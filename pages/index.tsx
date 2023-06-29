@@ -2,9 +2,9 @@ import React from "react";
 
 const Index = () => {
   return (
-    <>
-hi
-    </>
+    <div>
+        I am the landing page
+    </div>
   );
 };
 
