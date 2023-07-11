@@ -17,7 +17,6 @@ To start developing your μAgent, you need to import the necessary classes **Age
 
 ``` py
 from uagents import Agent, Context
-alice = Agent(name="alice", seed="alice recovery phrase")
 ```
 
 The **Agent** class represents an autonomous μAgent capable of making decisions, executing behaviors, and interacting with other agents in a decentralized fashion, whereas, the **Context** class provides μAgents with information about their environment and facilitates interactions between μAgents. Combining the **Agent** and **Context** classes provides the environment and communication infrastructure usable to build intelligent μAgents that operate autonomously and participate in decentralized networks.
@@ -38,7 +37,7 @@ Each μAgent is defined by 2 types of _addresses_:
 To check your μAgent's addresses, use the **print()** function:
 
 ``` py
-print("uGgent address: ", alice.address)
+print("uAgent address: ", alice.address)
 print("Fetch network address: ", alice.wallet.address())
 ```
 
@@ -71,4 +70,4 @@ and run the script,
 python name_of_script.py
 ```
 
-You successfully created your first μAgent! 
+Congratulations, you successfully created your first μAgent! 
