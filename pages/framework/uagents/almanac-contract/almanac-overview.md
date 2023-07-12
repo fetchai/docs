@@ -4,7 +4,7 @@
 
 The system employs strict time limitations for registrations, measured in **blocks**, to ensure the smooth operation of a large ecosystem of agents. This limitation addresses the liveness problem by encouraging μAgents to periodically re-register their information within the Almanac contract, thus keeping the registration details up to date for each one of them.
 
-Indeed, once a μAgent's registration information expires due to the time limit, queries for that μAgents will no longer return the previously registered information. This mechanism promotes the accuracy and relevance of the μAgents information available to others.
+Indeed, once a μAgent's registration information expires due to the time limit, queries for that μAgents will no longer return the previously registered information. _This mechanism promotes the accuracy and relevance of the μAgents information available to others_.
 
 During each registration process, μAgents must prove ownership of their address. This is achieved by signing a sequence number using their μAgent private key and subsequently submitting the signature to the contract for verification. The sequence number should increment with each successful registration and can also be queried. These steps are automated, ensuring a streamlined registration experience for μAgents.
 
