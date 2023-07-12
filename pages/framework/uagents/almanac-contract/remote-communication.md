@@ -1,4 +1,4 @@
-# Remote Communications and Agentverse Explorer
+# Remote Communication
 
 The Almanac contract allows μAgents to interact remotely from different locations across the internet. All you need to know is the recipient agent's address to query its information.
 
@@ -7,7 +7,7 @@ In this example, we will simulate a remote communication between μAgents by run
 > touch remote_agent_bob.py
 > touch remote_agent_alice.py
 
-### Alice
+## Alice
 
 On the text editor application of your choice, first open _remote_agent_alice.py_. We will start by defining **alice** and the recipient address (**bob**'s agent address in this example).
 
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     alice.run()
 ```
 
-### Bob
+## Bob
 
 Now consider **remote_agent_bob.py** script. Like before, we need to define a **Message** class for messages and create a μAgent named **bob**, configured with a **name**, **port**, and **seed**. We also need to register **bob** in the Almanac by first ensuring it has enough funds in its wallet to do so, thus we run the **fund_agent_if_low()** function. This function takes an address as an argument, which is obtained from **bob.wallet.address()**.
 
@@ -173,10 +173,10 @@ if __name__ == "__main__":
     bob.run()
 ```
 
-### Run the scripts
+## Run the agents
 
 Now, we are ready to run our scripts. First run bob and then alice from different terminals. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. 
 
-> python remote_agents_communication_alice.py
+> python remote_agent_bob.py
 
-> python remote_agents_communication_bob.py
+> python remote_agent_alice.py
