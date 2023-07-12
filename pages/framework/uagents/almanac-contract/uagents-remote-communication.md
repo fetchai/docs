@@ -1,4 +1,4 @@
-# Remote Communication
+# Remote Communication between μAgents
 
 The Almanac contract allows μAgents to interact remotely from different locations across the internet. All you need to know is the recipient agent's address to query its information.
 

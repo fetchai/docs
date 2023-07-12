@@ -1,4 +1,4 @@
-# Almanac contract registration
+# Register in the Almanac contract
 
 A μAgent can communicate in a remote fashion with another accross different locations on the internet. This is achievable by  using the μAgent  address to _register into the Almanac contract_ ( by first paying a small fee), and then _querying the Almanac to retrieve an HTTP endpoint_ of a recipient μAgent.
 

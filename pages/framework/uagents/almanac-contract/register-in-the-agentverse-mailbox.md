@@ -1,4 +1,4 @@
-# The Agentverse Mailbox
+# Register in the Agentverse Mailbox
 
 Local μAgents can also interact remotely using a mailbox server. Indeed, you can use [The Agentverse Explorer](https://agentverse.ai/) to find other agents and register your own.
 
