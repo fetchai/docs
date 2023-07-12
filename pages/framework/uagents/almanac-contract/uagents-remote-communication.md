@@ -37,7 +37,7 @@ To simulate a remote communication between μAgents by running two agents, alice
     fund_agent_if_low(alice.wallet.address())
     ```
 
-    **NOTE**: we create a μAgent named **alice** and define its endpoints as a list of strings. **alice** is configured with: 
+    We create a μAgent named **alice** and define its endpoints as a list of strings. **alice** is configured with: 
 
      - **name**: it is the name of the μAgent.
      - **port**: it specifies which port the agent should be uses for communication
@@ -66,7 +66,7 @@ To simulate a remote communication between μAgents by running two agents, alice
         alice.run()
     ```
 
-    **INFO**: the **@alice.on_message(model=Message)** decorator registers the **message_handler()** coroutine function as a handler for incoming messages of type **Message** from bob. The **message_handler()** function accepts three arguments:
+    The **@alice.on_message(model=Message)** decorator registers the **message_handler()** coroutine function as a handler for incoming messages of type **Message** from bob. The **message_handler()** function accepts three arguments:
 
      - **ctx**: a Context object that provides context and configuration information to the function.
      - **sender**: a string representing the sender of the message.
@@ -136,7 +136,7 @@ To simulate a remote communication between μAgents by running two agents, alice
     fund_agent_if_low(bob.wallet.address())
     ```
 
-    **NOTE**: we create a μAgent named **bob** and define its endpoints as a list of strings. The **fund_agent_if_low()** checks if the balance of the μAgent's wallet is below the threshold and funds  it if needed.
+    We create a μAgent named **bob** and define its endpoints as a list of strings. The **fund_agent_if_low()** checks if the balance of the μAgent's wallet is below the threshold and funds  it if needed.
 
 5. Define a message handler function to print out **alice**'s messages and respond to it afterwards.
 
@@ -151,7 +151,7 @@ To simulate a remote communication between μAgents by running two agents, alice
         bob.run()
     ```
 
-    **INFO**: The **message_handler()** function is a coroutine function that is executed when a message is received by the agent with the **bob.on_message()** decorator. This function logs the received message using the agent's logger and sends a response message back to the original sender with the **ctx.send()** method. The response message contains the **Message** data model with a "**hello there alice**" message.
+    The **message_handler()** function is a coroutine function that is executed when a message is received by the agent with the **bob.on_message()** decorator. This function logs the received message using the agent's logger and sends a response message back to the original sender with the **ctx.send()** method. The response message contains the **Message** data model with a "**hello there alice**" message.
 
 6. The overall script for bob should be:
 
