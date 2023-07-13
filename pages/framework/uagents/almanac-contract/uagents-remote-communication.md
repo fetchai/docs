@@ -41,7 +41,7 @@ To simulate a remote communication between μAgents by running two agents, alice
 
      - **name**: it is the name of the μAgent.
      - **port**: it specifies which port the agent should be uses for communication
-     - **seed**: it is a secret phrase used to generate the μAgent's private key.Importantly, make sure to add a seed to your agent, so you don't have to fund different addresses each time you run your agent.
+     - **seed**: it is a secret phrase used to generate the μAgent's private key. Make sure to add a seed to your μAgent, so you don't have to fund different addresses each time you run your agent.
     
      The **fund_agent_if_low()** checks if the balance of the μAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
 
@@ -53,7 +53,7 @@ To simulate a remote communication between μAgents by running two agents, alice
         await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob")
     ```
 
-    **INFO**: the **@alice.on_interval(period=2.0)** decorator schedules the **send_message()** coroutine function to run every 2 seconds. The **send_message()** function accepts a **Context** object, **ctx**, as an argument. Inside the **send_message()** function, there is an asynchronous call **await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))**. This call sends a message with the content, "**hello there bob**", to the recipient specified by the **RECIPIENT_ADDRESS** variable.
+    The **@alice.on_interval(period=2.0)** decorator schedules the **send_message()** coroutine function to run every 2 seconds. The **send_message()** function accepts a **Context** object, **ctx**, as an argument. Inside the **send_message()** function, there is an asynchronous call **await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))**. This call sends a message with the content, "**hello there bob**", to the recipient specified by the **RECIPIENT_ADDRESS** variable.
 
 6. Define a message handler function for **alice** to handle or upcoming messages from **bob**.
 
