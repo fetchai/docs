@@ -1,6 +1,6 @@
 # Get μAgent addresses
 
-To check your μAgent's addresses, first create your μAgent and then use the **print()** function:
+To check your μAgent's addresses, first create your μAgent and then use the **print()** function to retrieve them:
 
 ``` py
 from uagents import Agent

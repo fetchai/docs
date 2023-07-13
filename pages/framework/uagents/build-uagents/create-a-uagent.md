@@ -1,10 +1,11 @@
 # Create a μAgent
 
 ## Requirements 
+
 First of all, you need to:
 
 - Satisfy the [system requirements](system-requirements.md).
-- Install a text editor (e.g., [PyCharm CE](https://www.jetbrains.com/pycharm/download/) or [VisualStudioCode](https://code.visualstudio.com/download)).
+- Install a text editor application (e.g., [PyCharm CE](https://www.jetbrains.com/pycharm/download/) or [VisualStudioCode](https://code.visualstudio.com/download)).
 
 ## Walk-through
 
@@ -18,7 +19,7 @@ First of all, you need to:
     from uagents import Agent, Context
     ```
 
-    **Note**: the **Agent** class represents an autonomous μAgent capable of making decisions, executing behaviors, and interacting with other agents in a decentralized fashion, whereas, the **Context** class provides μAgents with information about their environment and facilitates interactions between μAgents.
+    The **Agent** class represents an autonomous μAgent capable of making decisions, executing behaviors, and interacting with other agents in a decentralized fashion, whereas, the **Context** class provides μAgents with information about their environment and facilitates interactions between μAgents.
 
 6. Create an instance of the **Agent** class, which represents our μAgent. 
 
@@ -26,7 +27,7 @@ First of all, you need to:
     alice = Agent(name="alice", seed="alice recovery phrase")
     ```
 
-    **Note**: The μAgent is assigned a **name** and a **seed**. This latter one parameter is optional but needed to set fixed addresses. Otherwise, random addresses will be generated every time you run the agent.
+    The μAgent is assigned a **name** and a **seed**. This latter one parameter is optional but needed to set fixed addresses. Otherwise, random addresses will be generated every time you run the agent.
 
 7. Assign the μAgent a behavior to be executed. For instance, **alice** agent could send a message to itself every 2 seconds saying hello.
 
@@ -39,21 +40,12 @@ First of all, you need to:
         alice.run()
     ```
 
-    **Note**: Within the μAgents Framework, _decorators are used to run periodic actions_ (e.g., sending a message periodically), or to run an action based on a specific event happening (e.g., when a message is being received). 
+    Within the μAgents Framework, _decorators are used to run periodic actions_ (e.g., sending a message periodically), or to run an action based on a specific event happening (e.g., when a message is being received). 
 
-    **Info**: The μAgent runs a **say_hello()** function to send a message periodically every **2.0** seconds, to log a message with the name provided in the **ctx** object, **alice**. The agent then uses the **ctx.logger.info()** method to print the content of such a message on your terminal, that is: **hello my name is alice**. 
+    The μAgent runs a **say_hello()** function to send a message periodically every **2.0** seconds, to log a message with the name provided in the **ctx** object, **alice**. The agent then uses the **ctx.logger.info()** method to print the content of such a message on your terminal, that is: **hello my name is alice**. 
 
 8. Save the .py script on the text editor of your choice and go back to the terminal or command prompt. 
-9. Activate the virtual environment 
+9. Activate the virtual environment: `poetry shell`
+10. Run the script: `python name_of_script.py`
 
-    ``` py
-    poetry shell
-    ```
-
-10. Run the script
-
-    ``` py
-    python name_of_script.py
-    ```
-
-**Congratulations, you successfully created your first μAgent!** 
+**Congratulations, you have successfully created your first μAgent!** 
