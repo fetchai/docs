@@ -1,4 +1,4 @@
-# Storage 
+# μAgents Storage 
 
 You can store information using the μAgent's local storage by simply running:
 

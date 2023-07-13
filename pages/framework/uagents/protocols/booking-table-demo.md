@@ -60,8 +60,7 @@ Let's start by defining the protocol for querying availability of tables at the 
         await ctx.send(sender, QueryTableResponse(status=status))
     ```
     
-    The decorator registers a handler function for **QueryTableRequest** messages received. The function checks if the requested table is already booked by checking the storage of the context object using the **ctx.storage.has()** method. If the table has been already booked, the response status attribute is set to **TableStatus.RESERVED**. Otherwise, the response status attribute is set to **TableStatus.FREE**. 
-
+    The decorator registers a handler function for **QueryTableRequest** messages received. The function checks if the requested table is already booked by checking the storage of the context object using the **ctx.storage.has()** method. If the table has been already booked, the response status attribute is set to **TableStatus.RESERVED**. Otherwise, the response status attribute is set to **TableStatus.FREE**.
     The function also logs the query and the status of the queried table using the **ctx.logger.info()**. Finally, the response (**QueryTableResponse**) is sent back to the sender using the **ctx.send()** method, with the status attribute set to the appropriate value.
 
 5. Save the script.
@@ -198,9 +197,5 @@ We are now able to focus on writing the script for this example.
 
 ## Run your script
 
-On your terminal, make sure you are in the right directory and that you activated your virtual environment. Run the main.py script: `python main.py`.
-
-
-
-
-   
+On your terminal, make sure you are in the right directory and that you activated your virtual environment. 
+Run the _main.py_ script: `python main.py`.
