@@ -1,4 +1,4 @@
-# Register in the Agentverse Mailbox
+# The Agentverse Mailbox Service
 
 Local μAgents can also interact remotely using a mailbox server. You can use [The Agentverse Explorer](https://agentverse.ai/) to find other agents and register your own.
 
@@ -25,8 +25,6 @@ To register agents in the **Agentverse mailbox**:
        mailbox=f"{API_KEY}@wss://agentverse.ai",
    )
    ```
-
-Now, you can recreate the example we showed at the [Remote Communication between μAgents](uagents-remote-communication.md) section by registering agent **bob** in [The Agentverse Explorer](https://agentverse.ai/) and adding the missing imports, models and handlers.
 
 ## Managed Agents on Agentverse
 
@@ -67,6 +65,8 @@ All you need to do is provide the **target address** of the agent.
         await ctx.send(sender, Message(message="hello there alice"))
     ```
 
-3. Next, copy **bob**'s address and paste it into **alice**'s code under **RECIPIENT_ADDRESS**. Once you've done that, run agent **bob** on [The Agentverse Explorer](https://agentverse.ai/) followed by your local agent **alice**. 
+3. Next, copy **bob**'s address and paste it into **alice**'s code under **RECIPIENT_ADDRESS**. Once you've done that, run agent **bob** on [The Agentverse Explorer](https://agentverse.ai/) followed by your local agent **alice**. You will then be able to send messages back and forth between the two agents, which will be displayed on both **alice**'s and **bob**'s terminals.
 
-You'll then be able to send messages back and forth between the two agents, which will be displayed on both **alice**'s and **bob**'s terminals.
+For a better understanding and visualisation, have a look at the tutorials section, in particular [The Agentverse Mailbox Service](agentverse-mailbox.md) tutorial. 
+
+Once you familiarise with these concepts, you could try to replicate the example showed in [μAgents Remote Communications](uagents-remote-communication.md) available in the tutorials section, by registering agent **bob** in [The Agentverse Explorer](https://agentverse.ai/) and adding the missing imports, models and handlers.
