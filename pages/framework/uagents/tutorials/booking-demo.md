@@ -1,179 +1,201 @@
-# Restaurant Booking Demo
+# Restaurant Booking Table Demo
 
-To showcase how easy it is to create μAgents for a particular application, here is an example of how to create a custom message type using the `Model` class.
+In this demo, we will show how to set up the code for a μAgent to query the state of a table at a restaurant and possibly book it if available, but defining different **protocols**. 
 
-```python
-from uagents import Model
+We want to define 2 specific protocols, one for table querying (**Table query protocol**) and one for table booking (**Table booking protocol**), to be called from a main script we will create at the end of this demonstration. 
 
-class TableStatus(Model):
-    seats: int
-    time_start: int
-    time_end: int
-```
+1. Navigate towards the directory you created for your project. 
+2. In here, we need to create a folder for this task: `mkdir booking_demo`.
+3. Inside this folder, create a main.py script, and another folder for your protocols: `touch main.py`, `mkdir protocols`.
 
-For this example, we will create a restaurant booking service with two agents: a `restaurant` with tables available and a `user` requesting table availability.
+We are ready to write the code for our 2 protocols and main script.
 
-## Restaurant Setup
+## Protocols
+### Table query protocol
 
-We can create a restaurant agent with its corresponding http endpoint. We will also make sure that the agent is funded so it is able to register in the Almanac contract.
+Let's start by defining the protocol for querying availability of tables at the restaurant: 
 
+1. Navigate towards the protocols folder: `cd protocols`
+2. Create a .py script named, **query.py**: `touch query.py`
+3. In the text editor application, define the **table query protocol**. The protocol consists of two message models: **QueryTableRequest** and **QueryTableResponse**, and an enumeration **TableStatus**.
 
-```python
-from uagents import Agent
-from uagents.setup import fund_agent_if_low
+    ```py
+    from enum import Enum
 
+    from uagents import Context, Model, Protocol
 
-restaurant = Agent(
-    name="restaurant",
-    port=8001,
-    seed="restaurant secret phrase",
-    endpoint=["http://127.0.0.1:8001/submit"],
-)
+    class TableStatus(str, Enum):
+        RESERVED = "reserved"
+        FREE = "free"
 
-fund_agent_if_low(restaurant.wallet.address())
-```
-The protocols `query_proto` and `book_proto` are built from message handlers in the same way as agents. See [query protocol](https://github.com/fetchai/uAgents/blob/master/examples/09-booking-protocol-demo/protocols/query.py) and [book protocol](https://github.com/fetchai/uAgents/blob/master/examples/09-booking-protocol-demo/protocols/book.py) for the details and logic behind these protocols, but for now we will simply import them. You will need to add these files inside a `protocols` folder in the same directory you are running your agent. See [agent protocols](../Key%20concepts/agent-protocols.md) for more information.
-Next we build the restaurant agent from these protocols and set the table availability information.
+    class QueryTableRequest(Model):
+        table_number: int
 
-```python
-from protocols.book import book_proto
-from protocols.query import query_proto, TableStatus
+    class QueryTableResponse(Model):
+        status: TableStatus
 
-# build the restaurant agent from stock protocols
-restaurant.include(query_proto)
-restaurant.include(book_proto)
-
-TABLES = {
-    1: TableStatus(seats=2, time_start=16, time_end=22),
-    2: TableStatus(seats=4, time_start=19, time_end=21),
-    3: TableStatus(seats=4, time_start=17, time_end=19),
-}
-
-```
-
-### Storage
-
-We will now store the `TABLES` information in the restaurant agent and run it.
-
-```python
-# set the table availability information in the restaurant protocols
-for (number, status) in TABLES.items():
-    restaurant._storage.set(number, status.dict())
-
-if __name__ == "__main__":
-    restaurant.run()
-```
-The restaurant agent is now online and listing for messages.
-
-## User Setup
-
-We will first import the needed objects and protocols. We will also need the restaurant agent's address to be able to communicate with it.
-
-```python
-from protocols.book import BookTableRequest, BookTableResponse
-from protocols.query import (
-    QueryTableRequest,
-    QueryTableResponse,
-)
-
-from uagents import Agent, Context
-from uagents.setup import fund_agent_if_low
-
-
-RESTAURANT_ADDRESS = "agent1qw50wcs4nd723ya9j8mwxglnhs2kzzhh0et0yl34vr75hualsyqvqdzl990"
-
-user = Agent(
-    name="user",
-    port=8000,
-    seed="user secret phrase",
-    endpoint=["http://127.0.0.1:8000/submit"],
-)
-
-fund_agent_if_low(user.wallet.address())
-
-```
-
-Now we create the table query to generate the `QueryTableRequest` using the restaurant address. If the request has not been completed before, we send the request to the restaurant agent.
-
-```python
-table_query = QueryTableRequest(
-    guests=3,
-    time_start=19,
-    duration=2,
-)
-
-# This on_interval agent function performs a request on a defined period
-
-@user.on_interval(period=3.0, messages=QueryTableRequest)
-async def interval(ctx: Context):
-    completed = ctx.storage.get("completed")
-
-    if not completed:
-        await ctx.send(RESTAURANT_ADDRESS, table_query)
-```
-
-The function below activates when a message is received back from the restaurant agent.
-`handle_query_response` will evaluate if there is a table available, and if so, respond with a `BookTableRequest` to complete the reservation.
-
-```python
-@user.on_message(QueryTableResponse, replies={BookTableRequest})
-async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
-    if len(msg.tables) > 0:
-        ctx.logger.info("There is a free table, attempting to book one now")
-        table_number = msg.tables[0]
-        request = BookTableRequest(
-            table_number=table_number,
-            time_start=table_query.time_start,
-            duration=table_query.duration,
-        )
-        await ctx.send(sender, request)
-    else:
-        ctx.logger.info("No free tables - nothing more to do")
-        ctx.storage.set("completed", True)
-
-```
-
-Then, `handle_book_response` will handle messages from the restaurant agent on whether the reservation was successful or unsuccessful.
-
-```python
-@user.on_message(BookTableResponse, replies=set())
-async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
-    if msg.success:
-        ctx.logger.info("Table reservation was successful")
-    else:
-        ctx.logger.info("Table reservation was UNSUCCESSFUL")
-
-    ctx.storage.set("completed", True)
-
-
-if __name__ == "__main__":
-    user.run()
-```
-
-Finally, run the restaurant agent and then the user agent from different terminals.
-
-!!! example "Run restaurant agent from one terminal"
-    
-    ``` bash
-    python restaurant.py
+    query_proto = Protocol()
     ```
 
-!!! example "Run user agent from a second terminal"
-    
-    ``` bash
-    python user.py
+    We define the enumeration **TableStatus** using the **Enum** class from the **enum** module, which contains two members: **RESERVED** and **FREE**. 
+
+    We then want to define two data models using the **Model** class from the **uagents** library: **QueryTableRequest**, which has a single attribute **table_number** of type **integer**, representing the table number to query, and **QueryTableResponse**, which has a single attribute status of type **TableStatus**.
+
+    We then create an instance of the **Protocol** class from the **uagents** module named **query_proto**.
+
+    ```py
+    query_proto = Protocol()
+    ```
+ 4. We then define a message handler function to handle incoming messages.
+
+    ```py
+    @query_proto.on_message(model=QueryTableRequest, replies={QueryTableResponse})
+    async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
+        if ctx.storage.has(str(msg.table_number)):
+            status = TableStatus.RESERVED
+        else:
+            status = TableStatus.FREE
+        ctx.logger.info(f"Table {msg.table_number} query. Status: {status}")
+
+        await ctx.send(sender, QueryTableResponse(status=status))
     ```
 
-You should see this printed on the user terminal:
+    The decorator registers a handler function for **QueryTableRequest** messages received. The function checks if the requested table is already booked by checking the storage of the context object using the **ctx.storage.has()** method. If the table has been already booked, the response status attribute is set to **TableStatus.RESERVED**. Otherwise, the response status attribute is set to **TableStatus.FREE**.
+    The function also logs the query and the status of the queried table using the **ctx.logger.info()**. Finally, the response (**QueryTableResponse**) is sent back to the sender using the **ctx.send()** method, with the status attribute set to the appropriate value.
 
-<div id="termynal1" data-termynal data-ty-typeDelay="100" data-ty-lineDelay="700">
-<span data-ty>INFO:root:Adding funds to agent...complete</span>
-<span data-ty>INFO:root:Registering Agent user...</span>
-<span data-ty>INFO:root:Registering Agent user...complete.</span>
-<span data-ty>Wallet address: fetchnfu3hd87323mw484ma3v3nz2v0q6uhds7d</span>
-<span data-ty>There is a free table, attempting to book one now</span>
-<span data-ty>Table reservation was successful</span>
-</div>
+5. Save the script.
 
-See the full example scripts at [restaurant](https://github.com/fetchai/uAgents/blob/master/examples/09-booking-protocol-demo/restaurant.py) and 
-[user](https://github.com/fetchai/uAgents/blob/master/examples/09-booking-protocol-demo/user.py).
+### Table book protocol
+
+We can now proceed by writing the booking protocol script for booking the table at the restaurant.
+
+1. Navigate towards the protocols folder: `cd protocols`
+2. Create a .py script named, **book.py**: `touch book.py`
+3. In the text editor application, define the **table book protocol**. The protocol consists of two message models: **BookTableRequest** and **BookTableResponse**.
+
+    ```py
+    from uagents import Context, Model, Protocol
+
+    class BookTableRequest(Model):
+        table_number: int
+
+    class BookTableResponse(Model):
+        success: bool
+
+    book_proto = Protocol()
+    ```
+    We define two data models using the **Model** class: **BookTableRequest**, which has a single attribute **table_number** of type **int**, and **BookTableResponse**, which has a single attribute **success** of type **bool**, indicating whether the table was successfully booked or not.
+
+4. Then, we define the _booking protocol_ as **book_proto**, as well as define the desired logic to determine if the **BookTableResponse** will be successful or not.
+
+    ```py
+    @book_proto.on_message(model=BookTableRequest, replies={BookTableResponse})
+    async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
+
+        if ctx.storage.has(str(msg.table_number)):
+            success = False
+        else:
+            success = True
+            ctx.storage.set(str(msg.table_number), sender)
+
+        # send the response
+        await ctx.send(sender, BookTableResponse(success=success))
+    ```
+
+    The decorator is used to register a handler function for **BookTableRequest** messages. The function checks if the requested table is already booked by checking the storage of the context object using the **ctx.storage.has()** method. If the table has been already booked, the response **success** attribute is set to **False**. Otherwise, the response **success** attribute is set to **True** and the **sender** identifier is stored in the context storage using the **ctx.storage.set()** method.
+
+    Finally, the response is sent back to the sender using the **ctx.send()** method, which takes ad parameters the sender identifier and the BookTableResponse object with the success attribute set to the appropriate value.
+
+5. Save the script.
+
+## Main script
+
+We are now able to focus on writing the script for this example. 
+
+1. In the text editor, enter the main.py script we initially created.
+2. Import necessary classes from the two protocols we defined above, to make them directly callable and usable from our main script file.
+
+    ```py
+    from protocols.book import BookTableRequest, BookTableResponse, book_proto
+    from protocols.query import (
+        QueryTableRequest,
+        QueryTableResponse,
+        TableStatus,
+        query_proto,
+    )
+
+    from uagents import Agent, Bureau, Context
+    ```
+
+    The **BookTableRequest** and **BookTableResponse** models and the **book_proto** protocol are used to request and confirm the booking of a table, whereas the **QueryTableRequest**, **QueryTableResponse**, **TableStatus**, and **query_proto** models and protocol are used to request and retrieve information about the status of a table.
+
+    We also import the necessary classes from the **uagents** library.
+
+3. Create two μAgents instances of the **Agent** class: **customer** and **restaurant**. The **restaurant** agent includes both the **query_proto** and **book_proto** protocols, which means it is capable of handling requests and responses related to querying table status and booking tables. The customer agent does not include any protocols.
+
+    ```py
+    restaurant = Agent(name="Restaurant")
+    restaurant.include(query_proto)
+    restaurant.include(book_proto)
+
+    customer = Agent(name="Customer")
+    ```
+4. Define functions and behaviors.
+
+    ```py
+    @customer.on_interval(period=3.0, messages=QueryTableRequest)
+    async def interval(ctx: Context):
+        started = ctx.storage.get("started")
+
+        if not started:
+            await ctx.send(restaurant.address, QueryTableRequest(table_number=42))
+
+        ctx.storage.set("started", True)
+    ```
+
+    This decorator sets up an interval in which the **customer** agent sends a **QueryTableRequest** message to the **restaurant** agent's address every **3.0** seconds. The messages parameter is set to send **QueryTableRequest** messages. The function first checks whether a **started** value is present in the storage object, through the **ctx.storage.get()** method. If it is not, the function sends a **QueryTableRequest** message to the restaurant with the table number specified as **42**. After sending the initial **QueryTableRequest** message, the function sets the **started** value to **True** in the storage object. This ensures that the function will not send duplicate **QueryTableRequest** messages on subsequent intervals.
+
+    ```py
+    @customer.on_message(QueryTableResponse, replies={BookTableRequest})
+    async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
+
+        if msg.status == TableStatus.FREE:
+            ctx.logger.info("Table is free, attempting to book it now")
+            await ctx.send(sender, BookTableRequest(table_number=42))
+
+        else:
+            ctx.logger.info("Table is not free - nothing more to do")
+    ```
+
+    This decorator defines a handler function triggered whenever a **QueryTableResponse** message is received. The function checks the status of the table in the message, and if it is free, it attempts to book the table by sending a **BookTableRequest** message to the restaurant with the table number specified. If the table is not free, it logs a message indicating that there is nothing more to do.
+
+    ```py
+    @customer.on_message(BookTableResponse, replies=set())
+    async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
+
+        if msg.success:
+            ctx.logger.info("Table reservation was successful")
+
+        else:
+            ctx.logger.info("Table reservation was UNSUCCESSFUL")
+    ```
+
+    This message handler function is triggered whenever the customer receives a **BookTableResponse** message. The function checks the **success** field in the message, and if it is **True**, it logs a message indicating that the table reservation was successful. If it is **False**, it logs a message indicating that the reservation was unsuccessful.
+
+5. Add both μAgents to the Bureau.
+
+    ```py
+    bureau = Bureau()
+    bureau.add(customer)
+    bureau.add(restaurant)
+
+    if __name__ == "__main__":
+        bureau.run()
+    ```
+
+6. Save the script.
+
+## Run your script
+
+On your terminal, make sure you are in the right directory and that you activated your virtual environment. 
+Run the _main.py_ script: `python main.py`.

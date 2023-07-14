@@ -1,102 +1,86 @@
-# Agent interactions
+# μAgents Communication
 
-## Add a second agent
+To show μAgents interacting, we need to create a second μAgent. To make our μAgents communicate with each other, we need to define a message structure for messages to be exchanged between the two μAgents. To do so, we need to import the class **Model** from **uagents** library to define a generic message. 
 
-To show μAgents interacting, we'll need to create a second agent.
-Importing the `Bureau` class will allow us to create a collection of agents and run them together in the same script.
-Then we can simply add agents `alice` and `bob` to the `Bureau` and run it.
+In addition, we need to import the **Bureau** class which allows us to create a collection of agents and run them together in the same script, by simply adding μAgents to the **Bureau** and run it consequently.
 
-```python
-from uagents import Agent, Context, Bureau
+1. Create a .py script for this task: `touch name_of_script.py`
 
-alice = Agent(name="alice", seed="alice recovery phrase")
-bob = Agent(name="bob", seed="bob recovery phrase")
+2. Import necessary classes from uagents library and define the message structure for messages to be exchanged. 
 
-@alice.on_interval(period=2.0)
-async def say_hello(ctx: Context):
-    ctx.logger.info(f'Hello, my name is {ctx.name}')
-
-@bob.on_interval(period=2.0)
-async def say_hello(ctx: Context):
-    ctx.logger.info(f'Hello, my name is {ctx.name}')
-
-bureau = Bureau()
-bureau.add(alice)
-bureau.add(bob)
-
-if __name__ == "__main__":
-    bureau.run()
-```
-
-Yoy should observe alice and bob printing out their name in the terminal.
-
-!!! example "Run your agents"
+    ```py
+    from uagents import Agent, Context, Bureau, Model
     
-    ``` bash
-    python simple-agents.py
+    class Message(Model):
+        text: str
     ```
 
-You will see the message printed out every 2 seconds. You might see a message indicating insufficient funds to register, check out [agent registration](../Key%20concepts/Alamanac%20contract/almanac-registration.md) for more information.
+3. Create the μAgents instances of the class Agent. 
 
-<div id="termynal1" data-termynal data-ty-typeDelay="100" data-ty-lineDelay="700">
-<span data-ty>Hello, my name is alice</span>
-<span data-ty>Hello, my name is bob</span>
-<span data-ty>Hello, my name is alice</span>
-<span data-ty>Hello, my name is bob</span>
-</div>
+    ```py
+    alice = Agent(name="alice", seed="alice recovery phrase")
+    bob = Agent(name="bob", seed="bob recovery phrase")
+    ```
 
-## Agent communication
+4. Define the **alice** μAgent behavior. We can use the **on_interval()** decorator to run periodically every 2 a **send_message()** coroutine function. The message is sent from alice to Bob using the **ctx.send()** method of the Context object, with **bob.address** as the recipient and an instance of the **Message** model.
+    
+    ```py
+    @alice.on_interval(period=3.0)
+    async def send_message(ctx: Context):
+       await ctx.send(bob.address, Message(message="hello there bob"))
+    ```
 
-To allow our agents to communicate with each other we will need a message structure, and for that, we need to import `Model` to define a generic message.
+5. Define an **on_message()** decorator to define a **message_handler()** coroutine function for **bob**, so for it to handle incoming messages from **alice**. It is triggered whenever **bob** receives a message of type **Message**. The function logs the received message and its sender using the **ctx.logger.info()** method. We can also add a response from **bob** to **alice**. We need to add send message from bob after alice's message is received 
+
+    ```py
+    @bob.on_message(model=Message)
+    async def bob_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        await ctx.send(alice.address, Message(message="hello there alice"))
+    ```
+
+6. Define a **message_handler()** function for **alice** to be make it capable to manage and print out **bob**'s response message.
+
+    ```py
+    @alice.on_message(model=Message)
+    async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    ```
+
+7. Create a **bureau** object as an instance of the class **Bureau**. Add both μAgents to it in order to run them from the same script.
+
+    ```py
+    bureau = Bureau()
+    bureau.add(alice)
+    bureau.add(bob)
+    
+    if __name__ == "__main__":
+        bureau.run()
+    ```
+
+The overall script for this task should look as follows:
 
 ```python
-from uagents import Model
+from uagents import Agent, Bureau, Context, Model
 
 class Message(Model):
-    text: str
-
-```
-
-We can use the `send` function from the `Context` class to send a message from alice to bob on an interval.
-
-```python
-@alice.on_interval(period=2.0)
-async def send_message(ctx: Context):
-    msg = f'hello there {bob.name} my name is {alice.name}'
-    await ctx.send(bob.address, Message(text=msg))
-```
-
-We also need to introduce a message handler for bob. We will do this inside the `on_message` decorator that will activate the `message_handler` once bob receives the message.
-
-```python
-@bob.on_message(Message)
-async def message_handler(ctx: Context, sender: str, msg: Message):
-    ctx.logger.info(f"Received message from {sender}: {msg.text}")
-    ctx.logger.info(msg)
-```
-
-Finally, we need to add both agents to the `Bureau` in order to run them from the same script.
-
-
-```python
-from uagents import Agent, Context, Bureau, Model
-
-class Message(Model):
-    text: str
+    message: str
 
 alice = Agent(name="alice", seed="alice recovery phrase")
 bob = Agent(name="bob", seed="bob recovery phrase")
 
-@alice.on_interval(period=2.0)
+@alice.on_interval(period=3.0)
 async def send_message(ctx: Context):
-    msg = f'hello there {bob.name} my name is {alice.name}'
-    await ctx.send(bob.address, Message(text=msg))
+   await ctx.send(bob.address, Message(message="hello there bob"))
 
-
+@alice.on_message(model=Message)
+async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+  
 @bob.on_message(model=Message)
-async def message_handler(ctx: Context, sender: str, msg: Message):
-    ctx.logger.info(f"Received message from {sender}: {msg.text}")
-
+async def bob_message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    await ctx.send(alice.address, Message(message="hello there alice"))
 
 bureau = Bureau()
 bureau.add(alice)
@@ -105,21 +89,3 @@ bureau.add(bob)
 if __name__ == "__main__":
     bureau.run()
 ```
-
-When running the script above, you should see alice's message printed on the terminal:
-
-!!! example "Run your agents"
-    
-    ``` bash
-    python agent-communication.py
-    ```
-
-<div id="termynal2" data-termynal data-ty-typeDelay="100" data-ty-lineDelay="700">
-<span data-ty>[bob]: message received from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob my name is alice</span>
-<span data-ty>[bob]: message received from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob my name is alice</span>
-</div>
-
-You could also try to add a response from bob to alice, for that you would need to add a `send` message from bob after alice's 
-message is received and a new message handler for alice to be able to manage and print out bob's message. For a slightly more complex 
-example check out the next section [remote agents](remote-agents.md).
-
