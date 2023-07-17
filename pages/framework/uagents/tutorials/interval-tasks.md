@@ -1,4 +1,4 @@
-# Interval tasks
+# μAgents Interval Tasks Demo
 
 μAgents can use interval tasks to periodically perform actions with some time interval.
 

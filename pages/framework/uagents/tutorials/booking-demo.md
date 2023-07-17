@@ -195,6 +195,12 @@ We are now able to focus on writing the script for this example.
 
 6. Save the script.
 
+The overall script should look as follows:
+
+```py
+
+```
+
 ## Run your script
 
 On your terminal, make sure you are in the right directory and that you activated your virtual environment. 
