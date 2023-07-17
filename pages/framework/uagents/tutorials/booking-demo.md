@@ -33,8 +33,6 @@ Let's start by defining the protocol for querying availability of tables at the 
 
     class QueryTableResponse(Model):
         status: TableStatus
-
-    query_proto = Protocol()
     ```
 
     We define the enumeration **TableStatus** using the **Enum** class from the **enum** module, which contains two members: **RESERVED** and **FREE**. 
@@ -64,6 +62,36 @@ Let's start by defining the protocol for querying availability of tables at the 
     The function also logs the query and the status of the queried table using the **ctx.logger.info()**. Finally, the response (**QueryTableResponse**) is sent back to the sender using the **ctx.send()** method, with the status attribute set to the appropriate value.
 
 5. Save the script.
+
+The overall script should look as follows:
+
+```py
+from enum import Enum
+
+from uagents import Context, Model, Protocol
+
+class TableStatus(str, Enum):
+    RESERVED = "reserved"
+    FREE = "free"
+
+class QueryTableRequest(Model):
+    table_number: int
+
+class QueryTableResponse(Model):
+    status: TableStatus
+
+query_proto = Protocol()
+
+@query_proto.on_message(model=QueryTableRequest, replies={QueryTableResponse})
+async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
+    if ctx.storage.has(str(msg.table_number)):
+        status = TableStatus.RESERVED
+    else:
+        status = TableStatus.FREE
+    ctx.logger.info(f"Table {msg.table_number} query. Status: {status}")
+
+    await ctx.send(sender, QueryTableResponse(status=status))
+```
 
 ### Table book protocol
 
@@ -107,6 +135,30 @@ We can now proceed by writing the booking protocol script for booking the table 
     Finally, the response is sent back to the sender using the **ctx.send()** method, which takes ad parameters the sender identifier and the BookTableResponse object with the success attribute set to the appropriate value.
 
 5. Save the script.
+
+The overall script should look as follows: 
+
+```py
+from uagents import Context, Model, Protocol
+
+class BookTableRequest(Model):
+    table_number: int
+
+class BookTableResponse(Model):
+    success: bool
+
+book_proto = Protocol()
+
+@book_proto.on_message(model=BookTableRequest, replies={BookTableResponse})
+async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
+    if ctx.storage.has(str(msg.table_number)):
+        success = False
+    else:
+        success = True
+        ctx.storage.set(str(msg.table_number), sender)
+
+    await ctx.send(sender, BookTableResponse(success=success))
+```
 
 ## Main script
 
@@ -195,10 +247,55 @@ We are now able to focus on writing the script for this example.
 
 6. Save the script.
 
-The overall script should look as follows:
+The overall main.py script should look as follows:
 
 ```py
+from protocols.book import BookTableRequest, BookTableResponse, book_proto
+from protocols.query import (
+    QueryTableRequest,
+    QueryTableResponse,
+    TableStatus,
+    query_proto,
+)
 
+from uagents import Agent, Bureau, Context
+
+restaurant = Agent(name="Restaurant")
+restaurant.include(query_proto)
+restaurant.include(book_proto)
+
+customer = Agent(name="Customer")
+
+@customer.on_interval(period=3.0, messages=QueryTableRequest)
+async def interval(ctx: Context):
+    started = ctx.storage.get("started")
+
+    if not started:
+        await ctx.send(restaurant.address, QueryTableRequest(table_number=42))
+
+    ctx.storage.set("started", True)
+
+@customer.on_message(QueryTableResponse, replies={BookTableRequest})
+async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
+    if msg.status == TableStatus.FREE:
+        ctx.logger.info("Table is free, attempting to book it now")
+        await ctx.send(sender, BookTableRequest(table_number=42))
+    else:
+        ctx.logger.info("Table is not free - nothing more to do")
+
+@customer.on_message(BookTableResponse, replies=set())
+async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
+    if msg.success:
+        ctx.logger.info("Table reservation was successful")
+    else:
+        ctx.logger.info("Table reservation was UNSUCCESSFUL")
+
+bureau = Bureau()
+bureau.add(customer)
+bureau.add(restaurant)
+
+if __name__ == "__main__":
+    bureau.run()
 ```
 
 ## Run your script

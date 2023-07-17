@@ -2,7 +2,7 @@
 
 To show μAgents interacting, we need to create a second μAgent. To make our μAgents communicate with each other, we need to define a message structure for messages to be exchanged between the two μAgents. To do so, we need to import the class **Model** from **uagents** library to define a generic message. In addition, we need to import the **Bureau** class which allows us to create a collection of agents and run them together in the same script, by simply adding μAgents to the **Bureau** and run it consequently.
 
-1. Create a .py script for this task: `touch name_of_script.py`
+1. Create a .py script for this task: `agents_communication.py`
 
 2. Import necessary classes from uagents library and define the message structure for messages to be exchanged. 
 
@@ -87,3 +87,8 @@ bureau.add(bob)
 if __name__ == "__main__":
     bureau.run()
 ```
+
+## Run the script
+
+On your terminal, make sure to be in the right directory for your project and activate the virtual environment.
+Run the script: `python agents_communication.py`

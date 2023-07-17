@@ -182,8 +182,7 @@ if __name__ == "__main__":
     bureau.run()
 ```
 
-We are ready to run our script. Make sure you saved your script and correctly activated your virtual environment. On your terminal, run:
+## Run the script
 
-``` py
-python sending_tokens.py
-```
+On your terminal, make sure to be in the right directory for your project and activate the virtual environment.
+Run the script: `python sending_tokens.py`

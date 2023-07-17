@@ -1,11 +1,11 @@
 # The Agentverse Mailbox Service
 
-In this tutorial, we show how to enable remote communications between μAgents through the Agentverse Mailbox service. 
-For additional information on this, visit the dedicated section in our [developer documentation](register-in-the-agentverse-mailbox.md)
+In this tutorial, we show how to enable remote communications between μAgents through the Agentverse Mailbox Service. 
+For information on this, visit the dedicated section in our [developer documentation](register-in-the-agentverse-mailbox.md)
 
 ## Alice 
 
-1. Create a script for **alice**. 
+1. Create a script for **alice**: `touch alice.py`
 2. Import the necessary classes from the **uagents** and **uagents.setup**, and define the **Message** class for messages to be exchanged between our μAgents.
 
     ```py
@@ -59,6 +59,8 @@ For additional information on this, visit the dedicated section in our [develope
     ```
     We defined a **handle_message()** coroutine function that serves as the message handler for the agent. It is triggered whenever the agent receives a message of type **Message**. The function logs the received message and its sender using the **ctx.logger.info()** method. It then sends a response message back to the sender using the **ctx.send()** method with the sender address and an instance of the **Message** model.
 
+7. Save the script.
+
 The overall script for **alice** should look as follows:
 
 ```py
@@ -93,9 +95,11 @@ if __name__ == "__main__":
     agent.run()
 ```
 
+**NOTE**: You need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly.
+
 ## Bob
 
-1. Create a .py script for **bob**.
+1. Create a .py script for **bob**: `touch bob.py`
 2. Import the necessary classes from the **uagents** and **uagents.setup**, and define the **Message** class for messages to be exchanged between our μAgents.
 
     ```py
@@ -162,6 +166,8 @@ if __name__ == "__main__":
         bob.run()
     ```
 
+9. Save the script.
+
 The overall script for bob should look as follows: 
 
 ```py
@@ -201,3 +207,13 @@ async def on_message(ctx: Context, sender: str, msg: Message):
 if __name__ == "__main__":
     bob.run()
 ```
+
+**NOTE**: You need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly. Here, you also need to provide bob with ALICE_ADDRESS field. 
+
+## Run the scripts
+
+Now, we are ready to run our scripts. Run **alice** and **bob** from different terminals. The received messages will print out in each terminal. 
+
+- Bob: `bob.py`
+
+- Alice: `alice.py`

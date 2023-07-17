@@ -2,11 +2,34 @@
 
 μAgents can use interval tasks to periodically perform actions with some time interval.
 
-We can use the **on_interval()** decorator to repeat a task in a specified period.
-We also need to import **Context** to have access to the information that the agent needs to function.
-In this case, we will just define a **say_hello()** function that will print out the agent name every 2 seconds.
+1. Navigate towards a directory created for your projects.
+2. Create a script for this task: `touch interval-task.py`
+3. Import necessary classes from **uagents** library and create your μAgent.
 
-```python
+    ```py
+    from uagents import Agent, Context
+    
+    alice = Agent(name="alice", seed="alice recovery phrase")
+    ```
+   
+4. Define your μAgent behavior.
+
+   ```py
+   @alice.on_interval(period=2.0)
+   async def say_hello(ctx: Context):
+       ctx.logger.info(f'hello, my name is {ctx.name}')
+   
+   if __name__ == "__main__":
+    alice.run()
+   ```
+
+   We can use the **on_interval()** decorator to repeat a task in a specified period. In this case, we will just define a **say_hello()** function that will print out "**hello, my name is alice**" every 2 seconds.
+
+5. Save the script. 
+
+The overall script should look as follows:
+
+```py
 from uagents import Agent, Context
 
 alice = Agent(name="alice", seed="alice recovery phrase")
@@ -18,3 +41,8 @@ async def say_hello(ctx: Context):
 if __name__ == "__main__":
     alice.run()
 ```
+
+## Run the script
+
+On your terminal, make sure to be in the right directory for your project and activate the virtual environment.
+Run the script: `touch interval-task.py`

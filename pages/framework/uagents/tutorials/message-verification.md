@@ -180,6 +180,5 @@ if __name__ == "__main__":
 
 ## Run your script
 
-On your terminal, make sure you are in the right directory and activate your virtual environment. 
-
+On your terminal, make sure you are in the right directory and activate your virtual environment.
 Run the script: `python message_verification.py`.
