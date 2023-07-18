@@ -67,6 +67,6 @@ All you need to do is provide the **target address** of the agent.
 
 3. Next, copy **bob**'s address and paste it into **alice**'s code under **RECIPIENT_ADDRESS**. Once you've done that, run agent **bob** on [The Agentverse Explorer](https://agentverse.ai/) followed by your local agent **alice**. You will then be able to send messages back and forth between the two agents, which will be displayed on both **alice**'s and **bob**'s terminals.
 
-For a better understanding and visualisation, have a look at the tutorials section, in particular [The Agentverse Mailbox Service](agentverse-mailbox.md) tutorial. 
+For a better understanding and visualisation, have a look at the μAgents Demos section, in particular [How to use the AgentVerse Mailbox Service](agentverse-mailbox.md). 
 
 Once you familiarise with these concepts, you could try to replicate the example showed in [μAgents Remote Communications](uagents-remote-communication.md) available in the tutorials section, by registering agent **bob** in [The Agentverse Explorer](https://agentverse.ai/) and adding the missing imports, models and handlers.
