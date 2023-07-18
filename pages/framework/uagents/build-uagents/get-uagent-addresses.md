@@ -1,4 +1,4 @@
-# Get μAgent addresses
+# μAgents addresses
 
 To check your μAgent's addresses, first create your μAgent and then use the **print()** function to retrieve them:
 
