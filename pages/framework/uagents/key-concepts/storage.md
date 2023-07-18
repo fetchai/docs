@@ -12,6 +12,3 @@ This will save the information in a JSON file, you can retreive it a any time us
 ```python
  ctx.storage.get("key")
 ```
-
-
-See the [restaurant booking demo](../tutorials/booking-demo.md) for an example that makes use of the agent's storage to store table information.
