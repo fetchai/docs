@@ -1,4 +1,4 @@
-# Benefits of μAgents
+# Benefits of using μAgents
 
 Here are a few of the reasons to build with μAgents:
 
