@@ -28,7 +28,7 @@ To show μAgents interacting, we need to create a second μAgent. To make our μ
        await ctx.send(bob.address, Message(message="hello there bob"))
     ```
 
-5. Define an **on_message()** decorator to define a **message_handler()** coroutine function for **bob**, so for it to handle incoming messages from **alice**. It is triggered whenever **bob** receives a message of type **Message**. The function logs the received message and its sender using the **ctx.logger.info()** method. We can also add a response from **bob** to **alice**. We need to add send message from bob after alice's message is received 
+5. Define an **on_message()** decorator to define a **message_handler()** coroutine function for **bob** to handle incoming messages from **alice**.
 
     ```py
     @bob.on_message(model=Message)
@@ -36,8 +36,10 @@ To show μAgents interacting, we need to create a second μAgent. To make our μ
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
         await ctx.send(alice.address, Message(message="hello there alice"))
     ```
+   
+   This function is triggered whenever **bob** receives a message of type **Message**. The function logs the received message and its sender using the **ctx.logger.info()** method. We can also add a response from **bob** to **alice**: we need to add a ctx.send() method for a message being sent from **bob** to **alice.address*. 
 
-6. Define a **message_handler()** function for **alice** to be make it capable to manage and print out **bob**'s response message.
+6. Define a **message_handler()** function for **alice** to be capable of managing and printing out **bob**'s response message.
 
     ```py
     @alice.on_message(model=Message)
@@ -45,7 +47,7 @@ To show μAgents interacting, we need to create a second μAgent. To make our μ
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
     ```
 
-7. Create a **bureau** object as an instance of the class **Bureau**. Add both μAgents to it in order to run them from the same script.
+7. Create a **bureau** object as an instance of the **Bureau** class, and add both μAgents to it in order to run them from the same script.
 
     ```py
     bureau = Bureau()

@@ -25,22 +25,7 @@
 
    We can use the **on_interval()** decorator to repeat a task in a specified period. In this case, we will just define a **say_hello()** function that will print out "**hello, my name is alice**" every 2 seconds.
 
-5. Save the script. 
-
-The overall script should look as follows:
-
-```py
-from uagents import Agent, Context
-
-alice = Agent(name="alice", seed="alice recovery phrase")
-
-@alice.on_interval(period=2.0)
-async def say_hello(ctx: Context):
-    ctx.logger.info(f'hello, my name is {ctx.name}')
-
-if __name__ == "__main__":
-    alice.run()
-```
+5. Save the script.
 
 ## Run the script
 

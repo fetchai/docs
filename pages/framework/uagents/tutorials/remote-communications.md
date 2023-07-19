@@ -39,13 +39,13 @@ We want to simulate a remote communication between μAgents, alice and bob, on d
 
     We create a μAgent named **alice** and define its endpoints as a list of strings. **alice** is configured with: 
 
-     - **name**: it is the name of the μAgent.
-     - **port**: it specifies which port the agent should be uses for communication
-     - **seed**: it is a secret phrase used to generate the μAgent's private key. Make sure to add a seed to your μAgent, so you don't have to fund different addresses each time you run your agent.
+     - **name**: name of the μAgent.
+     - **port**: the port the agent should use for communication
+     - **seed**: secret phrase used to generate the μAgent's private key. Make sure to add a seed to your μAgent, so you don't have to fund different addresses each time you run your agent.
 
-     The **fund_agent_if_low()** checks if the balance of the μAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
+     The **fund_agent_if_low()** checks if the balance of the μAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet (testnet only).
 
-5. Define **alice**'s functions and behaviours. We start by defining an interval task for this agent, so for it to send a message to the recipient address every 2 seconds.
+5. Define **alice**'s functions and behaviours. We start by defining an interval task for this agent.
 
     ```py
     @alice.on_interval(period=2.0)
@@ -55,7 +55,7 @@ We want to simulate a remote communication between μAgents, alice and bob, on d
 
     The **@alice.on_interval(period=2.0)** decorator schedules the **send_message()** coroutine function to run every 2 seconds. The **send_message()** function accepts a **Context** object, **ctx**, as an argument. Inside the **send_message()** function, there is an asynchronous call **await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))**. This call sends a message with the content, "**hello there bob**", to the recipient specified by the **RECIPIENT_ADDRESS** variable.
 
-6. Define a message handler function for **alice** to handle or upcoming messages from **bob**.
+6. Define a message handler function for **alice** to handle upcoming messages from **bob**.
 
     ```py
     @alice.on_message(model=Message)
@@ -135,8 +135,6 @@ if __name__ == "__main__":
 
     fund_agent_if_low(bob.wallet.address())
     ```
-
-    We create a μAgent named **bob** and define its endpoints as a list of strings. The **fund_agent_if_low()** checks if the balance of the μAgent's wallet is below the threshold and funds  it if needed.
 
 5. Define a message handler function to print out **alice**'s messages and respond to it afterwards.
 
