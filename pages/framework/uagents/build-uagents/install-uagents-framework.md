@@ -8,7 +8,7 @@ There exist 2 options to install the uagents package on your system:
 
 2. Within the directory, create and open a virtual environment using Poetry: `poetry init -n && poetry shell`
 
-3. Install Fetch.ai μAgents Framework: `pip add uagents`
+3. Install Fetch.ai μAgents Framework: `pip install uagents`
 
 4. Check if installation was successful: `pip show uagents`
 
@@ -35,14 +35,13 @@ There exist 2 options to install the uagents package on your system:
 
 ## Troubleshooting
 
-It is possible that you may encounter issues during the installation process.
-Here, you can find common problems and their solutions:
+It is possible that you may face issues during the installation process. Here, you can find common problems and their solutions:
 
 **Problem (MacOS/Python 3.11)**: 
 
    `Installing coincurve (17.0.0): Failed`
 
-**Solution**: install the latest versions of `automake`, `autoconf`, and `libtool` with: 
+**Solution**: install the latest versions of `automake`, `autoconf`, and `libtool`: 
 
    `brew install automake autoconf libtool`
 
