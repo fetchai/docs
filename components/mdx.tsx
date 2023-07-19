@@ -129,10 +129,22 @@ export function Tabs({children, half = false}) {
 
 export function Row({children}){
 
-    return ( <div className="flex">{children}</div>)
+    return ( <div className="flex pt-4">{children}</div>)
 
 }
 
 export function Col({children}){
 return ( <div className="w-1/2">{children}</div>)
+}
+
+export function Section({children}){
+    return ( <div className="my-32">{children}</div>)
+}
+
+export function ApiIntro({children}){
+    return ( <div className="pb-4 pr-4">{children}</div>)
+}
+
+export function Tag({children}){
+    return ( <div className="bg-green-100 border rounded w-fit">{children}</div>)
 }
