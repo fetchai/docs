@@ -8,3 +8,9 @@ pnpm i next react react-dom nextra nextra-theme-docs
 ````python
 pnpm next
 ````
+
+### view: 
+
+```python
+localhost:3000/framework
+```
