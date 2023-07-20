@@ -1,4 +1,4 @@
-# Create a μAgent Printing Name and Address
+# Create a μAgent printing Name and Address
 
 1. Create a Python script: `my_first_agent.py`
 2. Import the necessary classes **Agent** and **Context** from the **uagents** library. 

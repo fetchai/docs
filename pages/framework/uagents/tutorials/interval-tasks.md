@@ -1,6 +1,6 @@
 # μAgents Interval Tasks
 
-μAgents can use interval tasks to periodically perform actions with some time interval.
+μAgents can use interval tasks to periodically perform actions with a specified time interval, for example, sending a message every 2 seconds.
 
 1. Navigate towards a directory created for your projects.
 2. Create a script for this task: `touch interval-task.py`
