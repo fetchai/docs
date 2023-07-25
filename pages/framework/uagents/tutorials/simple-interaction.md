@@ -31,7 +31,7 @@ if __name__ == "__main__":
 Yoy should observe alice and bob printing out their name in the terminal.
 
 !!! example "Run your agents"
-    
+
     ``` bash
     python simple-agents.py
     ```
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 When running the script above, you should see alice's message printed on the terminal:
 
 !!! example "Run your agents"
-    
+
     ``` bash
     python agent-communication.py
     ```
@@ -122,4 +122,3 @@ When running the script above, you should see alice's message printed on the ter
 You could also try to add a response from bob to alice, for that you would need to add a `send` message from bob after alice's 
 message is received and a new message handler for alice to be able to manage and print out bob's message. For a slightly more complex 
 example check out the next section [remote agents](remote-agents.md).
-

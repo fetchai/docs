@@ -84,7 +84,7 @@ if __name__ == "__main__":
 Now, we first run `bob` and then `alice` from different terminals. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal.
 
 !!! example "Run Bob and Alice"
-    
+
     ``` bash
     python bob.py
     python alice.py

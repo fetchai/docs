@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
 ```
 !!! example "Run your agent"
-    
+
     ``` bash
     python agent.py
     ```

@@ -153,13 +153,13 @@ if __name__ == "__main__":
 Finally, run the restaurant agent and then the user agent from different terminals.
 
 !!! example "Run restaurant agent from one terminal"
-    
+
     ``` bash
     python restaurant.py
     ```
 
 !!! example "Run user agent from a second terminal"
-    
+
     ``` bash
     python user.py
     ```
