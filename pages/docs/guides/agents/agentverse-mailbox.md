@@ -1,7 +1,7 @@
 # How to use the AgentVerse Mailbox Service
 
 In this tutorial, we show how to enable remote communications between μAgents through the Agentverse Mailbox Service. 
-For information on this, visit the dedicated section in our [developer documentation](/pages/docs/references/uagents/uagents-almanac/register-in-the-agentverse-mailbox.md)
+For information on this, visit the dedicated section in our [developer documentation](/docs/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)
 
 ## Alice 
 

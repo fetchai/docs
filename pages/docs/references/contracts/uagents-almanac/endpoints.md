@@ -33,4 +33,4 @@ There exist _two format_ options when defining your agent's endpoints:
     )
     ```
 
-You can now head towards the dedicated guide showing you how to [register in the Almanac Contract](/pages/docs/references/uagents/guides/register-in-almanac.md) and enable remote communications between different μAgents.
+You can now head towards the dedicated guide showing you how to [register in the Almanac Contract](/docs/guides/agents/register-in-almanac.md) and enable remote communications between different μAgents.

@@ -11,4 +11,3 @@ Here are a few of the reasons to build with μAgents:
 4. **Security**: Security is a top priority in decentralized environments, and the framework ensures the protection of your μAgent's messages and wallets. Through cryptographic measures, the identities and assets associated with μAgents are safeguarded, providing peace of mind and maintaining the integrity of your μAgent's interactions and transactions.
 
 5. **Platform and language independency**: While initially launched as a Python library, the exchange protocol used by μAgents is defined in terms of standard data types. This inherent flexibility allows the framework to transcend any specific platform or programming language. As a lightweight and adaptable framework, expect the emergence of packages and implementations in other programming languages to further expand the reach and accessibility of μAgents in the near future.
-6. 
