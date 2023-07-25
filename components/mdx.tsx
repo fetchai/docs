@@ -151,5 +151,9 @@ export function ApiIntro({children}){
 }
 
 export function Tag({children}){
-    return ( <div className="bg-green-100 border rounded w-fit">{children}</div>)
+    return ( <div className="bg-green-100 border rounded w-fit p-2">{children}</div>)
+}
+
+export function CodeHeading({children}){
+    return ( <div className="flex gap-2">{children}</div>)
 }
