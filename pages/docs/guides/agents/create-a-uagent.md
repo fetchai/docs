@@ -11,7 +11,7 @@ You can create your first μAgent by building a Python script with the following
     alice = Agent(name="alice", seed="alice recovery phrase")
     ```
 
-    It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses](getting-uagent-address.md). Otherwise, random addresses will be generated every time you run the agent.
+    It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses](/docs/guides/agents/getting-uagent-address.md). Otherwise, random addresses will be generated every time you run the agent.
 
 3. Define a **say_hello()** function for alice to print a message periodically saying **"hello, my name is alice"**.
 
@@ -43,7 +43,8 @@ if __name__ == "__main__":
 
 ## Run your agent
 
+Make sure to have activated your virtual environment correctly. 
 
-Make sure to have activated your virtual environment correctly. Run the script: `python agent.py`
+Run the script: `python agent.py`
 
 **Congratulations, you have just created your first μAgent!**
