@@ -108,6 +108,6 @@ jobs:
             --zone $GKE_ZONE \
             --project $GKE_PROJECT
           helm upgrade --install --wait --timeout 300s $HELM_NAME \
-            ./k8s/website/ \
+            ./k8s/docs/ \
             --set-string website.image.tag=$IMAGE_TAG \
             -n $NAMESPACE
