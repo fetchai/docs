@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.10
+
+      - run: |
+          which node
+          which npm
+          which pnpm
+          node --version
+          npm --version
+          pnpm --version
+
+      - run: |
+          pnpm install --frozen-lockfile
+
+      - run: |
+          pnpm build

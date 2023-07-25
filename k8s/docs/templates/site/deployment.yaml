@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docs
+  labels:
+    app: docs
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docs
+
+  template:
+    metadata:
+      labels:
+        app: docs
+
+    spec:
+      containers:
+        - name: docs
+          image: "{{ .Values.website.image.repo }}:{{ .Values.website.image.tag }}"
+          ports:
+            - name: web
+              containerPort: 3000

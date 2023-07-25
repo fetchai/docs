@@ -1,0 +1,14 @@
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: docs
+  labels:
+    app: docs
+
+spec:
+  endpoints:
+    - dnsName:  {{ .Values.dns.name }}
+      recordTTL: 180
+      recordType: CNAME
+      targets:
+        - {{ .Values.dns.target }}

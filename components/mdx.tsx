@@ -1,5 +1,7 @@
 import React from "react";
-import {Tab} from '@headlessui/react'
+import {Tab as HeadlessTab} from '@headlessui/react'
+
+
 
 function InfoIcon(props) {
     return (
@@ -100,10 +102,10 @@ export function Tabs({children, half = false}) {
         <div className={`rounded h-min overflow-auto ${half ? "w-full" : "w-full"}`}>
 
 
-            <Tab.Group>
-                <Tab.List className="flex space-x-1 rounded-xl p-1">
+            <HeadlessTab.Group>
+                <HeadlessTab.List className="flex space-x-1 rounded-xl p-1">
                     {React.Children.map(children, (child, index) => (
-                        <Tab key={index} className={({selected}) =>
+                        <HeadlessTab key={index} className={({selected}) =>
                             classNames(
                                 'w-full rounded-lg py-2.5 text-sm font-medium leading-5 bg-slate-100',
                                 ' focus:outline-none focus:ring-2',
@@ -111,21 +113,24 @@ export function Tabs({children, half = false}) {
                                     ? 'shadow'
                                     : 'text-white-100 hover:bg-white/[0.12] hover:text-white'
                             )
-                        }>{child.props.heading}</Tab>
+                        }>{child.props.heading}</HeadlessTab>
                     ))}
-                </Tab.List>
-                <Tab.Panels>
+                </HeadlessTab.List>
+                <HeadlessTab.Panels>
                     {React.Children.map(children, (child, index) => (
-                        <Tab.Panel key={index}
+                        <HeadlessTab.Panel key={index}
                                    className={classNames('p-3 ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
-                                   )}>{child.props.children}</Tab.Panel>
+                                   )}>{child.props.children}</HeadlessTab.Panel>
                     ))}
-                </Tab.Panels>
-            </Tab.Group>
+                </HeadlessTab.Panels>
+            </HeadlessTab.Group>
         </div>
     )
 }
 
+export function Tab(props) {
+    return <HeadlessTab {...props}/>
+}
 
 export function Row({children}){
 

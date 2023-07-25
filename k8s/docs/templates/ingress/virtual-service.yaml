@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: docs
+  labels:
+    app: docs
+
+spec:
+  gateways:
+    - docs
+
+  hosts:
+    - {{ .Values.dns.name }}
+    {{- range .Values.dns.additionalHosts }}
+    - {{ . | quote }}
+    {{- end }}
+
+  http:
+    - route:
+        - destination:
+            host: docs
+            port:
+              number: 80
+          weight: 100
