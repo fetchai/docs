@@ -14,3 +14,7 @@ pnpm next
 ```python
 localhost:3000/framework
 ```
+
+### Staging Website
+
+https://docs-staging.sandbox-london-b.fetch-ai.com/framework
