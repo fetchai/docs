@@ -16,14 +16,14 @@ To show μAgents interacting, we need to create a second μAgent, **bob**.
 
 3. Create the μAgents instances of the class **Agent**. 
 
-    ```py
+    ```py 
     alice = Agent(name="alice", seed="alice recovery phrase")
     bob = Agent(name="bob", seed="bob recovery phrase")
     ```
 
 4. Define the **alice** μAgent behavior. We can use the **.on_interval()** decorator to run periodically every 2 a **send_message()** coroutine function. The message is sent from **alice** to **bob** using the **ctx.send()** method of the **Context** object, with **bob.address** as the recipient and an instance of the **Message** model.
 
-    ```py
+    ```py 
     @alice.on_interval(period=3.0)
     async def send_message(ctx: Context):
        await ctx.send(bob.address, Message(message="hello there bob"))

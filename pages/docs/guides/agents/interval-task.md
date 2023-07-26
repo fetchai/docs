@@ -2,19 +2,19 @@
 
 μAgents can use interval tasks to periodically perform actions with a specified time interval, for example, sending a message every 2 seconds.
 
-1. Navigate towards a directory created for your projects.
-2. Create a script for this task: `touch interval-task.py`
-3. Import necessary classes from **uagents** library and create your μAgent.
+1. First, navigate towards a directory created for your projects
+2. We then need to create a script for this task, and name it: `touch interval-task.py`
+3. Let's then import the necessary classes from **uagents** library and create our μAgent:
 
-    ```py
+    ```py copy
     from uagents import Agent, Context
 
     alice = Agent(name="alice", seed="alice recovery phrase")
     ```
 
-4. Define your μAgent behavior.
+4. We can now define our μAgent's behavior:
 
-   ```py
+   ```py copy
    @alice.on_interval(period=2.0)
    async def say_hello(ctx: Context):
        ctx.logger.info(f'hello, my name is {ctx.name}')
@@ -27,7 +27,9 @@
 
 5. Save the script.
 
-```py
+The overall script should look as follows: 
+
+```py copy filename="interval-task.py"
 from uagents import Agent, Context
 
 alice = Agent(name="alice", seed="alice recovery phrase")

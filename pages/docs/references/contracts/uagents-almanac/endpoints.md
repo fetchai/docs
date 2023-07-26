@@ -10,7 +10,7 @@ There exist _two format_ options when defining your agent's endpoints:
 
 - **List format**: This defines the μAgent's endpoints as a list of strings. The weights will be automatically assigned a value of 1.
 
-    ```py
+    ```py copy
     agent = Agent(
         name="alice",
         port=8000,
@@ -21,7 +21,7 @@ There exist _two format_ options when defining your agent's endpoints:
 
 - **Dictionary format**: This defines the μAgent's endpoints in a Dict format, specifying the weight for each endpoint. If the weight parameter is not specified, it will be assigned a value of 1.
 
-    ```py
+    ```py copy
     agent = Agent(
         name="alice",
         port=8000,

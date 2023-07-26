@@ -54,7 +54,7 @@ All you need to do is provide the **target address** of the agent.
 
 2. Then, add the following code to **bob**:
 
-    ```py
+    ```py copy
     class Message(Model):
         message: str
 

@@ -1,14 +1,12 @@
 # Using μAgents storage function
 
-In this tutorial, we illustrate how storage functions are called and how to use them. 
+In this guide, we want to illustrate how storage functions are called and how to use them. We want to create a μAgent which gets a value from the storage (starting from 0) every second. Then prints it, and puts the new value back into the storage but increased by 1 unit.
 
-We want to create a μAgent which gets a value from the storage (starting from 0) every second. Then prints it, and puts the new value back into the storage but increased by 1 unit.
+1. First of all, create a Python script, and name it: `touch storage.py`.
+2. Then, open the script in your text editor of choice and import the necessary classes from the **uagents** library.
+3. Let's then create a μAgent named **alice** which logs a message every second using the **on_interval** decorator, indicating the current count. The **on_interval** function takes a **Context** object as a parameter: the **Context** object contains a storage attribute, which is used to store and retrieve data between method calls. 
 
-1. Create a .py script: `touch storage.py`.
-2. Open the script in your text editor of choice and import the necessary classes from the **uagents** library.
-3. Create a μAgent named **alice** which logs a message every second using the **on_interval()** decorator, indicating the current count. The **on_interval()** function takes a **Context** object as a parameter: the **Context** object contains a storage attribute, which is used to store and retrieve data between method calls. 
-
-    ```py
+    ```py copy filename="storage.py"
     from uagents import Agent, Context
 
     alice = Agent(name="alice", seed="alice recovery phrase")
@@ -26,7 +24,7 @@ We want to create a μAgent which gets a value from the storage (starting from 0
         alice.run()
     ```
 
-    Here, the **on_interval()** function retrieves the current count from the storage attribute using the **ctx.storage.get()** method. It prints the **current_count** value, and then increments it by 1, and stores the updated count back to the storage attribute using the **ctx.storage.set()** method. The current count is then logged using the **ctx.logger.info()** method.
+    Here, the **on_interval** function retrieves the current count from the storage attribute using the **ctx.storage.get** method. It prints the **current_count** value, and then increments it by 1, and stores the updated count back to the storage attribute using the **ctx.storage.set** method. The current count is then logged using the **ctx.logger.info** method.
 
 4. Save the script.
 

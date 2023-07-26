@@ -1,17 +1,17 @@
 # Registering in the Almanac Contract
 
-The Almanac contract requires μAgents to pay a fee for registration using their **Agent Address**, and thus to be found by other agents on the network.
+The [Almanac contract](/docs/references/contracts/uagents-almanac/almanac-overview.md) is an essential component for remote communication between μAgents. It requires them to pay a fee for registration using their **Agent Address** and thus, for μAgents to be found by other agents on the network 
 
 Therefore, it is essential for μAgents to have funds available in their **Fetch Network Address**. 
 
 Registering a μAgent within the Almanac requires to import:
 
 - The **Agent** class from the **uagents** library to create our μAgent.
-- The **fund_agent_if_low** class from the **uagents.setup** module, which you can use _on the Fetch.ai testnet_ to run the function **fund_agent_if_low()**. This function will check if you have enough tokens to register in the Almanac contract. If not it will add tokens to your Fetch Network address. Make sure to add a **seed** to your agent, so you don't have to fund different addresses each time you run your agent. 
+- The **fund_agent_if_low** class from the **uagents.setup** module, which you can use _on the Fetch.ai testnet_ to run the function **fund_agent_if_low**. This function will check if you have enough tokens to register in the Almanac contract. If not it will add tokens to your Fetch Network address. Make sure to add a **seed** to your agent, so you don't have to fund different addresses each time you run your agent. 
 
 As highlighted in [Register in the Almanac contract](/docs/references/contracts/uagents-almanac/endpoints.md), μAgents can communicate by querying the Almanac and retrieving an **HTTP endpoint** from the recipient μAgent. Therefore, we need to specify the service endpoints when defining our μAgent:
 
-```py
+```py copy filename="interval-task.py"
 from uagents.setup import fund_agent_if_low
 from uagents import Agent
 
