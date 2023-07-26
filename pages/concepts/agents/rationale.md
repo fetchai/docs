@@ -1,4 +1,6 @@
-# Why μAgents
+## rework this to be a reasons why we developed this, not why you should. Show our passion for this, why we think this is world changing.
+
+## Why μAgents
 
 Here are a few of the reasons to build with μAgents:
 
