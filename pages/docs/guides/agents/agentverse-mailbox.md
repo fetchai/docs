@@ -1,7 +1,7 @@
 # How to use the AgentVerse Mailbox Service
 
 In this tutorial, we show how to enable remote communications between μAgents through the Agentverse Mailbox Service. 
-For information on this, visit the dedicated section in our [developer documentation](/docs/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)
+For information on this, visit the dedicated section in our [references section](/docs/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)
 
 ## Alice 
 
@@ -16,7 +16,7 @@ For information on this, visit the dedicated section in our [developer documenta
         message: str
     ```
 
-3. Generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+3. Generate a secure **seed phrase** (e.g. https://pypi.org/project/mnemonic/)
 
     ```py
     SEED_PHRASE = "put_your_seed_phrase_here"
@@ -28,7 +28,7 @@ For information on this, visit the dedicated section in our [developer documenta
     print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
     ```
 
-5. Sign up at [Agentverse](https://agentverse.ai) to get an API key and register your μAgent.
+5. Sign up at [Agentverse](https://agentverse.ai) to get an **API key** and register your μAgent.
 
     ```py
     API_KEY = "put_your_API_key_here"
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     agent.run()
 ```
 
-**NOTE**: You need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly.
+**NOTE: You need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly.**
 
 ## Bob
 
@@ -112,13 +112,13 @@ if __name__ == "__main__":
         message: str
     ```
 
-3. Define ALICE_ADDRESS by copyng the address generated in the script for **alice** above.
+3. Define **ALICE_ADDRESS** by copyng the address generated in the script for **alice** above.
 
     ```py
     ALICE_ADDRESS = "paste_alice_address_here"
     ```
 
-4. Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/).
+4. Generate a second **seed phrase** (e.g. https://pypi.org/project/mnemonic/).
 
     ```py
     SEED_PHRASE = "put_your_seed_phrase_here"
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
     ```
 
-6. Head towards the [Agentverse](https://agentverse.ai) to get your API key and register a second agent.
+6. Head towards the [Agentverse](https://agentverse.ai) to get your **API key** and register a second agent.
 
     ```py
     API_KEY = "put_your_API_key_here"
@@ -153,7 +153,7 @@ if __name__ == "__main__":
         await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
     ```
 
-    Here, we define a **send_message()** coroutine function that is scheduled to run periodically every 2 seconds using the **on_interval()** decorator. Inside the coroutine, a message of type **Message** is sent to **alice**'s address using the **ctx.send()** method.
+    Here, we define a **send_message()** coroutine function that is scheduled to run periodically every 2 seconds using the **.on_interval()** decorator. Inside the coroutine, a message of type **Message** is sent to **alice**'s address using the **ctx.send()** method.
 
 8. Define a message handler for **bob** to handle incoming messages from 
 
@@ -208,7 +208,7 @@ if __name__ == "__main__":
     bob.run()
 ```
 
-**NOTE**: You need to generate your **SEED_PHRASE** and **API_KEY** and substitute these into the above required fields for the script to run correctly. Here, you also need to provide bob with **ALICE_ADDRESS** field. 
+**NOTE: You need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly. Here, you also need to provide bob with ALICE_ADDRESS field.** 
 
 ## Run the scripts
 

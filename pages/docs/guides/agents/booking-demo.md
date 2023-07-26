@@ -2,13 +2,14 @@
 
 In this demo, we want to show how to set up the code to create a restaurant booking service with two μAgents: a **restaurant** with tables available, and a **user** requesting table availability.
 
-We also want to define 2 specific **protocols**, one for table querying (i.e., **Table querying protocol**) and one for table booking (i.e., **Table booking protocol**), to be called from a main script we will create at the end of this demonstration. 
+We also want to define 2 specific **protocols**, one for table querying (i.e., **Table querying protocol**) and one for table booking (i.e., **Table booking protocol**). Then we will need to define two uAgents scripts, **restaurant** and **user**, which will make use of the protocols to query and book a table.
 
 1. Navigate towards the directory you created for your project. 
 2. In here, we need to create a folder for this task: `mkdir booking_demo`.
-3. Inside this folder, create a **main.py** script, and another folder for your protocols: `touch main.py`, `mkdir protocols`.
+3. Inside this folder we will create another folder for our **protocols**: `mkdir protocols`. 
+4. After having defined our protocols, we will create a scripts for our **restaurant** and **user** uAgents, which will make use of these protocols to query, check, confirm and book an available table at the restaurant.
 
-We are ready to write the code for our 2 protocols and main scripts.
+We are ready to write the code for our 2 protocols.
 
 ## Protocols
 ### Table querying protocol
@@ -95,7 +96,8 @@ Let's start by defining the protocol for querying availability of tables at the 
     ```
 
    - **handle_query_request()**: this message handler function is defined using the **@query_proto.on_message()** decorator. It handles the **QueryTableRequest** messages and replies with a **QueryTableResponse** message. The handler processes the table availability query based on the provided parameters, checks the table statuses stored in the agent's storage, and sends the available table numbers as a response to the querying agent. Additionally, the handler tracks the total number of queries made and increments the count in storage.
-   - **handle_get_total_queries()**: this message handler is defined using the **@query_proto.on_query()** decorator. It handles the **GetTotalQueries** query and replies with a **TotalQueries** message containing the total number of queries made to the system. The handler retrieves the total query count from the agent's storage and responds with the count.
+   
+   - **handle_get_total_queries()**: this message handler function is defined using the **@query_proto.on_query()** decorator. It handles the **GetTotalQueries** query and replies with a **TotalQueries** message containing the total number of queries made to the system. The handler retrieves the total query count from the agent's storage and responds with the count.
 
 7. Save the script.
 

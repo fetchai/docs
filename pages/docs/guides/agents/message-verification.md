@@ -57,7 +57,7 @@ In this demo, we show how to set up the code for 2 μAgents to exchange messages
         )
     ```
 
-    This function is decorated using the **@alice.on_interval()** decorator, which indicates that the function is called periodically every **3.0** seconds to send messages to **bob**'s address. It takes in a single argument **ctx**. The function first creates a message, **msg**, and computes its digest using the **encode()** function. The message is then sent to bob using the **ctx.send()** method, along with the **digest** and a **signature** of the digest using the **alice.sign_digest()** function.
+    This function is decorated using the **.on_interval()** decorator, which indicates that the function is called periodically every **3.0** seconds to send messages to **bob**'s address. It takes in a single argument **ctx**. The function first creates a message, **msg**, and computes its digest using the **encode()** function. The message is then sent to bob using the **ctx.send()** method, along with the **digest** and a **signature** of the digest using the **alice.sign_digest()** function.
 
 8. Define an **alice_rx_message()** function used to receive and process messages sent by **bob**.
 
@@ -72,7 +72,7 @@ In this demo, we show how to set up the code for 2 μAgents to exchange messages
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
     ```
 
-    This function is decorated using the **@alice.on_message()**, indicating that the function is triggered when a message is being received of type **Message**. The function takes in three arguments: **ctx**, **sender**, and **msg**.  
+    This function is decorated using the **.on_message()**, indicating that the function is triggered when a message is being received of type **Message**. The function takes in three arguments: **ctx**, **sender**, and **msg**.  
 
     The first thing the function does is verify the authenticity of the message using the **Identity.verify_digest()** function. If the message cannot be verified, the function raises an assertion error. Assuming the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message.
 
@@ -97,7 +97,7 @@ In this demo, we show how to set up the code for 2 μAgents to exchange messages
         )
     ```
 
-    This function is decorated using the **@bob.on_message()**, indicating that the function is triggered when a message is being received of type **Message**. takes in three arguments: **ctx**, **sender**, and **msg**.
+    This function is decorated using the **.on_message()**, indicating that the function is triggered when a message is being received of type **Message**. takes in three arguments: **ctx**, **sender**, and **msg**.
 
     The function firstly verifies the authenticity of the message using the **Identity.verify_digest()** function. If the message cannot be verified, the function raises an assertion error. On the other hand, if the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message using the **ctx.logger.info()** method.
 

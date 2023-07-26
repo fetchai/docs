@@ -1,6 +1,6 @@
 # Create a μAgent printing name and address
 
-1. Create a Python script: `my_first_agent.py`
+1. Create a Python script: `my_agent.py`
 2. Import the necessary classes **Agent** and **Context** from the **uagents** library. 
 
     ``` py
@@ -29,6 +29,5 @@
 ## Run the script
 
 On your terminal, make sure to be in the right directory for your project and activate the virtual environment.
-Run the script: `my_first_agent.py`
 
-**Congratulations, you have successfully created your first μAgent!** 
+Run the script: `my_agent.py`

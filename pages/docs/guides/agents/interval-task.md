@@ -23,7 +23,7 @@
     alice.run()
    ```
 
-   We can use the **on_interval()** decorator to repeat a task in a specified period. In this case, we will just define a **say_hello()** function that will print out "**hello, my name is alice**" every 2 seconds.
+   We can use the **.on_interval()** decorator to repeat a task in a specified period. In this case, we will just define a **say_hello()** function that will print out "**hello, my name is alice**" every 2 seconds.
 
 5. Save the script.
 

@@ -64,7 +64,7 @@ In this tutorial, we show how to set up two agents, **alice** and **bob**, with 
         )
     ```
 
-    This defines an event handler for alice using the **@alice.on_interval()** decorator. This event handler is triggered at regular intervals of **10.0** seconds in this case. The event handler function is named **request_funds()** and takes a **ctx** parameter of type **Context**. Within the function, **alice** sends a payment request message to **bob** by using the **ctx.send()** method. The **ctx.send()** method is called with the recipient address, **bob.address**, which specifies that the message should be sent to bob. The message is an instance of the **PaymentRequest()** model. It contains **alice**'s wallet address (**str(ctx.wallet.address())**), the amount (**AMOUNT**), and the denomination (**DENOM**).
+    This defines an event handler for alice using the **.on_interval()** decorator. This event handler is triggered at regular intervals of **10.0** seconds in this case. The event handler function is named **request_funds()** and takes a **ctx** parameter of type **Context**. Within the function, **alice** sends a payment request message to **bob** by using the **ctx.send()** method. The **ctx.send()** method is called with the recipient address, **bob.address**, which specifies that the message should be sent to **bob**. The message is an instance of the **PaymentRequest()** model. It contains **alice**'s wallet address (**str(ctx.wallet.address())**), the amount (**AMOUNT**), and the denomination (**DENOM**).
 
 7. Define a **confirm_transaction()** message handler for **alice** to handle incoming messages from **bob** of type **TransactionInfo**.
 
@@ -84,7 +84,7 @@ In this tutorial, we show how to set up two agents, **alice** and **bob**, with 
 
     The event handler function is named **confirm_transaction()** and takes three parameters: **ctx**, **sender**, and **msg**. Within the function, **alice** logs an informational message using the **ctx.logger.info()** method, indicating the receipt of transaction information from the sender agent, **bob**, and displaying the **msg** object. The **wait_for_tx_to_complete()** function is used to await the completion of the transaction specified by the **tx_hash** received in the message.
 
-    Once the transaction is completed, The code accesses the **coin_received** event from the transaction response using **tx_resp.events[\"coin_received\"]**. It checks if the receiver address matches **alice**'s wallet address (**str(ctx.wallet.address())**) and if the amount received matches the expected amount (**AMOUNT + DENOM**).
+    Once the transaction is completed, the code accesses the **coin_received** event from the transaction response using **tx_resp.events[\"coin_received\"]**. It checks if the receiver address matches **alice**'s wallet address (**str(ctx.wallet.address())**) and if the amount received matches the expected amount (**AMOUNT + DENOM**).
 
     If the conditions are met, **alice** logs another informational message indicating the success of the transaction and displaying the details of the received coins.
 

@@ -2,12 +2,11 @@
 
 In this tutorial, we show how to use the Almanac contract to make μAgents interact remotely from different locations across the internet. All you need to know is the recipient agent's address to query its information.
 
-We want to simulate a remote communication between μAgents, alice and bob, on different ports and terminals on the same device. First of all, let's start by creating two μAgents separately, in different scripts. 
+We want to simulate a remote communication between μAgents, **alice** and **bob**, on different ports and terminals on the same device. First of all, let's start by creating two μAgents separately, in different scripts. 
 
 ## Alice
 
-1. Create a .py scripts for this task: `touch remote_agent_alice.py`. Open this script on the text editor application of your choice.  
-
+1. Create a .py scripts for this task: `touch remote_agent_alice.py`.
 2. Import the necessary classes from **uagents** and **uagents.setup**.
 
     ```py
@@ -37,13 +36,9 @@ We want to simulate a remote communication between μAgents, alice and bob, on d
     fund_agent_if_low(alice.wallet.address())
     ```
 
-    We create a μAgent named **alice** and define its endpoints as a list of strings. **alice** is configured with: 
+    We create a μAgent named **alice** and define its endpoints as a list of strings. **alice** is configured with:**name**, **port**, and **seed**.
 
-     - **name**: name of the μAgent.
-     - **port**: the port the agent should use for communication
-     - **seed**: secret phrase used to generate the μAgent's private key. Make sure to add a seed to your μAgent, so you don't have to fund different addresses each time you run your agent.
-
-     The **fund_agent_if_low()** checks if the balance of the μAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet (testnet only).
+     The **fund_agent_if_low()** checks if the balance of the μAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet (_testnet only_).
 
 5. Define **alice**'s functions and behaviours. We start by defining an interval task for this agent.
 
@@ -53,7 +48,7 @@ We want to simulate a remote communication between μAgents, alice and bob, on d
         await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob")
     ```
 
-    The **@alice.on_interval(period=2.0)** decorator schedules the **send_message()** coroutine function to run every 2 seconds. The **send_message()** function accepts a **Context** object, **ctx**, as an argument. Inside the **send_message()** function, there is an asynchronous call **await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))**. This call sends a message with the content, "**hello there bob**", to the recipient specified by the **RECIPIENT_ADDRESS** variable.
+    The **.on_interval()** decorator schedules a **send_message()** coroutine function to run every 2 seconds. The function accepts a **Context** object, **ctx**, as an argument. Inside the **send_message()** function, there is an asynchronous call **await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))**. This call sends a message with the content, "**hello there bob**", to the recipient specified by the **RECIPIENT_ADDRESS** variable.
 
 6. Define a message handler function for **alice** to handle upcoming messages from **bob**.
 
@@ -66,11 +61,7 @@ We want to simulate a remote communication between μAgents, alice and bob, on d
         alice.run()
     ```
 
-    The **@alice.on_message(model=Message)** decorator registers the **message_handler()** coroutine function as a handler for incoming messages of type **Message** from bob. The **message_handler()** function accepts three arguments:
-
-     - **ctx**: a Context object that provides context and configuration information to the function.
-     - **sender**: a string representing the sender of the message.
-     - **msg**: a **Message** object representing the incoming message.
+    The **.on_message()** decorator registers the **message_handler()** coroutine function as a handler for incoming messages of type **Message**. The **message_handler()** function accepts three arguments: **ctx**, **sender**, and **msg**.
 
     The **ctx.logger.info()** method is called to log information about the received message, including the sender (**bob**) and message content.
 
@@ -108,8 +99,7 @@ if __name__ == "__main__":
 
 ## Bob
 
-1. Create a .py scripts for this task: `touch remote_agent_bob.py`. Open this script on the text editor application of your choice.  
-
+1. Create a .py scripts for this task: `touch remote_agent_bob.py`.
 2. Import the necessary classes from **uagents** and **uagents.setup**.
 
     ```py
@@ -149,7 +139,7 @@ if __name__ == "__main__":
         bob.run()
     ```
 
-    The **message_handler()** function is a coroutine function that is executed when a message is received by the agent with the **bob.on_message()** decorator. This function logs the received message using the agent's logger and sends a response message back to the original sender with the **ctx.send()** method. The response message contains the **Message** data model with a "**hello there alice**" message.
+    The **message_handler()** function is a coroutine function that is executed when a message is received by the agent with the **.on_message()** decorator. This function logs the received message using the agent's logger and sends a response message back to the original sender with the **ctx.send()** method. The response message contains the **Message** data model with a "**hello there alice**" message.
 
 The overall script for bob should be:
 
@@ -186,3 +176,4 @@ Now, we are ready to run our scripts. First run **bob** and then **alice** from 
 - Bob: `python remote_agent_bob.py`
 
 - Alice: `python remote_agent_alice.py`
+- 

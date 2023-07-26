@@ -1,4 +1,4 @@
-# μAgents Framework documentation index
+# μAgents Framework Documentation Index
 
 **Introduction**:
 
@@ -8,10 +8,7 @@
 
 **Installation**:
 
-- [System Requirements](/docs/guides/agents/installation/system-requirements.md)
-- [Install with Pip](/docs/guides/agents/installation/install-with-pip.md)
-- [Install from source code](/docs/guides/agents/installation/install-from-source-code.md)
-- [Troubleshooting](/docs/guides/agents/installation/troubleshooting.md)
+- [Install μAgents Framework](/docs/guides/agents/installing-uagent.md)
 
 **Guides**:
 
@@ -21,9 +18,8 @@
 - [μAgents Interval Task](/docs/guides/agents/interval-task.md)
 - [μAgents Storage Functions](/docs/guides/agents/storage-function.md)
 - [Registering in the Almanac contract](/docs/guides/agents/register-in-almanac.md)
-- [Start communicating with other agents](/docs/guides/agents/start-communicating-with-other-agents):
-  - [Local communication](/docs/guides/agents/start-communicating-with-other-agents/local-communication.md)
-  - [Remote communication](/docs/guides/agents/start-communicating-with-other-agents/remote-communication.md)
+- [Start communicating with other agents: Local communication](/docs/guides/agents/start-communicating-with-other-agents/local-communication.md)
+- [Start communicating with other agents: Remote communication](/docs/guides/agents/start-communicating-with-other-agents/remote-communication.md)
 - [How to use the AgentVerse Mailbox Service](/docs/guides/agents/agentverse-mailbox.md)
 - [How to book a table at a restaurant using μAgents](/docs/guides/agents/booking-demo.md)
 - [How to use μAgents to verify messages](/docs/guides/agents/message-verification.md)

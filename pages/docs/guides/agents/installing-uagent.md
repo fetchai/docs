@@ -43,7 +43,6 @@ On your computer, you may need to install:
     poetry shell
     ```
 
-
 ## Troubleshooting
 
 It is possible that you may face issues during the installation process. Here, you can find common problems and their solutions:
