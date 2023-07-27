@@ -106,14 +106,14 @@ In this guide, we show how to set up two agents, **alice** and **bob**, with **a
 
 8. We are now ready to add both μAgents to the **Bureau** object for them to be run together.
 
-```py copy
-bureau = Bureau()
-bureau.add(alice)
-bureau.add(bob)
-
-if __name__ == "__main__":
-    bureau.run()
-```
+   ```py copy
+   bureau = Bureau()
+   bureau.add(alice)
+   bureau.add(bob)
+   
+   if __name__ == "__main__":
+       bureau.run()
+   ```
 
 The overall code for this example should look as follows: 
 

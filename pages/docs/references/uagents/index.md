@@ -2,38 +2,38 @@
 
 **Introduction**:
 
-- [Introduction](/docs/concepts/agents/uagents-intro.md)
-- [Why μAgents](/docs/concepts/agents/why-uagents.md)
-- [Interoperability](/docs/concepts/agents/interoperability.md)
+- Introduction [↗️](/docs/concepts/agents/uagents-intro.md)
+- Why μAgents [↗️](/docs/concepts/agents/why-uagents.md)
+- Interoperability [↗️](/docs/concepts/agents/interoperability.md)
 
 **Installation**:
 
-- [Install μAgents Framework](/docs/guides/agents/installing-uagent.md)
+- Install μAgents Framework [↗️](/docs/guides/agents/installing-uagent.md)
 
 **Guides**:
 
-- [Creating your first μAgent](/docs/guides/agents/create-a-uagent.md)
-- [Printing name and address](/docs/guides/agents/create-uagent-name-address.md)
-- [Getting a μAgent address](/docs/guides/agents/getting-uagent-address.md)
-- [μAgents Interval Task](/docs/guides/agents/interval-task.md)
-- [μAgents Storage Functions](/docs/guides/agents/storage-function.md)
-- [Registering in the Almanac contract](/docs/guides/agents/register-in-almanac.md)
-- [Start communicating with other agents: Local communication](/docs/guides/agents/start-communicating-with-other-agents/local-communication.md)
-- [Start communicating with other agents: Remote communication](/docs/guides/agents/start-communicating-with-other-agents/remote-communication.md)
-- [How to use the AgentVerse Mailbox Service](/docs/guides/agents/agentverse-mailbox.md)
-- [How to book a table at a restaurant using μAgents](/docs/guides/agents/booking-demo.md)
-- [How to use μAgents to verify messages](/docs/guides/agents/message-verification.md)
-- [How to use μAgents to send tokens](/docs/guides/agents/send-tokens.md)
-- [How to use the μAgents to simulate a cleaning scenario](/docs/guides/agents/cleaning-demo.md)
+- Creating your first μAgent [↗️](/docs/guides/agents/create-a-uagent.md)
+- Printing name and address [↗️](/docs/guides/agents/create-uagent-name-address.md)
+- Getting a μAgent address [↗️](/docs/guides/agents/getting-uagent-address.md)
+- μAgents Interval Task [↗️](/docs/guides/agents/interval-task.md)
+- μAgents Storage Functions [↗️](/docs/guides/agents/storage-function.md)
+- Registering in the Almanac contract [↗️](/docs/guides/agents/register-in-almanac.md)
+- Start communicating with other agents: Local communication [↗️](/docs/guides/agents/start-communicating-with-other-agents/local-communication.md)
+- Start communicating with other agents: Remote communication [↗️](/docs/guides/agents/start-communicating-with-other-agents/remote-communication.md)
+- How to use the AgentVerse Mailbox Service [↗️](/docs/guides/agents/agentverse-mailbox.md)
+- How to book a table at a restaurant using μAgents [↗️](/docs/guides/agents/booking-demo.md)
+- How to use μAgents to verify messages [↗️](/docs/guides/agents/message-verification.md)
+- How to use μAgents to send tokens [↗️](/docs/guides/agents/send-tokens.md)
+- How to use the μAgents to simulate a cleaning scenario [↗️](/docs/guides/agents/cleaning-demo.md)
 
 **Almanac Contract and Remote Communication**:
 
-- [Almanac contract overview](/docs/references/contracts/uagents-almanac/almanac-overview.md)
-- [Endpoint weighting and registration in the Almanac contract](/docs/references/contracts/uagents-almanac/endpoints.md)
-- [The Agentverse Mailbox Service](/docs/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)
+- Almanac contract overview [↗️](/docs/references/contracts/uagents-almanac/almanac-overview.md)
+- Endpoint weighting and registration in the Almanac contract [↗️](/docs/references/contracts/uagents-almanac/endpoints.md)
+- The Agentverse Mailbox Service [↗️](/docs/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)
 
 **Protocols**:
 
-- [μAgents Protocols](/docs/references/uagents/uagents-protocols/agent-protocols.md)
-- [Exchange Protocol](/docs/references/uagents/uagents-protocols/exchange-protocol.md)
-- [Storage](/docs/references/uagents/uagents-protocols/storage.md)
+- μAgents Protocols [↗️](/docs/references/uagents/uagents-protocols/agent-protocols.md)
+- Exchange Protocol [↗️](/docs/references/uagents/uagents-protocols/exchange-protocol.md)
+- Storage [↗️](/docs/references/uagents/uagents-protocols/storage.md)

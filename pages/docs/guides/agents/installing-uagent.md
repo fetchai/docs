@@ -55,4 +55,4 @@ It is possible that you may face issues during the installation process. Here, y
 
    `brew install automake autoconf libtool`
 
-For any other problems, please let us know by creating an [issue](https://github.com/fetchai/uAgents/issues).
+For any other problems, please let us know by creating an issue [↗️](https://github.com/fetchai/uAgents/issues).

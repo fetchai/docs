@@ -4,12 +4,11 @@ In this guide, we want to show how to set up the code to create a restaurant boo
 
 We also want to define 2 specific **protocols**, one for table querying (i.e., **Table querying protocol**) and one for table booking (i.e., **Table booking protocol**). Then we will need to define two uAgents scripts, **restaurant** and **user**, which will make use of the protocols to query and book a table.
 
-1. First of all, navigate towards the directory you created for your project. 
-2. In here, we need to create a folder for this task: `mkdir booking_demo`.
-3. Inside this folder we will create another folder for our **protocols**: `mkdir protocols`. 
-4. After having defined our protocols, we will create a scripts for our **restaurant** and **user** uAgents, which will make use of these protocols to query, check, confirm and book an available table at the restaurant.
+1. First of all, navigate towards the directory you created for your project and create a folder for this task: `mkdir booking_demo`.
+2. Inside this folder we will create another folder for our **protocols**: `mkdir protocols`. 
+3. After having defined our protocols, we will create 2 script2 for our **restaurant** and **user** uAgents, which will make use of these protocols to query, check, confirm and book an available table at the restaurant.
 
-We are ready to write the code for our 2 protocols.
+We can start by writing the code for our 2 protocols.
 
 ## Protocols
 ### Table querying protocol

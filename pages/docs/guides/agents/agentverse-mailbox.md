@@ -1,12 +1,17 @@
 # How to use the AgentVerse Mailbox Service
 
-In this tutorial, we show how to enable remote communications between μAgents through the Agentverse Mailbox Service. 
-For information on this, visit the dedicated section in our [references section](/docs/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)
+μAgents can communicate remotely by also using the Agentverse Explorer [↗️](https://agentverse.ai/)️. The Agentverse Explorer is a platform that aims at creating a decentralized network of agents capable of communicating and interacting with each other. Agents in the Agentverse can send and receive messages, execute tasks, and collaborate with other agents to achieve various goals.
 
-## Alice 
+In this guide, we want to show how to enable remote communications between μAgents using the Agentverse Mailbox Service [↗️](/docs/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md). 
+
+## Walk-through example
+
+We make use of the [μAgents Remote Communication](/docs/guides/agents/start-communicating-with-other-agents/remote-communication.md) guide, but now we specify the **Mailbox server** and the **API Key** for our μAgents.
+
+### Alice 
 
 1. First of all, let's create a script for **alice**: `touch alice.py`
-2. We then need to import the necessary classes from the **uagents** and **uagents.setup**, and define the **Message** class for messages to be exchanged between our μAgents:
+2. We need to import the necessary classes from **uagents** (**Agent**, **Context**, **Model**) and **uagents.setup** (**fund_agent_if_low**), and define the **Message** class for messages to be exchanged between our μAgents. We also need to generate a secure **SEED_PHRASE** (e.g., https://pypi.org/project/mnemonic/) and get the address of our agent, which is  needed to register it to create a Mailbox, alongside a name (i.e., alice in this case). Following this, we would need to sign up at Agentverse [↗️](https://agentverse.ai) to get an **API key**:
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -14,18 +19,15 @@ For information on this, visit the dedicated section in our [references section]
 
     class Message(Model):
         message: str
-    ```
 
-3. Let's then generate a secure **seed phrase** (e.g. https://pypi.org/project/mnemonic/) and get the address of our agent. We then need to sign up at [Agentverse](https://agentverse.ai) to get an **API key**:
-
-    ```py copy
     SEED_PHRASE = "put_your_seed_phrase_here"
    
     print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
 
     API_KEY = "put_your_API_key_here"
     ```
-4. We can now register our μAgent, **alice**:
+
+3. _Now your agent is ready to join the Agentverse!_ We can now register our μAgent, **alice**, by providing **name**, **seed** and **mailbox**. Make sure your agent has enough funds for this:
 
     ```py copy
     alice = Agent(
@@ -36,8 +38,10 @@ For information on this, visit the dedicated section in our [references section]
 
     fund_agent_if_low(alice.wallet.address())
     ```
+   
+   On the Fetch.ai testnet, you can use the **fund_agent_if_low** function. This one checks if the balance of the μAgent’s wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
 
-5.  Let's define a message handler function for **alice**:
+4. Let's define a message handler function for **alice**:
 
     ```py copy
     @alice.on_message(model=Message, replies={Message})
@@ -55,7 +59,7 @@ For information on this, visit the dedicated section in our [references section]
     
     We have defined a **handle_message** coroutine function that serves as the message handler for the agent. It is triggered whenever the agent receives a message of type **Message**. This function logs the received message and its sender using the **ctx.logger.info** method. It then sends a response message back to the sender using the **ctx.send** method with the sender address and an instance of the **Message** model.
 
-6. Save the script.
+5. Save the script.
 
 The overall script for **alice** should look as follows:
 
@@ -91,12 +95,12 @@ if __name__ == "__main__":
     agent.run()
 ```
 
-**NOTE: You need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly.**
+**Remember that you need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly.**
 
 ## Bob
 
-1. Let's now create anoter Python script for **bob**: `touch bob.py`
-2. We can now import the necessary classes from the **uagents** and **uagents.setup**, and define the **Message** class for messages to be exchanged between our μAgents:
+1. Let's now create another Python script for **bob**: `touch bob.py`
+2. We can now import the necessary classes from the **uagents** and **uagents.setup**, and define the **Message** class for messages to be exchanged between our μAgents. We then need to define **ALICE_ADDRESS** by copying the address generated in the script for **alice** above, as well as generate a second **seed phrase** (e.g. https://pypi.org/project/mnemonic/), and get the address for our second agent. Like for **alice**, head towards the [Agentverse](https://agentverse.ai) to get the **API key** for this **bob**:
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -104,11 +108,7 @@ if __name__ == "__main__":
 
     class Message(Model):
         message: str
-    ```
-
-3. Define the **ALICE_ADDRESS** by copying the address generated in the script for **alice** above. Then, generate a second **seed phrase** (e.g. https://pypi.org/project/mnemonic/), and get the address for our second agent. You can now head towards the [Agentverse](https://agentverse.ai) to get the **API key** for this agent:
-
-    ```py copy
+   
     ALICE_ADDRESS = "paste_alice_address_here"
 
     SEED_PHRASE = "put_your_seed_phrase_here"
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     API_KEY = "put_your_API_key_here"
     ```
 
-4. Let's now  register this second agent, **bob**:
+3. _Now your agent is ready to join the Agentverse!_ Let's register this second μAgent, **bob**, by providing **name**, **seed** and **mailbox**:
 
     ```py copy
     bob = Agent(
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     fund_agent_if_low(bob.wallet.address())
     ```
 
-5. Let's define function for **bob** to send messages:
+4. We can now define a function for **bob** to send messages:
 
     ```py copy
     @bob.on_interval(period=2.0)
@@ -139,9 +139,9 @@ if __name__ == "__main__":
         await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
     ```
 
-    Here, we have defined a **send_message()** coroutine function that is scheduled to run periodically every 2 seconds using the **.on_interval()** decorator. Inside the coroutine, a message of type **Message** is sent to **alice**'s address using the **ctx.send()** method.
+    Here, we have defined a **send_message** coroutine function that is scheduled to run periodically every 2 seconds using the **on_interval** decorator. Inside the coroutine function, a message of type **Message** is sent to **alice**'s address using the **ctx.send** method.
 
-6. Let's now define a message handler for **bob** to handle incoming messages: 
+5. Let's now define a message handler for **bob** to handle incoming messages: 
 
     ```py copy
     @bob.on_message(model=Message, replies=set())
@@ -151,12 +151,13 @@ if __name__ == "__main__":
     if __name__ == "__main__":
         bob.run()
     ```
+   Here, we have set up an **on_message** function for bob to handle messages of type **Message**. When a message of this type is received by **bob**, the message handler function logs the sender's address and the content of the message using **ctx.logger.info()** method.
 
-7. Save the script.
+6. Save the script.
 
-The overall script for bob should look as follows: 
+The overall script for **bob** should look as follows: 
 
-```py  copy filename="bob.py"
+```py copy filename="bob.py"
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
 
@@ -184,21 +185,19 @@ async def send_message(ctx: Context):
     ctx.logger.info("Sending message to alice")
     await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
 
-
 @bob.on_message(model=Message, replies=set())
 async def on_message(ctx: Context, sender: str, msg: Message):
     ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
 
 if __name__ == "__main__":
     bob.run()
 ```
 
-**NOTE: You need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly. Here, you also need to provide bob with ALICE_ADDRESS field.** 
+**Remember that you need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly. Here, you also need to provide bob with an ALICE_ADDRESS field.** 
 
 ## Run the scripts
 
 Now, we are ready to run our scripts. Run **alice** and **bob** from different terminals. The received messages will be printed out in each terminal. 
 
-- Terminal 1: `python bob.py`
-- Terminal 2: `python alice.py`
+- Bob: `python bob.py`
+- Alice: `python alice.py`

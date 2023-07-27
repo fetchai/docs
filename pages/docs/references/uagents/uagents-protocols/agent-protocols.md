@@ -45,4 +45,4 @@ Then, if your agent is called restaurant you can include the protocol in this wa
 restaurant.include(book_proto)
 ```
 
-For a better understanding of these concepts, consider having a look at the [storage](storage.md) and [Exchange protocol](exchange-protocol.md) resources and consider going through the extensive [How to book a table at a restaurant using μAgents](/docs/guides/agents/booking-demo.md) demonstration in the Guides section.
+For a better understanding of these concepts, consider having a look at the _Storage_ [↗️](storage.md) and _Exchange protocol_ [↗️](exchange-protocol.md) resources and consider going through the extensive _How to book a table at a restaurant using μAgents_ [↗️](/docs/guides/agents/booking-demo.md) demonstration in the Guides section.
