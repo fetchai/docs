@@ -23,7 +23,7 @@ In this guide, we want to show how to set up the code for two μAgents to exchan
     - **digest**: a string representing the SHA-256 hash of the message. 
     - **signature**: a string representing the digital signature of the hash using the sender's private key.
 
-4. let's define an **encode** function used to generate the digest for each message before it is signed:
+4. Let's define an **encode** function used to generate the digest for each message before it is signed:
 
     ```py copy
     def encode(message: str) -> bytes:
@@ -96,11 +96,9 @@ In this guide, we want to show how to set up the code for two μAgents to exchan
 
     This function is decorated using the **on_message**, indicating that the function is triggered when a message is being received of type **Message**. takes in three arguments: **ctx**, **sender**, and **msg**.
 
-    The function firstly verifies the authenticity of the message using the **Identity.verify_digest** function. If the message cannot be verified, the function raises an assertion error. On the other hand, if the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message using the **ctx.logger.info** method.
+    The function firstly verifies the authenticity of the message using the **Identity.verify_digest** function. If the message cannot be verified, the function raises an assertion error. On the other hand, if the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message using the **ctx.logger.info** method. It then creates a response message, **msg**, and computes its digest using the **encode** function. The response message is then sent to **alice** using the **ctx.send** method.
 
-    The function then creates a response message, **msg**, and computes its digest using the **encode** function. The response message is then sent to **alice** using the **ctx.send** method.
-
-9. We are ready to add both μAgents to a **Bureau** object for them to be run together.
+9. We are now ready to add both μAgents to a **Bureau** object for them to be run together.
 
     ```py copy
     bureau = Bureau()
