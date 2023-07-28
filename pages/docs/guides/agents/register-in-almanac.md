@@ -25,6 +25,6 @@ alice = Agent(
 fund_agent_if_low(alice.wallet.address())
 ```
 
-Here we defined a local http address, but you can also define a remote address to allow agent communication over different machines through the internet. Once you run your script, your μAgent will start the registration process, the balance of the μAgent's wallet will be checked and be funded if needed. Then, you will be ready to start to a remote communication with other μAgents registered within the Almanac contract.
+Here we defined a local HTTP address, but you can also define a remote address to allow agent communication over different machines through the internet. Once you run your script, your μAgent will start the registration process, the balance of the μAgent's wallet will be checked and be funded if needed. Then, you will be ready to start to a remote communication with other μAgents registered within the Almanac contract.
 
 For further information on how to set up your μAgents and register them into the Almanac to allow for remote communication, visit the _μAgents Remote Communication_ [↗️](/docs/guides/agents/start-communicating-with-other-agents/remote-communication.md) guide.

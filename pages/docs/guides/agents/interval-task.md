@@ -2,7 +2,7 @@
 
 μAgents can use interval tasks to periodically perform actions with a specified time interval, for example, sending a message every 2 seconds.
 
-1. First, navigate towards a directory created for your projects
+1. First, we need to navigate towards a directory created for our projects
 2. We then need to create a script for this task, and name it: `touch interval-task.py`
 3. Let's then import the necessary classes from **uagents** library and create our μAgent:
 

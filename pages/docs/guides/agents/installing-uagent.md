@@ -11,7 +11,6 @@ On your computer, you may need to install:
 - [Poetry](https://python-poetry.org/) for virtual environments (optional).
 - μAgents framework.
 
-
 ## Install with Pip
 
 1. Create a directory for your μAgents related project: `mkdir directory_name`

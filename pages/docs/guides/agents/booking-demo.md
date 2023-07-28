@@ -183,7 +183,7 @@ We can now proceed by writing the booking protocol script for booking the table 
    - **BookTableRequest**: this represents the request to book a table. It includes attributes: **table_number** to be booked, **time_start** of the booking, and the **duration** of the booking. 
    - **BookTableResponse**: This contains the response to the table booking request. It includes a boolean attribute **success**, indicating whether the booking was successful or not.
 
-4. Let's now define the message handler:
+4. Let's now define the message handler function:
 
     ```py copy
     @book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
@@ -264,7 +264,7 @@ async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
 
 We are now ready to define our restaurant agent. 
 
-1. Let's create a Python script in booking_demo folder, and name it: `touch restaurant.py`
+1. Let's create a Python script in **booking_demo** folder, and name it: `touch restaurant.py`
 2. We then need to import the necessary classes from the uagents library and the two protocols we previously defined:
 
     ```py copy
@@ -348,7 +348,7 @@ if __name__ == "__main__":
 
 We can finally define the script for our customer agent querying and booking a table at the restaurant. 
 
-1. First of all, create a Python script in booking_demo folder, and name it: `touch user.py`
+1. First of all, create a Python script in **booking_demo** folder, and name it: `touch user.py`
 2. We then need to import necessary classes from the **uagents** library and the two protocols defined above. We also need the restaurant agent's address to be able to communicate with it:
 
     ```py copy

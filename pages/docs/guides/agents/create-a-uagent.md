@@ -24,7 +24,7 @@ In this guide we want to show how to create your first μAgent using the tools p
         alice.run()
     ```
 
-    The **on_interval()** decorator defines a periodic behavior for this agent. In this case, the agent will execute the **say_hello** function every 2 seconds. The **Context** object is a collection of data and functions related to the agent. In this case, we just use the agent's name. The agent executes the function and uses the **ctx.logger.info** method to print the message.
+    The **on_interval** decorator defines a periodic behavior for this agent. In this case, the agent will execute the **say_hello** function every 2 seconds. The **Context** object is a collection of data and functions related to the agent. In this case, we just use the agent's name. The agent executes the function and uses the **ctx.logger.info** method to print the message.
     
 4. Save the script
 

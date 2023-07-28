@@ -6,7 +6,7 @@ In this guide, we want to show how to enable remote communications between μAge
 
 ## Walk-through example
 
-We make use of the [μAgents Remote Communication](/docs/guides/agents/start-communicating-with-other-agents/remote-communication.md) guide, but now we specify the **Mailbox server** and the **API Key** for our μAgents.
+We make use of the μAgents Remote Communication [↗️](/docs/guides/agents/start-communicating-with-other-agents/remote-communication.md) guide, but now we specify the **Mailbox server** and the **API Key** for our μAgents.
 
 ### Alice 
 
@@ -39,7 +39,7 @@ We make use of the [μAgents Remote Communication](/docs/guides/agents/start-com
     fund_agent_if_low(alice.wallet.address())
     ```
    
-   On the Fetch.ai testnet, you can use the **fund_agent_if_low** function. This one checks if the balance of the μAgent’s wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
+   On the _Fetch.ai testnet_, you can use the **fund_agent_if_low** function. This one checks if the balance of the μAgent’s wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
 
 4. Let's define a message handler function for **alice**:
 
