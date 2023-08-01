@@ -1,5 +1,4 @@
 # Installation
-
 ## System Requirements
 
 Fetch.ai's [uagents](https://pypi.org/project/uagents/) package is a Python library running on Ubuntu/Debian, MacOS, and Windows systems. 
@@ -10,7 +9,6 @@ On your computer, you may need to install:
 - [PIP](https://pypi.org/project/pip/) (Python Installs Packages).
 - [Poetry](https://python-poetry.org/) for virtual environments (optional).
 - μAgents framework.
-
 
 ## Install with Pip
 
@@ -42,7 +40,6 @@ On your computer, you may need to install:
     ```py
     poetry shell
     ```
-
 
 ## Troubleshooting
 
