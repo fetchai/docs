@@ -1,34 +1,51 @@
 # μAgents local communication
 
-To show μAgents interacting, we need to create a second μAgent. To make our μAgents communicate with each other, we need to define a message structure for messages to be exchanged between the two μAgents. To do so, we need to import the class **Model** from **uagents** library to define a generic message. In addition, we need to import the **Bureau** class which allows us to create a collection of agents and run them together in the same script, by simply adding μAgents to the **Bureau** and run it consequently.
 
-1. Create a .py script for this task: `agents_communication.py`
+The first step to better understand how μAgents communicate is to introduce how 2 μAgents perform a local communication. Let’s consider a basic example in which two μAgents say hello to each other.
 
-2. Import necessary classes from uagents library and define the message structure for messages to be exchanged. 
+## Walk-through example 
 
-    ```py
+1. First of all, let's create a Python script for this task and name it: 
+
+   `touch agents_communication.py`
+
+2. Then, let's import these necessary classes from the **uagents** library: **Agent**, **Context**, **Bureau**, and **Model**. Let's then define the message structure for messages to be exchanged between the μAgents using the class **Model**. 
+
+   Then, we would need to create the μAgents, **alice** and **bob**, with **name** and **seed** parameters.
+
+    ```py copy
     from uagents import Agent, Context, Bureau, Model
 
     class Message(Model):
         text: str
-    ```
 
-3. Create the μAgents instances of the class Agent. 
-
-    ```py
     alice = Agent(name="alice", seed="alice recovery phrase")
     bob = Agent(name="bob", seed="bob recovery phrase")
     ```
 
-4. Define the **alice** μAgent behavior. We can use the **on_interval()** decorator to run periodically every 2 a **send_message()** coroutine function. The message is sent from alice to Bob using the **ctx.send()** method of the Context object, with **bob.address** as the recipient and an instance of the **Message** model.
+3. Let's now define alice behaviors.
 
-    ```py
+   - We need to define a function for **alice** to send messages to **bob** periodically.
+
+    ```py copy
     @alice.on_interval(period=3.0)
     async def send_message(ctx: Context):
        await ctx.send(bob.address, Message(message="hello there bob"))
     ```
 
-5. Define an **on_message()** decorator to define a **message_handler()** coroutine function for **bob** to handle incoming messages from **alice**.
+    We can use the **on_interval** decorator to define a coroutine **send_message** function that will be called every 3 seconds. The coroutine function sends a message to **bob** using the **ctx.send** method of the **Context** object.
+
+   - We then need to define a function for **alice** to manage incoming messages.
+
+    ```py
+    @alice.on_message(model=Message)
+    async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    ```
+
+   This defines the coroutine function **alice_message_handler** that serves as a message handler for **alice**. It is triggered whenever **alice** receives a message of type **Message**. The function logs the received message and its sender using the **ctx.logger.info** method.
+
+4. Let's now define the behavior of our second agent, **bob**.
 
     ```py
     @bob.on_message(model=Message)
@@ -37,17 +54,9 @@ To show μAgents interacting, we need to create a second μAgent. To make our μ
         await ctx.send(alice.address, Message(message="hello there alice"))
     ```
 
-   This function is triggered whenever **bob** receives a message of type **Message**. The function logs the received message and its sender using the **ctx.logger.info()** method. We can also add a response from **bob** to **alice**: we need to add a ctx.send() method for a message being sent from **bob** to **alice.address*. 
+   Here, we have defined a coroutine **bob_message_handler** function that serves as the message handler for **bob**. It is triggered whenever bob receives a message of type **Message** from other agents. The function logs the received message and its sender using the **ctx.logger.info** method. Finally, we make **bob** compose a response message to be sent back using the **ctx.send** method with **alice.address** as the recipient address and an instance of the **Message** model as the message payload.
 
-6. Define a **message_handler()** function for **alice** to be capable of managing and printing out **bob**'s response message.
-
-    ```py
-    @alice.on_message(model=Message)
-    async def alice_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-    ```
-
-7. Create a **bureau** object as an instance of the **Bureau** class, and add both μAgents to it in order to run them from the same script.
+5. Let's then use the **Bureau** class to create a **Bureau** object. This will allow us to run μAgents together in the same script.
 
     ```py
     bureau = Bureau()
@@ -91,6 +100,4 @@ if __name__ == "__main__":
 
 ## Run the script
 
-On your terminal, make sure to be in the right directory for your project and activate the virtual environment.
-
-Run the script: `python agents_communication.py`
+We are now ready to run the script: `python agents_communication.py`
