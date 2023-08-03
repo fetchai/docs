@@ -6,15 +6,9 @@
 - [Why μAgents](/concepts/agents/why-uagents.md)
 - [Interoperability](/concepts/agents/interoperability.md)
 
-**Installation**:
-
-- [System Requirements](/guides/agents/installation/system-requirements.md)
-- [Install with Pip](/docs/guides/agents/installation/install-with-pip.md)
-- [Install from source code](/docs/guides/agents/installation/install-from-source-code.md)
-- [Troubleshooting](/docs/guides/agents/installation/troubleshooting.md)
-
 **Guides**:
 
+- [Installation](/guides/agents/installing-uagent.md)
 - [Creating your first μAgent 🤖🧑‍💻](/guides/agents/create-a-uagent.md)
 - [Printing name and address](/guides/agents/create-uagent-name-address.md)
 - [Getting a μAgent address](/guides/agents/getting-uagent-address.md)
