@@ -1,7 +1,7 @@
 # Creating your first μAgent 🤖🧑‍💻
 ## Introduction
 
-The μAgents Framework developed by Fetch.ai makes it easy to build agents for all kinds of decentralized use cases. 
+The μAgents Framework makes it easy to build agents for all kinds of decentralized use cases. 
 
 In this guide we want to show you the steps needed for _creating your first μAgent in a blink of an eye!_ 
 
@@ -11,7 +11,7 @@ In this guide we want to show you the steps needed for _creating your first μAg
 
 ### Walk-through
 
-Here, we want to show how to create your first μAgent using the tools provided by Fetch.ai uagents library. You can create your first μAgent by building a Python script with the following steps:
+Here, we want to show how to create your first μAgent using the tools provided by Fetch.ai **uagents** library. You can create your first μAgent by following the steps below:
 
 1. First of all, let's create a Python script for this task, and name it:
 
@@ -24,7 +24,7 @@ Here, we want to show how to create your first μAgent using the tools provided 
    alice = Agent(name="alice", seed="alice recovery phrase")
    ```
    
-   It is optional but useful to include a seed parameter when creating an agent to set fixed addresses [↗](/guides/agents/getting-uagent-address.md)️. Otherwise, random addresses will be generated every time you run the agent.
+   It is optional but useful to include a **seed** parameter when creating an agent to set fixed addresses [↗](/guides/agents/getting-uagent-address.md)️. Otherwise, random addresses will be generated every time you run the agent.
 
 3. Let's define a **say_hello** function for our agent to print a message periodically saying hello:
 
