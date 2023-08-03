@@ -16,15 +16,12 @@
 **Guides**:
 
 - [Creating your first μAgent](/docs/guides/agents/create-a-uagent.md)
-- [Printing name and address](/docs/guides/agents/create-uagent-name-address.md)
+- [Printing name and address 🤖📫](/docs/guides/agents/create-uagent-name-address.md)
 - [Getting a μAgent address](/docs/guides/agents/getting-uagent-address.md)
 - [μAgents Interval Task](/docs/guides/agents/interval-task.md)
 - [μAgents Storage Functions](/docs/guides/agents/storage-function.md)
 - [Registering in the Almanac contract](/docs/guides/agents/register-in-almanac.md)
-- [Start communicating with other agents](/docs/guides/agents/start-communicating-with-other-agents):
-  - [Local communication](/docs/guides/agents/start-communicating-with-other-agents/local-communication.md)
-  - [Remote communication](/docs/guides/agents/start-communicating-with-other-agents/remote-communication.md)
-- [How to use the AgentVerse Mailbox Service](/docs/guides/agents/agentverse-mailbox.md)
+- [Communicating with other μAgents 📱🤖](/guides/agents/create-uagent-name-address.md)
 - [How to book a table at a restaurant using μAgents](/docs/guides/agents/booking-demo.md)
 - [How to use μAgents to verify messages](/docs/guides/agents/message-verification.md)
 - [How to use μAgents to send tokens](/docs/guides/agents/send-tokens.md)
