@@ -1,4 +1,4 @@
-# Installation
+# Installation 🛠️📲
 
 ## System Requirements
 
@@ -10,7 +10,6 @@ On your computer, you may need to install:
 - [PIP](https://pypi.org/project/pip/) (Python Installs Packages).
 - [Poetry](https://python-poetry.org/) for virtual environments (optional).
 - μAgents framework.
-
 
 ## Install with Pip
 
@@ -42,8 +41,7 @@ On your computer, you may need to install:
     ```py
     poetry shell
     ```
-
-
+   
 ## Troubleshooting
 
 It is possible that you may face issues during the installation process. Here, you can find common problems and their solutions:
