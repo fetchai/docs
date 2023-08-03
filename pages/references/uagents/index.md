@@ -9,8 +9,8 @@
 **Guides**:
 
 - [Installation 🛠️📲](/guides/agents/installing-uagent.md)
-- [Creating your first μAgent](/guides/agents/create-a-uagent.md)
-- [Printing name and address](/guides/agents/create-uagent-name-address.md)
+- [Creating your first μAgent 🤖🧑‍💻](/guides/agents/create-a-uagent.md)
+- [Printing name and address 🤖📫](/guides/agents/create-uagent-name-address.md)
 - [Getting a μAgent address](/guides/agents/getting-uagent-address.md)
 - [μAgents Interval Task](/guides/agents/interval-task.md)
 - [μAgents Storage Functions](/guides/agents/storage-function.md)
@@ -21,7 +21,6 @@
 - [How to use μAgents to send tokens](/guides/agents/send-tokens.md)
 - [How to use the μAgents to simulate a cleaning scenario](/guides/agents/cleaning-demo.md)
 - [Creating a μAgent to generate revenue on your data](/guides/agents/creating-an-agent-to-generate-revenue-on-your-data.md)
-
 
 **Almanac Contract and Remote Communication**:
 
