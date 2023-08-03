@@ -1,6 +1,6 @@
 # Printing name and address 🤖📫
 
-In this guide we aim at showing how to create a μAgent being able to say hello and printing its name and address [↗️](/guides/agents/getting-uagent-address.md).
+In this guide we aim at showing how to create a μAgent being able to say hello and printing its name and address.
 
 ## Walk-through
 
