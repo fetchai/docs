@@ -2,8 +2,8 @@
 
 **Introduction**:
 
-- [Introduction](/concepts/agents/agents.md)
-- [Why μAgents](/concepts/agents/rationale.md)
+- [Introduction 🚀](/concepts/agents/agents.md)
+- [Why μAgents 🤔💡](/concepts/agents/rationale.md)
 - [Interoperability](/concepts/agents/interoperability.md)
 
 **Guides**:
