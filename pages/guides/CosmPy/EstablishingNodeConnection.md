@@ -5,6 +5,7 @@ After successfully installing CosmPy, you can begin interacting with Cosmos-base
 2. Import the CosmPy library into your Python project to gain access to its functionalities.
 3. To start interacting with a blockchain, you first need to establish a connection to a network node. You can use `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. 
 
+In the example below we're connecting to the Fetch.ai mainnet.
 
 ```py
 import cosmpy

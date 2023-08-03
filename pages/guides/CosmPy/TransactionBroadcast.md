@@ -1,6 +1,6 @@
 # Send Tokens
 
-CosmPy simplifies broadcasting transactions. After creating a wallet, you can send transactions by following the provided example. In it we first connect to the desired network then provide the desired destination address. The transaction is neatly broadcast using the `Ledger_client.send_tokens` function. 
+CosmPy simplifies broadcasting transactions. After creating a wallet, you can send transactions by following the provided example. In it we first connect to the desired network then provide the desired destination address. The transaction is then broadcast using the `Ledger_client.send_tokens` function. 
 
 ```py
 from cosmpy.aerial.client import LedgerClient, NetworkConfig

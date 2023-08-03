@@ -29,4 +29,3 @@ License: Apache-2.0
 Requires: bech32, ecdsa, grpcio, jsonschema, protobuf, pycryptodome, python-dateutil, requests
 
 ```
-

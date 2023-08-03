@@ -30,4 +30,4 @@ balance = ledger_client.query_bank_balance(address, denom='afet')
 ```
 
 which will return the value of the (integer) funds held by the address with the specified 
-denomination. If the `denom` argument is omitted the function will return the fee denomination specified in the `NetworkConfig` object used to initialize the `LedgerClient`.
+denomination. If the `denom` argument is omitted the function will return the fee denomination specified in the `NetworkConfig` object used to initialize the `LedgerClient`
