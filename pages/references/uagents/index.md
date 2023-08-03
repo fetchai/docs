@@ -15,7 +15,7 @@
 - [μAgents Interval Task](/guides/agents/interval-task.md)
 - [μAgents Storage Functions](/guides/agents/storage-function.md)
 - [Registering in the Almanac contract](/guides/agents/register-in-almanac.md)
-- [Communicating with other agents](/guides/agents/communicating-with-other-agents.md)
+- [Communicating with other μAgents 📱🤖](/guides/agents/communicating-with-other-agents.md)
 - [How to book a table at a restaurant using μAgents](/guides/agents/booking-demo.md)
 - [How to use μAgents to verify messages](/guides/agents/message-verification.md)
 - [How to use μAgents to send tokens](/guides/agents/send-tokens.md)

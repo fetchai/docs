@@ -4,7 +4,7 @@ In the evolving landscape of decentralized technology, the emergence of autonomo
 
 Fetch.ai introduces the μAgents Framework designed to empower developers with the tools to build intelligent, autonomous agents that interact, collaborate, and navigate the complexity of the modern world.
 
-At the core of this revolutionary technology lies the concept of μAgents (micro-agents), a type of decentralized, autonomous entities that transcend traditional boundaries, unlocking a realm of possibilities yet unexplored. As pioneers, we are strongly driven by our passion for innovation and the potential of μAgents to reshape the structure of our society.
+At the core of this revolutionary technology lies the concept of μAgents, a type of decentralized, autonomous entities that transcend traditional boundaries, unlocking a realm of possibilities yet unexplored. As pioneers, we are strongly driven by our passion for innovation and the potential of μAgents to reshape the structure of our society.
 
 μAgents offer a gateway to a future where intelligent entities communicate, negotiate, and collaborate in a straightforward and trustless fashion, harnessing the power of decentralized networks. The days of centralized decision-making have come to an end. Now, autonomous agents have the chance of taking charge, empowered by the framework to manifest unique, customizable behaviors that suit the most specific use cases. The journey begins with a few lines of code, where creativity meets functionality, and the potential to build intelligent agents that adapt, learn, and engage with the world becomes a tangible reality.
 
