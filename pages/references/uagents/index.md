@@ -22,6 +22,7 @@
 - [How to use the μAgents to simulate a cleaning scenario](/guides/agents/cleaning-demo.md)
 - [Creating a μAgent to generate revenue on your data](/guides/agents/creating-an-agent-to-generate-revenue-on-your-data.md)
 
+
 **Almanac Contract and Remote Communication**:
 
 - [Almanac contract overview](/references/contracts/uagents-almanac/almanac-overview.md)
