@@ -55,4 +55,6 @@ The output should be as follows:
 
 ```
 hello, my name is alice
+hello, my name is alice
+hello, my name is alice
 ```

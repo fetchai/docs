@@ -13,9 +13,7 @@ In this guide we want to show you the steps needed for _creating your first μAg
 
 Here, we want to show how to create your first μAgent using the tools provided by Fetch.ai **uagents** library. You can create your first μAgent by following the steps below:
 
-1. First of all, let's create a Python script for this task, and name it:
-
-   `touch agent.py`
+1. First of all, let's create a Python script for this task, and name it: `touch agent.py`
 
 2. We then need to import the **Agent** and **Context** classes from the **uagents** library, and then create a μAgent using the class **Agent**:
 
@@ -24,12 +22,12 @@ Here, we want to show how to create your first μAgent using the tools provided 
    alice = Agent(name="alice", seed="alice recovery phrase")
    ```
    
-   It is optional but useful to include a **seed** parameter when creating an agent to set fixed addresses [↗](/guides/agents/getting-uagent-address.md)️. Otherwise, random addresses will be generated every time you run the agent.
+   It is optional but useful to include a **seed** parameter when creating an agent to set fixed addresses [↗️](/guides/agents/getting-uagent-address.md)️. Otherwise, random addresses will be generated every time you run the agent.
 
 3. Let's define a **say_hello** function for our agent to print a message periodically saying hello:
 
    ```py copy
-   @alice.on_interval(period=2.0)
+   @alice.on_event("startup")
    async def say_hello(ctx: Context):
        ctx.logger.info(f'hello, my name is {ctx.name}')
    
@@ -48,7 +46,7 @@ from uagents import Agent, Context
 
 alice = Agent(name="alice", seed="alice recovery phrase")
 
-@alice.on_interval(period=2.0)
+@alice.on_event("startup")
 async def say_hello(ctx: Context):
     ctx.logger.info(f'hello, my name is {ctx.name}')
 
@@ -61,5 +59,13 @@ if __name__ == "__main__":
 Make sure to have activated your virtual environment correctly. 
 
 Run the script: `python agent.py`
+
+The output would be: 
+
+```
+[alice]: hello, my name is alice
+[alice]: hello, my name is alice
+[alice]: hello, my name is alice
+```
 
 _**Congratulations, you have just created your first μAgent!**_

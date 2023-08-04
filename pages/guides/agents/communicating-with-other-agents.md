@@ -16,9 +16,7 @@ Let's get started!
 
 The first step to better understand how μAgents communicate is to introduce how 2 μAgents perform a local communication. Let’s consider a basic example in which two μAgents say hello to each other.
 
-1. First of all, let’s create a Python script for this task and name it: 
-
-    `touch agents_communication.py`
+1. First of all, let’s create a Python script for this task and name it: `touch agents_communication.py`
 
 2. Then, let's import these necessary classes from the uagents library: **Agent**, **Context**, **Bureau**, and **Model** Let's then define the message structure for messages to be exchanged between the μAgents using the class **Model**. 
 
@@ -109,9 +107,17 @@ if __name__ == "__main__":
     bureau.run()
 ```
 
-We are now ready to run the script: 
+We are now ready to run the script: `python agents_communication.py`
 
-    `python agents_communication.py`
+The output would be:
+
+```
+[alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
+[  bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
+[alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
+[  bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
+[alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
+```
 
 ## μAgents Remote Communication: the Almanac Contract
 
@@ -133,11 +139,12 @@ Let's start by defining the script for **alice**.
 
 #### Alice
 
-1. In **remote_agents_alice.py** script, we would need to import the necessary classes from the **uagents** library: **Agent**, **Context**, and **Model**. We then need to define the message structure for messages to be exchanged between agents using the class **Model**, as well as the **RECIPIENT_ADDRESS**. This is the address to which **alice** will send messages.
+1. In **remote_agents_alice.py** script, we would need to import the necessary classes from the **uagents** (**Agent**, **Context**, and **Model**) and from **uagents.setup** (**fund_agent_if_low**). We then need to define the message structure for messages to be exchanged between agents using the class **Model**, as well as the **RECIPIENT_ADDRESS**. This is the address to which **alice** will send messages.
 
     ```py copy 
     from uagents import Agent, Context, Model
-    
+    from uagents.setup import fund_agent_if_low
+   
     class Message(Model):
         message: str
     
@@ -190,6 +197,7 @@ The overall script for alice agent should be looking as follows:
 
 ```py copy filename="remote_agents_alice.py"
 from uagents import Agent, Context, Model
+from uagents.setup import fund_agent_if_low
 
 class Message(Model):
     message: str
@@ -207,7 +215,7 @@ fund_agent_if_low(alice.wallet.address())
 
 @alice.on_interval(period=2.0)
 async def send_message(ctx: Context):
-    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob")
+    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))
 
 @alice.on_message(model=Message)
 async def message_handler(ctx: Context, sender: str, msg: Message):
@@ -221,12 +229,12 @@ We can now proceed by writing the script for agent **bob**.
 
 #### Bob
 
-1. In **remote_agents_bob.py** script, import the necessary classes from the **uagents** library: **Agent**, **Context**, and **Model**. Then, define the message structure for messages to be exchanged between the μAgents using the **Model** class, as well as our second μAgent, **bob**, by providing **name**, **seed**, **port**, and **endpoint**. Make sure it has enough funds to register in the Almanac contract.
+1. In **remote_agents_bob.py** script, import the necessary classes from the **uagents** and **uagents.setup**. Then, define the message structure for messages to be exchanged between the μAgents using the **Model** class, as well as our second μAgent, **bob**, by providing **name**, **seed**, **port**, and **endpoint**. Make sure it has enough funds to register in the Almanac contract.
 
     ```py copy
-    from uagents.setup import fund_agent_if_low
     from uagents import Agent, Context, Model
-    
+    from uagents.setup import fund_agent_if_low
+   
     class Message(Model):
         message: str
     
@@ -284,14 +292,31 @@ async def message_handler(ctx: Context, sender: str, msg: Message):
 if __name__ == "__main__":
     bob.run()
 ```
+
 #### Run the scripts
 
 In different terminal windows, first run **bob** and then **alice** from different terminals. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. 
 
-Alice: `python remote_agents_alice.py`
+Terminal 1: `python remote_agents_bob.py`
+Terminal 2: `python remote_agents_alice.py`
 
-Bob: `python remote_agents_bob.py`
+The output will depend on the terminal:
 
+- **alice**:
+
+   ```
+   [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
+   [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
+   [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
+   ```
+
+- **bob**: 
+
+   ```
+   [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
+   [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
+   [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
+   ```
 ## μAgents Remote Communication: the AgentVerse Mailbox Service
 
 μAgents can communicate remotely by also using the Agentverse Explorer [↗️](https://agentverse.ai/)️. The Agentverse Explorer is a platform that aims at creating a decentralized network of agents capable of communicating and interacting with each other. Agents in the Agentverse can send and receive messages, execute tasks, and collaborate with other agents to achieve various goals.
@@ -304,9 +329,7 @@ We make use of the μAgents Remote Communication guide above, but now, we specif
 
 #### Alice 
 
-1. First of all, let's create a script for alice: 
-
-    `touch alice.py`
+1. First of all, let's create a script for alice: `touch alice.py`
 
 2. We need to import the necessary classes from **uagents** (**Agent**, **Context**, **Model**) and **uagents.setup** (**fund_agent_if_low**), and define the **Message** class for messages to be exchanged between our μAgents. We also need to generate a secure **SEED_PHRASE** (e.g., https://pypi.org/project/mnemonic/) and get the address of our agent, which is  needed to register it to create a **Mailbox**, alongside a name (i.e., **alice** in this case). Following this, we would need to sign up at Agentverse [↗️](https://agentverse.ai/) to get an **API key**:
 
@@ -392,9 +415,7 @@ if __name__ == "__main__":
 
 #### Bob
 
-1. Let's now create another Python script for **bob**: 
-
-   `touch bob.py`
+1. Let's now create another Python script for **bob**: `touch bob.py`
 
 2. We can now import the necessary classes from **uagents** and **uagents.setup**, and define the **Message** class for messages to be exchanged between our μAgents. We then need to define **ALICE_ADDRESS** by copying the address generated in the script for **alice** above, as well as generate a second **SEED_PHRASE** (e.g. https://pypi.org/project/mnemonic/), and get the address for our agent, which is  needed to register it to create a **Mailbox**, alongside a name (i.e., **bob** in this case).  Like for **alice**, head towards the Agentverse [↗️](https://agentverse.ai/)️ to get the **API key** for **bob**:
 
