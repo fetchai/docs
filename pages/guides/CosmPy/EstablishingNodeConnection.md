@@ -6,13 +6,14 @@ With CosmPy installed you can connect and begin interacting with Cosmos-based bl
 import cosmpy
 
 from cosmpy.aerial.client import LedgerClient, NetworkConfig
+
 #Connecting to the Fetch.ai mainnet
 ledger_client = LedgerClient(NetworkConfig.fetch_mainnet())
 
 ```
 You can use `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. 
 
-In the code snippet above we're using the `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. Additionally network  configurations are provided automatically. For example, `NetworkConfig.fetch_mainnet()` is the configuration for the Fetch ledger. However CosmPy allows you to customize the network configuration and interact with other chains. You can explore a full list of chain identifiers, denominations and end-point at this [chain registry](https://github.com/cosmos/chain-registry/).  
+In the code snippet above we're using the `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. Additionally network  configurations are provided automatically. For example, `NetworkConfig.fetch_mainnet()` is the configuration for the Fetch ledger. However CosmPy allows you to customize the network configuration and interact with other chains. You can explore a full list of chain identifiers, denominations and end-point at this [chain registry↗️](https://github.com/cosmos/chain-registry/).  
 
 Below is an example of a custom network configuration. 
 
