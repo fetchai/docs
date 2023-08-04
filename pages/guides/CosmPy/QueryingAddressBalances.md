@@ -1,10 +1,10 @@
 # Querying Balances 
 
-Once you’ve established a connection to a network node [Guide on connecting↗️](/Users/nikolaydimitrov/FetchProjects/docs_v2/pages/guides/CosmPy/EstablishingNodeConnection.md) you can use the `LegderClient` object to perform many useful operations such as querying balances. In particular the `LedgerClient` object allows you to: 
-Query all balances associated with a particular address 
-Query all balances associated with a particular denomination 
+Once you’ve established a connection to a network node [Guide on connecting↗️](/guides/CosmPy/EstablishingNodeConnection.md) you can use the `LegderClient` object to perform many useful operations such as querying balances. In particular the `LedgerClient` object allows you to: 
+1. Query all balances associated with a particular address 
+2. Query all balances associated with a particular denomination 
 
-Let’s explore how to achieve both. We’ll start off by importing CosmPy as well as the relevant modules. We’ll then connect to the chain we want to perform the query on. Once connected we will specify the address we want to query. In our example we’re connected to the Fetch.ai mainnet and we’re querying all balances associated with a particular address. 
+Let’s explore how to achieve both. We’ll start by importing CosmPy as well as the relevant modules. We’ll then connect to the chain we want to perform the query on. Once connected we will specify the address we want to query. In our example we’re connected to the Fetch.ai mainnet and we’re querying all balances associated with a particular address. 
 
 ```py copy 
 import cosmpy

@@ -1,12 +1,12 @@
 # Wallets and Private Keys
 
-Wallets allow individuals to manage, store and transact across blockchain networks. Wallets are composed of a public and private key pair.The private key is a unique and secret cryptographic code that provides ownership and control over the wallet and allows individuals to authorize transactions signing. The public address is a cryptographic identifier that allows individuals to receive and view transactions. 
+Wallets allow individuals to manage, store and transact across blockchain networks. Wallets are composed of a public and private key pair. The private key is a unique and secret cryptographic code that provides ownership and control over the wallet and allows individuals to authorize transactions signing. The public address is a cryptographic identifier that allows individuals to receive and view transactions. 
 
-Changes to the state of a network are achieved through transaction broadcasting. To accomplish this, we can use the tools provided by CosmPy in a straightforward way to create and manage private keys and addresses. In this guide you’ll learn how to nboth generate a new private key as well as recover a previously generated one. The examples below outline how to achieve both. 
+Changes to the state of a network are achieved by broadcasting transactions. To accomplish this, we can use CosmPy in a straightforward way to create and manage private keys and addresses. In this guide you’ll learn how to both generate a new private key as well as recover a previously generated one. The examples below outline how to achieve both. 
 
 ## To generate a new private key
 
-```py copy 
+```py 
 #Import necessary classes 
 
 from cosmpy.aerial.wallet import LocalWallet
@@ -20,10 +20,14 @@ private_key = PrivateKey()
 
 Start by extracting the private key and convert it into a base64 encoded string. You can do this on macOS or Linux for the Fetch.ai network using the [FetchD CL↗️](https://docs.fetch.ai/ledger_v2/). An example is provided in the code snippet below. 
 
+```py
+#extract the private key and convert it into a base64 encoded string 
+fetchd keys export mykeyname --unsafe --unarmored-hex | xxd -r -p | base64
+
+```
+Once you've extracted and converted the key into a base64 encoded string you can recover to an existing private key by following along the provided example below. 
 
 ```py copy
-#recover an existing private key first  extract the private key and convert it into a base64 encoded string 
-fetchd keys export mykeyname --unsafe --unarmored-hex | xxd -r -p | base64
 
 #Import necessary classes 
 from cosmpy.aerial.wallet import LocalWallet
@@ -35,7 +39,7 @@ private_key = PrivateKey('<base64 encoded private key>') # Here is where you pro
 ```
 The `PrivateKey` object is one of CosmPy's low level primitives. This is why it is generally paired with a `Wallet` object. You can now create a local wallet using the `LocalWallet` class from the CosmPy library and initialize it with the `private_key`you generated or recovered earlier. The `LocalWallet`class is used to manage a local wallet associated with a private key for interacting with the Cosmos blockchain.
 
-With this wallet object, you can perform various operations, such as generating the corresponding public address associated with the private key and signing transactions. You can also query useful information such as the address from the wallet directly. The example below showcases both 
+With this wallet object, you can perform various operations, such as generating the corresponding public address associated with the private key and signing transactions. You can also query useful information such as the address from the wallet directly. The example below showcases how to achieve both.  
 
 ```py copy
 
