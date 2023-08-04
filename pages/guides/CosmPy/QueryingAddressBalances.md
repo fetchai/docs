@@ -1,6 +1,6 @@
 # Querying Balances 
 
-Once you’ve established a connection to a network node you can use the `LegderClient` object to perform many useful operations such as querying balances. In particular the `LedgerClient` object allows you to: 
+Once you’ve established a connection to a network node [Guide on connecting](/Users/nikolaydimitrov/FetchProjects/docs_v2/pages/guides/CosmPy/EstablishingNodeConnection.md) you can use the `LegderClient` object to perform many useful operations such as querying balances. In particular the `LedgerClient` object allows you to: 
 Query all balances associated with a particular address 
 Query all balances associated with a particular denomination 
 

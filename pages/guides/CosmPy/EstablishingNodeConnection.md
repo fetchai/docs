@@ -1,21 +1,18 @@
 # Connecting to a blockchain 
 
-After successfully installing CosmPy, you can begin interacting with Cosmos-based blockchains by following these steps.
-1. Start by setting up a new Python project where you'll be using the CosmPy library.
-2. Import the CosmPy library into your Python project to gain access to its functionalities.
-3. To start interacting with a blockchain, you first need to establish a connection to a network node. You can use `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. 
-
-In the example below we're connecting to the Fetch.ai mainnet.
+With CosmPy installed you can connect and begin interacting with Cosmos-based blockchains by following example below. 
 
 ```py
 import cosmpy
 
 from cosmpy.aerial.client import LedgerClient, NetworkConfig
-
+#Connecting to the Fetch.ai mainnet
 ledger_client = LedgerClient(NetworkConfig.fetch_mainnet())
 
 ```
-In the code snippet above, networks' configurations are provided automatically. For example, `NetworkConfig.fetch_mainnet()` is the configuration for the Fetch ledger. However CosmPy allows you to customize the network configuration and interact with other chains. You can explore a full list of chain identifiers, denominations and end-point at this [chain registry](https://github.com/cosmos/chain-registry/).  
+You can use `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. 
+
+In the code snippet above we're using the `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. Additionally network  configurations are provided automatically. For example, `NetworkConfig.fetch_mainnet()` is the configuration for the Fetch ledger. However CosmPy allows you to customize the network configuration and interact with other chains. You can explore a full list of chain identifiers, denominations and end-point at this [chain registry](https://github.com/cosmos/chain-registry/).  
 
 Below is an example of a custom network configuration. 
 
