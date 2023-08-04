@@ -1,8 +1,7 @@
-# Getting μAgent addresses
-
+# Getting μAgent addresses 🤖📫
 ## Introduction
 
-Each μAgent within the Fetch ecosystem is characterized by a different address. Addresses can allow the agent to perform different actions, including sending messages or interacting with the Almanac contract [↗️](/references/contracts/uagents-almanac/almanac-overview.md). 
+Each μAgent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the Almanac contract [↗️](/references/contracts/uagents-almanac/almanac-overview.md). 
 
 It is possible to distinguish between two different types of addresses:
 
@@ -10,14 +9,16 @@ It is possible to distinguish between two different types of addresses:
 
 - `Fetch network address`: This is the address providing the agent with the capabilities for interacting with the Fetch ledger, including registration in the Almanac contract.
 
-Let's now see how these addresses look like from different examples:
+To retrieve the address of your agent, you can either use the print function and specify which of the above addresses you wish to print out, ot by calling the **Context** class and methods to retrieve related information.
+
+**Let's now see how these ways of retrieving addresses look like!**
 
 ## Print μAgent address
 
-You can print the **uAgent address**, related to your μAgent, in the following way:
+You can print the **uAgent address** related to your μAgent in the following way:
 
 1. First of all, create a Python script and name it: `touch uagent-address.py`
-2. We then need to import the Agent class from the uagents library to create a μAgent, alice. Then, using the **print** function, we will print the related uAgent address. Importantly, remember that the **seed** parameter is used, when creating an agent, to set fixed addresses, otherwise a random address will be generated every time you run the agent.
+2. We then need to import the Agent class from the **uagents** library to create a μAgent, **alice**. Then, using the **print** function, we will print the related **uAgent address**. Importantly, remember that the **seed** parameter is used, when creating an agent, to set fixed addresses, otherwise a random address will be generated every time you run the agent.
 
 ```py copy filename="uagent-address.py"
 from uagents import Agent
@@ -35,10 +36,10 @@ uAgent address:  agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv7
 
 ## Print Fetch network address
 
-You can print your  **Fetch network address**, related to your μAgent, in the following way:
+You can print the **Fetch network address** related to your μAgent in the following way:
 
 1. Let's create a Python script, and name it: `touch fetch-address.py`
-2. As before, we first import the **Agent** class from the **uagents** library to create a μAgent, **alice**. Then, using the **print** function, we will print the related Fetch address.
+2. As before, we first import the **Agent** class from the **uagents** library to create a μAgent, **alice**. Then, using the **print** function, we will print the related **Fetch Network address**.
 
 ```py copy filename="fetch-address.py"
 from uagents import Agent
@@ -54,19 +55,21 @@ The output would be as follows:
 Fetch network address:  fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
 ```
 
-## Creating a μAgent printing its name and address 🤖📫
+## Print μAgent name and address using Context class
 
 In this guide, we aim at showing how to create a μAgent being able to say hello and printing its name and address retrieving such information from the **Context** class imported from the **uagents** library. 
 
-The **Context** class is a crucial component which represents the execution context of an agent. It encapsulates different attributes and methods which allow an agent to interact with its environment, send and receive messages, and manage its state and identity. Within this class, we can distinguish multiple attributes and methods, including the attributes **name** (which returns the name of the agent) and **address** (which returns the unique address of the agent). 
+The **Context** class is a crucial component which represents the execution context of an agent. It encapsulates different attributes and methods which allow an agent to interact with its environment, send and receive messages, and manage its state and identity. Within this class, we can distinguish multiple attributes and methods, including:
 
-Let's get started and use this class to make our agent print its name and address!
+- **name**: which returns the provided name of the agent, if specified, otherwise, if the agent's name is not explicitly set, then it will use the first ten characters of the agent's address as its name. 
+
+- **address**: which returns the unique address of the agent in the form **agent1...**. This address is essential for other agents interact with your agent. 
+
+**Let's get started and use the Context class to make our agent print its name and address!**
 
 ### Walk-through
 
-1. First of all, you need to create a Python script and name it: 
-
-   `touch my_agent.py`
+1. First of all, you need to create a Python script and name it: `touch my_agent.py`
 
 2. We then need to import the necessary classes **Agent** and **Context** from the **uagents** library, and then create an instance of the **Agent** class, **alice**:
 
