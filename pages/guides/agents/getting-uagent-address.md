@@ -31,7 +31,7 @@ You can print the **uAgent address** related to your μAgent in the following wa
 The output would be as follows:
 
 ```
-uAgent address:  agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
+uAgent address: agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
 ```
 
 ## Print Fetch network address
@@ -53,7 +53,7 @@ You can print the **Fetch network address** related to your μAgent in the follo
 The output would be as follows:
 
 ```
-Fetch network address:  fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
+Fetch network address: fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
 ```
 
 ## Print μAgent name and address using Context class
