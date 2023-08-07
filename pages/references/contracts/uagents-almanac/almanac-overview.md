@@ -1,8 +1,10 @@
-# Almanac Contract
+# Almanac Contract Overview
 
-μAgents participating in any system are required to register in the **Almanac contract**. The Almanac is a smart contract developed and deployed on the Fetch.ai blockchain which provides users with a direct way to query a particular μAgent's information, as well as allowing other agents to retrieve information about any specific μAgents registered within the contract. Thus, ***μAgents registration in the Almanac contract is a key part for agents to communicate in a remote way***.
+μAgents participating in any system are required to register in the **Almanac contract**. The Almanac is a smart contract developed and deployed on the Fetch.ai blockchain which provides users with a direct way to query a particular μAgent's information, as well as allowing other agents to retrieve information about any specific μAgents registered within the contract. 
 
-The system employs strict time limitations for registrations, measured in **blocks**, to ensure the smooth operation of a large ecosystem of agents. This limitation addresses the liveness problem by encouraging μAgents to periodically re-register their information within the Almanac contract, thus keeping the registration details up to date for each one of them.
+***μAgents registration in the Almanac contract is a key part for agents to communicate in a remote fashion***.
+
+The system employs strict time limitations for registrations, measured in **blocks**, to ensure the smooth operation of a large ecosystem of agents. _This limitation addresses the liveness problem by encouraging μAgents to periodically re-register their information within the Almanac contract, thus keeping the registration details up to date for each one of them._
 
 Indeed, once a μAgent's registration information expires due to the time limit, queries for that μAgents will no longer return the previously registered information. ***This mechanism promotes the accuracy and relevance of the μAgents information available to others***.
 
