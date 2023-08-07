@@ -22,7 +22,7 @@ Here, we want to show how to create your first μAgent using the tools provided 
    alice = Agent(name="alice", seed="alice recovery phrase")
    ```
    
-   It is optional but useful to include a **seed** parameter when creating an agent to set fixed addresses [↗️](/guides/agents/getting-uagent-address.md)️. Otherwise, random addresses will be generated every time you run the agent.
+   It is optional but useful to include a **seed** parameter when creating an agent to set fixed **addresses** [↗️](/guides/agents/getting-uagent-address.md)️. Otherwise, random addresses will be generated every time you run the agent.
 
 3. Let's define a **say_hello** function for our agent to print a message periodically saying hello:
 
@@ -63,8 +63,6 @@ Run the script: `python agent.py`
 The output would be: 
 
 ```
-[alice]: hello, my name is alice
-[alice]: hello, my name is alice
 [alice]: hello, my name is alice
 ```
 

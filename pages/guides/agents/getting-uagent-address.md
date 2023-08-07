@@ -1,7 +1,7 @@
 # Getting μAgent addresses 🤖📫
 ## Introduction
 
-Each μAgent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the Almanac contract [↗️](/references/contracts/uagents-almanac/almanac-overview.md). 
+Each μAgent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the **Almanac contract** [↗️](/references/contracts/uagents-almanac/almanac-overview.md). 
 
 It is possible to distinguish between two different types of addresses:
 
@@ -9,7 +9,7 @@ It is possible to distinguish between two different types of addresses:
 
 - `Fetch network address`: This is the address providing the agent with the capabilities for interacting with the Fetch ledger, including registration in the Almanac contract.
 
-To retrieve the address of your agent, you can either use the print function and specify which of the above addresses you wish to print out, ot by calling the **Context** class and methods to retrieve related information.
+To retrieve the address of your agent, you can either use the **print** function and specify which of the above addresses you wish to print out, ot by calling the **Context** class and methods to retrieve related information.
 
 **Let's now see how these ways of retrieving addresses look like!**
 
