@@ -1,0 +1,68 @@
+# Staking
+
+Staking is a crucial mechanism for Proof-of-Stake (PoS) based blockchains, empowering users to actively participate in securing the network while earning rewards. Staked (Delegated) funds are bonded to validator nodes. These validator nodes validate transactions and maintaining the network's integrity. By bonding funds to validators, individuals earn governance rights and actively contribute to the network's security and decentralization. 
+
+## Delegating 
+In the case of CosmPy the `Ledgerclient` object provides utilities for interacting with the staking component of the network. As you continue to explore the guide you’ll notice that the `LedgerClient` object plays a part in all stake related processes. To begin with we'll start with the example privded below to showcase how to use CosmPy to delegate 20 FET to a validator by using a `wallet` 
+
+```py
+validator_address = 'fetchvaloper1e4ykjwcwhwtasqxq50d4m7xz9hh7a86e9y8h87'
+
+tx = ledger_client.delegate_tokens(validator_address, 20, wallet)
+
+# block until the transaction has been successful or failed
+tx.wait_to_complete()
+```
+
+## Redelegating 
+Similarly to the delegate option, redelegating is the process of unbonding staked funds from one validator node and bonding them to another. This is highly useful in cases where a better validator option has arisen or in crisis management situations where  a rapid redelegation is needed. In the example below you'll learn how to redelegate 10 tokens from an exsiting `validator_address` to another `alternative_validator_address`
+
+```py
+
+validator_address = 'fetchvaloper1e4ykjwcwhwtasqxq50d4m7xz9hh7a86e9y8h87'
+alternate_validator_address = 'fetchvaloper1e4ykjwcwhwtasqxq50d4m7xz9hh7a86e9y8h87'
+
+tx = ledger_client.redelegate_tokens(validator_address, alternate_validator_address, 10, wallet)
+
+# block until the transaction has been successful or failed
+tx.wait_to_complete()
+```
+
+## Undelegating 
+
+Undelegated funds go through an unbonding period (typically 14 to 21 days for Cosmos sdk based projects) and once their unbonding period is complete funds become transferable. The code snippet we’ve shared showcases how to use the `LedgerClient` object to invoke the undelegation (in this case 5 tokens) and start the cool down process. Importantly the cool down is tracked for each undelegation invokation. For example if you trigger 3 undelegate actions on 3 consecutive days the first batch of tokens will become available 3 days before the final batch.
+
+```py
+
+tx = ledger_client.undelegate_tokens(validator_address, 5, wallet)
+
+# block until the transaction has been successful or failed
+tx.wait_to_complete()
+
+
+```
+
+## Claiming Rewards 
+
+Delegated funds accrue rewards. Rewards can be collected at any time and unlike delegations become immediately available.
+To claim rewards from a specific validator you can use the following code snippet. 
+
+```py
+tx = ledger_client.claim_rewards(validator_address, wallet)
+
+# block until the transaction has been successful or failed
+tx.wait_to_complete()
+
+```
+
+## Stake Queries 
+
+Additionally CosmPY allows you to perform useful stake queries and summaries.  You can query the stake information on any particular address at any point using the LedgerClient as shown in the example below. 
+
+```py
+address = 'fetch1h2l3cnu7e23whmd5yrfeunacez9tv0plv5rxqy'
+
+s = ledger_client.query_staking_summary(address)
+print(f"Summary: Staked: {s.total_staked} Unbonding: {s.total_unbonding} Rewards: {s.total_rewards}")
+
+```
