@@ -63,3 +63,4 @@ Requires: bech32, ecdsa, grpcio, jsonschema, protobuf, pycryptodome, python-date
     ```
 
 For more information on CosmPy visit our [GitHub↗️](https://github.com/fetchai/cosmpy) 
+
