@@ -187,5 +187,8 @@ Run the script: `python message_verification.py`.
 The output should be as follows:
 
 ```
-
+[  bob]: Alice's message verified!
+[  bob]: Received message from agent1qf5gfqm48k9acegez3sg82ney2aa6l5fvpwh3n3z0ajh0nam3ssgwnn5me7: hello there bob
+[alice]: Bob's message verified!
+[alice]: Received message from agent1qvjjle8dlf22ff7zsh6wr3gl8tdepzygftdxpc2vn8539ngt962a709c90s: hello there alice
 ```
