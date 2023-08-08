@@ -8,7 +8,7 @@
 
 **Guides**:
 
-- [Installation 🛠](/guides/agents/installing-uagent.md)
+- [Installation](/guides/agents/installing-uagent.md)
 - [Creating your first μAgent](/guides/agents/create-a-uagent.md)
 - [Getting μAgent addresses](/guides/agents/getting-uagent-address.md)
 - [μAgents Interval Task](/guides/agents/interval-task.md)
