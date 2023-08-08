@@ -62,4 +62,4 @@ Requires: bech32, ecdsa, grpcio, jsonschema, protobuf, pycryptodome, python-date
     poetry shell
     ```
 
-For more information on CosmPy visit our [GitHub↗️](https://github.com/fetchai/cosmpy)
+For more information on CosmPy visit our [GitHub↗️](https://github.com/fetchai/cosmpy) 
