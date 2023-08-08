@@ -1,15 +1,32 @@
-# Installation 
- 
+# Installation 🛠️
+
+Welcome to CosmPy, the Python-based framework that will streamline your interactions with Cosmos SDK based blockchain networks. 
+
+
+## System Requirements
+
+The CosmPy package is a Python library running on Ubuntu/Debian, and MacOS systems. 
+
+On your computer, you may need to install:
+
+- [Python](https://www.python.org/downloads/) 3.8, 3.9 or 3.10.
+- [PIP](https://pypi.org/project/pip/) (Python Installs Packages).
+- [Poetry](https://python-poetry.org/) for virtual environments (optional).
+- [CosmPy](https://pypi.org/project/cosmpy/) 
+
+## Installation 
 In order to install CosmPy ensure you have Python (version 3.8, 3.9 or 3.10) installed on your system. PIP is the preferred installer. PIP comes  built in with Python installations older than 3.4. 
 
-Once Python and PIP are installed, run the following command to install CosmPy 
-```
-pip install cosmpy 
-```
-Once installed we can verify the installation with the following command
-```
-pip show cosmpy
-```
+## Install with Pip
+
+1. Create a directory for cosmpy related projects: `mkdir directory_name`
+
+2. Within the directory, create and open a virtual environment using Poetry: `poetry init -n && poetry shell` (Optional)
+
+3. Install CosmPy with the following command `pip install cosmpy`
+
+4. Check if installation was successful: `pip show cosmpy`
+
 Once correctly installed you should see this output on the terminal 
 
 ```
@@ -23,3 +40,26 @@ License: Apache-2.0
 Requires: bech32, ecdsa, grpcio, jsonschema, protobuf, pycryptodome, python-dateutil, requests
 
 ```
+
+## Install from source code
+
+1. Download the latest released version from Github and navigate to the cosmpy directory:
+
+    ```py
+    git clone https://github.com/fetchai/cosmpy.git
+    cd cosmpy
+    ```
+
+2. Install the required dependencies:
+
+    ```py
+    poetry install
+    ```
+
+3. Open the virtual environment:
+
+    ```py
+    poetry shell
+    ```
+
+For more information on CosmPy visit our [GitHub↗️](https://github.com/fetchai/cosmpy)
