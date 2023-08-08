@@ -1,12 +1,11 @@
 # How to use uAgents to verify messages 📬🔐
-
 ## Introduction
 
-In this guide, we want to show how to set up the code for two μAgents to exchange messages with one another, and sign them to ensure authenticity and prevent tampering. 
+The emergence of decentralized technologies has introduced new possibilities for secure communication and data exchange. In this guide, we will delve into the process of setting up a scenario where two μAgents communicate with each other, employing cryptographic methods to verify the messages exchanged between them. We will showcase how to create a secure messaging environment using uAgents, where messages are not only exchanged but also signed and verified to prevent unauthorized access and tampering.
 
 ## Walk-through
 
-1. First of all, we need to navigate towards the directory you created for your project. 
+1. First of all, you need to navigate towards the directory you created for your project. 
 
 2. In here, let's create a Python script for this task and name it: `touch message_verification.py`.
 
