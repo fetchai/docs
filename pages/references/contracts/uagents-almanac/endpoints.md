@@ -1,8 +1,10 @@
 # Registration and Endpoints Weighting
 
-μAgents can communicate in a remote fashion with one another across different locations on the internet. This is achievable by  using the μAgent  address to _register into the Almanac contract_ ( by first paying a small fee), and then _querying the Almanac to retrieve an HTTP endpoint_ of a recipient μAgent.
+μAgents can communicate in a remote fashion with one another across different locations on the internet. This is achievable by  using the **Agent address** to _register into the Almanac contract_ ( by first paying a small fee), and then _querying the Almanac to retrieve an HTTP endpoint_ of a recipient μAgent.
 
-Whenever μAgents registers in the Almanac, they must specify the service **endpoints** that it provides alongside a **weight parameter** for each endpoint provided. Then, when any agent tries to communicate with this μAgent, the service endpoint will be chosen using a weighted random selection.
+Whenever μAgents registers in the Almanac, they must specify the service **endpoints** it provides alongside a **weight parameter** for each endpoint provided. Then, when any agent tries to communicate with this μAgent, the service endpoint will be chosen using a weighted random selection.
+
+For additional information on **μAgents addresses**, have a look at our [guide ↗️](/guides/agents/getting-uagent-address.md)
 
 ## Endpoint weighting
 
@@ -10,7 +12,7 @@ There exist _two format_ options when defining your agent's endpoints:
 
 - **List format**: This defines the μAgent's endpoints as a list of strings. The weights will be automatically assigned a value of 1.
 
-    ```py
+    ```py copy
     agent = Agent(
         name="alice",
         port=8000,
@@ -21,7 +23,7 @@ There exist _two format_ options when defining your agent's endpoints:
 
 - **Dictionary format**: This defines the μAgent's endpoints in a Dict format, specifying the weight for each endpoint. If the weight parameter is not specified, it will be assigned a value of 1.
 
-    ```py
+    ```py copy
     agent = Agent(
         name="alice",
         port=8000,
@@ -33,4 +35,7 @@ There exist _two format_ options when defining your agent's endpoints:
     )
     ```
 
-You can now head towards the dedicated guide showing you how to [register in the Almanac Contract](/docs/guides/agents/register-in-almanac.md) and enable remote communications between different μAgents.
+You can now head towards the following dedicated guides showing you how to:
+
+- [Register in the Almanac Contract ↗️](/guides/agents/register-in-almanac.md).
+- [Communicating with other μAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents.md).

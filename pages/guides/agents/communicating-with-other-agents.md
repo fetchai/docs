@@ -8,6 +8,7 @@ In this guide, we will explore two methods of communication between μAgents:
 - Local communication.
 - Remote communication via the [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md)️, and the [AgentVerse Mailbox Service ↗️](/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)️.
 
+
 We want to start by introducing you to the concept of local communication. This is the first step you would need to undertake to familiarize yourself with the code syntax we will be using in the remote communication section. Moreover, local communication is important for debugging purposes.
 
 Let's get started!
@@ -326,7 +327,7 @@ In this guide, we want to show how to enable remote communications between μAge
 
 ### Walk-through example
 
-We make use of the μAgents Remote Communication guide above, but now, we specify the **Mailbox** server and the **API Key** for our μAgents.
+We make use of the **μAgents Remote Communication** guide above, but now, we specify the **Mailbox** server and the **API Key** for our μAgents.
 
 #### Alice 
 
