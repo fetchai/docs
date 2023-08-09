@@ -1,7 +1,7 @@
 # Getting μAgent addresses 🤖📫
 ## Introduction
 
-Each μAgent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the **Almanac contract** [↗️](/references/contracts/uagents-almanac/almanac-overview.md). 
+Each μAgent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md). 
 
 It is possible to distinguish between two different types of addresses:
 

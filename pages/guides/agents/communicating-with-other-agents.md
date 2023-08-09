@@ -6,7 +6,7 @@ Communication is an essential feature of any agent network. It allows agents to 
 In this guide, we will explore two methods of communication between μAgents: 
 
 - Local communication.
-- Remote communication via the **Almanac Contract** [↗️](/references/contracts/uagents-almanac/almanac-overview.md)️, and the **AgentVerse Mailbox Service** [↗️](/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)️.
+- Remote communication via the [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md)️, and the [AgentVerse Mailbox Service ↗️](/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)️.
 
 We want to start by introducing you to the concept of local communication. This is the first step you would need to undertake to familiarize yourself with the code syntax we will be using in the remote communication section. Moreover, local communication is important for debugging purposes.
 
@@ -121,9 +121,9 @@ The output would be:
 
 ## μAgents Remote Communication: the Almanac Contract
 
-Remote μAgents communication is achieved by registering the μAgents into the **Almanac contract** [↗️](/references/contracts/uagents-almanac/almanac-overview.md)️ and then querying it to retrieve an HTTP endpoint from the recipient μAgent. Registration in the Almanac requires paying a small fee, so make sure to have enough funds to allow for this.
+Remote μAgents communication is achieved by registering the μAgents into the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md)️ and then querying it to retrieve an HTTP endpoint from the recipient μAgent. Registration in the Almanac requires paying a small fee, so make sure to have enough funds to allow for this.
 
-Whenever a μAgent registers in the Almanac, it must specify the service **endpoints** [↗️](/references/contracts/uagents-almanac/endpoints.md)️ alongside a weight parameter for each endpoint provided. Agents trying to communicate with your μAgent, will choose the service endpoints using a weighted random selection.
+Whenever a μAgent registers in the Almanac, it must specify the service [endpoints ↗️](/references/contracts/uagents-almanac/endpoints.md)️ alongside a weight parameter for each endpoint provided. Agents trying to communicate with your μAgent, will choose the service endpoints using a weighted random selection.
 
 Here, we show you how to create two μAgents and make them remotely communicate by registering and using the Almanac Contract.
 
@@ -320,9 +320,9 @@ The output will depend on the terminal:
   
 ## μAgents Remote Communication: the AgentVerse Mailbox Service
 
-μAgents can communicate remotely by also using the **Agentverse Explorer** [↗️](https://agentverse.ai/)️. The Agentverse Explorer is a platform that aims at creating a decentralized network of agents capable of communicating and interacting with each other. Agents in the Agentverse can send and receive messages, execute tasks, and collaborate with other agents to achieve various goals.
+μAgents can communicate remotely by also using the [Agentverse Explorer ↗️](https://agentverse.ai/)️. The Agentverse Explorer is a platform that aims at creating a decentralized network of agents capable of communicating and interacting with each other. Agents in the Agentverse can send and receive messages, execute tasks, and collaborate with other agents to achieve various goals.
 
-In this guide, we want to show how to enable remote communications between μAgents using the **Agentverse Mailbox Service** [↗️](/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)️.
+In this guide, we want to show how to enable remote communications between μAgents using the [Agentverse Mailbox Service ↗️](/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)️.
 
 ### Walk-through example
 
@@ -332,7 +332,7 @@ We make use of the μAgents Remote Communication guide above, but now, we specif
 
 1. First of all, let's create a script for alice: `touch alice.py`
 
-2. We need to import the necessary classes from **uagents** (**Agent**, **Context**, **Model**) and **uagents.setup** (**fund_agent_if_low**), and define the **Message** class for messages to be exchanged between our μAgents. We also need to generate a secure **SEED_PHRASE** (e.g., https://pypi.org/project/mnemonic/) and get the address of our agent, which is  needed to register it to create a **Mailbox**, alongside a name (i.e., **alice** in this case). Following this, we would need to sign up at **Agentverse** [↗️](https://agentverse.ai/) to get an **API key**:
+2. We need to import the necessary classes from **uagents** (**Agent**, **Context**, **Model**) and **uagents.setup** (**fund_agent_if_low**), and define the **Message** class for messages to be exchanged between our μAgents. We also need to generate a secure **SEED_PHRASE** (e.g., https://pypi.org/project/mnemonic/) and get the address of our agent, which is  needed to register it to create a **Mailbox**, alongside a name (i.e., **alice** in this case). Following this, we would need to sign up at [Agentverse ↗️](https://agentverse.ai/) to get an **API key**:
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -420,7 +420,7 @@ if __name__ == "__main__":
 
 1. Let's now create another Python script for **bob**: `touch bob.py`
 
-2. We can now import the necessary classes from **uagents** and **uagents.setup**, and define the **Message** class for messages to be exchanged between our μAgents. We then need to define **ALICE_ADDRESS** by copying the address generated in the script for **alice** above, as well as generate a second **SEED_PHRASE** (e.g. https://pypi.org/project/mnemonic/), and get the address for our agent, which is  needed to register it to create a **Mailbox**, alongside a name (i.e., **bob** in this case).  Like for **alice**, head towards the **Agentverse** [↗️](https://agentverse.ai/)️ to get the **API key** for **bob**:
+2. We can now import the necessary classes from **uagents** and **uagents.setup**, and define the **Message** class for messages to be exchanged between our μAgents. We then need to define **ALICE_ADDRESS** by copying the address generated in the script for **alice** above, as well as generate a second **SEED_PHRASE** (e.g. https://pypi.org/project/mnemonic/), and get the address for our agent, which is  needed to register it to create a **Mailbox**, alongside a name (i.e., **bob** in this case).  Like for **alice**, head towards the [Agentverse ↗️](https://agentverse.ai/)️ to get the **API key** for **bob**:
 
     ```py copy
     from uagents import Agent, Context, Model
