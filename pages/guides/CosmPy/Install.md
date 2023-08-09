@@ -9,13 +9,13 @@ The CosmPy package is a Python library running on Ubuntu/Debian, and MacOS syste
 
 On your computer, you may need to install:
 
-- [Python](https://www.python.org/downloads/) 3.8, 3.9 or 3.10.
-- [PIP](https://pypi.org/project/pip/) (Python Installs Packages).
-- [Poetry](https://python-poetry.org/) for virtual environments (optional).
-- [CosmPy](https://pypi.org/project/cosmpy/) 
+- [Python↗️](https://www.python.org/downloads/) 3.8, 3.9 or 3.10.
+- [PIP↗️](https://pypi.org/project/pip/) (Python Installs Packages).
+- [Poetry↗️](https://python-poetry.org/) for virtual environments (optional).
+- [CosmPy↗️](https://pypi.org/project/cosmpy/) 
 
 ## Installation 
-In order to install CosmPy ensure you have Python (version 3.8, 3.9 or 3.10) installed on your system. PIP is the preferred installer. PIP comes  built in with Python installations older than 3.4. 
+In order to install CosmPy ensure you have Python (version 3.8, 3.9 or 3.10) installed on your system. PIP is the preferred installer. 
 
 ## Install with Pip
 
@@ -45,20 +45,20 @@ Requires: bech32, ecdsa, grpcio, jsonschema, protobuf, pycryptodome, python-date
 
 1. Download the latest released version from Github and navigate to the cosmpy directory:
 
-    ```py
+    ```
     git clone https://github.com/fetchai/cosmpy.git
     cd cosmpy
     ```
 
 2. Install the required dependencies:
 
-    ```py
+    ```
     poetry install
     ```
 
 3. Open the virtual environment:
 
-    ```py
+    ```
     poetry shell
     ```
 

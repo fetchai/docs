@@ -5,14 +5,14 @@ CosmPy simplifies broadcasting transactions. After [creating a wallet↗️](/gu
 ```py
 from cosmpy.aerial.client import LedgerClient, NetworkConfig
 
-#Establishing connection to the network 
+# Establishing connection to the network 
 ledger_client = LedgerClient(NetworkConfig.fetch_mainnet())
-#Providing destination address 
+# Providing destination address 
 destination_address = 'fetch1h2l3cnu7e23whmd5yrfeunacez9tv0plv5rxqy'
-#Broadcasting the transaction
+# Broadcasting the transaction
 tx = ledger_client.send_tokens(destination_address, 10, "atestfet", wallet)
 
-#block until the transaction has been successful or failed
+# block until the transaction has been successful or failed
 tx.wait_to_complete()
 ```
 

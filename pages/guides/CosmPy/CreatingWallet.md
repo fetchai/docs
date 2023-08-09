@@ -6,13 +6,13 @@ Changes to the state of a network are achieved by broadcasting transactions. To 
 
 ## To generate a new private key
 
-```py 
-#Import necessary classes 
+```py copy
+# Import necessary classes 
 
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-#Creating a random private key 
+# Creating a random private key 
 private_key = PrivateKey()
 
 ```
@@ -20,8 +20,8 @@ private_key = PrivateKey()
 
 Start by extracting the private key and convert it into a base64 encoded string. You can do this on macOS or Linux for the Fetch.ai network using the [FetchD CL↗️](https://docs.fetch.ai/ledger_v2/). An example is provided in the code snippet below. 
 
-```py
-#extract the private key and convert it into a base64 encoded string 
+```py copy 
+# Extract the private key and convert it into a base64 encoded string 
 fetchd keys export mykeyname --unsafe --unarmored-hex | xxd -r -p | base64
 
 ```
@@ -29,11 +29,11 @@ Once you've extracted and converted the key into a base64 encoded string you can
 
 ```py copy
 
-#Import necessary classes 
+# Import necessary classes 
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-#Recovering an existing private key
+# Recovering an existing private key
 private_key = PrivateKey('<base64 encoded private key>') # Here is where you provide the base64 encoded private key string
 
 ```
@@ -49,7 +49,7 @@ print(wallet.address()) # will print the address for the wallet
 ```
 ## From mnemonic
 
-You can also use an account’s mnemonic phrase to get the associated private key. The example provided below showcases how to achieve that 
+You can also use an account’s mnemonic phrase to get the associated private key. The example provided below showcases how to achieve that. 
 
 ```py copy 
 

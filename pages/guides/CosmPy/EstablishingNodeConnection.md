@@ -7,7 +7,7 @@ import cosmpy
 
 from cosmpy.aerial.client import LedgerClient, NetworkConfig
 
-#Connecting to the Fetch.ai mainnet
+# Connecting to the Fetch.ai mainnet
 ledger_client = LedgerClient(NetworkConfig.fetch_mainnet())
 
 ```
