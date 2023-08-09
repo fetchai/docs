@@ -1,7 +1,7 @@
 # Getting μAgent addresses 🤖📫
 ## Introduction
 
-Each μAgent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the Almanac contract [↗️](/references/contracts/uagents-almanac/almanac-overview.md). 
+Each μAgent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md). 
 
 It is possible to distinguish between two different types of addresses:
 
@@ -9,7 +9,7 @@ It is possible to distinguish between two different types of addresses:
 
 - `Fetch network address`: This is the address providing the agent with the capabilities for interacting with the Fetch ledger, including registration in the Almanac contract.
 
-To retrieve the address of your agent, you can either use the print function and specify which of the above addresses you wish to print out, ot by calling the **Context** class and methods to retrieve related information.
+To retrieve the address of your agent, you can either use the **print** function and specify which of the above addresses you wish to print out, ot by calling the **Context** class and methods to retrieve related information.
 
 **Let's now see how these ways of retrieving addresses look like!**
 
@@ -20,18 +20,18 @@ You can print the **uAgent address** related to your μAgent in the following wa
 1. First of all, create a Python script and name it: `touch uagent-address.py`
 2. We then need to import the Agent class from the **uagents** library to create a μAgent, **alice**. Then, using the **print** function, we will print the related **uAgent address**. Importantly, remember that the **seed** parameter is used, when creating an agent, to set fixed addresses, otherwise a random address will be generated every time you run the agent.
 
-```py copy filename="uagent-address.py"
-from uagents import Agent
-
-alice = Agent(name="alice", seed="alice recovery phrase")
-
-print("uAgent address: ", alice.address)
-```
+   ```py copy filename="uagent-address.py"
+   from uagents import Agent
+   
+   alice = Agent(name="alice", seed="alice recovery phrase")
+   
+   print("uAgent address: ", alice.address)
+   ```
 
 The output would be as follows:
 
 ```
-uAgent address:  agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
+uAgent address: agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
 ```
 
 ## Print Fetch network address
@@ -39,20 +39,21 @@ uAgent address:  agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv7
 You can print the **Fetch network address** related to your μAgent in the following way:
 
 1. Let's create a Python script, and name it: `touch fetch-address.py`
+
 2. As before, we first import the **Agent** class from the **uagents** library to create a μAgent, **alice**. Then, using the **print** function, we will print the related **Fetch Network address**.
 
-```py copy filename="fetch-address.py"
-from uagents import Agent
-
-alice = Agent(name="alice", seed="alice recovery phrase")
-
-print("Fetch network address: ", alice.wallet.address())
-```
+   ```py copy filename="fetch-address.py"
+   from uagents import Agent
+   
+   alice = Agent(name="alice", seed="alice recovery phrase")
+   
+   print("Fetch network address: ", alice.wallet.address())
+   ```
 
 The output would be as follows:
 
 ```
-Fetch network address:  fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
+Fetch network address: fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
 ```
 
 ## Print μAgent name and address using Context class
