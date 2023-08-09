@@ -4,21 +4,23 @@
 
 The **μAgents Exchange Protocol** is a protocol designed as part of the Fetch.ai μAgents Framework. It defines a standardized method for communication between μAgents within the μAgents ecosystem.
 
-The Exchange protocol enables μAgents to exchange **messages** using a JSON-based format. Messages are structured as key-value pairs following the JSON standard. They can contain various types of information and are used to convey data and instructions between agents.
+The Exchange protocol enables μAgents to exchange **messages** using a JSON-based format, which are structured as key-value pairs following the JSON standard. Messages can contain various types of information and are used to convey data and instructions between agents.
 
-To facilitate communication, messages are encapsulated within **envelopes**. Envelopes serve as containers for the messages and include additional metadata.
+ Within the protocol, **envelopes** facilitate communication by encapsulating messages. Envelopes serve as containers for the messages and include additional metadata.
 
-In this protocol, μAgents can send **messages** enclosed in **envelopes**, which are then encoded and sent via HTTP to the **endpoints** of other μAgents.v
+In this protocol, μAgents can send **messages** enclosed in **envelopes**, which are then encoded and sent via HTTP to the [endpoints ↗️](/references/contracts/uagents-almanac/endpoints.md) of other μAgents.
 
-By adhering to the μAgents Exchange Protocol, μAgents within the Fetch.ai uAgents ecosystem can communicate with each other using a standardized and interoperable method. The protocol establishes a common format and structure for messages, enabling seamless interaction and integration between different μAgents and services.
+By adhering to the μAgents Exchange Protocol, agents within the Fetch.ai μAgents ecosystem can communicate with each other using a standardized and interoperable method. _The protocol establishes a common format and structure for messages, enabling seamless interaction and integration between different μAgents and services._
 
 We break down each of these concepts in more detail below.
 
-## Messages
+## Core concepts
+### Messages
 
 Messages consist of key-value pairs following the standard JSON format.
 
 Here are a few examples:
+
 ```json
 {"message": "hello"}
 ```
@@ -29,9 +31,9 @@ Here are a few examples:
 {"item": "pretzel", "bid": {"amount": 120, "denomination": "GBP"}}
 ```
 
-Once created, messages are then enclosed in envelopes containing some important metadata.
+Once messages are created, these are enclosed in envelopes containing some important metadata.
 
-## Envelopes
+### Envelopes
 
 Envelopes have the following form and are quite similar to blockchain transactions:
 
@@ -58,12 +60,8 @@ class Envelope:
 
 Envelopes are then JSON encoded and sent to endpoints of other μAgents or services.
 
-## Endpoints
+### Endpoints
 
-The protocol supports only one standardised endpoint:
-
-```HTTP 1.1 POST /submit```
-
-and expects data which is broadly JSON compatible. 
+The protocol supports only one standardised endpoint: ```HTTP 1.1 POST /submit```, and expects data which is broadly JSON compatible. 
 
 The protocol currently supports MIME content type `application/json`.

@@ -1,48 +1,59 @@
 # μAgents protocols
 
-The μAgents framework supports capturing related message types and handlers in **protocols**. Protocols are used to facilitate communication and interaction between μAgents in the μAgents framework. Any μAgent including the same protocol will be able to communicate with each other.
+Within the μAgents framework, **protocols** support capturing related message types and handlers. 
 
-A **protocol** is built similar to a **μAgents**, but it has no identity and cannot be run. It contains only the message types and handlers that define some components of μAgents functionality.
+Protocols are used to facilitate communication and interaction between μAgents in the μAgents framework. Indeed, any agent including the same protocol will be able to communicate with each other.
 
-To better understand what a protocol means and how to build one, let's use a _simple restaurant table booking request_ as an example. We first need to define the type of messages that the handler will receive and send. Here we define **BookTableRequest** which will contain the requested table number and **BookTableResponse** which will inform the user if that table is available.
+A **protocol** is built similar to a **μAgent**, but it has no identity and cannot be run. Protocols only contains the message types and handlers that define some components of a μAgent's functionality.
 
-```py
-from uagents import Context, Model, Protocol
+Let's use a _simple restaurant table booking request_ as an example to better understand what a protocol means and how to build one. 
 
-class BookTableRequest(Model):
-    table_number: int
+1. Let's start by creating a folder named **protocols**. Then, let's create Python script within it, and name it: 
 
-class BookTableResponse(Model):
-    success: bool
-```
+    `mkdir protocols`
+    `touch book.py`
 
-Now we define the booking protocol as **book_proto** and we define the desired logic to determine if the **BookTableResponse** will be successful or not.
+2. We import from **uagents** library the necessary classes **Context**, **Model**, and **Protocol**. Then, need to define the type of messages that the handler will receive and send:
 
-```py
-book_proto = Protocol()
+    ```py copy
+    from uagents import Context, Model, Protocol
+    
+    class BookTableRequest(Model):
+        table_number: int
+    
+    class BookTableResponse(Model):
+        success: bool
+    ```
+   
+     We use the **Model** class from **uagents** library to define **BookTableRequest** and **BookTableResponse** classes for setting up the structure of messages to be exchanged between your agents. The **BookTableRequest** class represents a request to book a table, containing the desired table number, while the **BookTableResponse** class represents the response to that request, indicating whether the booking was successful.
 
-@book_proto.on_message(model=BookTableRequest, replies={BookTableResponse})
-async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
-    if ctx.storage.has(str(msg.table_number)):
-        success = False
-    else:
-        success = True
-        ctx.storage.set(str(msg.table_number), sender)
+3. Now, we would need to define the booking protocol as **book_proto** and also define the desired logic to determine if the **BookTableResponse** will be successful or not.
 
-    # send the response
-    await ctx.send(sender, BookTableResponse(success=success))
-```
+    ```py copy
+    book_proto = Protocol()
+    
+    @book_proto.on_message(model=BookTableRequest, replies={BookTableResponse})
+    async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
+        if ctx.storage.has(str(msg.table_number)):
+            success = False
+        else:
+            success = True
+            ctx.storage.set(str(msg.table_number), sender)
+    
+        # send the response
+        await ctx.send(sender, BookTableResponse(success=success))
+    ```
 
-We will create a folder named **protocols** and save this file in it as **book.py**. We can then import it from the agent script:
+4. We can then import our booking protocol from into the script we create for our agent, in the following way:
 
-```py
-from protocols.book import book_proto
-```
+    ```py copy
+    from protocols.book import book_proto
+    ```
 
-Then, if your agent is called restaurant you can include the protocol in this way:
+5. If your agent is called **restaurant** you can include the protocol in this way:
 
-```py
-restaurant.include(book_proto)
-```
+    ```py copy
+    restaurant.include(book_proto)
+    ```
 
-For a better understanding of these concepts, consider having a look at the [storage](/docs/references/uagents/uagents-protocols/storage.md) and [Exchange protocol](/docs/references/uagents/uagents-protocols/exchange-protocol.md) resources and consider going through the extensive [How to book a table at a restaurant using uAgents](/docs/guides/agents/booking-demo.md) demonstration in the Guides section.
+For a better understanding of these concepts, consider having a look at the [storage ↗️](/references/uagents/uagents-protocols/storage.md) and **Exchange protocol**[↗️](/references/uagents/uagents-protocols/exchange-protocol.md) resources and consider going through the extensive **How to book a table at a restaurant using uAgents**[↗️](/guides/agents/booking-demo.md) demonstration in the Guides section.
