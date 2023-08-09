@@ -8,7 +8,7 @@ The Exchange protocol enables μAgents to exchange **messages** using a JSON-bas
 
  Within the protocol, **envelopes** facilitate communication by encapsulating messages. Envelopes serve as containers for the messages and include additional metadata.
 
-In this protocol, μAgents can send **messages** enclosed in **envelopes**, which are then encoded and sent via HTTP to the **endpoints** [↗️](/references/contracts/uagents-almanac/endpoints.md) of other μAgents.
+In this protocol, μAgents can send **messages** enclosed in **envelopes**, which are then encoded and sent via HTTP to the [endpoints ↗️](/references/contracts/uagents-almanac/endpoints.md) of other μAgents.
 
 By adhering to the μAgents Exchange Protocol, agents within the Fetch.ai μAgents ecosystem can communicate with each other using a standardized and interoperable method. _The protocol establishes a common format and structure for messages, enabling seamless interaction and integration between different μAgents and services._
 
