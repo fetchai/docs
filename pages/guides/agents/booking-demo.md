@@ -20,7 +20,7 @@ Let's start by defining the protocol for querying availability of tables at the 
 3. In the text editor application, define the **table querying protocol**. 
 4. Import necessary classes and define the **message data models**:
 
-    ```py
+    ```py copy
    from typing import List
 
    from uagents import Context, Model, Protocol
@@ -434,7 +434,7 @@ if __name__ == "__main__":
 
 The overall script should look as follows:
 
-```py
+```python copy filename="booking_demo.py"
 from protocols.book import BookTableRequest, BookTableResponse
 from protocols.query import (
     QueryTableRequest,
