@@ -33,7 +33,7 @@ You can also choose from a set of use case examples.
 
 To get started:
 
-1. Head towards the **Agentverse Explorer** [↗️](https://agentverse.ai/) and sign in. 
+1. Head towards the [Agentverse Explorer ↗️](https://agentverse.ai/) and sign in. 
 
 2. Then, click on **Managed Agents** and select **+ Use Case**. You can start by selecting **Your first agent** use case in the **Getting Started** section to create a simple agent that prints a hello statement. 
 
@@ -47,7 +47,7 @@ To get started:
 
 Communication between agentverse μAgent and local μAgent is also possible. All you need to do is provide the **target address** of the agent.
 
-1. After registering μAgent **alice** on the mailbox server, you can easily create a new agentverse agent **bob** by selecting **+ Agent** on **Managed Agents** in the **Agentverse Explorer** [↗️](https://agentverse.ai/). 
+1. After registering μAgent **alice** on the mailbox server, you can easily create a new agentverse agent **bob** by selecting **+ Agent** on **Managed Agents** in the [Agentverse Explorer ↗️](https://agentverse.ai/). 
 
 2. Then, you would need to add the following code to **bob**:
 
@@ -62,6 +62,6 @@ Communication between agentverse μAgent and local μAgent is also possible. All
         await ctx.send(sender, Message(message="hello there alice"))
     ```
 
-3. Next, you need to copy **bob**'s address and paste it into **alice**'s code under **RECIPIENT_ADDRESS**. Once you've done that, run agent **bob** on the **Agentverse Explorer** [↗️](https://agentverse.ai/) followed by your local agent **alice**. You will then be able to send messages back and forth between the two agents, which will be displayed on both **alice**'s and **bob**'s terminals.
+3. Next, you need to copy **bob**'s address and paste it into **alice**'s code under **RECIPIENT_ADDRESS**. Once you've done that, run agent **bob** on the [Agentverse Explorer ↗️](https://agentverse.ai/) followed by your local agent **alice**. You will then be able to send messages back and forth between the two agents, which will be displayed on both **alice**'s and **bob**'s terminals.
 
-For a better understanding and visualisation of the topic, you could have a look at the **μAgents Remote Communication: the AgentVerse Mailbox Service** guide in **Communicating with other μAgents 📱🤖** [↗️](/guides/agents/communicating-with-other-agents.md)️ guide.
+For a better understanding and visualisation of the topic, you could have a look at the **μAgents Remote Communication: the AgentVerse Mailbox Service** guide in [Communicating with other μAgents 📱🤖↗️](/guides/agents/communicating-with-other-agents.md)️ guide.

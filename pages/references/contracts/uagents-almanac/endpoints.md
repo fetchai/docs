@@ -4,7 +4,7 @@
 
 Whenever μAgents registers in the Almanac, they must specify the service **endpoints** it provides alongside a **weight parameter** for each endpoint provided. Then, when any agent tries to communicate with this μAgent, the service endpoint will be chosen using a weighted random selection.
 
-For additional information on **μAgents addresses**, have a look at our **guide** [↗️](/guides/agents/getting-uagent-address.md)
+For additional information on **μAgents addresses**, have a look at our [guide ↗️](/guides/agents/getting-uagent-address.md)
 
 ## Endpoint weighting
 
@@ -37,5 +37,5 @@ There exist _two format_ options when defining your agent's endpoints:
 
 You can now head towards the following dedicated guides showing you how to:
 
-- **Register in the Almanac Contract** [↗️](/guides/agents/register-in-almanac.md).
-- **Communicating with other μAgents 📱🤖** [↗️](/guides/agents/communicating-with-other-agents.md).
+- [Register in the Almanac Contract ↗️](/guides/agents/register-in-almanac.md).
+- [Communicating with other μAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents.md).
