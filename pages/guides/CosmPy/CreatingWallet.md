@@ -18,7 +18,7 @@ private_key = PrivateKey()
 ```
 ## To recover an existing private key
 
-Start by extracting the private key and convert it into a base64 encoded string. You can do this on macOS or Linux for the Fetch.ai network using the [FetchD CL↗️](https://docs.fetch.ai/ledger_v2/). An example is provided in the code snippet below. 
+Start by extracting the private key and convert it into a base64 encoded string. You can do this on macOS or Linux for the Fetch.ai network using the [FetchD CL ↗️ ](https://docs.fetch.ai/ledger_v2/). An example is provided in the code snippet below. 
 
 ```py copy 
 # Extract the private key and convert it into a base64 encoded string 
