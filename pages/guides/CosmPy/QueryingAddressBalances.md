@@ -1,6 +1,6 @@
 # Querying Balances 
 
-Once you’ve established a connection to a network node [Guide on connecting↗️](/guides/CosmPy/EstablishingNodeConnection.md) you can use the `LegderClient` object to perform many useful operations such as querying balances. In particular the `LedgerClient` object allows you to: 
+Once you’ve established a connection to a network node [Guide on connecting ↗️ ](/guides/CosmPy/EstablishingNodeConnection.md) you can use the `LegderClient` object to perform many useful operations such as querying balances. In particular the `LedgerClient` object allows you to: 
 1. Query all balances associated with a particular address 
 2. Query all balances associated with a particular denomination 
 
@@ -17,7 +17,7 @@ address: str = 'fetch12q5gw9l9d0yyq2th77x6pjsesczpsly8h5089x'
 balances = ledger_client.query_bank_all_balances(address)
 print(balances)
 ```
-Querying all balances associated with a particular address returns a `List` of `Coin` objects that contain amount and denom variables that correspond to all the funds held at the address and their denominations. This list includes all natively defined coins along with any tokens transferred using the inter-blockchain communication [IBC↗️](https://ibcprotocol.org/) protocol. Once successful, you'll see the following input in the terminal. 
+Querying all balances associated with a particular address returns a `List` of `Coin` objects that contain amount and denom variables that correspond to all the funds held at the address and their denominations. This list includes all natively defined coins along with any tokens transferred using the inter-blockchain communication [IBC ↗️ ](https://ibcprotocol.org/) protocol. Once successful, you'll see the following input in the terminal. 
 
 ```py copy
 [Coin(amount='1616060698998992698400', denom='afet'), Coin(amount='10', denom='ibc/605C5B80A8253543F8038F96F56BA13BDD8D300E12F1B32A3FA2E1EB2A933FA1'), Coin(amount='5000000', denom='ibc/B58E6786772640EC4B538AFC4393F742C326734B74CCAFAFBF7EFDC7D435B428')]
