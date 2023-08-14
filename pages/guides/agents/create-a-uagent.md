@@ -1,39 +1,52 @@
-# Create the agent
+# Creating your first μAgent 🤖🧑‍💻
+## Introduction
 
-You can create your first μAgent by building a Python script with the following steps:
+The μAgents Framework makes it easy to build agents for all kinds of decentralized use cases. 
 
-1. Create a script for this task: `touch agent.py`
-2. Import necessary classes from the **uagents** library and create a μAgent instance of the class **Agent**.
+In this guide we want to show you the steps needed for _creating your first μAgent in a blink of an eye!_ 
 
-    ```py
-    from uagents import Agent, Context
-    
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    ```
+**Let's get started!**
 
-    It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses](/docs/guides/agents/getting-uagent-address.md). Otherwise, random addresses will be generated every time you run the agent.
+## Create a μAgent saying hello and its name
 
-3. Define a **say_hello()** function for alice to print a message periodically saying **"hello, my name is alice"**.
+### Walk-through
 
-    ```py
-    @alice.on_interval(period=2.0)
-    async def say_hello(ctx: Context):
-        ctx.logger.info(f'hello, my name is {ctx.name}')
+Here, we want to show how to create your first μAgent using the tools provided by Fetch.ai **uagents** library. You can create your first μAgent by following the steps below:
+
+1. First of all, let's create a Python script for this task, and name it: `touch agent.py`
+
+2. We then need to import the **Agent** and **Context** classes from the **uagents** library, and then create a μAgent using the class **Agent**:
+
+   ```py copy
+   from uagents import Agent, Context
+   alice = Agent(name="alice", seed="alice recovery phrase")
+   ```
    
-    if __name__ == "__main__":
-        alice.run()
-    ```
+   It is optional but useful to include a **seed** parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address.md)️. Otherwise, random addresses will be generated every time you run the agent.
 
-    The **on_interval()** decorator defines a periodic behavior for this agent. In this case, the agent will execute the **say_hello()** function every 2 seconds. The **Context** object is a collection of data and functions related to the agent. In this case, we just use the agent's name. The agent executes the function and uses the **ctx.logger.info()** method to print the message.
-    
+3. Let's define a **say_hello** function for our agent to print a message periodically saying hello:
+
+   ```py copy
+   @alice.on_event("startup")
+   async def say_hello(ctx: Context):
+       ctx.logger.info(f'hello, my name is {ctx.name}')
+   
+   if __name__ == "__main__":
+       alice.run()
+   ```
+
+   The **on_interval** decorator defines a periodic behavior for this agent. In this case, the agent will execute the **say_hello** function every 2 seconds. The **Context** object is a collection of data and functions related to the agent. In this case, we just use the agent's name, **alice**. The agent executes the function and uses the **ctx.logger.info** method to print the message.
+
 4. Save the script
 
-```py
+The overall script should look as follows: 
+
+```py copy filename="agent.py"
 from uagents import Agent, Context
 
 alice = Agent(name="alice", seed="alice recovery phrase")
 
-@alice.on_interval(period=2.0)
+@alice.on_event("startup")
 async def say_hello(ctx: Context):
     ctx.logger.info(f'hello, my name is {ctx.name}')
 
@@ -41,10 +54,16 @@ if __name__ == "__main__":
     alice.run()
 ```
 
-## Run your agent
+### Run your agent
 
 Make sure to have activated your virtual environment correctly. 
 
 Run the script: `python agent.py`
 
-**Congratulations, you have just created your first μAgent!**
+The output would be: 
+
+```
+[alice]: hello, my name is alice
+```
+
+_**Congratulations, you have just created your first μAgent!**_
