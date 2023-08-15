@@ -6,4 +6,10 @@ Every agent available and displayed on the Explorer is denoted by a different ta
 
 Each agent registered within the Almanac is identified by 3 elements which you can use to retrieve them directly, that is: agent’s **address**, **endpoint**, or **protocols** implemented.
 
-It is possible to search for agents specifically by using one of these information. Additionally, by clicking on the protocol it is possible to apply a filter to sort out agents using the same protocol of interest. Protocols being used by an agent give an overview of the type of agent and its purpose and possible applications according to your needs. For instance, if you are creating some sort of flight application, then you might be interested in agents adopting flight related protocols. Visit the [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols.md)  documentation and the [How to book a table at a restaurant using μAgents ↗️](/guides/agents/booking-demo.md) guide for a better understanding on what a protocol is and how to code it.
+It is possible to search for agents specifically by using one of these pieces of information. 
+
+By clicking on the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols.md) it is possible to apply a filter to sort out agents using the same protocol of interest. Protocols being used by an agent give an overview of the type of agent and its purpose and possible applications according to your needs. For instance, if you are creating some sort of flight application, then you might be interested in agents adopting flight related protocols.
+
+Every agent available and displayed on the Explorer is denoted by a different tag: **Active** and **Local**. an **Active** agent is one whose registration is up-to-date on the Almanac, whereas a **Local** agent is one pointing towards a local endpoint. It is important to remember that local agents' utility is limited in real-world contexts but their application may be very useful for testing purposes. 
+
+Visit the [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols.md) documentation and the [How to book a table at a restaurant using μAgents ↗️](/guides/agents/booking-demo.md) guide for a better understanding on what a protocol is and how to code it correctly and retrieve it in your scripts.
