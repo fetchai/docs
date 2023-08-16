@@ -1,0 +1,11 @@
+# Getting started 🎯
+ 
+Agentverse includes different sections which allow you to perform different actions and access different services. Importantly, **you first need to sign in into your account**. 
+
+You can do so by:
+
+1. Providing **email** and **password**.
+2. Sign in with **Google**.
+3. Sign in with **Fetch wallet**.
+
+Once you log in, you will be able to start interacting with the Agentverse and its services.

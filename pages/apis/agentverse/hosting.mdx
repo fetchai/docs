@@ -1,0 +1,263 @@
+import {Note, Properties, Property, Warn, Section, ApiIntro, Tag, CodeHeading} from "../../../components/mdx";
+import {Tabs, Tab} from "../../../components/mdx";
+import {Row, Col} from "../../../components/mdx";
+import ApiEndpoint from "../../../components/api-endpoint";
+
+# Hosting API
+
+## Overview
+
+<Row>
+    <Col>
+        The hosting API allows you to manage your agents that are hosted by Agentverse. This involves creating new
+        agents, updating the code of existing agents, starting and stopping agents, and getting logs of agents.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        GET /v1/hosting/agents
+        POST /v1/hosting/agents
+
+        GET /v1/hosting/agents/:agentAddress
+        DELETE /v1/hosting/agents/:agentAddress
+
+        GET /v1/hosting/agents/:agentAddress/code
+        PUT /v1/hosting/agents/:agentAddress/code
+
+        POST /v1/hosting/agents/:agentAddress/start
+        POST /v1/hosting/agents/:agentAddress/stop
+
+        GET /v1/hosting/agents/:agentAddress/logs/latest
+        DELETE /v1/hosting/agents/:agentAddress/logs
+        ```
+    </Col>
+</Row>
+
+## The Agent Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="name" type="string">
+                The given name of the agent. This is only a label that is used internally so users can keep track of
+                their agents.
+            </Property>
+            <Property name="address" type="string">
+                The address of the agent. This is also the current public key of the agent
+            </Property>
+            <Property name="running" type="boolean">
+                The current state of the agent. `true` if the agent is currently running, `false` otherwise.
+            </Property>
+            <Property name="compiled" type="boolean | null">
+                The current code compilation status for the agent. `true` if the agent is compiled, `false` if the
+                compilation failed, `null` if the agent has not been compiled yet.
+            </Property>
+            <Property name="revision" type="integer">
+                The current revision of the agent. Everytime an update is made to the agent, the revision is incremented
+            </Property>
+            <Property name="code_digest" type="string | null">
+                The current digest of the code of the agent. Useful for determining if there have been code changes that
+                need to be applied to the agent.
+
+                This value can be `null` if the agent has not been compiled yet.
+            </Property>
+            <Property name="wallet_address" type="string | null">
+                The wallet address that is associated with the agent. If a wallet address is not associated with the
+                agent, this value will be `null`.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample Agent Object"
+        {
+            "name": "My first agent",
+            "address": "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+            "running": false,
+            "compiled": true,
+            "revision": 7,
+            "code_digest": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+            "wallet_address": "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk"
+        }
+        ```
+    </Col>
+</Row>
+
+## Getting a list of your agents
+
+**Endpoint**: `GET /v1/hosting/agents`
+
+### Request
+
+<Row>
+    <Col>
+        Parameters
+        <div className="text-gray-400 italic">no parameters</div>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash filename="Shell command" copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents
+                ````
+            </Tab>
+
+            <Tab heading="python">
+                ```python filename="Using requests" copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/hosting/agents', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js filename="Using fetch API" copy
+                await fetch('https://agentverse.ai/v1/hosting/agents', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            }
+                ```
+            </Tab>
+        </Tabs>
+    </Col>
+</Row>
+
+
+### Responses
+
+<Row>
+    <Col>
+        On a successful request, the response will be an array of [Agent Objects](#the-agent-object)
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="HTTP 200">
+                ```json filename="List of Agents"
+                [
+                    {
+                        "name": "My first agent",
+                        "address": "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+                        "running": false,
+                        "compiled": true,
+                        "revision": 7,
+                        "code_digest": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+                        "wallet_address": "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk"
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs>
+    </Col>
+</Row>
+
+
+## Creating a new agent
+
+**Endpoint**: `GET /v1/hosting/agents`
+
+
+#### New Agent Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="name" type="string">
+                The given name of the agent. This is only a label that is used internally so users can keep track of
+                their agents.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="New Agent Object"
+        {
+            "name": "My newest agent"
+        }
+        ```
+    </Col>
+</Row>
+
+### Request
+
+<Row>
+    <Col>
+        On Successful creation of an agent, the response will be an [Agent Object](#the-agent-object)
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash filename="Shell command" copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents
+                ````
+            </Tab>
+
+            <Tab heading="python">
+                ```python filename="Using requests" copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/hosting/agents', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js filename="Using fetch API" copy
+                await fetch('https://agentverse.ai/v1/hosting/agents', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            }
+                ```
+            </Tab>
+        </Tabs>
+    </Col>
+</Row>
+
+
+### Responses
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl https://api.example.com/v1/balance -u sk_test_4eC39HqLyjWDarjtT1zdp7dc:
+                ````
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/hosting/agents', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/agents', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            }
+                ```
+            </Tab>
+        </Tabs>
+    </Col>
+</Row>
+
