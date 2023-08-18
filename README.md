@@ -4,7 +4,7 @@
 
 ### Staging Website
 
-https://docs-staging.sandbox-london-b.fetch-ai.com/framework
+https://docs-staging.sandbox-london-b.fetch-ai.com/docs
 
 ## Developing
 
