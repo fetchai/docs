@@ -62,7 +62,7 @@ const classes = {
 }
 
 type FolderProps = {
-  item: PageItem | MenuItem | Item
+  item: any
   anchors: Heading[]
 }
 
