@@ -1,5 +1,5 @@
 import React from 'react'
-import { DocsThemeConfig } from 'nextra-theme-docs'
+import { DocsThemeConfig } from './packages/nextra-theme-docs'
 
 const config: DocsThemeConfig = {
   logo: <span>Fetch.ai Documentation</span>,
