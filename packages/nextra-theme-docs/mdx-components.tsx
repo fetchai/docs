@@ -91,7 +91,7 @@ const findSummary = (children: ReactNode) => {
       summary = result[0]
       c = cloneElement(child, {
         ...child.props,
-        children: result[1]?.length ? result[1] : undefined,
+        children: result[1] ? result[1] : undefined,
         key: index
       })
     }

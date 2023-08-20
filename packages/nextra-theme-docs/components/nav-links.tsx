@@ -26,8 +26,8 @@ export const NavLinks = ({
   const nav = config.navigation
   const navigation: Exclude<DocsThemeConfig['navigation'], boolean> =
     typeof nav === 'boolean' ? { prev: nav, next: nav } : nav
-  let prev = navigation.prev && flatDirectories[currentIndex - 1]
-  let next = navigation.next && flatDirectories[currentIndex + 1]
+  let prev: any = navigation.prev && flatDirectories[currentIndex - 1]
+  let next: any = navigation.next && flatDirectories[currentIndex + 1]
 
   if (prev && !prev.isUnderCurrentDocsTree) prev = false
   if (next && !next.isUnderCurrentDocsTree) next = false
