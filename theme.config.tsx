@@ -1,8 +1,8 @@
 import React from 'react'
-import { DocsThemeConfig } from './packages/nextra-theme-docs'
+import { DocsThemeConfig } from './theme/fetch-ai-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span>Fetch.ai Docs</span>,
+  logo: <span>Fetch.ai Documentation</span>,
   project: {
     link: 'https://github.com/shuding/nextra-docs-template',
   },
