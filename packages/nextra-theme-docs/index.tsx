@@ -187,7 +187,7 @@ const InnerLayout = ({
       {themeContext.navbar &&
         renderComponent(config.navbar.component, {
           flatDirectories,
-          items: topLevelNavbarItems
+          items: docsDirectories
         })}
       <div
         className={cn(
@@ -204,7 +204,6 @@ const InnerLayout = ({
             asPopover={hideSidebar}
             includePlaceholder={themeContext.layout === 'default'}
           />
-          {tocEl}
           <SkipNavContent />
           <Body
             themeContext={themeContext}

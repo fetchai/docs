@@ -17,7 +17,7 @@ const classes = {
   link: cn(
     'nx-text-sm contrast-more:nx-text-gray-700 contrast-more:dark:nx-text-gray-100'
   ),
-  active: cn('nx-font-medium nx-subpixel-antialiased'),
+  active: cn('nx-font-medium nx-subpixel-antialiased grey-background'),
   inactive: cn(
     'nx-text-gray-600 hover:nx-text-gray-800 dark:nx-text-gray-400 dark:hover:nx-text-gray-200'
   )
@@ -95,19 +95,59 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           'contrast-more:nx-shadow-[0_0_0_1px_#000] contrast-more:dark:nx-shadow-[0_0_0_1px_#fff]'
         )}
       />
-      <nav className="nx-mx-auto nx-flex nx-h-[var(--nextra-navbar-height)] nx-max-w-[90rem] nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
-        {config.logoLink ? (
-          <Anchor
-            href={typeof config.logoLink === 'string' ? config.logoLink : '/'}
-            className="nx-flex nx-items-center hover:nx-opacity-75 ltr:nx-mr-auto rtl:nx-ml-auto"
+      <nav className="nx-mx-auto nx-py-4 nx-max-w-[90rem] nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
+        <div className="nx-flex">
+          {config.logoLink ? (
+            <Anchor
+              href={typeof config.logoLink === 'string' ? config.logoLink : '/'}
+              className="nx-flex nx-items-center hover:nx-opacity-75 ltr:nx-mr-auto rtl:nx-ml-auto"
+            >
+              {renderComponent(config.logo)}
+            </Anchor>
+          ) : (
+            <div className="nx-flex nx-items-center ltr:nx-mr-auto rtl:nx-ml-auto">
+              {renderComponent(config.logo)}
+            </div>
+          )}
+          
+
+          {renderComponent(config.search.component, {
+            directories: flatDirectories,
+            className: 'nx-hidden md:nx-inline-block mx-min-w-[200px]'
+          })}
+
+          {config.project.link ? (
+            <Anchor
+              className="nx-p-2 nx-text-current"
+              href={config.project.link}
+              newWindow
+            >
+              {renderComponent(config.project.icon)}
+            </Anchor>
+          ) : null}
+
+          {config.chat.link ? (
+            <Anchor
+              className="nx-p-2 nx-text-current"
+              href={config.chat.link}
+              newWindow
+            >
+              {renderComponent(config.chat.icon)}
+            </Anchor>
+          ) : null}
+
+          {renderComponent(config.navbar.extraContent)}
+
+          <button
+            type="button"
+            aria-label="Menu"
+            className="nextra-hamburger -nx-mr-2 nx-rounded nx-p-2 active:nx-bg-gray-400/20 md:nx-hidden"
+            onClick={() => setMenu(!menu)}
           >
-            {renderComponent(config.logo)}
-          </Anchor>
-        ) : (
-          <div className="nx-flex nx-items-center ltr:nx-mr-auto rtl:nx-ml-auto">
-            {renderComponent(config.logo)}
-          </div>
-        )}
+            <MenuIcon className={cn({ open: menu })} />
+          </button>
+        </div>
+
         {items.map(pageOrMenu => {
           if (pageOrMenu.display === 'hidden') return null
 
@@ -150,7 +190,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               key={href}
               className={cn(
                 classes.link,
-                'nx-relative -nx-ml-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block',
+                'nx-relative nx-mx-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block',
                 !isActive || page.newWindow ? classes.inactive : classes.active
               )}
               newWindow={page.newWindow}
@@ -163,42 +203,6 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
             </Anchor>
           )
         })}
-
-        {renderComponent(config.search.component, {
-          directories: flatDirectories,
-          className: 'nx-hidden md:nx-inline-block mx-min-w-[200px]'
-        })}
-
-        {config.project.link ? (
-          <Anchor
-            className="nx-p-2 nx-text-current"
-            href={config.project.link}
-            newWindow
-          >
-            {renderComponent(config.project.icon)}
-          </Anchor>
-        ) : null}
-
-        {config.chat.link ? (
-          <Anchor
-            className="nx-p-2 nx-text-current"
-            href={config.chat.link}
-            newWindow
-          >
-            {renderComponent(config.chat.icon)}
-          </Anchor>
-        ) : null}
-
-        {renderComponent(config.navbar.extraContent)}
-
-        <button
-          type="button"
-          aria-label="Menu"
-          className="nextra-hamburger -nx-mr-2 nx-rounded nx-p-2 active:nx-bg-gray-400/20 md:nx-hidden"
-          onClick={() => setMenu(!menu)}
-        >
-          <MenuIcon className={cn({ open: menu })} />
-        </button>
       </nav>
     </div>
   )

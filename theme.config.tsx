@@ -2,7 +2,7 @@ import React from 'react'
 import { DocsThemeConfig } from './packages/nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span>Fetch.ai Documentation</span>,
+  logo: <span>Fetch.ai Docs</span>,
   project: {
     link: 'https://github.com/shuding/nextra-docs-template',
   },
@@ -12,7 +12,8 @@ const config: DocsThemeConfig = {
   docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
   footer: {
     text: 'Fetch.ai 2023',
-  },
+  }
 }
+
 
 export default config
