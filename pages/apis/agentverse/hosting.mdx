@@ -28,6 +28,15 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
         GET /v1/hosting/agents/:agentAddress/logs/latest
         DELETE /v1/hosting/agents/:agentAddress/logs
+
+        GET /v1/hosting/usage/current
+        GET /v1/hosting/usage/year/month
+
+        GET /v1/hosting/usage/agents/address/current
+        GET /v1/hosting/usage/agents/address/year/month
+
+        POST /v1/hosting/submit
+        POST /v1/hosting/agents/register_name/:address
         ```
     </Col>
 </Row>
@@ -99,7 +108,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 curl -X GET \
                 -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
                 https://agentverse.ai/v1/hosting/agents
-                ````
+                ```
             </Tab>
 
             <Tab heading="python">
@@ -119,7 +128,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 headers: {
                 Authorization: `Bearer ${token}`,
             }
-            }
+            })
                 ```
             </Tab>
         </Tabs>
@@ -193,7 +202,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 curl -X GET \
                 -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
                 https://agentverse.ai/v1/hosting/agents
-                ````
+                ```
             </Tab>
 
             <Tab heading="python">
@@ -213,7 +222,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 headers: {
                 Authorization: `Bearer ${token}`,
             }
-            }
+            })
                 ```
             </Tab>
         </Tabs>
@@ -222,26 +231,62 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
 
 ### Responses
+    
+
+<Row>
+    <Col>
+        On a successful request, the response will be an Agent Object [Agent Objects](#the-agent-object)
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="HTTP 200">
+                ```json filename="Agent Object"
+                [
+                    {
+                        "name": "My first agent",
+                        "address": " some address ",
+                        "running": false,
+                        "revision": 7
+                        
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs>
+    </Col>
+</Row>
+            
+        
+
+
+
+## Look up Specific Agent 
+
+**Endpoint**: `GET /v1/hosting/agents/{address}`
+
+### Request
 
 <Row>
     <Col>
         <ApiIntro>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            Looks up a specific agent by address on the hosting platform. 
         </ApiIntro>
     </Col>
     <Col>
         <Tabs>
             <Tab heading="curl">
                 ```bash copy
-                curl https://api.example.com/v1/balance -u sk_test_4eC39HqLyjWDarjtT1zdp7dc:
-                ````
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents/{address}
+                ```
             </Tab>
 
             <Tab heading="python">
                 ```python copy
                 import requests
 
-                requests.get('https://agentverse.ai/v1/hosting/agents', headers={
+                requests.get('https://agentverse.ai/v1/hosting/agents/{address}', headers={
                 'Authorization': f'Bearer {token}',
             })
                 ```
@@ -249,17 +294,926 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
             <Tab heading="javascript">
                 ```js copy
-                await fetch('https://agentverse.ai/v1/hosting/agents', {
+                await fetch('https://agentverse.ai/v1/hosting/agents/{address}', {
                 method: 'GET',
                 headers: {
                 Authorization: `Bearer ${token}`,
             }
-            }
+            })
                 ```
             </Tab>
-        </Tabs>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On successful look up of an agent the response will be the Agent object you've specified by address. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Specific agent by address "
+                [
+                    {
+                        "name": "My first agent",
+                        "address": "the address",
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
     </Col>
 </Row>
 
 
+
+
+
+## Delete Specified Agent 
+
+**Endpoint**: `DELETE /v1/hosting/agents/{agentAddress}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Deletes a specified Agent from the platform. 
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy 
+                curl -X DELETE \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents/{agentAddress}/code
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.delete('https://agentverse.ai/v1/hosting/agents/{agentAddress}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/agents/{agentAddress}', {
+                method: 'DELETE',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On successful deletion the reponse will be a time-stamped log of the deletion. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Deleted agent "
+                [
+                    {
+                     "Title": "Log Timestamp",
+                     "type": "string",
+                     "format": "date-time"
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+
+## Get current agent code.
+
+**Endpoint**: `GET /v1/hosting/agents/{agentAddress}/code`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Looks up the code for an agent specified by address
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy 
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents/{agentAddress}/code
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/hosting/agents/{agentAddress}/code', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/agents/{agentAddress}/code', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On successful look up, the response will be an Agent Code Object.
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Current Agent Code "
+                [
+                    {
+                       "AgentCode": "Some Code"
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Update agent code specified by address.
+
+**Endpoint**:  `PUT /v1/hosting/agents/{agentAddress}/code`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Updates the code for a specific agent, identified by address.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X PUT \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents/{agentAddress}/code
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.put('https://agentverse.ai/v1/hosting/agents/{agentAddress}/code', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/agents/{agentAddress}/code', {
+                method: 'PUT',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On successful look up of the agent code, the reponse will be a ...
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Updated agent code "
+                [
+                    {
+                       "AgentCode":"Some code"
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Starts a specific agent, identified by address.
+
+**Endpoint**:  `POST /v1/hosting/agents/{agentAddress}/start`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Starts a specific agent, identified by address.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents/{agentAddress}/start
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/hosting/agents/{agentAddress}/start', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/agents/{agentAddress}/start', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On successful start the response will be an Agent Object with a specific address. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Started Agent  "
+                [
+                    {
+                       "Agent": "My Started Agent"
+                       "Address": "My started Agent address"
+                       "running": true, 
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Stops a specific agent, identified by address.
+
+**Endpoint**:  `POST /v1/hosting/agents/{agentAddress}/stop`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Stops a specific agent, identified by address.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents/{agentAddress}/stop
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/hosting/agents/{agentAddress}/stop', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/agents/{agentAddress}/stop', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On successful stop the response will be the Agent Object identified by it's address. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" updated agent code  "
+                [
+                    {
+                       "Agent": "My stopped Agent"
+                       "Address": "My stopped Agent's address"
+                       "running": false,
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Get Latest Logs For Agent
+
+**Endpoint**:  `GET /v1/hosting/agents/{agentAddress}/logs/latest`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Gets the latest logs for a specific agent, identified by address.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents/{agentAddress}/logs/latest
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/hosting/agents/{agentAddress}/logs/latest', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/agents/{agentAddress}/logs/latest', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On successful retrieval of the specified agent logs the response will be an AgentLog object. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Retrieve agent logs  "
+                [
+                    {
+                       "AgentLog": "My Agent Logs"
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Delete Logs For Agent
+
+**Endpoint**:  `DELETE /v1/hosting/agents/{agentAddress}/logs/latest`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Deletes all the logs for a specific agent, identified by address.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X DELETE \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents/{agentAddress}/logs/latest
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.delete('https://agentverse.ai/v1/hosting/agents/{agentAddress}/logs', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/agents/{agentAddress}/logs', {
+                method: 'DELETE',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On successful deletion of the specified agent logs the response will be an empty log entry. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Deleted Agent logs "
+                [
+                    {
+                       "log_entry": "Empty log"
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+
+## Get Agent Usage
+
+**Endpoint**:  `GET /v1/hosting/usage/current`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Get Agent Usage for the currently selected agent. 
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+               ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/usage/current
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/hosting/usage/current', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/usage/current', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the reponse will be a ...
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Current agent usage "
+                [
+                    {
+                       
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Get Agent Usage
+
+**Endpoint**:  `GET /v1/hosting/usage/{year}/{month}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Get Agent Usage for the currently selected Agent per month.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/usage/{year}/{month}
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/hosting/usage/{year}/{month}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/usage/{year}/{month}', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the reponse will be a the usage for a specified Agent for a selected month.
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Monthly Agent Usage  "
+                [
+                    {
+
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Get Agent usage by address
+
+**Endpoint**:  `GET /v1/hosting/usage/agents/{address}/current`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Get the current usage for an Agent, identified by address.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/usage/agents/{address}/current
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/hosting/usage/agents/{address}/current', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/usage/agents/{address}/current', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the reponse will be the current usage for a specified Agent identified by address.
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Current usage for specific Agent  "
+                [
+                    {
+                       
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Get current Agent usage by address for a specifc month 
+
+**Endpoint**:  `GET /v1/hosting/usage/agents/{address}/{year}/{month}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Get the current usage for an Agent, identified by address.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/usage/agents/{address}/{year}/{month}
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/hosting/usage/agents/{address}/{year}/{month}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/usage/agents/{address}/{year}/{month}', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the reponse will be the monthly usage for an Agent idenfied by address.
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Monthly usage for specific Agent  "
+                [
+                    {
+                       
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Sumbmit a message envelope  
+
+**Endpoint**:  `POST /v1/hosting/submit`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Submit Message Envelope. 
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/submit
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/hosting/submit', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/hosting/submit', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the reponse will be a ...
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" updated agent code  "
+                [
+                    {
+                       
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
 
