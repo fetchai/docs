@@ -312,7 +312,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On successful look up of an agent the response will be the Agent object you've specified by address. 
+             On successful look up of an agent the response will be a json array. 
          </ApiIntro>
     </Col>
     <Col>
@@ -321,8 +321,16 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Specific agent by address "
                 [
                     {
-                        "name": "My first agent",
-                        "address": "the address",
+                      
+                      "name": "Storage Agent", 
+                      "address": "agent1qfjasaxqk69cleqm23v36qal7tn4zp3qstc3qc6devkraqepptsnyla7j0m", 
+                      "domain": "None",
+                      "running": "False", 
+                      "compiled": "None", 
+                      "revision": "0", 
+                      "code_digest": "4a8d510d546de8ff74aa27abaa7ebd95bf7876d8b31b265f6022c49d7b49cf45", 
+                      "wallet_address": "fetch1n20wvzfhn5gprfgfxwuzly290c4wxudj76mh6u"
+                      
                     }
                 ]
                 ```
@@ -388,7 +396,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On successful deletion the reponse will be a time-stamped log of the deletion. 
+             On successful deletion the reponse will be the deletion of the specified by address Agent. 
          </ApiIntro>
     </Col>
     <Col>
@@ -397,9 +405,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Deleted agent "
                 [
                     {
-                     "Title": "Log Timestamp",
-                     "type": "string",
-                     "format": "date-time"
+                    
                     }
                 ]
                 ```
@@ -464,7 +470,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On successful look up, the response will be an Agent Code Object.
+             On successful look up, the response will be a json array containing the digest, code and timestamp. 
          </ApiIntro>
     </Col>
     <Col>
@@ -473,7 +479,11 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Current Agent Code "
                 [
                     {
-                       "AgentCode": "Some Code"
+                       
+                        "digest": "4a8d510d546de8ff74aa27abaa7ebd95bf7876d8b31b265f6022c49d7b49cf45", 
+                        "code": "\n# This agent will store a number in storage and increment it every 3 seconds",
+                        "timestamp': '2023-08-22T12:49:45.856000+00:00"
+                        
                     }
                 ]
                 ```
@@ -537,7 +547,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On successful look up of the agent code, the reponse will be a ...
+             On successful update of the agent code, the reponse will be a digest. 
          </ApiIntro>
     </Col>
     <Col>
@@ -546,7 +556,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Updated agent code "
                 [
                     {
-                       "AgentCode":"Some code"
+                       "digest":"66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530"
                     }
                 ]
                 ```
@@ -566,7 +576,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
         <ApiIntro>
-            Starts a specific agent, identified by address.
+            Starts a specific agent identified by address.
         </ApiIntro>
     </Col>
     <Col>
@@ -610,7 +620,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On successful start the response will be an Agent Object with a specific address. 
+             On successful start the selected by address Agent will start and API will return a json array. 
          </ApiIntro>
     </Col>
     <Col>
@@ -619,9 +629,14 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Started Agent  "
                 [
                     {
-                       "Agent": "My Started Agent"
-                       "Address": "My started Agent address"
-                       "running": true, 
+                       "name": "Storage Agent", 
+                       "address": "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7", 
+                       "domain": "None", 
+                       "running": "True", 
+                       "compiled": "False", 
+                       "revision": "4", 
+                       "code_digest": "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530", 
+                       "wallet_address": "None"
                     }
                 ]
                 ```
@@ -632,7 +647,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
 
 
-## Stops a specific agent, identified by address.
+## Stops a specific agent identified by address.
 
 **Endpoint**:  `POST /v1/hosting/agents/{agentAddress}/stop`
 
@@ -685,7 +700,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On successful stop the response will be the Agent Object identified by it's address. 
+             On success the selected by address Agent will stop and the API will return a json array. 
          </ApiIntro>
     </Col>
     <Col>
@@ -694,9 +709,16 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" updated agent code  "
                 [
                     {
-                       "Agent": "My stopped Agent"
-                       "Address": "My stopped Agent's address"
-                       "running": false,
+                      {
+                        "name": "Storage Agent", 
+                        "address": "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7", 
+                        "domain": "None", 
+                        "running": "False", 
+                        "compiled": "False",
+                        "revision": "3", 
+                        "code_digest": "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530", 
+                        "wallet_address": "None"
+                      }
                     }
                 ]
                 ```
@@ -707,7 +729,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
 
 
-## Get Latest Logs For Agent
+## Get Latest Logs For Agent identified by address
 
 **Endpoint**:  `GET /v1/hosting/agents/{agentAddress}/logs/latest`
 
@@ -760,7 +782,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On successful retrieval of the specified agent logs the response will be an AgentLog object. 
+             On successful retrieval of the specified agent logs the response will a json array with the log timestamp and entries. 
          </ApiIntro>
     </Col>
     <Col>
@@ -769,7 +791,8 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Retrieve agent logs  "
                 [
                     {
-                       "AgentLog": "My Agent Logs"
+                       "log_timestamp": '2023-08-22T14:09:48.259000', 
+                       "log_entry": "[INFO]: My count is: 0"
                     }
                 ]
                 ```
@@ -780,7 +803,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
 
 
-## Delete Logs For Agent
+## Delete the latest Logs For Agent identified by address 
 
 **Endpoint**:  `DELETE /v1/hosting/agents/{agentAddress}/logs/latest`
 
@@ -789,7 +812,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
         <ApiIntro>
-            Deletes all the logs for a specific agent, identified by address.
+            Deletes the latest logs for a specific agent, identified by address.
         </ApiIntro>
     </Col>
     <Col>
@@ -833,7 +856,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On successful deletion of the specified agent logs the response will be an empty log entry. 
+             On success, the response will be the deletion of the specified agent logs. 
          </ApiIntro>
     </Col>
     <Col>
@@ -842,7 +865,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Deleted Agent logs "
                 [
                     {
-                       "log_entry": "Empty log"
+                       
                     }
                 ]
                 ```
@@ -854,7 +877,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
 
 
-## Get Agent Usage
+## Get current Agent Usage
 
 **Endpoint**:  `GET /v1/hosting/usage/current`
 
@@ -907,7 +930,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On success the reponse will be a ...
+             On success the reponse will be a json array containing data about the usage of the currently selected agent. 
          </ApiIntro>
     </Col>
     <Col>
@@ -916,7 +939,16 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Current agent usage "
                 [
                     {
-                       
+                       "year": "2023", 
+                       "month": "8", 
+                       "computation_time": "2291", 
+                       "num_messages": "12", 
+                       "num_message_bytes": "0", 
+                       "num_agents": "4", 
+                       "quota_computation_time": "3100000000", 
+                       "quota_num_messages": "31000000", 
+                       "quota_message_bytes": "63488000000", 
+                       "quota_agents": "1000"
                     }
                 ]
                 ```
@@ -927,7 +959,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
 
 
-## Get Agent Usage
+## Get Agent Usage for a specific year and month
 
 **Endpoint**:  `GET /v1/hosting/usage/{year}/{month}`
 
@@ -980,16 +1012,25 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On success the reponse will be a the usage for a specified Agent for a selected month.
+             On success the reponse will be a json array with the usage for the currently selected Agent for a selected month.
          </ApiIntro>
     </Col>
     <Col>
         <Tabs>
             <Tab Tab heading="HTTP 200">
-                ```json filename=" Monthly Agent Usage  "
+                ```json filename=" Monthly Agent Usage "
                 [
                     {
-
+                        "year": "2023", 
+                        "month": "8", 
+                        "computation_time": "456731", 
+                        "num_messages": "2805", 
+                        "num_message_bytes": "0", 
+                        "num_agents": "4", 
+                        "quota_computation_time": "3100000000", 
+                        "quota_num_messages": "31000000", 
+                        "quota_message_bytes": "63488000000", 
+                        "quota_agents": "1000"
                     }
                 ]
                 ```
@@ -1000,7 +1041,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
 
 
-## Get Agent usage by address
+## Get current Agent usage by address
 
 **Endpoint**:  `GET /v1/hosting/usage/agents/{address}/current`
 
@@ -1053,7 +1094,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On success the reponse will be the current usage for a specified Agent identified by address.
+             On success the reponse will be a json array containing information about the current usage for a specified Agent identified by address.
          </ApiIntro>
     </Col>
     <Col>
@@ -1062,7 +1103,11 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Current usage for specific Agent  "
                 [
                     {
-                       
+                        "year": "2023", 
+                        "month": "8",
+                        "computation_time": "1230", 
+                        "num_messages": "4", 
+                        "num_message_bytes": "0"
                     }
                 ]
                 ```
@@ -1073,7 +1118,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 
 
 
-## Get current Agent usage by address for a specifc month 
+## Get current Agent usage by address for a specifc year and month 
 
 **Endpoint**:  `GET /v1/hosting/usage/agents/{address}/{year}/{month}`
 
@@ -1126,7 +1171,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On success the reponse will be the monthly usage for an Agent idenfied by address.
+             On success the reponse will be a json array containing the monthly usage for an Agent idenfied by address for a specific year and month.
          </ApiIntro>
     </Col>
     <Col>
@@ -1135,7 +1180,11 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename=" Monthly usage for specific Agent  "
                 [
                     {
-                       
+                       "year": "2023", 
+                       "month": "8", 
+                       "computation_time": "1230", 
+                       "num_messages": "4", 
+                       "num_message_bytes": "0"
                     }
                 ]
                 ```
@@ -1205,7 +1254,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
     <Col>
         <Tabs>
             <Tab Tab heading="HTTP 200">
-                ```json filename=" updated agent code  "
+                ```json filename=" Missing due to error 422 "
                 [
                     {
                        
@@ -1217,3 +1266,76 @@ import ApiEndpoint from "../../../components/api-endpoint";
     </Col>
 </Row>
 
+
+
+
+## Register Agent Name  
+
+**Endpoint**:  `POST /v1/hosting/agents/register_name/{address}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Submit Message Envelope. 
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/hosting/agents/register_name/{address}
+                
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post(' https://agentverse.ai/v1/hosting/agents/register_name/{address}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch(' https://agentverse.ai/v1/hosting/agents/register_name/{address}', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the reponse will be a ...
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Missing due to error 422 "
+                [
+                    {
+                       
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
