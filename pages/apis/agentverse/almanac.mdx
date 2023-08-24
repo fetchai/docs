@@ -1,0 +1,600 @@
+import {Note, Properties, Property, Warn, Section, ApiIntro, Tag, CodeHeading} from "../../../components/mdx";
+import {Tabs, Tab} from "../../../components/mdx";
+import {Row, Col} from "../../../components/mdx";
+import ApiEndpoint from "../../../components/api-endpoint";
+
+# Almanac Service API 
+
+## Overview
+
+<Row>
+    <Col>
+        The Almanac service indexes the Almanac contract making it easier for developers to access data. 
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        GET  /v1/almanac/recent
+        POST /v1/almanac/search
+
+        GET /v1/almanac/agents/:address
+        GET /v1/almanac/search/available_name
+
+        POST /v1/almanac/manifests
+        GET /v1/almanac/manifests/protocols/:protocol_digest
+
+        GET /v1/almanac/manifests/models/:model_digest
+        ```
+    </Col>
+</Row>
+
+
+## The Agent Object 
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="status" type="string">
+                The given address of the agent. 
+            </Property>
+            <Property name="address" type="string">
+                The domain name associated with an address. 
+            </Property>
+            <Property name="Endpoints" type="array">
+                Endpoints..
+            </Property>
+            <Property name="Protocol" type="array">
+                Protocol..
+            </Property>
+            <Property name="Expiry" type="string">
+                Expiry
+                The wallet address that is associated with the agent. If a wallet address is not associated with the
+                agent, this value will be `null`.
+            </Property>
+            <Property name="Domain name" type="string">
+                Domain name 
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample Agent Object"
+        {
+            "status": "Active",
+            "address": "agent1qwckmey38jd6xl6al9k5qcelr9faqfgpxh73tev6fa3ruqnzajp6yneg3qw",
+            "endpoints": "{'https://hosting.prod.fetch-ai.com/v1/hosting/submit', 'weight': 1}",
+            "protocol": "a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
+            "expiry": "2023-08-26T03:30:05.568195+00:00",
+            "Domain name": "Hello world"
+        }
+        ```
+    </Col>
+</Row>
+
+
+
+## Get recently registered Agents 
+
+**Endpoint**: `GET /v1/almanac/recent`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Get recently registered Agents on the Almanac contract
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/almanac/recent
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/almanac/recent', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/almanac/recent', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success, the response will be a json array with the informaiton about the recently registered Agents. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Recently registered Agents"
+                [
+                    {
+                   "status": "active", 
+                   "address": "agent1qvjlldu6fjparnqhzmz38tz0t3v4cdju0szmxfxg23a0h79mw9k6qnza98n", 
+                   "domain_name": "hemant.agent", 
+                   "endpoints": [{"url": "https://engine-staging.sandbox-london-b.fetch-ai.com/v1/engine/message/submit", "weight": 1}], 
+                   "protocols": [], "expiry": "2023-08-26T13:20:10.035592+00:00"
+                        
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Almanac Agent Search 
+
+**Endpoint**: `POST /v1/almanac/search`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Almanac Agent Search 
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/almanac/search
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/almanac/search', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/almanac/search', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the reponse will be a json array with the recently registered agents.
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Recently registered Agent(s) "
+                [
+                    {
+                      "status": "active", 
+                      "address": "agent1q2kjqapdest5gs30sws5nlrghzxns0ke5feqft7uqu6usewytjex5f7dmrh", 
+                      "domain_name": "hello.world", 
+                      "endpoints": [{'url': "https://hosting.prod.fetch-ai.com/v1/hosting/submit", "weight": 1}], 
+                      "protocols": ["a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125"],
+                      "expiry": "2023-08-26T03:30:05.568195+00:00"
+                 
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Almanac Search for an Agent identified by address
+
+**Endpoint**: `GET /v1/almanac/agents/{address}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Search for a specific Agent identified by address in the Almanac contract.  
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/almanac/agents/{address}
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/almanac/agents/{address}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/almanac/agents/{address}', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+## Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success, the reponse will be a json array with the information for the agent specified by address. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Specific agent by address "
+                [
+                    {
+                      "status": "active", 
+                      "address": "agent1qwr5pul2j02mr960hhhdjzpsvfq3z92mh7l0ac2xqyk34v84f994usqftwu", 
+                      "domain_name": "None", 
+                      "endpoints": [{"url": "https://agent-hosting-canary.sandbox-london-b.fetch-ai.com/v1/hosting/submit", "weight": 1}], 
+                      "protocols": ["a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125"], 
+                      "expiry": "2023-08-26T13:18:26.946201+00:00"
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Search Available Agent Name
+
+**Endpoint**: `GET /v1/almanac/search/available_name`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Search for an available agent name. 
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/almanac/search/available_name
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/almanac/search/available_name', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/almanac/search/available_name', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be json array with information about the availability of a name. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" Agent name availability "
+                [
+                    {
+                      "name_prefix": "Testing", 
+                      "domain": ".agent", 
+                      "status": "available"
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Upload Manifest 
+
+**Endpoint**: `POST /v1/almanac/manifests`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Upload a manifest to the Almanac contract. 
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/almanac/manifests
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/almanac/manifests', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/almanac/manifests', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success..
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" 422.. "
+                [
+                    {
+                    
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Get protocol manifests
+
+**Endpoint**: `GET /v1/almanac/manifests/protocols/{protocol_digest}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Get protocol manifests. 
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be a json array with the needed information. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="Get Protocol Manifests"
+                [
+                    {
+                    
+                        "version": "1.0", 
+                        "metadata": {'name': 'alice', 'version': '0.1.0', 'digest': 'proto:a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125'}, 
+                        "models": [], 
+                        "interactions": []
+                    
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Get Protocol Manifest 
+
+**Endpoint**: `GET /v1/almanac/manifests/models/{model_digest}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Get protocol manifests
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/almanac/manifests/models/{model_digest}
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/almanac/manifests/models/{model_digest}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/almanac/manifests/models/{model_digest}', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename=" 422.."
+                [
+                    {
+                      
+           
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
