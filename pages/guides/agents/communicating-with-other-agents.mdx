@@ -20,9 +20,9 @@ The first step to better understand how μAgents communicate is to introduce how
 
 1. First of all, let’s create a Python script for this task and name it: `touch agents_communication.py`
 
-2. Then, let's import these necessary classes from the uagents library: **Agent**, **Context**, **Bureau**, and **Model** Let's then define the message structure for messages to be exchanged between the μAgents using the class **Model**. 
+2. Then, let's import these necessary classes from the uagents library: `Agent`, `Context`, `Bureau`, and `Model` Let's then define the message structure for messages to be exchanged between the μAgents using the class `Model`.
 
-    Then, we would need to create the μAgents, **alice** and **bob**, with name and seed parameters. 
+    Then, we would need to create the μAgents, `alice` and `bob`, with name and seed parameters.
 
     ```py copy
     from uagents import Agent, Bureau, Context, Model
@@ -42,9 +42,9 @@ The first step to better understand how μAgents communicate is to introduce how
        await ctx.send(bob.address, Message(message="hello there bob"))
     ```
 
-    We can use the **on_interval** decorator to define a coroutine **send_message** function that will be called every 3 seconds. The coroutine function sends a message to bob using the **ctx.send** method of the **Context** object.
+    We can use the `.on_interval()` decorator to define a coroutine `send_message()` function that will be called every 3 seconds. The coroutine function sends a message to bob using the `ctx.send()` method of the Context object.
 
-    We then need to define a **message_handler** function for **alice** to manage incoming messages.
+    We then need to define a `alice_message_handler()` function for alice to manage incoming messages.
 
     ```py copy
     @alice.on_message(model=Message)
@@ -52,9 +52,9 @@ The first step to better understand how μAgents communicate is to introduce how
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
     ```
 
-    This defines the coroutine function **alice_message_handler** that serves as a message handler for **alice**. It is triggered whenever alice receives a message of type **Message**. The function logs the received message and its sender using the **ctx.logger.info** method.
+    This defines the coroutine function `alice_message_handler()` that serves as a message handler for `alice`. It is triggered whenever alice receives a message of type `Message`. The function logs the received message and its sender using the `ctx.logger.info()` method.
 
-4. Let's now define the behavior of our second agent, **bob**.
+4. Let's now define the behavior of our second agent, `bob`.
 
     ```py copy
     @bob.on_message(model=Message)
@@ -63,9 +63,9 @@ The first step to better understand how μAgents communicate is to introduce how
         await ctx.send(alice.address, Message(message="hello there alice"))
     ```
 
-    Here, we have defined a coroutine **bob_message_handler** function that serves as the message handler for **bob**. It is triggered whenever bob receives a message of type **Message** from other agents. The function logs the received message and its sender using the **ctx.logger.info** method. Finally, we make **bob** compose a response message to be sent back using the **ctx.send** method with **alice.address** as the recipient address and an instance of the **Message** model as the message payload.
+    Here, we have defined a coroutine `bob_message_handler()` function that serves as the message handler for `bob`. It is triggered whenever bob receives a message of type `Message` from other agents. The function logs the received message and its sender using the `ctx.logger.info()` method. Finally, we make `bob` compose a response message to be sent back using the `ctx.send()` method with `alice.address` as the recipient address and an instance of the `Message` model as the message payload.
 
-5. Let's then use the **Bureau** class to create a **Bureau** object. This will allow us to run μAgents together in the same script.
+5. Let's then use the `Bureau` class to create a `Bureau` object. This will allow us to run μAgents together in the same script.
 
     ```py copy
     bureau = Bureau()
@@ -141,7 +141,7 @@ Let's start by defining the script for **alice**.
 
 #### Alice
 
-1. In **remote_agents_alice.py** script, we would need to import the necessary classes from the **uagents** (**Agent**, **Context**, and **Model**) and from **uagents.setup** (**fund_agent_if_low**). We then need to define the message structure for messages to be exchanged between agents using the class **Model**, as well as the **RECIPIENT_ADDRESS**. This is the address to which **alice** will send messages.
+1. In `remote_agents_alice.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between agents using the class `Model`, as well as the `RECIPIENT_ADDRESS`. This is the address to which `alice` will send messages.
 
     ```py copy 
     from uagents import Agent, Context, Model
@@ -153,7 +153,7 @@ Let's start by defining the script for **alice**.
     RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
     ```
 
-2. Let's now create our μAgent, **alice**, by providing **name**, **seed**, **port**, and **endpoint**. Also, make sure it has enough funds to register in the Almanac contract.
+2. Let's now create our μAgent, `alice`, by providing `name`, `seed`, `port`, and vendpoint`. Also, make sure it has enough funds to register in the Almanac contract.
 
     ```py copy
     alice = Agent( 
@@ -166,9 +166,9 @@ Let's start by defining the script for **alice**.
     fund_agent_if_low(alice.wallet.address())
     ```
 
-    On the Fetch.ai testnet, you can use the **fund_agent_if_low** function. This one checks if the balance of the μAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency. In this case, it checks if the balance of **alice**'s wallet is low and funds it if necessary.
+    On the Fetch.ai testnet, you can use the `fund_agent_if_low` function. This one checks if the balance of the μAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency. In this case, it checks if the balance of `alice`'s wallet is low and funds it if necessary.
     
-3. We are ready to define **alice**'s behaviors. Let's start with a function for alice to send messages.
+3. We are ready to define `alice`'s behaviors. Let's start with a function for alice to send messages.
 
     ```py copy
     @alice.on_interval(period=2.0)
@@ -176,9 +176,9 @@ Let's start by defining the script for **alice**.
         await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob")
     ```
 
-    Here, the **on_interval** decorator schedules the **send_message** coroutine function to be run every 2 seconds. Inside the function, there is an asynchronous call indicated by the **ctx.send** method. This call sends a message with the content **"hello there bob"** to the **RECIPIENT_ADDRESS**.
+    Here, the `.on_interval()` decorator schedules the `send_message()`coroutine function to be run every 2 seconds. Inside the function, there is an asynchronous call indicated by the `ctx.send()` method. This call sends a message with the content `"hello there bob"` to the `RECIPIENT_ADDRESS`.
 
-4. We then need to define a function for **alice** to handle incoming messages from other agents.
+4. We then need to define a function for `alice` to handle incoming messages from other agents.
 
     ```py copy
     @alice.on_message(model=Message)
@@ -189,9 +189,9 @@ Let's start by defining the script for **alice**.
         alice.run()
     ```
     
-    Here, we have used the **on_message** decorator to register the **message_handler** coroutine function as a handler for incoming messages of type **Message**.
+    Here, we have used the `.on_message()` decorator to register the `message_handler()` coroutine function as a handler for incoming messages of type `Message`.
     
-    The **message_handler** function takes three arguments: **ctx**, **sender**, and **msg**. Inside this function, we call the **ctx.logger.info** method to log information about the received message, including the sender and message content.
+    The `message_handler()` function takes three arguments: `ctx`, `sender`, and `msg`. Inside this function, we call the `ctx.logger.info()` method to log information about the received message, including the sender and message content.
 
 5. We can now save the script.
 
@@ -227,11 +227,11 @@ if __name__ == "__main__":
     alice.run()
 ```
 
-We can now proceed by writing the script for agent **bob**.
+We can now proceed by writing the script for agent `bob`.
 
 #### Bob
 
-1. In **remote_agents_bob.py** script, import the necessary classes from the **uagents** and **uagents.setup**. Then, define the message structure for messages to be exchanged between the μAgents using the **Model** class, as well as our second μAgent, **bob**, by providing **name**, **seed**, **port**, and **endpoint**. Make sure it has enough funds to register in the Almanac contract.
+1. In `remote_agents_bob.py` script, import the necessary classes from the `uagents` and `uagents.setup`. Then, define the message structure for messages to be exchanged between the μAgents using the `Model` class, as well as our second μAgent, `bob`, by providing `name`, `seed`, `port`, and `endpoint`. Make sure it has enough funds to register in the Almanac contract.
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -250,7 +250,7 @@ We can now proceed by writing the script for agent **bob**.
     fund_agent_if_low(bob.wallet.address())
     ```
 
-2. Let's now define a function for **bob** to handle incoming messages and answering back to the sender.
+2. Let's now define a function for `bob` to handle incoming messages and answering back to the sender.
 
     ```py copy
     @bob.on_message(model=Message)
@@ -263,7 +263,7 @@ We can now proceed by writing the script for agent **bob**.
         bob.run()
     ```
 
-    Here, we have defined an asynchronous **message_handler** function for bob to handle incoming messages from other μAgents. The function is decorated with **on_message**, and it is triggered whenever a message of type **Message** is received by **bob**. When a message is received, the handler function logs the sender's address and the content of the message. It then sends a response back to the sender using the **ctx.send** with a new message. The response message contains the **Message** data model with a **"hello there alice"** message.
+    Here, we have defined an asynchronous `message_handler()` function for bob to handle incoming messages from other μAgents. The function is decorated with `.on_message()`, and it is triggered whenever a message of type `Message` is received by `bob`. When a message is received, the handler function logs the sender's address and the content of the message. It then sends a response back to the sender using the `ctx.send()` with a new message. The response message contains the `Message` data model with a `"hello there alice"` message.
 
 3. Save the script.
 
@@ -297,7 +297,7 @@ if __name__ == "__main__":
 
 #### Run the scripts
 
-In different terminal windows, first run **bob** and then **alice** from different terminals. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. 
+In different terminal windows, first run `bob` and then `alice` from different terminals. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal.
 
 Terminal 1: `python remote_agents_bob.py`
 Terminal 2: `python remote_agents_alice.py`
@@ -322,7 +322,7 @@ The output will depend on the terminal:
   
 ## μAgents Remote Communication: the AgentVerse Mailbox Service
 
-μAgents can communicate remotely by also using the [Agentverse Explorer ↗️](https://agentverse.ai/)️. The Agentverse Explorer is a platform that aims at creating a decentralized network of agents capable of communicating and interacting with each other. Agents in the Agentverse can send and receive messages, execute tasks, and collaborate with other agents to achieve various goals.
+μAgents can communicate remotely by also using the [Agentverse ↗️](https://agentverse.ai/)️. The Agentverse is a platform that aims at creating a decentralized network of agents capable of communicating and interacting with each other. Agents in the Agentverse can send and receive messages, execute tasks, and collaborate with other agents to achieve various goals.
 
 In this guide, we want to show how to enable remote communications between μAgents using the [Agentverse Mailbox Service ↗️](/references/contracts/uagents-almanac/register-in-the-agentverse-mailbox.md)️.
 
@@ -332,9 +332,9 @@ We make use of the **μAgents Remote Communication** guide above, but now, we sp
 
 #### Alice 
 
-1. First of all, let's create a script for alice: `touch alice.py`
+1. First of all, let's create a script for **alice**: `touch alice.py`
 
-2. We need to import the necessary classes from **uagents** (**Agent**, **Context**, **Model**) and **uagents.setup** (**fund_agent_if_low**), and define the **Message** class for messages to be exchanged between our μAgents. We also need to generate a secure **SEED_PHRASE** (e.g., https://pypi.org/project/mnemonic/) and get the address of our agent, which is  needed to register it to create a **Mailbox**, alongside a name (i.e., **alice** in this case). Following this, we would need to sign up at [Agentverse ↗️](https://agentverse.ai/) to get an **API key**:
+2. We need to import the necessary classes from `uagents` (`Agent`, `Context`, `Model`) and `uagents.setup` (`fund_agent_if_low`), and define the `Message` class for messages to be exchanged between our μAgents. We also need to generate a secure `SEED_PHRASE` (e.g., https://pypi.org/project/mnemonic/) and get the address of our agent, which is  needed to register it to create a `Mailbox`, alongside a name (i.e., `alice` in this case). Following this, we would need to sign up at [Agentverse ↗️](https://agentverse.ai/) to get an `API key`:
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -350,7 +350,7 @@ We make use of the **μAgents Remote Communication** guide above, but now, we sp
     API_KEY = "put_your_API_key_here"
     ```
    
-3. _Now your agent is ready to join the Agentverse!_ We can now register our μAgent, **alice**, by providing **name**, **seed**, and **mailbox server**. Make sure your agent has enough funds for this:
+3. _Now your agent is ready to join the Agentverse!__ We can now register our μAgent, `alice`, by providing `name`, `seed`, and `mailbox`. Make sure your agent has enough funds for this:
     
     ```py copy
     agent = Agent(
@@ -362,9 +362,9 @@ We make use of the **μAgents Remote Communication** guide above, but now, we sp
     fund_agent_if_low(agent.wallet.address())
     ```
 
-    On the _Fetch.ai testnet_, you can use the **fund_agent_if_low** function. This one checks if the balance of the μAgent’s wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
+    On the _Fetch.ai testnet_, you can use the `fund_agent_if_low` function. This one checks if the balance of the μAgent’s wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
 
-4. Let's define a message handler function for **alice**.
+4. Let's define a message handler function for `alice`.
 
     ```py copy
     @agent.on_message(model=Message, replies={Message})
@@ -378,11 +378,11 @@ We make use of the **μAgents Remote Communication** guide above, but now, we sp
         agent.run()
     ```
    
-    We have defined a **handle_message** coroutine function that serves as the message handler for the agent. It is triggered whenever the agent receives a message of type **Message**. This function logs the received message and its sender using the **ctx.logger.info** method. It then sends a response message back to the sender using the **ctx.send** method with the sender address and an instance of the **Message** model.
+    We have defined a `handle_message()` coroutine function that serves as the message handler for the agent. It is triggered whenever the agent receives a message of type `Message`. This function logs the received message and its sender using the `ctx.logger.info()` method. It then sends a response message back to the sender using the `ctx.send()` method with the sender address and an instance of the `Message` model.
 
 5. Save the script.
 
-The overall script for alice should look as follows:
+The overall script for `alice` should look as follows:
 
 ```py copy filename="alice.py"
 from uagents import Agent, Context, Model
@@ -422,7 +422,7 @@ if __name__ == "__main__":
 
 1. Let's now create another Python script for **bob**: `touch bob.py`
 
-2. We can now import the necessary classes from **uagents** and **uagents.setup**, and define the **Message** class for messages to be exchanged between our μAgents. We then need to define **ALICE_ADDRESS** by copying the address generated in the script for **alice** above, as well as generate a second **SEED_PHRASE** (e.g. https://pypi.org/project/mnemonic/), and get the address for our agent, which is  needed to register it to create a **Mailbox**, alongside a name (i.e., **bob** in this case).  Like for **alice**, head towards the [Agentverse ↗️](https://agentverse.ai/)️ to get the **API key** for **bob**:
+2. We can now import the necessary classes from `uagents` and `uagents.setup`, and define the `Message` class for messages to be exchanged between our μAgents. We then need to define `ALICE_ADDRESS` by copying the address generated in the script for `alice` above, as well as generate a second `SEED_PHRASE` (e.g. https://pypi.org/project/mnemonic/), and get the address for our agent, which is  needed to register it to create a `Mailbox`, alongside a name (i.e., `bob` in this case).  Like for `alice`, head towards the [Agentverse ↗️](https://agentverse.ai/)️ to get the `API key` for `bob`:
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -440,7 +440,7 @@ if __name__ == "__main__":
     API_KEY = "put_your_API_key_here"
     ```
 
-3. _Now your agent is ready to join the Agentverse!_ Let's register this second μAgent, **bob**, by providing **name**, **seed**, and **mailbox** server:
+3. _Now your agent is ready to join the Agentverse!_ Let's register this second μAgent, `bob`, by providing `name`, `seed`, and `mailbox` server:
 
     ```py copy
     agent = Agent(
@@ -452,7 +452,7 @@ if __name__ == "__main__":
     fund_agent_if_low(agent.wallet.address())
     ```
    
-4. We can now define a function for **bob** to send messages:
+4. We can now define a function for `bob` to send messages:
 
     ```py copy
     @agent.on_interval(period=2.0)
@@ -462,7 +462,7 @@ if __name__ == "__main__":
         await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
     ```
    
-    Here, we have defined a **send_message** coroutine function that is scheduled to run periodically every 2 seconds using the **on_interval** decorator. Inside the coroutine function, a message of type **Message** is sent to **alice**'s address using the **ctx.send** method.
+    Here, we have defined a `send_message()` coroutine function that is scheduled to run periodically every 2 seconds using the `.on_interval()` decorator. Inside the coroutine function, a message of type `Message` is sent to `alice`'s address using the `ctx.send(9`) method.
 
 5. Let's now define a message handler for **bob** to handle incoming messages: 
 
@@ -475,11 +475,11 @@ if __name__ == "__main__":
         agent.run()
     ```
 
-    Here, we have set up an **on_message** function for bob to handle messages of type **Message**. When a message of this type is received by **bob**, the message handler function logs the sender's address and the content of the message using **ctx.logger.info** method.
+    Here, we have set up an `on_message()` function for bob to handle messages of type `Message`. When a message of this type is received by `bob`, the message handler function logs the sender's address and the content of the message using `ctx.logger.info()` method.
 
 6. Save the script.
 
-The overall script for **bob** should look as follows: 
+The overall script for `bob` should look as follows:
 
 ```py copy filename="bob.py"
 from uagents import Agent, Context, Model
@@ -521,7 +521,7 @@ if __name__ == "__main__":
 
 #### Run the scripts
 
-Now, we are ready to run our scripts. Run **alice** and **bob** from different terminals. The received messages will print out in each terminal. 
+Now, we are ready to run our scripts. Run `alice` and `bob` from different terminals. The received messages will print out in each terminal.
 
 Bob: `python bob.py`
 
@@ -556,7 +556,7 @@ In this comprehensive guide, we explored two different methods of communication 
 - **Local communication**. 
 - **Remote communication** via the Almanac Contract or the AgentVerse Mailbox Service.
 
-For _local communication_, we learned how to use the uagents library to create two μAgents, **alice** and **bob**, and enable them to exchange messages with one another. We defined the message structure using the **Model** class and implemented message handlers for both agents. By running the script we observed their real-time message exchange.
+For _local communication_, we learned how to use the uagents library to create two μAgents, **alice** and **bob**, and enable them to exchange messages with one another. We defined the message structure using the `Model` class and implemented message handlers for both agents. By running the script we observed their real-time message exchange.
 
 Next, we delved into _remote communication_, which facilitates interaction between μAgents through the Almanac Contract. This method requires registering the agents in the Almanac Contract and querying for **HTTP endpoints** for communication. By running the scripts separately,  we could observe the real-time messages exchange, fostering a decentralized network of interacting agents.
 
