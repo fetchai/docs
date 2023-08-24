@@ -13,7 +13,8 @@ We want to start by introducing you to the concept of local communication. This 
 
 Let's get started!
 
-## μAgents: Local Communication
+## μAgents: Local Communication 
+### Walk-through
 
 The first step to better understand how μAgents communicate is to introduce how 2 μAgents perform a local communication. Let’s consider a basic example in which two μAgents say hello to each other.
 
@@ -128,7 +129,7 @@ Whenever a μAgent registers in the Almanac, it must specify the service [endpoi
 
 Here, we show you how to create two μAgents and make them remotely communicate by registering and using the Almanac Contract.
 
-### Walk-through example
+### Walk-through
 
 The first step would be to create two different Python scripts for this task, each one representing a remote μAgent: 
 
@@ -303,7 +304,7 @@ Terminal 2: `python remote_agents_alice.py`
 
 The output will depend on the terminal:
 
-- **alice**:
+- **Alice**:
 
    ```
    [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
@@ -311,7 +312,7 @@ The output will depend on the terminal:
    [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
    ```
 
-- **bob**: 
+- **Bob**: 
 
    ```
    [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
@@ -325,7 +326,7 @@ The output will depend on the terminal:
 
 In this guide, we want to show how to enable remote communications between μAgents using the [Agentverse Mailbox Service ↗️](/guides/agentverse/utilising-the-mailbox.mdx)️.
 
-### Walk-through example
+### Walk-through
 
 We make use of the **μAgents Remote Communication** guide above, but now, we specify the **Mailbox** server and the **API Key** for our μAgents.
 
@@ -525,6 +526,28 @@ Now, we are ready to run our scripts. Run **alice** and **bob** from different t
 Bob: `python bob.py`
 
 Alice: `python alice.py`
+
+The output should be as follows depending on the terminal:
+
+- **Alice**:
+
+   ```
+   [alice]: Received message from agent1q0p2mhaqjv46wmsn6jx3lnggwffnpuzsuy70ax6np07wdhlkjqytx7fq73t: hello there alice
+   [alice]: Sending message to bob
+   [alice]: Received message from agent1q0p2mhaqjv46wmsn6jx3lnggwffnpuzsuy70ax6np07wdhlkjqytx7fq73t: hello there alice
+   [alice]: Sending message to bob
+   [alice]: Received message from agent1q0p2mhaqjv46wmsn6jx3lnggwffnpuzsuy70ax6np07wdhlkjqytx7fq73t: hello there alice
+   ```
+
+- **Bob**:
+
+   ```
+   [  bob]: Received message from agent1qvgt6q5ld2q6fm4x3xaptppgl5gpa5p3xx9g38n5ds3eht9h0gyn5nq0nl7: hello there bob
+   [  bob]: Sending message to alice
+   [  bob]: Received message from agent1qvgt6q5ld2q6fm4x3xaptppgl5gpa5p3xx9g38n5ds3eht9h0gyn5nq0nl7: hello there bob
+   [  bob]: Sending message to alice
+   [  bob]: Received message from agent1qvgt6q5ld2q6fm4x3xaptppgl5gpa5p3xx9g38n5ds3eht9h0gyn5nq0nl7: hello there bob
+   ```
 
 ## Conclusion
 
