@@ -33,7 +33,7 @@ function LandingPage() {
     <section className={styles.page}>
       <p className={styles.mainTitle}>Documentation</p>
       <p className={styles.description}>Explore our guides and examples to use Fetch</p>
-      <section className="nx-mt-60">
+      <section className="nx-mt-60 landing-page-left-image">
         <p className={styles.subTitle}>Getting Started</p>
         <p className={styles.description}>Explore our guides and examples to use Fetch</p>
 

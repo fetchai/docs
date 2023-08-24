@@ -1,9 +1,10 @@
 import React from 'react'
 import { DocsThemeConfig } from './theme/fetch-ai-docs'
 import Footer from './components/footer'
+import Logo from './components/Logo'
 
 const config: DocsThemeConfig = {
-  logo: <span>Fetch.ai Documentation</span>,
+  logo: <Logo/>,
   project: {
     link: 'https://github.com/shuding/nextra-docs-template',
   },
