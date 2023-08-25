@@ -8,9 +8,9 @@ In this guide we will show how to set up protocols and different μAgents to imp
 1. First of all, you need to navigate towards the directory you created for your project and create a folder for this task: `mkdir cleaning_demo`.
 2. Inside this folder we will create another folder for our protocols: `mkdir protocols`.
 3. Within the `protocols` folder, let's create a sub-folder: `mkdir cleaning`. This is the folder including all of the scripts for our cleaning protocol to run correctly.
-3. After having defined our protocols, we will create 2 scripts, one for our **user** and the other one for **cleaner** μAgents.
+3. After having defined our protocols folder, we need to create 2 scripts, one for our **user** and the other one for **cleaner** μAgents.
 
-We can start by writing the code for our 2 protocols.
+We can start by writing the code for our protocol.
 
 ### Cleaning Protocol
 
@@ -141,7 +141,7 @@ First of all, let's define a protocol handling communication between a user requ
 
     If all conditions are met, the handler sets `accept` to `True` and calculates the proposed `price` based on the markup and availability's minimum hourly price. If any condition is not met, the handler sets `accept` to `False` and the `price` to `0`. Finally, the handler sends a `ServiceResponse` message back to the sender with the calculated `accept` flag and `price`. The handler logs relevant information using the `ctx.logger.info()` method.
 
-5.  We then define another event handler using the `@cleaning_proto.on_message()` decorator. This handler processes incoming booking requests, evaluates various conditions, and generates appropriate responses indicating whether the service request was successful. It is triggered whenever a `ServiceBooking` message is received and generates a `BookingResponse` messages as response.
+5.  We then define another event handler, `handle_book_request()`, using the `@cleaning_proto.on_message()` decorator. This handler processes incoming booking requests, evaluates various conditions, and generates appropriate responses indicating whether the service request was successful. It is triggered whenever a `ServiceBooking` message is received and generates a `BookingResponse` messages as response.
 
     ```py copy
     @cleaning_proto.on_message(model=ServiceBooking, replies=BookingResponse)
@@ -170,7 +170,7 @@ First of all, let's define a protocol handling communication between a user requ
         await ctx.send(sender, BookingResponse(success=success))
     ```
 
-    We defined the `@cleaning_proto.on_message()` decorator which is triggered when a ServiceBooking message is received. The event handles `handle_book_request()` function gets executed when a `ServiceBooking` message is received. It takes the following parameters: `ctx`, `sender`, and `msg`. The handler starts by retrieving the provider's information, availability, and services using the context's information. It also retrieves the user instance based on the sender's address, and calculates the message duration in hours. The function then checks multiple conditions to decide whether the booking request can be accepted:
+    We defined the `@cleaning_proto.on_message()` decorator which is triggered when a ServiceBooking message is received. The event handler `handle_book_request()` function gets executed when a `ServiceBooking` message is received. It takes the following parameters: `ctx`, `sender`, and `msg`. The handler starts by retrieving the provider's information, availability, and services using the context's information. It also retrieves the user instance based on the sender's address, and calculates the message duration in hours. The function then checks multiple conditions to decide whether the booking request can be accepted:
 
         - Whether the requested services are within the provider's available services.
         - Whether the requested time is within the provider's availability.
@@ -344,45 +344,45 @@ We now continue and define a `models` protocol which defines the structure and r
 
     We defined the following data models:
 
-    - `ServiceType` is an enumeration class that defines different types of cleaning services. Each service type is associated with an integer value. Service types include `FLOOR`, `WINDOW`, `LAUNDRY`, `IRON`, and `BATHROOM`.
+        - `ServiceType` is an enumeration class that defines different types of cleaning services. Each service type is associated with an integer value. Service types include `FLOOR`, `WINDOW`, `LAUNDRY`, `IRON`, and `BATHROOM`.
 
-    - `User` is a model representing the users of the cleaning service. It takes in the following fields:
-        - `id`: Auto-incrementing integer field serving as the primary key.
-        - `name`: Character field with a maximum length of 64 for the user's name.
-        - `address`: Character field with a maximum length of 100 for the user's address.
-        - `created_at`: DateTime field automatically set to the current timestamp when the user is created.
+        - `User` is a model representing the users of the cleaning service. It takes in the following fields:
+                - `id`: Auto-incrementing integer field serving as the primary key.
+                - `name`: Character field with a maximum length of 64 for the user's name.
+                - `address`: Character field with a maximum length of 100 for the user's address.
+                - `created_at`: DateTime field automatically set to the current timestamp when the user is created.
 
-    - `Service` is model representing types of cleaning services. It takes in the following fields:
-        - `id`: Auto-incrementing integer field serving as the primary key.
-        - `type`: Enum field storing the ServiceType enumeration values.
+        - `Service` is model representing types of cleaning services. It takes in the following fields:
+            - `id`: Auto-incrementing integer field serving as the primary key.
+            - `type`: Enum field storing the ServiceType enumeration values.
 
-    - `Provider` is a model representing cleaning service providers. It considers the following fields:
-        - `id`: Auto-incrementing integer field serving as the primary key.
-        - `name`: Character field with a maximum length of 64 for the provider's name.
-        - `location`: Character field with a maximum length of 64 for the provider's location.
-        - `created_at`: DateTime field automatically set to the current timestamp when the provider is created.
-        - `availability`: Reverse relation to the `Availability` model.
-        - `services`: Many-to-many relationship with the `Service` model.
-        - `markup`: Float field representing the markup applied to service prices.
+        - `Provider` is a model representing cleaning service providers. It considers the following fields:
+            - `id`: Auto-incrementing integer field serving as the primary key.
+            - `name`: Character field with a maximum length of 64 for the provider's name.
+            - `location`: Character field with a maximum length of 64 for the provider's location.
+            - `created_at`: DateTime field automatically set to the current timestamp when the provider is created.
+            - `availability`: Reverse relation to the `Availability` model.
+            - `services`: Many-to-many relationship with the `Service` model.
+            - `markup`: Float field representing the markup applied to service prices.
 
-    - `Availability` is a model representing the availability of a cleaning service provider. It considers the following fields:
-        - `id`: Auto-incrementing integer field serving as the primary key.
-        - `provider`: One-to-one relationship to the `Provider` model.
-        - `max_distance`: Integer field representing the maximum distance a provider can travel for services.
-        - `time_start`: DateTime field indicating the start time of availability.
-        - `time_end`: DateTime field indicating the end time of availability.
-        - `min_hourly_price`: Float field representing the minimum hourly price for services.
+        - `Availability` is a model representing the availability of a cleaning service provider. It considers the following fields:
+            - `id`: Auto-incrementing integer field serving as the primary key.
+            - `provider`: One-to-one relationship to the `Provider` model.
+            - `max_distance`: Integer field representing the maximum distance a provider can travel for services.
+            - `time_start`: DateTime field indicating the start time of availability.
+            - `time_end`: DateTime field indicating the end time of availability.
+            - `min_hourly_price`: Float field representing the minimum hourly price for services.
 
 3. Save the script.
 
-Now that we have defined the protocols for this application, we proceed by defining the user and cleaner agents.1
+Now that we have defined the protocols for this application, we proceed by defining the user and cleaner agents.
 
 ### Cleaner agent
 
 We are now ready to define our `cleaner` agent.
 
 1. Let's now create a Python script in `cleaning_demo` folder, and name it: `touch cleaner.py`
-2. We now need to import the necessary classes and the protocols we previously defined, and then create our `cleaner` agent as an instance of the `Agent` class and make sure it has enough funds to register within the Almanac contract by running the `fund_agent_if_low()` function. The agent is configured with a specific port, seed, and endpoint.
+2. We now need to import the necessary classes and the protocols we previously defined, and then create our `cleaner` agent as an instance of the `Agent` class and make sure it has enough funds to register within the Almanac contract by running the `fund_agent_if_low()` function. The agent is configured with a specific `name`, `port`, `seed`, and `endpoint`.
 
     ```py copy
     from datetime import datetime
@@ -413,7 +413,7 @@ We are now ready to define our `cleaner` agent.
 
     The `cleaner` agent includes the previously defined cleaning protocol (`cleaning_proto`) using the `include()` method. This integrates the protocol's models and handlers into the agent's capabilities. The agent is set up to interact with the cleaning service protocol, allowing it to communicate with users and providers according to the logic defined in the protocol's handlers.
 
-3. We then define the behaviors of our cleaner agent.
+3. We then define the behaviors of our `cleaner` agent.
 
     ```py copy
     @cleaner.on_event("startup")
@@ -449,14 +449,14 @@ We are now ready to define our `cleaner` agent.
         cleaner.run()
     ```
 
-    The `startup` event handler function is decorated with the `.on_event()` decorator. This handler is executed when the `cleaner` agent starts up. Its purpose is to initialize the agent's environment, set up the database, and populate it with necessary data. This function initializes the Tortoise ORM (Object–Relational Mapping) with the specified database URL and modules. It prepares the ORM to work with the defined data models. The ORM used to manage database connections and schema generation for the agent's data models. In the snippet above, `db_url` is set to `sqlite://db.sqlite3`, indicating the use of an SQLite database named `db.sqlite3`. `modules` specifies the module containing the data models related to the cleaning protocol. We then define the `Tortoise.generate_schemas()` which is a function that generates the database schemas based on the defined data models. It sets up the necessary tables and relationships in the database. Afterwards, we create instances of the `Provider` and `Service` models and populates them with data.
+    The `startup()` event handler function is decorated with the `.on_event()` decorator. This handler is executed when the `cleaner` agent starts up. Its purpose is to initialize the agent's environment, set up the database, and populate it with necessary data. This function initializes the Tortoise ORM (Object–Relational Mapping) with the specified database URL and modules. It prepares the ORM to work with the defined data models. The ORM is used to manage database connections and schema generation for the agent's data models. In the snippet above, `db_url` is set to `sqlite://db.sqlite3`, indicating the use of an SQLite database named `db.sqlite3`. `modules` specifies the module containing the data models related to the cleaning protocol. We then define the `Tortoise.generate_schemas()` which is a function that generates the database schemas based on the defined data models. It sets up the necessary tables and relationships in the database. Afterwards, we create instances of the `Provider` and `Service` models and populates them with data.
 
-    A Provider instance is created with the "cleaner" agent's name ("cleaner") and location ("London Kings Cross").
-    Three Service instances are created with different service types: `FLOOR`, `WINDOW`, and `LAUNDRY`. The created Service instances are associated with the `Provider` instance using the `provider.services.add()` method. This establishes a relationship between providers and the services they offer. We proceed by defining an `Availability` instance to represent the availability of the cleaning service provider: it includes details such as the provider, start and end times of availability, maximum service distance (10 miles), and minimum hourly price (5).
+    A `Provider` instance is created with the `cleaner` agent's name ("cleaner") and location ("London Kings Cross").
+    Three `Service` instances are created with different service types: `FLOOR`, `WINDOW`, and `LAUNDRY`. The created `Service` instances are associated with the `Provider` instance using the `provider.services.add()` method. This establishes a relationship between providers and the services they offer. We proceed by defining an `Availability` instance to represent the availability of the cleaning service provider: it includes details such as the provider, start and end times of availability, maximum service distance (10 miles), and minimum hourly price (5).
 
 4. Save the script.
 
-The overall code for this task should look as follows:
+The overall code should look as follows:
 
 ```py copy filename="cleaner.py"
 from datetime import datetime
@@ -522,7 +522,7 @@ if __name__ == "__main__":
 We are now ready to define our `user` agent.
 
 1. Let's now create a Python script in `cleaning_demo` folder, and name it: `touch user.py`
-2. We need to import the necessary classes and the protocols we previously defined, and then create our `user` agent as an instance of the `Agent` class and make sure it has enough funds to register within the Almanac contract by running the `fund_agent_if_low()` function. The agent is configured with a specific port, seed, and endpoint. We also define the cleaner's address:
+2. We need to import the necessary classes and the protocols we previously defined, and then create our `user` agent as an instance of the `Agent` class and make sure it has enough funds to register within the Almanac contract by running the `fund_agent_if_low()` function. The agent is configured with a specific `name`, `port`, `seed`, and `endpoint`. We also define the `cleaner`'s address:
 
     ```py copy
     from datetime import datetime, timedelta
@@ -553,7 +553,7 @@ We are now ready to define our `user` agent.
     fund_agent_if_low(user.wallet.address())
     ```
 
-3. Let's define a `ServiceRequest` object to represent a request for cleaning services. It includes information such as the user's name, location, start time, duration, types of services requested, and a maximum price. We also define a MARKDOWN to apply a discount or markdown to the service.
+3. Let's define a `ServiceRequest` object to represent a request for cleaning services. It includes information such as the user's name, location, start time, duration, types of services requested, and a maximum price. We also define a `MARKDOWN` to apply a discount or markdown to the service.
 
     ```py copy
     request = ServiceRequest(
@@ -582,8 +582,7 @@ We are now ready to define our `user` agent.
 
    ```
 
-   The `interval()` function is decorated with the `.on_interval()` decorator indicating that is is executed at regular intervals specified by the period parameter to send `ServiceRequest` messages. Within the function, the `ctx.storage.set()` method is called to store the `MARKDOWN` constant in the context's storage under the key "markdown". The function first checks the value of the "completed" which is retrieved from the context's storage. This is used to determine whether the service request has already been completed. If the service request is not marked as completed, an informational log message is generated using `ctx.logger.info()` method indicating that a cleaning service request is being made. The `{request}` placeholder in the log message is filled with the details of the request object previously created.
-   Then, `ctx.send()` method is called to send the cleaning service request to the specified address (`CLEANER_ADDRESS`) alongside with the request object.
+   The `interval()` function is decorated with the `.on_interval()` decorator indicating that is is executed at regular intervals specified by the period parameter to send `ServiceRequest` messages. Within the function, the `ctx.storage.set()` method is called to store the `MARKDOWN` constant in the context's storage under the key "markdown". The function first checks the value of `completed` which is retrieved from the context's storage using `ctx.storage.get()` method. This is used to determine whether the service request has already been completed. If the service request is not marked as completed, an informational log message is generated using `ctx.logger.info()` method indicating that a cleaning service request is being made. The `{request}` placeholder in the log message is filled with the details of the request object previously created. Then, `ctx.send()` method is called to send the cleaning service request to the specified address (`CLEANER_ADDRESS`) alongside with the request object.
 
 5. We then would need to define a function for handling responses to service queries and generating service bookings based on the received response.
 
@@ -629,7 +628,7 @@ We are now ready to define our `user` agent.
         user.run()
     ```
 
-    The `handle_book_response()` function is decorated with `.on_message()` decorator indicating that it's meant to handle messages of type BookingResponse. However, it specifies replies=set(), which means that this function is not intended to send any replies. The function processes the booking response message: if the `success` field in the message is `True`, a log message is generated indicating that the booking was successful using `ctx.logger.info()` method. If the success field is `False`, a log message is generated indicating that the booking was unsuccessful. The "completed" key in the context's storage is set to `True` using the `ctx.storage.set()` method to indicate that the entire booking process has been completed.
+    The `handle_book_response()` function is decorated with `.on_message()` decorator indicating that it's meant to handle messages of type BookingResponse. However, it specifies `replies=set()`, which means that this function is not intended to send any replies. The function processes the booking response message: if the `success` field in the message is `True`, a log message is generated indicating that the booking was successful using `ctx.logger.info()` method. If the success field is `False`, a log message is generated indicating that the booking was unsuccessful. The "completed" key in the context's storage is set to `True` using the `ctx.storage.set()` method to indicate that the entire booking process has been completed.
 
 7. Save the script.
 
@@ -648,7 +647,6 @@ from protocols.cleaning import (
 from protocols.cleaning.models import ServiceType
 from uagents import Agent, Context
 from uagents.setup import fund_agent_if_low
-
 
 CLEANER_ADDRESS = "agent1qdfdx6952trs028fxyug7elgcktam9f896ays6u9art4uaf75hwy2j9m87w"
 
@@ -674,7 +672,6 @@ request = ServiceRequest(
 
 MARKDOWN = 0.8
 
-
 @user.on_interval(period=3.0, messages=ServiceRequest)
 async def interval(ctx: Context):
     ctx.storage.set("markdown", MARKDOWN)
@@ -683,7 +680,6 @@ async def interval(ctx: Context):
     if not completed:
         ctx.logger.info(f"Requesting cleaning service: {request}")
         await ctx.send(CLEANER_ADDRESS, request)
-
 
 @user.on_message(ServiceResponse, replies=ServiceBooking)
 async def handle_query_response(ctx: Context, sender: str, msg: ServiceResponse):
@@ -702,7 +698,6 @@ async def handle_query_response(ctx: Context, sender: str, msg: ServiceResponse)
         ctx.logger.info("Cleaner is not available - nothing more to do")
         ctx.storage.set("completed", True)
 
-
 @user.on_message(BookingResponse, replies=set())
 async def handle_book_response(ctx: Context, _sender: str, msg: BookingResponse):
     if msg.success:
@@ -711,7 +706,6 @@ async def handle_book_response(ctx: Context, _sender: str, msg: BookingResponse)
         ctx.logger.info("Booking was UNSUCCESSFUL")
 
     ctx.storage.set("completed", True)
-
 
 if __name__ == "__main__":
     user.run()
@@ -743,9 +737,3 @@ The output should be as follows, depending on the terminal:
 [ user]: Cleaner is available, attempting to book now
 [ user]: Booking was successful
 ```
-
-
-
-
-
-
