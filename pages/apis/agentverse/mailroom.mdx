@@ -1,0 +1,1542 @@
+import {Note, Properties, Property, Warn, Section, ApiIntro, Tag, CodeHeading} from "../../../components/mdx";
+import {Tabs, Tab} from "../../../components/mdx";
+import {Row, Col} from "../../../components/mdx";
+import ApiEndpoint from "../../../components/api-endpoint";
+
+# Hosting API
+
+## Overview
+
+<Row>
+    <Col>
+        The mailroom API allows you to manage your agents that are hosted by Agentverse.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        POST /v1/auth/challenge
+        POST /v1/auth/prove
+        POST /v1/submit
+
+        GET /v1/mailbox
+        DELETE /v1/mailbox
+
+        GET /v1/mailbox/:uuid
+        DELETE /v1/mailbox/:uuid 
+
+        GET /v1/agents
+        POST /v1/agents
+
+        GET /v1/agents/:address
+        PUT /v1/agents/:address
+        DELETE/v1/agents/:address
+
+        GET /v1/api-keys
+        POST /v1/api-keys
+
+        DELETE /v1/api-keys/:uuid
+
+        GET /v1/profile/usage
+
+        POST /v1/feedback 
+
+        GET /internal/healthy 
+        GET /internal/ready
+        GET /internal/metrics
+        ```
+    </Col>
+</Row>
+
+## The Agent Object 
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="address" type="string">
+                The given name of the agent. This is only a label that is used internally so users can keep track of
+                their agents.
+            </Property>
+            <Property name="name" type="string">
+                The address of the agent. This is also the current public key of the agent
+            </Property>
+            <Property name="Pending_messages" type="integer">
+                The current state of the agent. `true` if the agent is currently running, `false` otherwise.
+            </Property>
+            <Property name="Bytes_transferred" type="integer">
+                The current code compilation status for the agent. `true` if the agent is compiled, `false` if the
+                compilation failed, `null` if the agent has not been compiled yet.
+            </Property>
+            <Property name="Previous_bytes_transferred" type="integer">
+                The current revision of the agent. Everytime an update is made to the agent, the revision is incremented
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Example Agent Object  "
+        {
+            "name": "Example Name", 
+            "address": "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg", 
+            "Pending_messages": 1, 
+            "Bytes_transferred": 1, 
+            "Previous_Bytes_transferred": 1
+        }
+        ```
+    </Col>
+</Row>
+
+
+
+## Collect Challenge
+
+**Endpoint**: `POST /v1/auth/challenge`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Intro
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/auth/challenge
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/auth/challenge', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/auth/challenge', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Submit Proof 
+
+**Endpoint**: `POST /v1/auth/prove`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Intro
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/auth/prove
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/auth/prove', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/auth/prove', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Submit Message Envelope
+
+**Endpoint**: `POST /v1/submit`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Submit Message Envelope
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/submit
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/submit', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/submit', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+## List mailbox messages
+
+**Endpoint**: `GET /v1/mailbox`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           List mailbox messages.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/mailbox
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/mailbox', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/mailbox', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Delete all mailbox messages
+
+**Endpoint**: `DELETE /v1/mailbox`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Delete all mailbox message.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X DELETE \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/mailbox
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.delete('https://agentverse.ai/v1/mailbox', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/mailbox', {
+                method: 'DELETE',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Get specific envelope 
+
+**Endpoint**: `GET /v1/mailbox/:uuid`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Get specific envelope.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/mailbox/{uuid}
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/mailbox/{uuid}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/mailbox/{uuid}', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Delete specific envelope 
+
+**Endpoint**: `DELETE /v1/mailbox/:uuid`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Delete a specific envelope.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X DELETE \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/mailbox/{uuid}
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.delete('https://agentverse.ai/v1/mailbox/{uuid}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/mailbox/{uuid}', {
+                method: 'DELETE',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## List Agents
+
+**Endpoint**: `GET /v1/agents`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           List Agents.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/agents
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/agents', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/agents', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Register Agent
+
+**Endpoint**: `POST /v1/agents`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Register Agent.
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/agents
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/agents', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/agents', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Get specific Agent identified by address
+
+**Endpoint**: `GET /v1/agents/{address}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Get specific Agent identified by address
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/agents/{address}
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/agents/{address}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/agents/{address}', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Update specific Agent identified by address
+
+**Endpoint**: `PUT /v1/agents/{address}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Update specific Agent identified by address
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X PUT \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/agents/{address}
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.put('https://agentverse.ai/v1/agents/{address}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/agents/{address}', {
+                method: 'PUT',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Delete specific Agent identified by address
+
+**Endpoint**: `DELETE /v1/agents/{address}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           Delete specific Agent identified by address
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X DELETE \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/agents/{address}
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.delete('https://agentverse.ai/v1/agents/{address}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/agents/{address}', {
+                method: 'DELETE',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## List API keys
+
+**Endpoint**: `GET /v1/api-keys`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+           List API keys
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/api-keys
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/api-keys', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/api-keys', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Create API key
+
+**Endpoint**: `POST /v1/api-keys`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Create API key
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/api-keys
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/api-keys', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/api-keys', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Delete API key
+
+**Endpoint**: `DELETE /v1/api-keys/{uuid}`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Delete API key
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X DELETE \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/api-keys/{uuid}
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.delete('https://agentverse.ai/v1/api-keys/{uuid}', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/api-keys/{uuid}', {
+                method: 'DELETE',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Get profile usage
+
+**Endpoint**: `GET /v1/profile/usage`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Get profile usage
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/profile/usage
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/profile/usage', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/profile/usage', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Submit feedback
+
+**Endpoint**: `POST /v1/feedback`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Submit feedback
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X POST \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/feedback
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.post('https://agentverse.ai/v1/feedback', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/feedback', {
+                method: 'POST',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Health Probe
+
+**Endpoint**: `GET /internal/healthy`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Health Probe 
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/internal/healthy
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/internal/healthy', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/internal/healthy', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+## Readiness Probe
+
+**Endpoint**: `GET /internal/ready`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Readiness probe
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/v1/internal/ready
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/v1/internal/ready', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/v1/internal/ready', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+
+
+## Collect Metrics
+
+**Endpoint**: `GET /internal/metrics`
+
+### Request
+
+<Row>
+    <Col>
+        <ApiIntro>
+            Collect internal metrics
+        </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab heading="curl">
+                ```bash copy
+                curl -X GET \
+                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
+                https://agentverse.ai/internal/metrics
+                ```
+            </Tab>
+
+            <Tab heading="python">
+                ```python copy
+                import requests
+
+                requests.get('https://agentverse.ai/internal/metrics', headers={
+                'Authorization': f'Bearer {token}',
+            })
+                ```
+            </Tab>
+
+            <Tab heading="javascript">
+                ```js copy
+                await fetch('https://agentverse.ai/internal/metrics', {
+                method: 'GET',
+                headers: {
+                Authorization: `Bearer ${token}`,
+            }
+            })
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
+
+### Response 
+
+
+<Row>
+    <Col>
+         <ApiIntro>
+             On success the response will be .. 
+         </ApiIntro>
+    </Col>
+    <Col>
+        <Tabs>
+            <Tab Tab heading="HTTP 200">
+                ```json filename="TItle"
+                [
+                    {
+                      
+                      
+                    }
+                ]
+                ```
+            </Tab>
+        </Tabs> 
+    </Col>
+</Row>
