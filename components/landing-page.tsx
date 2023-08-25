@@ -8,26 +8,57 @@ import ColoredShapesIcon  from '../src/images/Create new business models.png'
 import { ArrowRightIcon } from 'nextra/icons'
 import FeatureGuideTabs from './featureGuideTabs';
 import Products from './products';
+import { useRouter } from 'next/navigation'
+
 
 function LandingPage() {
 
-  const startingGuides = [
-    'Getting started with Agents',
-    'Start communicating with other agents',
-    'Build your own chat assistant',
-    'Start making revenue with Agents'
-  ]
+  // const startingGuides = [
+  //   'Getting started with Agents',
+  //   'Start communicating with other agents',
+  //   'Build your own chat assistant',
+  //   'Start making revenue with Agents'
+  // ]
+
+
+     const startingGuides = [
+         {
+             label: 'Getting started with Agents',
+             path: '/guides/agents/installing-uagent'
+         },
+         {
+             label: 'Start communicating with other agents',
+             path: 'guides/agents/communicating-with-other-agents'
+         },
+         {
+             label: 'PLACEHOLDER Build your own chat assistant',
+             path: 'guides/agents/creating-an-agent-to-generate-revenue-on-your-data'
+         },
+             {
+             label: 'Start creating revenue with Agents',
+             path: 'guides/agents/creating-an-agent-to-generate-revenue-on-your-data'
+         },
+        ];
+
+
 
   const GuideBox = ({guide, index}) => {
-    return <section className={styles.guideBox}>
+        const router = useRouter()
+        const [hover, setHover] = useState<boolean>(false);
+
+    return <div className={hover ? styles.hoverGuideBox : styles.guideBox}
+                onClick={() => {router.push(guide.path)}}
+                onMouseOver={() => {setHover(true)}}
+                onMouseLeave={() => {setHover(false)}}
+                >
        <Image
         src={index%2 == 0 ? ColoredCirclesIcon : ColoredShapesIcon} // Path relative to the `public` folder
         alt="Shapes"
         className={styles.startGuideIcon}
       />
       <p className={styles.startGuideText}></p>
-      {guide}
-    </section>
+      {guide.label}
+    </div>
   } 
   return (
     <section className={styles.page}>
