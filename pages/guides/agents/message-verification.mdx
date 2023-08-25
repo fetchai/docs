@@ -9,7 +9,7 @@ The emergence of decentralized technologies has introduced new possibilities for
 
 2. In here, let's create a Python script for this task and name it: `touch message_verification.py`.
 
-3. We now need to import the necessary classes from **uagents** (**Agent**, **Bureau**, **Context**, and **Model**), **uagents.crypto** (**Identity**) and **hashlib**. Then we would need to define the messages format using the **Message** class as a subclass of **Model**:
+3. We now need to import the necessary classes from `uagents` (`Agent`, `Bureau`, `Context`, and `Model`), `uagents.crypto` (`Identity`) and `hashlib`. Then we would need to define the messages format using the `Message` class as a subclass of `Model`:
 
     ```py copy
     import hashlib
@@ -24,11 +24,11 @@ The emergence of decentralized technologies has introduced new possibilities for
 
    The message format has three attributes: 
 
-    - **message**: a string representing the message text.
-    - **digest**: a string representing the SHA-256 hash of the message. 
-    - **signature**: a string representing the digital signature of the hash using the sender's private key.
+    - `message`: a string representing the message text.
+    - `digest`: a string representing the SHA-256 hash of the message.
+    - `signature`: a string representing the digital signature of the hash using the sender's private key.
 
-4. Let's now define an **encode** function used to generate the digest for each message before it is signed:
+4. Let's now define an `encode()` function used to generate the digest for each message before it is signed:
 
     ```py copy
     def encode(message: str) -> bytes:
@@ -39,14 +39,14 @@ The emergence of decentralized technologies has introduced new possibilities for
 
      This function is used to hash a string message using the SHA-256 algorithm and return the resulting digest as bytes. 
 
-5. We can now proceed and create our μAgents using the **Agent** class:
+5. We can now proceed and create our μAgents using the `Agent` class:
 
     ```py copy
     alice = Agent(name="alice", seed="alice recovery password")
     bob = Agent(name="bob", seed="bob recovery password")
     ```
 
-6. Let's now define a **send_message** function for **alice** to send messages to **bob**:
+6. Let's now define a `send_message()` function for `alice` to send messages to `bob`:
  
     ```py copy
     @alice.on_interval(period=3.0)
@@ -59,9 +59,9 @@ The emergence of decentralized technologies has introduced new possibilities for
         )
     ```
 
-    This function is decorated using the **on_interval** decorator, which indicates that the function is called periodically every **3.0** seconds to send messages to **bob**'s address. It takes in a single argument **ctx**. The function first creates a message, **msg**, and computes its digest using the **encode** function. The message is then sent to **bob** using the **ctx.send** method, along with the **digest** and a **signature** of the digest using the **alice.sign_digest** function.
+    This function is decorated using the `.on_interval()` decorator, which indicates that the function is called periodically every `3.0` seconds to send messages to `bob`'s address. It takes in a single argument `ctx`. The function first creates a message, `msg`, and computes its digest using the `encode` function. The message is then sent to `bob` using the `ctx.send()` method, along with the `digest` and a `signature` of the digest using the `alice.sign_digest()` function.
 
-7. Let's then define an **alice_rx_message** function used to receive and process messages sent by **bob**:
+7. Let's then define an `alice_rx_message()` function used to receive and process messages sent by `bob`:
 
     ```py copy
     @alice.on_message(model=Message)
@@ -73,11 +73,11 @@ The emergence of decentralized technologies has introduced new possibilities for
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
     ```
 
-    This function is decorated using the **on_message**, indicating that the function is triggered when a message is being received of type **Message**. The function takes in three arguments: **ctx**, **sender**, and **msg**.  
+    This function is decorated using the `.on_message()`, indicating that the function is triggered when a message is being received of type `Message`. The function takes in three arguments: `ctx`, `sender`, and `msg`.
 
-    The function first verifies the authenticity of the message using the **Identity.verify_digest** function. If the message cannot be verified, the function raises an assertion error. Assuming the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message.
+    The function first verifies the authenticity of the message using the `Identity.verify_digest()` function. If the message cannot be verified, the function raises an assertion error. Assuming the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message.
 
-8. We can now define a **bob_rx_message** function used by **bob** to receive and process messages sent by **alice**:
+8. We can now define a `bob_rx_message()` function used by `bob` to receive and process messages sent by `alice`:
 
     ```py copy
     @bob.on_message(model=Message)
@@ -97,11 +97,11 @@ The emergence of decentralized technologies has introduced new possibilities for
         )
     ```
 
-    This function is decorated using the **on_message**, indicating that the function is triggered when a message is being received of type **Message**. It takes in three arguments: **ctx**, **sender**, and **msg**.
+    This function is decorated using the `.on_message()` decorator, indicating that the function is triggered when a message is being received of type `Message`. It takes in three arguments: `ctx`, `sender`, and `msg`.
 
-    The function first verifies the authenticity of the message using the **Identity.verify_digest** function. If the message cannot be verified, the function raises an assertion error. On the other hand, if the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message using the **ctx.logger.info** method. It then creates a response message, **msg**, and computes its digest using the **encode** function. The response message is then sent to **alice** using the **ctx.send** method.
+    The function first verifies the authenticity of the message using the `Identity.verify_digest()` function. If the message cannot be verified, the function raises an assertion error. On the other hand, if the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message using the `ctx.logger.info()` method. It then creates a response message, `msg`, and computes its digest using the `encode` function. The response message is then sent to `alice` using the `ctx.send()` method.
 
-9. We can now create a **bureau** object from the **Bureau** class and then add both agents to it so for them to be run together.
+9. We can now create a `bureau` object from the `Bureau` class and then add both agents to it so for them to be run together.
 
     ```py copy
     bureau = Bureau()
