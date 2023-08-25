@@ -9,11 +9,13 @@ import authenticationIcon from '../src/svgs/authentication.svg'
 import explorerIcon from '../src/svgs/explorer.svg'
 import almanacIcon from '../src/svgs/almanac.svg'
 import styles from './tab.module.css'
+import { useRouter } from 'next/navigation'
 
 interface Item {
   title: string;
   description: React.ReactNode;
   icon: string; // Provide the path to the icon
+  path: string; // Link to the content
 }
 
 interface SectionProps {
@@ -22,12 +24,14 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ heading, items }) => {
+
+  const router = useRouter()
   return (
     <div className="nx-my-8">
       <h2 className="nx-text-xl nx-font-semibold nx-text-gray-400">{heading}</h2>
       <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-3 nx-gap-4 nx-mt-4">
         {items.map((item, index) => (
-          <div key={index} className="nx-p-4 nx-flex">
+          <div key={index} className="nx-p-4 nx-flex" onClick={() => router.push(item.path)}>
             <Image src={item.icon} alt={`Icon for ${item.title}`} className={styles.productIcon} />
             <div>
               <h3 className="nx-text-black nx-font-bold nx-mb-2">{item.title}</h3>
@@ -54,28 +58,24 @@ const Section: React.FC<SectionProps> = ({ heading, items }) => {
 
 const items: { [key: string]: Item[] } = {
   'AI Engine': [
-    { title: 'AI Agents API', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>), icon: apiAgentIcon },
-    { title: 'Agents Insights', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: insightsAgentIcon },
-    { title: 'Whisper', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: whisperAgentIcon },
-    { title: 'uAgents', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
-    { title: 'Search & Discovery API', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
-    { title: 'Agentverse Explorer', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
-  ],
+    { title: 'Intelligence LLMS', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>), icon: apiAgentIcon , path: "/concepts/ai-engine/general-intelligence-with-llms"},
+    { title: 'Context Control', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: insightsAgentIcon , path: "/guides"},
+    { title: 'DetlaV', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: whisperAgentIcon , path: "/guides"},
+    { title: 'Analytics', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
+    ],
   'AI Agent Services': [
-    { title: 'Hosting / Managed Agents', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
-    { title: 'Mailbox / IoT Agents', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: mailBoxIcon },
-    { title: 'Authetication API', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: authenticationIcon },
-    { title: 'uAgents', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
-    { title: 'Search & Discovery API', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
-    { title: 'Agentverse Explorer', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: explorerIcon },
+    { title: 'Hosting ', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
+    { title: 'Mailbox', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: mailBoxIcon , path: "/guides"},
+    { title: 'Agent API', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: authenticationIcon , path: "/guides"},
+    { title: 'Explorer', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
+    { title: 'Search & Discovery', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
   ],
   'Open Network': [
-    { title: 'Fetch Ledger', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: whisperAgentIcon },
-    { title: 'Names Service', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
-    { title: 'Alamanac', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: almanacIcon },
-    { title: 'Cosmpy', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
-    { title: 'Jenesis', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
-    { title: 'Alamanac', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon },
+    { title: 'Fetch Ledger', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: whisperAgentIcon, path: "/guides"},
+    { title: 'Names Service', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
+    { title: 'Alamanac', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: almanacIcon , path: "/guides"},
+    { title: 'Cosmpy', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
+    { title: 'Wallet', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
   ],
 };
 
