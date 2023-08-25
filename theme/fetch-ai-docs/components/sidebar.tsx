@@ -20,6 +20,7 @@ import { renderComponent } from '../utils'
 import { Anchor } from './anchor'
 import { Collapse } from './collapse'
 import { LocaleSwitch } from './locale-switch'
+import { themeOptionsSchema } from './theme-switch'
 
 const TreeState: Record<string, boolean> = Object.create(null)
 
@@ -71,6 +72,11 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
   const [route] = routeOriginal.split('#')
   const active = [route, route + '/'].includes(item.route + '/')
   const activeRouteInside = active || route.startsWith(item.route + '/')
+
+  //to check whether route fall under current main directory or not
+
+  const parentLevelRoute = route.split('/')
+  const currentItemParentRoute = item.route.split('/')
 
   const focusedRoute = useContext(FocusedItemContext)
   const focusedRouteInside = !!focusedRoute?.startsWith(item.route + '/')
@@ -134,64 +140,67 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
   // use button when link don't have href because it impacts on SEO
   const ComponentToUse = isLink ? Anchor : 'button'
 
-  return (
-    <li className={cn({ open, active })}>
-      <ComponentToUse
-        href={isLink ? item.route : undefined}
-        className={cn(
-          'nx-items-center nx-justify-between nx-gap-2',
-          !isLink && 'nx-text-left nx-w-full',
-          classes.link,
-          active ? classes.active : classes.inactive
-        )}
-        onClick={e => {
-          const clickedToggleIcon = ['svg', 'path'].includes(
-            (e.target as HTMLElement).tagName.toLowerCase()
-          )
-          if (clickedToggleIcon) {
-            e.preventDefault()
-          }
-          if (isLink) {
-            // If it's focused, we toggle it. Otherwise, always open it.
-            if (active || clickedToggleIcon) {
-              TreeState[item.route] = !open
-            } else {
-              TreeState[item.route] = true
-              setMenu(false)
-            }
-            rerender({})
-            return
-          }
-          if (active) return
-          TreeState[item.route] = !open
-          rerender({})
-        }}
-      >
-        {renderComponent(config.sidebar.titleComponent, {
-          title: item.title,
-          type: item.type,
-          route: item.route
-        })}
-        <ArrowRightIcon
-          className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
-          pathClassName={cn(
-            'nx-origin-center nx-transition-transform rtl:-nx-rotate-180',
-            open && 'ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]'
+  if (currentItemParentRoute[1] == parentLevelRoute[1]) {
+    return (
+      <li className={cn({ open, active })}>
+        <ComponentToUse
+          href={isLink ? item.route : undefined}
+          className={cn(
+            'nx-items-center nx-justify-between nx-gap-2',
+            !isLink && 'nx-text-left nx-w-full',
+            classes.link,
+            active ? classes.active : classes.inactive
           )}
-        />
-      </ComponentToUse>
-      <Collapse className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1" isOpen={open}>
-        {Array.isArray(item.children) ? (
-          <Menu
-            className={cn(classes.border, 'ltr:nx-ml-3 rtl:nx-mr-3')}
-            directories={item.children}
-            base={item.route}
-            anchors={anchors}
+          onClick={e => {
+            const clickedToggleIcon = ['svg', 'path'].includes(
+              (e.target as HTMLElement).tagName.toLowerCase()
+            )
+            if (clickedToggleIcon) {
+              e.preventDefault()
+            }
+            if (isLink) {
+              // If it's focused, we toggle it. Otherwise, always open it.
+              if (active || clickedToggleIcon) {
+                TreeState[item.route] = !open
+              } else {
+                TreeState[item.route] = true
+                setMenu(false)
+              }
+              rerender({})
+              return
+            }
+            if (active) return
+            TreeState[item.route] = !open
+            rerender({})
+          }}
+        >
+          {renderComponent(config.sidebar.titleComponent, {
+            title: item.title,
+            type: item.type,
+            route: item.route
+          })}
+          <ArrowRightIcon
+            className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
+            pathClassName={cn(
+              'nx-origin-center nx-transition-transform rtl:-nx-rotate-180',
+              open && 'ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]'
+            )}
           />
-        ) : null}
-      </Collapse>
-    </li>
-  )
+        </ComponentToUse>
+        <Collapse className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1" isOpen={open}>
+          {Array.isArray(item.children) ? (
+            <Menu
+              className={cn(classes.border, 'ltr:nx-ml-3 rtl:nx-mr-3')}
+              directories={item.children}
+              base={item.route}
+              anchors={anchors}
+            />
+          ) : null}
+        </Collapse>
+      </li>
+    )
+  }
+  return null
 }
 
 function Separator({ title }: { title: string }): ReactElement {
@@ -308,7 +317,7 @@ function Menu({
   return (
     <ul className={cn(classes.list, className)}>
       {directories.map(item =>
-        !onlyCurrentDocs || item.isUnderCurrentDocsTree ? (
+        !onlyCurrentDocs || !item.theme || (item.theme && item.theme.isUnderCurrentDocsTree) ? (
           item.type === 'menu' ||
           (item.children && (item.children.length || !item.withIndexPage)) ? (
             <Folder key={item.name} item={item} anchors={anchors} />
@@ -343,11 +352,11 @@ export function Sidebar({
   const router = useRouter()
   const [focused, setFocused] = useState<null | string>(null)
   const [showSidebar, setSidebar] = useState(true)
-  const [showToggleAnimation, setToggleAnimation] = useState(false)
 
   const anchors = useMemo(() => headings.filter(v => v.depth === 2), [headings])
   const sidebarRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+
 
   useEffect(() => {
     if (menu) {
@@ -386,9 +395,6 @@ export function Sidebar({
     setMenu(false)
   }, [router.asPath, setMenu])
 
-  const hasI18n = config.i18n.length > 0
-  const hasMenu = config.darkMode || hasI18n
-
   return (
     <>
       {includePlaceholder && asPopover ? (
@@ -405,7 +411,7 @@ export function Sidebar({
       />
       <aside
         className={cn(
-          'nextra-sidebar-container nx-flex nx-flex-col',
+          'nextra-sidebar-container nx-flex nx-flex-col nx-bg-gray-100',
           'md:nx-top-16 md:nx-shrink-0 motion-reduce:nx-transform-none',
           'nx-transform-gpu nx-transition-all nx-ease-in-out',
           'print:nx-hidden',
@@ -430,9 +436,7 @@ export function Sidebar({
           >
             <div
               className={cn(
-                'nx-overflow-y-auto nx-overflow-x-hidden',
-                'nx-p-4 nx-grow md:nx-h-[calc(100vh-var(--nextra-navbar-height)-var(--nextra-menu-height))]',
-                showSidebar ? 'nextra-scrollbar' : 'no-scrollbar'
+                'nx-overflow-y-auto nx-overflow-x-hidden'   
               )}
               ref={sidebarRef}
             >
@@ -461,52 +465,6 @@ export function Sidebar({
           </OnFocusItemContext.Provider>
         </FocusedItemContext.Provider>
 
-        {hasMenu && (
-          <div
-            className={cn(
-              'nx-sticky nx-bottom-0',
-              'nx-bg-white dark:nx-bg-dark', // when banner is showed, sidebar links can be behind menu, set bg color as body bg color
-              'nx-mx-4 nx-py-4 nx-shadow-[0_-12px_16px_#fff]',
-              'nx-flex nx-items-center nx-gap-2',
-              'dark:nx-border-neutral-800 dark:nx-shadow-[0_-12px_16px_#111]',
-              'contrast-more:nx-border-neutral-400 contrast-more:nx-shadow-none contrast-more:dark:nx-shadow-none',
-              showSidebar
-                ? cn(hasI18n && 'nx-justify-end', 'nx-border-t')
-                : 'nx-py-4 nx-flex-wrap nx-justify-center'
-            )}
-            data-toggle-animation={
-              showToggleAnimation ? (showSidebar ? 'show' : 'hide') : 'off'
-            }
-          >
-            <LocaleSwitch
-              lite={!showSidebar}
-              className={cn(showSidebar ? 'nx-grow' : 'max-md:nx-grow')}
-            />
-            {config.darkMode && (
-              <div
-                className={
-                  showSidebar && !hasI18n ? 'nx-grow nx-flex nx-flex-col' : ''
-                }
-              >
-                {renderComponent(config.themeSwitch.component, {
-                  lite: !showSidebar || hasI18n
-                })}
-              </div>
-            )}
-            {config.sidebar.toggleButton && (
-              <button
-                title={showSidebar ? 'Hide sidebar' : 'Show sidebar'}
-                className="max-md:nx-hidden nx-h-7 nx-rounded-md nx-transition-colors nx-text-gray-600 dark:nx-text-gray-400 nx-px-2 hover:nx-bg-gray-100 hover:nx-text-gray-900 dark:hover:nx-bg-primary-100/5 dark:hover:nx-text-gray-50"
-                onClick={() => {
-                  setSidebar(!showSidebar)
-                  setToggleAnimation(true)
-                }}
-              >
-                <ExpandIcon isOpen={showSidebar} />
-              </button>
-            )}
-          </div>
-        )}
       </aside>
     </>
   )
