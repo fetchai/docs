@@ -15,7 +15,7 @@ export type NavBarProps = {
 
 const classes = {
   link: cn(
-    'nx-text-sm contrast-more:nx-text-gray-700 contrast-more:dark:nx-text-gray-100'
+    'nx-text-sm contrast-more:nx-text-gray-700 contrast-more:dark:nx-text-gray-100 nx-mt-4 nx-px-4'
   ),
   active: cn('nx-font-medium nx-subpixel-antialiased grey-background'),
   inactive: cn(
@@ -190,16 +190,16 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               key={href}
               className={cn(
                 classes.link,
-                'nx-relative nx-mx-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block',
+                'nx-relative nx-mr-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block',
                 !isActive || page.newWindow ? classes.inactive : classes.active
               )}
               newWindow={page.newWindow}
               aria-current={!page.newWindow && isActive}
             >
-              <span className="nx-absolute nx-inset-x-0 nx-text-center">
+              <span className="nx-absolute nx-inset-x-0 nx-text-center nx-text-base">
                 {page.title}
               </span>
-              <span className="nx-invisible nx-font-medium">{page.title}</span>
+              <span className="nx-invisible nx-text-base">{page.title}</span>
             </Anchor>
           )
         })}
