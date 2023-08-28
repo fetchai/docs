@@ -826,7 +826,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 </Row>
 
 
-
+#PUT - https://agentverse.ai/v1/agents/ -  'address': 'agent1qgdwkcszayhwzks7dkpncdvje0p04f2uzpq0q44e40qxv5v6rwwszkjnugl', 'name': 'AliceUpdateName', 'pending_messages': 0, 'bytes_transferred': 0, 'previous_bytes_transferred': 0
 ## Update specific Agent identified by address
 
 **Endpoint**: `PUT /v1/agents/{address}`
@@ -879,16 +879,20 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On success the response will be .. 
+             On success the response will be an array of json objects including the updated agent name. 
          </ApiIntro>
     </Col>
     <Col>
         <Tabs>
             <Tab Tab heading="HTTP 200">
-                ```json filename="TItle"
+                ```json filename="Updated Agent Name"
                 [
                     {
-                      
+                      "address": "agent1qgdwkcszayhwzks7dkpncdvje0p04f2uzpq0q44e40qxv5v6rwwszkjnugl",
+                      "name": "AliceUpdateName",
+                      "pending_messages": 0, 
+                      "bytes_transferred": 0, 
+                      "previous_bytes_transferred": 0
                       
                     }
                 ]
@@ -1031,7 +1035,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
     <Col>
         <Tabs>
             <Tab Tab heading="HTTP 200">
-                ```json filename="TItle"
+                ```json filename="Title"
                 [
                     {
                      "items" :[{"uuid": "uuid-example", "key": "API-key example", "name": "Test", "expires_at": "2023-11-26T06:09:05.511108+00:00"}], 
