@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './tab.module.css'
+import { useRouter } from 'next/router';
 
 
 const FeatureGuideTabs = () => {
@@ -73,6 +74,18 @@ const FeatureGuideTabs = () => {
     };
   }, []);
 
+  const GuideBox = ({content}) => {
+    const router = useRouter()
+    const [hover, setHover] = useState<boolean>(false);
+
+    return <section className={hover ? styles.hoverGuideBox : styles.guideBox}
+                onMouseOver={() => {setHover(true)}}
+                onMouseLeave={() => {setHover(false)}}>
+        <h3 className="nx-text-black nx-font-bold nx-mb-2">{content.title}</h3>
+        <p className="nx-text-gray-500 nx-text-sm nx-font-light">{content.description}</p>
+      </section>
+    } 
+
   return (
     <div>
       <div className='nx-my-8'>
@@ -122,10 +135,7 @@ const FeatureGuideTabs = () => {
       <div className="nx-mt-4">
         <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
           {tabItems[activeTab].content.map(content => {
-            return <section className={styles.box}>
-              <h3 className="nx-text-black nx-font-bold nx-mb-2">{content.title}</h3>
-              <p className="nx-text-gray-500 nx-text-sm nx-font-light">{content.description}</p>
-            </section>
+            return <GuideBox content={content}/>
           })}
         </div>
       </div>
