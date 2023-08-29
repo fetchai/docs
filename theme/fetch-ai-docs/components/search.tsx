@@ -192,7 +192,7 @@ export function Search({
   )
 
   return (
-    <div className={cn('nextra-search nx-relative md:nx-w-64', className)}>
+    <div className={focused ? cn('nextra-search nx-relative nx-footer-width-50 nx-rounded-t-xl nx-border-purple', className) : cn('nextra-search nx-relative md:nx-w-64', className)}>
       {renderList && (
         <div
           className="nx-fixed nx-inset-0 nx-z-10"

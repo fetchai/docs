@@ -234,7 +234,9 @@ export const getComponents = ({
     td: Td,
     details: Details,
     summary: Summary,
-    pre: Pre,
+    pre: props => (
+      <Pre className='nx-pre-code nx-text-fetch-main' {...props}/>
+    ),
     code: Code,
     ...components
   }
