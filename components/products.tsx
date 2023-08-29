@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import apiAgentIcon from '../src/svgs/agents-api.svg'
 import insightsAgentIcon from '../src/svgs/agents-insights.svg'
@@ -23,33 +23,41 @@ interface SectionProps {
   items: Item[];
 }
 
-const Section: React.FC<SectionProps> = ({ heading, items }) => {
+const Item = ({ item, index }) => {
 
+  const [hover, setHover] = useState<boolean>(false);
   const router = useRouter()
   return (
-    <div className="nx-my-8">
-      <h2 className="nx-text-xl nx-font-semibold nx-text-gray-400">{heading}</h2>
+    <div key={index} className="nx-p-4 nx-flex nx-cursor-pointer" onClick={() => router.push(item.path)} onMouseOver={() => {setHover(true)}} onMouseLeave={() => {setHover(false)}}>
+      <Image src={item.icon} alt={`Icon for ${item.title}`} className={styles.productIcon} />
+      <div>
+        <h3 className={hover ? "nx-text-purple nx-font-bold nx-mb-2" : "nx-text-black nx-font-bold nx-mb-2"}>{item.title}</h3>
+        <p className="nx-text-gray-500 nx-text-sm nx-font-light">
+          <>
+            Description to explain{' '}
+            <strong>
+              <span style={{ color: 'black', fontWeight: '500' }}>what to expect</span>
+            </strong>{' '}
+            or{' '}
+            <strong>
+              <span style={{ color: 'black', fontWeight: '500' }}>quick links</span>
+            </strong>{' '}
+            to popular articles
+          </>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const Section: React.FC<SectionProps> = ({ heading, items }) => {
+
+  return (
+    <div className="nx-my-8" >
+      <h2 className={"nx-text-xl nx-font-semibold nx-text-gray-400"}>{heading}</h2>
       <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-3 nx-gap-4 nx-mt-4">
         {items.map((item, index) => (
-          <div key={index} className="nx-p-4 nx-flex" onClick={() => router.push(item.path)}>
-            <Image src={item.icon} alt={`Icon for ${item.title}`} className={styles.productIcon} />
-            <div>
-              <h3 className="nx-text-black nx-font-bold nx-mb-2">{item.title}</h3>
-              <p className="nx-text-gray-500 nx-text-sm nx-font-light">
-                <>
-                  Description to explain{' '}
-                  <strong>
-                    <span style={{ color: 'black', fontWeight: '500' }}>what to expect</span>
-                  </strong>{' '}
-                  or{' '}
-                  <strong>
-                    <span style={{ color: 'black', fontWeight: '500' }}>quick links</span>
-                  </strong>{' '}
-                  to popular articles
-                </>
-              </p>
-            </div>
-          </div>
+          <Item item={item} index={index}/>
         ))}
       </div>
     </div>
