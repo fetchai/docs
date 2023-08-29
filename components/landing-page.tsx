@@ -22,12 +22,12 @@ function LandingPage() {
              path: 'guides/agents/communicating-with-other-agents'
          },
          {
-             label: 'PLACEHOLDER Build your own chat assistant',
-             path: 'guides/agents/creating-an-agent-to-generate-revenue-on-your-data'
+             label: 'How to use μAgents to send tokens 📊💸',
+             path: 'guides/agents/send-tokens'
          },
              {
-             label: 'Start creating revenue with Agents',
-             path: 'guides/agents/creating-an-agent-to-generate-revenue-on-your-data'
+             label: 'How to use μAgents to verify messages 📬🔐',
+             path: 'guides/agents/message-verification'
          },
         ];
 
