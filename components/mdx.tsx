@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Tab as HeadlessTab } from "@headlessui/react";
 
 function InfoIcon(props) {
@@ -122,6 +122,32 @@ export function Tabs({ children, half = false }) {
           ))}
         </HeadlessTab.Panels>
       </HeadlessTab.Group>
+    </div>
+  );
+}
+
+export function DropDownTabs({ children, half = false }) {
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const handleTabChange = (event) => {
+    setSelectedTab(parseInt(event.target.value));
+  };
+  return (
+    <div>
+      <select
+        className="nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium nx-bg-white nx-border nx-border-black/10 outline-none pr-6"
+        value={selectedTab}
+        onChange={handleTabChange}
+      >
+        {React.Children.map(children, (child, index) => (
+          <option key={index} value={index}>
+            {child.props.heading}
+          </option>
+        ))}
+      </select>
+      {React.Children.map(children, (child, index) => (
+        index === selectedTab ? child.props.children : null
+      ))}
     </div>
   );
 }

@@ -1,14 +1,16 @@
-# Sending funds
+# Sending funds 💸
 
-CosmPy simplifies broadcasting transactions. After [creating a wallet ↗️ ](/guides/CosmPy/CreatingWallet.md) you can send transactions by following the provided example. In it we first connect to the desired network then provide the desired destination address. The transaction is then broadcast using the `Ledger_client.send_tokens` function. 
+CosmPy simplifies broadcasting transactions. After [creating a wallet ↗️](/guides/CosmPy/CreatingWallet.md) you can send transactions by following the provided example. In it we first connect to the desired network then provide the desired destination address. The transaction is then broadcast using the `Ledger_client.send_tokens` function.
 
-```py
+```py copy
 from cosmpy.aerial.client import LedgerClient, NetworkConfig
 
 # Establishing connection to the network 
 ledger_client = LedgerClient(NetworkConfig.fetch_mainnet())
+
 # Providing destination address 
 destination_address = 'fetch1h2l3cnu7e23whmd5yrfeunacez9tv0plv5rxqy'
+
 # Broadcasting the transaction
 tx = ledger_client.send_tokens(destination_address, 10, "atestfet", wallet)
 
@@ -20,10 +22,11 @@ In this example, we want to send 10 atestfet tokens to the `destination_address`
 
 ## Sending and verifying a transaction 
 
-For a more comprehensive example we'll use the testnet and submit a transaction then verify it's completion by exploring  the output on the terminal. For transactions made on the mainnet it's advisable to use our [blockexplorer ↗️ ](https://explore.fetch.ai/) or a block explorer such as [Mintscan ↗️ ](https://www.mintscan.io/fetchai). The following code snippet shows you how to create two wallets, namely Alice and Bob's. Once created, the next step is to establish a connection to Fetch.ai's testnet. We then query Alice's balance and include a while function to make sure Alice has a positive balance and can perform the transaction, in this case Alice will send Bob 10 atestfet. As a final step we'll print the transaction hash, as well as Bob and Alice's balances. 
+For a more comprehensive example, we will use the testnet and submit a transaction then verify its completion by exploring the output on the terminal. For transactions made on the mainnet it is advisable to use our [block explorer ↗️](https://explore.fetch.ai/) or a block explorer such as [Mintscan ↗️](https://www.mintscan.io/fetchai). The following code snippet shows you how to create two wallets, namely for Alice and Bob's.
+
+Once created, the next step is to establish a connection to Fetch.ai's testnet. We then query Alice's balance and include a while function to make sure Alice has a positive balance and can perform the transaction. In this case Alice will send Bob 10 atestfet. As a final step, we will print the transaction hash, as well as Bob and Alice's balances.
 
 ```py copy
-
 # Import the required libraries and modules 
 from cosmpy.aerial.client import LedgerClient, NetworkConfig # Required to establish a connection to the network
 from cosmpy.aerial.faucet import FaucetApi # Required to fund Alice's wallet if she has a 0 balance
@@ -42,6 +45,7 @@ def main():
     
     # Query Alice's Balance
     alice_balance = ledger.query_bank_balance(bob.address())
+
     # Should alice have no funds in her wallet, add funds
     while alice_balance < (10**18):
         print("Providing wealth to alice...")
@@ -52,6 +56,7 @@ def main():
     print(
         f"Alice Address: {alice.address()} Balance: {ledger.query_bank_balance(alice.address())}"
     )
+
     print(
         f"Bob   Address: {bob.address()} Balance: {ledger.query_bank_balance(bob.address())}"
     )
@@ -59,22 +64,24 @@ def main():
     # Broadcast the transaction and print the outputs on the terminal 
     tx = ledger.send_tokens(bob.address(), 10, "atestfet", alice)
     print(f"TX {tx.tx_hash} waiting to complete...")
+
     tx.wait_to_complete()
+
     print(f"TX {tx.tx_hash} waiting to complete...done")
 
     print(
         f"Alice Address: {alice.address()} Balance: {ledger.query_bank_balance(alice.address())}"
     )
+
     print(
         f"Bob   Address: {bob.address()} Balance: {ledger.query_bank_balance(bob.address())}"
     )
-
 
 if __name__ == "__main__":
     main()
 ```
 
-Once you've executed the script you'll notice the console output is consitent with the code. We first see a print of the starting balance of both addresses, we then see the transaction hash along with the new balances for boch Alice and Bob. 
+Once you have executed the script you will notice the console output is consistent with the code. We first see a print of the starting balance of both addresses, we then see the transaction hash along with the new balances for boch Alice and Bob:
 
 ```
 Alice Address: fetch1kfsarzv8s0kl7pcznjgyc6mnaz96akl79kzttv Balance: 10000000000000000000
@@ -83,5 +90,4 @@ TX 25E8F5D9F101DB5AC57DC5FF2566BA4F290609B6AADBFF1D566B398BA5FFAF48 waiting to c
 TX 25E8F5D9F101DB5AC57DC5FF2566BA4F290609B6AADBFF1D566B398BA5FFAF48 waiting to complete...done
 Alice Address: fetch1kfsarzv8s0kl7pcznjgyc6mnaz96akl79kzttv Balance: 9999416775000000512
 Bob   Address: fetch1ww8gsxk4usmq0tdjyele4nqyxcmc3zquu3fc52 Balance: 10
-
 ```
