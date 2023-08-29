@@ -81,8 +81,8 @@ const FeatureGuideTabs = () => {
     return <section className={hover ? styles.hoverGuideBox : styles.guideBox}
                 onMouseOver={() => {setHover(true)}}
                 onMouseLeave={() => {setHover(false)}}>
-        <h3 className="nx-text-black nx-font-bold nx-mb-2">{content.title}</h3>
-        <p className="nx-text-gray-500 nx-text-sm nx-font-light">{content.description}</p>
+        <h3 className="nx-text-black nx-font-medium nx-mb-2 nx-text-lg">{content.title}</h3>
+        <p className="nx-text-gray-500 nx-font-normal">{content.description}</p>
       </section>
     } 
 
