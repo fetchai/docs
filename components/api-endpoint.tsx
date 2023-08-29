@@ -1,14 +1,22 @@
 import {Code, Pre} from 'nextra/components';
 import React from 'react';
-import {ApiIntro, Col, Properties, Property, Row, Section, Tab, Tabs} from "./mdx";
+import {ApiIntro, Col, Properties, Property, Row, Section, Tab, DropDownTabs} from "./mdx";
 
+interface PropertyType {
+  name: string;
+  type: string;
+  description: string;
+}
 
 const PythonCodeTab: React.FC<{
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
-    url: string,
-    samplePayload?: any
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  url: string,
+  samplePayload?: any
 }> = ({method, url, samplePayload}) => {
-    let code = `\
+
+  let code = ``
+  if(samplePayload) {
+    code = `\
 import requests
 
 data = ${JSON.stringify(samplePayload, null, 4)}
@@ -16,122 +24,221 @@ data = ${JSON.stringify(samplePayload, null, 4)}
 requests.${method.toLowerCase()}("${url}", json=data, headers=\{
     "Authorization": "bearer <your token here>"
 }
-`
+    `
+  } else {
+    code = `\
+import requests
 
-    return (
-        <Pre filename="python">
-            <Code className="shiki" data-lanuage="python">
-                {code.split("\n").map((line, index) => {
-                    return (
-                        <>
-                            {line}
-                            <br/>
-                        </>
-                    );
-                })}
-            </Code>
-        </Pre>
-    );
+requests.${method.toLowerCase()}("${url}",, headers=\{
+    "Authorization": "bearer <your token here>"
+}
+    `
+  }
+
+  return (
+      <Pre filename="python" hasCopyCode={true} className="nx-pre-code">
+          <Code className="shiki" data-lanuage="python">
+              {code.split("\n").map((line, index) => {
+                  return (
+                      <>
+                          {line}
+                          <br/>
+                      </>
+                  );
+              })}
+          </Code>
+      </Pre>
+  );
+}
+
+const JavascriptCodeTab: React.FC<{
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  url: string,
+  samplePayload?: any
+}> = ({method, url, samplePayload}) => {
+
+  let code = ``
+  if (samplePayload) {
+    code = `\
+body = ${JSON.stringify(samplePayload, null, 4)}
+
+await fetch("${url}", {
+  method: ${method.toLowerCase()},
+  headers: {
+    Authorization: Bearer <your token here>
+  },
+  body
+})`
+  } else {
+    code = `\
+await fetch("${url}", {
+  method: ${method.toLowerCase()},
+  headers: {
+    Authorization: Bearer <your token here>
+  }
+})`
+  }
+  
+  return (
+    <Pre filename="javascript" hasCopyCode={true} className="nx-pre-code">
+      <Code className="shiki" data-lanuage="javascript">
+        {code.split("\n").map((line, index) => {
+          return (
+            <>
+              {line}
+              <br/>
+            </>
+          );
+        })}
+      </Code>
+    </Pre>
+  );
 }
 
 
 const CurlCodeTab: React.FC<{
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
-    url: string,
-    samplePayload?: any
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  url: string,
+  samplePayload?: any
 }> = ({method, url, samplePayload}) => {
-    let code = `\
+  let code = `\
 curl \\
- -X ${method} \\
- -H Authorization: bearer <your token here> \\
+-X ${method} \\
+-H Authorization: bearer <your token here> \\
 ${url}`
 
-    if (samplePayload) {
-        code += ` \\\n -d '${JSON.stringify(samplePayload)}'`
-    }
+  if (samplePayload) {
+    code += ` \\\n -d '${JSON.stringify(samplePayload)}'`
+  }
 
-    return (
-        <Pre filename="bash" hasCopyCode={true}>
-            {code.split("\n").map((line, index) => {
-                return (
-                    <>
-                        {line}
-                        <br/>
-                    </>
-                );
-            })}
-        </Pre>
-    );
+  return (
+    <Pre filename="bash" hasCopyCode={true} className="nx-pre-code">
+      {code.split("\n").map((line, index) => {
+        return (
+          <>
+            {line}
+            <br/>
+          </>
+        );
+      })}
+    </Pre>
+  );
 }
 
 
-const ApiEndpoint: React.FC<{
+const JsonCodeTab: React.FC<{
+  samplePayload: any
+}> = ({samplePayload}) => {
+  const formattedJson = JSON.stringify(samplePayload, null, 2);
+
+  return (
+    <pre className="nx-pre-code" filename="json" hasCopyCode={true}>
+      {formattedJson}
+    </pre>
+  );
+}
+
+
+export const ApiResponses: React.FC<{
+  description?: string,
+  samplePayload: any,
+  properties?: PropertyType[]
+}> = (props) => {
+  return (
+    <>
+      <Row><h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl">Responses</h1></Row>
+      <Row>
+        <Col>
+          {props.description ? <ApiIntro>
+            {props.description}
+          </ApiIntro> : null}
+
+          {props.properties && props.properties.length ? <Properties>
+            {props.properties.map(property => {
+              return <Property name={property.name} type={property.type}>
+                {property.description}
+              </Property>
+            })}
+          </Properties> : null}
+        </Col>
+        <Col>
+          <DropDownTabs>
+            <Tab heading="HTTP 200">
+              <JsonCodeTab samplePayload={props.samplePayload}/>
+            </Tab>
+          </DropDownTabs>
+        </Col>
+      </Row>
+    </>
+  )
+};
+
+
+
+export const ApiRequest: React.FC<{
     apiUrl: string,
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     path: string,
     description: string,
-    samplePayload?: any
+    samplePayload?: any,
+    properties?: PropertyType[]
 }> = (props) => {
     return (
-        <>
-            <Row>
-                <ApiIntro>
-                    {props.description}
-                </ApiIntro>
-
-            </Row>
-
-            <Row><h2 className="text-lg font-bold">Request</h2></Row>
-            <Row>
-                <Col>
-                    <Properties>
-                        <Property name="id" type="string">
-                            Unique identifier for the message.
-                        </Property>
-                        <Property name="conversation_id" type="string">
-                            Unique identifier for the conversation the message belongs to.
-                        </Property>
-                        <Property name="contact" type="object">
-                            The contact object for the contact who sent the message.
-                        </Property>
-                        <Property name="message" type="string">
-                            The message content.
-                        </Property>
-                        <Property name="reactions" type="array">
-                            An array of reaction objects associated with the message.
-                        </Property>
-                        <Property name="attachments" type="array">
-                            An array of attachment objects associated with the message.
-                        </Property>
-                        <Property name="read_at" type="timestamp">
-                            Timestamp of when the message was read.
-                        </Property>
-                        <Property name="created_at" type="timestamp">
-                            Timestamp of when the message was created.
-                        </Property>
-                        <Property name="updated_at" type="timestamp">
-                            Timestamp of when the message was last updated.
-                        </Property>
-                    </Properties>
-                </Col>
-                <Col>
-
-                    <Tabs>
-                        <Tab header="curl">
-                            <CurlCodeTab method={props.method} url={props.apiUrl + props.path}
-                                         samplePayload={props.samplePayload}/>
-                        </Tab>
-                        <Tab header="python">
-                            <PythonCodeTab method={props.method} url={props.apiUrl + props.path}
-                                           samplePayload={props.samplePayload}/>
-                        </Tab>
-                    </Tabs>
-
-                </Col>
-            </Row>
-        </>
+      <>
+        <Row><h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl">Request</h1></Row>
+        <Row>
+          <Col>
+            {props.description ? <ApiIntro>
+              {props.description}
+            </ApiIntro> : null}
+            {props.properties && props.properties.length ? <Properties>
+              {props.properties.map(property => {
+                return <Property name={property.name} type={property.type}>
+                  {property.description}
+                </Property>
+              })}
+            </Properties> : null}
+          </Col>
+          <Col>
+            <DropDownTabs>
+              <Tab heading="Curl">
+                <CurlCodeTab method={props.method} url={props.apiUrl + props.path} samplePayload={props.samplePayload}/>
+              </Tab>
+              <Tab heading="Python">
+                <PythonCodeTab method={props.method} url={props.apiUrl + props.path} samplePayload={props.samplePayload}/>
+              </Tab>
+              <Tab heading="Javascript">
+                <JavascriptCodeTab method={props.method} url={props.apiUrl + props.path} samplePayload={props.samplePayload}/>
+              </Tab>
+            </DropDownTabs>
+          </Col>
+        </Row>
+      </>
     )
 };
 
-export default ApiEndpoint;
+export const ApiEndpointRequestResponse: React.FC<{
+  apiUrl: string,
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  path: string,
+  description: string,
+  samplePayload?: any,
+  responses?: any,
+  responseProperties?: PropertyType[],
+  responseDescription?: string,
+  properties?: PropertyType[]
+}> = (props) => {
+  return (
+    <>
+      <Row><p className="nx-endpoint nx-text-base"><span className="nextra-content nx-font-medium">Endpoint: </span><span className="nx-endpoint-method nx-text-fetch-main">{props.method}</span> <span className="nx-text-purple nx-font-normal">{props.path}</span></p></Row>
+
+      <ApiRequest apiUrl={props.apiUrl} method={props.method} path={props.path} description={props.description} samplePayload={props.samplePayload ? props.samplePayload : null} properties={props.properties ? props.properties : null}/>
+      {
+        props.responses ? <ApiResponses samplePayload={props.responses ? props.responses : null} properties={props.responseProperties ? props.responseProperties : null} description={props.responseDescription ? props.responseDescription : null}/> : null
+      }
+      
+    </>
+  )
+};
+
 

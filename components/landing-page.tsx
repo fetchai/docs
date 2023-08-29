@@ -13,14 +13,6 @@ import { useRouter } from 'next/navigation'
 
 function LandingPage() {
 
-  // const startingGuides = [
-  //   'Getting started with Agents',
-  //   'Start communicating with other agents',
-  //   'Build your own chat assistant',
-  //   'Start making revenue with Agents'
-  // ]
-
-
      const startingGuides = [
          {
              label: 'Getting started with Agents',
