@@ -132,9 +132,9 @@ const JsonCodeTab: React.FC<{
   const formattedJson = JSON.stringify(samplePayload, null, 2);
 
   return (
-    <pre className="nx-pre-code" filename="json" hasCopyCode={true}>
+    <Pre className="nx-pre-code" filename="json" hasCopyCode={true}>
       {formattedJson}
-    </pre>
+    </Pre>
   );
 }
 
