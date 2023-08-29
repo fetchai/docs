@@ -5,7 +5,7 @@ import styles from './landing.module.css'
 import Image from 'next/image';
 import ColoredCirclesIcon from '../src/images/New search paradigms.png'
 import ColoredShapesIcon  from '../src/images/Create new business models.png'
-import FeatureGuideTabs from './featureGuideTabs';
+import { FeatureGuideTabs } from './featureGuideTabs';
 import Products from './products';
 import { useRouter } from 'next/navigation'
 
