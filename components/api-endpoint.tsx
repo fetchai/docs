@@ -36,17 +36,10 @@ requests.${method.toLowerCase()}("${url}",, headers=\{
   }
 
   return (
-      <Pre filename="python" hasCopyCode={true} className="nx-pre-code">
-          <Code className="shiki" data-lanuage="python">
-              {code.split("\n").map((line, index) => {
-                  return (
-                      <>
-                          {line}
-                          <br/>
-                      </>
-                  );
-              })}
-          </Code>
+      <Pre filename="python" data-language="python" hasCopyCode={true} className="nx-pre-code">
+        <Code data-lanuage="python" data-theme="default">
+          {code}
+        </Code>
       </Pre>
   );
 }
@@ -80,16 +73,9 @@ await fetch("${url}", {
   }
   
   return (
-    <Pre filename="javascript" hasCopyCode={true} className="nx-pre-code">
-      <Code className="shiki" data-lanuage="javascript">
-        {code.split("\n").map((line, index) => {
-          return (
-            <>
-              {line}
-              <br/>
-            </>
-          );
-        })}
+    <Pre filename="javascript" data-lanuage="javascript" hasCopyCode={true} className="nx-pre-code">
+      <Code data-lanuage="javascript" data-theme="default" className="javascript">
+        {code}
       </Code>
     </Pre>
   );

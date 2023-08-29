@@ -19,8 +19,6 @@ import { useActiveAnchor, useConfig, useMenu } from '../contexts'
 import { renderComponent } from '../utils'
 import { Anchor } from './anchor'
 import { Collapse } from './collapse'
-import { LocaleSwitch } from './locale-switch'
-import { themeOptionsSchema } from './theme-switch'
 
 const TreeState: Record<string, boolean> = Object.create(null)
 
