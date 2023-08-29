@@ -3,13 +3,13 @@ import {Tabs, Tab} from "../../../components/mdx";
 import {Row, Col} from "../../../components/mdx";
 import ApiEndpoint from "../../../components/api-endpoint";
 
-# Hosting API
+# Mailroom API
 
 ## Overview
 
 <Row>
     <Col>
-        The mailroom API allows you to manage your agents that are hosted by Agentverse.
+        The mailroom API allows you to set up and manage mailboxes for your locally run agents. 
     </Col>
     <Col>
         ```bash filename="Endpoints"
@@ -666,7 +666,6 @@ import ApiEndpoint from "../../../components/api-endpoint";
                       "total": 1,
                       "page": 1, 
                       "size": 50
-                      
                     }
                 ]
                 ```
@@ -729,7 +728,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 <Row>
     <Col>
          <ApiIntro>
-             On success the response will be the registration of the Agent for the mailbox. 
+             On success the response will be the registration of the Agent for the mailbox as well as an array of json objects.
          </ApiIntro>
     </Col>
     <Col>
@@ -738,8 +737,11 @@ import ApiEndpoint from "../../../components/api-endpoint";
                 ```json filename="Successful registration"
                 [
                     {
-                      
-                      
+                      "address": "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg", 
+                      "name": "Initialtest",
+                      "pending_messages": 0, 
+                      "bytes_transferred": 0, 
+                      "previous_bytes_transferred": 0
                     }
                 ]
                 ```
@@ -816,7 +818,6 @@ import ApiEndpoint from "../../../components/api-endpoint";
                       "pending_messages": 0, 
                       "bytes_transferred": 0, 
                       "previous_bytes_transferred": 0
-                      
                     }
                 ]
                 ```
@@ -826,7 +827,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
 </Row>
 
 
-#PUT - https://agentverse.ai/v1/agents/ -  'address': 'agent1qgdwkcszayhwzks7dkpncdvje0p04f2uzpq0q44e40qxv5v6rwwszkjnugl', 'name': 'AliceUpdateName', 'pending_messages': 0, 'bytes_transferred': 0, 'previous_bytes_transferred': 0
+
 ## Update specific Agent identified by address
 
 **Endpoint**: `PUT /v1/agents/{address}`
@@ -893,7 +894,6 @@ import ApiEndpoint from "../../../components/api-endpoint";
                       "pending_messages": 0, 
                       "bytes_transferred": 0, 
                       "previous_bytes_transferred": 0
-                      
                     }
                 ]
                 ```
@@ -1042,7 +1042,6 @@ import ApiEndpoint from "../../../components/api-endpoint";
                      "total": 1, 
                      "page": 1, 
                      "size" 50
-                      
                     }
                 ]
                 ```
@@ -1268,7 +1267,6 @@ import ApiEndpoint from "../../../components/api-endpoint";
                       "bytes_stored_limit": 50000000, 
                       "num_agents": 1, 
                       "num_agents_limit": 4
-                      
                     }
                 ]
                 ```
@@ -1337,7 +1335,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
     <Col>
         <Tabs>
             <Tab Tab heading="HTTP 200">
-                ```json filename="TItle"
+                ```json filename=" Sample Feedback"
                 [
                     {
                       
