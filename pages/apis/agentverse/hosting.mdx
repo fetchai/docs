@@ -1,11 +1,27 @@
-import {Note, Properties, Property, Warn, Section, ApiIntro, Tag, CodeHeading} from "../../../components/mdx";
-import {DropDownTabs, Tab} from "../../../components/mdx";
-import {Row, Col} from "../../../components/mdx";
-import ApiEndpoint from "../../../components/api-endpoint";
+import {
+  Note,
+  Properties,
+  Property,
+  Warn,
+  Section,
+  ApiIntro,
+  Tag,
+  CodeHeading,
+} from "../../../components/mdx";
+import { DropDownTabs, Tab } from "../../../components/mdx";
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+  ApiRequest,
+  ApiResponses,
+} from "../../../components/api-endpoint";
 
 # Hosting API
 
-<div className='nx-text-fetch-content'>This is a placeholder incase we want to have a subtitle for a brief description/intro text in article pages.</div>
+<div className="nx-text-fetch-content">
+  This is a placeholder incase we want to have a subtitle for a brief
+  description/intro text in article pages.
+</div>
 
 ## Overview
 
@@ -32,6 +48,7 @@ import ApiEndpoint from "../../../components/api-endpoint";
         DELETE /v1/hosting/agents/:agentAddress/logs
         ```
     </Col>
+
 </Row>
 
 ## The Agent Object
@@ -81,184 +98,60 @@ import ApiEndpoint from "../../../components/api-endpoint";
         }
         ```
     </Col>
+
 </Row>
 
 ## Getting a list of your agents
 
-**Endpoint**: `GET /v1/hosting/agents`
-
-### Request
-
-<Row>
-    <Col>
-        Parameters
-        <div className="text-gray-400 italic">no parameters</div>
-    </Col>
-    <Col>
-        <DropDownTabs>
-            <Tab heading="curl">
-                ```bash filename="Shell command" copy
-                curl -X GET \
-                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
-                https://agentverse.ai/v1/hosting/agents
-                ````
-            </Tab>
-
-            <Tab heading="python">
-                ```python filename="Using requests" copy
-                import requests
-
-                requests.get('https://agentverse.ai/v1/hosting/agents', headers={
-                'Authorization': f'Bearer {token}',
-            })
-                ```
-            </Tab>
-
-            <Tab heading="javascript">
-                ```js filename="Using fetch API" copy
-                        await fetch('https://agentverse.ai/v1/hosting/agents', {
-                        method: 'GET',
-                        headers: {
-                        Authorization: `Bearer ${token}`,
-                    }
-                ```
-            </Tab>
-        </DropDownTabs>
-    </Col>
-</Row>
-
-
-### Responses
-
-<Row>
-    <Col>
-        On a successful request, the response will be an array of [Agent Objects](#the-agent-object)
-    </Col>
-    <Col>
-        <DropDownTabs>
-            <Tab heading="HTTP 200">
-                ```json filename="List of Agents"
-                [
-                    {
-                        "name": "My first agent",
-                        "address": "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
-                        "running": false,
-                        "compiled": true,
-                        "revision": 7,
-                        "code_digest": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
-                        "wallet_address": "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk"
-                    }
-                ]
-                ```
-            </Tab>
-        </DropDownTabs>
-    </Col>
-</Row>
-
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/hosting/agents"
+  description="Request for listing all of your agents at once"
+  responses={[
+    {
+      name: "My first agent",
+      address:
+        "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+      running: false,
+      compiled: true,
+      revision: 7,
+      code_digest:
+        "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      wallet_address: "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk",
+    },
+  ]}
+  responseDescription="On a successful request, the response will be an array of Agent Objects"
+/>
 
 ## Creating a new agent
 
-**Endpoint**: `GET /v1/hosting/agents`
-
-
-#### New Agent Object
-
-<Row>
-    <Col>
-        <Properties>
-            <Property name="name" type="string">
-                The given name of the agent. This is only a label that is used internally so users can keep track of
-                their agents.
-            </Property>
-        </Properties>
-    </Col>
-    <Col>
-        ```json filename="New Agent Object"
-        {
-            "name": "My newest agent"
-        }
-        ```
-    </Col>
-</Row>
-
-### Request
-
-<Row>
-    <Col>
-        On Successful creation of an agent, the response will be an [Agent Object](#the-agent-object)
-    </Col>
-    <Col>
-        <DropDownTabs>
-            <Tab heading="curl">
-                ```bash filename="Shell command" copy
-                curl -X GET \
-                -H "Authorization: Bearer ${AGENTVERSE_TOKEN}" \
-                https://agentverse.ai/v1/hosting/agents
-                ````
-            </Tab>
-
-            <Tab heading="python">
-                ```python filename="Using requests" copy
-                import requests
-
-                requests.get('https://agentverse.ai/v1/hosting/agents', headers={
-                'Authorization': f'Bearer {token}',
-            })
-                ```
-            </Tab>
-
-            <Tab heading="javascript">
-                ```js filename="Using fetch API" copy
-                await fetch('https://agentverse.ai/v1/hosting/agents', {
-                method: 'GET',
-                headers: {
-                Authorization: `Bearer ${token}`,
-            }
-            }
-                ```
-            </Tab>
-        </DropDownTabs>
-    </Col>
-</Row>
-
-
-### Responses
-
-<Row>
-    <Col>
-        <ApiIntro>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        </ApiIntro>
-    </Col>
-    <Col>
-        <DropDownTabs>
-            <Tab heading="curl">
-                ```bash copy
-                curl https://api.example.com/v1/balance -u sk_test_4eC39HqLyjWDarjtT1zdp7dc:
-                ````
-            </Tab>
-
-            <Tab heading="python">
-                ```python copy
-                import requests
-
-                requests.get('https://agentverse.ai/v1/hosting/agents', headers={
-                'Authorization': f'Bearer {token}',
-            })
-                ```
-            </Tab>
-
-            <Tab heading="javascript">
-                ```js copy
-                await fetch('https://agentverse.ai/v1/hosting/agents', {
-                method: 'GET',
-                headers: {
-                Authorization: `Bearer ${token}`,
-            }
-            }
-                ```
-            </Tab>
-        </DropDownTabs>
-    </Col>
-</Row>
-
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1/hosting/agent"
+  description="Request for creating a new agent"
+  properties={[
+    {
+      name: "name",
+      type: "string",
+      description:
+        "The given name of the agent. This is only a label that is used internally so users can keep track of their agents.",
+    },
+  ]}
+  samplePayload={{
+    name: "My newest agent",
+  }}
+  responses={{
+    name: "My newest agent",
+    address:
+      "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+    running: false,
+    compiled: true,
+    revision: 1,
+    code_digest:
+      "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+    wallet_address: "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk",
+  }}
+  responseDescription="On a successful request, the response will be an Agent Object"
+/>
