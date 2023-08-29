@@ -262,7 +262,8 @@ export const DEFAULT_THEME: DocsThemeConfig = {
   },
   navigation: true,
   nextThemes: {
-    defaultTheme: 'system',
+    defaultTheme: 'Light',
+    forcedTheme: 'Light',
     storageKey: 'theme'
   },
   notFound: {
