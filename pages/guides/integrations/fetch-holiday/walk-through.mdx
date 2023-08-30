@@ -14,7 +14,7 @@ mkdir utils
 touch main.py
 ```
 
-These directories will contain the different files you will need to correctly run the project.3
+These directories will contain the different files you will need to correctly run the project.
 
 ## Define the scripts
 ### Agents
@@ -33,7 +33,7 @@ Let's start by defining the script for a top activities agent which provides tou
 
 1. Enter the `activities` folder and create a script for this agent: `touch top_activities.py`
 
-2. Within this script, import the necessary modules, create an agent "top_activities" , and make sure it has enough funds to register in the [Almanac contract ↗](/references/contracts/uagents-almanac/almanac-overview.mdx):
+2. Within this script, import the necessary modules, create an agent `top_activities` using a secret `seed`, and make sure it has enough funds to register in the [Almanac contract ↗](/references/contracts/uagents-almanac/almanac-overview.mdx):
 
     ```py copy
     from langchain.chat_models import ChatOpenAI
@@ -111,9 +111,9 @@ Let's start by defining the script for a top activities agent which provides tou
     agent.include(top_activities_protocol)
     ```
 
-    We defined a function named `get_top_activity()` that will handle `TopActivities` messages as definded by the `.on_message()` decorator. The function then logs information about the received message, sender, and session using `ctx.logger.info()` method. The code then checks if `msg.preferred_activities` is provided. If it is, a message about preferred activities is generated. We proceed by generating the input for the language model using the filled prompt as input to the language model for generating a response. The code then parses the output using the output parser previously defined. The parsed result is used to create a list of options, each represented as a `KeyValue` object. The code then logs the result and the corresponding options. A response is sent back to the sender using ctx.send() method. The response includes the options generated from the parsed output and specifies the response type as `UAgentResponseType.FINAL_OPTIONS`.
+    We defined a function named `get_top_activity()` that will handle `TopActivities` messages as definded by the `.on_message()` decorator. The function then logs information about the received message, sender, and session using `ctx.logger.info()` method. The code then checks if `msg.preferred_activities` is provided. If it is, a message about preferred activities is generated. We proceed by generating the input for the language model using the filled prompt as input to the language model for generating a response. The code then parses the output using the output parser previously defined. The parsed result is used to create a list of options, each represented as a `KeyValue` object. The code then logs the result and the corresponding options. A response is sent back to the sender using `ctx.send()` method. The response includes the options generated from the parsed output and specifies the response type as `UAgentResponseType.FINAL_OPTIONS`.
 
-    Within a try-except block, any exceptions that may occur during this process are logged as warnings, and an error response is sent back to the sender. We finally use the `.include()` method to include the `TopActivities` protocol in the agent, ensuring it's ready to handle messages of this type.
+    Any exceptions that may occur during this process are logged as warnings, and an error response is sent back to the sender. We finally use the `.include()` method to include the `TopActivities` protocol in the agent, ensuring it's ready to handle messages of this type.
 
 6. Save the script.
 
@@ -187,8 +187,8 @@ agent.include(top_activities_protocol)
 
 Let's now define the script for a top destinations agent which provides tourist destinations based on specified city and date criteria.
 
-1. Within the destinations directory previously created, create a Python script for this agent and name it: `touch top_destinations.py`.
-2. Let's import the needed modules and initialize an agent named "top_destinations" using a secret seed. Let's ensure the agent has sufficient funds in its wallet. We would then need to define the large language model setup and the communication protocol which defines the communication rules for handling messages about top destinations:
+1. Within the `destinations` directory previously created, create a Python script for this agent and name it: `touch top_destinations.py`.
+2. Let's import the needed modules and initialize an agent named `top_destinations` using a secret `seed`. Let's ensure the agent has sufficient funds in its wallet. We would then need to define the large language model setup and the communication protocol which defines the communication rules for handling messages about top destinations:
 
     ```py copy
     from uagents import Agent, Context, Protocol
@@ -253,7 +253,7 @@ Let's now define the script for a top destinations agent which provides tourist 
 
 4. Save the script.
 
-The overall script should look as follows
+The overall script should look as follows:
 
 ```py copy filename="top_destinations.py"
 from uagents import Agent, Context, Protocol
@@ -314,8 +314,8 @@ agent.include(top_destinations_protocol)
 
 Let's now define the script for a flights agent which provides flights information based on specified city and date criteria.
 
-1. Within the destinations directory previously created, create a Python script for this agent and name it: `touch flights.py`.
-2. Let's import the needed modules and initialize an agent named "flights_adaptor" using a secret seed. Let's ensure the agent has sufficient funds in its wallet:
+1. Within the `flights` directory previously created, create a Python script for this agent and name it: `touch flights.py`.
+2. Let's import the needed modules and initialize an agent named `flights_adaptor` using a secret `seed`. Let's ensure the agent has sufficient funds in its wallet:
 
     ```py copy
     from uagents import Agent, Context, Protocol
@@ -350,7 +350,7 @@ Let's now define the script for a flights agent which provides flights informati
       }
     ```
 
-4. Let's then define a `skyscanner_format_data()` function to process data from the Skyscanner API response to extract essential flight details.
+4. Let's then define a `skyscanner_format_data()` function to process data from the Skyscanner API response to extract essential flight details:
 
     ```py copy
     def skyscanner_format_data(data):
@@ -397,7 +397,7 @@ Let's now define the script for a flights agent which provides flights informati
     flights_protocol = Protocol("Flights")
     ```
 
-6. We would need to create and define a function `flight_offers()` to handle messages related to flight offers within the `Flights` protocol.
+6. We would need to create and define a function `flight_offers()` to handle messages related to flight offers within the `Flights` protocol:
 
     ```py copy
     @flights_protocol.on_message(model=Flights, replies={UAgentResponse})
@@ -450,8 +450,7 @@ Let's now define the script for a flights agent which provides flights informati
     agent.include(flights_protocol)
     ```
 
-
-    Whenever a message of the `Flights` model type is received, this function first extracts the necessary information (e.g., origin, destination, date, and number of persons) from the user's input, and constructs a payload for a Skyscanner API request and sends the request. It then formats the API response to extract essential flight details and selects the top 5 flight options from the data. It then creates a unique request ID for tracking, Then, it constructs a response message containing the top flight options and sends it to the user. Any exception that might occur during this process and communicates errors to the user is handled by the function. Finally, we include the `Flights` protocol using the `.include()` method, so enabling it to utilize the `flight_offers()` function to manage and respond to flight offer-related messages.
+    Whenever a message of `Flights` model type is received, this function first extracts the necessary information (e.g., origin, destination, date, and number of persons) from the user's input, and constructs a payload for a Skyscanner API request which is then sent. It then formats the API response to extract essential flight details and selects the top 5 flight options from the data. It then creates a unique request ID for tracking, Then, it constructs a response message containing the top flight options and sends it to the user. Any exception that might occur during this process and communicates errors to the user is handled by the function. Finally, we include the `Flights` protocol using the `.include()` method, so enabling it to utilize the `flight_offers()` function to manage and respond to flight offer-related messages.
 
 7. Save the script.
 
@@ -574,11 +573,11 @@ agent.include(flights_protocol)
 
 ### Messages
 
-Now that we have defined our agents, we would need to define the structured data formats that these agents will use to communicate with each other or with external systems. There are 4 structured data models which we need to define within the `messages` directory previously created within `src` folder:
+Now that we have defined our agents, we would need to define the structured data formats that these agents will use to communicate with each other or with external systems. There are 4 structured data models which we need to define within the `messages` directory previously created within the `src` folder:
 
 #### Flight
 
-The Flights model is designed to hold flight-related information with various fields, each annotated with descriptions and optional constraints. It's used to standardize and validate data exchanged between agents or systems within the uAgents integration.
+The Flight model is designed to hold flight-related information with various fields, each annotated with descriptions and optional constraints. It's used to standardize and validate data exchanged between agents or systems within the uAgents integration.
 
 1. Within the `messages` folder, let's create a Python script and name it: `touch flight.py`.
 2. In here, we need to import the necessary modules and define a model to represent structured data for flight-related information:
@@ -601,11 +600,11 @@ The Flights model is designed to hold flight-related information with various fi
         allow_population_by_field_name = True
     ```
 
-    Here, we define a class named `Flights` which inherits from the `Model` class. Inside this class we defines a field named `from_` which represents the airport IATA code for the departure airport. It includes a description and uses the `Field` class to provide additional metadata. We then define a field named `to` which represents the airport IATA code for the destination airport. It includes a description. An optional field named `trip` is defined. This can hold values like "oneway" or "return" to indicate the type of trip. We also defined a field `date` containing the date of the outbound flight and a field `back_date` for return flights. `route` indicates the maximum number of stops for the flight route. The field named `persons` represents the number of people flying.
+    Here, we define a class named `Flights` which inherits from the `Model` class. Inside this class, we defines a field named `from_` which represents the airport IATA code for the departure airport. It includes a description and uses the `Field` class to provide additional metadata. We then define a field named `to` which represents the airport IATA code for the destination airport. It includes a description. An optional field named `trip` is defined. This can hold values like "oneway" or "return" to indicate the type of trip. We also defined a field `date` containing the date of the outbound flight and a field `back_date` for return flights. `route` indicates the maximum number of stops for the flight route. The field named `persons` represents the number of people flying.
 
 #### General
 
-1. Within the `messages` folder, let's create a Python script and name it: `touch general.py`.
+1. Within the `messages` folder, let's create another Python script and name it: `touch general.py`.
 2. In here, we need to import the necessary modules and define the different data models:
 
     ```py copy filename="general.py"
@@ -645,7 +644,7 @@ The Flights model is designed to hold flight-related information with various fi
 
 #### Top activities
 
-1. Within the `messages` folder, let's create a Python script and name it: `touch top_activities.py`.
+1. Within the `messages` folder, let's create an additional Python script and name it: `touch top_activities.py`.
 2. In here, we need to import the necessary modules and define the data model through which agents can exchange data about users' preferences for top activities in a specific city, helping them to make more informed and tailored suggestions to users:
 
     ```py copy filename="general.py"
@@ -668,7 +667,7 @@ The Flights model is designed to hold flight-related information with various fi
 
 By using this model, agents can communicate and understand user preferences for holiday destinations, allowing them to provide more tailored suggestions and recommendations based on the user's interests.
 
-1. Within the `messages` folder, let's create a Python script and name it: `touch top_destinations.py`.
+1. Within the `messages` folder, let's create a final Python script and name it: `touch top_destinations.py`.
 2. In here, we need to import the necessary modules and define the data model through which agents can exchange data about users' preferences for top destinations:
 
     ```py copy filename="general.py"
@@ -679,15 +678,15 @@ By using this model, agents can communicate and understand user preferences for 
       preferences: str = Field(description="The field expresses what the user prefer. Can be left empty. For example: 'beach', 'mountains, rivers', 'city', etc.")
     ```
 
-    Here, we defined a `TopDestinations model which represents user preferences for top holiday destinations. This class takes in a `preferences` parameter which indicated a field that expresses what the user prefers for their holiday destination. It can be left empty or contain preferences like "beach," "mountains," "rivers," "city," etc.
+    Here, we defined a `TopDestinations` model which represents user preferences for top holiday destinations. This class takes in a `preferences` parameter which indicated a field that expresses what the user prefers for their holiday destination. It can be left empty or contain preferences like `beach`, `mountains`, `rivers`, `city`, and so on.
 
-### LLMs
+### LLM - Large Language Model
 
-We need to define a convenient way to interact with OpenAI's large language models for text generation, embedding, and completions.
+We need to define a convenient way to interact with OpenAI's large language model (LLM) for text generation, embedding, and completions.
 
 1. To start, we need to enter now the `utils` folder created at the beginning within the `src` folder.
 2. In here, let's create a Python file and name it: `touch llm.py`.
-3. First of all, we need to import the needed classes. Then, we proceed and define a `OpenAILLM` class. This class encapsulates methods for interacting with OpenAI's large language model.
+3. First of all, we need to import the needed classes. Then, we proceed and define a `OpenAILLM` class. This class encapsulates methods for interacting with OpenAI's large language model:
 
     ```py copy
     import openai
@@ -763,7 +762,7 @@ We need to define a convenient way to interact with OpenAI's large language mode
             return await self.complete(header, prompt, complete, temperature, max_tokens, stop)
     ```
 
-    The class provides methods for interacting with OpenAI's LLM. It accepts two arguments during initialization:
+    The `OpenAILLM` class provides methods for interacting with OpenAI's LLM. It accepts two arguments during initialization:
 
         - `completion_model`: The model to use for completions (default: `"text-davinci-003"`).
         - `embedding_model`: The model to use for text embeddings (default: `"text-embedding-ada-002"`).
@@ -773,7 +772,7 @@ We need to define a convenient way to interact with OpenAI's large language mode
         - `embedding()`: This takes a text input, creates an embedding using the specified embedding model, and returns the embedding.
         - `complete()`: This generates completions based on the input prompt using the specified completion model. It supports both GPT-3 DaVinci model and GPT-4/gpt-3.5 chat model.
 
-4. We then need to define a `get_llm()` function which returns an instance of `OpenAILLM` class with a specific completion model ("gpt-3.5-turbo").
+4. We then need to define a `get_llm()` function which returns an instance of `OpenAILLM` class with a specific completion model (`"gpt-3.5-turbo"`).
 
     ```py copy
     def get_llm():
@@ -874,9 +873,9 @@ def get_llm():
 
 ### Main script
 
-We are now ready to write the code for our main script. In the `src` folder in `fetch-holiday`, let's create a Python script and name it: `touch main.py`.
+We are now ready to write the code for our main script. In the `src` folder in `fetch-holiday` integration, let's enter the `main.py` script initially created.
 
-1. Let's import the needed class and let's create a Bureau object as an instance of the Bureau class. We need to add the  three different agents to it, and then run the Bureau to manage and coordinate their execution:
+1. Let's import the needed class and let's create a `Bureau` object as an instance of the `Bureau` class. We need to add the  three different agents to it, and then run the `Bureau` to manage and coordinate their execution:
 
     ```py copy filename="main.py"
     from uagents import Bureau
@@ -906,10 +905,10 @@ Once you finalized the `main.py` script, you will need to run the project and it
 You need to look for the following output in the logs:
 
 ```
-Adding top destinations agent to Bureau: {top_dest_address}
+Adding top destinations agent to Bureau: {top_destinations_agent.address}
 ```
 
-Copy the `{top_dest_address}` value and paste it somewhere safe. You will need it in the following step.
+Copy the `{top_destinations_agent.address}` value and paste it somewhere safe. You will need it in the following step.
 
 ### Set up a client script
 
@@ -938,7 +937,7 @@ Now that we have set up the integrations, let's run a client script that will sh
 
     @top_dest_client.on_interval(period=10.0)
     async def send_message(ctx: Context):
-        await ctx.send("{top_dest_address}", top_dest_request)
+        await ctx.send("{top_destinations_agent.address}", top_dest_request)
 
     @top_dest_client.on_message(model=UAgentResponse)
     async def message_handler(ctx: Context, _: str, msg: UAgentResponse):
@@ -954,7 +953,7 @@ Now that we have set up the integrations, let's run a client script that will sh
 
 #### Run the client script
 
-Open a new terminal (let the previous one be as is), and navigate to the `src` folder to run the client.
+Open a new terminal (let the previous one be as is), and navigate to the `src` folder to run the client script.
 
 ```
 cd src
