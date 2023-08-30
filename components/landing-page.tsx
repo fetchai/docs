@@ -14,20 +14,20 @@ function LandingPage() {
 
      const startingGuides = [
          {
-             label: 'Getting started with Agents',
+             label: 'Getting started with Agents 🛠️📲',
              path: '/guides/agents/installing-uagent'
          },
          {
-             label: 'Start communicating with other agents',
+             label: 'Start communicating with other agents 📱🤖',
              path: 'guides/agents/communicating-with-other-agents'
          },
          {
-             label: 'PLACEHOLDER Build your own chat assistant',
-             path: 'guides/agents/creating-an-agent-to-generate-revenue-on-your-data'
+             label: 'How to use μAgents to send tokens 📊💸',
+             path: 'guides/agents/send-tokens'
          },
              {
-             label: 'Start creating revenue with Agents',
-             path: 'guides/agents/creating-an-agent-to-generate-revenue-on-your-data'
+             label: 'How to use μAgents to verify messages 📬🔐',
+             path: 'guides/agents/message-verification'
          },
         ];
 
@@ -57,7 +57,7 @@ function LandingPage() {
       <p className={styles.description}>Explore our guides and examples to use Fetch</p>
       <section className="nx-mt-60 landing-page-left-image">
         <p className={styles.subTitle}>Getting Started</p>
-        <p className={styles.description}>Explore our guides and examples to use Fetch</p>
+        <p className={styles.description}>Explore our guides and examples to use Fetch.</p>
 
         <div className={styles.startGuides}>
           <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
@@ -74,7 +74,7 @@ function LandingPage() {
         <div className='nx-flex nx-justify-between'>
           <p className={styles.subTitle}>Featured Guides</p>
         </div>
-        <p className={styles.description}>Guides are the evergreen documents of the docs, technically focussed (code heavy) explanations of use-cases and concepts.</p>
+        <p className={styles.description}>Guides are the evergreen documents of the docs, technically focused (code heavy) explanations of use-cases and concepts.</p>
         <FeatureGuideTabs/>
       </section>
       <section className='nx-mt-160'>
