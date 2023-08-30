@@ -2,8 +2,20 @@ import React, { useEffect, useState } from 'react';
 import styles from './tab.module.css'
 import { useRouter } from 'next/router';
 
+export const GuideBox = ({content}) => {
+  const router = useRouter()
+  const [hover, setHover] = useState<boolean>(false);
 
-const FeatureGuideTabs = () => {
+  return <section className={hover ? styles.hoverGuideBox : styles.guideBox}
+              onClick={() => {router.push(content.path)}}
+              onMouseOver={() => {setHover(true)}}
+              onMouseLeave={() => {setHover(false)}}>
+      <h3 className="nx-text-black nx-font-medium nx-mb-2 nx-text-lg">{content.title}</h3>
+      <p className="nx-text-gray-500 nx-font-normal">{content.description}</p>
+    </section>
+  } 
+
+export const FeatureGuideTabs = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -12,51 +24,64 @@ const FeatureGuideTabs = () => {
       label: 'Agents',
       content: [{
         title: 'Installing the uAgent framework',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
+
       },{
         title: 'Creating your first agent',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/create-a-uagent'
       },
       {
         title: 'How to use μAgents to verify messages',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/message-verification'
       },{
         title: 'Registering in the Almanac contract',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
       },
       {
         title: 'Communicating with other agents',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
       },{
         title: 'How to use the μAgents to simulate a cleaning scenario',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
       }]
     },
     { 
       label: 'Hosting',
       content: [{
         title: 'Installing the uhosting framework',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
       },{
         title: 'Creating your first hosting',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
       },
       {
         title: 'Communicating with other hostings',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
       },{
         title: 'How to use the μhostings to simulate a cleaning scenario',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
       }]
     },
     { 
       label: 'Other',
       content: [{
         title: 'Installing other framework',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
       },{
         title: 'Creating your first other featured guide for now',
-        description: 'Welcome back to another eagerly anticipated community update.'
+        description: 'Welcome back to another eagerly anticipated community update.',
+        path: 'guides/agents/installing-uagent'
       }]
     },
   ];
@@ -74,17 +99,7 @@ const FeatureGuideTabs = () => {
     };
   }, []);
 
-  const GuideBox = ({content}) => {
-    const router = useRouter()
-    const [hover, setHover] = useState<boolean>(false);
-
-    return <section className={hover ? styles.hoverGuideBox : styles.guideBox}
-                onMouseOver={() => {setHover(true)}}
-                onMouseLeave={() => {setHover(false)}}>
-        <h3 className="nx-text-black nx-font-medium nx-mb-2 nx-text-lg">{content.title}</h3>
-        <p className="nx-text-gray-500 nx-font-normal">{content.description}</p>
-      </section>
-    } 
+  
 
   return (
     <div>
@@ -142,5 +157,3 @@ const FeatureGuideTabs = () => {
     </div>
   );
 };
-
-export default FeatureGuideTabs;
