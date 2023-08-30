@@ -90,8 +90,11 @@ const items: { [key: string]: Item[] } = {
 const IndexPage: React.FC = () => {
   return (
     <div className="nx-container nx-mx-auto nx-py-8">
-      {Object.entries(items).map(([heading, itemList]) => (
-        <><Section key={heading} heading={heading} items={itemList} /></>
+      {Object.entries(items).map(([heading, itemList], index) => (
+        <div key={heading}>
+          {index !== 0 && <div className="nx-mt-32 nx-mb-32 nx-border-t nx-border-gray-300" />}
+          <Section heading={heading} items={itemList} />
+        </div>
       ))}
     </div>
   );
