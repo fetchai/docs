@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
               <div className='nx-flex'>
                 <Anchor
                   className="nx-p-2 nx-text-current"
-                  href='https://github.com/shuding/nextra-docs-template'
+                  href='https://discord.gg/fetchai'
                   newWindow
                 >
                   {renderComponent(<>
@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
 
                 <Anchor
                   className="nx-p-2 nx-text-current"
-                  href='https://discord.com'
+                  href='https://github.com/fetchai'
                   newWindow
                 >
                   {renderComponent(<>
