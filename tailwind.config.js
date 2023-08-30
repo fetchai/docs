@@ -1,43 +1,73 @@
-/** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors');
+
+const makePrimaryColor = (l) => ({ opacityValue }) => {
+  if (opacityValue === undefined) {
+    return `hsl(var(--nextra-primary-hue) 100% ${l}%)`;
+  }
+  return `hsl(var(--nextra-primary-hue) 100% ${l}% / ${opacityValue})`;
+};
+
 module.exports = {
-  content: ['./pages/**/*.{js,mjs,jsx,ts,tsx,mdx}',
-            './components/**.{js,mjs,jsx,ts,tsx,mdx}'],
-  darkMode: 'class',
+  prefix: 'nx-',
+  content: [
+    './pages/**/*.{js,mjs,jsx,ts,tsx,mdx}',
+    './components/**/*.{js,mjs,jsx,ts,tsx,mdx}',
+    // './styles/**/*.css', // Add this line to include the nextra-theme-docs CSS files
+  ],
   theme: {
-    fontSize: {
-      '2xs': ['0.75rem', { lineHeight: '1.25rem' }],
-      xs: ['0.8125rem', { lineHeight: '1.5rem' }],
-      sm: ['0.875rem', { lineHeight: '1.5rem' }],
-      base: ['1rem', { lineHeight: '1.75rem' }],
-      lg: ['1.125rem', { lineHeight: '1.75rem' }],
-      xl: ['1.25rem', { lineHeight: '1.75rem' }],
-      '2xl': ['1.5rem', { lineHeight: '2rem' }],
-      '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
-      '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
-      '5xl': ['3rem', { lineHeight: '1' }],
-      '6xl': ['3.75rem', { lineHeight: '1' }],
-      '7xl': ['4.5rem', { lineHeight: '1' }],
-      '8xl': ['6rem', { lineHeight: '1' }],
-      '9xl': ['8rem', { lineHeight: '1' }],
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
     },
-    typography: require('./node_modules/@tailwindcss/typography'),
+    fontSize: {
+      xs: '.75rem',
+      sm: '.875rem',
+      base: '1rem',
+      lg: '1.125rem',
+      xl: '1.25rem',
+      '2xl': '1.5rem',
+      '3xl': '1.875rem',
+      '4xl': '2.25rem',
+      '5xl': '3rem',
+      '6xl': '4rem',
+    },
+    letterSpacing: {
+      tight: '-0.015em',
+    },
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      black: '#000',
+      white: '#fff',
+      gray: colors.gray,
+      slate: colors.slate,
+      neutral: colors.neutral,
+      red: colors.red,
+      orange: colors.orange,
+      blue: colors.blue,
+      yellow: colors.yellow,
+      primary: {
+        50: makePrimaryColor(97),
+        100: makePrimaryColor(94),
+        200: makePrimaryColor(86),
+        300: makePrimaryColor(77),
+        400: makePrimaryColor(66),
+        500: makePrimaryColor(50),
+        600: makePrimaryColor(45),
+        700: makePrimaryColor(39),
+        750: makePrimaryColor(35),
+        800: makePrimaryColor(32),
+        900: makePrimaryColor(24),
+      },
+    },
     extend: {
-      boxShadow: {
-        glow: '0 0 4px rgb(0 0 0 / 0.1)',
-      },
-      maxWidth: {
-        lg: '33rem',
-        '2xl': '40rem',
-        '3xl': '50rem',
-        '5xl': '66rem',
-      },
-      opacity: {
-        1: '0.01',
-        2.5: '0.025',
-        7.5: '0.075',
-        15: '0.15',
+      colors: {
+        dark: '#111',
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
-}
+  darkMode: ['class', 'html[class~="dark"]'],
+};

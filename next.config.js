@@ -1,6 +1,8 @@
 const withNextra = require('nextra')({
-  theme: 'nextra-theme-docs',
+  theme: './theme/fetch-ai-docs',
   themeConfig: './theme.config.tsx',
 })
 
-module.exports = withNextra()
+module.exports = withNextra({
+  basePath: '/docs',
+})

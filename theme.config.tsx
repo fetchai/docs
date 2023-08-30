@@ -1,18 +1,24 @@
 import React from 'react'
-import { DocsThemeConfig } from 'nextra-theme-docs'
+import { DocsThemeConfig } from './theme/fetch-ai-docs'
+import Footer from './components/footer'
+import Logo from './components/Logo'
 
 const config: DocsThemeConfig = {
-  logo: <span>My Project</span>,
+  logo: <Logo/>,
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: 'https://github.com/fetchai',
   },
   chat: {
-    link: 'https://discord.com',
+    link: 'https://discord.gg/fetchai',
   },
   docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
   footer: {
-    text: 'Nextra Docs Template',
+    component: <Footer/>
   },
+  search: {
+    placeholder: 'Search in documentation'
+  }
 }
+
 
 export default config
