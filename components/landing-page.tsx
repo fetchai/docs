@@ -22,11 +22,11 @@ function LandingPage() {
              path: 'guides/agents/communicating-with-other-agents'
          },
          {
-             label: 'How to use Agents to send tokens 📊💸',
+             label: 'How to use μAgents to send tokens 📊💸',
              path: 'guides/agents/send-tokens'
          },
              {
-             label: 'How to use Agents to verify messages 📬🔐',
+             label: 'How to use μAgents to verify messages 📬🔐',
              path: 'guides/agents/message-verification'
          },
         ];
