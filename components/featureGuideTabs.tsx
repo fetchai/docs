@@ -23,32 +23,40 @@ export const FeatureGuideTabs = () => {
     { 
       label: 'Agents',
       content: [{
-        title: 'Installing the uAgent framework',
-        description: 'Welcome back to another eagerly anticipated community update.',
+        title: 'Installing the μAgents Framework 🛠️📲',
+        description: 'A guide for installing the μAgents Framework correctly.',
         path: 'guides/agents/installing-uagent'
 
       },{
-        title: 'Creating your first agent',
-        description: 'Welcome back to another eagerly anticipated community update.',
+        title: 'Creating your first μAgent 🤖🧑‍💻',
+        description: 'A guide showing you how to create your first agent in few minutes.',
         path: 'guides/agents/create-a-uagent'
       },
       {
-        title: 'How to use μAgents to verify messages',
-        description: 'Welcome back to another eagerly anticipated community update.',
+        title: 'How to use μAgents to verify messages 📬🔐',
+        description: 'A guide showing you how to use μAgents to verify messages.',
         path: 'guides/agents/message-verification'
       },{
         title: 'Registering in the Almanac contract',
-        description: 'Welcome back to another eagerly anticipated community update.',
-        path: 'guides/agents/installing-uagent'
+        description: 'A guide showing you how to correctly register within the Almanac contract.',
+        path: 'guides/agents/register-in-almanac'
       },
       {
-        title: 'Communicating with other agents',
-        description: 'Welcome back to another eagerly anticipated community update.',
-        path: 'guides/agents/installing-uagent'
+        title: 'Communicating with other μAgents 📱🤖',
+        description: 'A guide showing different communication methods between agents.',
+        path: 'guides/agents/communicating-with-other-agents'
       },{
-        title: 'How to use the μAgents to simulate a cleaning scenario',
-        description: 'Welcome back to another eagerly anticipated community update.',
-        path: 'guides/agents/installing-uagent'
+        title: 'How to use the μAgents to simulate a cleaning scenario ✨',
+        description: 'A guide teaching you how agents can be used to set up a cleaning scenario.',
+        path: 'guides/agents/cleaning-demo'
+      },{
+        title: 'Getting μAgent addresses 🤖📫',
+        description: 'A guide teaching you how to retrieve μAgent addresses.',
+        path: 'guides/agents/getting-uagent-address'
+      },{
+        title: 'How to book a table at a restaurant using μAgents',
+        description: 'A guide showcasing a table booking process using μAgents.',
+        path: 'guides/agents/booking-demo'
       }]
     },
     { 
