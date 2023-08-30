@@ -6,10 +6,10 @@ import Logo from './components/Logo'
 const config: DocsThemeConfig = {
   logo: <Logo/>,
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: 'https://github.com/fetchai',
   },
   chat: {
-    link: 'https://discord.com',
+    link: 'https://discord.gg/fetchai',
   },
   docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
   footer: {
