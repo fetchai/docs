@@ -68,22 +68,22 @@ const items: { [key: string]: Item[] } = {
   'AI Engine': [
     { title: 'Intelligence LLMS', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>), icon: apiAgentIcon , path: "/concepts/ai-engine/general-intelligence-with-llms"},
     { title: 'Context Control', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: insightsAgentIcon , path: "/guides"},
-    { title: 'DetlaV', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: whisperAgentIcon , path: "/guides"},
+    { title: 'DeltaV', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: whisperAgentIcon , path: "/guides"},
     { title: 'Analytics', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
     ],
   'AI Agent Services': [
-    { title: 'Hosting ', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
-    { title: 'Mailbox', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: mailBoxIcon , path: "/guides"},
-    { title: 'Agent API', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: authenticationIcon , path: "/guides"},
-    { title: 'Explorer', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
-    { title: 'Search & Discovery', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
+    { title: 'Hosting', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/concepts/agent-services/agent-hosting"},
+    { title: 'Mailbox', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: mailBoxIcon , path: "/concepts/agent-services/agent-mail"},
+    { title: 'Agent APIs', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: authenticationIcon , path: "/concepts/agent-services/agent-apis"},
+    { title: 'Explorer', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/concepts/agent-services/agent-explorer"},
+    { title: 'Search & Discovery', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/references/contracts/uagents-almanac/almanac-overview"},
   ],
   'Open Network': [
     { title: 'Fetch Ledger', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: whisperAgentIcon, path: "/guides"},
     { title: 'Names Service', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
-    { title: 'Alamanac', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: almanacIcon , path: "/guides"},
-    { title: 'Cosmpy', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
-    { title: 'Wallet', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
+    { title: 'Almanac', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: almanacIcon , path: "/references/contracts/uagents-almanac/almanac-overview"},
+    { title: 'Cosmpy', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides/fetch-network/cosmpy/install"},
+    { title: 'Wallet', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides/fetch-network/fetch-wallet-getting-started"},
   ],
 };
 
