@@ -24,6 +24,14 @@ spec:
             - name: web
               containerPort: 3000
 
+          resources:
+            requests:
+              cpu: {{ .Values.website.cpuRequest | quote }}
+              memory: {{ .Values.website.memRequest | quote }}
+            limits:
+              cpu: {{ .Values.website.cpuLimit | quote }}
+              memory: {{ .Values.website.memLimit | quote }}
+
           startupProbe:
             httpGet:
               path: /
