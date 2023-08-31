@@ -6,7 +6,10 @@ metadata:
     app: docs
 
 spec:
-  replicas: 1
+  {{- if .Values.website.hpa.enabled }}
+  {{- else }}
+  replicas: {{ .Values.website.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       app: docs
@@ -23,3 +26,41 @@ spec:
           ports:
             - name: web
               containerPort: 3000
+
+          resources:
+            requests:
+              cpu: {{ .Values.website.cpuRequest | quote }}
+              memory: {{ .Values.website.memRequest | quote }}
+            limits:
+              cpu: {{ .Values.website.cpuLimit | quote }}
+              memory: {{ .Values.website.memLimit | quote }}
+
+          startupProbe:
+            httpGet:
+              path: /
+              port: web
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 6 # allow 30 seconds for the initial start of the application
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: web
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 12 # allow 60 seconds before killing the pod
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: web
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 1

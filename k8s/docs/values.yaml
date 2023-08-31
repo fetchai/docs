@@ -5,6 +5,17 @@ website:
     repo: "gcr.io/fetch-ai-sandbox/docs-website"
     tag: "3cf4f5f"
 
+  hpa:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    cpuUtilization: 60
+
+  cpuRequest: "100m"
+  memRequest: "400Mi"
+  cpuLimit: "500m"
+  memLimit: "650Mi"
+
 dns:
   name: docs-staging.sandbox-london-b.fetch-ai.com
   target: gaia.sandbox-london-b.fetch-ai.com
