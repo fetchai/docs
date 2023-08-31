@@ -62,34 +62,34 @@ export const FeatureGuideTabs = () => {
     { 
       label: 'Hosting',
       content: [{
-        title: 'Installing the uhosting framework',
-        description: 'Welcome back to another eagerly anticipated community update.',
-        path: 'guides/agents/installing-uagent'
+        title: 'Creating a hosted agent 🤖',
+        description: 'Use the Agentverse Hosting service to develop your agents directly on the Agentverse platform.',
+        path: '/guides/agentverse/creating-a-hosted-agent'
       },{
-        title: 'Creating your first hosting',
-        description: 'Welcome back to another eagerly anticipated community update.',
-        path: 'guides/agents/installing-uagent'
+        title: 'Discovering agents 🔎',
+        description: 'Learn to use the Agentverse Explorer to start an interaction with other registered agents.',
+        path: '/guides/agentverse/discovering-agents'
       },
       {
-        title: 'Communicating with other hostings',
-        description: 'Welcome back to another eagerly anticipated community update.',
-        path: 'guides/agents/installing-uagent'
+        title: 'Utilising the Agentverse Mailbox Service 📬',
+        description: 'Set up mailboxes for your locally-run agents and to run them independently of your constant presence to run the server.',
+        path: '/guides/agentverse/utilising-the-mailbox'
       },{
-        title: 'How to use the μhostings to simulate a cleaning scenario',
-        description: 'Welcome back to another eagerly anticipated community update.',
-        path: 'guides/agents/installing-uagent'
+        title: 'Registering Agent Services',
+        description: 'Description to be added.',
+        path: '/guides/agentverse/registering-agent-services'
       }]
     },
     { 
       label: 'Other',
       content: [{
-        title: 'Installing other framework',
-        description: 'Welcome back to another eagerly anticipated community update.',
-        path: 'guides/agents/installing-uagent'
+        title: 'Fetch Wallet 💵',
+        description: 'A guide helping you to get started with the Fetch wallet.',
+        path: '/guides/fetch-network/fetch-wallet-getting-started'
       },{
-        title: 'Creating your first other featured guide for now',
-        description: 'Welcome back to another eagerly anticipated community update.',
-        path: 'guides/agents/installing-uagent'
+        title: 'How to convert FET to and from ERC20 🔄',
+        description: 'A guide for converting Native FET to and from ERC-20 FET.',
+        path: '/guides/fetch-network/how-to-convert-fet-to-and-from-erc20'
       }]
     },
   ];
