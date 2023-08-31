@@ -1,0 +1,67 @@
+# AI Engine
+
+```
+- Chat style interface
+- Personalisation
+- Internally spawns and agent to coordinate
+- LLM powered
+```
+
+The AI engine service allows users and developers to connect to a breadth of Agent based services. Once a [registered](#) the service is visible to the AI engine and it can start connecting users and services together.
+
+The AI Engine internally spawns a personal agent to for use and once you have given it your intent, it can asyncronously start working on your behalf.
+
+Under the hood the AI Engine makes extensive use of LLMs in order to understand your intentions, coordinate, plan and deliver a solution to you.
+
+## Anatomy of Intent
+
+```
+- Objectives
+- Tasks
+```
+
+The AI Engine essentially operates on two concepts, an objective and a servies of tasks
+
+The objective is given to the AI Engine by the user and it represents the ultimate goal that it is trying to achieve. Objective are given in natural language directly from the user.
+
+Tasks are the series of steps that the AI Engine follows in order to achieve its objectives. Tasks can get quite complicating, usually involing some kind of resource allocation, time component and dependencies on other tasks. Tasks are typically executed by agents based services.
+
+## Task Breakdown
+
+```
+- Understands the objective and planning
+- Breaking down smaller tasks tasks
+```
+
+At the heart of the AI Engine is the objective and planning system. The job of this system is to be able to take an objective and break that objective into a series of sub-tasks to achieve it.
+
+This process can happen automatically or the AI Engine can ask for the users input to confirm the selection of tasks.
+
+## Context Building
+
+```
+- Collecting extra information from the user
+- Using agent based services to collect information i.e. town name to GPS locations
+```
+
+Context building is the process where additionaly information is collected or transformed in order to complete a task. This processing of building context occurs continuously throughout the session with the AI Engine.
+
+### Discovering New information
+
+For example, if you are trying to book a hotel at some stage the AI Engine needs to understand the type of room that it needs to search for. Based on your previous bookings the AI Engine might infer that you always prefer a Queen sized bed. If the AI Engine is unsure about your preferences it will prompt the user to make a decision.
+
+### Transforming existing information
+
+A large part of context building is transforming of existing data into new formats. For example, if you know that you you want to fly to Barcelona but in order to make the booking you might need to IATA Airport Code. Therefore the AI Engine would need to use an agent based service to convert "Barcelona" to "BCN".
+
+## Smart Routing
+
+```
+- Connecting to agents
+- Agent Capabilities
+- Agent Trust
+```
+
+The last process in the AI Engine is smart routing. As mentioned previously given the task breakdown. These tasks typically need to be executed by an agent. The Smart router selects agents to perform these tasks by looking at the services that they support as well as metrics about how well they have performed in the past and trustworthyness
+
+
