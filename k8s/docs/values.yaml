@@ -3,7 +3,18 @@ website:
 
   image:
     repo: "gcr.io/fetch-ai-sandbox/docs-website"
-    tag: "3cf4f5f"
+    tag: "aac12f0"
+
+  hpa:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    cpuUtilization: 60
+
+  cpuRequest: "100m"
+  memRequest: "400Mi"
+  cpuLimit: "500m"
+  memLimit: "650Mi"
 
 dns:
   name: docs-staging.sandbox-london-b.fetch-ai.com
@@ -15,4 +26,5 @@ tls:
   certName: docs-staging-cert
 
 ingress:
+  enable: true
   gateway: istio-fetch-gaia-ig
