@@ -1,0 +1,480 @@
+import {
+  Note,
+  Properties,
+  Property,
+  Warn,
+  Section,
+  ApiIntro,
+  Tag,
+  CodeHeading,
+} from "../../../components/mdx";
+import { DropDownTabs, Tab } from "../../../components/mdx";
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+  ApiRequest,
+  ApiResponses,
+} from "../../../components/api-endpoint";
+
+# DELTA-V API
+
+<div className="nx-text-fetch-content">
+  Most of the endpoints depends on various instances and are considered parameters for the actual endpoint, but these are not meant to be passed directly by the user.
+
+Instead, these instance-dependent elements are integrated and managed directly by the backend system. We refer to them as `*name_parameter`, where the asterisk (\*) is used to denote a specific instance-dependent parameter that the route relies on.
+
+Mind that: to access these APIs, user must be **authenticated** and have the **correct permissions**.
+
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The DeltaV API allows you to interact with the DeltaV backend, allowing you to interact with your agents and more.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        GET /v1/engine/chat/sessions
+        POST /v1/engine/chat/sessions
+
+        DELETE /v1/engine/chat/sessions/:session_id
+
+        POST /v1/engine/chat/sessions/:session_id/submit
+
+        GET /v1/engine/chat/sessions/:session_id/responses
+
+        GET /v1/engine/chat/sessions/:session_id/messages
+
+        GET /v1/engine/chat/sessions/:session_id/messages/all
+
+        POST /v1/engine/chat/sessions/:session_id/feedback
+
+        GET /v1/engine/chat/remaining_tokens
+        ```
+    </Col>
+
+</Row>
+
+## Starting your session
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1/engine/chat/sessions"
+  description="Start a new session for a user authenticated through JWT."
+  responses={[
+    {
+      session_id: "c320b5c4-518c-428b-889d-3cb8403901c0",
+      user: "YOUR_CLIENT_UID",
+      num_messages: 0,
+      last_message_timestamp: null,
+      messages: [],
+      bucket_id: null,
+      model: "talkative-01",
+      remaining_tokens: 10000000,
+    },
+  ]}
+  responseDescription="Returns the newly created Session object"
+/>
+
+## Get all sessions for a user
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1/engine/chat/sessions"
+  description="Retrieves all sessions for a user authenticated through JWT."
+  responses={[
+    {
+      session_id: "7be16891-39a6-44a6-88cb-377250dd8eb7",
+      user: "YOUR_CLIENT_UID",
+      num_messages: 0,
+      last_message_timestamp: null,
+      messages: [],
+      bucket_id: null,
+      model: "talkative-01",
+      remaining_tokens: 9999099,
+    },
+    {
+      session_id: "aed47bb4-9d73-4135-89f7-925036aa83bd",
+      user: "YOUR_CLIENT_UID",
+      num_messages: 0,
+      last_message_timestamp: null,
+      messages: [],
+      bucket_id: "ef6937d9-c086-4785-8bb1-748680821714",
+      model: "talkative-01",
+      remaining_tokens: 9999099,
+    },
+  ]}
+  responseDescription="Returns a list of Session objects associated with the user"
+/>
+
+## Sending a new message
+
+There are 4 types of messages that can be sent to the backend:
+
+- `start`: This is the first message that should be sent to the backend. It contains the objective and context of the conversation. The objective and context are used to determine which agent to use for the conversation.
+- `user_message`: This is a message sent by the user.
+- `user_json`: This is a JSON message sent by the user.
+- `stop`: This is the last message that should be sent to the backend. It indicates that the conversation has ended.
+
+### Sending start message
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1/engine/chat/sessions/:session_id/submit"
+  description="Sending start message"
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description: "Contains the data for the type of message being sent.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent.",
+    },
+    {
+      name: "objective",
+      type: "string",
+      description:
+        "The objective of the conversation. This is used to determine which agent to use for the conversation.",
+    },
+    {
+      name: "context",
+      type: "string",
+      description:
+        "The context of the conversation. This is used to give information about the user to the agent.",
+    },
+  ]}
+  samplePayload={{
+    payload: {
+      type: "start",
+      objective: "I'd like to go to London",
+      context:
+        "User full Name: Test User\nUser email: user@user.com\nUser location: latitude=51.5072, longitude=0.1276\n",
+    },
+  }}
+  responseDescription="On a successful request, there is no response"
+/>
+
+### Sending user message
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1/engine/chat/sessions/:session_id/submit"
+  description="Send an answer to a question asked by the agent"
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description: "Contains the data for the type of message being sent.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent.",
+    },
+    {
+      name: "user_message",
+      type: "string",
+      description:
+        "The user response to a question asked by the agent or to confirm the context",
+    },
+  ]}
+  samplePayload={{
+    payload: {
+      type: "user_message",
+      user_message: "The booking is for 2 people",
+    },
+  }}
+  responseDescription="On a successful request, there is no response"
+/>
+
+### Sending user json message
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1/engine/chat/sessions/:session_id/submit"
+  description="Request for creating a new agent"
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description:
+        "Contains the data for the type of message being sent. The payload is different for each type of message.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent.",
+    },
+    {
+      name: "user_json",
+      type: "JSON",
+      description:
+        "The objective of the conversation. This is used to determine which agent to use for the conversation.",
+    },
+    {
+      name: "user_json-type",
+      type: "string",
+      description:
+        "The context of the conversation. type: `task_list`, `options`. `task_list` is used to select a task pertaining to a specific agent. `options` is used to select a subtask pertaining to a specific agent or select an option from a list of suggestions given by the agent.",
+    },
+    {
+      name: "user_json-selection",
+      type: "array",
+      description:
+        "The selection of the user from the list of options. The selection is an array of integers or UUID4",
+    },
+
+]}
+samplePayload={{
+    payload: {
+      type: "user_json",
+      user_json: {
+        type: "task_list | options",
+        selection: ["0 | 9f157712-472d-4f0d-814d-d5aae9fd7b28"],
+      },
+    },
+  }}
+responseDescription="On a successful request, there is no response"
+/>
+
+### Sending stop message
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1/engine/chat/sessions/:session_id/submit"
+  description="Request for creating a new agent"
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description:
+        "Contains the data for the type of message being sent. The payload is different for each type of message.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent.",
+    },
+  ]}
+  samplePayload={{
+    payload: {
+      type: "stop",
+    },
+  }}
+  responseDescription="On a successful request, there is no response"
+/>
+
+## Delete a session for a user
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="DELETE"
+  path="/v1/engine/chat/sessions/:session_id"
+  description="Delete a specific session given a session id for a user authenticated through JWT."
+/>
+
+## Fetch new messages sent by agent
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1/engine/chat/sessions/:session_id/responses"
+  description="Fetches new messages for a specific session identified by the session_id"
+  responses={[
+    {
+      agent_response:
+        '{"message_id": "c5c27376-0edc-41db-ae7b-980b4a6bfe8b", "timestamp": "2023-08-31T13:10:48.941865", "score": 0.0, "type": "agent_json", "agent_json": {"type": "task_list", "text": "Found tasks for your objective. Please select.", "options": [{"key": 0, "value": "TopActivities/TopActivities"}, {"key": 1, "value": "Flights/Flights"}, {"key": 2, "value": "Hotels/Hotels"}], "context_json": null}}',
+    },
+  ]}
+  responseDescription="Return an agent_response object containing the agent response in JSON format, which can be parsed to retrieve the agent message. It can be an AgentMessage or an AgentJsonMessage. They are almost similar to user_message and user_json_message, but they are sent by the agent."
+/>
+
+## Fetch recent messages given a timestamp
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1/engine/chat/sessions/:session_id/messages?from_timestamp=2023-08-31T13:26:30.941865"
+  description="Fetches agent messages filtered by timestamps for a specific session identified by the session_id"
+  properties={[
+    {
+      name: "from_timestamp",
+      type: "datetime",
+      description:
+        "The timestamp from which to fetch the agent messages. The timestamp is in ISO 8601 format.",
+    },
+  ]}
+  responses={[
+    {
+      session_id: "063fcfef-a3ec-46c4-aa8e-c9a51b6f24b7",
+      messages: [
+        {
+          message_id: "922c9be4-28dd-4fdb-9b91-fc26f360d86c",
+          timestamp: "2023-08-31T13:26:42.093485",
+          score: 0.0,
+          type: "agent_info",
+          agent_info:
+            "I start building the context to execute 'TopActivities/TopActivities' task..",
+        },
+        {
+          message_id: "2969efc7-4a8b-46e1-8c9e-fb86dbe3f5fb",
+          timestamp: "2023-08-31T13:26:51.744958",
+          score: 0.0,
+          type: "agent_json",
+          agent_json: {
+            type: "context_json",
+            text: "Can you confirm the following context?",
+            options: null,
+            context_json: {
+              digest:
+                "model:77dcd01525f6f2f58bc5035942725bd57be171a9af44d2f19b796a01bd52cd91",
+              args: {
+                city: "London",
+                date: "[date]",
+                preferred_activities: "",
+              },
+            },
+          },
+        },
+      ],
+    },
+  ]}
+  responseDescription="Return the most recent list of agent messages given a timestamp. The timestamp is in ISO 8601 format."
+/>
+## Fetch all messages sent by agent in a session
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1/engine/chat/sessions/:session_id/messages/all"
+  description="Fetches agent messages filtered by timestamps for a specific session identified by the session_id"
+  responses={[
+    {
+      session_id: "063fcfef-a3ec-46c4-aa8e-c9a51b6f24b7",
+      messages: [
+        {
+          message_id: "24df920c-a8eb-41cb-aa10-4283d0602d5e",
+          timestamp: "2023-08-31T13:26:23.238697",
+          score: 0.0,
+          type: "agent_json",
+          agent_json: {
+            type: "task_list",
+            text: "Found tasks for your objective. Please select.",
+            options: [
+              {
+                key: 0,
+                value: "TopActivities/TopActivities",
+              },
+              {
+                key: 1,
+                value: "Flights/Flights",
+              },
+              {
+                key: 2,
+                value: "Hotels/Hotels",
+              },
+            ],
+            context_json: null,
+          },
+        },
+        {
+          message_id: "922c9be4-28dd-4fdb-9b91-fc26f360d86c",
+          timestamp: "2023-08-31T13:26:42.093485",
+          score: 0.0,
+          type: "agent_info",
+          agent_info:
+            "I start building the context to execute 'TopActivities/TopActivities' task..",
+        },
+        {
+          message_id: "2969efc7-4a8b-46e1-8c9e-fb86dbe3f5fb",
+          timestamp: "2023-08-31T13:26:51.744958",
+          score: 0.0,
+          type: "agent_json",
+          agent_json: {
+            type: "context_json",
+            text: "Can you confirm the following context?",
+            options: null,
+            context_json: {
+              digest:
+                "model:77dcd01525f6f2f58bc5035942725bd57be171a9af44d2f19b796a01bd52cd91",
+              args: {
+                city: "London",
+                date: "[date]",
+                preferred_activities: "",
+              },
+            },
+          },
+        },
+      ],
+    },
+  ]}
+  responseDescription="Return all the messages sent by the agent for a specific session."
+/>
+
+## Provide feedback for a session
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1/engine/chat/sessions/:session_id/feedback"
+  description="Give feedback for a specific session identified by the session_id"
+  properties={[
+    {
+      name: "models",
+      type: "array",
+      description:
+        "Contains the list of models that the user wants to query for remaining tokens. It is an array of strings where each string is the name of the model.",
+    },
+    {
+      name: "email",
+      type: "string",
+      description: "The email of the user",
+    },
+  ]}
+  responses={{
+    model_tokens: {
+      "talkative-01": 9999099,
+      "creative-01": 5000000,
+    },
+  }}
+  responseDescription="On a successful request returns the remaining tokens for the models that have been queried"
+/>
+
+## Retrieve remaining tokens
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1/engine/chat/remaining_tokens?models=talkative-01,creative-01&email=user@user.com"
+  description="Request for retrieving the amount of tokens left for each model"
+  properties={[
+    {
+      name: "models",
+      type: "array",
+      description:
+        "Contains the list of models that the user wants to query for remaining tokens. It is an array of strings where each string is the name of the model.",
+    },
+    {
+      name: "email",
+      type: "string",
+      description: "The email of the user",
+    },
+  ]}
+  responses={{
+    model_tokens: {
+      "talkative-01": 9999099,
+      "creative-01": 5000000,
+    },
+  }}
+  responseDescription="On a successful request returns the remaining tokens for the models that have been queried"
+/>
