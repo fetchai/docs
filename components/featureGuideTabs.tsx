@@ -23,8 +23,8 @@ export const FeatureGuideTabs = () => {
     { 
       label: 'Agents',
       content: [{
-        title: 'Installing the μAgents Framework 🛠️📲',
-        description: 'A guide for installing the μAgents Framework correctly.',
+        title: 'Installing the uAgents Framework 🛠️📲',
+        description: 'A guide for installing the uAgents Framework correctly.',
         path: 'guides/agents/installing-uagent'
 
       },{
@@ -33,8 +33,8 @@ export const FeatureGuideTabs = () => {
         path: 'guides/agents/create-a-uagent'
       },
       {
-        title: 'How to use μAgents to verify messages 📬🔐',
-        description: 'A guide showing you how to use μAgents to verify messages.',
+        title: 'How to use uAgents to verify messages 📬🔐',
+        description: 'A guide showing you how to use uAgents to verify messages.',
         path: 'guides/agents/message-verification'
       },{
         title: 'Registering in the Almanac contract',
@@ -42,11 +42,11 @@ export const FeatureGuideTabs = () => {
         path: 'guides/agents/register-in-almanac'
       },
       {
-        title: 'Communicating with other μAgents 📱🤖',
+        title: 'Communicating with other uAgents 📱🤖',
         description: 'A guide showing different communication methods between agents.',
         path: 'guides/agents/communicating-with-other-agents'
       },{
-        title: 'How to use the μAgents to simulate a cleaning scenario ✨',
+        title: 'How to use the uAgents to simulate a cleaning scenario ✨',
         description: 'A guide teaching you how agents can be used to set up a cleaning scenario.',
         path: 'guides/agents/cleaning-demo'
       },{
@@ -54,8 +54,8 @@ export const FeatureGuideTabs = () => {
         description: 'A guide teaching you how to retrieve μAgent addresses.',
         path: 'guides/agents/getting-uagent-address'
       },{
-        title: 'How to book a table at a restaurant using μAgents',
-        description: 'A guide showcasing a table booking process using μAgents.',
+        title: 'How to book a table at a restaurant using uAgents',
+        description: 'A guide showcasing a table booking process using uAgents.',
         path: 'guides/agents/booking-demo'
       }]
     },

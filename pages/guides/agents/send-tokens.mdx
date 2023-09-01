@@ -1,4 +1,4 @@
-# How to use μAgents to send tokens 📊💸
+# How to use uAgents to send tokens 📊💸
 
 ## Introduction
 
@@ -30,7 +30,7 @@ In the world of agent-based decentralized systems, efficient communication and s
 
     - The `TransactionInfo` model represents information about a transaction and contains a single attribute, `tx_hash`.
 
-3. Let's define our μAgents, `alice` and `bob`. Ensure they have enough funds in their wallets to carry out transactions.
+3. Let's define our uAgents, `alice` and `bob`. Ensure they have enough funds in their wallets to carry out transactions.
 
     ```py copy 
     alice = Agent(name="alice", seed="alice secret phrase")
@@ -40,7 +40,7 @@ In the world of agent-based decentralized systems, efficient communication and s
     fund_agent_if_low(bob.wallet.address())
     ```
 
-4. We can now define our μAgents functions.
+4. We can now define our uAgents functions.
 
     ```py copy
     @alice.on_interval(period=10.0)
@@ -98,7 +98,7 @@ In the world of agent-based decentralized systems, efficient communication and s
 
    Once the transaction is completed, `bob` sends a message back to `alice` to inform her about the transaction, using `ctx.send()`. The message is created using the `TransactionInfo` model with the `tx_hash` obtained from the transaction response. The `ctx.send()` method is used to send this message to alice using her address (`alice.address`).
 
-7. We are now ready to use the Bureau class to create a `bureau` object and add both μAgents to it so for them to be run together.
+7. We are now ready to use the Bureau class to create a `bureau` object and add both uAgents to it so for them to be run together.
 
    ```py copy
    bureau = Bureau()
