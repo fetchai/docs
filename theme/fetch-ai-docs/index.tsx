@@ -176,9 +176,16 @@ const InnerLayout = ({
     // before hydration as Tailwind expects the `dir` attribute to exist on the
     // `html` element.
     <div dir={direction}>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-GYC9HYF1LD"></script>
+
       <script
         dangerouslySetInnerHTML={{
-          __html: `document.documentElement.setAttribute('dir','${direction}')`
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GYC9HYF1LD');
+            document.documentElement.setAttribute('dir','${direction}')`
         }}
       />
       <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
