@@ -34,15 +34,7 @@ const Item = ({ item, index }) => {
         <h3 className={hover ? "nx-text-purple nx-text-lg nx-font-medium nx-mb-2" : "nx-text-black nx-text-lg nx-font-medium nx-mb-2"}>{item.title}</h3>
         <p className="nx-text-gray-500 nx-text-base nx-font-light">
           <>
-            Description to explain{' '}
-            <strong>
-              <span style={{ color: 'black', fontWeight: '500' }}>what to expect</span>
-            </strong>{' '}
-            or{' '}
-            <strong>
-              <span style={{ color: 'black', fontWeight: '500' }}>quick links</span>
-            </strong>{' '}
-            to popular articles
+            {item.description}
           </>
         </p>
       </div>
@@ -66,24 +58,22 @@ const Section: React.FC<SectionProps> = ({ heading, items }) => {
 
 const items: { [key: string]: Item[] } = {
   'AI Engine': [
-    { title: 'Intelligence LLMS', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>), icon: apiAgentIcon , path: "/concepts/ai-engine/general-intelligence-with-llms"},
-    { title: 'Context Control', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: insightsAgentIcon , path: "/guides"},
-    { title: 'DeltaV', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: whisperAgentIcon , path: "/guides"},
-    { title: 'Analytics', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
+    { title: 'Synergy of agent-based services and AI Engine ecosystem', description: (<>Discover how the AI Engine facilitates interactions by discovering user preferences, transforming raw data into actionable insights through collaboration with agent-based services.</>), icon: apiAgentIcon , path: "/concepts/ai-engine/the-synergetic-power-of-agent-based-services-in-the-ai-engine-ecosystem"},
+    { title: 'Context building and smart routing', description: (<>In the realm of the AI Engine's capabilities, the process of discovering new information takes a main stage, elevating user experiences to new heights.</>),icon: insightsAgentIcon , path: "/concepts/ai-engine/context-building-and-smart-routing"},
+    { title: 'DeltaV', description: (<>Coming soon.</>),icon: whisperAgentIcon , path: "/guides"},
+    { title: 'Analytics', description: (<>Coming soon.</>),icon: walletIcon , path: "/guides"},
     ],
   'AI Agent Services': [
-    { title: 'Hosting', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/concepts/agent-services/agent-hosting"},
-    { title: 'Mailbox', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: mailBoxIcon , path: "/concepts/agent-services/agent-mail"},
-    { title: 'Agent APIs', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: authenticationIcon , path: "/concepts/agent-services/agent-apis"},
-    { title: 'Explorer', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/concepts/agent-services/agent-explorer"},
-    { title: 'Search & Discovery', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/references/contracts/uagents-almanac/almanac-overview"},
+    { title: 'Hosting', description: (<>The Agentverse hosting platform enables all users to get started quickly and to deploy agents to the cloud to start connecting and automating.</>),icon: walletIcon , path: "/concepts/agent-services/agent-hosting"},
+    { title: 'Mailbox', description: (<>Set up mailboxes for your local agents and to run them independently of your constant presence to run the server.</>),icon: mailBoxIcon , path: "/concepts/agent-services/agent-mail"},
+    { title: 'Agent APIs', description: (<>Understand and use the Agentverse APIs.</>),icon: authenticationIcon , path: "/apis/agentverse"},
+    { title: 'Explorer', description: (<>Learn to use the Agentverse Explorer to start an interaction with other registered agents.</>),icon: walletIcon , path: "/concepts/agent-services/agent-explorer"},
   ],
   'Open Network': [
-    { title: 'Fetch Ledger', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: whisperAgentIcon, path: "/guides"},
-    { title: 'Names Service', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides"},
-    { title: 'Almanac', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: almanacIcon , path: "/references/contracts/uagents-almanac/almanac-overview"},
-    { title: 'Cosmpy', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides/fetch-network/cosmpy/install"},
-    { title: 'Wallet', description: (<>Description to explain <strong>what to expect</strong> or <strong>quick links</strong> to popular articles</>),icon: walletIcon , path: "/guides/fetch-network/fetch-wallet-getting-started"},
+    { title: 'Almanac', description: (<>Use the Almanac contract to query a particular agent's information.</>),icon: almanacIcon , path: "/references/contracts/uagents-almanac/almanac-overview"},
+    { title: 'Cosmpy', description: (<>Get stated with CosmPy.</>),icon: walletIcon , path: "/guides/fetch-network/cosmpy/install"},
+    { title: 'Wallet', description: (<>Let's get yourself started started with the Fetch wallet.</>),icon: walletIcon , path: "/guides/fetch-network/fetch-wallet-getting-started"},
+    { title: 'Ledger', description: (<>Coming soon.</>),icon: almanacIcon , path: ""},
   ],
 };
 

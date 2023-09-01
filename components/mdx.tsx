@@ -158,11 +158,11 @@ export function Tab(props) {
 }
 
 export function Row({ children }) {
-  return <div className="nx-flex nx-pt-4 nx-gap-8">{children}</div>;
+  return <div className="nx-pt-4 nx-gap-8 nx-flex-mdx">{children}</div>;
 }
 
 export function Col({ children }) {
-  return <div className="nx-w-1/2">{children}</div>;
+  return <div className="nx-w-1/2-mdx nx-w-full-mdx">{children}</div>;
 }
 
 export function Section({ children }) {

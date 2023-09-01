@@ -1,3 +1,4 @@
+{{ if .Values.ingress.enable }}
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -41,3 +42,4 @@ spec:
         mode: SIMPLE
         privateKey: sds
         serverCertificate: sds
+{{ end }}

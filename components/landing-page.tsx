@@ -54,10 +54,10 @@ function LandingPage() {
   return (
     <section className={styles.page}>
       <p className={styles.mainTitle}>Documentation</p>
-      <p className={styles.description}>Explore our guides and examples to use Fetch</p>
+      <p className={styles.description}>Explore our documentation, guides and examples to get to know Fetch.ai tools and products.</p>
       <section className="nx-mt-60 landing-page-left-image">
         <p className={styles.subTitle}>Getting Started</p>
-        <p className={styles.description}>Explore our guides and examples to use Fetch.</p>
+        <p className={styles.description}>Explore our guides and examples.</p>
 
         <div className={styles.startGuides}>
           <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
@@ -74,12 +74,12 @@ function LandingPage() {
         <div className='nx-flex nx-justify-between'>
           <p className={styles.subTitle}>Featured Guides</p>
         </div>
-        <p className={styles.description}>Guides are the evergreen documents of the docs, technically focused (code heavy) explanations of use-cases and concepts.</p>
+        <p className={styles.description}>Guides are the evergreen documents of the docs, technically focused explanations of use-cases and concepts.</p>
         <FeatureGuideTabs/>
       </section>
       <section className='nx-mt-160'>
         <p className={styles.subTitle}>Browse by product</p>
-        <p className={styles.description}>Drill down to each product in detail</p>
+        <p className={styles.description}>Click on each product for additional details.</p>
         <Products/>
       </section>
       
