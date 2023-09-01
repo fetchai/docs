@@ -71,8 +71,8 @@ const items: { [key: string]: Item[] } = {
   ],
   'Open Network': [
     { title: 'Almanac', description: (<>Use the Almanac contract to query a particular agent's information.</>),icon: almanacIcon , path: "/references/contracts/uagents-almanac/almanac-overview"},
-    { title: 'Cosmpy', description: (<>Get stated with CosmPy.</>),icon: walletIcon , path: "/guides/fetch-network/cosmpy/install"},
-    { title: 'Wallet', description: (<>Let's get yourself started started with the Fetch wallet.</>),icon: walletIcon , path: "/guides/fetch-network/fetch-wallet-getting-started"},
+    { title: 'Cosmpy', description: (<>Get started with CosmPy.</>),icon: walletIcon , path: "/guides/fetch-network/cosmpy/install"},
+    { title: 'Wallet', description: (<>Let's get yourself started with the Fetch wallet.</>),icon: walletIcon , path: "/guides/fetch-network/fetch-wallet-getting-started"},
   ],
 };
 
