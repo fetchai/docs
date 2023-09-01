@@ -124,15 +124,15 @@ The output would be:
 
 ## uAgents Remote Communication: the Almanac Contract
 
-Remote uAgents communication is achieved by registering the uAgents into the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md)️ and then querying it to retrieve an HTTP endpoint from the recipient μAgent. Registration in the Almanac requires paying a small fee, so make sure to have enough funds to allow for this.
+Remote uAgents communication is achieved by registering the uAgents into the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md)️ and then querying it to retrieve an HTTP endpoint from the recipient uAgent. Registration in the Almanac requires paying a small fee, so make sure to have enough funds to allow for this.
 
-Whenever a μAgent registers in the Almanac, it must specify the service [endpoints ↗️](/references/contracts/uagents-almanac/endpoints.md)️ alongside a weight parameter for each endpoint provided. Agents trying to communicate with your μAgent, will choose the service endpoints using a weighted random selection.
+Whenever a uAgent registers in the Almanac, it must specify the service [endpoints ↗️](/references/contracts/uagents-almanac/endpoints.md)️ alongside a weight parameter for each endpoint provided. Agents trying to communicate with your uAgent, will choose the service endpoints using a weighted random selection.
 
 Here, we show you how to create two uAgents and make them remotely communicate by registering and using the Almanac Contract.
 
 ### Walk-through
 
-The first step would be to create two different Python scripts for this task, each one representing a remote μAgent: 
+The first step would be to create two different Python scripts for this task, each one representing a remote uAgent: 
 
 Bob: `touch remote_agents_bob.py`
 
@@ -154,7 +154,7 @@ Let's start by defining the script for **alice**.
     RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
     ```
 
-2. Let's now create our μAgent, `alice`, by providing `name`, `seed`, `port`, and vendpoint`. Also, make sure it has enough funds to register in the Almanac contract.
+2. Let's now create our uAgent, `alice`, by providing `name`, `seed`, `port`, and vendpoint`. Also, make sure it has enough funds to register in the Almanac contract.
 
     ```py copy
     alice = Agent( 
@@ -167,7 +167,7 @@ Let's start by defining the script for **alice**.
     fund_agent_if_low(alice.wallet.address())
     ```
 
-    On the Fetch.ai testnet, you can use the `fund_agent_if_low` function. This one checks if the balance of the μAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency. In this case, it checks if the balance of `alice`'s wallet is low and funds it if necessary.
+    On the Fetch.ai testnet, you can use the `fund_agent_if_low` function. This one checks if the balance of the uAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency. In this case, it checks if the balance of `alice`'s wallet is low and funds it if necessary.
     
 3. We are ready to define `alice`'s behaviors. Let's start with a function for alice to send messages.
 
@@ -232,7 +232,7 @@ We can now proceed by writing the script for agent `bob`.
 
 #### Bob
 
-1. In `remote_agents_bob.py` script, import the necessary classes from the `uagents` and `uagents.setup`. Then, define the message structure for messages to be exchanged between the uAgents using the `Model` class, as well as our second μAgent, `bob`, by providing `name`, `seed`, `port`, and `endpoint`. Make sure it has enough funds to register in the Almanac contract.
+1. In `remote_agents_bob.py` script, import the necessary classes from the `uagents` and `uagents.setup`. Then, define the message structure for messages to be exchanged between the uAgents using the `Model` class, as well as our second uAgent, `bob`, by providing `name`, `seed`, `port`, and `endpoint`. Make sure it has enough funds to register in the Almanac contract.
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -351,7 +351,7 @@ We make use of the **uAgents Remote Communication** guide above, but now, we spe
     API_KEY = "put_your_API_key_here"
     ```
    
-3. _Now your agent is ready to join the Agentverse!__ We can now register our μAgent, `alice`, by providing `name`, `seed`, and `mailbox`. Make sure your agent has enough funds for this:
+3. _Now your agent is ready to join the Agentverse!__ We can now register our uAgent, `alice`, by providing `name`, `seed`, and `mailbox`. Make sure your agent has enough funds for this:
     
     ```py copy
     agent = Agent(
@@ -363,7 +363,7 @@ We make use of the **uAgents Remote Communication** guide above, but now, we spe
     fund_agent_if_low(agent.wallet.address())
     ```
 
-    On the _Fetch.ai testnet_, you can use the `fund_agent_if_low` function. This one checks if the balance of the μAgent’s wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
+    On the _Fetch.ai testnet_, you can use the `fund_agent_if_low` function. This one checks if the balance of the uAgent’s wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
 
 4. Let's define a message handler function for `alice`.
 
@@ -441,7 +441,7 @@ if __name__ == "__main__":
     API_KEY = "put_your_API_key_here"
     ```
 
-3. _Now your agent is ready to join the Agentverse!_ Let's register this second μAgent, `bob`, by providing `name`, `seed`, and `mailbox` server:
+3. _Now your agent is ready to join the Agentverse!_ Let's register this second uAgent, `bob`, by providing `name`, `seed`, and `mailbox` server:
 
     ```py copy
     agent = Agent(

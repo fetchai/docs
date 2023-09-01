@@ -28,7 +28,7 @@ export const FeatureGuideTabs = () => {
         path: 'guides/agents/installing-uagent'
 
       },{
-        title: 'Creating your first μAgent 🤖🧑‍💻',
+        title: 'Creating your first uAgent 🤖🧑‍💻',
         description: 'A guide showing you how to create your first agent in few minutes.',
         path: 'guides/agents/create-a-uagent'
       },
@@ -43,15 +43,15 @@ export const FeatureGuideTabs = () => {
       },
       {
         title: 'Communicating with other uAgents 📱🤖',
-        description: 'A guide showing different communication methods between agents.',
+        description: 'A guide showing different communication methods between uAgents.',
         path: 'guides/agents/communicating-with-other-agents'
       },{
         title: 'How to use the uAgents to simulate a cleaning scenario ✨',
-        description: 'A guide teaching you how agents can be used to set up a cleaning scenario.',
+        description: 'A guide teaching you how uAgents can be used to set up a cleaning scenario.',
         path: 'guides/agents/cleaning-demo'
       },{
-        title: 'Getting μAgent addresses 🤖📫',
-        description: 'A guide teaching you how to retrieve μAgent addresses.',
+        title: 'Getting uAgents addresses 🤖📫',
+        description: 'A guide teaching you how to retrieve uAgents addresses.',
         path: 'guides/agents/getting-uagent-address'
       },{
         title: 'How to book a table at a restaurant using uAgents',
