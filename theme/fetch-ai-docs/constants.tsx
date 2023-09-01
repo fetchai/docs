@@ -239,12 +239,12 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     <>
       <meta name="msapplication-TileColor" content="#fff" />
       <meta httpEquiv="Content-Language" content="en" />
-      <meta name="description" content="Nextra: the next docs builder" />
+      <meta name="description" content="Fetch AI Documentation" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@shuding_" />
-      <meta property="og:title" content="Nextra: the next docs builder" />
-      <meta property="og:description" content="Nextra: the next docs builder" />
-      <meta name="apple-mobile-web-app-title" content="Nextra" />
+      <meta property="og:title" content="Fetch AI Documentation" />
+      <meta property="og:description" content="Fetch AI Documentation" />
+      <meta name="apple-mobile-web-app-title" content="Fetch AI Documentation" />
     </>
   ),
   i18n: [],
@@ -333,7 +333,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     float: true,
     title: 'On This Page'
   },
-  useNextSeoProps: () => ({ titleTemplate: '%s – Nextra' })
+  useNextSeoProps: () => ({ titleTemplate: '%s – Fetch AI Documentation' })
 }
 
 export const DEEP_OBJECT_KEYS = Object.entries(DEFAULT_THEME)
