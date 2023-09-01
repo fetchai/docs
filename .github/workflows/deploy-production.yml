@@ -1,0 +1,79 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - release/production
+
+jobs:
+  build:
+    name: Build Images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Gcloud Auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: '${{ secrets.ORG_PRODUCTION_IMAGES_PUSH }}'
+
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Set Image Tag
+        id: lookup
+        run: echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - run: |
+          gcloud auth list
+          gcloud auth configure-docker -q
+          echo "VERSION: ${{ steps.lookup.outputs.version }}"
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+        with:
+          install: true
+
+      - name: Cache Docker Layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-website-cache
+          key: ${{ runner.os }}-buildx-image-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-buildx-image
+
+      - name: Build and Push Images
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: gcr.io/fetch-ai-images/docs-website:${{ steps.lookup.outputs.version }}
+          cache-from: type=local,src=/tmp/.buildx-website-cache
+          cache-to: type=local,dest=/tmp/.buildx-website-cache-new
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-website-cache
+          mv /tmp/.buildx-website-cache-new /tmp/.buildx-website-cache
+
+      - name: Trigger Image Update
+        run: |
+          curl -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Authorization: token ${{ secrets.ORG_DISPATCH_RENDER_TOKEN }}" \
+          --request POST \
+          --data '{"event_type": "docs-build", "client_payload": {"image": "${{ env.IMAGE }}", "key_path": "${{ env.KEY_PATH }}", "tag": "${{ env.TAG }}", "commit_message_service": "${{ env.SERVICE_NAME }}"}}' \
+          ${{ env.TARGET_REPO }}
+        env:
+          IMAGE: gcr.io/fetch-ai-images/docs-website
+          KEY_PATH: ".website.image.tag"
+          TAG: ${{ steps.lookup.outputs.version }}
+          SERVICE_NAME: Documentation
+          TARGET_REPO: https://api.github.com/repos/fetchai/infra-production-deployment/dispatches
+
+

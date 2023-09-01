@@ -8,7 +8,10 @@ import argparse
 PROFILES = {
     'staging': {
         'repository': 'gcr.io/fetch-ai-sandbox/docs-website',
-    }
+    },
+    'production': {
+        'repository': 'gcr.io/fetch-ai-images/docs-website',
+    },
 }
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
