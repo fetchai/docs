@@ -51,7 +51,7 @@ function validateMeta(pageMap: PageMapItem[]) {
           metaSchema.parse(data)
         } catch (error) {
           console.error(
-            `[nextra-theme-docs] Error validating _meta.json file for "${key}" property.\n\n${normalizeZodMessage(
+            `Error validating _meta.json file for "${key}" property.\n\n${normalizeZodMessage(
               error
             )}`
           )
@@ -90,7 +90,7 @@ export const ConfigProvider = ({
       themeSchema.parse(theme)
     } catch (error) {
       console.error(
-        `[nextra-theme-docs] Error validating theme config file.\n\n${normalizeZodMessage(
+        `Error validating theme config file.\n\n${normalizeZodMessage(
           error
         )}`
       )
