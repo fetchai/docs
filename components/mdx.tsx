@@ -181,4 +181,11 @@ export function CodeHeading({ children }) {
   return <div className="nx-flex nx-gap-2">{children}</div>;
 }
 
+export function Grid3({ children }) {
+  return <div className="nx-grid nx-grid-cols-1 nx-pt-4 sm:nx-grid-cols-1 md:nx-grid-cols-2 lg:nx-grid-cols-3 nx-gap-4">{children}</div>;
+}
+
+export function Grid2({ children }) {
+  return <div className="nx-grid nx-grid-cols-1 nx-pt-4 sm:nx-grid-cols-1 md:nx-grid-cols-2 lg:nx-grid-cols-2 nx-gap-4">{children}</div>;
+}
   
