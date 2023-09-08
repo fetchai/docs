@@ -82,7 +82,7 @@ const IndexPage: React.FC = () => {
     <div className="nx-container nx-mx-auto nx-py-8">
       {Object.entries(items).map(([heading, itemList], index) => (
         <div key={heading}>
-          {index !== 0 && <div className="nx-mt-32 nx-mb-32 nx-border-t nx-border-gray-300" />}
+          {index !== 0 && <div className="nx-mt-16 nx-mb-16 nx-border-t nx-border-gray-300" />}
           <Section heading={heading} items={itemList} />
         </div>
       ))}
