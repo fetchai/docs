@@ -195,7 +195,7 @@ export function Search({
     <div className={focused ? cn('nextra-search nx-relative nx-footer-width-50 nx-rounded-t-xl nx-border-purple', className) : cn('nextra-search nx-relative md:nx-w-64', className)}>
       {renderList && (
         <div
-          className="nx-fixed nx-inset-0 nx-z-10"
+          className="nx-fixed nx-inset-0 nx-z-10 nx-footer-width-50"
           onClick={() => setShow(false)}
         />
       )}
@@ -218,7 +218,7 @@ export function Search({
         onCompositionStart={handleComposition}
         onCompositionEnd={handleComposition}
         type="search"
-        placeholder={renderString(config.search.placeholder)}
+        placeholder={focused ? '' : renderString(config.search.placeholder)}
         onKeyDown={handleKeyDown}
         suffix={icon}
       />

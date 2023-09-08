@@ -12,7 +12,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         spellCheck={false}
         className={cn(
           className,
-          'nx-block nx-w-full nx-appearance-none nx-rounded-lg nx-px-3 nx-py-2 nx-transition-colors',
+          'nx-block nx-w-full nx-appearance-none nx-rounded-xxl nx-px-3 nx-py-2 nx-transition-colors',
           'nx-text-base nx-leading-tight md:nx-text-sm',
           'nx-bg-black/[.05] dark:nx-bg-gray-50/10',
           'focus:nx-bg-white dark:focus:nx-bg-dark',

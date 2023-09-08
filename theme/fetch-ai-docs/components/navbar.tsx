@@ -113,12 +113,12 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
 
           {renderComponent(config.search.component, {
             directories: flatDirectories,
-            className: 'nx-hidden md:nx-inline-block mx-min-w-[200px]'
+            className: 'nx-hidden md:nx-inline-block mx-min-w-[280px] nx-mr-4 nx-mt-05'
           })}
 
           {config.project.link ? (
             <Anchor
-              className="nx-p-2 nx-text-current"
+              className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
               href={config.project.link}
               newWindow
             >
@@ -128,7 +128,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
 
           {config.chat.link ? (
             <Anchor
-              className="nx-p-2 nx-text-current"
+              className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
               href={config.chat.link}
               newWindow
             >
@@ -202,6 +202,11 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               <span className="nx-invisible nx-text-base">{page.title}</span>
             </Anchor>
           )
+        })}
+
+        {renderComponent(config.search.component, {
+          directories: flatDirectories,
+          className: 'md:nx-hidden nx-mt-6 nx-mb-2'
         })}
       </nav>
     </div>
