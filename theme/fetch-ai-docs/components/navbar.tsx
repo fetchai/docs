@@ -113,7 +113,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
 
           {renderComponent(config.search.component, {
             directories: flatDirectories,
-            className: 'nx-hidden md:nx-inline-block mx-min-w-[200px]'
+            className: 'nx-hidden md:nx-inline-block mx-min-w-[280px] nx-mr-4 nx-mt-05'
           })}
 
           {config.project.link ? (
