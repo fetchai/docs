@@ -245,6 +245,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
       <meta property="og:title" content="Fetch.ai Documentation" />
       <meta property="og:description" content="Fetch.ai Documentation" />
       <meta name="apple-mobile-web-app-title" content="Fetch.ai Documentation" />
+      <link rel="icon" href="/docs/favicon.png" sizes="any"/>
     </>
   ),
   i18n: [],
