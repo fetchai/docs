@@ -7,23 +7,20 @@ Communication is an essential feature of any agent network. It allows agents to 
 In this guide, we will explore two methods of communication between uAgents: 
 
 - Local communication.
-- Remote communication via the [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview.mdx)️, and the [AgentVerse Mailbox Service ↗️](/concepts/agent-services/agent-mail.mdx)️.
+- Remote communication via the [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)️, and the Agentverse [Mailroom / IoT Gateway 📫 ↗️](/concepts/agent-services/agent-mail)️ service.
 
+We want to start by introducing you to the concept of **local communication**. This is the first step you would need to undertake to familiarize yourself with the code syntax we will be using in the **remote communication** section. Moreover, local communication is important for debugging purposes.
 
-We want to start by introducing you to the concept of local communication. This is the first step you would need to undertake to familiarize yourself with the code syntax we will be using in the remote communication section. Moreover, local communication is important for debugging purposes.
-
-Let's get started!
+**Let's get started!**
 
 ## uAgents: Local Communication 
 ### Walk-through
 
 The first step to better understand how uAgents communicate is to introduce how 2 uAgents perform a local communication. Let’s consider a basic example in which two uAgents say hello to each other.
 
-1. First of all, let’s create a Python script for this task and name it: `touch agents_communication.py`
+1. First of all, let's create a Python script for this task and name it: `touch agents_communication.py`
 
-2. Then, let's import these necessary classes from the uagents library: `Agent`, `Context`, `Bureau`, and `Model` Let's then define the message structure for messages to be exchanged between the uAgents using the class `Model`.
-
-    Then, we would need to create the uAgents, `alice` and `bob`, with name and seed parameters.
+2. Then, let's import these necessary classes from the uagents library: `Agent`, `Context`, `Bureau`, and `Model` Let's then define the message structure for messages to be exchanged between the uAgents using the class `Model`. Then, we would need to create the uAgents, `alice` and `bob`, with name and seed parameters.
 
     ```py copy
     from uagents import Agent, Bureau, Context, Model
@@ -35,7 +32,7 @@ The first step to better understand how uAgents communicate is to introduce how 
     bob = Agent(name="bob", seed="bob recovery phrase")
     ```
 
-3. Let's now define alice behaviors. We need to define a function for alice to send messages to bob periodically.
+3. Let's now define `alice`'s behaviors. We need to define a function for `alice` to send messages to bob periodically:
 
     ```py copy 
     @alice.on_interval(period=3.0)
@@ -43,9 +40,9 @@ The first step to better understand how uAgents communicate is to introduce how 
        await ctx.send(bob.address, Message(message="hello there bob"))
     ```
 
-    We can use the `.on_interval()` decorator to define a coroutine `send_message()` function that will be called every 3 seconds. The coroutine function sends a message to bob using the `ctx.send()` method of the Context object.
+    We can use the `.on_interval()` decorator to define a coroutine `send_message()` function that will be called every 3 seconds. The coroutine function sends a message to `bob` using the `ctx.send()` method of the `Context` object.
 
-    We then need to define a `alice_message_handler()` function for alice to manage incoming messages.
+4. We then need to define a `alice_message_handler()` function for `alice` to manage incoming messages:
 
     ```py copy
     @alice.on_message(model=Message)
@@ -55,7 +52,7 @@ The first step to better understand how uAgents communicate is to introduce how 
 
     This defines the coroutine function `alice_message_handler()` that serves as a message handler for `alice`. It is triggered whenever alice receives a message of type `Message`. The function logs the received message and its sender using the `ctx.logger.info()` method.
 
-4. Let's now define the behavior of our second agent, `bob`.
+5. Let's now define the behavior of our second agent, `bob`:
 
     ```py copy
     @bob.on_message(model=Message)
@@ -66,7 +63,7 @@ The first step to better understand how uAgents communicate is to introduce how 
 
     Here, we have defined a coroutine `bob_message_handler()` function that serves as the message handler for `bob`. It is triggered whenever bob receives a message of type `Message` from other agents. The function logs the received message and its sender using the `ctx.logger.info()` method. Finally, we make `bob` compose a response message to be sent back using the `ctx.send()` method with `alice.address` as the recipient address and an instance of the `Message` model as the message payload.
 
-5. Let's then use the `Bureau` class to create a `Bureau` object. This will allow us to run uAgents together in the same script.
+6. Let's then use the `Bureau` class to create a `Bureau` object. This will allow us to run uAgents together in the same script.
 
     ```py copy
     bureau = Bureau()
@@ -77,7 +74,7 @@ The first step to better understand how uAgents communicate is to introduce how 
         bureau.run()
     ```
 
-6. Save the script.
+7. Save the script.
 
 The complete script should be looking as follows: 
 
@@ -142,7 +139,7 @@ Let's start by defining the script for **alice**.
 
 #### Alice
 
-1. In `remote_agents_alice.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between agents using the class `Model`, as well as the `RECIPIENT_ADDRESS`. This is the address to which `alice` will send messages.
+1. In `remote_agents_alice.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between agents using the class `Model`, as well as the `RECIPIENT_ADDRESS`. This is the address to which `alice` will send messages:
 
     ```py copy 
     from uagents import Agent, Context, Model
@@ -154,7 +151,7 @@ Let's start by defining the script for **alice**.
     RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
     ```
 
-2. Let's now create our uAgent, `alice`, by providing `name`, `seed`, `port`, and vendpoint`. Also, make sure it has enough funds to register in the Almanac contract.
+2. Let's now create our uAgent, `alice`, by providing `name`, `seed`, `port`, and `endpoint`. Also, make sure it has enough funds to register in the Almanac contract.
 
     ```py copy
     alice = Agent( 
@@ -168,8 +165,8 @@ Let's start by defining the script for **alice**.
     ```
 
     On the Fetch.ai testnet, you can use the `fund_agent_if_low` function. This one checks if the balance of the uAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency. In this case, it checks if the balance of `alice`'s wallet is low and funds it if necessary.
-    
-3. We are ready to define `alice`'s behaviors. Let's start with a function for alice to send messages.
+
+3. We are ready to define `alice`'s behaviors. Let's start with a function for `alice` to send messages:
 
     ```py copy
     @alice.on_interval(period=2.0)
@@ -179,7 +176,7 @@ Let's start by defining the script for **alice**.
 
     Here, the `.on_interval()` decorator schedules the `send_message()`coroutine function to be run every 2 seconds. Inside the function, there is an asynchronous call indicated by the `ctx.send()` method. This call sends a message with the content `"hello there bob"` to the `RECIPIENT_ADDRESS`.
 
-4. We then need to define a function for `alice` to handle incoming messages from other agents.
+4. We then need to define a function for `alice` to handle incoming messages from other agents:
 
     ```py copy
     @alice.on_message(model=Message)
@@ -251,7 +248,7 @@ We can now proceed by writing the script for agent `bob`.
     fund_agent_if_low(bob.wallet.address())
     ```
 
-2. Let's now define a function for `bob` to handle incoming messages and answering back to the sender.
+2. Let's now define a function for `bob` to handle incoming messages and answering back to the sender:
 
     ```py copy
     @bob.on_message(model=Message)
@@ -325,7 +322,7 @@ The output will depend on the terminal:
 
 uAgents can communicate remotely by also using the [Agentverse ↗️](https://agentverse.ai/)️. The Agentverse is a platform that aims at creating a decentralized network of agents capable of communicating and interacting with each other. Agents in the Agentverse can send and receive messages, execute tasks, and collaborate with other agents to achieve various goals.
 
-In this guide, we want to show how to enable remote communications between uAgents using the [Agentverse Mailbox Service ↗️](/guides/agentverse/utilising-the-mailbox.mdx)️.
+In this guide, we want to show how to enable remote communications between uAgents using the [Agentverse Mailbox Service ↗️](/guides/agentverse/utilising-the-mailbox)️.
 
 ### Walk-through
 
@@ -333,7 +330,7 @@ We make use of the **uAgents Remote Communication** guide above, but now, we spe
 
 #### Alice 
 
-1. First of all, let's create a script for **alice**: `touch alice.py`
+1. First of all, let's create a script for `alice`: `touch alice.py`
 
 2. We need to import the necessary classes from `uagents` (`Agent`, `Context`, `Model`) and `uagents.setup` (`fund_agent_if_low`), and define the `Message` class for messages to be exchanged between our uAgents. We also need to generate a secure `SEED_PHRASE` (e.g., https://pypi.org/project/mnemonic/) and get the address of our agent, which is  needed to register it to create a `Mailbox`, alongside a name (i.e., `alice` in this case). Following this, we would need to sign up at [Agentverse ↗️](https://agentverse.ai/) to get an `API key`:
 
@@ -365,7 +362,7 @@ We make use of the **uAgents Remote Communication** guide above, but now, we spe
 
     On the _Fetch.ai testnet_, you can use the `fund_agent_if_low` function. This one checks if the balance of the uAgent’s wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
 
-4. Let's define a message handler function for `alice`.
+4. Let's define a message handler function for `alice`:
 
     ```py copy
     @agent.on_message(model=Message, replies={Message})

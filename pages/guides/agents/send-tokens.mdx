@@ -2,12 +2,12 @@
 
 ## Introduction
 
-In the world of agent-based decentralized systems, efficient communication and secure data exchange are essential. In this guide, we will walk you through the process of setting up two agents utilizing the **uagents** library to establish a dynamic workflow where one agent periodically sends payment requests to another, which in turn processes these requests, executes transactions, and provides transaction information back to sending agent.
+In the world of agent-based decentralized systems, efficient communication and secure data exchange are essential. In this guide, we will walk you through the process of setting up two agents utilizing the `uagents` library to establish a dynamic workflow where one agent periodically sends payment requests to another, which in turn processes these requests, executes transactions, and provides transaction information back to sending agent.
 
 ## Walk-through
 
 1. First of all, create a Python script for this task, and name it: `touch sending_tokens.py`
-2. Then, import the necessary modules from `uagents`, `uagents.network`, and `uagents.setup`. Let's then define two data models: `PaymentRequest` and `TransactionInfo`. Then, set up the values for the `AMOUNT` and `DENOM` variables, which define the default amount and denomination for the payment requests.
+2. Then, import the necessary modules from `uagents`, `uagents.network`, and `uagents.setup`. Let's then define two data models: `PaymentRequest` and `TransactionInfo`. Then, set up the values for the `AMOUNT` and `DENOM` variables, which define the default amount and denomination for the payment requests:
 
     ```py copy
     from uagents import Agent, Bureau, Context, Model
@@ -55,7 +55,7 @@ In the world of agent-based decentralized systems, efficient communication and s
 
     This defines an event handler for alice using the `.on_interval()` decorator. This event handler is triggered at regular intervals of `10.0` seconds in this case. The event handler function is named `request_funds()` and takes a `ctx` parameter of type `Context`. Within the function, `alice` sends a payment request message to `bob` by using the `ctx.send()` method. The `ctx.send()` method is called with the recipient address, `bob.address`, which specifies that the message should be sent to `bob`. The message is an instance of the `PaymentRequest()` model. It contains `alice`'s wallet address (`ctx.wallet.address()`), the amount (`AMOUNT`), and the denomination (`DENOM`).
 
-5. We can now define a `confirm_transaction` message handler for `alice` to handle incoming messages from `bob` of type `TransactionInfo`.
+5. We can now define a `confirm_transaction()` message handler for `alice` to handle incoming messages from `bob` of type `TransactionInfo`:
 
     ```py copy
     @alice.on_message(model=TransactionInfo)
@@ -78,7 +78,7 @@ In the world of agent-based decentralized systems, efficient communication and s
 
     If the conditions are met, `alice` logs another informational message indicating the success of the transaction and displaying the details of the received coins.
 
-6. Let's now define an event handler for `bob`. This event handler is triggered when `bob` receives a message of type `PaymentRequest` from `alice`.
+6. Let's now define an event handler for `bob`. This event handler is triggered when `bob` receives a message of type `PaymentRequest` from `alice`:
 
    ```py copy
    @bob.on_message(model=PaymentRequest, replies=TransactionInfo)
