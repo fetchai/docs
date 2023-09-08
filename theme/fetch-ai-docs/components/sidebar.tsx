@@ -421,11 +421,6 @@ export function Sidebar({
         )}
         ref={containerRef}
       >
-        <div className="nx-px-4 nx-pt-4 md:nx-hidden">
-          {renderComponent(config.search.component, {
-            directories: flatDirectories
-          })}
-        </div>
         <FocusedItemContext.Provider value={focused}>
           <OnFocusItemContext.Provider
             value={item => {
@@ -455,7 +450,7 @@ export function Sidebar({
               <Menu
                 className="md:nx-hidden"
                 // The mobile dropdown menu, shows all the directories.
-                directories={fullDirectories}
+                directories={docsDirectories}
                 // Always show the anchor links on mobile (`md`).
                 anchors={anchors}
               />
