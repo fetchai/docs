@@ -24,45 +24,45 @@ const Footer: React.FC = () => {
   const developers = [
     {
       description: 'Docs',
-      path: '/'
+      path: 'https://fetch.ai/docs'
     },
     {
       description: 'AI Agents',
-      path: '/'
+      path: 'https://fetch.ai/docs/guides/agents/installing-uagent'
     },
     {
       description: 'Agentverse.ai',
-      path: '/'
+      path: 'https://agentverse.ai/'
     }
   ]
 
   const company = [
     {
       description: 'Blog',
-      path: '/'
+      path: 'https://fetch.ai/content-hub'
     },
     {
       description: 'Fetch.ai Foundation',
-      path: '/'
+      path: 'https://fetchai.foundation/'
     },
     {
       description: 'Careers',
-      path: '/'
+      path: 'https://fetch.ai/careers'
     }
   ]
 
   const legal = [
     {
       description: 'Press and Media',
-      path: '/'
+      path: 'https://fetch.ai/press-media'
     },
     {
       description: 'Privacy Policy',
-      path: '/'
+      path: 'https://fetch.ai/privacy-policy'
     },
     {
       description: 'Terms of Service',
-      path: '/'
+      path: 'https://fetch.ai/terms-of-condition'
     }
   ]
 
