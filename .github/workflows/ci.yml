@@ -25,16 +25,19 @@ jobs:
         with:
           version: 8.6.10
 
-      - run: |
-          which node
-          which npm
-          which pnpm
-          node --version
-          npm --version
-          pnpm --version
+      - name: Dependencies
+        run: |
+          pnpm install
 
-      - run: |
-          pnpm install --frozen-lockfile
 
-      - run: |
-          pnpm build
+      - name: Build
+        run: |
+          pnpm run build
+
+      - name: Lint
+        run: |
+          pnpm run lint --if-present
+
+      - name: Formatting
+        run: |
+          cd ui && npm run fmt:check --if-present
