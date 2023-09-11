@@ -235,19 +235,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
       </>
     )
   },
-  head: (
-    <>
-      <meta name="msapplication-TileColor" content="#fff" />
-      <meta httpEquiv="Content-Language" content="en" />
-      <meta name="description" content="Fetch.ai Documentation" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@shuding_" />
-      <meta property="og:title" content="Fetch.ai Documentation" />
-      <meta property="og:description" content="Fetch.ai Documentation" />
-      <meta name="apple-mobile-web-app-title" content="Fetch.ai Documentation" />
-      <link rel="icon" href="/docs/favicon.png" sizes="any"/>
-    </>
-  ),
+  head: (<></>),
   i18n: [],
   logo: (
     <>

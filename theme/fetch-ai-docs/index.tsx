@@ -181,6 +181,10 @@ const InnerLayout = ({
           __html: `document.documentElement.setAttribute('dir','${direction}')`
         }}
       />
+      <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PRBVQNSV"
+          height="0" width="0" className='nextra-iframe-google-tag'></iframe>
+      </noscript>
       <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
       <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 
