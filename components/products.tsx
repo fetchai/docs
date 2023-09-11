@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import apiAgentIcon from '../src/svgs/agents-api.svg'
 import insightsAgentIcon from '../src/svgs/agents-insights.svg'
@@ -43,15 +43,30 @@ const Item = ({ item, index }) => {
   );
 };
 
-const Section: React.FC<SectionProps> = ({ heading, items, route }) => {
-  const [hover, setHover] = useState<boolean>(false);
-  const router = useRouter()
+const Section: React.FC<SectionProps> = ({ heading, items }) => {
+  useEffect(() => {
+    // Check if there is a hash fragment in the URL
+    if (window.location.hash) {
+      // Get the ID of the section corresponding to the hash fragment
+      const sectionId = window.location.hash.substring(1);
+
+      // Find the section element by its ID
+      const sectionElement = document.getElementById(sectionId);
+
+      // Scroll to the section if it exists
+      if (sectionElement) {
+        sectionElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, []); // This effect runs once when the component mounts
+
+  const sectionId = heading.replace(/ /g, '').toLowerCase()
   return (
-    <div className="nx-my-8" >
-      <h2 className={hover ? "nx-text-lg nx-font-medium nx-text-purple nx-cursor-pointer" : "nx-text-lg nx-font-medium nx-text-fetch-light-grey nx-cursor-pointer"} onClick={() => router.push(route)} onMouseOver={() => {setHover(true)}} onMouseLeave={() => {setHover(false)}}>{heading}</h2>
+    <div id={sectionId} className="nx-my-8">
+      <h2 className={"nx-text-lg nx-font-medium nx-text-fetch-light-grey"}>{heading}</h2>
       <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-3 nx-gap-4 nx-mt-4">
         {items.map((item, index) => (
-          <Item item={item} index={index}/>
+          <Item item={item} index={index} />
         ))}
       </div>
     </div>
