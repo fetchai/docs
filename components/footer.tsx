@@ -5,18 +5,9 @@ import styles from './landing.module.css'
 import {Anchor} from 'theme/fetch-ai-docs/components';
 import {renderComponent} from 'theme/fetch-ai-docs/utils';
 import {DiscordIcon, GitHubIcon} from 'nextra/icons'
-import {useRouter} from 'next/router';
-
 
 const FooterLink = ({content}) => {
-    const router = useRouter()
     const [hover, setHover] = useState<boolean>(false);
-
-    // window.open(
-    //                                     'https://agentverse.ai',
-    //                                     '_blank',
-    //                                     'noopener, noreferrer'
-    //                                 )
     return <section
         onClick={() => {
 
