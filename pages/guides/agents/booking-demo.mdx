@@ -1,16 +1,16 @@
-# How to book a table at a restaurant using μAgents
+# How to book a table at a restaurant using uAgents
 
 ## Introduction
 
-In this guide, we want to show how to set up the code to create a restaurant booking service with two μAgents: a **restaurant** with tables available, and a **user** requesting table availability.
+In this guide, we want to show how to set up the code to create a restaurant booking service with two uAgents: a **restaurant** with tables available, and a **user** requesting table availability.
 
-We also want to define 2 specific **protocols**, one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). Then we will need to define two μAgents scripts, **restaurant** and **user**, which will make use of the protocols to query and book a table.
+We also want to define 2 specific **protocols**, one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). Then we will need to define two uAgents scripts, **restaurant** and **user**, which will make use of the protocols to query and book a table.
 
 ## Walk-through
 
 1. First of all, we need to navigate towards the directory you created for your project and create a folder for this task: `mkdir booking_demo`.
 2. Inside this folder we will create another folder for our `protocols`: `mkdir protocols`.
-3. After having defined our protocols, we will create 2 scripts, one for our `restaurant` and the other one for `user` uAgents. These μAgents will make use of the protocols to query, check, confirm and book an available table at the restaurant.
+3. After having defined our protocols, we will create 2 scripts, one for our `restaurant` and the other one for `user` uAgents. These uAgents will make use of the protocols to query, check, confirm and book an available table at the restaurant.
 
 We can start by writing the code for our 2 protocols.
 
@@ -159,7 +159,7 @@ async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQuer
 We can now proceed by writing the booking protocol script for booking the table at the restaurant.
 
 1. First of all, navigate towards the protocols folder: `cd protocols`
-2. In here, let's create a Python script named, and name it: `touch book.py`
+2. In here, let's create a Python script and name it: `touch book.py`
 3. In the text editor application, we can proceed to define the **table booking protocol**. We need to import the necessary classes and define the _message data models_. In this case, the booking protocol consists of two message models: `BookTableRequest` and `BookTableResponse`. Then create an instance of the `Protocol` class and name it `book_proto`:
 
     ```py copy
@@ -179,7 +179,7 @@ We can now proceed by writing the booking protocol script for booking the table 
     ```
 
    - `BookTableRequest`: this represents the request to book a table. It includes attributes: `table_number` to be booked, `time_start` of the booking, and the `duration` of the booking.
-   - `BookTableResponse`: This contains the response to the table booking request. It includes a boolean attribute `success`, indicating whether the booking was successful or not.
+   - `BookTableResponse`: this contains the response to the table booking request. It includes a boolean attribute `success`, indicating whether the booking was successful or not.
 
 4. Let's now define the message handler function:
 
@@ -211,6 +211,7 @@ We can now proceed by writing the booking protocol script for booking the table 
     ```
 
    The `handle_book_request()` handler first retrieves table statuses from the agent's storage and converts them into a dictionary with integer keys (table numbers) and `TableStatus` values. The `TableStatus` class is imported from the `query` module. Next, the handler gets the table associated with the requested `table_number` from the `tables` dictionary. The handler checks if the requested `time_start` falls within the availability period of the table. If the table is available for the requested booking duration, the handler sets `success` to `True`, updates the table's `time_start` to reflect the end of the booking, and saves the updated table information in the agent's storage using `ctx.storage.set()`. If the table is not available for the requested booking, the handler sets `success` to `False`.
+
    The handler sends a `BookTableResponse` message back to the sender with the `success` status of the booking using await `ctx.send()` method.
 
 5. Save the script.
@@ -252,12 +253,12 @@ async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
     await ctx.send(sender, BookTableResponse(success=success))
 ```
 
-### Restaurant agent
+### Restaurant uAgent
 
-We are now ready to define our restaurant agent. 
+We are now ready to define our restaurant uAgent.
 
 1. Let's now create a Python script in `booking_demo` folder, and name it: `touch restaurant.py`
-2. We then need to import the necessary classes from the uagents library and the two protocols we previously defined:
+2. We then need to import the necessary classes from the `uagents` library and the two protocols we previously defined:
 
     ```py copy
     from uagents import Agent
@@ -338,9 +339,9 @@ if __name__ == "__main__":
     restaurant.run()
 ```
 
-### User agent
+### User uAgent
 
-We can finally define the script for our customer agent querying and booking a table at the restaurant. 
+We can finally define the script for our user uAgent querying and booking a table at the restaurant.
 
 1. First of all, let's create a Python script in `booking_demo` folder, and name it: `touch user.py`
 2. We then need to import necessary classes from the `uagents` library and the two protocols defined above. We also need the restaurant agent's address to be able to communicate with it:
@@ -495,7 +496,7 @@ if __name__ == "__main__":
 
 ## Run the scripts
 
-Run the `restaurant` agent and then the `user` agent from different terminals.
+Run the `restaurant` agent and then the `user` agent from different terminals:
 
 - Terminal 1: `python restaurant.py`
 

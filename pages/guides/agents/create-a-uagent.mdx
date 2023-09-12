@@ -1,22 +1,22 @@
-# Creating your first μAgent 🤖🧑‍💻
+# Creating your first uAgent 🤖🧑‍💻
 
 ## Introduction
 
-The μAgents Framework makes it easy to build agents for all kinds of decentralized use cases.
+The uAgents Framework makes it easy to build agents for all kinds of decentralized use cases.
 
-In this guide we want to show you the steps needed for _creating your first μAgent in a blink of an eye!_
+In this guide we want to show you the steps needed for _creating your first uAgent in a blink of an eye!_
 
 **Let's get started!**
 
-## Create a μAgent saying hello and its name
+## Create a uAgent saying hello and its name
 
 ### Walk-through
 
-Here, we want to show how to create your first μAgent using the tools provided by Fetch.ai `uagents` library. You can create your first μAgent by following the steps below:
+Here, we want to show how to create your first uAgent using the tools provided by Fetch.ai `uagents` library. You can create your first uAgent by following the steps below:
 
 1. First of all, let's create a Python script for this task, and name it: `touch agent.py`
 
-2. We then need to import the `Agent` and `Context` classes from the `uagents` library, and then create a μAgent using the class `Agent`:
+2. We then need to import the `Agent` and `Context` classes from the `uagents` library, and then create a uAgent using the class `Agent`:
 
    ```py copy
    from uagents import Agent, Context
@@ -25,7 +25,7 @@ Here, we want to show how to create your first μAgent using the tools provided 
 
    It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address.md)️. Otherwise, random addresses will be generated every time you run the agent.
 
-3. Let's define a `say_hello()` function for our agent to print a message periodically saying hello:
+3. Let's define a `say_hello()` function for our agent to print a message periodically saying `hello, my name is ...`:
 
    ```py copy
    @alice.on_event("startup")
@@ -36,9 +36,9 @@ Here, we want to show how to create your first μAgent using the tools provided 
        alice.run()
    ```
 
-   The `.on_interval` decorator defines a periodic behavior for this agent. In this case, the agent will execute the `say_hello()` function every 2 seconds. The `Context` object is a collection of data and functions related to the agent. In this case, we just use the agent's name, `alice`. The agent executes the function and uses the `ctx.logger.info()` method to print the message.
+   The `.on_interval()` decorator defines a periodic behavior for this agent. In this case, the agent will execute the `say_hello()` function every 2 seconds. The `Context` object is a collection of data and functions related to the agent. In this case, we just use the agent's name, `alice`. The agent executes the function and uses the `ctx.logger.info()` method to print the message.
 
-4. Save the script
+4. Save the script.
 
 The overall script should look as follows:
 
@@ -67,4 +67,4 @@ The output would be:
 [alice]: hello, my name is alice
 ```
 
-_**Congratulations, you have just created your first μAgent!**_
+_**Congratulations, you have just created your first uAgent!**_
