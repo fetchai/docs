@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { Tab as HeadlessTab } from "@headlessui/react";
 
-function InfoIcon(props) {
+function InfoIcon(properties) {
   return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
+    <svg viewBox="0 0 16 16" aria-hidden="true" {...properties}>
       <circle cx="8" cy="8" r="8" strokeWidth="0" />
       <path
         fill="none"
@@ -17,15 +17,15 @@ function InfoIcon(props) {
   );
 }
 
-function WarnIcon(props) {
+function WarnIcon(properties) {
   return (
-    <svg viewBox="0 0 16 16" fill="red" aria-hidden="true" {...props}>
+    <svg viewBox="0 0 16 16" fill="red" aria-hidden="true" {...properties}>
       <path d="M8 0a8 8 0 1 0 8 8A8.009 8.009 0 0 0 8 0zm0 14a6 6 0 1 1 6-6 6.007 6.007 0 0 1-6 6zm1-9H7v6h2zm0 7H7v2h2z" />
     </svg>
   );
 }
 
-export function Note({ children }) {
+export function Note({ children }: {children: ReactNode}) {
   return (
     <div className="nx-my-6 nx-flex nx-gap-2.5 nx-rounded-2xl nx-border nx-border-emerald-500/20 nx-bg-emerald-50/50 nx-p-4 nx-leading-6 nx-text-emerald-900 nx-dark:border-emerald-500/30 nx-dark:bg-emerald-500/5 nx-dark:text-emerald-200 nx-dark:[--tw-prose-links-hover:theme(colors.emerald.300)] nx-dark:[--tw-prose-links:theme(colors.white)]">
       <InfoIcon className="nx-mt-1 nx-h-4 nx-w-4 nx-flex-none nx-fill-emerald-500 nx-stroke-white nx-dark:fill-emerald-200/20 nx-dark:stroke-emerald-200" />
@@ -36,7 +36,7 @@ export function Note({ children }) {
   );
 }
 
-export function Warn({ children }) {
+export function Warn({ children }: {children: ReactNode}) {
   return (
     <div className="nx-my-6 nx-flex nx-gap-2.5 nx-rounded-2xl nx-border nx-border-red-500/20 nx-bg-red-50/50 nx-p-4 nx-leading-6 nx-text-red-900 nx-dark:border-red-500/30 nx-dark:bg-red-500/5 nx-dark:text-red-200 nx-dark:[--tw-prose-links-hover:theme(colors.red.300)] nx-dark:[--tw-prose-links:theme(colors.white)]">
       <WarnIcon className="nx-mt-1 nx-h-4 nx-w-4 nx-flex-none nx-fill-red-500 nx-stroke-white nx-dark:fill-red-200/20 nx-dark:stroke-red-200" />
@@ -47,7 +47,7 @@ export function Warn({ children }) {
   );
 }
 
-export function Properties({ children }) {
+export function Properties({ children }: {children: ReactNode}) {
   return (
     <div className="nx-my-6">
       <ul
@@ -60,7 +60,7 @@ export function Properties({ children }) {
   );
 }
 
-export function Property({ name, type, children }) {
+export function Property({ name, type, children }: {name:string; type: string; children: ReactNode}) {
   console.log(name, type, children);
   return (
     <li className="nx-m-0 nx-px-0 nx-py-4 nx-first:pt-0 nx-last:pb-0">
@@ -87,7 +87,8 @@ function classNames(...classes) {
 }
 
 // leaving half as I think this will  be needed in future
-export function Tabs({ children, half = false }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function Tabs({ children, half = false }: {children: any; half: boolean}) {
   return (
     <div className={`nx-rounded nx-h-min nx-overflow-auto ${half ? "nx-w-full" : "nx-w-full"}`}>
       <HeadlessTab.Group>
@@ -126,11 +127,12 @@ export function Tabs({ children, half = false }) {
   );
 }
 
-export function DropDownTabs({ children, half = false }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function DropDownTabs({ children }: {children: any}) {
   const [selectedTab, setSelectedTab] = useState(0);
 
   const handleTabChange = (event) => {
-    setSelectedTab(parseInt(event.target.value));
+    setSelectedTab(Number.parseInt(event.target.value));
   };
   return (
     <div>
@@ -146,46 +148,46 @@ export function DropDownTabs({ children, half = false }) {
         ))}
       </select>
       {React.Children.map(children, (child, index) => (
-        index === selectedTab ? child.props.children : null
+        index === selectedTab ? child.props.children : undefined
       ))}
     </div>
   );
 }
 
 
-export function Tab(props) {
-  return <HeadlessTab {...props}/>
+export function Tab(properties) {
+  return <HeadlessTab {...properties}/>
 }
 
-export function Row({ children }) {
+export function Row({ children }: {children: ReactNode}) {
   return <div className="nx-pt-4 nx-gap-8 nx-flex-mdx">{children}</div>;
 }
 
-export function Col({ children }) {
+export function Col({ children }: {children: ReactNode}) {
   return <div className="nx-w-1/2-mdx nx-w-full-mdx">{children}</div>;
 }
 
-export function Section({ children }) {
+export function Section({ children }: {children: ReactNode}) {
   return <div className="nx-my-32">{children}</div>;
 }
 
-export function ApiIntro({ children }) {
+export function ApiIntro({ children }: {children: ReactNode}) {
   return <div className="nx-pb-4 nx-pr-4">{children}</div>;
 }
 
-export function Tag({ children }) {
+export function Tag({ children }: {children: ReactNode}) {
   return <div className="nx-bg-green-100 nx-border nx-rounded nx-w-fit nx-p-2">{children}</div>;
 }
 
-export function CodeHeading({ children }) {
+export function CodeHeading({ children }: {children: ReactNode}) {
   return <div className="nx-flex nx-gap-2">{children}</div>;
 }
 
-export function Grid3({ children }) {
+export function Grid3({ children }: {children: ReactNode}) {
   return <div className="nx-grid nx-grid-cols-1 nx-pt-4 sm:nx-grid-cols-1 md:nx-grid-cols-2 lg:nx-grid-cols-3 nx-gap-4">{children}</div>;
 }
 
-export function Grid2({ children }) {
+export function Grid2({ children }: {children: ReactNode}) {
   return <div className="nx-grid nx-grid-cols-1 nx-pt-4 sm:nx-grid-cols-1 md:nx-grid-cols-2 lg:nx-grid-cols-2 nx-gap-4">{children}</div>;
 }
   

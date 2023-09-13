@@ -1,7 +1,7 @@
 import React from 'react'
 import { DocsThemeConfig } from './theme/fetch-ai-docs'
 import Footer from './components/footer'
-import Logo from './components/Logo'
+import Logo from './components/logo'
 
 const config: DocsThemeConfig = {
   logo: <Logo/>,

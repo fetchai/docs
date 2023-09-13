@@ -1,11 +1,9 @@
-// Example from https://beta.reactjs.org/learn
-
-import { useState } from 'react'
+import React, { useState } from 'react'
 import styles from './landing.module.css'
 import Image from 'next/image';
 import ColoredCirclesIcon from '../src/images/New search paradigms.png'
 import ColoredShapesIcon  from '../src/images/Create new business models.png'
-import { FeatureGuideTabs } from './featureGuideTabs';
+import { FeatureGuideTabs } from './feature-guide-tabs';
 import Products from './products';
 import { useRouter } from 'next/navigation'
 
@@ -33,7 +31,7 @@ function LandingPage() {
 
 
 
-  const GuideBox = ({guide, index}) => {
+  const GuideBox = ({guide, index}: {guide:{label: string, path: string}, index:number}) => {
         const router = useRouter()
         const [hover, setHover] = useState<boolean>(false);
 
@@ -63,7 +61,7 @@ function LandingPage() {
           <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
             {
               startingGuides.map((guide, index) => {
-                return <GuideBox guide={guide} index={index}/>
+                return <GuideBox key={index} guide={guide} index={index}/>
               })
             }
           </div>

@@ -1,6 +1,6 @@
 import {Code, Pre} from 'nextra/components';
 import React from 'react';
-import {ApiIntro, Col, Properties, Property, Row, Section, Tab, DropDownTabs} from "./mdx";
+import {ApiIntro, Col, Properties, Property, Row, Tab, DropDownTabs} from "./mdx";
 
 interface PropertyType {
   name: string;
@@ -11,29 +11,25 @@ interface PropertyType {
 const PythonCodeTab: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
   url: string,
-  samplePayload?: any
+  samplePayload?: unknown
 }> = ({method, url, samplePayload}) => {
 
   let code = ``
-  if(samplePayload) {
-    code = `\
+  code = samplePayload ? `\
 import requests
 
-data = ${JSON.stringify(samplePayload, null, 4)}
+data = ${JSON.stringify(samplePayload, undefined, 4)}
 
-requests.${method.toLowerCase()}("${url}", json=data, headers=\{
+requests.${method.toLowerCase()}("${url}", json=data, headers={
     "Authorization": "bearer <your token here>"
 }
-    `
-  } else {
-    code = `\
+    ` : `\
 import requests
 
-requests.${method.toLowerCase()}("${url}",, headers=\{
+requests.${method.toLowerCase()}("${url}",, headers={
     "Authorization": "bearer <your token here>"
 }
-    `
-  }
+    `;
 
   return (
       <Pre filename="python" data-language="python" hasCopyCode={true} className="nx-pre-code">
@@ -47,13 +43,12 @@ requests.${method.toLowerCase()}("${url}",, headers=\{
 const JavascriptCodeTab: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
   url: string,
-  samplePayload?: any
+  samplePayload?: unknown
 }> = ({method, url, samplePayload}) => {
 
   let code = ``
-  if (samplePayload) {
-    code = `\
-body = ${JSON.stringify(samplePayload, null, 4)}
+  code = samplePayload ? `\
+body = ${JSON.stringify(samplePayload, undefined, 4)}
 
 await fetch("${url}", {
   method: ${method.toLowerCase()},
@@ -61,16 +56,13 @@ await fetch("${url}", {
     Authorization: Bearer <your token here>
   },
   body
-})`
-  } else {
-    code = `\
+})` : `\
 await fetch("${url}", {
   method: ${method.toLowerCase()},
   headers: {
     Authorization: Bearer <your token here>
   }
-})`
-  }
+})`;
   
   return (
     <Pre filename="javascript" data-lanuage="javascript" hasCopyCode={true} className="nx-pre-code">
@@ -85,7 +77,7 @@ await fetch("${url}", {
 const CurlCodeTab: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
   url: string,
-  samplePayload?: any
+  samplePayload?: unknown
 }> = ({method, url, samplePayload}) => {
   let code = `\
 curl \\
@@ -99,7 +91,7 @@ ${url}`
 
   return (
     <Pre filename="bash" hasCopyCode={true} className="nx-pre-code">
-      {code.split("\n").map((line, index) => {
+      {code.split("\n").map((line) => {
         return (
           <>
             {line}
@@ -113,9 +105,9 @@ ${url}`
 
 
 const JsonCodeTab: React.FC<{
-  samplePayload: any
+  samplePayload: unknown
 }> = ({samplePayload}) => {
-  const formattedJson = JSON.stringify(samplePayload, null, 2);
+  const formattedJson = JSON.stringify(samplePayload, undefined, 2);
 
   return (
     <Pre className="nx-pre-code" filename="json" hasCopyCode={true}>
@@ -127,30 +119,30 @@ const JsonCodeTab: React.FC<{
 
 export const ApiResponses: React.FC<{
   description?: string,
-  samplePayload: any,
+  samplePayload: unknown,
   properties?: PropertyType[]
-}> = (props) => {
+}> = (properties) => {
   return (
     <>
       <Row><h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl">Responses</h1></Row>
       <Row>
         <Col>
-          {props.description ? <ApiIntro>
-            {props.description}
-          </ApiIntro> : null}
+          {properties.description ? <ApiIntro>
+            {properties.description}
+          </ApiIntro> : undefined}
 
-          {props.properties && props.properties.length ? <Properties>
-            {props.properties.map(property => {
-              return <Property name={property.name} type={property.type}>
+          {properties.properties && properties.properties.length > 0 ? <Properties>
+            {properties.properties.map(property => {
+              return <Property key={property.name} name={property.name} type={property.type}>
                 {property.description}
               </Property>
             })}
-          </Properties> : null}
+          </Properties> : undefined}
         </Col>
         <Col>
           <DropDownTabs>
             <Tab heading="HTTP 200">
-              <JsonCodeTab samplePayload={props.samplePayload}/>
+              <JsonCodeTab samplePayload={properties.samplePayload}/>
             </Tab>
           </DropDownTabs>
         </Col>
@@ -166,35 +158,35 @@ export const ApiRequest: React.FC<{
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     path: string,
     description: string,
-    samplePayload?: any,
+    samplePayload?: unknown,
     properties?: PropertyType[]
-}> = (props) => {
+}> = (properties) => {
     return (
       <>
         <Row><h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl">Request</h1></Row>
         <Row>
           <Col>
-            {props.description ? <ApiIntro>
-              {props.description}
-            </ApiIntro> : null}
-            {props.properties && props.properties.length ? <Properties>
-              {props.properties.map(property => {
-                return <Property name={property.name} type={property.type}>
+            {properties.description ? <ApiIntro>
+              {properties.description}
+            </ApiIntro> : undefined}
+            {properties.properties && properties.properties.length > 0 ? <Properties>
+              {properties.properties.map(property => {
+                return <Property key={property.name} name={property.name} type={property.type}>
                   {property.description}
                 </Property>
               })}
-            </Properties> : null}
+            </Properties> : undefined}
           </Col>
           <Col>
             <DropDownTabs>
               <Tab heading="Curl">
-                <CurlCodeTab method={props.method} url={props.apiUrl + props.path} samplePayload={props.samplePayload}/>
+                <CurlCodeTab method={properties.method} url={properties.apiUrl + properties.path} samplePayload={properties.samplePayload}/>
               </Tab>
               <Tab heading="Python">
-                <PythonCodeTab method={props.method} url={props.apiUrl + props.path} samplePayload={props.samplePayload}/>
+                <PythonCodeTab method={properties.method} url={properties.apiUrl + properties.path} samplePayload={properties.samplePayload}/>
               </Tab>
               <Tab heading="Javascript">
-                <JavascriptCodeTab method={props.method} url={props.apiUrl + props.path} samplePayload={props.samplePayload}/>
+                <JavascriptCodeTab method={properties.method} url={properties.apiUrl + properties.path} samplePayload={properties.samplePayload}/>
               </Tab>
             </DropDownTabs>
           </Col>
@@ -208,19 +200,19 @@ export const ApiEndpointRequestResponse: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
   path: string,
   description: string,
-  samplePayload?: any,
-  responses?: any,
+  samplePayload?: unknown,
+  responses?: unknown,
   responseProperties?: PropertyType[],
   responseDescription?: string,
   properties?: PropertyType[]
-}> = (props) => {
+}> = (properties) => {
   return (
     <>
-      <Row><p className="nx-endpoint nx-text-base"><span className="nextra-content nx-font-medium">Endpoint: </span><span className="nx-endpoint-method nx-text-fetch-main">{props.method}</span> <span className="nx-text-purple nx-font-normal">{props.path}</span></p></Row>
+      <Row><p className="nx-endpoint nx-text-base"><span className="nextra-content nx-font-medium">Endpoint: </span><span className="nx-endpoint-method nx-text-fetch-main">{properties.method}</span> <span className="nx-text-purple nx-font-normal">{properties.path}</span></p></Row>
 
-      <ApiRequest apiUrl={props.apiUrl} method={props.method} path={props.path} description={props.description} samplePayload={props.samplePayload ? props.samplePayload : null} properties={props.properties ? props.properties : null}/>
+      <ApiRequest apiUrl={properties.apiUrl} method={properties.method} path={properties.path} description={properties.description} samplePayload={properties.samplePayload ?? undefined} properties={properties.properties ?? undefined}/>
       {
-        props.responses ? <ApiResponses samplePayload={props.responses ? props.responses : null} properties={props.responseProperties ? props.responseProperties : null} description={props.responseDescription ? props.responseDescription : null}/> : null
+        properties.responses ? <ApiResponses samplePayload={properties.responses ?? undefined} properties={properties.responseProperties ?? undefined} description={properties.responseDescription ?? undefined}/> : undefined
       }
       
     </>

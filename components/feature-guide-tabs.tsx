@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styles from './tab.module.css'
 import { useRouter } from 'next/router';
 
-export const GuideBox = ({content}) => {
+export const GuideBox = ({content}: {
+  content: {
+    title: string
+    description: string
+    path: string
+  }
+}) => {
   const router = useRouter()
   const [hover, setHover] = useState<boolean>(false);
 
@@ -117,7 +123,7 @@ export const FeatureGuideTabs = () => {
             <select
               className="nx-block nx-appearance-none nx-w-full nx-px-4 nx-py-2 nx-pr-8 nx-rounded-md nx-bg-gray-300 nx-text-gray-700"
               value={activeTab}
-              onChange={(e) => setActiveTab(parseInt(e.target.value))}
+              onChange={(event) => setActiveTab(Number.parseInt(event.target.value))}
             >
               {tabItems.map((tab, index) => (
                 <option key={index} value={index}>
@@ -157,8 +163,8 @@ export const FeatureGuideTabs = () => {
       </div>
       <div className="nx-mt-4">
         <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
-          {tabItems[activeTab].content.map(content => {
-            return <GuideBox content={content}/>
+          {tabItems[activeTab].content.map((content, index) => {
+            return <GuideBox key={index} content={content}/>
           })}
         </div>
       </div>

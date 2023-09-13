@@ -8,7 +8,10 @@ import { DiscordIcon, GitHubIcon } from 'nextra/icons'
 import { useRouter } from 'next/router';
 
 
-const FooterLink = ({content}) => {
+const FooterLink = ({content}: {content: {
+  description: string
+  path: string
+}}) => {
   const router = useRouter()
   const [hover, setHover] = useState<boolean>(false);
 
@@ -113,22 +116,22 @@ const Footer: React.FC = () => {
               <div className="md:nx-col-span-1 md:nx-mb-4">
                 <h4 className="nx-text-black nx-font-semibold nx-mb-2">Developers</h4>
                 
-                {developers.map(content => {
-                  return <FooterLink content={content}/>
+                {developers.map((content, index) => {
+                  return <FooterLink key={index} content={content}/>
                 })}
               </div>
 
               <div className="md:nx-col-span-1 md:nx-mb-4">
                 <h4 className="nx-text-black nx-font-semibold nx-mb-2">Company</h4>
-                {company.map(content => {
-                  return <FooterLink content={content}/>
+                {company.map((content, index) => {
+                  return <FooterLink key={index} content={content}/>
                 })}
               </div>
 
               <div className="md:nx-col-span-1 md:nx-mb-4">
                 <h4 className="nx-text-black nx-font-semibold nx-mb-2">Legal</h4>
-                {legal.map(content => {
-                  return <FooterLink content={content}/>
+                {legal.map((content, index) => {
+                  return <FooterLink key={index} content={content}/>
                 })}
               </div>
               </div>
