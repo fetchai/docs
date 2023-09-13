@@ -6,33 +6,33 @@ uAgents can perform an _interval task_ to periodically perform actions with a sp
 
 **Let's get started and create our first interval task!**
 
-## Walk-through 
+## Walk-through
 
 1. First of all, we would need to create a Python script for this task, and name it: `touch interval-task.py`
 2. Let's then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our uAgent:
 
-    ```py copy
-    from uagents import Agent, Context
+   ```py copy
+   from uagents import Agent, Context
 
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    ```
+   alice = Agent(name="alice", seed="alice recovery phrase")
+   ```
 
 3. We can now define our uAgent's behavior:
 
-    ```py copy
-    @alice.on_interval(period=2.0)
-    async def say_hello(ctx: Context):
-        ctx.logger.info(f'hello, my name is {ctx.name}')
-   
-    if __name__ == "__main__":
-        alice.run()
-    ```
+   ```py copy
+   @alice.on_interval(period=2.0)
+   async def say_hello(ctx: Context):
+       ctx.logger.info(f'hello, my name is {ctx.name}')
+
+   if __name__ == "__main__":
+       alice.run()
+   ```
 
    We can use the `.on_interval()` decorator to repeat a task in a specified time period. In this case, we will just define a `say_hello()` function to send a message every 2 seconds, saying hello and printing the name of the agent retrieved using `ctx.name()` method. The output will be printed out using the `ctx.logger.info()` method.
 
 4. Save the script.
 
-The overall script should look as follows: 
+The overall script should look as follows:
 
 ```py copy filename="interval-task.py"
 from uagents import Agent, Context
@@ -42,7 +42,7 @@ alice = Agent(name="alice", seed="alice recovery phrase")
 @alice.on_interval(period=2.0)
 async def say_hello(ctx: Context):
     ctx.logger.info(f'hello, my name is {ctx.name}')
-    
+
 if __name__ == "__main__":
     alice.run()
 ```

@@ -13,24 +13,24 @@ Changes to the state of a network are achieved by broadcasting transactions. To 
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
-# Creating a random private key 
+# Creating a random private key
 private_key = PrivateKey()
 ```
 
 ## Recover an existing private key
 
-Start by extracting the private key and convert it into a base64 encoded string. You can do this on macOS or Linux for the Fetch.ai network using the FetchD CL. An example is provided in the code snippet below. 
+Start by extracting the private key and convert it into a base64 encoded string. You can do this on macOS or Linux for the Fetch.ai network using the FetchD CL. An example is provided in the code snippet below.
 
-```py copy 
-# Extract the private key and convert it into a base64 encoded string 
+```py copy
+# Extract the private key and convert it into a base64 encoded string
 fetchd keys export mykeyname --unsafe --unarmored-hex | xxd -r -p | base64
 ```
 
-Once you've extracted and converted the key into a base64 encoded string you can recover to an existing private key by following along the provided example below. 
+Once you've extracted and converted the key into a base64 encoded string you can recover to an existing private key by following along the provided example below.
 
 ```py copy
 
-# Import necessary classes 
+# Import necessary classes
 from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.crypto.keypairs import PrivateKey
 
@@ -40,7 +40,7 @@ private_key = PrivateKey('<base64 encoded private key>') # Here is where you pro
 
 The `PrivateKey` object is one of CosmPy's low level primitives. This is why it is generally paired with a `Wallet` object. You can now create a local wallet using the `LocalWallet` class from the CosmPy library and initialize it with the `private_key` you generated or recovered earlier. The `LocalWallet` class is used to manage a local wallet associated with a private key for interacting with the Cosmos blockchain.
 
-With this wallet object, you can perform various operations, such as generating the corresponding public address associated with the private key and signing transactions. You can also query useful information such as the address from the wallet directly. The example below showcases how to achieve both.  
+With this wallet object, you can perform various operations, such as generating the corresponding public address associated with the private key and signing transactions. You can also query useful information such as the address from the wallet directly. The example below showcases how to achieve both.
 
 ```py copy
 wallet = LocalWallet(private_key)
