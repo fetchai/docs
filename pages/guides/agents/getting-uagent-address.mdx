@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Each uAgent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md). 
+Each uAgent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md).
 
 It is possible to distinguish between two different types of addresses:
 
@@ -24,9 +24,9 @@ You can print the `uAgent address` related to your uAgent in the following way:
 
    ```py copy filename="uagent-address.py"
    from uagents import Agent
-   
+
    alice = Agent(name="alice", seed="alice recovery phrase")
-   
+
    print("uAgent address: ", alice.address)
    ```
 
@@ -46,9 +46,9 @@ You can print the `Fetch network address` related to your uAgent in the followin
 
    ```py copy filename="fetch-address.py"
    from uagents import Agent
-   
+
    alice = Agent(name="alice", seed="alice recovery phrase")
-   
+
    print("Fetch network address: ", alice.wallet.address())
    ```
 
@@ -76,24 +76,24 @@ The `Context` class is a crucial component which represents the execution contex
 
 2. We then need to import the necessary classes `Agent` and `Context` from the `uagents` library, and then create an instance of the `Agent` class, `alice`:
 
-    ```py copy
-    from uagents import Agent, Context
-     
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    ```
+   ```py copy
+   from uagents import Agent, Context
+
+   alice = Agent(name="alice", seed="alice recovery phrase")
+   ```
 
 3. We would then need to assign the uAgent the behavior to be executed. In this case, **alice** could send a message when it is being run saying hello and printing its name and address:
 
-    ```py copy 
-    @alice.on_event("startup")
-    async def introduce_agent(ctx: Context):
-        ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}."
-     
-     if __name__ == "__main__":
-         alice.run()
-    ```
+   ```py copy
+   @alice.on_event("startup")
+   async def introduce_agent(ctx: Context):
+       ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}."
 
-   This `introduce_agent()` function takes a single argument `ctx` of type `Context`. The message is printed out using the `ctx.logger.info()` method, and  includes the agent's name obtained from attribute `name` of the `Context` class and retrieved using `ctx.name()` method. The same for the agent's address, which is obtained from attribute `address` of the `Context` class and retrieved using `ctx.address()` method.
+    if __name__ == "__main__":
+        alice.run()
+   ```
+
+   This `introduce_agent()` function takes a single argument `ctx` of type `Context`. The message is printed out using the `ctx.logger.info()` method, and includes the agent's name obtained from attribute `name` of the `Context` class and retrieved using `ctx.name()` method. The same for the agent's address, which is obtained from attribute `address` of the `Context` class and retrieved using `ctx.address()` method.
 
 4. Save the script.
 
@@ -101,13 +101,13 @@ The overall script should look as follows:
 
 ```py copy filename="my_agent.py"
 from uagents import Agent, Context
- 
+
 alice = Agent(name="alice", seed="alice recovery phrase")
- 
+
 @alice.on_event("startup")
 async def introduce_agent(ctx: Context):
     ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}.")
- 
+
 if __name__ == "__main__":
     alice.run()
 ```

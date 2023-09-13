@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Staking is a crucial mechanism for Proof-of-Stake (PoS) based blockchains, empowering users to actively participate in securing the network while earning rewards. Staked (Delegated) funds are bonded to validator nodes. These validator nodes validate transactions and maintaining the network's integrity. By bonding funds to validators, individuals earn governance rights and actively contribute to the network's security and decentralization. 
+Staking is a crucial mechanism for Proof-of-Stake (PoS) based blockchains, empowering users to actively participate in securing the network while earning rewards. Staked (Delegated) funds are bonded to validator nodes. These validator nodes validate transactions and maintaining the network's integrity. By bonding funds to validators, individuals earn governance rights and actively contribute to the network's security and decentralization.
 
 ## Delegating
 
@@ -31,7 +31,7 @@ tx = ledger_client.redelegate_tokens(validator_address, alternate_validator_addr
 tx.wait_to_complete()
 ```
 
-## Undelegating 
+## Undelegating
 
 Undelegated funds go through an **unbonding period** (i.e., typically 14 to 21 days for Cosmos sdk based projects) and once their unbonding period is complete funds become transferable. The code snippet we have shared showcases how to use the `LedgerClient` object to invoke the undelegation (in this case 5 tokens) and start the cool down process. Importantly, the cool down is tracked for each undelegation invokation. For instance, if you trigger 3 undelegate actions on 3 consecutive days the first batch of tokens will become available 3 days before the final batch.
 
@@ -42,7 +42,7 @@ tx = ledger_client.undelegate_tokens(validator_address, 5, wallet)
 tx.wait_to_complete()
 ```
 
-## Claiming Rewards 
+## Claiming Rewards
 
 **Delegated funds accrue rewards**. Rewards can be collected at any time and unlike delegations become immediately available.
 To claim rewards from a specific validator you can use the following code snippet:
@@ -54,7 +54,7 @@ tx = ledger_client.claim_rewards(validator_address, wallet)
 tx.wait_to_complete()
 ```
 
-## Stake Queries 
+## Stake Queries
 
 Additionally, CosmPY allows you to perform useful **stake queries** and **summaries**. You can query the stake information on any particular address at any point using the `LedgerClient` as shown in the example below:
 
