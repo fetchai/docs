@@ -1,4 +1,4 @@
-# Stake optimizer️
+# Stake optimizer
 
 ## Getting started
 
@@ -17,8 +17,8 @@ from cosmpy.aerial.config import NetworkConfig
 ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
 ```
 
-## Set and Query Variables
-### Staking Variables
+## Set and query variables
+### Staking variables
 
 First, we need to define the desired amount and the total period that we would like to stake in: `initial_stake` and `total_period` variables. Here we will stake 50 TESTFET for 60000 minutes. For this guide, we will work with minutes as a time unit:
 
@@ -27,7 +27,7 @@ initial_stake = 50000000000000000000
 total_period = 60000
 ```
 
-### Validator Selection and Variables
+### Validator selection and variables
 
 We are now ready to select a validator to delegate our tokens. We can do this by analyzing which one has the lowest commission and a reasonable amount of stake delegated compared to the total stake.
 
@@ -152,20 +152,23 @@ minute_reward = anual_reward/360/24/60
 rate = minute_reward/initial_stake
 ```
 
-### Calculate Optimal Compounding Period
+### Calculate optimal compounding period
 
 We can calculate the optimal compounding period that maximizes our staking rewards analytically by using the following formula:
 
-![](/../../src/images/)
+![](/../../docs_v2/src/images/docs/reward_equation.png)
 
     Where:
 
     M = Total stake at time D
-    S= Initial Stake \ f = Transaction Fee \ k = Reward Rate
-    m = Number Of Compounding Transactions \ n = Compounding Period
+    S = Initial Stake 
+    f = Transaction Fee 
+    k = Reward Rate
+    m = Number Of Compounding Transactions 
+    n = Compounding Period
     D = m x n = Total Staking Time
 
-We will now find the value that maximizes reward by taking the first derivative with respect to n and finding the root in the interval (0,D]:
+We will now find the value that maximizes reward by taking the first derivative with respect to _n_ and finding the root in the interval _(0,D]_:
 
 ```py copy
 import numpy as np
@@ -215,7 +218,7 @@ plt.title('Maximizing Rewards')
 plt.grid()
 ```
 
-![](/../../src/images/docs/)
+![](/../../docs_v2/src/images/docs/cosmpy-graph-optimal-period.png)
 
 Finally, we can compare the compounding staking rewards to a simple non-compounding strategy:
 
@@ -261,7 +264,7 @@ plt.legend()
 plt.yscale('log')
 ```
 
-![](/../../src/images/cosmpy_stake_optimizer/)
+![](/../../docs_v2/src/images/docs/cosmpy_stake_optimizer.png)
 
 Now that we have presented the concepts and ideas behind the optimizer, have a look at the abbreviated version of the code below:
 

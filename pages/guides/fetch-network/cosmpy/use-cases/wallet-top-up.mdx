@@ -1,0 +1,27 @@
+# Wallet top-up 💵
+
+## Introduction
+
+If you are performing multiple transactions from a certain `task_wallet`, you can set an algorithm to keep that wallet address topped-up. For this use case, we will use three different wallets: `wallet`, `authz_wallet`, and `task_wallet`. Wallet will be the main wallet address that we don't want to give full access to, therefore we will authorize `authz_wallet` to send a certain amount of tokens from wallet to `task_wallet` every time `task_wallet` balance falls below a certain `minimum_balance` threshold. This way, `task_wallet` can keep performing transactions using the main wallet's tokens by being topped-up by `authz_wallet`.
+
+Let's start by defining `wallet`, `authz_wallet` and `task_wallet` address.
+
+
+1.
+```py copy
+from cosmpy.aerial.wallet import LocalWallet
+from cosmpy.crypto.keypairs import PrivateKey
+from cosmpy.aerial.client import LedgerClient, NetworkConfig
+
+ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
+
+# Define wallets with any private keys
+wallet = LocalWallet(PrivateKey("F7w1yHq1QIcQiSqV27YSwk+i1i+Y4JMKhkpawCQIh6s="))
+
+authz_wallet = LocalWallet(
+    PrivateKey("KI5AZQcr+FNl2usnSIQYpXsGWvBxKLRDkieUNIvMOV8=")
+)
+
+# Define any task_wallet address
+task_wallet_address = 'fetch1ay6grfwhlm00wydwa3nw0x2u44qz4hg2uku8dc'
+```
