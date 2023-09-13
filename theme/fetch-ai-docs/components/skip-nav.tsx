@@ -55,8 +55,8 @@ export const SkipNavLink = forwardRef<HTMLAnchorElement, SkipNavLinkProps>(
   ): ReactElement {
     const className =
       providedClassName === undefined // Give the option to the user to pass a falsy other than undefined to remove the default styles
-        // eslint-disable-next-line unicorn/no-nested-ternary
-        ? styled // Give the user a way to opt-in the default style provided with the theme. Probably remove this option in the next major version (v3.x) and just do a check to use the providedClassName or the default
+        ? // eslint-disable-next-line unicorn/no-nested-ternary
+          styled // Give the user a way to opt-in the default style provided with the theme. Probably remove this option in the next major version (v3.x) and just do a check to use the providedClassName or the default
           ? cn(
               "nx-sr-only",
               "focus:nx-not-sr-only focus:nx-fixed focus:nx-z-50 focus:nx-m-3 focus:nx-ml-4 focus:nx-h-[calc(var(--nextra-navbar-height)-1.5rem)] focus:nx-rounded-lg focus:nx-border focus:nx-px-3 focus:nx-py-2 focus:nx-align-middle focus:nx-text-sm focus:nx-font-bold",
