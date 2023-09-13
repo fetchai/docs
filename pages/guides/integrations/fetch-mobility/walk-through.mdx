@@ -35,110 +35,110 @@ Enter the `ev_charger` directory previously created within the `src` folder.
 1. Let's start by creating a Python script for the `ev_charger` agent: `touch ev_charger.py`.
 2. We then import the needed classes and create an agent named `ev_adaptor` using the `uagents` Framework.
 
-    ```py copy
-    import os
-    import uuid
+   ```py copy
+   import os
+   import uuid
 
-    import requests
-    from messages import EVRequest, KeyValue, UAgentResponse, UAgentResponseType
-    from uagents import Agent, Context, Protocol
-    from uagents.setup import fund_agent_if_low
+   import requests
+   from messages import EVRequest, KeyValue, UAgentResponse, UAgentResponseType
+   from uagents import Agent, Context, Protocol
+   from uagents.setup import fund_agent_if_low
 
-    EV_SEED = os.getenv("EV_SEED", "ev charger service secret phrase")
+   EV_SEED = os.getenv("EV_SEED", "ev charger service secret phrase")
 
-    agent = Agent(
-        name="ev_adaptor",
-        seed=EV_SEED,
-    )
+   agent = Agent(
+       name="ev_adaptor",
+       seed=EV_SEED,
+   )
 
-    fund_agent_if_low(agent.wallet.address())
-    ```
+   fund_agent_if_low(agent.wallet.address())
+   ```
 
-    This agent is a software entity designed to interact with an external service. It is being initialized with a cryptographic seed, referred to as `EV_SEED` which is used for secure communication and validation. To ensure that the agent can perform transactions, we need to make sure that the agent's wallet balance is enough and tops up the wallet if the balance is low by running the `fund_agent_if_low()` function.
+   This agent is a software entity designed to interact with an external service. It is being initialized with a cryptographic seed, referred to as `EV_SEED` which is used for secure communication and validation. To ensure that the agent can perform transactions, we need to make sure that the agent's wallet balance is enough and tops up the wallet if the balance is low by running the `fund_agent_if_low()` function.
 
 3. We need to define the code for configuring the interaction with the OpenChargeMap API, which provides information about EV charging stations.
 
-    ```py copy
-    OPENCHARGEMAP_API_KEY = os.environ.get("OPENCHARGEMAP_API_KEY", "")
+   ```py copy
+   OPENCHARGEMAP_API_KEY = os.environ.get("OPENCHARGEMAP_API_KEY", "")
 
-    assert (
-        OPENCHARGEMAP_API_KEY
-    ), "OPENCHARGEMAP_API_KEY environment variable is missing from .env"
+   assert (
+       OPENCHARGEMAP_API_KEY
+   ), "OPENCHARGEMAP_API_KEY environment variable is missing from .env"
 
-    OPENCHARGEMAP_API_URL = "https://api.openchargemap.io/v3/poi?"
-    MAX_RESULTS = 100
-    ```
+   OPENCHARGEMAP_API_URL = "https://api.openchargemap.io/v3/poi?"
+   MAX_RESULTS = 100
+   ```
 
-    It retrieves the API key required for accessing the `OpenChargeMap` service from the environment variable `OPENCHARGEMAP_API_KEY`. An `assert` statement checks whether the API key is available. If the key is missing, it raises an assertion error and stops the script, notifying that the `OPENCHARGEMAP_API_KEY` environment variable is missing from the `.env` file. The base URL for the OpenChargeMap API, `OPENCHARGEMAP_API_URL`, is set to `"https://api.openchargemap.io/v3/poi?"`. This URL will be used for making API requests. A constant `MAX_RESULTS` is defined with a value of `100`, which might be used to limit the maximum number of results returned by API queries.
+   It retrieves the API key required for accessing the `OpenChargeMap` service from the environment variable `OPENCHARGEMAP_API_KEY`. An `assert` statement checks whether the API key is available. If the key is missing, it raises an assertion error and stops the script, notifying that the `OPENCHARGEMAP_API_KEY` environment variable is missing from the `.env` file. The base URL for the OpenChargeMap API, `OPENCHARGEMAP_API_URL`, is set to `"https://api.openchargemap.io/v3/poi?"`. This URL will be used for making API requests. A constant `MAX_RESULTS` is defined with a value of `100`, which might be used to limit the maximum number of results returned by API queries.
 
 4. We then need to define a function serving as the interface to the OpenChargeMap API to obtain data about nearby EV charging stations.
 
-    ```py copy
-    def get_ev_chargers(latitude: float, longitude: float, miles_radius: float) -> list:
-        """Return ev chargers available within given miles_readius of the latiture and longitude.
-        this information is being retrieved from https://api.openchargemap.io/v3/poi? API
-        """
-        response = requests.get(
-            url=OPENCHARGEMAP_API_URL
-            + f"maxresults={MAX_RESULTS}&latitude={latitude}&longitude={longitude}&distance={miles_radius}",
-            headers={"x-api-key": OPENCHARGEMAP_API_KEY},
-            timeout=5,
-        )
-        if response.status_code == 200:
-            return response.json()
-        return []
+   ```py copy
+   def get_ev_chargers(latitude: float, longitude: float, miles_radius: float) -> list:
+       """Return ev chargers available within given miles_readius of the latiture and longitude.
+       this information is being retrieved from https://api.openchargemap.io/v3/poi? API
+       """
+       response = requests.get(
+           url=OPENCHARGEMAP_API_URL
+           + f"maxresults={MAX_RESULTS}&latitude={latitude}&longitude={longitude}&distance={miles_radius}",
+           headers={"x-api-key": OPENCHARGEMAP_API_KEY},
+           timeout=5,
+       )
+       if response.status_code == 200:
+           return response.json()
+       return []
 
-    ev_chargers_protocol = Protocol("EvChargers")
-    ```
+   ev_chargers_protocol = Protocol("EvChargers")
+   ```
 
-    The `get_ev_chargers()` function accepts three parameters: `latitude`, `longitude`, and `miles_radius`. These parameters define the geographical area to search for EV chargers and such function is used to retrieve information about EV chargers within a specified radius of a given latitude and longitude using the OpenChargeMap API. The function sends an HTTP GET request to the OpenChargeMap API using the `requests.get()` method. The URL for the API request is constructed by combining various parameters, including `OPENCHARGEMAP_API_URL`, `MAX_RESULTS`, `latitude`, `longitude`, and `miles_radius`. The request includes an `"x-api-key"` header, which provides the API key (`OPENCHARGEMAP_API_KEY`) for authentication and authorization. The `timeout` parameter is set to 5 seconds, indicating that the request should time out if it takes longer than 5 seconds to receive a response. The function checks the HTTP response status code. If the status code is 200 (indicating a successful response), the function returns the JSON content of the response, which likely contains information about EV chargers. If the status code is not 200, the function returns an empty list `[]`.
+   The `get_ev_chargers()` function accepts three parameters: `latitude`, `longitude`, and `miles_radius`. These parameters define the geographical area to search for EV chargers and such function is used to retrieve information about EV chargers within a specified radius of a given latitude and longitude using the OpenChargeMap API. The function sends an HTTP GET request to the OpenChargeMap API using the `requests.get()` method. The URL for the API request is constructed by combining various parameters, including `OPENCHARGEMAP_API_URL`, `MAX_RESULTS`, `latitude`, `longitude`, and `miles_radius`. The request includes an `"x-api-key"` header, which provides the API key (`OPENCHARGEMAP_API_KEY`) for authentication and authorization. The `timeout` parameter is set to 5 seconds, indicating that the request should time out if it takes longer than 5 seconds to receive a response. The function checks the HTTP response status code. If the status code is 200 (indicating a successful response), the function returns the JSON content of the response, which likely contains information about EV chargers. If the status code is not 200, the function returns an empty list `[]`.
 
-     Finally, a protocol named `ev_chargers_protocol` is created using the `Protocol` class. This protocol is given the name `EvChargers`. This protocol is used to define message formats and handlers for specific types of messages related to EV chargers. It will be used to specify how the agent should handle messages of this type.
+   Finally, a protocol named `ev_chargers_protocol` is created using the `Protocol` class. This protocol is given the name `EvChargers`. This protocol is used to define message formats and handlers for specific types of messages related to EV chargers. It will be used to specify how the agent should handle messages of this type.
 
 5. We then define a message handler function, `ev_chargers`, which is used to handle messages of type `EVRequest`:
 
-    ```py copy
-    @ev_chargers_protocol.on_message(model=EVRequest, replies=UAgentResponse)
-    async def ev_chargers(ctx: Context, sender: str, msg: EVRequest):
-        ctx.logger.info(f"Received message from {sender}")
-        try:
-            ev_chargers = get_ev_chargers(msg.latitude, msg.longitude, msg.miles_radius)
-            request_id = str(uuid.uuid4())
-            conn_types = []
-            options = []
-            for idx, ev_station in enumerate(ev_chargers):
-                for conn in ev_station["Connections"]:
-                    conn_types.append(conn["ConnectionType"]["Title"])
-                    conn_type_str = ", ".join(conn_types)
-                    option = f"""● EV charger: {ev_station['AddressInfo']['Title']} , located {round(ev_station['AddressInfo']['Distance'], 2)} miles from your location\n● Usage cost {ev_station['UsageCost']};\n● Type - {conn_type_str}"""
+   ```py copy
+   @ev_chargers_protocol.on_message(model=EVRequest, replies=UAgentResponse)
+   async def ev_chargers(ctx: Context, sender: str, msg: EVRequest):
+       ctx.logger.info(f"Received message from {sender}")
+       try:
+           ev_chargers = get_ev_chargers(msg.latitude, msg.longitude, msg.miles_radius)
+           request_id = str(uuid.uuid4())
+           conn_types = []
+           options = []
+           for idx, ev_station in enumerate(ev_chargers):
+               for conn in ev_station["Connections"]:
+                   conn_types.append(conn["ConnectionType"]["Title"])
+                   conn_type_str = ", ".join(conn_types)
+                   option = f"""● EV charger: {ev_station['AddressInfo']['Title']} , located {round(ev_station['AddressInfo']['Distance'], 2)} miles from your location\n● Usage cost {ev_station['UsageCost']};\n● Type - {conn_type_str}"""
 
-                options.append(KeyValue(key=idx, value=option))
-            await ctx.send(
-                sender,
-                UAgentResponse(
-                    options=options,
-                    type=UAgentResponseType.SELECT_FROM_OPTIONS,
-                    request_id=request_id,
-                ),
-            )
-        except Exception as exc:
-            ctx.logger.error(exc)
-            await ctx.send(
-                sender, UAgentResponse(message=str(exc), type=UAgentResponseType.ERROR)
-            )
+               options.append(KeyValue(key=idx, value=option))
+           await ctx.send(
+               sender,
+               UAgentResponse(
+                   options=options,
+                   type=UAgentResponseType.SELECT_FROM_OPTIONS,
+                   request_id=request_id,
+               ),
+           )
+       except Exception as exc:
+           ctx.logger.error(exc)
+           await ctx.send(
+               sender, UAgentResponse(message=str(exc), type=UAgentResponseType.ERROR)
+           )
 
-    agent.include(ev_chargers_protocol)
-    ```
+   agent.include(ev_chargers_protocol)
+   ```
 
-    The function is decorated with the `.on_message()` decorator. This specifies that the function should handle messages of type `EVRequest` and reply with messages of type `UAgentResponse`. The function takes three parameters: `ctx`, `sender`, and `msg`. The handler logs an informational message, using `ctx.logger.info()` method, indicating that it has received a message from the sender. The main functionality of the message handler is placed inside a try-except block to handle potential exceptions.
+   The function is decorated with the `.on_message()` decorator. This specifies that the function should handle messages of type `EVRequest` and reply with messages of type `UAgentResponse`. The function takes three parameters: `ctx`, `sender`, and `msg`. The handler logs an informational message, using `ctx.logger.info()` method, indicating that it has received a message from the sender. The main functionality of the message handler is placed inside a try-except block to handle potential exceptions.
 
-    It calls the `get_ev_chargers()` function, passing in the `latitude`, `longitude`, and `miles_radius` from the incoming `msg`. This function is expected to retrieve information about EV chargers in the specified geographical area.
+   It calls the `get_ev_chargers()` function, passing in the `latitude`, `longitude`, and `miles_radius` from the incoming `msg`. This function is expected to retrieve information about EV chargers in the specified geographical area.
 
-    As a response, we get the `request_id`, which is an unique identifier for the request is generated using `uuid.uuid4()`, and the lists `conn_types` and `options` which are initialized to collect information about available EV chargers and their details. A loop iterates over the retrieved EV charger data (`ev_chargers`) and their connection types. For each EV charger, it constructs a detailed option string containing information such as charger title, distance, usage cost, and connection types. These option strings are appended to the `options` list along with a numeric key (`idx`) to represent each option.
+   As a response, we get the `request_id`, which is an unique identifier for the request is generated using `uuid.uuid4()`, and the lists `conn_types` and `options` which are initialized to collect information about available EV chargers and their details. A loop iterates over the retrieved EV charger data (`ev_chargers`) and their connection types. For each EV charger, it constructs a detailed option string containing information such as charger title, distance, usage cost, and connection types. These option strings are appended to the `options` list along with a numeric key (`idx`) to represent each option.
 
-    A response message of type `UAgentResponse` is constructed and sent back to the original sender using `ctx.send()` method. This response includes the collected options, specifies the response type as `UAgentResponseType.SELECT_FROM_OPTIONS`, and includes the `request_id`. If any exceptions occur during the processing of the message (e.g., an error in fetching EV charger data), an error message is logged, and an error response of type `UAgentResponseType.ERROR` is sent back to the sender. Finally, the message handler is included in the `ev_chargers_protocol` by calling `.include()` method. This step ensures that the agent is configured to handle messages of this type.
+   A response message of type `UAgentResponse` is constructed and sent back to the original sender using `ctx.send()` method. This response includes the collected options, specifies the response type as `UAgentResponseType.SELECT_FROM_OPTIONS`, and includes the `request_id`. If any exceptions occur during the processing of the message (e.g., an error in fetching EV charger data), an error message is logged, and an error response of type `UAgentResponseType.ERROR` is sent back to the sender. Finally, the message handler is included in the `ev_chargers_protocol` by calling `.include()` method. This step ensures that the agent is configured to handle messages of this type.
 
-5. Save the script.
+6. Save the script.
 
 The overall script should look as follows:
 
@@ -221,8 +221,8 @@ agent.include(ev_chargers_protocol)
 
 Enter the `geopy_car_parking` directory previously created within `src`.
 
-1. Let's first create a Python script within this directory and name it: `touch geopy_car_parking.py`
-2. We then need to import the necessary classes to then set the virtual environment and initialize our agent. We need to make sure it has enough funds available.
+1.  Let's first create a Python script within this directory and name it: `touch geopy_car_parking.py`
+2.  We then need to import the necessary classes to then set the virtual environment and initialize our agent. We need to make sure it has enough funds available.
 
     ```py copy
     import os
@@ -254,7 +254,7 @@ Enter the `geopy_car_parking` directory previously created within `src`.
 
     The agent expects to find an environment variable named `GEOAPI_API_KEY`. It asserts that this variable exists; otherwise, it raises an assertion error. This ensures that the necessary API key for the Geoapify service is available. The `PARKING_API_URL` variable is set to the base URL of the Geoapify Places API (`"https://api.geoapify.com/v2/places?"`). This URL will be used to make requests for parking place information.
 
-3. We then need to define a function to take the response from the Geoapify API and format it into a user-friendly representation:
+3.  We then need to define a function to take the response from the Geoapify API and format it into a user-friendly representation:
 
     ```py copy
     def format_parking_data(api_response) -> list:
@@ -298,7 +298,7 @@ Enter the `geopy_car_parking` directory previously created within `src`.
 
     Finally, the function constructs a formatted string for each parking place using the extracted data. It includes the parking place's name, capacity (if available), and address. Each formatted string is appended to the `parking_data` list, using the `.append()` method. The function returns the `parking_data` list, which now contains formatted information about parking places. This function essentially takes the complex and raw data from the Geoapify API and refines it into a list of user-friendly strings, making it easier to present parking place details to end-users.
 
-4. We now have to define a function fetching parking data from a Geoapify Parking API:
+4.  We now have to define a function fetching parking data from a Geoapify Parking API:
 
     ```py copy
     def get_parking_from_api(latitude, longitude, radius, max_r) -> list:
@@ -329,7 +329,7 @@ Enter the `geopy_car_parking` directory previously created within `src`.
 
     The requests.get() method is used to make the API request, and the response is stored in the response variable. If the API request is successful, the function returns the JSON response by calling `response.json()` function. If there is an exception (e.g., a network issue or API error), it catches the exception and prints an error message along with the exception details. It then returns an empty list `[]`.
 
-5. We then need to define a message handler function for handling `GeoParkingRequest` messages:
+5.  We then need to define a message handler function for handling `GeoParkingRequest` messages:
 
     ```py copy
     @geoapi_parking_protocol.on_message(model=GeoParkingRequest, replies=UAgentResponse)
@@ -388,9 +388,9 @@ Enter the `geopy_car_parking` directory previously created within `src`.
         - Radius Conversion: It calculates the search radius in meters by multiplying the `msg.radius` value by 1609. This conversion might be needed to match the units expected by the `get_parking_from_api()` function.
         - API Request: It calls the `get_parking_from_api()` function with the user's preferences latitude, longitude, converted radius, and max result count. This function is expected to return parking data from an API and is used to retrieve parking spaces close to the user.
 
-     The function then uses the `format_parking_data()` function to format the API response data into a suitable format for user presentation. Depending on the length of the formatted response data, it prepares a response to be sent back to the user. If there is more than one parking option (`len(response) > 1`), it constructs a list of options (`KeyValue` objects) and sends it as a select-from-options response to the user. This allows the user to choose from multiple parking options. If there is only one or no parking options available, it sends a suitable response message. If any exception occurs during the execution of the try block, it logs the error and sends an error message as a response to the user. Finally, we include this `geoapi_parking_protocol` protocol in the agent using the `.include` method.
+    The function then uses the `format_parking_data()` function to format the API response data into a suitable format for user presentation. Depending on the length of the formatted response data, it prepares a response to be sent back to the user. If there is more than one parking option (`len(response) > 1`), it constructs a list of options (`KeyValue` objects) and sends it as a select-from-options response to the user. This allows the user to choose from multiple parking options. If there is only one or no parking options available, it sends a suitable response message. If any exception occurs during the execution of the try block, it logs the error and sends an error message as a response to the user. Finally, we include this `geoapi_parking_protocol` protocol in the agent using the `.include` method.
 
-6. Save the script.
+6.  Save the script.
 
 The overall script should look as follows:
 
@@ -527,7 +527,7 @@ touch general.py
 touch geoapi_parking.py
 ```
 
-#### __init__.py
+#### **init**.py
 
 Inside this Python file, we need to define the following:
 
@@ -551,24 +551,24 @@ We now need to define a data model class for representing requests related to El
 - `longitude`: A floating-point number representing the longitude of the location where EV charging is requested.
 - `miles_radius`: A floating-point number representing the search radius (in miles) to find available EV charging stations around the specified location.
 
-    ```py copy filename="ev_charger.py"
-    from uagents import Model
+  ```py copy filename="ev_charger.py"
+  from uagents import Model
 
-    class EVRequest(Model):
-        """
-        Represents an Electric Vehicle (EV) Charging Request.
+  class EVRequest(Model):
+      """
+      Represents an Electric Vehicle (EV) Charging Request.
 
-        Attributes:
-            latitude (float): The latitude of the location where EV charging is requested.
-            longitude (float): The longitude of the location where EV charging is requested.
-            miles_radius (float): The search radius (in miles) to find available EV charging stations
-                                 around the specified location.
-        """
+      Attributes:
+          latitude (float): The latitude of the location where EV charging is requested.
+          longitude (float): The longitude of the location where EV charging is requested.
+          miles_radius (float): The search radius (in miles) to find available EV charging stations
+                               around the specified location.
+      """
 
-        latitude: float
-        longitude: float
-        miles_radius: float
-    ```
+      latitude: float
+      longitude: float
+      miles_radius: float
+  ```
 
 #### general.py
 
@@ -666,7 +666,7 @@ Within the geoapi_parking.py, we need to define a data model class for represent
 
 Now, we are ready to define the script for our `main.py` Python file originally created at the beginning of this guide.
 
-1. In the script, let's start by importing the necessary modules and classes:
+1.  In the script, let's start by importing the necessary modules and classes:
 
     ```py copy
     from agents.ev_charger.ev_charger import agent as ev_charger_agent
@@ -678,7 +678,7 @@ Now, we are ready to define the script for our `main.py` Python file originally 
         - `geopy_car_parking_agent` is imported from the `agents.geopy_car_parking.geopy_car_parking` module.
         - `Bureau` is imported from the `uagents` library.
 
-2. We then would need to create an instance of the Bureau class, and configure it with the following parameters:
+2.  We then would need to create an instance of the Bureau class, and configure it with the following parameters:
 
         - `endpoint`: it specifies the endpoint URL where the bureau can submit information. In this case, it's set to `"http://127.0.0.1:8000/submit"`.
         - `port`: it specifies the port on which the bureau operates. In this case, it's set to `8000`.
@@ -688,7 +688,7 @@ Now, we are ready to define the script for our `main.py` Python file originally 
         bureau = Bureau(endpoint="http://127.0.0.1:8000/submit", port=8000)
     ```
 
-3. We then need to add the two agents to the bureau:
+3.  We then need to add the two agents to the bureau:
 
     ```py copy
         print(f"Adding Ev charger agent to Bureau: {ev_charger_agent.address}")
@@ -703,7 +703,7 @@ Now, we are ready to define the script for our `main.py` Python file originally 
         - `ev_charger_agent` is added to the `bureau` using `bureau.add(ev_charger_agent)`.
         - `geopy_car_parking_agent` is added to the `bureau` using `bureau.add(geopy_car_parking_agent)`.
 
-4. Save the script.
+4.  Save the script.
 
 ```py copy filename="main.py"
 from agents.ev_charger.ev_charger import agent as ev_charger_agent

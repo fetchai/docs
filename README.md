@@ -10,15 +10,15 @@ https://docs-staging.sandbox-london-b.fetch-ai.com/docs
 
 ### Install dependencies
 
-````bash
+```bash
 pnpm install
-````
+```
 
 ### Run Development Server
 
-````bash
+```bash
 pnpm dev
-````
+```
 
 The site is then visible at:
 
@@ -28,17 +28,16 @@ http://127.0.0.1:3000/docs
 
 Build the codebase
 
-````bash
+```bash
 pnpm build
-````
+```
 
 Run the production server
 
-````bash
+```bash
 pnpm start
-````
+```
 
 The site is then visible at:
 
 http://127.0.0.1:3000/docs
-
