@@ -14,30 +14,30 @@ function LandingPage() {
     {
       label: "Getting started with Agents 🛠️📲",
       path: "/guides/agents/installing-uagent",
-      icon: AgentverseGettingStartedIcon
+      icon: AgentverseGettingStartedIcon,
     },
     {
       label: "Start communicating with other agents 📱🤖",
       path: "guides/agents/communicating-with-other-agents",
-      icon: CommunicateIcon
+      icon: CommunicateIcon,
     },
     {
       label: "How to use uAgents to send tokens 📊💸",
       path: "guides/agents/send-tokens",
-      icon: BuildChatAiIcon
+      icon: BuildChatAiIcon,
     },
     {
       label: "How to use uAgents to verify messages 📬🔐",
       path: "guides/agents/message-verification",
-      icon: RevenueIcon
+      icon: RevenueIcon,
     },
   ];
 
   const GuideBox = ({
-    guide
+    guide,
   }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    guide: { label: string; path: string, icon: any };
+    guide: { label: string; path: string; icon: any };
   }) => {
     const router = useRouter();
     const [hover, setHover] = useState<boolean>(false);
