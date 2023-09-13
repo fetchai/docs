@@ -25,21 +25,22 @@
  *
  * Source: https://github.com/reach/reach-ui/blob/43f450db7bcb25a743121fe31355f2294065a049/LICENSE
  */
-import cn from 'clsx'
-import type { ComponentProps, ReactElement } from 'react'
-import { forwardRef } from 'react'
+import cn from "clsx";
+import React from "react";
+import type { ComponentProps, ReactElement } from "react";
+import { forwardRef } from "react";
 
 // TODO: Change the DEFAULT_ID for `nextra-skip-nav` or something else on the next major version (v3.x). The DEFAULT_ID must be 'reach-skip-nav' because changing this value is a breaking change for users that use v2.0.1 and earlier
-const DEFAULT_ID = 'reach-skip-nav'
-const DEFAULT_LABEL = 'Skip to content'
+const DEFAULT_ID = "reach-skip-nav";
+const DEFAULT_LABEL = "Skip to content";
 
 type SkipNavLinkProps = Omit<
-  ComponentProps<'a'>,
-  'ref' | 'href' | 'children'
+  ComponentProps<"a">,
+  "ref" | "href" | "children"
 > & {
-  label?: string
-  styled?: boolean
-}
+  label?: string;
+  styled?: boolean;
+};
 
 export const SkipNavLink = forwardRef<HTMLAnchorElement, SkipNavLinkProps>(
   function (
@@ -50,20 +51,21 @@ export const SkipNavLink = forwardRef<HTMLAnchorElement, SkipNavLinkProps>(
       styled,
       ...props
     },
-    forwardedRef
+    forwardedRef,
   ): ReactElement {
     const className =
       providedClassName === undefined // Give the option to the user to pass a falsy other than undefined to remove the default styles
-        ? styled // Give the user a way to opt-in the default style provided with the theme. Probably remove this option in the next major version (v3.x) and just do a check to use the providedClassName or the default
+        ? // eslint-disable-next-line unicorn/no-nested-ternary
+          styled // Give the user a way to opt-in the default style provided with the theme. Probably remove this option in the next major version (v3.x) and just do a check to use the providedClassName or the default
           ? cn(
-              'nx-sr-only',
-              'focus:nx-not-sr-only focus:nx-fixed focus:nx-z-50 focus:nx-m-3 focus:nx-ml-4 focus:nx-h-[calc(var(--nextra-navbar-height)-1.5rem)] focus:nx-rounded-lg focus:nx-border focus:nx-px-3 focus:nx-py-2 focus:nx-align-middle focus:nx-text-sm focus:nx-font-bold',
-              'focus:nx-text-gray-900 focus:dark:nx-text-gray-100',
-              'focus:nx-bg-white focus:dark:nx-bg-neutral-900',
-              'focus:nx-border-neutral-400 focus:dark:nx-border-neutral-800'
+              "nx-sr-only",
+              "focus:nx-not-sr-only focus:nx-fixed focus:nx-z-50 focus:nx-m-3 focus:nx-ml-4 focus:nx-h-[calc(var(--nextra-navbar-height)-1.5rem)] focus:nx-rounded-lg focus:nx-border focus:nx-px-3 focus:nx-py-2 focus:nx-align-middle focus:nx-text-sm focus:nx-font-bold",
+              "focus:nx-text-gray-900 focus:dark:nx-text-gray-100",
+              "focus:nx-bg-white focus:dark:nx-bg-neutral-900",
+              "focus:nx-border-neutral-400 focus:dark:nx-border-neutral-800",
             )
-          : ''
-        : providedClassName
+          : ""
+        : providedClassName;
 
     return (
       <a
@@ -76,18 +78,18 @@ export const SkipNavLink = forwardRef<HTMLAnchorElement, SkipNavLinkProps>(
       >
         {label}
       </a>
-    )
-  }
-)
+    );
+  },
+);
 
-SkipNavLink.displayName = 'SkipNavLink'
+SkipNavLink.displayName = "SkipNavLink";
 
-type SkipNavContentProps = Omit<ComponentProps<'div'>, 'ref' | 'children'>
+type SkipNavContentProps = Omit<ComponentProps<"div">, "ref" | "children">;
 
 export const SkipNavContent = forwardRef<HTMLDivElement, SkipNavContentProps>(
   function ({ id, ...props }, forwardedRef): ReactElement {
-    return <div {...props} ref={forwardedRef} id={id || DEFAULT_ID} />
-  }
-)
+    return <div {...props} ref={forwardedRef} id={id || DEFAULT_ID} />;
+  },
+);
 
-SkipNavContent.displayName = 'SkipNavContent'
+SkipNavContent.displayName = "SkipNavContent";
