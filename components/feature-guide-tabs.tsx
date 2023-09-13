@@ -189,7 +189,7 @@ export const FeatureGuideTabs = () => {
                   key={index}
                   className={`nx-px-6 nx-py-2 ${
                     index === activeTab
-                      ? "nx-bg-black nx-text-white nx-rounded-md"
+                      ? "nx-bg-selected-tab nx-text-white nx-rounded-md"
                       : ""
                   }`}
                   onClick={() => setActiveTab(index)}
