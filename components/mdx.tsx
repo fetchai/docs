@@ -95,11 +95,11 @@ function classNames(...classes) {
 }
 
 // leaving half as I think this will  be needed in future
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Tabs({
   children,
   half = false,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: any;
   half: boolean;
 }) {
