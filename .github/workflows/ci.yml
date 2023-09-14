@@ -19,22 +19,24 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: ".nvmrc"
 
       - uses: pnpm/action-setup@v2
         with:
           version: 8.6.10
 
-      - run: |
-          which node
-          which npm
-          which pnpm
-          node --version
-          npm --version
-          pnpm --version
+      - name: Dependencies
+        run: |
+          pnpm install
 
-      - run: |
-          pnpm install --frozen-lockfile
+      - name: Build
+        run: |
+          pnpm run build
 
-      - run: |
-          pnpm build
+      - name: Lint
+        run: |
+          pnpm run lint
+
+      - name: Formatting
+        run: |
+          pnpm run fmt:check

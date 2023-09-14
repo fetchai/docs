@@ -19,7 +19,7 @@ jobs:
       - name: Setup Gcloud Auth
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: '${{ secrets.ORG_PRODUCTION_IMAGES_PUSH }}'
+          credentials_json: "${{ secrets.ORG_PRODUCTION_IMAGES_PUSH }}"
 
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
@@ -75,5 +75,3 @@ jobs:
           TAG: ${{ steps.lookup.outputs.version }}
           SERVICE_NAME: Documentation
           TARGET_REPO: https://api.github.com/repos/fetchai/infra-production-deployment/dispatches
-
-
