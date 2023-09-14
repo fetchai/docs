@@ -73,10 +73,10 @@ After having defined such parameters, we can then start a timer that claims rewa
 
 ## Walk-through
 
-Below we provide a step-by-step example to create an auto compounder using the `cosmpy.aerial` package.
+Below we provide a step-by-step guide to create an auto compounder using the `cosmpy.aerial` package.
 
-1. First of all, create a Python script and name it: `touch auto-compunder.py`
-2. We then need to import the necessary modules, including `argparse`, `time`, and various modules from the `cosmpy.aerial` package:
+1. First of all, create a Python script and name it: `touch aerial_compounder.py`
+2. We need to import the necessary modules, including `argparse`, `time`, and various modules from the `cosmpy.aerial` package:
 
     ```py copy
     import argparse
@@ -88,7 +88,7 @@ Below we provide a step-by-step example to create an auto compounder using the `
     from cosmpy.aerial.wallet import LocalWallet
     ```
 
-3. We now define a `_parse_commandline()` function responsible for parsing command-line arguments when the script is being executed:
+3. We now need to define a `_parse_commandline()` function responsible for parsing command-line arguments when the script is being executed:
 
     ```py copy
     def _parse_commandline():
@@ -118,7 +118,7 @@ Below we provide a step-by-step example to create an auto compounder using the `
         return parser.parse_args()
     ```
 
-    We first create a `parser` object using the `argparse` module. Argument parsers are used to specify and parse command-line arguments. The `add_argument()` method is used to specify the arguments that the script will accept. It takes several parameters, including:
+    We first create a `parser` instance of the `ArgumentParser` class using the `argparse` module. Argument parsers are used to specify and parse command-line arguments. The `add_argument()` method is used to specify the arguments that the script will accept. It takes several parameters, including:
 
         - `name`: the name of the argument.
         - `type`: the type to which the argument should be converted (in this case, `int`).
@@ -213,10 +213,10 @@ Below we provide a step-by-step example to create an auto compounder using the `
 
     The first line calls the `_parse_commandline()` function we defined earlier. It returns an object with the parsed command-line arguments. We then create two objects:
 
-         - A `Ledger Client` configured for the Fetch.ai stable testnet. This client will be used to interact with the blockchain network.
-         - A `Faucet API` configured for the Fetch.ai stable testnet. This API is used for providing additional funds to the wallet if needed.
+         - A `ledger` instance of the `Ledger Client` class configured for the Fetch.ai stable testnet. This client will be used to interact with the blockchain network.
+         - A `faucet_api` instance of the `Faucet API` class configured for the Fetch.ai stable testnet. This API is used for providing additional funds to the wallet if needed.
 
-    We then need to get all the active validators on the network by using the `query_validators()` method. After this, we choose a validator and create a new wallet named `alice` using `LocalWallet.generate()` and check the balance of the `alice` wallet. If the balance is less than the initial stake, it enters a loop to provide wealth to the wallet using the faucet API until the balance reaches the specified initial stake. We can now delegate the initial stake of tokens to the chosen validator using the `delegate_tokens()` method of the `ledger` object.
+    We then need to get all the active validators on the network by using the `query_validators()` method. After this, we choose a validator and create a new wallet named `alice` using `LocalWallet.generate()` and check the balance of the `alice` wallet. If the balance is less than the initial stake, it enters a loop to provide wealth to the wallet using the faucet API until the balance reaches the specified initial stake. We can now delegate the initial stake of tokens to the chosen validator using the `delegate_tokens()` method.
 
     We proceed by setting time limits and periods. `time_limit = args.time_limit` sets the time limit based on the command-line argument, whereas `period = args.period` sets the compounding period based on the command-line argument. After this, we define the compounding loop, similar to what was described in the first part of this guide: it iterates over a specified time period, queries staking summary, claims rewards, and either stakes the rewards or skips if fees exceed rewards. Time management is important here: indeed, the loop keeps track of time using `time.monotonic()` to ensure it does not exceed the specified time limit. It waits for the specified period before starting the next compounding cycle.
 
@@ -224,7 +224,7 @@ Below we provide a step-by-step example to create an auto compounder using the `
 
 The overall script should look as follows:
 
-```py copy filename="auto-compunder.py
+```py copy filename="aerial_compounder.py"
 import argparse
 import time
 

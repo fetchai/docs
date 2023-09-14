@@ -160,13 +160,13 @@ We can calculate the optimal compounding period that maximizes our staking rewar
 
     Where:
 
-    M = Total stake at time D
-    S = Initial Stake 
-    f = Transaction Fee 
-    k = Reward Rate
-    m = Number Of Compounding Transactions 
-    n = Compounding Period
-    D = m x n = Total Staking Time
+    - M = Total stake at time D
+    - S = Initial Stake
+    - f = Transaction Fee
+    - k = Reward Rate
+    - m = Number Of Compounding Transactions
+    - n = Compounding Period
+    - D = m x n = Total Staking Time
 
 We will now find the value that maximizes reward by taking the first derivative with respect to _n_ and finding the root in the interval _(0,D]_:
 
@@ -266,9 +266,9 @@ plt.yscale('log')
 
 ![](/../../docs_v2/src/images/docs/cosmpy_stake_optimizer.png)
 
-Now that we have presented the concepts and ideas behind the optimizer, have a look at the abbreviated version of the code below:
+Now that we have presented the concepts and ideas behind the stake optimizer, have a look at the abbreviated version of the code provided below:
 
-```py copy fileneame="stake-optimizer.py"
+```py copy filename="aerial_stake_optimizer.py"
 import json
 
 from cosmpy.aerial.client import LedgerClient, NetworkConfig
@@ -280,7 +280,6 @@ from cosmpy.aerial.wallet import LocalWallet
 from cosmpy.protos.cosmos.bank.v1beta1.query_pb2 import QueryTotalSupplyRequest
 from cosmpy.protos.cosmos.params.v1beta1.query_pb2 import QueryParamsRequest
 from cosmpy.protos.cosmos.staking.v1beta1.query_pb2 import QueryValidatorsRequest
-
 
 # This function returns the total reward for given:
 # * f -> fee
@@ -303,7 +302,6 @@ def M(x, f, S, k, D):
     return (S * (1 + (k * x)) ** (D / x)) + (
         (1 - ((1 + (k * x)) ** (D / x))) / (k * x)
     ) * f
-
 
 def main():
     """Run main."""
@@ -461,7 +459,6 @@ def main():
     # These values can be used in aerial_compounder.py to maximize rewards
     print("total period: ", total_period, "minutes")
     print("optimal compounding period: ", optimal_period, "minutes")
-
 
 if __name__ == "__main__":
     main()

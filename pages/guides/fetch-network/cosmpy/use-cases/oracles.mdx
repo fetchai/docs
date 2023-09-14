@@ -5,17 +5,20 @@
 **Oracles** are entities that can update state variables in smart contracts and whose goal is usually to accurately estimate or predict some real world quantity or quantities. These quantities can then be used in the logic of other smart contracts. This guide shows how to write a CosmPy script that deploys and updates an oracle contract with a coin price, and another script that deploys a contract that queries this coin price.
 
 ## Walk-through
-### Aerial oracle
 
-1. First of all, create a Python script and name it: `touch aerial_oracle.py`
-2. We need to download the binaries for both contracts, which can be done as follows:
+Here we provide an overview guide for setting up your own aerial oracle in few steps.
+
+We initially need to download the binaries for both contracts, which can be done as follows:
 
     ```
     wget https://raw.githubusercontent.com/fetchai/agents-aea/develop/packages/fetchai/contracts/oracle/build/oracle.wasm
     wget https://raw.githubusercontent.com/fetchai/agents-aea/develop/packages/fetchai/contracts/oracle_client/build/oracle_client.wasm
     ```
 
-3. We would then also require the following imports:
+### Aerial oracle
+
+1. First of all, create a Python script and name it: `touch aerial_oracle.py`
+2. We would then also require the following imports:
 
     ```py copy
     from time import sleep
@@ -27,7 +30,7 @@
     from cosmpy.crypto.address import Address
     ```
 
-4. We then need to choose a data source for the coin price, the update interval, the decimal precision, and the decimal timeout for the oracle value:
+3. We then need to choose a data source for the coin price, the update interval, the decimal precision, and the decimal timeout for the oracle value:
 
     ```py copy
     COIN_PRICE_URL = (
@@ -111,15 +114,15 @@
         main()
     ```
 
-    This defines our `main()` function. When the script is run, the code inside main will be executed. `args = _parse_commandline()` calls the `_parse_commandline()` function that we defined earlier. It parses the command-line arguments and returns an object (`args`) containing the values of the parsed arguments. We then generate a new local wallet, and then create a client for interacting with a blockchain ledger, using `LedgerClient()`. We configured it to use the Fetch.ai stable testnet. We then create a client for interacting with a faucet API and query the balance of the wallet's address using the `query_bank_balance()` method. We also define an initial `while` loop which continues as long as the `wallet_balance` is less than `10**18`. Inside this first loop: it prints a message indicating that wealth is being provided to the wallet, then it calls the faucet API to get wealth for the wallet, and it updates the `wallet_balance` by querying the bank balance again.
+    This defines our `main()` function. When we run the script, the code inside `main()` will be executed. `args = _parse_commandline()` calls the `_parse_commandline()` function that we defined earlier. It parses the command-line arguments and returns an object (`args`) containing the values of the parsed arguments. We then generate a new local wallet, and then create a client for interacting with a blockchain ledger, using `LedgerClient()` class. We configured it to use the Fetch.ai stable testnet. We then create a client for interacting with a faucet API and query the balance of the wallet's address using the `query_bank_balance()` method. We also define an initial `while` loop which continues as long as the `wallet_balance` is less than `10**18`. Inside this first loop: it prints a message indicating that wealth is being provided to the wallet, then it calls the faucet API to get wealth for the wallet, and it updates the `wallet_balance` by querying the bank balance again.
 
     After this, we create a `contract` object using `LedgerContract()`: this takes the path to the oracle contract file, the ledger client, and optionally, the contract address. `if not args.contract_address:` condition checks if `args.contract_address` is not provided. If it has not been provided, it means the contract has not been deployed yet. We then set up an instantiation message with a fee of 100. We can then deploy the contract using the provided instantiation message, the wallet, and a specified fund source (`"1atestfet"` in this case).
 
      The `print()` function prints the address of the deployed oracle contract. After this, we define a `grant_role_message` object which sets up a message to grant the oracle role to the address associated with the wallet, and execute the message to grant the oracle role and wait for the transaction to complete. The following `print()` function prints a message indicating that the oracle role has been granted to the address associated with the wallet.
 
-    TWe finally define a second `while` loop which runs indefinitely: it sends a GET request to a URL (`COIN_PRICE_URL`) to retrieve coin prices, then extracts the price in USD. It then calculates a value based on the price and the specified decimal precision (`ORACLE_VALUE_DECIMALS`), and sets up an update message with the new oracle value. Lastly, itexecutes the update message and waits for the transaction to complete, and prints the updated oracle value and indicates when the next update will occur.
+    We can finally define a second `while` loop which runs indefinitely: it sends a GET request to a URL (`COIN_PRICE_URL`) to retrieve coin prices, then extracts the price in USD. It then calculates a value based on the price and the specified decimal precision (`ORACLE_VALUE_DECIMALS`), and sets up an update message with the new oracle value. Lastly, it executes the update message, waits for the transaction to complete, prints the updated oracle value and indicates when the next update will occur.
 
-This script let us interact with a blockchain ledger, deploy a contract, and perform oracle-related tasks such as updating values based on external data. Keep in mind that specific details to be added to the code need to be inserted depending on your information and data.
+This script let us interact with a blockchain ledger, deploy a contract, and perform oracle-related tasks such as updating values based on external data.
 
 7. Save the script.
 
@@ -302,7 +305,7 @@ Now, we will write a script that deploys a contract that can request the oracle 
         main()
     ```
 
-    The first line calls the `_parse_commandline()` function that we defined earlier. It will parse the command-line arguments and return an object (`args`) containing the parsed values. We proceed and generate a new local wallet, `wallet`, and then create a new `ledger` object for interacting with the blockchain or ledger system, using `LedgerClient()`. Afterwards, we create a `FaucetApi` object, which is used for interacting with the faucet service. We use the `query_bank_balance()` method of the `ledger` object to query the balance of the wallet. It gets the balance associated with the wallet's address. We then define a `while` loop which will continue as long as the `wallet_balance` is less than `10**18`. This is to ensure the wallet has a sufficient balance. Afterwards, we use the `get_wealth()` method of the `faucet_api` object to add wealth to the wallet, and then create a new `LedgerContract()` object which takes the `contract_path`, the `ledger` object, and an optional `contract_address`. `if not args.contract_address:` checks if `args.contract_address` is not provided. If it has not been provided, it means that the contract has not been deployed yet. We then create an instantiation message, which contains the data needed for deploying the contract. `contract.deploy()` deploys the contract with the provided instantiation message and the wallet. The code then prints out the address of the deployed contract. Finally, we define a second loop starting with `while True:` which repeatedly executes the following steps:
+    The first line calls the `_parse_commandline()` function that we defined earlier. It will parse the command-line arguments and return an object (`args`) containing the parsed values. We proceed and generate a new local wallet, `wallet`, and then create a new `ledger` object for interacting with the blockchain or ledger system, using `LedgerClient()`. Afterwards, we create a `FaucetApi` object, `faucet_api`,  which is used for interacting with the faucet service. We use the `query_bank_balance()` method to query the balance associated with the wallet's address. We then define a `while` loop which will continue as long as the `wallet_balance` is less than `10**18`. This is to ensure the wallet has a sufficient balance. Afterwards, we use the `get_wealth()` method to add wealth to the wallet, and then create a new `LedgerContract()` object which takes the `contract_path`, the `ledger` object, and an optional `contract_address`. `if not args.contract_address:` checks if `args.contract_address` is not provided. If it has not been provided, it means that the contract has not been deployed yet. We then create an `instantiation_message`, which contains the data needed for deploying the contract. `contract.deploy()` deploys the contract with the provided `instantiation_message` and the `wallet`. The code then prints out the address of the deployed contract. Finally, we define a second loop starting with `while True:` which repeatedly executes the following steps:
 
         - It creates a request message, which is used to query the oracle value.
         - It executes the contract function call with the request message, using the wallet for authorization. The funds argument is set to `"100atestfet"`.
@@ -384,3 +387,5 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+Bear in mind that specific data related to the oracle's address and contract need to be provided by hand based on your personalized information!
