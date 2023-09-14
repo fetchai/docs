@@ -1,5 +1,474 @@
-# Swap automation
+# Swap automation 🔄
 
 ## Introduction
 
-The following guide demonstrates an automated swapping strategy for a liquidity pool on the Fetch.ai network. It interacts with a liquidity pool contract and performs swaps between two different tokens (atestfet and CW20 tokens) based on specified price thresholds.
+The following guide demonstrates an automated swapping strategy for a liquidity pool on the Fetch.ai network. It interacts with a liquidity pool contract and performs swaps between two different tokens (atestfet and CW20 tokens) based on specified price thresholds. A mean-reversion strategy expects the prices to return to "normal" levels or a certain moving average following a temporary price spike. We can construct a similar strategy using the Liquidity Pool, where we will set upper and lower bound prices that will trigger a sell and a buy transaction respectively. If the behavior of the LP prices works as expected always returning to a certain moving average, we could profit by selling high and buying low. We will do this by swapping atestfet and CW20 with the Liquidity Pool, we refer to a sell transaction when we sell atestfet and get CW20 tokens, a buy transaction would be exactly the opposite.
+
+## Walk-through
+
+1. Let's start by creating a Python script and name it: `touch aerial_swap_automation.py`
+2. Let's then import the needed classes:
+
+    ```py copy
+    import argparse
+    from time import sleep
+
+    from cosmpy.aerial.client import LedgerClient, NetworkConfig
+    from cosmpy.aerial.contract import LedgerContract
+    from cosmpy.aerial.faucet import FaucetApi
+    from cosmpy.aerial.wallet import LocalWallet
+    ```
+
+3. We then need to define a `swap_native_for_cw20()` function which performs a swap from native tokens (atestfet) to CW20 tokens within a liquidity pool:
+
+    ```py copy
+    def swap_native_for_cw20(swap_amount, pair_contract, wallet):
+        """
+        Swap Native for cw20.
+
+        :param swap_amount: swap amount
+        :param pair_contract: pair contract address
+        :param wallet: wallet address
+
+        """
+        tx = pair_contract.execute(
+            {
+                "swap": {
+                    "offer_asset": {
+                        "info": {"native_token": {"denom": "atestfet"}},
+                        "amount": str(swap_amount),
+                    }
+                }
+            },
+            sender=wallet,
+            funds=str(swap_amount) + "atestfet",
+        )
+        print("swapping native for cw20 tokens")
+        tx.wait_to_complete()
+    ```
+
+    Within the function, we defined the following parameters:
+
+        - `swap_amount`: this parameter specifies the amount of native tokens to be swapped for CW20 tokens.
+
+        - `pair_contract`: this parameter represents the contract address of the liquidity pool pair where the swap will occur.
+
+        - `wallet`: this parameter represents the wallet address that will perform the swap.
+
+    The function constructs a transaction to execute the swap operation. The `execute()` method is called on the `pair_contract` with a dictionary specifying the `"swap"` operation. Inside the `"swap"` operation, the `offer_asset` field is set to the following:
+
+        - `info`: this field specifies that the swap involves native tokens (`native_token`) with the denomination `"atestfet"`.
+        - `amount`: this field specifies the amount of native tokens to be swapped, which is converted to a string.
+
+    The `sender` parameter is set to the `wallet` address, indicating that the wallet will initiate the swap. The `funds` parameter is set to a string representing the total amount of funds being used for the swap, which includes the `swap_amount` and `"atestfet"`. Finally, the function waits for the transaction to complete and prints a message indicating that native tokens are being swapped for CW20 tokens.
+
+4. We then need to define a `swap_cw20_for_native()` function which performs a swap from CW20 tokens to native tokens (atestfet) within a liquidity pool:
+
+    ```py copy
+
+    def swap_cw20_for_native(swap_amount, pair_contract_address, token_contract, wallet):
+        """
+        Swap cw20 for native.
+
+        :param swap_amount: swap amount
+        :param pair_contract_address: pair contract address
+        :param token_contract: token contract
+        :param wallet: wallet address
+
+        """
+        tx = token_contract.execute(
+            {
+                "send": {
+                    "contract": pair_contract_address,
+                    "amount": str(swap_amount),
+                    "msg": "eyJzd2FwIjp7fX0=",
+                }
+            },
+            wallet,
+        )
+        print("swapping cw20 for native tokens")
+        tx.wait_to_complete()
+    ```
+
+    Within the function, we defined the following parameters:
+
+        - `swap_amount`: this parameter specifies the amount of CW20 tokens to be swapped for native tokens.
+        - `pair_contract_address`: this parameter represents the contract address of the liquidity pool pair where the swap will occur.
+        - `token_contract`: this parameter represents the contract for the CW20 token.
+        - `wallet`: This parameter represents the wallet address that will perform the swap.
+
+    The function constructs a transaction to execute the swap operation: the `execute()` method is called on the `token_contract` with a dictionary specifying the `"send"` operation. Inside this operation, the contract field is set to `pair_contract_address`, indicating that the CW20 tokens will be sent to the liquidity pool.  The `amount` field is set to the `swap_amount`, which is converted to a string. The `msg` field is set to the base64 encoded message `"eyJzd2FwIjp7fX0="`, which likely contains additional instructions or parameters for the swap. The `wallet` address is specified as the sender of the transaction. Finally, the function waits for the transaction to complete and prints a message indicating that CW20 tokens are being swapped for native tokens.
+
+5. We now would need to proceed by defining a `_parse_commandline()` function:
+
+    ```py copy
+    def _parse_commandline():
+        """Commandline parser."""
+        parser = argparse.ArgumentParser()
+
+        parser.add_argument(
+            "trading_wallet",
+            type=int,
+            nargs="?",
+            default=1000000,
+            help="initial atestfet balance to perform swaps using the liquidity pool",
+        )
+        parser.add_argument(
+            "upper_bound",
+            type=int,
+            nargs="?",
+            default=20.5,
+            help="price upper bound that will trigger a swap from cw20 to native tokens",
+        )
+        parser.add_argument(
+            "lower_bound",
+            type=int,
+            nargs="?",
+            default=19.5,
+            help="price lower bound that will trigger a swap from native to cw20 tokens",
+        )
+        parser.add_argument(
+            "commission",
+            type=int,
+            nargs="?",
+            default=0.003,
+            help="LP commission, for terraswap the default is 0.3%",
+        )
+        parser.add_argument(
+            "interval_time",
+            type=int,
+            nargs="?",
+            default=5,
+            help="interval time in seconds to query liquidity pool price",
+        )
+
+        return parser.parse_args()
+    ```
+
+    This function is responsible for parsing command line arguments in the script. It uses the `argparse.ArgumentParser()` class to define and handle the expected command line arguments:
+
+        - `trading_wallet`: this argument represents the initial balance of atestfet in the trading wallet. It's an optional argument, and if not provided, it defaults to `1000000`.
+        - `upper_bound`: this argument specifies the upper price threshold that will trigger a swap from cw20 to native tokens . If not provided, it defaults to `20.5`.
+        - `lower_bound`: this argument sets the lower price threshold that will trigger a swap from native to cw20 tokens. It defaults to `19.5` if not provided.
+        - `commission`: this argument defines the commission rate for the liquidity pool. The default is `0.003`, representing 0.3%.
+        - `interval_time`: this argument determines the interval (in seconds) at which the script queries the liquidity pool price. If not provided, it defaults to `5` seconds.
+
+    The function then returns an object containing the parsed arguments. These arguments can be accessed later in the script to control the behavior of the swap automation.
+
+6. We are ready to write down our `main()` function:
+
+    ```py copy
+    def main():
+        """Run main."""
+        args = _parse_commandline()
+
+        # Define any wallet
+        wallet = LocalWallet.generate()
+
+        # Network configuration
+        ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
+
+        # Add tokens to wallet
+        faucet_api = FaucetApi(NetworkConfig.latest_stable_testnet())
+
+        wallet_balance = ledger.query_bank_balance(wallet.address())
+
+        while wallet_balance < (10**18):
+            print("Providing wealth to wallet...")
+            faucet_api.get_wealth(wallet.address())
+            wallet_balance = ledger.query_bank_balance(wallet.address())
+
+        # Define cw20, pair and liquidity token contracts
+        token_contract_address = (
+            "fetch1qr8ysysnfxmqzu7cu7cq7dsq5g2r0kvkg5e2wl2fnlkqss60hcjsxtljxl"
+        )
+        pair_contract_address = (
+            "fetch1vgnx2d46uvyxrg9pc5mktkcvkp4uflyp3j86v68pq4jxdc8j4y0s6ulf2a"
+        )
+
+        token_contract = LedgerContract(
+            path=None, client=ledger, address=token_contract_address
+        )
+        pair_contract = LedgerContract(
+            path=None, client=ledger, address=pair_contract_address
+        )
+
+        # tokens in trading wallet (currency will vary [atestfet,cw20] )
+        currency = "atestfet"
+        tokens = args.trading_wallet
+
+        # Swap thresholds
+        upper_bound = args.upper_bound
+        lower_bound = args.lower_bound
+
+        # LP commission
+        commission = args.commission
+
+        # Wait time
+        interval = args.interval_time
+
+        while True:
+
+            # Query LP status
+            pool = pair_contract.query({"pool": {}})
+            native_amount = int(pool["assets"][1]["amount"])
+            cw20_amount = int(pool["assets"][0]["amount"])
+
+            if currency == "atestfet":
+                # Calculate received cw20 tokens if atestfet tokens are given to LP
+                tokens_out = round(
+                    ((cw20_amount * tokens) / (native_amount + tokens)) * (1 - commission)
+                )
+
+                # Sell price of atestfet => give atestfet, get cw20
+                sell_price = tokens / tokens_out
+                print("atestfet sell price: ", sell_price)
+                if sell_price <= lower_bound:
+                    swap_native_for_cw20(tokens, pair_contract, wallet)
+                    tokens = int(
+                        token_contract.query(
+                            {"balance": {"address": str(wallet.address())}}
+                        )["balance"]
+                    )
+
+                    # Trading wallet currency changed to cw20
+                    currency = "CW20"
+            else:
+                # Calculate received atestfet tokens if cw20 tokens are given to LP
+                tokens_out = round(
+                    ((native_amount * tokens) / (cw20_amount + tokens)) * (1 - commission)
+                )
+
+                # Buy price of atestfet => give cw20, get atestfet
+                buy_price = tokens_out / tokens
+                print("atestfet buy price: ", buy_price)
+                if buy_price >= upper_bound:
+                    swap_cw20_for_native(
+                        tokens, pair_contract_address, token_contract, wallet
+                    )
+                    tokens = tokens_out
+
+                    # Trading wallet currency changed to cw20
+                    currency = "atestfet"
+
+            sleep(interval)
+
+
+    if __name__ == "__main__":
+        main()
+    ```
+
+    Within the `main()` function, the `_parse_commandline()` function is used to parse command line arguments. It sets various parameters such as the initial trading wallet balance, upper and lower price bounds for triggering swaps, liquidity pool commission, and interval time for querying the liquidity pool price, and all of these values are store in the `args` variable. After this, a new wallet is generated using the `generate()` method of the `LocalWallet` class, and network configuration is set up using the `LedgerClient()` class. Tokens are added to the wallet by using the Faucet API. This happens within a `while` loop which continues until the wallet balance reaches at least `10**18`. The wallet balance is retrieved using the `query_bank_balance()`. Afterwards, we need to define the addresses of the CW20, pair, and liquidity token contracts, as well as initialise various variables based on the command line arguments, including the initial wallet balance, `upper_bound` and `lower_bound` price bounds for swaps, LP commission rate, and the interval at which to check the liquidity pool price.
+
+    We then define a loop (`while True`), which:
+
+        - Queries the liquidity pool status (`pair_contract.query({"pool": {}})`) to get the current amounts of native tokens (`atestfet`) and CW20 tokens.
+        - Checks the current currency in the trading wallet (`currency`), which can be either native or CW20 tokens.
+        - If the current `currency` is `atestfet`, it calculates the potential amount of CW20 tokens that would be received if native tokens were given to the liquidity pool. This is done based on the ratio of CW20 tokens to the total of native tokens and current wallet tokens, with a deduction for the LP commission. It calculates a `sell_price` as the ratio of the current wallet tokens to tokens swapped out.
+        - If the sell price is lower than or equal to the specified `lower_bound`, it triggers the `swap_native_for_cw20()` function, which swaps atestfet tokens for CW20 tokens.
+        - After the successful swap, it updates the tokens variable to the new balance of CW20 tokens and changes the currency to `"CW20"`.
+        - If the current currency is `"CW20"`, it calculates the potential amount of atestfet tokens that would be received if CW20 tokens are given to the liquidity pool. This is done based on the ratio of native tokens to the total of CW20 tokens and current wallet tokens, with a deduction for the LP commission. It calculates a `buy_price` as the ratio of potential atestfet tokens to the current wallet tokens.
+        - If the `buy_price` is higher than or equal to the specified `upper_bound`, it triggers the `swap_cw20_for_native()` function, which swaps CW20 tokens for atestfet tokens.
+        - After the successful swap, it updates the tokens variable to the new balance of atestfet tokens and changes the currency to `"atestfet"`.
+        The loop then waits for the specified `interval` before checking the liquidity pool status and performing the next iteration.
+
+7. Save the script.
+
+The overall script should be as follows:
+
+```py copy filename="aerial_swap_automation.py"
+import argparse
+from time import sleep
+
+from cosmpy.aerial.client import LedgerClient, NetworkConfig
+from cosmpy.aerial.contract import LedgerContract
+from cosmpy.aerial.faucet import FaucetApi
+from cosmpy.aerial.wallet import LocalWallet
+
+def swap_native_for_cw20(swap_amount, pair_contract, wallet):
+    """
+    Swap Native for cw20.
+
+    :param swap_amount: swap amount
+    :param pair_contract: pair contract address
+    :param wallet: wallet address
+
+    """
+    tx = pair_contract.execute(
+        {
+            "swap": {
+                "offer_asset": {
+                    "info": {"native_token": {"denom": "atestfet"}},
+                    "amount": str(swap_amount),
+                }
+            }
+        },
+        sender=wallet,
+        funds=str(swap_amount) + "atestfet",
+    )
+    print("swapping native for cw20 tokens")
+    tx.wait_to_complete()
+
+def swap_cw20_for_native(swap_amount, pair_contract_address, token_contract, wallet):
+    """
+    Swap cw20 for native.
+
+    :param swap_amount: swap amount
+    :param pair_contract_address: pair contract address
+    :param token_contract: token contract
+    :param wallet: wallet address
+
+    """
+    tx = token_contract.execute(
+        {
+            "send": {
+                "contract": pair_contract_address,
+                "amount": str(swap_amount),
+                "msg": "eyJzd2FwIjp7fX0=",
+            }
+        },
+        wallet,
+    )
+    print("swapping cw20 for native tokens")
+    tx.wait_to_complete()
+
+def _parse_commandline():
+    """Commandline parser."""
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "trading_wallet",
+        type=int,
+        nargs="?",
+        default=1000000,
+        help="initial atestfet balance to perform swaps using the liquidity pool",
+    )
+    parser.add_argument(
+        "upper_bound",
+        type=int,
+        nargs="?",
+        default=20.5,
+        help="price upper bound that will trigger a swap from cw20 to native tokens",
+    )
+    parser.add_argument(
+        "lower_bound",
+        type=int,
+        nargs="?",
+        default=19.5,
+        help="price lower bound that will trigger a swap from native to cw20 tokens",
+    )
+    parser.add_argument(
+        "commission",
+        type=int,
+        nargs="?",
+        default=0.003,
+        help="LP commission, for terraswap the default is 0.3%",
+    )
+    parser.add_argument(
+        "interval_time",
+        type=int,
+        nargs="?",
+        default=5,
+        help="interval time in seconds to query liquidity pool price",
+    )
+
+    return parser.parse_args()
+
+def main():
+    """Run main."""
+    args = _parse_commandline()
+
+    # Define any wallet
+    wallet = LocalWallet.generate()
+
+    # Network configuration
+    ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
+
+    # Add tokens to wallet
+    faucet_api = FaucetApi(NetworkConfig.latest_stable_testnet())
+
+    wallet_balance = ledger.query_bank_balance(wallet.address())
+
+    while wallet_balance < (10**18):
+        print("Providing wealth to wallet...")
+        faucet_api.get_wealth(wallet.address())
+        wallet_balance = ledger.query_bank_balance(wallet.address())
+
+    # Define cw20, pair and liquidity token contracts
+    token_contract_address = (
+        "fetch1qr8ysysnfxmqzu7cu7cq7dsq5g2r0kvkg5e2wl2fnlkqss60hcjsxtljxl"
+    )
+    pair_contract_address = (
+        "fetch1vgnx2d46uvyxrg9pc5mktkcvkp4uflyp3j86v68pq4jxdc8j4y0s6ulf2a"
+    )
+
+    token_contract = LedgerContract(
+        path=None, client=ledger, address=token_contract_address
+    )
+    pair_contract = LedgerContract(
+        path=None, client=ledger, address=pair_contract_address
+    )
+
+    # tokens in trading wallet (currency will vary [atestfet,cw20] )
+    currency = "atestfet"
+    tokens = args.trading_wallet
+
+    # Swap thresholds
+    upper_bound = args.upper_bound
+    lower_bound = args.lower_bound
+
+    # LP commission
+    commission = args.commission
+
+    # Wait time
+    interval = args.interval_time
+
+    while True:
+
+        # Query LP status
+        pool = pair_contract.query({"pool": {}})
+        native_amount = int(pool["assets"][1]["amount"])
+        cw20_amount = int(pool["assets"][0]["amount"])
+
+        if currency == "atestfet":
+            # Calculate received cw20 tokens if atestfet tokens are given to LP
+            tokens_out = round(
+                ((cw20_amount * tokens) / (native_amount + tokens)) * (1 - commission)
+            )
+
+            # Sell price of atestfet => give atestfet, get cw20
+            sell_price = tokens / tokens_out
+            print("atestfet sell price: ", sell_price)
+            if sell_price <= lower_bound:
+                swap_native_for_cw20(tokens, pair_contract, wallet)
+                tokens = int(
+                    token_contract.query(
+                        {"balance": {"address": str(wallet.address())}}
+                    )["balance"]
+                )
+
+                # Trading wallet currency changed to cw20
+                currency = "CW20"
+        else:
+            # Calculate received atestfet tokens if cw20 tokens are given to LP
+            tokens_out = round(
+                ((native_amount * tokens) / (cw20_amount + tokens)) * (1 - commission)
+            )
+
+            # Buy price of atestfet => give cw20, get atestfet
+            buy_price = tokens_out / tokens
+            print("atestfet buy price: ", buy_price)
+            if buy_price >= upper_bound:
+                swap_cw20_for_native(
+                    tokens, pair_contract_address, token_contract, wallet
+                )
+                tokens = tokens_out
+
+                # Trading wallet currency changed to cw20
+                currency = "atestfet"
+
+        sleep(interval)
+
+if __name__ == "__main__":
+    main()
+```
