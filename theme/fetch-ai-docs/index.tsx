@@ -48,7 +48,6 @@ const Body = ({
   const config = useConfig();
   const mounted = useMounted();
 
-
   if (themeContext.layout === "raw") {
     return <div className={classes.main}>{children}</div>;
   }
@@ -56,7 +55,7 @@ const Body = ({
   const date =
     themeContext.timestamp && config.gitTimestamp && timestamp
       ? new Date(timestamp)
-      : null
+      : null;
 
   const gitTimestampEl =
     // Because a user's time zone may be different from the server page
@@ -66,7 +65,7 @@ const Body = ({
       </div>
     ) : (
       <div className="nx-mt-16" />
-    )
+    );
 
   const content = (
     <>
