@@ -5,7 +5,6 @@ import styles from "./landing.module.css";
 import { Anchor } from "theme/fetch-ai-docs/components";
 import { renderComponent } from "theme/fetch-ai-docs/utils";
 import { DiscordIcon, GitHubIcon } from "nextra/icons";
-import { useRouter } from "next/router";
 
 const FooterLink = ({
   content,
@@ -15,13 +14,11 @@ const FooterLink = ({
     path: string;
   };
 }) => {
-  const router = useRouter();
   const [hover, setHover] = useState<boolean>(false);
-
   return (
     <section
       onClick={() => {
-        router.push(content.path);
+        window.open(content.path, "_blank", "noopener, noreferrer");
       }}
       onMouseOver={() => {
         setHover(true);
@@ -62,7 +59,7 @@ const Footer: React.FC = () => {
   const company = [
     {
       description: "Blog",
-      path: "https://fetch.ai/content-hub",
+      path: "https://fetch.ai/blog",
     },
     {
       description: "Fetch.ai Foundation",
