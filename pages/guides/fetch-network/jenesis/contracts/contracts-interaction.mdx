@@ -42,21 +42,21 @@ You will observe the following text indicating the available contracts in your p
 
 In this case, we can see that `deployment_1` and `token_1` deployments are available for this project. If these contracts have been already deployed you can directly interact with them by performing contract queries and executions, such as:
 
-    ```py
+    ```py copy
     >>> deployment_1.query(args = {'msg_name': {...}}
     >>> deployment_1.execute(args = {'msg_name': {...}}
     ```
 
 A ledger client (`ledger`) and your locally stored wallet keys will also be available in the shell. For example, if you have a local key named `alice`, you will find this under `wallets['alice']` and you can query the balance as follows:
 
-    ```py
+    ```py copy
     >>> ledger.query_bank_balance(wallets['alice'])
     10000000000000000000
     ```
 
 If the ledger is a testnet with a faucet url, you can get funds using the `faucet`:
 
-    ```py
+    ```py copy
     >>> faucet.get_wealth(wallets['alice'])
     ```
 
@@ -66,7 +66,7 @@ Jenesis also attaches the contract query, execution and deploy messages as dynam
 
 For example, the following query
 
-    ```py
+    ```py copy
     >>> token_1.query({"balance": {"address": str(wallet.address())}}))
     ```
 
@@ -79,7 +79,7 @@ can also be run with:
 
 Similarly, instead of using `token_1.execute...` , a transfer can be executed with:
 
-    ```py
+    ```py copy
     >>> token_1.transfer(amount='1000', recipient=str(wallet2.address()), sender=wallet)
     ```
 
@@ -89,7 +89,7 @@ We will now show an example assuming that the `token_1` deployment contract has 
 
 For this example, we will first generate two wallets. We provide wealth to the sender wallet in atestfet so it can pay for transaction fees.
 
-    ```py
+    ```py copy
     >>> wallet = LocalWallet.generate()
     >>> wallet2 = LocalWallet.generate()
     >>> faucet.get_wealth(wallet)
@@ -97,26 +97,26 @@ For this example, we will first generate two wallets. We provide wealth to the s
 
 We now proceed to deploy `my_token` contract using `token_1` deployment configuration, we define the arguments for the cw20 token: name, symbol, decimal, and the addresses that will be funded with these cw20 tokens. In this case we will fund wallet's address with 5000 tokens.
 
-    ```py
+    ```py copy
     >>> token_1.deploy(name="Crab Coin", symbol="CRAB", decimals=6, initial_balances=[{ "address": str(wallet.address()), "amount" :  "5000"}], sender=wallet)
     ```
 
 We can query wallet balance to make sure it has been funded with cw20 tokens
 
-    ```py
+    ```py copy
     >>> token_1.balance(address=str(wallet.address()))
     {'balance': '5000'}
     ```
 
 We now execute a cw20 token transfer of 1000 tokens from wallet to wallet2
 
-    ```py
+    ```py copy
     >>> token_1.transfer(amount='1000', recipient=str(wallet2.address()), sender=wallet)
     ```
 
 Finally, we query both wallets' balance:
 
-    ```py
+    ```py copy
     >>> token_1.balance(address=str(wallet.address()))
     {'balance': '4000'}
     >>> token_1.balance(address=str(wallet2.address()))
@@ -129,7 +129,7 @@ We can observe that wallet has sent 1000 tokens to wallet2.
 
 You can also assemble the above commands into a script that is executable by the  `run` command:
 
-    ```py
+    ```py copy
     from cosmpy.aerial.wallet import LocalWallet
 
     wallet = LocalWallet.generate()
