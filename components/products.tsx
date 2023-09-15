@@ -1,12 +1,17 @@
 import React, { ReactNode, useState } from "react";
 import Image from "next/image";
-import apiAgentIcon from "../src/svgs/agents-api.svg";
-import insightsAgentIcon from "../src/svgs/agents-insights.svg";
-import whisperAgentIcon from "../src/svgs/agents-whisper.svg";
+import apiAgentIcon from "../src/svgs/api-agents.svg";
+import insightsAgentIcon from "../src/svgs/context-control.svg";
+import whisperAgentIcon from "../src/svgs/delta-v.svg";
 import walletIcon from "../src/svgs/wallet.svg";
+import cosmpyIcon from "../src/svgs/cosmpy.svg";
+import analyticsIcon from "../src/svgs/analytics.svg";
+import hostingIcon from "../src/svgs/hosting.svg";
 import mailBoxIcon from "../src/svgs/mailbox.svg";
-import authenticationIcon from "../src/svgs/authentication.svg";
+import explorerIcon from "../src/svgs/explorer.svg";
 import almanacIcon from "../src/svgs/almanac.svg";
+import synergyIcon from "../src/svgs/synergy.svg";
+import ledgerIcon from "../src/svgs/ledger.svg";
 import styles from "./tab.module.css";
 import { useRouter } from "next/navigation";
 
@@ -97,7 +102,7 @@ const items: { [key: string]: Item[] } = {
           through collaboration with agent-based services.
         </>
       ),
-      icon: apiAgentIcon,
+      icon: synergyIcon,
       path: "/concepts/ai-engine/the-synergetic-power-of-agent-based-services-in-the-ai-engine-ecosystem",
     },
     {
@@ -121,7 +126,7 @@ const items: { [key: string]: Item[] } = {
     {
       title: "Analytics",
       description: <>Coming soon.</>,
-      icon: walletIcon,
+      icon: analyticsIcon,
       path: "/guides",
     },
   ],
@@ -135,7 +140,7 @@ const items: { [key: string]: Item[] } = {
           automating.
         </>
       ),
-      icon: walletIcon,
+      icon: hostingIcon,
       path: "/concepts/agent-services/agent-hosting",
     },
     {
@@ -152,7 +157,7 @@ const items: { [key: string]: Item[] } = {
     {
       title: "Agent APIs",
       description: <>Understand and use the Agentverse APIs.</>,
-      icon: authenticationIcon,
+      icon: apiAgentIcon,
       path: "/apis/agentverse",
     },
     {
@@ -163,7 +168,7 @@ const items: { [key: string]: Item[] } = {
           other registered agents.
         </>
       ),
-      icon: walletIcon,
+      icon: explorerIcon,
       path: "/concepts/agent-services/agent-explorer",
     },
   ],
@@ -182,7 +187,7 @@ const items: { [key: string]: Item[] } = {
     {
       title: "Cosmpy",
       description: <>Get stated with CosmPy.</>,
-      icon: walletIcon,
+      icon: cosmpyIcon,
       path: "/guides/fetch-network/cosmpy/install",
     },
     {
@@ -196,7 +201,7 @@ const items: { [key: string]: Item[] } = {
     {
       title: "Ledger",
       description: <>Coming soon.</>,
-      icon: almanacIcon,
+      icon: ledgerIcon,
       path: "",
     },
   ],
