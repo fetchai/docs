@@ -1,6 +1,8 @@
+import { Callout } from 'nextra/components'
+
 # Querying
 
-The graphql API relies heavily on [postgraphile ↗️](https://www.graphile.org/postgraphile/usage-library/) (as a library)to resolve graphql requests.
+The graphql API relies heavily on [postgraphile ↗️](https://www.graphile.org/postgraphile/usage-library/) (as a library) to resolve graphql requests.
 
 Postgraphile plugins also play a critical role. In particular, the [connection-filter ↗️](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter) and [pg-aggregates ↗️](https://github.com/graphile/pg-aggregates) plugins.
 
@@ -8,11 +10,13 @@ Postgraphile plugins also play a critical role. In particular, the [connection-f
 
 The graphql API implements [the connections specification ↗️](https://relay.dev/graphql/connections.htm) for pagination. For further information, have a look at [GraphQL pagination docs ↗️](https://graphql.org/learn/pagination/#end-of-list-counts-and-connections).
 
-**It is recommended to prefer using pagination operators by default (e.g. `first: <limit>`) to avoid unnecessary delays in query responses.**
+<Callout type="info" emoji="💡️">
+  It is recommended to prefer using pagination operators by default (e.g. `first: <limit>`) to avoid unnecessary delays in query responses.
+</Callout>
 
 ## Filtering
 
-Filtering is facilitated by postgraphile and its plugins. For specifics on supported operators and how to use them, please refer to their documentation:
+Filtering is facilitated by [postgraphile ↗️](https://www.graphile.org/postgraphile/usage-library/) and its plugins. For specifics on supported operators and how to use them, please refer to their documentation:
 
     - [connection-filter plugin ↗️](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter)
     - [operators ↗️](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter/blob/master/docs/operators.md#json-jsonb)
