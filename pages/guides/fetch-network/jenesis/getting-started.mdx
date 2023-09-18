@@ -1,6 +1,6 @@
 # Getting started 🎯
 
-There are multiple commands integrated into jenesis that allow you to perform a variety of tasks these commands are:
+There are multiple commands integrated into jenesis that allow you to perform a variety of tasks. These commands are:
 
     - `new`
     - `init`
@@ -14,6 +14,8 @@ There are multiple commands integrated into jenesis that allow you to perform a 
     - `shell`
     - `network`
 
+**Let's get started!**
+
 ## Create a new project
 
 Create a project using the `new` command
@@ -22,7 +24,9 @@ Create a project using the `new` command
     jenesis new my_project [--profile my_profile] [--network network_name]
     ```
 
-This will create a new directory called `my_project`. You can use `--profile` and `--network` optional arguments; when they aren't used, profile and network will be set to `testing` and `fetchai-testnet` respectively. Inside this directory a `jenesis.toml` file will be created containing the following information:
+This will create a new directory called `my_project`. You can use `--profile` and `--network` optional arguments to provide additional arguments for profile and network desired for the project. Whenever these arguments are not used, these will be set to `testing` and `fetchai-testnet` respectively.
+
+Inside this directory for your projuect, a `jenesis.toml` file will be created containing the following information:
 
     ```toml
     [project]
@@ -46,23 +50,23 @@ This will create a new directory called `my_project`. You can use `--profile` an
     [profile.my_profile.contracts]
     ```
 
-The project name is the argument passed to the `new` command while the authors field is populated by querying the user's GitHub username and email address. The profile's network will be filled with the relevant configuration variables. The contracts field will remain empty until new contracts are added. This `my_profile` profile will be set as the default profile, this means that every time you use a jenesis command without specifying a profile, `my_profile` will be used.
+The project's `name` is the argument passed to the `new` command while the authors field is populated by querying the user's GitHub username and email address. The profile's network will be filled with the relevant configuration variables. The contracts field will remain empty until new contracts are added. This `my_profile` profile will be set as the default profile, this means that every time you use a jenesis command without specifying a profile, `my_profile` will be used.
 
 An empty `contracts` folder will also be created inside `my_project` directory that will eventually contain all the information needed to compile and deploy the desired contracts.
 
-The `init` command is similar to the `new`` command, but in this case, you won't need a project name argument since this command is intended to run inside an existing project directory.
+The `init` command is similar to the `new`` command, but in this case, you will not need a project `name` argument since **this command is intended to run inside an existing project directory**:
 
     ```
     jenesis init [--profile my_profile] [--network network_name]
     ```
 
-This command will create the same files and folders inside your project directory as the ones described for the `new` command.
+This command will create the same files and folders inside your project directory as the ones described for the `new` command above.
 
 If using a cargo workspace, you just need to navigate to the top level of your project and run the `init` command shown above. This will create the `jenesis.toml` configuration file inside your workspace including all the relevant information from existing contracts.
 
 ## Configure a network
 
-By default, jenesis will configure the project to run on the latest stable Fetch.ai testnet. Use `fetchai-mainnet` to configure for the Fetch.ai mainnet or directly edit the `jenesis.toml` file to configure for other networks.
+**By default, jenesis will configure the project to run on the latest stable Fetch.ai testnet**. Use `fetchai-mainnet` to configure for the Fetch.ai mainnet or directly edit the `jenesis.toml` file to configure for other networks.
 
 To test on a local node, pass the argument `--network fetchai-localnode` when creating a project:
 
@@ -98,7 +102,7 @@ The configuration can be found under the `network` heading in the `jenesis.toml`
     debug_trace = true
     ```
 
-In particular, to fund some accounts for testing, replace the `genesis_accounts` field with the addresses to be funded.
+In particular, **to fund some accounts for testing**, replace the `genesis_accounts` field with the addresses to be funded.
 
 When running any of the commands `deploy`, `run`, `shell`, and `attach`, jenesis will check for a currently running local node. If there is not one provided, a new one will be created in a docker container.
 

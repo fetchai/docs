@@ -8,9 +8,9 @@ Contract Interaction in blockchain refers to the process of communicating with d
 
 You can interact with your project's contracts by using the `shell` or `run` commands.
 
-## Previous steps
+### Getting started
 
-To reproduce the examples provided here, we need to add and compile a basic starter contract and a cw20 token contract to your project with the following commands:
+To reproduce the examples provided here, we need to add and compile a basic [starter ↗️](https://github.com/fetchai/jenesis-templates/tree/master/contracts/starter) contract and a [cw-20 token contract ↗️](https://github.com/fetchai/jenesis-templates/tree/master/contracts/cw20-base) to your project with the following commands:
 
     ```bash
     jenesis add contract starter my_first_contract -d deployment_1
@@ -18,9 +18,9 @@ To reproduce the examples provided here, we need to add and compile a basic star
     jenesis compile
     ```
 
-For more contract template examples visit [Jenesis Templates ↗️](https://github.com/fetchai/jenesis-templates)
+For more information on contract template examples, visit [Jenesis Templates ↗️](https://github.com/fetchai/jenesis-templates)
 
-## Interactive Shell
+### Interactive Shell
 
 To open a shell where you can easily interact with your contracts, run:
 
@@ -34,7 +34,7 @@ If a profile is not selected, the default profile will be selected automatically
     jenesis shell --profile my_profile
     ```
 
-You will observe the following text indicating the available contracts in your project.
+You will observe the following text indicating the available contracts in your project:
 
     ```
     Network: fetchai-testnet
@@ -44,7 +44,7 @@ You will observe the following text indicating the available contracts in your p
     Detecting contracts...complete
     ```
 
-> *NOTE: `jenesis shell` currently requires that contract names use accepted python variable names. For example, using `token-1` instead of `token_1` will generate an error when trying to interact with it.**
+    > **NOTE: `jenesis shell` currently requires that contract names use accepted python variable names. For example, using `token-1` instead of `token_1` will generate an error when trying to interact with it.**
 
 In this case, we can see that `deployment_1` and `token_1` deployments are available for this project. If these contracts have been already deployed you can directly interact with them by performing contract queries and executions, such as:
     
@@ -66,11 +66,11 @@ If the ledger is a testnet with a faucet url, you can get funds using the `fauce
     >>> faucet.get_wealth(wallets['alice'])
     ```
 
-## Dynamic Methods
+### Dynamic Methods
 
 Jenesis also attaches the contract query, execution and deploy messages as dynamic methods.
 
-For example, the following query
+For example, the following query:
 
     ```py copy
     >>> token_1.query({"balance": {"address": str(wallet.address())}}))
@@ -91,9 +91,9 @@ Similarly, instead of using `token_1.execute...` , a transfer can be executed wi
 
 Additionally, Jensesis has an autocompletion helper for query, execution and deployment arguments. It will show automatically when typing in the shell.
 
-We will now show an example assuming that the `token_1` deployment contract has only been compiled and not yet deployed, going through deployment, execution, and querying using dynamic methods.
+We will now show an example assuming that `token_1` deployment contract has only been compiled and not yet deployed, going through deployment, execution, and querying using dynamic methods.
 
-For this example, we will first generate two wallets. We provide wealth to the sender wallet in atestfet so it can pay for transaction fees.
+For this example, we will first generate two wallets. We provide wealth to the sender wallet in atestfet so it can pay for transaction fees:
 
     ```py copy
     >>> wallet = LocalWallet.generate()
@@ -101,20 +101,20 @@ For this example, we will first generate two wallets. We provide wealth to the s
     >>> faucet.get_wealth(wallet)
     ```
 
-We now proceed to deploy `my_token` contract using `token_1` deployment configuration, we define the arguments for the cw20 token: name, symbol, decimal, and the addresses that will be funded with these cw20 tokens. In this case we will fund wallet's address with 5000 tokens.
+We can then proceed to deploy `my_token` contract using `token_1` deployment configuration. We define the arguments for the cw-20 token: `name`, `symbol`, `decimal`, and the `address` that will be funded with these cw-20 tokens. In this case, we will fund wallet's address with 5000 tokens:
 
     ```py copy
     >>> token_1.deploy(name="Crab Coin", symbol="CRAB", decimals=6, initial_balances=[{ "address": str(wallet.address()), "amount" :  "5000"}], sender=wallet)
     ```
 
-We can query wallet balance to make sure it has been funded with cw20 tokens
+We can query wallet balance to make sure it has been funded with cw20 tokens:
 
     ```py copy
     >>> token_1.balance(address=str(wallet.address()))
     {'balance': '5000'}
     ```
 
-We now execute a cw20 token transfer of 1000 tokens from wallet to wallet2
+We now execute a cw-20 token transfer of 1000 tokens from wallet to wallet2:
 
     ```py copy
     >>> token_1.transfer(amount='1000', recipient=str(wallet2.address()), sender=wallet)
@@ -131,7 +131,7 @@ Finally, we query both wallets' balance:
 
 We can observe that wallet has sent 1000 tokens to wallet2.
 
-## Executing Scripts
+### Executing Scripts
 
 You can also assemble the above commands into a script that is executable by the  `run` command:
 
