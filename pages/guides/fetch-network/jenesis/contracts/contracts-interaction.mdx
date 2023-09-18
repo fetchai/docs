@@ -1,5 +1,11 @@
 # Contract Interaction
 
+## Introduction
+
+Contract Interaction in blockchain refers to the process of communicating with deployed smart contracts. This involves querying contract information or executing specific functions defined within the contract. Interactions can include tasks like checking balances, transferring tokens, and more. Profiles provide network and contract configurations, while dynamic methods simplify common tasks. Scripts automate interactions for programmatic tasks. This interaction is vital for utilizing decentralized applications and services offered by smart contracts on the blockchain.
+
+## Start an interaction
+
 You can interact with your project's contracts by using the `shell` or `run` commands.
 
 ## Previous steps
@@ -41,7 +47,7 @@ You will observe the following text indicating the available contracts in your p
 > *NOTE: `jenesis shell` currently requires that contract names use accepted python variable names. For example, using `token-1` instead of `token_1` will generate an error when trying to interact with it.**
 
 In this case, we can see that `deployment_1` and `token_1` deployments are available for this project. If these contracts have been already deployed you can directly interact with them by performing contract queries and executions, such as:
-
+    
     ```py copy
     >>> deployment_1.query(args = {'msg_name': {...}}
     >>> deployment_1.execute(args = {'msg_name': {...}}
@@ -83,7 +89,7 @@ Similarly, instead of using `token_1.execute...` , a transfer can be executed wi
     >>> token_1.transfer(amount='1000', recipient=str(wallet2.address()), sender=wallet)
     ```
 
-Jensesis also has an autocompletion helper for query, execution and deployment arguments. It will show automatically when typing in the shell.
+Additionally, Jensesis has an autocompletion helper for query, execution and deployment arguments. It will show automatically when typing in the shell.
 
 We will now show an example assuming that the `token_1` deployment contract has only been compiled and not yet deployed, going through deployment, execution, and querying using dynamic methods.
 
