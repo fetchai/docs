@@ -7,7 +7,7 @@ Once you have established a [connection to a network node ↗️](/guides/fetch-
 
 Let's explore how to achieve both. We will start by importing CosmPy as well as the relevant modules. We will then connect to the chain we want to perform the query on. Once connected, we will specify the address we want to query. In our example we will connect to the Fetch.ai Mainnet and we will query all balances associated with a particular address.
 
-```py copy 
+```py copy
 import cosmpy
 from cosmpy.aerial.client import LedgerClient, NetworkConfig
 
@@ -26,7 +26,7 @@ Querying all balances associated with a particular address returns a `List` of `
 
 In order to query all balances associated with a particular denomination we can run the same script but substitute the final balance command with:
 
-```py 
+```py
 balance = ledger_client.query_bank_balance(address, denom='afet')
 ```
 

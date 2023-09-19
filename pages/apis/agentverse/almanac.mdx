@@ -19,7 +19,7 @@ import {
 # Almanac API
 
 <div className="nx-text-fetch-content">
-Welcome to the Almanac API documentation. 
+  Welcome to the Almanac API documentation.
 </div>
 
 ## Overview
@@ -44,7 +44,8 @@ Welcome to the Almanac API documentation.
 
 </Row>
 
-## Notable Objects 
+## Notable Objects
+
 ### The Agent Object
 
 <Row>
@@ -72,7 +73,7 @@ Welcome to the Almanac API documentation.
         {
             "status": "Active",
             "address": "agent1qwckmey38jd6xl6al9k5qcelr9faqfgpxh73tev6fa3ruqnzajp6yneg3qw",
-            "endpoints": [{"url": "https://hosting.prod.fetch-ai.com/v1/hosting/submit", "weight": 1}],
+            "endpoints": [{"url": "https://agentverse.ai/v1/hosting/submit", "weight": 1}],
             "protocol": "a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
             "expiry": "2023-08-26T03:30:05.568195+00:00"
         }
@@ -80,7 +81,7 @@ Welcome to the Almanac API documentation.
     </Col>
 </Row>
 
-### The AgentNameAvailability Object 
+### The AgentNameAvailability Object
 
 <Row>
     <Col>
@@ -107,7 +108,7 @@ Welcome to the Almanac API documentation.
     </Col>
 </Row>
 
-### The AgentNameAvailabilityStatus Object 
+### The AgentNameAvailabilityStatus Object
 
 <Row>
     <Col>
@@ -126,7 +127,8 @@ Welcome to the Almanac API documentation.
     </Col>
 </Row>
 
-## Request and response library 
+## Request and response library
+
 ### Get Recently Registered Agents
 
 <ApiEndpointRequestResponse
@@ -136,11 +138,18 @@ Welcome to the Almanac API documentation.
   description="Request for getting your recently registered Agents"
   responses={[
     {
-        status: "active", 
-        address: "agent1qvjlldu6fjparnqhzmz38tz0t3v4cdju0szmxfxg23a0h79mw9k6qnza98n", 
-        domain_name: "hemant.agent", 
-        endpoints: [{"url": "https://engine-staging.sandbox-london-b.fetch-ai.com/v1/engine/message/submit", "weight": 1}], 
-        protocols: [], "expiry": "2023-08-26T13:20:10.035592+00:00",
+      status: "active",
+      address:
+        "agent1qvjlldu6fjparnqhzmz38tz0t3v4cdju0szmxfxg23a0h79mw9k6qnza98n",
+      domain_name: "hemant.agent",
+      endpoints: [
+        {
+          url: "https://agentverse.ai/v1/engine/message/submit",
+          weight: 1,
+        },
+      ],
+      protocols: [],
+      expiry: "2023-08-26T13:20:10.035592+00:00",
     },
   ]}
   responseDescription="On a success the response will be an array of Agent Object properties."
@@ -157,8 +166,7 @@ Welcome to the Almanac API documentation.
     {
       name: "",
       type: "",
-      description:
-        "",
+      description: "",
     },
   ]}
   samplePayload={{
@@ -166,11 +174,19 @@ Welcome to the Almanac API documentation.
   }}
   responses={[
     {
-      status: "active", 
-      address: "agent1q2kjqapdest5gs30sws5nlrghzxns0ke5feqft7uqu6usewytjex5f7dmrh", 
-      domain_name: "none", 
-      endpoints: [{'url': "https://hosting.prod.fetch-ai.com/v1/hosting/submit", "weight": 1}], 
-      protocols: ["a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125"],
+      status: "active",
+      address:
+        "agent1q2kjqapdest5gs30sws5nlrghzxns0ke5feqft7uqu6usewytjex5f7dmrh",
+      domain_name: "none",
+      endpoints: [
+        {
+          url: "https://agentverse.ai/v1/hosting/submit",
+          weight: 1,
+        },
+      ],
+      protocols: [
+        "a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
+      ],
       expiry: "2023-08-26T03:30:05.568195+00:00",
     },
   ]}
@@ -188,20 +204,28 @@ Welcome to the Almanac API documentation.
     {
       name: "",
       type: "",
-      description:
-        "",
+      description: "",
     },
   ]}
   samplePayload={{
-    address: "agent1qwr5pul2j02mr960hhhdjzpsvfq3z92mh7l0ac2xqyk34v84f994usqftwu", 
+    address:
+      "agent1qwr5pul2j02mr960hhhdjzpsvfq3z92mh7l0ac2xqyk34v84f994usqftwu",
   }}
   responses={[
     {
-      status: "active", 
-      address: "agent1qwr5pul2j02mr960hhhdjzpsvfq3z92mh7l0ac2xqyk34v84f994usqftwu", 
-      domain_name: "None", 
-      endpoints: [{"url": "https://agent-hosting-canary.sandbox-london-b.fetch-ai.com/v1/hosting/submit", "weight": 1}], 
-      protocols: ["a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125"], 
+      status: "active",
+      address:
+        "agent1qwr5pul2j02mr960hhhdjzpsvfq3z92mh7l0ac2xqyk34v84f994usqftwu",
+      domain_name: "None",
+      endpoints: [
+        {
+          url: "https://agentverse.ai/v1/hosting/submit",
+          weight: 1,
+        },
+      ],
+      protocols: [
+        "a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
+      ],
       expiry: "2023-08-26T13:18:26.946201+00:00",
     },
   ]}
@@ -219,23 +243,21 @@ Welcome to the Almanac API documentation.
     {
       name: "",
       type: "",
-      description:
-        "",
+      description: "",
     },
   ]}
   samplePayload={{
-    name_prefix: "Testing", 
+    name_prefix: "Testing",
   }}
   responses={[
-      {
-        name_prefix: "Testing", 
-        domain: ".agent", 
-        status: "available",
-      },
+    {
+      name_prefix: "Testing",
+      domain: ".agent",
+      status: "available",
+    },
   ]}
   responseDescription="On success the response will be an array of json objects with information about the availability of a name"
 />
-
 
 ### Get Protocol Manifest
 
@@ -248,24 +270,30 @@ Welcome to the Almanac API documentation.
     {
       name: "",
       type: "",
-      description:
-        "",
+      description: "",
     },
   ]}
   samplePayload={{
-    protocol_digest: "proto:a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
+    protocol_digest:
+      "proto:a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
   }}
   responses={[
     {
-      version: "1.0", 
-      metadata: [{"name": "alice", "version": "0.1.0", "digest": "proto:a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125"}], 
-      models: [], 
+      version: "1.0",
+      metadata: [
+        {
+          name: "alice",
+          version: "0.1.0",
+          digest:
+            "proto:a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
+        },
+      ],
+      models: [],
       interactions: [],
     },
   ]}
   responseDescription="On success, the response will be a JSON object with the updated digest."
 />
-
 
 ### Get Protocol Manifest.
 
@@ -278,18 +306,25 @@ Welcome to the Almanac API documentation.
     {
       name: "",
       type: "",
-      description:
-        "",
+      description: "",
     },
   ]}
   samplePayload={{
-    model_digest: "model:1cf9335834e772996ecb5e4746c48b46e886b1d1c72a11725daee5d2aea8d682",
+    model_digest:
+      "model:1cf9335834e772996ecb5e4746c48b46e886b1d1c72a11725daee5d2aea8d682",
   }}
   responses={[
     {
-      version: "1.0", 
-      metadata: [{"name": "alice", "version": "0.1.0", "digest": "proto:a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125"}], 
-      models: [], 
+      version: "1.0",
+      metadata: [
+        {
+          name: "alice",
+          version: "0.1.0",
+          digest:
+            "proto:a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
+        },
+      ],
+      models: [],
       interactions: [],
     },
   ]}

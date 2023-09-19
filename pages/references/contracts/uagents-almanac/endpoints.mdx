@@ -8,34 +8,34 @@ For additional information on **uAgents addresses**, have a look at our [guide �
 
 ## Endpoint weighting
 
-There exist _two format_ options when defining your agent's endpoints: 
+There exist _two format_ options when defining your agent's endpoints:
 
 - **List format**: This defines the uAgent's endpoints as a list of strings. The weights will be automatically assigned a value of 1.
 
-    ```py copy
-    agent = Agent(
-        name="alice",
-        port=8000,
-        seed="agent secret phrase",
-        endpoint=["http://127.0.0.1:8000/submit","http://127.0.0.1:8001/submit"]
-    )
-    ```
+  ```py copy
+  agent = Agent(
+      name="alice",
+      port=8000,
+      seed="agent secret phrase",
+      endpoint=["http://127.0.0.1:8000/submit","http://127.0.0.1:8001/submit"]
+  )
+  ```
 
 - **Dictionary format**: This defines the uAgent's endpoints in a Dict format, specifying the weight for each endpoint. If the weight parameter is not specified, it will be assigned a value of 1.
 
-    ```py copy
-    agent = Agent(
-        name="alice",
-        port=8000,
-        seed="agent recovery seed phrase",
-        endpoint={
-            "http://127.0.0.1:8000/submit": {"weight": 2},
-            "http://127.0.0.1:8001/submit": {}, # weight value = 1
-        },
-    )
-    ```
+  ```py copy
+  agent = Agent(
+      name="alice",
+      port=8000,
+      seed="agent recovery seed phrase",
+      endpoint={
+          "http://127.0.0.1:8000/submit": {"weight": 2},
+          "http://127.0.0.1:8001/submit": {}, # weight value = 1
+      },
+  )
+  ```
 
 You can now head towards the following dedicated guides showing you how to:
 
-- [Register in the Almanac Contract ↗️](/guides/agents/register-in-almanac.md).
-- [Communicating with other uAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents.md).
+- [Register in the Almanac Contract ↗️](/guides/agents/register-in-almanac).
+- [Communicating with other μAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents).

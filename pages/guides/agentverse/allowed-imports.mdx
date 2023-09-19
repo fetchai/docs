@@ -1,143 +1,144 @@
 # uAgents
 
-In the [Agentverse ↗](https://agentverse.ai/) Code Editor, you have the freedom to import and utilize a selected set of modules to create your code, while maintaining security and control. These pre-approved modules offer a diverse range of functionalities, allowing you to build complex agents. The listed modules include:
+In the [Agentverse ↗](https://agentverse.ai/) Code Editor, you have the freedom to import and utilize a selected set of modules to create your code, while maintaining security and control. These pre-approved modules offer a diverse range of functionalities, allowing you to build complex agents.
 
-- **Uagents:** Build fast and lightweight agents for decentralized scenarios using the μAgents framework. Checkout [μAgents ↗](/concepts) documentation for more information.
+**The listed modules include**:
 
-     - Available classes: `Model`, `Context`, `Protocol`.
+- `uagents`: build fast and lightweight agents for decentralized scenarios using the μAgents framework. Checkout the [μAgents ↗](/concepts#μagents) documentation for more information.
 
+  - Available classes: `Model`, `Context`, `Protocol`.
+
+  Example:
+
+  ```py copy
+  from uagents import Context, Model
+
+  class Message(Model):
+      text: str
+
+  @agent.on_interval(period=2.0)
+  async def print_message(ctx: Context):
+      msg = Message(text=f"Hello there my wallet address is {ctx.wallet}.")
+      print(msg.text)
+  ```
+
+- `json`: Seamlessly interact with JSON data structures.
+
+  - Available functions: `dumps`, `loads`.
+
+  Example:
+
+  ```py copy
+  import json
+
+  some_json =  '{ "agent":"Alice", "age":"1 day"}'
+
+  # JSON to python dictionary
+  python_dict = json.loads(some_json)
+  print(python_dict["age"])
+
+  # python dictionary to JSON:
+  some_json_2 = json.dumps(python_dict)
+
+  # the result is a JSON string equal to some_json:
+  print(some_json_2)
+  ```
+
+- `requests`: Interact with HTTP requests and responses.
+
+  - Available functions: `get`, `post`, `put`, `patch`, `delete`.
+
+  Example:
+
+  ```py copy
+  import requests
+
+  response = requests.get('https://api.github.com')
+  if response.status_code == 200:
+      print('Success!')
+  elif response.status_code == 404:
+      print('Not Found.')
+
+  print(response.headers)
+  ```
+
+- `cosmpy`: A Python library for interacting with Cosmos-based blockchains. Checkout [CosmPy ↗](/guides/fetch-network/cosmpy/install) documentation for more information.
+
+  - Full access to all functions and features.
+
+  Example:
+
+  ```py copy
+  from cosmpy import aerial
+
+  # Define network configuration, faucet and ledger
+  network = aerial.client.NetworkConfig.fetchai_stable_testnet()
+  faucet_api = aerial.faucet.FaucetApi(network)
+  ledger = aerial.client.LedgerClient(network)
+
+  MINIMUM_BALANCE = 100000000000000000
+
+  @agent.on_interval(period=20.0)
+  async def get_tokens(ctx: Context):
+
+      agent_balance = ledger.query_bank_balance(ctx.wallet)
+
+      if agent_balance < MINIMUM_BALANCE:
+          print("Providing wealth to agent...")
+          faucet_api.get_wealth(ctx.wallet)
+  ```
+
+- `datetime`: Handle date and time operations with ease.
+
+  - Full access to all functions and features.
+
+  Example:
+
+  ```py copy
+  import datetime
+
+  today = datetime.datetime.now()
+  print(f"Today is: {today.year}:{today.month}:{today.day}")
+  ```
+
+- `enum`: Create enumerations with symbolic names and unique values.
+
+  - Full access to all functions and features.
+
+  Example:
+
+  ```py copy
+  from enum import Enum
+
+  class Agent(Enum):
+      alice = 1
+      bob = 2
+      carl = 3
+
+  print(Agent.bob.value)
+  ```
+
+- `pydantic`: Ensure data validation and settings management.
+
+  - Full access to all functions and features.
     Example:
 
-    ```py copy
-    from uagents import Context, Model
+  ```py copy
+  from pydantic import BaseModel
 
-    class Message(Model):
-        text: str
+  data = {
+      "name": "alice",
+      "age": 21
+  }
 
-    @agent.on_interval(period=2.0)
-    async def print_message(ctx: Context):
-        msg = Message(text=f"Hello there my wallet address is {ctx.wallet}.")
-        print(msg.text)
-    ```
+  class User(BaseModel):
+      name: str
+      age: int
 
-- **Json:** Seamlessly interact with JSON data structures.
+  user = User(**data)
 
-     - Available functions: `dumps`, `loads`.
-
-    Example:
-
-    ```py copy
-    import json
-
-    some_json =  '{ "agent":"Alice", "age":"1 day"}'
-
-    # JSON to python dictionary
-    python_dict = json.loads(some_json)
-    print(python_dict["age"])
-
-    # python dictionary to JSON:
-    some_json_2 = json.dumps(python_dict)
-
-    # the result is a JSON string equal to some_json:
-    print(some_json_2)
-    ```
-
-- **Requests:** Interact with HTTP requests and responses.
-
-     - Available functions: `get`, `post`, `put`, `patch`, `delete`.
-
-    Example:
-
-    ```py copy
-    import requests
-
-    response = requests.get('https://api.github.com')
-    if response.status_code == 200:
-        print('Success!')
-    elif response.status_code == 404:
-        print('Not Found.')
-
-    print(response.headers)
-    ```
-
-- **Cosmpy:** A Python library for interacting with Cosmos-based blockchains. Checkout [cosmpy ↗](/guides/fetch-network/cosmpy/install) documentation for more information.
-
-     - Full access to all functions and features.
-
-    Example:
-
-    ```py copy
-    from cosmpy import aerial
-
-    # Define network configuration, faucet and ledger
-    network = aerial.client.NetworkConfig.fetchai_stable_testnet()
-    faucet_api = aerial.faucet.FaucetApi(network)
-    ledger = aerial.client.LedgerClient(network)
-
-    MINIMUM_BALANCE = 100000000000000000
-
-    @agent.on_interval(period=20.0)
-    async def get_tokens(ctx: Context):
-
-        agent_balance = ledger.query_bank_balance(ctx.wallet)
-
-        if agent_balance < MINIMUM_BALANCE:
-            print("Providing wealth to agent...")
-            faucet_api.get_wealth(ctx.wallet)
-    ```
-
-
-- **Datetime:** Handle date and time operations with ease.
-
-     - Full access to all functions and features.
-
-    Example:
-
-    ```py copy
-    import datetime
-
-    today = datetime.datetime.now()
-    print(f"Today is: {today.year}:{today.month}:{today.day}")
-    ```
-
-- **Enum:** Create enumerations with symbolic names and unique values.
-
-     - Full access to all functions and features.
-
-    Example:
-
-    ```py copy
-    from enum import Enum
-
-    class Agent(Enum):
-        alice = 1
-        bob = 2
-        carl = 3
-
-    print(Agent.bob.value)
-    ```
-
-- **Pydantic:** Ensure data validation and settings management.
-
-     - Full access to all functions and features.
-    Example:
-
-    ```py copy
-    from pydantic import BaseModel
-
-    data = {
-        "name": "alice",
-        "age": 21
-    }
-
-    class User(BaseModel):
-        name: str
-        age: int
-
-    user = User(**data)
-
-    print(user)
-    ```
+  print(user)
+  ```
 
 ## Multi-file Support:
 
@@ -171,4 +172,4 @@ Then you can just import the `Sentence` data model to your `agent.py` file and m
         print(msg.text)
     ```
 
-Explore the resources at the [Agentverse guides ↗](/guides) and [Agentverse concepts ↗](/concepts) for additional guides and documentation resources!
+Explore the resources at the [Agentverse guides ↗](/guides#agentverse) and [Agentverse concepts ↗](/concepts#agentverse) for additional guides and documentation resources!
