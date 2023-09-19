@@ -57,10 +57,10 @@ Let's start by defining the script for a top activities agent which provides tou
    fund_agent_if_low(agent.wallet.address())
    ```
 
-We've just imported all the necessary modules, created an agent named `top_activities` using a secret [seed ↗](https://en.wikipedia.org/wiki/Random_seed) , and make sure it has enough funds to register in the [Almanac contract ↗](/references/contracts/uagents-almanac/almanac-overview.mdx):
+We've just imported all the necessary modules, created an agent named `top_activities` using a secret [seed ↗](https://en.wikipedia.org/wiki/Random_seed) , and with ` fund_agent_if_low(agent.wallet.address())` made sure that this agent has enough funds to register in the [Almanac contract ↗](/references/contracts/uagents-almanac/almanac-overview.mdx):
 
 
-3. Let's then define an **output parser** using  `CommaSeparatedListOutputParser` from the imported Lanchain library we just imported. This helps parse the results from the agent's response. Additionally we must define a **prompt template** by using a `PromptTemplate` instance, which provides a structured message that explains the agent's role and expectations. It includes placeholders for variables like `city`, `date`, and `preferred_activities_str`:
+3. Next let's then define an **output parser** using  `CommaSeparatedListOutputParser` from the Langchain library we just imported. This helps parse the results from the agent's response. Then we define a **prompt template** by using a `PromptTemplate` instance, which provides a structured message that explains the agent's role and expectations. It includes placeholders for variables like `city`, `date`, and `preferred_activities_str`:
 
    ```py copy
    output_parser = CommaSeparatedListOutputParser()
