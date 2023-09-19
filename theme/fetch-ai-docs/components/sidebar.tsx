@@ -140,7 +140,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
   // use button when link don't have href because it impacts on SEO
   const ComponentToUse = isLink ? Anchor : "button";
 
-  if (currentItemParentRoute[1] == parentLevelRoute[1]) {
+  if (currentItemParentRoute[1] == parentLevelRoute[1] || (parentLevelRoute[1] == '' && level == 1)) {
     return (
       <li className={cn({ open, active })}>
         <ComponentToUse
@@ -351,6 +351,8 @@ export function Sidebar({
   headings,
   includePlaceholder,
 }: SideBarProps): ReactElement {
+
+
   const config = useConfig();
   const { menu, setMenu } = useMenu();
   const router = useRouter();
@@ -416,7 +418,7 @@ export function Sidebar({
       />
       <aside
         className={cn(
-          "nextra-sidebar-container nx-flex nx-flex-col nx-bg-gray-100 nx-px-3",
+          "nextra-sidebar-container nx-flex nx-flex-col nx-bg-gray-100 nx-p-3",
           "md:nx-top-16 md:nx-shrink-0 motion-reduce:nx-transform-none",
           "nx-transform-gpu nx-transition-all nx-ease-in-out",
           "print:nx-hidden md:nx-w-64",
