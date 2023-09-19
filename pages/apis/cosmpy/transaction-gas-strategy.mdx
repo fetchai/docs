@@ -1,0 +1,125 @@
+# cosmpy.aerial.gas
+
+Transaction Gas Stragegy 
+
+## Gas Strategy Objects
+
+```py 
+class GasStrategy(ABC)
+```
+Transaction gas strategy 
+
+### estimate_gas
+
+```py 
+@abstractmethod 
+def estimate_gas(tx: Transaction) -> int 
+```
+Estimate the transaction gas 
+
+**Arguments:**
+- `tx`: Transaction
+
+**Returns:**
+None
+
+### block_gas_limit
+```py
+@abstractmethod
+def block_gas_limit() -> int 
+```
+Get the block gas limit 
+
+**Returns:**
+None
+
+## SimulationGasStrategy Objects 
+
+Simulation transaction gas strategy 
+
+**Arguments:**
+- `GasStrategy`: gas strategy 
+
+### __init__
+```py
+def __init__(client: "LedgerClient", multiplier: Optional[float] = None)
+```
+Init the Simulation transaction gas strategy 
+
+**Arguments:**
+- `client`: Ledger client
+- `multiplier`: multiplier, defaults to None
+
+### estimate_gas
+```py
+def estimate_gas(tx: Transaction) -> int 
+```
+Get estimated transaction gas
+
+**Arguments:**
+- `tx`: transaction 
+
+**Returns:**
+Estimated transaction gas 
+
+### block_gas_limit
+```py 
+def block_gas_limit() ->int
+```
+Get the block gas limit
+
+**Returns:**
+block gas limit 
+
+## OfflineMessageTableStrategy Objects 
+
+```py
+class OfflineMessageTableStrategy(GasStrategy)
+```
+Offline message table strategy
+**Arguments:**
+- `GasStrategy`: gas strategy
+
+### default_table
+```py
+@staticmethod
+def default_table() ->"OfflineMessageTableStrategy"
+```
+Offline message strategy default table 
+
+**Returns:**
+offline message default table strategy 
+
+### __init__
+```py
+def __init__ (fallback_gas_limit: Optional[int] = None, block_limit: Optional[int] = None)
+```
+init offline message table strategy 
+
+**Arguments:**
+- `fallback_gas_limit`: Fallback gas limit, defaults to None 
+- `block_limit`: Block limit, defaults to None
+
+
+### update_entry
+
+```py 
+def update_entry(transaction_type: str, gas_limit: int)
+```
+Update the entry of the transaction 
+
+**Arguments:**
+- `tx`: transaction 
+
+**Returns:**
+Estimated transaction gas 
+
+
+### block_gas_limit
+```py 
+def block_gas_limit() ->int
+```
+Get the block gas limit
+
+**Returns:**
+block gas limit 
