@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
 import apiAgentIcon from "../src/svgs/api-agents.svg";
 import insightsAgentIcon from "../src/svgs/context-control.svg";
@@ -77,8 +77,26 @@ const Item = ({
 };
 
 const Section: React.FC<SectionProperties> = ({ heading, items }) => {
+  useEffect(() => {
+    // Check if there is a hash fragment in the URL
+    if (window.location.hash) {
+      // Get the ID of the section corresponding to the hash fragment
+      const sectionId = window.location.hash.slice(1);
+
+      // Find the section element by its ID
+      // eslint-disable-next-line unicorn/prefer-query-selector
+      const sectionElement = document.getElementById(sectionId);
+
+      // Scroll to the section if it exists
+      if (sectionElement) {
+        sectionElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []); // This effect runs once when the component mounts
+
+  const sectionId = heading.replaceAll(" ", "").toLowerCase();
   return (
-    <div className="nx-my-8">
+    <div id={sectionId} className="nx-my-8">
       <h2 className={"nx-text-lg nx-font-medium nx-text-fetch-light-grey"}>
         {heading}
       </h2>
