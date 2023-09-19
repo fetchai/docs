@@ -34,7 +34,7 @@ Let's start by defining the script for a top activities agent which provides tou
 
 1. Enter the `activities` folder and create a script for this agent: `touch top_activities.py`
 
-2. Within this script, import the necessary modules, create an agent `top_activities` using a secret `seed`, and make sure it has enough funds to register in the [Almanac contract ↗](/references/contracts/uagents-almanac/almanac-overview.mdx):
+2. Paste in the following snippet:
 
    ```py copy
    from langchain.chat_models import ChatOpenAI
@@ -57,7 +57,10 @@ Let's start by defining the script for a top activities agent which provides tou
    fund_agent_if_low(agent.wallet.address())
    ```
 
-3. Let's then define an **output parser** using `CommaSeparatedListOutputParser`, to help parse the results from the agent's response, and a **prompt template** defined using a `PromptTemplate` instance, which provides a structured message that explains the agent's role and expectations. It includes placeholders for variables like `city`, `date`, and `preferred_activities_str`:
+We've just imported all the necessary modules, created an agent named `top_activities` using a secret [seed ↗](https://en.wikipedia.org/wiki/Random_seed) , and make sure it has enough funds to register in the [Almanac contract ↗](/references/contracts/uagents-almanac/almanac-overview.mdx):
+
+
+3. Let's then define an **output parser** using  `CommaSeparatedListOutputParser` from the imported Lanchain library we just imported. This helps parse the results from the agent's response. Additionally we must define a **prompt template** by using a `PromptTemplate` instance, which provides a structured message that explains the agent's role and expectations. It includes placeholders for variables like `city`, `date`, and `preferred_activities_str`:
 
    ```py copy
    output_parser = CommaSeparatedListOutputParser()
@@ -74,7 +77,7 @@ Let's start by defining the script for a top activities agent which provides tou
    )
    ```
 
-4. Let's create an instance of the `ChatOpenAI` class (referred to as `llm`) to interact with a large language model to understand and generate human-like text. The next steps would be loading tools for the agent and initialize it by also connecting the loaded tools and the large language model to it. Finally, define the communication protocol, called `TopActivities`:
+4. Now let's create an instance of the `ChatOpenAI` class (referred to as `llm`) to interact with a large language model to understand and generate human-like text. The next steps would be loading tools for the agent and initialize it by also connecting the loaded tools and the large language model to it. Finally, define the communication protocol, called `TopActivities`:
 
    ```py copy
    llm = ChatOpenAI(temperature=0.1)
