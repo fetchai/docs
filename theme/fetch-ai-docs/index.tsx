@@ -46,33 +46,31 @@ const Body = ({
   children,
 }: BodyProps): ReactElement => {
   const config = useConfig();
-  console.log("----timestamp---", timestamp);
   const mounted = useMounted();
-
-  console.log("----mounted---", mounted);
 
   if (themeContext.layout === "raw") {
     return <div className={classes.main}>{children}</div>;
   }
 
-  // const date =
-  //   themeContext.timestamp && config.gitTimestamp && timestamp
-  //     ? new Date(timestamp)
-  //     : null
+  const date =
+    themeContext.timestamp && config.gitTimestamp && timestamp
+      ? new Date(timestamp)
+      : null;
 
-  // const gitTimestampEl =
-  //   // Because a user's time zone may be different from the server page
-  //   mounted && date ? (
-  //     <div className="nx-mt-12 nx-mb-8 nx-block nx-text-xs nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400">
-  //       {renderComponent(config.gitTimestamp, { timestamp: date })}
-  //     </div>
-  //   ) : (
-  //     <div className="nx-mt-16" />
-  //   )
+  const gitTimestampEl =
+    // Because a user's time zone may be different from the server page
+    mounted && date ? (
+      <div className="nx-mt-12 nx-mb-8 nx-block nx-text-xs nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400">
+        {renderComponent(config.gitTimestamp, { timestamp: date })}
+      </div>
+    ) : (
+      <div className="nx-mt-16" />
+    );
 
   const content = (
     <>
       {children}
+      {gitTimestampEl}
       {navigation}
     </>
   );
