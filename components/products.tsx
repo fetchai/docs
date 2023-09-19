@@ -89,15 +89,17 @@ const Section: React.FC<SectionProperties> = ({ heading, items }) => {
 
       // Scroll to the section if it exists
       if (sectionElement) {
-        sectionElement.scrollIntoView({ behavior: 'smooth' });
+        sectionElement.scrollIntoView({ behavior: "smooth" });
       }
     }
   }, []); // This effect runs once when the component mounts
 
-  const sectionId = heading.replaceAll(' ', '').toLowerCase()
+  const sectionId = heading.replaceAll(" ", "").toLowerCase();
   return (
     <div id={sectionId} className="nx-my-8">
-      <h2 className={"nx-text-lg nx-font-medium nx-text-fetch-light-grey"}>{heading}</h2>
+      <h2 className={"nx-text-lg nx-font-medium nx-text-fetch-light-grey"}>
+        {heading}
+      </h2>
       <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-3 nx-gap-4 nx-mt-4">
         {items.map((item, index) => (
           <Item key={index} item={item} index={index} />
@@ -228,8 +230,10 @@ const IndexPage: React.FC = () => {
     <div className="nx-container nx-mx-auto nx-py-8">
       {Object.entries(items).map(([heading, itemList], index) => (
         <div key={heading}>
-          {index !== 0 && <div className="nx-mt-16 nx-mb-16 nx-border-t nx-border-gray-300" />}
-          <Section heading={heading} items={itemList}  />
+          {index !== 0 && (
+            <div className="nx-mt-16 nx-mb-16 nx-border-t nx-border-gray-300" />
+          )}
+          <Section heading={heading} items={itemList} />
         </div>
       ))}
     </div>
