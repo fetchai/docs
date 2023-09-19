@@ -21,7 +21,7 @@ We can start by writing the code for our 2 protocols.
 Let's start by defining the protocol for querying availability of tables at the restaurant:
 
 1. First of all, we need to navigate towards the protocols folder: `cd protocols`
-2. Let's then create a Python script named, and name it: `touch query.py`
+2. Let's then create a Python script named, and name it by running: `touch query.py`
 3. In the text editor application, we proceed and define the `table querying protocol`.
 4. We now need to import necessary classes and define the _message data models_. Then, create an instance of the `Protocol` class and name it `query_proto`:
 
@@ -68,7 +68,7 @@ Let's start by defining the protocol for querying availability of tables at the 
            for (
                num,
                status,
-           ) in ctx.storage._data.items()  # pylint: disable=protected-access
+           ) in ctx.storage._data.items()
            if isinstance(num, int)
        }
 
@@ -134,7 +134,7 @@ async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest
         for (
             num,
             status,
-        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+        ) in ctx.storage._data.items()
         if isinstance(num, int)
     }
     available_tables = []
@@ -161,7 +161,7 @@ async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQuer
 We can now proceed by writing the booking protocol script for booking the table at the restaurant.
 
 1. First of all, navigate towards the protocols folder: `cd protocols`
-2. In here, let's create a Python script and name it: `touch book.py`
+2. In here, let's create a Python script and name it by running: `touch book.py`
 3. In the text editor application, we can proceed to define the **table booking protocol**. We need to import the necessary classes and define the _message data models_. In this case, the booking protocol consists of two message models: `BookTableRequest` and `BookTableResponse`. Then create an instance of the `Protocol` class and name it `book_proto`:
 
    ```py copy
@@ -193,7 +193,7 @@ We can now proceed by writing the booking protocol script for booking the table 
            for (
                num,
                status,
-           ) in ctx.storage._data.items()  # pylint: disable=protected-access
+           ) in ctx.storage._data.items()
            if isinstance(num, int)
        }
        table = tables[msg.table_number]
@@ -222,14 +222,16 @@ The overall script should look as follows:
 
 ```py copy filename="book.py"
 from uagents import Context, Model, Protocol
-
 from .query import TableStatus
+
 class BookTableRequest(Model):
     table_number: int
     time_start: int
     duration: int
+
 class BookTableResponse(Model):
     success: bool
+
 book_proto = Protocol()
 @book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
 async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
@@ -238,7 +240,7 @@ async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
         for (
             num,
             status,
-        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+        ) in ctx.storage._data.items()
         if isinstance(num, int)
     }
     table = tables[msg.table_number]
@@ -255,11 +257,11 @@ async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
     await ctx.send(sender, BookTableResponse(success=success))
 ```
 
-### Restaurant uAgent
+### Restaurant Agent
 
 We are now ready to define our restaurant uAgent.
 
-1. Let's now create a Python script in `booking_demo` folder, and name it: `touch restaurant.py`
+1. Let's now create a Python script in `booking_demo` folder, and name it by running: `touch restaurant.py`
 2. We then need to import the necessary classes from the `uagents` library and the two protocols we previously defined:
 
    ```py copy
