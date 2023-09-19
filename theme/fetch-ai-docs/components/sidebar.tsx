@@ -140,7 +140,10 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
   // use button when link don't have href because it impacts on SEO
   const ComponentToUse = isLink ? Anchor : "button";
 
-  if (currentItemParentRoute[1] == parentLevelRoute[1] || (parentLevelRoute[1] == '' && level == 1)) {
+  if (
+    currentItemParentRoute[1] == parentLevelRoute[1] ||
+    (parentLevelRoute[1] == "" && level == 1)
+  ) {
     return (
       <li className={cn({ open, active })}>
         <ComponentToUse
@@ -150,7 +153,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
             !isLink && "nx-text-left nx-w-full",
             classes.link,
             active ? classes.active : classes.inactive,
-            activeRouteInside ? "nx-text-purple": ""
+            activeRouteInside ? "nx-text-purple" : "",
           )}
           onClick={(e) => {
             const clickedToggleIcon = ["svg", "path"].includes(
@@ -351,8 +354,6 @@ export function Sidebar({
   headings,
   includePlaceholder,
 }: SideBarProps): ReactElement {
-
-
   const config = useConfig();
   const { menu, setMenu } = useMenu();
   const router = useRouter();
