@@ -69,7 +69,6 @@ export function Property({
   type: string;
   children: ReactNode;
 }) {
-  console.log(name, type, children);
   return (
     <li className="nx-m-0 nx-px-0 nx-py-4 nx-first:pt-0 nx-last:pb-0">
       <dl className="nx-m-0 nx-flex nx-flex-wrap nx-items-center nx-gap-x-3 nx-gap-y-2">
