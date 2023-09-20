@@ -28,7 +28,7 @@ mkdir ev_charger
 mkdir geopy_car_parking
 ```
 
-#### EV Charger
+#### EV Charger agent
 
 Enter the `ev_charger` directory previously created within the `src` folder.
 
@@ -527,7 +527,7 @@ touch general.py
 touch geoapi_parking.py
 ```
 
-#### **init**.py
+#### __init__ script
 
 Inside this Python file, we need to define the following:
 
@@ -543,7 +543,7 @@ Inside this Python file, we need to define the following:
 
 - `from .geoapi_parking import GeoParkingRequest`: This line is importing the `GeoParkingRequest` class from module named `geoapi_parking`.
 
-#### ev_charger.py
+#### ev_charger script
 
 We now need to define a data model class for representing requests related to Electric Vehicle (EV) charging. Inside this Python file, we first need to import the `Model` class from `uagents` library, and then define an `EVRequest` class. The class defines three attributes as class variables. These attributes represent the data associated with an EV charging request:
 
@@ -570,7 +570,7 @@ We now need to define a data model class for representing requests related to El
       miles_radius: float
   ```
 
-#### general.py
+#### general script
 
 We now need to define the `general.py` script for generalized structured data models for messages to be exchanged between our agents. We import the necessary classes and define the following classes:
 
@@ -632,7 +632,7 @@ We now need to define the `general.py` script for generalized structured data mo
 
         - `UAgentResponse`: this is a data model class that represents a user Agent Response. It has several attributes: `type` (an attribute of type `UAgentResponseType` representing the type of the response), `agent_address` (an optional string attribute representing the address of the agent to which the response is directed), `message`(an optional string attribute representing a message related to the response), `options` (an optional list of `KeyValue` objects representing response options), and `request_id` (an optional string attribute serving as an identifier for the corresponding request).
 
-#### geoapi_parking.py
+#### geoapi_parking script
 
 Within the geoapi_parking.py, we need to define a data model class for representing requests related to parking information in a geographic location:
 
@@ -662,7 +662,7 @@ Within the geoapi_parking.py, we need to define a data model class for represent
         - `radius`: an integer representing the search radius (in miles) to find parking spots around the specified location.
         - `max_result`: an integer representing the maximum number of parking spots to be returned. It has a default value of 5, meaning that if not explicitly provided, the default value will be used.
 
-### Main script
+### main script
 
 Now, we are ready to define the script for our `main.py` Python file originally created at the beginning of this guide.
 

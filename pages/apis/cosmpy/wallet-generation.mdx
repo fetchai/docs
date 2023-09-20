@@ -1,0 +1,162 @@
+# cosmpy.aerial.wallet 
+
+Wallet generation 
+
+## Wallet Objects 
+```py
+class Wallet(ABC, UserString)
+```
+Wallet generation 
+
+**Arguments:** 
+- `ABC`: ABC abstract method 
+- `UserString`: user string 
+
+### Address 
+```py 
+@abstractmethod
+def address() -> Address 
+```
+get the address of the wallet 
+
+**Returns:** 
+None 
+
+### public_key 
+```py 
+@abstractmethod
+def public_key() -> PublicKey
+```
+get the public key of the wallet 
+
+**Returns:** 
+None 
+
+### Signer 
+```py 
+@abstractmethod
+def signer() -> Signer 
+```
+get the signer of the wallet 
+
+**Returns:**
+None 
+
+### data 
+```py 
+@property
+def data()
+```
+Get the address of the wallet 
+
+**Returns:** 
+Address
+
+### __json__
+```py 
+def __json__()
+```
+Return the address in string format 
+
+**Returns:**
+Address in string format 
+
+## LocalWallet Objects 
+```py 
+class LocalWallet(Wallet)
+```
+Generate local wallet
+
+**Arguments:** 
+- `Wallet`: wallet 
+
+
+### Generate
+```py 
+@staticmethod
+def generate(prefix: Optional[str] = None) -> "LocalWallet"
+```
+generate local wallet 
+
+**Arguments:**
+- `prefix`: prefix, defaults to None 
+
+**Returns:** 
+local wallet 
+
+
+### from_mnemonic
+```py 
+@staticmethod
+def from_mnemonic(
+    mnemonic: str, 
+    prefix: Optional[str] = None
+) -> "LocalWallet"
+```
+Generate local wallet from mnemonic 
+
+**Arguments:** 
+- `mnemonic`: mnemonic 
+- `prefix`: prefix, defaults to None 
+
+**Returns:** 
+Local wallet 
+
+
+### from_unsafe_seed
+```py 
+@staticmethod
+def from_unsafe_seed(
+    text: str, 
+    index: Optional[int] = None, 
+    prefix: Optional[str] = None
+) -> "LocalWallet"
+```
+Generate local wallet from unsafe seed 
+
+**Arguments:** 
+- `text`: text 
+- `index`: index, defaults to None 
+- `prefix`: prefix, defaults to None 
+
+**Returns:** 
+Local wallet 
+
+### __init__
+```py 
+def __init__(private_key: PrivateKey, prefix: Optional[str] = None)
+```
+Init wallet with 
+
+**Arguments:** 
+- `private_key`: private key of the wallet 
+- `prefix`: prefix, defaults to None 
+
+### address 
+```py 
+def address() -> Address
+```
+Get the wallet address
+
+**Returns:** 
+Wallet address
+
+
+### public_key 
+```py 
+def public_key() ->PublicKey
+```
+Get the public key of the wallet
+
+**Returns:** 
+public key 
+
+
+### signer 
+```py 
+def signer() -> PrivateKey
+```
+Get the signer of the wallet 
+
+**Returns:** 
+signer 
