@@ -1,0 +1,84 @@
+# cosmpy.aerial.client.staking 
+
+Staking funcationality 
+
+## ValidatorStatus Objects
+```py 
+class ValidatorStatus(Enum)
+```
+Validator status
+
+### from_proto
+```py
+@classmethod
+def from_proto(cls, value: int) -> "ValidatorStatus"
+```
+Get the validator status from protocol
+
+**Arguments:**
+- `value`: value
+
+**Raises:**
+- `RuntimeError`: Unable to decode validator status 
+
+**Returns:** 
+Validator status 
+
+
+### create_delegate_msg
+```py
+def create_delegate_msg(delegator: Address, validator: Address, amount: int, denom: str) -> MsgDelegate
+```
+Create delegate message 
+
+**Arguments:**
+- `delegator`: delegator 
+- `validator`: validator 
+- `amount`: amount 
+- `denom`: denom 
+
+**Returns:**
+Delegate message 
+
+
+### create_redelegate_message
+```py
+def create_redelegate_message(
+    delegator_address: Address, 
+    validator_src_address: Address, 
+    validator_dst_address: Address, 
+    amount: int, 
+    denom: str
+) ->MsgBeginRedelegate
+```
+Create redelegate message
+
+**Arguments**
+- `delegator_address`: delegator address
+- `validator_src_address`: source validation address
+- `validator_dst_address`: destination validator address
+- `amount`: amount
+- `denom`: denom 
+
+**Returns:** 
+redelegate message 
+
+### create_undelegate_message
+```py
+def create_undelegate_message(
+    delegator_address: Address, 
+    validator_address: Address, 
+    amount: int, 
+    denom: str
+) -> MsgUndelegate
+```
+Create undelegate message 
+
+**Arguments:** 
+- `delegator_address`: delegator address 
+- `validator_address`: validator address 
+- `amount`: amount 
+- `denom`: denom 
+
+**Returns:** 
+Undelegate message 
