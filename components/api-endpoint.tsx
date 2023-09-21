@@ -1,4 +1,4 @@
-import { Button, Code, Pre } from "nextra/components";
+import { Code, Pre } from "nextra/components";
 import React, { useState } from "react";
 import {
   ApiIntro,
@@ -9,8 +9,7 @@ import {
   Tab,
   DropDownTabs,
 } from "./mdx";
-import axios from 'axios';
-
+import axios from "axios";
 
 interface PropertyType {
   name: string;
@@ -194,15 +193,14 @@ export const ApiRequest: React.FC<{
   samplePayload?: unknown;
   properties?: PropertyType[];
 }> = (properties) => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bearerToken, setBearerToken] = useState('');
-  const [response, setResponse] = useState('');
+  const [bearerToken, setBearerToken] = useState("");
+  const [response, setResponse] = useState("");
 
   const openModal = () => {
     setIsModalOpen(true);
     // Clear previous response
-    setResponse('');
+    setResponse("");
   };
 
   const closeModal = () => {
@@ -224,7 +222,7 @@ export const ApiRequest: React.FC<{
       setResponse(`Error: ${error.message}`);
     }
   };
-  
+
   return (
     <>
       <Row>
