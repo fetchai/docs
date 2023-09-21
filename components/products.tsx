@@ -218,9 +218,9 @@ const items: { [key: string]: Item[] } = {
     },
     {
       title: "Ledger",
-      description: <>Coming soon.</>,
+      description: <>Get started with the Fetch Ledger.</>,
       icon: ledgerIcon,
-      path: "",
+      path: "/concepts/ledger/intro",
     },
   ],
 };
