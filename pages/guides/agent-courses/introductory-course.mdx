@@ -1,0 +1,991 @@
+# Course Introduction 
+
+This course is designed to guide and instruct you through your initial agent development journey. As you move along through it you’ll begin creating increasingly sophisticated agents. 
+The course  encompasses: definitions, essential concepts, best practices, and guides you through the installation, setup, and creation of progressively intricate and valuable agents. 
+
+Introduction to Agents  
+The uAgents (micro-Agents) Framework is a lightweight framework that allows individuals and enterprises to create and deploy AI agents in a variety of industries including in decentralized contexts. 
+By definition agents are software entities that carry out some set of operations on behalf of a user or another program with some degree of independence or autonomy, and in doing so, employ  knowledge or representation of the user's goals or desires. 
+
+In practical terms, agents enable individuals and organizations to automate a wide range of workflows, from simple to complex, by leveraging a combination of artificial intelligence, API calls, blockchain technology and sophisticated business logic. 
+
+
+# Setup and installation 
+Setups are the initial hurdle of any software endeavor. Just like in soccer where a proper goal-keeper is half the team, a smooth initial setup is half the journey. And since teamwork makes the dream work if you face any unexpected challenges join  our Discord where a team member will assist you. 
+
+If you’re new to Python development this is everything you need to know in a nutshell.  Python is an interpreted language and requires a Python interpreter and tools to manage your virtual environments and packages. Python is also an ecosystem full of useful downloadable packages. 
+
+Here’s a list of all the tools you may need to maximize your productivity and master the creation of agents. 
+
+1. IDEs: Visual studio or PyCharm (any will work) 
+2. Homebrew: Latest Version
+3. PyEnv: Latest Version
+4. Python: 3.8+
+5. Poetry: Latest Version
+
+## Homebrew 
+We recommend starting with homebrew since it’ll help you easily install all other software. Homebrew is a package manager for macOS that simplifies the installation and management of software and packages on a Mac computer through the command line. Here are the most useful commands you’ll need: 
+- Installing homebrew from your terminal: `brew install`
+- Listing all of your available packages: `brew list`
+- Opening  the help menu in the terminal: `brew help` 
+
+For more information on homebrew explore their [website ↗️](brew.sh) 
+
+## PyEnv
+We recommend using pyenv  since it’ll help you manage installed Python interpreters. Pyenv is a Python version management tool that allows you to easily switch between different versions of Python on your computer.
+It helps developers work with multiple Python versions and ensures compatibility for various projects. Here are the most useful commands you’ll need. 
+
+## Poetry 
+We recommend using poetry since it’ll simplify the development process. Poetry is a package and dependency management tool for Python that can work with virtual environments.
+You can install Poetry [here ↗️](https://python-poetry.org/docs/). Or by using Homebrew.  In Python development, a virtual environment is a self-contained, isolated environment within a computer's operating system that allows you to install and manage software packages and dependencies independently of the system-wide Python environment. 
+Some of the main commands used with Poetry are the following:
+
+- Create a new Pytohn project template: `poetry new project-name`
+- Initialize a new Python project in the current directory: `poetry init` - This command guides you through the process of setting up your project and creating a pyproject.toml configuration file. 
+- Install project dependencies: `poetry install`
+- Add a new dependency to your project: `poetry add package-name`
+- Update project dependencies: `poetry update `
+- Activate a virtual environment for your project: `poetry shell`
+
+## Full Setup Sequence 
+
+Start by installing homebrew through the terminal then run the brew update command to ensure you’re up to date with the latest version.
+To install simply paste this command in your terminal , you can verify it here: brew.sh 
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+then ensure homebrew is updated by running: 
+```
+brew update
+```
+
+As a next step proceed by installing PyEnv this will help you manage different Python interpreters.
+```
+brew install pyenv
+```
+
+Once you’ve installed pyenv you can configure its shell environment. To achieve this run this sequence of commands.These commands configure your shell environment (specifically for the Zsh shell) to work seamlessly with pyenv. They set up environment variables, modify the PATH, and initialize pyenv so that you can easily manage and switch between different Python versions using pyenv.
+You can verify them [here ↗](https://github.com/pyenv/pyenv#installation)
+ 
+
+```
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+```
+As your next step install a version of Python above 3.8+
+In this example we’ve provided the 3.10 version. 
+```
+pyenv install 3.10
+```
+For additional help run the following command
+
+```
+pyenv help
+```
+As the final step we want to ensure the global version of Python we’re working with isn’t the default system one. To achieve this we’ll run the following commands.
+```
+pyenv --global 3.10 #Here we set the global interpreter 
+pyenv versions #Here we verify if it's set up correctly 
+```
+As our next step we’ll install Poetry which will greatly help us in managing all of the Python specific packages: To install poetry run the following in your Zsh terminal. 
+```
+curl -sSL https://install.python-poetry.org | python3 -
+```
+For more information visit: https://python-poetry.org/docs/#installation
+
+
+Once you’ve installed everything simply open up our IDE and set yourself up for your first project.
+To achieve that open up the folder or directory where you’d wish to store your project and run the following sequence of commands: 
+
+```
+poetry init  
+```
+this will open up the setup wizard, simply follow the steps. During the setu sequence you'll be asked which dependies you'd want to see installed. At this point simply select uagents. 
+
+The wizard will ask for  a name, a version, an author, a license and most importantly the dependencies for your project. At this stage input uagents , once you’ve completed the initialization, run:
+```
+poetry install
+```
+And you’ll see the installation occur in accordance with the pyproject.toml file 
+
+At this stage you’re done and you can begin creating your first agent.
+
+## Alternative Setup 
+
+For those who already have Python installed and work within a preexisting setup an alternative is to use PIP combined with any other virtual environment manager. 
+
+PIP (Python Installs Packages)
+PIP is a command-line tool which allows you to install, manage, and remove Python packages (i.e., libraries and modules) from the Python Package Index (PyPI) or other package repositories. 
+The following are different commands you can carry out using PIP:
+
+- Installing packages: `pip install package-name`
+- Upgrading packages: `pip install --upgrade package-name>`
+- Listing installed packages: `pip list`
+- Show installed package: `pip show package-name`
+- Uninstalling Packages: `pip uninstall package-name`
+
+
+
+
+## Overview of the uAgents Framework
+
+The uAgents Framework is a Python library designed for creating intelligent and autonomous agents in decentralized environments.
+It prioritizes security through cryptography for message and asset protection. It enables easy collaboration between agents in distributed networks via the Almanac contract.
+Agents find applications in various domains and fields such as
+
+
+- IoT Usage: It allows agents to represent physical objects, making it suitable for Internet of Things (IoT) applications, enabling interactions with real-world devices.
+
+- AI Integration: The Framework supports agents as wrappers for AI models, allowing developers to incorporate AI capabilities into their agent-based systems. 
+
+- Automation through APIs: Agents can automate tasks through APIs, facilitating integration with external systems for applications requiring automated interactions. 
+
+- Blockchain Integration: It embraces blockchain technology, enabling DeFi agent development and innovative primitives for secure and transparent financial transactions in decentralized ecosystems.
+
+# Key Concepts 
+
+## Addresses 
+In the uAgents Framework, every uAgent is identified by a unique address, which serves as a standardized way to communicate with the agent in a decentralized environment. There are two types of addresses within the framework:
+
+### uAgent Address: 
+This is the primary identifier for the agent, allowing it to interact with other agents, exchange messages, and engage in decentralized network activities, ensuring secure communication.
+
+### Fetch Address: 
+This cryptographic public address is linked to the agent and its wallet on the Fetch.ai blockchain.
+It enables various functionalities, including interaction with the Fetch ledger, registration in the Almanac contract, and performing operations like token or asset transfers on the blockchain, playing a crucial role in the agent's functionality.
+
+# Storage
+Agents in the uAgents Framework can store information in a JSON file, which they can retrieve as needed. This storage is crucial for agents to maintain a state, remember past interactions, and make informed decisions based on historical data.
+It helps agents retain and utilize information over time, remember past interactions and decisions, and learn from their experiences
+
+# Protocols 
+The uAgents framework provides strong support for organizing message types and their handlers within protocols. Protocols are sets of rules governing data transmission, reception, and interpretation between devices or systems. They define communication format, timing, sequencing, and error handling.
+Protocols enable standardized communication, ensuring accurate and reliable data exchange. Agents using the same protocol can communicate directly, promoting efficient interactions within the system.
+
+# Exchange Protocol 
+
+The uAgents Exchange Protocol facilitates efficient communication among agents by using standardized messaging techniques. It involves packaging messages in envelopes, encoding them, and transmitting them via HTTP to designated endpoints. 
+Messages consist of key-value pairs in JSON format and are enclosed in envelopes with metadata. Envelopes contain: 
+- sender and recipient addresses, 
+- message schema, 
+- payload, 
+- expiration time, 
+- signature for authentication. 
+The protocol uses a standardized HTTP 1.1 POST /submit endpoint for message processing and expects JSON-formatted data. These details ensure consistent and standardized communication within the Fetch.ai uAgents ecosystem. 
+
+# Almanac Contract (Search and Discovery) 
+
+## Overview
+In the uAgents ecosystem, agents need to register in the Almanac contract to initiate interactions. The Almanac is a smart contract on the Fetch.ai blockchain, allowing users to query specific μAgent information and enabling agents to access data about registered uAgents.
+Registrations are time-limited to address the challenge of managing a large agent ecosystem. Agents must periodically re-register to keep their information current. 
+When registration expires, queries for that agent will no longer return their details, ensuring the accuracy and relevance of available uAgents information.
+
+## Registration 
+uAgents can communicate remotely with one another across different locations on the internet by using the Agent address to register into the Almanac contract. 
+Agents first have to pay a small fee, and then query the Almanac to retrieve an HTTP endpoint of a recipient uAgent.
+
+# Coding and Implementation 
+
+## Creating your first agent 
+Creating your first agent is a straightforward process. Start by importing the required modules. In our case, we would need to import the Agent module from the uagents framework, and proceed to instantiate it by providing a name. 
+
+The following code exemplifies the creation of the simplest possible agent:
+```py 
+# Import the required modules from the framework 
+from uagents import Agent, Context
+
+# Instantiate your first Agent and give it a name 
+agent = Agent(name="alice")
+```
+
+## Creating a second agent and start an interaction
+Building on our previous example, we will now increase the complexity by assigning something to do to our agent. From a technical perspective, this means providing our agent with some sort of logic and behaviors. 
+In this example the logic is straight-forward: on start-up the agent will introduce itself and provide its address by printing both, on the terminal.
+To achieve this, we can make use of a decorator. Within Python, decorators are a powerful and flexible way to modify or enhance the behavior of functions or methods without changing their actual code. 
+Decorators are essentially functions that wrap other functions or methods, allowing you to add functionality before, after, or around the wrapped function's execution. 
+In particular, in our example below,  an `on_event()` decorator specifies that the agent should run an `introduce_agent()` function which will return a message presenting the agent with name and related address by using the Context class and related name `(ctx.name)` and address `(ctx.address)` methods:
+
+```py
+# Import the required modules 
+
+from uagents import Agent, Context
+
+agent = Agent(name="alice")
+
+# Provide your Agent with a job 
+
+@alice.on_event("startup")
+async def introduce_agent(ctx: Context):
+ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}.")
+
+# This constructor simply ensure that only this script is running 
+if __name__ == "__main__":
+agent.run()
+```
+
+The output of this Agent will be: 
+```
+Hello, I'm agent alice and my address is agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t.
+```
+
+## Printing agent’s addresses
+
+As we’ve mentioned earlier every uAgent is identified by two addresses within the uAgents Framework: uAgent and Fetch Network addresses. 
+If you need to obtain your agent’s address and do not wish to use a decorator you can use do so by using a `print()` function:
+
+```py
+from uagents import Agent
+
+alice = Agent(name="alice")
+
+print("uAgent address: ", alice.address)
+print("Fetch network address: ", alice.wallet.address())
+```
+The output would look like this: 
+```
+uAgent address: agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
+Fetch network address: fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
+```
+
+## Agents and interval tasks 
+Interval tasks execute a specific task or set of instructions at a predefined time interval. They’re especially useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. 
+Setting up interval tasks for agents is a great way to harness their potential and streamline processes including web scraping, data processing, job scheduling and more.
+In this example we  define an interval task by setting up an `on_interval()` decorator with a timer that triggers the task repetition. In this case a `say_hello()` function, and printing the output on the terminal using the `ctx.logger.info()` method of the Context class. 
+As an introductory example, we will consider an agent that periodically prints hello on the console:
+
+```py 
+from uagents import Agent, Context 
+
+agent = Agent(name="agent", seed="alice recovery phrase") 
+
+@agent.on_interval(period=2.0)
+async def say_hello(ctx: Context):
+ctx.logger.info(f'hello, my name is {ctx.name}')
+
+if __name__ == "__main__":
+agent.run()
+
+```
+The output would look like this:
+```
+hello, my name is alice
+hello, my name is alice
+hello, my name is alice
+```
+As we go on through the course you will notice increasingly complex examples that shed light on the power of interval tasks.
+
+## Agent interactions and interval tasks 
+
+Considering the previous example, we now introduce a second agent and demonstrate how these can interact. In this scenario, we create two agents, each one with a name and seed phrase, and enable them to periodically engage with each other by defining the required logic and functions. 
+Additionally, we introduce the `Bureau` class, which enables agents within the same program to be run together from the same script. This setup demonstrates the essence of agent interaction in a synchronized manner:
+
+```py 
+from uagents import Agent, Context, Bureau
+
+alice = Agent(name="alice", seed="alice recovery phrase")
+bob = Agent(name="bob", seed="bob recovery phrase")
+
+@alice.on_interval(period=2.0)
+async def say_hello(ctx: Context):
+ctx.logger.info(f'Hello, my name is {ctx.name}')
+
+@bob.on_interval(period=2.0)
+async def say_hello(ctx: Context):
+ctx.logger.info(f'Hello, my name is {ctx.name}')
+
+bureau = Bureau()
+bureau.add(alice)
+bureau.add(bob)
+
+if __name__ == "__main__":
+bureau.run()
+
+```
+The output would look like: 
+
+```
+[alice] Hello, my name is alice
+[  bob] Hello, my name is bob
+[alice] Hello, my name is alice
+[  bob] Hello, my name is bob
+[alice] Hello, my name is alice
+[  bob] Hello, my name is bob
+```
+
+## Agent Communication 
+
+We now introduce a greater degree of complexity by incorporating the `Model` class, enabling effective communication between different agents. 
+The Model class allows us to establish a structured message format,  which provides an adequate framework for passing messages:
+
+```py 
+from uagents import Agent, Bureau, Context, Model
+ 
+class Message(Model):
+message: str
+```
+We need to define a function for alice to send messages to bob periodically, using the `on_interval()` decorator. 
+Within this one, we can define a `send_message()` function using the Context class to make our agent alice send a message to bob on an interval:
+
+```py 
+@alice.on_interval(period=3.0)
+async def send_message(ctx: Context):
+await ctx.send(bob.address, Message(message="hello there bob"))
+```
+
+We then need to introduce a message handler function for bob, in order to handle all incoming messages from other agents. 
+We will do this through a `on_message()` decorator that will activate the `message_handler()` once bob receives a message of type `Message`:
+
+```py 
+@bob.on_message(model=Message)
+async def bob_message_handler(ctx: Context, sender: str, msg: Message):
+ctx.logger.info(f"Received message from {sender}: {msg.message}")
+await ctx.send(alice.address, Message(message="hello there alice"))
+```
+
+We finally need to define a message handler function for alice to handle all response messages from bob:
+
+```py 
+@alice.on_message(model=Message)
+async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+```
+
+Finally, we need to add both agents to the Bureau in order to run them from the same script. 
+
+```py 
+bureau = Bureau()
+bureau.add(alice)
+bureau.add(bob)
+ 
+if __name__ == "__main__":
+bureau.run()
+```
+
+The complete script for this example is provided below: 
+
+```py 
+from uagents import Agent, Bureau, Context, Model
+ 
+class Message(Model):
+message: str
+ 
+alice = Agent(name="alice", seed="alice recovery phrase")
+bob = Agent(name="bob", seed="bob recovery phrase")
+ 
+@alice.on_interval(period=3.0)
+async def send_message(ctx: Context):
+await ctx.send(bob.address, Message(message="hello there bob"))
+ 
+@alice.on_message(model=Message)
+async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+ctx.logger.info(f"Received message from {sender}: {msg.message}")
+ 
+@bob.on_message(model=Message)
+async def bob_message_handler(ctx: Context, sender: str, msg: Message):
+ctx.logger.info(f"Received message from {sender}: {msg.message}")
+await ctx.send(alice.address, Message(message="hello there alice"))
+ 
+bureau = Bureau()
+bureau.add(alice)
+bureau.add(bob)
+
+if __name__ == "__main__":
+bureau.run()
+```
+The output would be: 
+```
+[alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
+[  bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
+[alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
+[  bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
+[alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
+[ bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
+```
+
+## Enabling search and discovery for your Agent (Almanac Registration)
+
+Agent registration in the Almanac contract is a key feature which enables discoverability of agents as well as  remote agent communication. In order to register agents must pay a small fee therefore, your agents need to have funds available in their Fetch address.
+When using the testnet, you can use the function `fund_agent_if_low()` to fund your agent. Following the existing sequence we: import, instantiate and in this specific example include a function that ensures that agents have a non-zero balance. 
+This function will check if you have enough tokens to register in the almanac-contract. If not it will add tokens to your Fetch address. 
+uAgents can communicate by querying the Almanac contract and retrieving an HTTP endpoint from the recipient uAgent. Therefore, we need to specify the service endpoints when defining an agent at registration. 
+HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. 
+These endpoints define the entry points for various operations or functions offered by a web service or application.
+
+Thus, at registration, we will have what follows:
+
+```py 
+from uagents.setup import fund_agent_if_low
+from uagents import Agent
+ 
+alice = Agent(
+    name="alice",
+    port=8000,
+    seed="alice secret phrase",
+    endpoint=["http://127.0.0.1:8000/submit"],
+)
+ 
+fund_agent_if_low(alice.wallet.address())
+```
+
+Here we defined a local http address, but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed to your agent so you don't have to fund different addresses each time you run your agent.
+
+## Remote Agent Communication 
+
+As previously specified, uAgents can interact remotely. To achieve this we simply need to know an agent's address and query the rest of its information in the Almanac contract.  
+To simulate a remote context you can create two agents, operating on separate ports and terminals within the same device. This mirrors real-world scenarios where agents communicate efficiently across diverse geographic locations, enhancing collaboration and expanding the reach of intelligent systems.
+In this example, we provide two scripts for two separate agents. In order to establish a line of remote communication both agents should be registered on the Almanac contract and should possess non-zero balances. 
+We first introduce Alice. Following the existing frame of development we first import the required modules, we then instantiate the Model class to define a Message data model for messages to be exchanged between our agents, and provide a recipient address for reference. 
+Then, we create our agent alice, by providing needed information for registration, and also making sure it has enough balance in its wallet: 
+
+```py 
+from uagents import Agent, Context, Model
+from uagents.setup import fund_agent_if_low
+ 
+class Message(Model):
+    message: str
+ 
+RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+ 
+alice = Agent( 
+    name="alice",
+    port=8000,
+    seed="alice secret phrase",
+    endpoint=["http://127.0.0.1:8000/submit"],
+)
+ 
+fund_agent_if_low(alice.wallet.address())
+ 
+@alice.on_interval(period=2.0)
+async def send_message(ctx: Context):
+    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))
+ 
+@alice.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+ 
+if __name__ == "__main__":
+    alice.run()
+```
+
+Similarly, we also need to define a script for bob so to create a remote communication with alice agent:
+
+```py 
+from uagents.setup import fund_agent_if_low
+from uagents import Agent, Context, Model
+    
+class Message(Model):
+    message: str
+    
+bob = Agent(
+    name="bob",
+    port=8001,
+    seed="bob secret phrase",
+    endpoint=["http://127.0.0.1:8001/submit"],
+)
+    
+fund_agent_if_low(bob.wallet.address())
+ 
+@bob.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    
+    await ctx.send(sender, Message(message="hello there alice"))
+    
+if __name__ == "__main__":
+    bob.run()
+```
+In different terminal windows, first run bob and then alice. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal:
+
+**Alice:** 
+```
+[alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
+[alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
+[alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
+```
+
+**Bob:**
+```
+[  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
+[  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
+[  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
+```
+
+## Agents and storage 
+
+Agents within the uAgents Framework possess the capability to locally store information in a JSON file, ensuring data retrieval as needed. This storage functionality serves as a fundamental component for agents to maintain a state, recollect prior interactions, and base decisions on historical data. 
+The objective behind integrating storage features is to empower agents to preserve and leverage information over time, facilitating the recollection of past interactions and context for more informed decision-making. This capacity to learn from past experiences enables agents to adapt and refine their behavior and decision processes. 
+Retrieving or setting storage information within the Framework is achieved through two distinct methods: 
+- `ctx.storage.get()` for retrieval 
+- `ctx.storage.set()` for setting data.
+An example to better understand the concept of storage is provided below. 
+In this example we have a full script for an agent holding a number, incrementing it by one and adding it to its storage is also provided.
+
+```py 
+from uagents import Agent, Context
+ 
+alice = Agent(name="alice", seed="alice recovery phrase")
+ 
+@alice.on_interval(period=1.0)
+async def on_interval(ctx: Context):
+    current_count = ctx.storage.get("count") or 0
+ 
+    ctx.logger.info(f"My count is: {current_count}")
+ 
+    ctx.storage.set("count", current_count + 1)
+ 
+if __name__ == "__main__":
+    alice.run()
+```
+
+The output would be: 
+```
+[alice]: My count is: 1
+[alice]: My count is: 2
+[alice]: My count is: 3
+...
+```
+
+## Booking a table at a restaurant
+
+We now want to show how to set up the code to create a restaurant booking service with two uAgents: a restaurant with tables available, and a user requesting table availability.
+We will accomplish this by defining 2 specific protocols, one for table querying (i.e., Table querying protocol) and one for table booking (i.e., Table booking protocol). We will then need to define two uAgents, restaurant and user, which will make use of the protocols to query and book a table.
+We can start by writing the code for our 2 protocols.
+
+### Table querying protocol
+Let's start by defining the protocol for querying availability of tables at the restaurant. We start by importing the necessary classes and defining the message data models for types of messages being handled.
+Then, we proceed to create an instance of the Protocol class and name it `query_proto`
+
+```py 
+from typing import List
+ 
+from uagents import Context, Model, Protocol
+ 
+class TableStatus(Model):
+    seats: int
+    time_start: int
+    time_end: int
+ 
+class QueryTableRequest(Model):
+    guests: int
+    time_start: int
+    duration: int
+ 
+class QueryTableResponse(Model):
+    tables: List[int]
+ 
+class GetTotalQueries(Model):
+    pass
+ 
+class TotalQueries(Model):
+    total_queries: int
+
+query_proto = Protocol()
+```
+
+Here, we defined different messages data models: `TableStatus` represents the status of a table and includes the attributes number of seats, start time, and end time. 
+`QueryTableRequest` is used for querying table availability. It includes information about the number of guests, start time, and duration of the table request. 
+`QueryTableResponse` contains the response to the query table availability. It includes a list of table numbers that are available based on query parameters. 
+`GetTotalQueries` is used to request the total number of queries made to the system. `TotalQueries` contains the response to the total queries request, including the count of total queries made to the system.
+
+Let's then define the message handlers for the `query_proto` protocol:
+
+```py 
+@query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
+async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
+    tables = {
+        int(num): TableStatus(**status)
+        for (
+            num,
+            status,
+        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+        if isinstance(num, int)
+    }
+ 
+    available_tables = []
+    for number, status in tables.items():
+        if (
+            status.seats >= msg.guests
+            and status.time_start <= msg.time_start
+            and status.time_end >= msg.time_start + msg.duration
+        ):
+            available_tables.append(int(number))
+ 
+    ctx.logger.info(f"Query: {msg}. Available tables: {available_tables}.")
+ 
+    await ctx.send(sender, QueryTableResponse(tables=available_tables))
+ 
+    total_queries = int(ctx.storage.get("total_queries") or 0)
+    ctx.storage.set("total_queries", total_queries + 1)
+ 
+@query_proto.on_query(model=GetTotalQueries, replies=TotalQueries)
+async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQueries):
+    total_queries = int(ctx.storage.get("total_queries") or 0)
+    await ctx.send(sender, TotalQueries(total_queries=total_queries))
+
+```
+`handle_query_request()` is the message handler function defined using the `on_message()` decorator. 
+It handles the QueryTableRequest messages and replies with a QueryTableResponse message. The handler processes the table availability query based on the provided parameters, checks the table statuses stored in the agent's storage, and sends the available table numbers as a response to the querying agent. 
+Additionally, the handler tracks the total number of queries made and increments the count in storage. On the other hand, `handle_get_total_queries()` is the message handler function defined using the `on_query()` decorator. 
+It handles the `GetTotalQueries` query and replies with a `TotalQueries` message containing the total number of queries made to the system. 
+The handler retrieves the total query count from the agent's storage and responds with the count.
+
+
+The overall script should look as follows:
+
+
+```py 
+from typing import List
+ 
+from uagents import Context, Model, Protocol
+ 
+class TableStatus(Model):
+    seats: int
+    time_start: int
+    time_end: int
+ 
+class QueryTableRequest(Model):
+    guests: int
+    time_start: int
+    duration: int
+ 
+class QueryTableResponse(Model):
+    tables: List[int]
+ 
+class GetTotalQueries(Model):
+    pass
+ 
+class TotalQueries(Model):
+    total_queries: int
+query_proto = Protocol()
+ 
+@query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
+async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
+    tables = {
+        int(num): TableStatus(**status)
+        for (
+            num,
+            status,
+        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+        if isinstance(num, int)
+    }
+    available_tables = []
+    for number, status in tables.items():
+        if (
+            status.seats >= msg.guests
+            and status.time_start <= msg.time_start
+            and status.time_end >= msg.time_start + msg.duration
+        ):
+            available_tables.append(int(number))
+    ctx.logger.info(f"Query: {msg}. Available tables: {available_tables}.")
+    await ctx.send(sender, QueryTableResponse(tables=available_tables))
+    total_queries = int(ctx.storage.get("total_queries") or 0)
+    ctx.storage.set("total_queries", total_queries + 1)
+ 
+@query_proto.on_query(model=GetTotalQueries, replies=TotalQueries)
+async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQueries):
+    total_queries = int(ctx.storage.get("total_queries") or 0)
+    await ctx.send(sender, TotalQueries(total_queries=total_queries))
+
+``` 
+
+### Table booking protocol
+
+We can now proceed by writing the booking protocol script for booking the table at the restaurant. We first need to import the necessary classes and define the message data models. 
+In this case, the booking protocol consists of two message models: `BookTableRequest` and `BookTableResponse`. Then create an instance of the Protocol class and name it `book_proto`:
+
+```py 
+from uagents import Context, Model, Protocol
+ 
+from .query import TableStatus
+ 
+class BookTableRequest(Model):
+    table_number: int
+    time_start: int
+    duration: int
+ 
+class BookTableResponse(Model):
+    success: bool
+ 
+book_proto = Protocol() 
+
+```
+
+`BookTableRequest` represents the request to book a table. It includes attributes: `table_number` to be booked, `time_start`of the booking, and the duration of the booking.  
+`BookTableResponse` contains the response to the table booking request. It includes a boolean attribute success, indicating whether the booking was successful or not. Let's now define the message handler function:
+
+```py 
+@book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
+async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
+    tables = {
+        int(num): TableStatus(**status)
+        for (
+            num,
+            status,
+        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+        if isinstance(num, int)
+    }
+    table = tables[msg.table_number]
+ 
+    if (
+        table.time_start <= msg.time_start
+        and table.time_end >= msg.time_start + msg.duration
+    ):
+        success = True
+        table.time_start = msg.time_start + msg.duration
+        ctx.storage.set(msg.table_number, table.dict())
+    else:
+        success = False
+ 
+    # send the response
+    await ctx.send(sender, BookTableResponse(success=success))
+```
+
+The `handle_book_request()` handler first retrieves table statuses from the agent's storage and converts them into a dictionary with integer keys (table numbers) and `TableStatus` values. The `TableStatus` class is imported from the query module. 
+Next, the handler gets the table associated with the requested `table_number` from the tables dictionary. 
+The handler checks if the requested time_start falls within the availability period of the table. If the table is available for the requested booking duration, the handler sets success to True, updates the table's `time_start` to reflect the end of the booking, and saves the updated table information in the agent's storage using `ctx.storage.set()`. 
+If the table is not available for the requested booking, the handler sets success to False. The handler sends a `BookTableResponse` message back to the sender with the success status of the booking using the `ctx.send()` method.
+
+The overall script should be: 
+
+```py 
+from uagents import Context, Model, Protocol
+ 
+from .query import TableStatus
+class BookTableRequest(Model):
+    table_number: int
+    time_start: int
+    duration: int
+class BookTableResponse(Model):
+    success: bool
+book_proto = Protocol()
+@book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
+async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
+    tables = {
+        int(num): TableStatus(**status)
+        for (
+            num,
+            status,
+        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+        if isinstance(num, int)
+    }
+    table = tables[msg.table_number]
+    if (
+        table.time_start <= msg.time_start
+        and table.time_end >= msg.time_start + msg.duration
+    ):
+        success = True
+        table.time_start = msg.time_start + msg.duration
+        ctx.storage.set(msg.table_number, table.dict())
+    else:
+        success = False
+    # send the response
+    await ctx.send(sender, BookTableResponse(success=success))
+
+```
+
+### Restaurant uAgent
+
+We are now ready to define our restaurant uAgent. We need to import the necessary classes from the uagents library and the two protocols we previously defined and define our restaurant agent, making sure it has enough balance in its wallet for registration:
+
+```py 
+rom uagents import Agent
+from uagents.setup import fund_agent_if_low
+ 
+restaurant = Agent(
+    name="restaurant",
+    port=8001,
+    seed="restaurant secret phrase",
+    endpoint=["http://127.0.0.1:8001/submit"],
+)
+ 
+fund_agent_if_low(restaurant.wallet.address())
+```
+
+Let's build the restaurant agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the restaurant agent:
+
+```py 
+from protocols.book import book_proto
+from protocols.query import query_proto, TableStatus
+ 
+# build the restaurant agent from stock protocols
+restaurant.include(query_proto)
+restaurant.include(book_proto)
+ 
+TABLES = {
+    1: TableStatus(seats=2, time_start=16, time_end=22),
+    2: TableStatus(seats=4, time_start=19, time_end=21),
+    3: TableStatus(seats=4, time_start=17, time_end=19),
+}
+
+for (number, status) in TABLES.items():
+    restaurant._storage.set(number, status.dict())
+ 
+if __name__ == "__main__":
+    restaurant.run()
+
+```
+The restaurant agent is now online and ready to receive messages.
+
+### User uAgent
+
+We can finally define the script for our user uAgent querying and booking a table at the restaurant.
+
+We need to import necessary classes from the uagents library and the two protocols defined above. We also need the restaurant agent's address to be able to communicate with it:
+
+```py 
+from uagents import Agent, Context
+from uagents.setup import fund_agent_if_low
+from protocols.book import BookTableRequest, BookTableResponse
+from protocols.query import (
+    QueryTableRequest,
+    QueryTableResponse,
+)
+ 
+RESTAURANT_ADDRESS = "agent1qw50wcs4nd723ya9j8mwxglnhs2kzzhh0et0yl34vr75hualsyqvqdzl990"
+ 
+user = Agent(
+    name="user",
+    port=8000,
+    seed="user secret phrase",
+    endpoint=["http://127.0.0.1:8000/submit"],
+)
+ 
+fund_agent_if_low(user.wallet.address())
+```
+
+Let's then create the table query to generate the `QueryTableRequest` using the restaurant address. Then create an `interval()` function which performs a table query request on a defined period to the restaurant, to query the availability of a table given the `table_query` parameters:
+
+```py 
+table_query = QueryTableRequest(
+    guests=3,
+    time_start=19,
+    duration=2,
+)
+ 
+@user.on_interval(period=3.0, messages=QueryTableRequest)
+async def interval(ctx: Context):
+    completed = ctx.storage.get("completed")
+ 
+    if not completed:
+        await ctx.send(RESTAURANT_ADDRESS, table_query)
+```
+We then need to define the message handler function for incoming `QueryTableResponse` messages from the restaurant agent:
+
+```py 
+@user.on_message(QueryTableResponse, replies={BookTableRequest})
+async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
+    if len(msg.tables) > 0:
+        ctx.logger.info("There is a free table, attempting to book one now")
+        table_number = msg.tables[0]
+        request = BookTableRequest(
+            table_number=table_number,
+            time_start=table_query.time_start,
+            duration=table_query.duration,
+        )
+        await ctx.send(sender, request)
+    else:
+        ctx.logger.info("No free tables - nothing more to do")
+        ctx.storage.set("completed", True)
+```
+Let's then define a function which will handle messages from the restaurant agent on whether the reservation was successful or not:
+
+```py 
+@user.on_message(BookTableResponse, replies=set())
+async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
+    if msg.success:
+        ctx.logger.info("Table reservation was successful")
+ 
+    else:
+        ctx.logger.info("Table reservation was UNSUCCESSFUL")
+ 
+    ctx.storage.set("completed", True)
+ 
+if __name__ == "__main__":
+    user.run()
+```
+
+The overall script for the user agent should be:
+
+
+```py 
+from protocols.book import BookTableRequest, BookTableResponse
+from protocols.query import (
+    QueryTableRequest,
+    QueryTableResponse,
+)
+from uagents import Agent, Context
+from uagents.setup import fund_agent_if_low
+ 
+RESTAURANT_ADDRESS = "agent1qw50wcs4nd723ya9j8mwxglnhs2kzzhh0et0yl34vr75hualsyqvqdzl990"
+ 
+user = Agent(
+    name="user",
+    port=8000,
+    seed="user secret phrase",
+    endpoint=["http://127.0.0.1:8000/submit"],
+)
+ 
+fund_agent_if_low(user.wallet.address())
+ 
+table_query = QueryTableRequest(
+    guests=3,
+    time_start=19,
+    duration=2,
+)
+ 
+# This on_interval agent function performs a request on a defined period
+@user.on_interval(period=3.0, messages=QueryTableRequest)
+async def interval(ctx: Context):
+    completed = ctx.storage.get("completed")
+    
+    if not completed:
+        await ctx.send(RESTAURANT_ADDRESS, table_query)
+        
+@user.on_message(QueryTableResponse, replies={BookTableRequest})
+async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
+    if len(msg.tables) > 0:
+        ctx.logger.info("There is a free table, attempting to book one now")
+        
+        table_number = msg.tables[0]
+        
+        request = BookTableRequest(
+            table_number=table_number,
+            time_start=table_query.time_start,
+            duration=table_query.duration,
+        )
+        
+        await ctx.send(sender, request)
+        
+    else:
+    
+        ctx.logger.info("No free tables - nothing more to do")
+        ctx.storage.set("completed", True)
+        
+@user.on_message(BookTableResponse, replies=set())
+async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
+    if msg.success:
+        ctx.logger.info("Table reservation was successful")
+        
+    else:
+        ctx.logger.info("Table reservation was UNSUCCESSFUL")
+        
+    ctx.storage.set("completed", True)
+    
+if __name__ == "__main__":
+    user.run()
+```
+
+We are finally ready to run the example. Run the restaurant agent and then the user agent from different terminals. The output should be as follows, depending on the terminal:
+
+**Restaurant:** 
+```
+[restaurant]: Query: guests=3 time_start=19 duration=2. Available tables: [2].
+```
+
+User: 
+```
+[ user]: There is a free table, attempting to book one now 
+[ user]: Table reservation was successful
+```
+
