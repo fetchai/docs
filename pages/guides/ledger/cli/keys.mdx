@@ -1,126 +1,134 @@
-CLI - Managing keys 🔑
+import { Callout } from 'nextra/components'
 
-Managing your keys is an essential part of working with the Ledger, since all interactions are authenticated with these keys.
+# CLI - Managing keys 🔑
 
-## Adding keys
+Managing keys is an essential part of working with the Ledger, since all interactions are authenticated with these keys.
 
-To create a new local key you need run the following command:
+## How to add keys
 
-```bash
-fetchd keys add <your_key_name>
-```
+To **create a new local key**, you would need to run the following command:
 
-<div class="admonition note">
-  <p class="admonition-title">Note</p>
-  <p>These keys are stored locally on your system. By default, these keys will be stored in the OS level keychain, however, in general these keys are considered less secure than using a hardware device</p>
-</div>
+    ```bash
+    fetchd keys add <your_key_name>
+    ```
 
-After running the command `fetchd` will print out a summary of the new key. An example of this output is shown below:
+<Callout type="info" emoji="ℹ️">
+  These keys are stored locally on your system. By default, these keys will be stored in the OS level keychain, however, in general these keys are considered less secure than using a hardware device
+</Callout>
 
-```text
-- name: test
-  type: local
-  address: fetch142tawq2rj397mctc3jtw9dfzf03ns0ze4swat0
-  pubkey: fetchpub1addwnpepqvtmze0ekffynnjx9n85g6sexzl49ze2vpgc2f52fteyyghjtvvqw682nkx
-  mnemonic: ""
-  threshold: 0
-  pubkeys: []
-```
+After running the above command, `fetchd` will print out a summary of the new key being produced. An output example is shown below:
 
-This will be followed by a 24-word mnemonic that can be used to re-generate the private key and address for the account (keep this safe, if ever used to control main-net tokens).
+    ```text
+    - name: test
+      type: local
+      address: fetch142tawq2rj397mctc3jtw9dfzf03ns0ze4swat0
+      pubkey: fetchpub1addwnpepqvtmze0ekffynnjx9n85g6sexzl49ze2vpgc2f52fteyyghjtvvqw682nkx
+      mnemonic: ""
+      threshold: 0
+      pubkeys: []
+    ```
 
-## Looking up an address
+This will be followed by a 24-word mnemonic that can be used to re-generate the private key and address for the account.want
 
-A common operation that you will want to do is to lookup the address for a specified key. This can be done quickly using the following command:
+<Callout type="warning" emoji="⚠️">
+  Keep this safe if ever use it to control Mainnet tokens!
+</Callout>
 
-```bash
-fetchd keys show -a <name of key>
-```
+## How to look up for an address
 
-An example of the expected output is shown below:
+A common operation that you may want to carry out is to research the address related to specified key. This can be performed quickly, by running following command:
 
-```bash
-fetch142tawq2rj397mctc3jtw9dfzf03ns0ze4swat0
-```
+    ```bash
+    fetchd keys show -a <name of key>
+    ```
 
-A less common operation, but still useful, would be to lookup the public key for a specified key. The can be achieved with the following command:
+The expected output should be as shown below:
 
-```bash
-fetchd keys show -p <name of the key>
-```
+    ```bash
+    fetch142tawq2rj397mctc3jtw9dfzf03ns0ze4swat0
+    ```
 
-An example of the expected output is shown below:
+A less common operation, but still useful, would be to look for the public key related to a specified key.
+This can be achieved with the following command:
 
-```bash
-fetchpub1addwnpepqvtmze0ekffynnjx9n85g6sexzl49ze2vpgc2f52fteyyghjtvvqw682nkx
-```
+    ```bash
+    fetchd keys show -p <name of the key>
+    ```
 
-## Listing keys
+The expected output should be similar to what shown below:
 
-To lookup more detailed information for all keys on your system use the following command:
+    ```bash
+    fetchpub1addwnpepqvtmze0ekffynnjx9n85g6sexzl49ze2vpgc2f52fteyyghjtvvqw682nkx
+    ```
 
-```bash
-fetchd keys list
-```
+## How to list keys
 
-This will output all of your keys information in a yaml format that is similar to the one generated when you first created the key.
+If you wish to research for more detailed information for all keys within your system, simply use the following command:
 
-```bash
-- name: test
-  type: local
-  address: fetch142tawq2rj397mctc3jtw9dfzf03ns0ze4swat0
-  pubkey: fetchpub1addwnpepqvtmze0ekffynnjx9n85g6sexzl49ze2vpgc2f52fteyyghjtvvqw682nkx
-  mnemonic: ""
-  threshold: 0
-  pubkeys: []
-```
+    ```bash
+    fetchd keys list
+    ```
 
-## Recovering a key
+This will show all your keys information in a `yaml` format similar to the one generated when you first created the key:
 
-You can import a key from a 24-word mnemonic by running:
+    ```bash
+    - name: test
+      type: local
+      address: fetch142tawq2rj397mctc3jtw9dfzf03ns0ze4swat0
+      pubkey: fetchpub1addwnpepqvtmze0ekffynnjx9n85g6sexzl49ze2vpgc2f52fteyyghjtvvqw682nkx
+      mnemonic: ""
+      threshold: 0
+      pubkeys: []
+    ```
 
-```bash
-fetchd keys add <name> --recover
-> Enter your bip39 mnemonic
-<type or paste your mnemonic>
-```
-You'll be prompted to enter the mnemonic phrase, and it will then print the matching address and key details as when creating a new key.
+## How to recover a key
 
-## Hardware Wallets
+You can import a key from a 24-word mnemonic by running the following:
 
-### Setup
+    ```bash
+    fetchd keys add <name> --recover
+    > Enter your bip39 mnemonic
+    <type or paste your mnemonic>
+    ```
 
-We recommend hardware wallets as a solution for managing private keys. The Fetch ledger is compatible with Ledger Nano hardware wallets. To use your Ledger Nano you will need to complete the following steps:
+You will be prompted to enter the **mnemonic phrase**, and it will then print the matching address and key details as when creating a new key.
+
+## Hardware wallets
+
+### Set up your hardware wallet
+
+**We recommend hardware wallets as a solution for managing private keys!**
+
+The Fetch ledger is compatible with **Ledger Nano hardware wallets**. To use your Ledger Nano, you will need to go through the following steps:
 
 1. Set-up your wallet by creating a PIN and passphrase, which must be stored securely to enable recovery if the device is lost or damaged.
 2. Connect your device to your PC and update the firmware to the latest version using the Ledger Live application.
 3. Install the Cosmos application using the software manager (Manager > Cosmos > Install).
 
-### Adding a new key
+### How to add a new key
 
-In order to use the hardware wallet address with the cli, the user must first add it via `fetchd`. This process only records the public information about the key.
+To use the hardware wallet address with the CLI, the user must first add it via `fetchd`. This process only records the public information about the key.
 
-To import the key first plug in the device and enter the device pin. Once you have unlocked the device navigate to the Cosmos app on the device and open it.
+You can **import the key** by first plugging in the device and enter the device pin. Once you have unlocked the device, navigate to the Cosmos app on the device and open it.
 
-To add the key use the following command:
+Then, you can **add the key using the following command:
 
-```bash
-fetchd keys add <name for the key> --ledger --index 0
-```
+    ```bash
+    fetchd keys add <name for the key> --ledger --index 0
+    ```
 
-<div class="admonition note">
-  <p class="admonition-title">Note</p>
-  <p>The <code>--ledger</code> flag tells the command line tool to talk to the ledger device and the <code>--index</code> flag selects which HD index should be used.</p>
-</div>
+<Callout type="info" emoji="ℹ️">
+  The `--ledger` flag tells the command line tool to talk to the ledger device and the `--index` flag selects which HD index should be used.
+</Callout>
 
-When running this command, the Ledger device will prompt you to verify the generated address. Once you have done this you will get an output in the following form:
+When running this command, the Ledger device will prompt you to verify the generated address. Once you have done this. you will get an output in the following form:
 
-```bash
-- name: hw1
-  type: ledger
-  address: fetch1xqqftqp8ranv2taxsx8h594xprfw3qxl7j3ra2
-  pubkey: fetchpub1addwnpepq2dulyd9mly3xqnvfgdsjkqlqzsxldpdhd6cnpm67sx90zhfw2ragk9my5h
-  mnemonic: ""
-  threshold: 0
-  pubkeys: []
-```
+    ```bash
+    - name: hw1
+      type: ledger
+      address: fetch1xqqftqp8ranv2taxsx8h594xprfw3qxl7j3ra2
+      pubkey: fetchpub1addwnpepq2dulyd9mly3xqnvfgdsjkqlqzsxldpdhd6cnpm67sx90zhfw2ragk9my5h
+      mnemonic: ""
+      threshold: 0
+      pubkeys: []
+    ```
