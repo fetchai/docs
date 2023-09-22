@@ -2,11 +2,21 @@ import { Callout } from 'nextra/components'
 
 # Governance
 
-If you wish to take part in governance, you either need to be running a full validator node or you need to have have delegated stake to an existing validator.
+## Introduction
+
+Governance is the mechanisms through which participants collectively make decisions about the rules, parameters, and policies that govern a given network. This can include things like protocol upgrades, parameter adjustments, and even more fundamental decisions about the network's direction and purpose. Changes are requested through governance proposals, which represent formal suggestions or requests put forth by a member or participant of a network or community to make changes to the rules, parameters, or policies that govern that network. These proposals are typically submitted to a decentralized governance system, where participants in the network have the opportunity to review, discuss, and ultimately vote on the proposed changes.
+
+The approval process and the required majority for a proposal to pass can vary depending on the specific governance model of the network. Once a proposal is approved, the changes outlined in the proposal are typically implemented according to the network's governance mechanisms. This could involve deploying new smart contracts, updating software, or making adjustments to on-chain parameters.
+
+## How to take part in the governance mechanism
+
+If you wish to take part in governance, you either need to be running a **full validator node** or you need to **have delegated stake to an existing validator**.
+
+For additional information, visit the [validators section ↗️](/concepts/fetch-network/ledger/validators) of our documentation, or the [delegation ↗️](/guides/fetch-network/ledger/cli/delegator#how-to-delegate-tokens) guide.
 
 ## Stake delegation
 
-If you want to delegate stake to a validator the following command should be used:
+If you want to delegate stake to a validator, the following command should be used:
 
     ```bash
     fetchd tx staking delegate <VALOPER_ADDRESS> <AMOUNT> --from <KEY_NAME>
@@ -20,9 +30,11 @@ For instance:
     fetchd tx staking delegate fetchvaloper1cct4fhhksplu9m9wjljuthjqhjj93z0s97p3g7 1000atestfet --from agent
     ```
 
+Have a look at our [delegation ↗️](/guides/fetch-network/ledger/cli/delegator#how-to-delegate-tokens) guide for further information on how to delegate your tokens to a validator using the CLI.
+
 ## Proposals overview
 
-There are three types of proposal:
+There are **three types** of proposal:
 
     1. **Text proposals**: These are the most basic type of proposal. They can be used to get the opinion from participants of the network on a given topic.
     2. **Parameter proposals**: These proposals are used to update the value of an existing software parameter of the network.
@@ -72,17 +84,19 @@ If a user wants to **increase the deposit of a proposal**, they would run the fo
 
     `fetchd tx gov deposit <proposalID> 100atestfet --from <key name>`
 
-For example:
+For instance:
 
     `fetchd tx gov deposit 2 100atestfet --from validator`
 
-To get the **proposalID**, use the **txhash** obtained when the proposal was submitted and run the following command:
+If you want to get the **proposalID**, you will need to use the **txhash** obtained when the proposal was submitted and run the following command:
 
     `fetchd query tx <txhash>`
 
+For additional information on how to create a governance proposal using CLI, have a look at our [guide ↗️](/guides/fetch-network/ledger/cli/governance-proposals).
+
 ## Listing current proposals
 
-Current proposals are visible from the block explorer and using the CLI.
+Current proposals can be retrieved by using the CLI or from the [block explorer  ↗️](/guides/fetch-network/ledger/block-explorer).
 
 If you wish to **get the list of current proposals** and their corresponding _proposal-ids_, then run the following command:
 
@@ -99,5 +113,5 @@ For instance:
     `fetchd tx gov vote 5 yes --from validator`
 
 <Callout type="info" emoji="ℹ️">
-  When using CLI commands make sure that your CLI is pointing at the correct network. See the [CLI introduction ↗️](/guides/ledger/cli/intro) in our documentation for more details.
+  When using CLI commands make sure that your CLI is pointing at the correct network. See the [CLI introduction ↗️](/guides/fetch-network/ledger/cli/intro) in our documentation for more details.
 </Callout>

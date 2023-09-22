@@ -11,9 +11,9 @@ testing. This document will outline the steps required in order to configure a `
   These steps only need to be done once in order to setup the local network.
 </Callout>
 
-1. Build the ledger from source. Follow the [installation instructions ↗️](/guides/ledger/installation) in order to compile the latest version of the ledger.
+1. Build the ledger from source. Follow the [installation ↗️](/guides/fetch-network/ledger/installation) instructions in order to compile the latest version of the Ledger.
 
-2. Remove any existing networks. Since we are starting a new network, we need to remove any local files that we have in our system from a previous network
+2. Remove any existing networks. Since we are starting a new network, we need to remove any local files that we have in our system from a previous network:
 
        `rm -Rf ~/.fetchd`
 
@@ -22,8 +22,8 @@ testing. This document will outline the steps required in order to configure a `
        `fetchd init --chain-id localnet-1 my-local-node-name`
 
 <Callout type="info" emoji="ℹ️">
-  * `localnet-1` is the chain id
-  * `my-local-node-name` is the moniker for the node
+  - `localnet-1` is the chain id
+  - `my-local-node-name` is the moniker for the node
 </Callout>
 
     If you want to make any updates to the genesis, it is a good opportunity to make these updates now.
@@ -33,10 +33,10 @@ testing. This document will outline the steps required in order to configure a `
        `fetchd keys add validator`
 
 <Callout type="info" emoji="ℹ️">
-  * `validator` is the name of the key in the keyring
+  - `validator` is the name of the key in the keyring
 </Callout>
 
-    For more informationm checkout the complete [documentation on keys ↗️](/guides/ledger/cli/keys).
+    For more informationm checkout the complete documentation on [keys ↗️](/guides/fetch-network/ledger/cli/keys).
 
 5. Adding the validator to the network. To set the initial state for the network, use the following command which allocates `100000000000000000000` `stake` tokens to the validator which can be bonded:
 
@@ -56,8 +56,7 @@ testing. This document will outline the steps required in order to configure a `
 
        `fetchd collect-gentxs`
 
-    After running this command, the network will be successfully configured and you have computed the final genesis configuration
-    for the network.
+    After running this command, the network will be successfully configured and you have computed the final genesis configuration for the network.
 
 ## Running the local node
 

@@ -220,7 +220,7 @@ const items: { [key: string]: Item[] } = {
       title: "Ledger",
       description: <>Get started with the Fetch Ledger.</>,
       icon: ledgerIcon,
-      path: "/concepts/ledger/intro",
+      path: "/concepts/fetch-network/ledger/intro",
     },
   ],
 };

@@ -1,18 +1,22 @@
 import { Callout } from 'nextra/components'
 
-# CLI - Delegator guide
+# CLI - Delegation
 
-## Querying the state
+Delegations refers to the act of assigning the responsibility of validating transactions and creating new blocks to a specific validator node. Below you can find different operations executable through the [CLI ↗️](/guides/fetch-network/ledger/cli/intro).
 
-### How to query the current staking holdings of validators
+## How to query the current staking holdings of validators
 
-The following command can be used to retrieve the current staking holdings of all validators:
+You can query the current staking holdings of validators using the `fetchd`command-line interface, and run the following command:
 
     ```bash
     fetchd query staking validators
     ```
 
-On `dorado` test network, this will produce an output similar to the following, describing the status of all the existing validators:
+This command will provide information about all the existing validators in the network, including details such as their operator address, consensus public key, status, tokens staked, commission rates, and more.
+
+The output will be a list of validators, each represented in a block of information, similar to the example you provided earlier. This information gives an overview of each validator's status and staked tokens.
+
+On `dorado` test network, this command will produce an output similar to the following:
 
     ```text
     - |
@@ -64,11 +68,19 @@ On `dorado` test network, this will produce an output similar to the following, 
     ...
     ```
 
-If you want to obtain the same information for a **single validator**, use the following command, by providing the `operatoraddress` of the validator:
+Similarly, if you wish to retrieve the same information but now for a **single validator**, use the following command, by providing the `operator_address` of the specific validator:
+
+    ```bash
+    fetchd query staking validator operator_address
+    ```
+
+For instance:
 
     ```bash
     fetchd query staking validator fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w
     ```
+
+This command will provide detailed information about the specific validator, including their commission rates, minimum self-delegation, and other relevant details.
 
 A delegator will be particularly interested in the following keys:
 
@@ -79,13 +91,21 @@ A delegator will be particularly interested in the following keys:
 
 ### How to query the delegations made to a validator
 
-From a validator address, we can **retrieve the list of delegations** it received:
+You can **query the list of delegations made to a specific validator** using the `fetchd` command-line interface, and run the following command:
 
     ```bash
     fetchd query staking delegations-to fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w
     ```
 
-Below is a sample of delegations `validator2` received on `dorado`:
+Here, replace `VALIDATOR_OPERATOR_ADDRESS` with the actual operator address of the validator you are interested in. For instance:
+
+    ```bash
+    fetchd query staking delegations-to VALIDATOR_OPERATOR_ADDRESS
+    ```
+
+This command will provide information about the delegations made to the specified validator, including details such as the delegator's address, the validator's address, and the amount of shares and tokens delegated.
+
+Below, you can find an example of delegations to `validator2` received on `dorado` testnet:
 
     ```text
     - delegation:
@@ -104,17 +124,27 @@ Below is a sample of delegations `validator2` received on `dorado`:
         amount: "100000"
     ```
 
-### How to query the re-delegations
+This output shows two delegations made to the validator, along with the delegator's address, the validator's address, the number of shares, and the amount of tokens delegated.
 
-Delegators can choose to re-delegate the tokens they already delegated from one validator to another. Re-delegation takes effect immediately, without any waiting period. However, the tokens ca not be re-delegated until the initial re-delegation transaction has completed its 21 day completion time (the unlocking time is indicated by the `redelegationentry/completion_time` field in the outputs below).
+### How to query re-delegations
 
-To obtain the list of re-delegations made from a validator, use the following command:
+Re-delegation is the process of transferring already delegated tokens from one validator to another. This allows participants to change their delegation strategy without having to unbond and wait for the unbonding period to complete.
+
+Delegators can choose to re-delegate the tokens they already delegated from one validator to another at any time. Re-delegation takes effect immediately, without any waiting period. However, the tokens can not be re-delegated until the initial re-delegation transaction has completed its 21 day completion time. The unlocking time is indicated by the `redelegationentry/completion_time` field in the outputs below.
+
+You can **query the list of re-delegations made from a validator** by using the `fetchd` command-line interface and run the following command:
+
+    ```bash
+    fetchd query staking redelegations-from VALIDATOR_OPERATOR_ADDRESS
+    ```
+
+Replace `VALIDATOR_OPERATOR_ADDRESS` with the actual operator address of the validator you are interested in. For instance:
 
     ```bash
     fetchd query staking redelegations-from fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w
     ```
 
-This produces an output similar to the following, where delegator `fetch15fn3meky8ktfry3qm73xkpjckzw4dazxpfx34m` issued 2 re-delegations from `fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w` to `fetchvaloper122veneudkzyalay6gusvrhhpp0560mparpanvu`:
+This command will provide information about the re-delegations made from the specified validator, including details such as the delegator's address, the source validator's address, the destination validator's address, and information about the re-delegation entries. The output will be a list of re-delegations, each represented in a block of information. Below you can find an example output:
 
     ```text
     fetchd query staking redelegations-from fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w
@@ -138,23 +168,31 @@ This produces an output similar to the following, where delegator `fetch15fn3mek
         balance: "10000"
     ```
 
-Similarly, the list of re-delegations issued by a delegator can be obtained with the following command:
+Here, delegator `fetch15fn3meky8ktfry3qm73xkpjckzw4dazxpfx34m` issued 2 re-delegations from `fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w` to `fetchvaloper122veneudkzyalay6gusvrhhpp0560mparpanvu`:
+
+Similarly, you can obtain the list of re-delegations issued by a delegator by running the following command:
 
     ```bash
     fetchd query staking redelegations fetch15fn3meky8ktfry3qm73xkpjckzw4dazxpfx34m
     ```
 
-### How to query the user rewards
+### How to query rewards
 
-After having delegated some tokens to a validator, the user is eligible to a share of the rewards the validator collects.
+Once you have delegated tokens to a validator, you will be eligible to a share of the rewards the validator collects.
 
-If you wish to **retrieve all the outstanding rewards for an address**, run the following command:
+If you wish to **retrieve all the outstanding rewards for a specific address**, run the following command using the `fetchd` command-line interface,  :
+
+    ```bash
+    fetchd query distribution rewards DELEGATOR_ADDRESS
+    ```
+
+You will need to replace `DELEGATOR_ADDRESS` with the actual address of the delegator whose rewards you want to query. For instance:
 
     ```bash
     fetchd query distribution rewards fetch15fn3meky8ktfry3qm73xkpjckzw4dazxpfx34m
     ```
 
-This will produce the following output, in which the address has delegated tokens to 2 validators on `dorado` test network:
+This command will provide information about the rewards earned by the specified delegator, including details such as the validator addresses and the amount of rewards in different denominations. The output will be a list of rewards, each represented in a block of information. Below you can find an example output:
 
     ```text
     rewards:
@@ -171,13 +209,15 @@ This will produce the following output, in which the address has delegated token
       amount: "0.000000000001200000"
     ```
 
-You can also **filter rewards for a given validator**. For instance, you can filter rewards for `validator5` as shown below:
+In this example, the delegator at `DELEGATOR_ADDRESS` has earned rewards from two different validators on `dorado` test network. The rewards are listed in different denominations, such as `atestfet`.
+
+You can also **filter rewards for a given validator**. For instance, you can filter rewards for `validator5` (`fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w`) as shown below:
 
     ```bash
     fetchd query distribution rewards fetch15fn3meky8ktfry3qm73xkpjckzw4dazxpfx34m fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w
     ```
 
-We now get the reward from this specific validator:
+In the output, we get the rewards from this specific validator:
 
     ```text
     - denom: atestfet
@@ -204,7 +244,7 @@ This will require a confirmation before issuing a transaction. After the transac
 
 **Re-delegating tokens allows you to transfer already delegated tokens from one validator to another**.
 
-From the above example where we delegated `1000000 atestfet` to `fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w`, we can now re-delegate parts or all of those tokens to another validator. For instance, we re-delegate `400000 atestfet` from `fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w` to `fetchvaloper122veneudkzyalay6gusvrhhpp0560mparpanvu` by running the following command:
+From the above example where you delegated `1000000 atestfet` to `fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w`, you can now re-delegate parts or all of those tokens to another validator. For instance, you can re-delegate `400000 atestfet` from `fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w` to `fetchvaloper122veneudkzyalay6gusvrhhpp0560mparpanvu` by running the following command:
 
     ```bash
     fetchd tx staking redelegate fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w fetchvaloper122veneudkzyalay6gusvrhhpp0560mparpanvu 400000atestfet --from myKey
@@ -212,12 +252,12 @@ From the above example where we delegated `1000000 atestfet` to `fetchvaloper1z7
 
 This will prompt for confirmation and issue a new transaction once accepted.
 
-From here, inspecting the delegations from our account, we will see that our delegated tokens are now:
+From here, if you inspect the delegations from our account, you will be able to see that your delegated tokens are now:
 
     - `600000atestfet` to validator `fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w` (our initial 1000000 minus the 400000 re-delegated).
     - `400000atestfet` to validator `fetchvaloper122veneudkzyalay6gusvrhhpp0560mparpanvu`.
 
-Now, those `400000 atestfet` we redelegated can not be re-delegated anymore for 21 days (the exact date can be found by querying the re-delegation transaction, under the `completion_time` key).
+Now, those `400000 atestfet` you re-delegated can not be re-delegated anymore for 21 days (the exact date can be found by querying the re-delegation transaction, under the `completion_time` key).
 
 <Callout type="info" emoji="ℹ️">
   It is still possible to unbond those tokens if needed.
@@ -225,25 +265,31 @@ Now, those `400000 atestfet` we redelegated can not be re-delegated anymore for 
 
 ### How to unbond tokens
 
-You can transfer parts or all of our delegated tokens back to our account at any time by running the following command:
+**Bonding** refers to the act of locking up a certain amount of cryptocurrency tokens in a wallet or smart contract to participate in the network's consensus mechanism. These tokens are often referred to as the **stake**. Conversely, **unbonding** is the process of withdrawing or releasing the previously bonded tokens. When a user initiates an unbonding transaction, they are indicating that they want to take back their tokens from the staking mechanism.
+
+You can transfer parts or all of our delegated tokens back to your account at any time by running the following command:
 
     ```bash
     fetchd tx staking unbond fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w 300000atestfet --from myKey
     ```
 
-Once again, this will prompt for confirmation and issue a transaction, initiating the transfer of `300000 atestfet` from our stake on `fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w` validator back to our account. Those tokens will then be available **after a 21 day period** (the exact date can be found by querying the redelegation transaction, under the `completion_time` key).
+Once again, this will prompt for confirmation and issue a transaction, initiating the transfer of `300000 atestfet` from our stake on `fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w` validator address back to your account. Those tokens will then be available **after a 21 day period** (the exact date can be found by querying the re-delegation transaction, under the `completion_time` key).
 
 ### How to withdraw rewards
 
-In order to transfer rewards to the wallet, the following command can be used:
+In order **to transfer rewards to the wallet**, run the following command:
+
+    ```bash
+    fetchd tx distribution withdraw-rewards validator_address --from myKey
+    ```
+
+It requires the validator address from where the reward is withdrawn, and the name of the account private key having delegated tokens to the validator. For instance:
 
     ```bash
     fetchd tx distribution withdraw-rewards fetchvaloper1z72rph6l5j6ex83n4urputykawcqg6t98xul2w --from myKey
     ```
 
-It requires the validator address from where the reward is withdrawn, and the name of the account private key having delegated tokens to the validator.
-
-You can claim all rewards, when you have delegated tokens to multiple validators, by running the following command:
+You can **claim all rewards when you have delegated tokens to multiple validators**, by running the following command:
 
     ```bash
     fetchd tx distribution withdraw-all-rewards --from myKey
