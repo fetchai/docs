@@ -19,7 +19,7 @@ We want to start by introducing you to the concept of **local communication**. T
 
 The first step to better understand how uAgents communicate is to introduce how 2 uAgents perform a local communication. Let’s consider a basic example in which two uAgents say hello to each other.
 
-1. First of all, let's create a Python script for this task and name it: `touch agents_communication.py`
+1. First of all, let's create a Python script for this task and name it by running: `touch agents_communication.py`
 
 2. Then, let's import these necessary classes from the uagents library: `Agent`, `Context`, `Bureau`, and `Model` Let's then define the message structure for messages to be exchanged between the uAgents using the class `Model`. Then, we would need to create the uAgents, `alice` and `bob`, with name and seed parameters.
 
@@ -140,7 +140,7 @@ Let's start by defining the script for **alice**.
 
 #### Alice
 
-1. In `remote_agents_alice.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between agents using the class `Model`, as well as the `RECIPIENT_ADDRESS`. This is the address to which `alice` will send messages:
+1. In `remote_agents_alice.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between agents using the class `Model`, as well as the `RECIPIENT_ADDRESS` (bob's address). Note that if you don't know bob's address yet, you can use **print(bob.address)** after defining agent bob to get this information. This is the address to which `alice` will send messages:
 
    ```py copy
    from uagents import Agent, Context, Model
@@ -332,7 +332,7 @@ We make use of the **uAgents Remote Communication** guide above, but now, we spe
 
 #### Alice
 
-1. First of all, let's create a script for `alice`: `touch alice.py`
+1. First of all, let's create a script for `alice` by running: `touch alice.py`
 
 2. We need to import the necessary classes from `uagents` (`Agent`, `Context`, `Model`) and `uagents.setup` (`fund_agent_if_low`), and define the `Message` class for messages to be exchanged between our uAgents. We also need to generate a secure `SEED_PHRASE` (e.g., https://pypi.org/project/mnemonic/) and get the address of our agent, which is needed to register it to create a `Mailbox`, alongside a name (i.e., `alice` in this case). Following this, we would need to sign up at [Agentverse ↗️](https://agentverse.ai/) to get an `API key`:
 
@@ -420,7 +420,7 @@ if __name__ == "__main__":
 
 #### Bob
 
-1. Let's now create another Python script for **bob**: `touch bob.py`
+1. Let's now create another Python script for **bob** by running: `touch bob.py`
 
 2. We can now import the necessary classes from `uagents` and `uagents.setup`, and define the `Message` class for messages to be exchanged between our uAgents. We then need to define `ALICE_ADDRESS` by copying the address generated in the script for `alice` above, as well as generate a second `SEED_PHRASE` (e.g. https://pypi.org/project/mnemonic/), and get the address for our agent, which is needed to register it to create a `Mailbox`, alongside a name (i.e., `bob` in this case). Like for `alice`, head towards the [Agentverse ↗️](https://agentverse.ai/)️ to get the `API key` for `bob`:
 
