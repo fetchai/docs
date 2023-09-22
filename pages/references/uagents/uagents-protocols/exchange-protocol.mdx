@@ -42,14 +42,17 @@ Envelopes have the following form and are quite similar to blockchain transactio
 
 ```python
 @dataclass
-class Envelope:
-    sender: str:    # bech32-encoded public address
-    target: str:    # bech32-encoded public address
-    session: str    # UUID
-    protocol: str   # protocol digest
-    payload: bytes  # JSON type: base64 str
-	expires: int    # Unix timestamp in seconds
-    signature: str  # bech32-encoded signature
+class Envelope(BaseModel):
+    version: int                     # Envelope version
+    sender: str:                     # Bech32-encoded public address of the sender
+    target: str:                     # Bech32-encoded public address of the target recipient
+    session: UUID4                   # UUID of the session
+    schema_digest: str               # Digest of the schema used for the payload
+    protocol_digest: Optional[str]   # Optional protocol digest for custom protocols
+    payload: Optional[str]           # JSON payload encoded as a base64 string
+	expires: Optional[int]           # Unix timestamp in seconds indicating expiration
+    nonce: Optional[int]             # Optional nonce
+    signature: Optional[str]         # Bech32-encoded signature
 ```
 
 ### Semantics
