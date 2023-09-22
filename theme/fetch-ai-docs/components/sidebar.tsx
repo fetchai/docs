@@ -44,19 +44,19 @@ const classes = {
     "nx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:nx-border",
   ),
   inactive: cn(
-    "nx-text-gray-500 hover:nx-bg-gray-100 hover:nx-text-gray-900",
+    "hover:nx-bg-gray-100 hover:nx-text-gray-900",
     "dark:nx-text-neutral-400 dark:hover:nx-bg-primary-100/5 dark:hover:nx-text-gray-50",
     "contrast-more:nx-text-gray-900 contrast-more:dark:nx-text-gray-50",
     "contrast-more:nx-border-transparent contrast-more:hover:nx-border-gray-900 contrast-more:dark:hover:nx-border-gray-50",
   ),
   active: cn(
-    "nx-bg-primary-100 nx-font-semibold nx-text-primary-800 dark:nx-bg-primary-400/10 dark:nx-text-primary-600",
+    "nx-bg-white nx-font-semibold  dark:nx-bg-primary-400/10 dark:nx-text-primary-600",
     "contrast-more:nx-border-primary-500 contrast-more:dark:nx-border-primary-500",
   ),
-  list: cn("nx-flex nx-flex-col nx-gap-1"),
+  list: cn("nx-flex nx-flex-col nx-gap-4"),
   border: cn(
     "nx-relative before:nx-absolute before:nx-inset-y-1",
-    'before:nx-w-px before:nx-bg-gray-200 before:nx-content-[""] dark:before:nx-bg-neutral-800',
+    'before:nx-w-px  before:nx-content-[""] dark:before:nx-bg-neutral-800',
     "ltr:nx-pl-3 ltr:before:nx-left-0 rtl:nx-pr-3 rtl:before:nx-right-0",
   ),
 };
@@ -140,7 +140,10 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
   // use button when link don't have href because it impacts on SEO
   const ComponentToUse = isLink ? Anchor : "button";
 
-  if (currentItemParentRoute[1] == parentLevelRoute[1]) {
+  if (
+    currentItemParentRoute[1] == parentLevelRoute[1] ||
+    (parentLevelRoute[1] == "" && level == 1)
+  ) {
     return (
       <li className={cn({ open, active })}>
         <ComponentToUse
@@ -150,6 +153,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
             !isLink && "nx-text-left nx-w-full",
             classes.link,
             active ? classes.active : classes.inactive,
+            activeRouteInside ? "nx-text-purple" : "",
           )}
           onClick={(e) => {
             const clickedToggleIcon = ["svg", "path"].includes(
@@ -415,7 +419,7 @@ export function Sidebar({
       />
       <aside
         className={cn(
-          "nextra-sidebar-container nx-flex nx-flex-col nx-bg-gray-100",
+          "nextra-sidebar-container nx-flex nx-flex-col nx-bg-gray-100 nx-p-3",
           "md:nx-top-16 md:nx-shrink-0 motion-reduce:nx-transform-none",
           "nx-transform-gpu nx-transition-all nx-ease-in-out",
           "print:nx-hidden md:nx-w-64",
