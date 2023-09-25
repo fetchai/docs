@@ -52,13 +52,13 @@ Initialize fetchd by running the following command:
   This will initialize default configuration files under the `FETCHD_HOME` folder, which default to `~/.fetchd/`.
 </Callout>
 
-Execute the following command to **download the latest genesis file**:
+You will then need to execute the following command to **download the latest genesis file**:
 
     ```bash
     curl <rpc url>/genesis | jq '.result.genesis' > ~/.fetchd/config/genesis.json
     ```
 
-Finally, **connect fetchd to the network** by getting it to connect to a seed node for the given network:
+Finally, you will need to **connect fetchd** by getting it to connect to a seed node for the given network:
 
     ```bash
     fetchd start --p2p.seeds=<network seed peers>
@@ -68,13 +68,13 @@ Finally, **connect fetchd to the network** by getting it to connect to a seed no
 
 If you wish to connect to the **Dorado testnet** for example, you would need to run the following steps:
 
-1. We would need to initialize a new Fetch.ai node named `my-first-fetch-node` with the chain ID `dorado-1` using the following command:
+1. You would need to initialize a new Fetch.ai node named `my-first-fetch-node` with the chain ID `dorado-1` using the following command:
 
     ```bash
     fetchd init my-first-fetch-node --chain-id dorado-1
     ```
 
-2. We would then need to get the genesis file, which contains the initial state of the blockchain. You can get it either from the rpc interface with:
+2. You would then need to get the genesis file, which contains the initial state of the blockchain. You can get it either from the rpc interface with:
 
     ```bash
     # genesis
@@ -83,7 +83,7 @@ If you wish to connect to the **Dorado testnet** for example, you would need to 
     curl https://storage.googleapis.com/fetch-ai-testnet-genesis/genesis-dorado-827201.json --output ~/.fetchd/config/genesis.json
     ```
 
-3. Then, we would start the Fetch.ai node with specific seed nodes on the Dorado testnet using the command:
+3. Then, you would start the Fetch.ai node with specific seed nodes on the Dorado testnet using the command:
 
     ```bash
     # start

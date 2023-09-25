@@ -2,14 +2,16 @@
 
 ## Pre-requisites
 
-You need to have:
+First of all, you need to have:
 
     - [installed ↗️](/guides/fetch-network/ledger/installation) fetchd.
     - Configured and [connected ↗️](/guides/fetch-network/ledger/joining-testnet) your validator to the desired network.
 
+Also, it woould be beneficial if you also explore the [CLI documentation ↗️](/guides/fetch-network/ledger/cli/intro) to understand how to correctly interact with the Fetch Ledger.
+
 ## Creating a validator
 
-If you wish to create a validator, you will need to send a transaction to the network bonding or staking your FET tokens. This process registers you as a validator, and if you are one of the chosen validators, you will start to produce blocks. To create a validator using fetchd [Command Line Interface (CLI) ↗️](/guides/ledger/cli/intro):
+If you wish to create a validator, you will need to send a transaction to the network to stake your FET tokens. This process registers you as a validator, and if you are one of the chosen validators, you will start to produce blocks. If you want to create a validator using fetchd [Command Line Interface (CLI) ↗️](/guides/fetch-network/ledger/cli/intro) you will need to send a `create-validator` transaction to the network as shown below:
 
     ```bash
     fetchd tx staking create-validator \
@@ -27,9 +29,9 @@ If you wish to create a validator, you will need to send a transaction to the ne
 
 **Dorado example**
 
-Before trying to create a validator, you should verify that you have some tokens available beforehand. The easiest way to do this is via the [CLI ↗️](/guides/ledger/cli/tokens).
+You should verify that you have some tokens available beforehand before trying to create a validator. The easiest way to do this is via the [CLI ↗️](/guides/fetch-network/ledger/cli/tokens).
 
-Below, you can find an example of a typical Command CLI command that registers the node as running the validator:
+Below, you can find an example of a typical CLI command that registers the node as running the validator:
 
     ```bash
     fetchd tx staking create-validator \
@@ -45,12 +47,10 @@ Below, you can find an example of a typical Command CLI command that registers t
       --from=test-key
     ```
 
-## Editing a validator
+## Edit a validator configuration
 
 It is possible that validators will need to adjust various settings about their nodes over the time.
-This can be simple things like the associated website for a validator or more consequential actions like altering the commission rate. In either case, should a validator choose to make this update they would send an `edit-validator` transaction to the network.
-
-These can be created in a similar way to the `create-validator` transaction depicted above:
+This can be simple things such as the associated website for a validator or more consequential actions like altering the commission rate. In either case, should a validator choose to make this update they would send an `edit-validator` transaction to the network. These transactions can be created in a similar way to the `create-validator` transaction depicted above:
 
     ```bash
     fetchd tx staking edit-validator
@@ -64,7 +64,9 @@ These can be created in a similar way to the `create-validator` transaction depi
 
 ## Unbonding a validator
 
-Whenever and if a validator wants to stop being a validator for any reason, they can unbond some or all of their staked tokens. This is carried out with the following CLI command:
+Whenever and if a validator wants to stop being a validator for any reason, they can unbond some or all of their staked tokens. Unbonding refers to the process of withdrawing or removing a certain amount of staked tokens from a validator or a network after a defined waiting period.
+
+This operation is carried out with the following CLI command:
 
     ```bash
     fetchd tx staking unbond \

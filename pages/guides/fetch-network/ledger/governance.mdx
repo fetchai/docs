@@ -12,17 +12,17 @@ The approval process and the required majority for a proposal to pass can vary d
 
 If you wish to take part in governance, you either need to be running a **full validator node** or you need to **have delegated stake to an existing validator**.
 
-For additional information, visit the [validators section ↗️](/concepts/fetch-network/ledger/validators) of our documentation, or the [delegation ↗️](/guides/fetch-network/ledger/cli/delegator#how-to-delegate-tokens) guide.
+For additional information, visit the [validators ↗️](/concepts/fetch-network/ledger/validators) section of our documentation, or the [delegation ↗️](/guides/fetch-network/ledger/cli/delegator#how-to-delegate-tokens) guide.
 
 ## Stake delegation
 
-If you want to delegate stake to a validator, the following command should be used:
+If you want to delegate your stake to a validator, the following command should be used:
 
     ```bash
     fetchd tx staking delegate <VALOPER_ADDRESS> <AMOUNT> --from <KEY_NAME>
     ```
 
-where the `<VALOPER_ADDRESS>` begins with the prefix `fetchvaloper1...` and the `<AMOUNT>` field contains the currency denomination.
+    where the `<VALOPER_ADDRESS>` begins with the prefix `fetchvaloper1...` and the `<AMOUNT>` field contains the currency denomination.
 
 For instance:
 
@@ -36,9 +36,11 @@ Have a look at our [delegation ↗️](/guides/fetch-network/ledger/cli/delegato
 
 There are **three types** of proposal:
 
-    1. **Text proposals**: These are the most basic type of proposal. They can be used to get the opinion from participants of the network on a given topic.
-    2. **Parameter proposals**: These proposals are used to update the value of an existing software parameter of the network.
-    3. **Software upgrade proposals**: These are used to propose an upgrade of the `fetchd` software, particularly in cases where the software changes might not necessary be backwards compatible or in some way present a major update to the network.
+    1. **Text proposals**: these are the most basic type of proposal. They can be used to get the opinion from participants of the network on a given topic.
+
+    2. **Parameter proposals**: these proposals are used to update the value of an existing software parameter of the network.
+
+    3. **Software upgrade proposals**: these are used to propose an upgrade of the `fetchd` software, particularly in cases where the software changes might not necessary be backwards compatible or in some way present a major update to the network.
 
 ## The proposal process
 
@@ -46,12 +48,12 @@ There are **three types** of proposal:
 
 In order for the proposal to be open for voting, it needs to come with a deposit that is greater than a parameter called _minDeposit_. The deposit need not be provided in its entirety by the submitter. If the initial proposer's deposit is not sufficient, the proposal enters the **deposit period** status. Then, any FET holder can increase the deposit by sending a _depositTx_ transaction to the network.
 
-Once the deposit reaches _minDeposit_, the proposal enters the **voting period**, which lasts 2 weeks. Any bonded FET holder can then cast a vote on this proposal. The user has the following options for voting:
+Once the deposit reaches _minDeposit_, the proposal enters the **voting period**, which lasts 2 weeks. Any bonded FET holder can then cast a vote on this proposal, by choosing one of the following options for voting:
 
-    * Yes
-    * No
-    * NoWithVeto
-    * Abstain
+    * Yes.
+    * No.
+    * NoWithVeto.
+    * Abstain.
 
 At the end of the voting period, the proposal is accepted if there are **more than 50% Yes votes** (excluding Abstain votes) and **less than 33.33% of NoWithVeto votes** (excluding Abstain votes).
 

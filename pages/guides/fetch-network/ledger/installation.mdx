@@ -4,7 +4,9 @@ import { Callout } from 'nextra/components'
 
 ## Prerequisites
 
-    - **Go 1.18+**: installation instructions available [here ↗️](https://golang.org/dl/).
+You can start using the ledger by first having installed what follows:
+
+    - **Go 1.18+**: installation instructions are available [here ↗️](https://golang.org/dl/).
     - **Packages**: `make`, `gcc` (on Ubuntu, install them with `sudo apt-get update && sudo apt-get install -y make gcc`).
 
 ## Building the code
@@ -51,7 +53,7 @@ This should return a path such as `~/go/bin/fetchd` (might be different dependin
   ```
   source ~/.bashrc
   ```
-  </Callout>
+</Callout>
 
 You can also **verify that you are running the correct version** by running the following command:
 
@@ -59,13 +61,15 @@ You can also **verify that you are running the correct version** by running the 
     fetchd version
     ```
 
-This should print a version number that must be compatible with the network you're connecting to. See the [network page ↗️](/references/fetch-network/ledger/active-networks) for the list of supported versions per network.
+This would print a version number that must be compatible with the network you are connecting to. See the [network page ↗️](/references/fetch-network/ledger/active-networks) for the list of supported versions per available network.
 
 ### FAQ
 
-**Error: failed to parse log level (main:info,state:info,:error): Unknown Level String: 'main:info,state:info,:error', defaulting to NoLevel**
+<Callout type="error" emoji="️🚫">
+  Error: failed to parse log level (main:info,state:info,:error): Unknown Level String: 'main:info,state:info,:error', defaulting to NoLevel.
+</Callout>
 
-This means you had a pre-stargate version of fetchd (≤ v0.7.x), and just installed a stargate version (≥ v0.8.x), you will need to remove the previous configuration files with:
+This means that **you had a pre-stargate version of fetchd (≤ v0.7.x), and that you have just installed another stargate version (≥ v0.8.x)**. To solve the issue, you will need to remove the previous configuration files with the following:
 
     ```bash
     rm ~/.fetchd/config/app.toml ~/.fetchd/config/config.toml
