@@ -138,14 +138,12 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "CosmPy",
-          description:
-            "A guide helping you to get started with CosmPy tools.",
+          description: "A guide helping you to get started with CosmPy tools.",
           path: "/guides/fetch-network/cosmpy/install",
         },
         {
           title: "Jenesis",
-          description:
-            "A guide helping you to get started with Jenesis tools.",
+          description: "A guide helping you to get started with Jenesis tools.",
           path: "/guides/fetch-network/jenesis/getting-started",
         },
       ],
