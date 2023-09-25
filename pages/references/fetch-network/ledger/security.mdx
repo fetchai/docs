@@ -1,22 +1,29 @@
+import { Callout } from 'nextra/components'
+
 # Validator security
 
-Each validator candidate is encouraged to run its operations independently, as diverse setups increase the resilience of the network. Validator candidates should commence their setup phase now in order to be on time for launch.
+To bolster network resilience, each [validator ↗️](/concepts/fetch-network/ledger/validators) candidate is strongly encouraged to maintain independent operations. This diversity in setups serves as a robust defense for the network.
 
-## Key management - HSM
+## Key management with HSM
 
-It is mission critical that an attacker cannot steal a validator's key. If this is possible, it puts the entire stake delegated to the compromised validator at risk. Hardware security modules are an important strategy for mitigating this risk. HSM modules must support `ed25519` signatures.
+Preserving the integrity of a validator's key is of paramount importance. Any vulnerability in this regard jeopardizes the entire delegated stake placed with the compromised validator. Employing **Hardware Security Modules (HSM)** constitutes a vital strategy in mitigating this risk. It is imperative that HSM modules support `ed25519` signatures.
 
 ## Sentry nodes (DDOS protection)
 
-Validators are responsible for ensuring that the network can sustain denial of service attacks.
+Validators bear the responsibility of ensuring the network's ability to withstand Denial of Service (DDoS) attacks.
 
-One recommended way to mitigate these risks is for validators is to carefully structure their network topology in a so-called sentry node architecture.
+One highly recommended approach to mitigate these risks is for validators to meticulously structure their network topology using a **sentry node architecture**.
 
-Validator nodes should only connect to full-nodes they trust because they operate them themselves or are run by other validators they know socially. This architecture shifts the burden of denial-of-service from the validator's node directly to its sentry nodes, and may require new sentry nodes be spun up or activated to mitigate attacks on existing ones.
+<Callout type="info" emoji="ℹ️">
+  Sentry nodes act as intermediaries between the validator node and the rest of the network. They are strategically placed to handle external connections and absorb potential DDoS attacks. Sentry nodes are usually exposed to the internet, allowing them to handle incoming traffic.
+</Callout>
 
-Sentry nodes can be quickly spun up or change their IP addresses. Because the links to the sentry nodes are in private IP space, an internet based attacked cannot disturb them directly. This will ensure validator block proposals and votes always make it to the rest of the network.
+Validator nodes should exclusively connect to full-nodes they have confidence in, either because they operate them themselves or because they are managed by other validators with whom they have established a social connection. This architecture shifts the burden of withstanding a denial-of-service attack from the validator's node directly to its sentry nodes. It may necessitate the deployment or activation of new sentry nodes to counteract attacks on existing ones.
 
-To setup your sentry node architecture, you can follow the instructions provided below:
+Sentry nodes can be rapidly deployed or have their IP addresses changed. Since the links to the sentry nodes exist in a private IP space, they are shielded from direct disruption by internet-based attacks. This ensures that validator block proposals and votes consistently reach the rest of the network.
+
+To set up your sentry node architecture, please follow the instructions provided below:
+
 
 - Validators nodes should edit their `config.toml`:
 
