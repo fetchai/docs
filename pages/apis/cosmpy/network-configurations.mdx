@@ -1,0 +1,112 @@
+# cosmpy.aerial.config 
+
+Network configurations. 
+
+## NetworkConfigError Objects 
+
+```py  
+class NetworkConfigError(RuntimeError)
+```
+
+Network config error 
+
+**Arguments:**
+
+- `RuntimeError:` Runtime error 
+
+## NetworkConfig Objects 
+
+```py
+@dataclass
+class NetworkConfig()
+```
+
+Network configurations
+
+**Raises:**
+
+- `NetworkConfigError`: Network config error 
+
+- `RuntimeError`: Runtime error 
+
+### validate
+
+```py
+def validate()
+```
+Validate network configuration 
+
+**Raises:**
+
+- `NetworkConfigError:` Network config error 
+
+### fetchai_dorado_testnet
+
+```py 
+@classmethod 
+def fetchai_dorado_testnet(cls) -> "Network Config"
+```
+
+Fetchai dorado testnet. 
+
+**Returns:** 
+Network configuration 
+
+### fetchai_alpha_testnet
+
+```py
+@classmethod
+def fetchai_alpha_testnet(cls)
+```
+
+Get the fetchai alpha testnet 
+
+**Raises:**
+
+- `RuntimeError:` No beta testnet available 
+
+### fetchai_stable_testnet 
+
+```py 
+@classmethod
+def fetchai_stable_testnet(cls)
+```
+
+Get the fetchai stable testnet 
+
+**Returns:**
+fetchai stable testnet. For now dorado is fetchai stable testnet  
+
+### fetchai_mainnet
+
+```py 
+@classmethod
+def fetchai_mainnet(cls) -> "NetworkConfig"
+```
+Get the fetchain mainnet configuration 
+
+**Returns:** 
+fetch mainnet configuration
+
+### fetch_mainnet
+
+```py
+@classmethod
+def fetch_mainnet(cls) -> "NetworkConfig"
+```
+Get the fetch mainnet 
+
+**Returns:**
+fetch mainnet configurations
+
+### latest_stable_testnet 
+
+```py
+@classmethod
+def latest_stable_testnet(cls) -> "NetworkConfig"
+```
+
+Get the latest stable testnet 
+
+**Returns:**
+latest stable testnet 
