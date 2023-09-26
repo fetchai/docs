@@ -1,3 +1,21 @@
+import {
+  Note,
+  Properties,
+  Property,
+  Warn,
+  Section,
+  ApiIntro,
+  Tag,
+  CodeHeading,
+} from "../../../../components/mdx";
+import { DropDownTabs, Tab } from "../../../../components/mdx";
+import { Row, Col } from "../../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+  ApiRequest,
+  ApiResponses,
+} from "../../../../components/api-endpoint";
+
 <a id="src.uagents.envelope"></a>
 
 # Envelope
@@ -14,18 +32,41 @@ Represents an envelope for message communication between agents.
 
 **Attributes**:
 
-- `version` _int_ - The envelope version.
-- `sender` _str_ - The sender's address.
-- `target` _str_ - The target's address.
-- `session` _UUID4_ - The session UUID that persists for back-and-forth
-  dialogues between agents.
-- `schema_digest` _str_ - The schema digest for the enclosed message (alias for protocol).
-- `protocol_digest` _Optional[str]_ - The digest of the protocol associated with the message
-  (optional).
-- `payload` _Optional[str]_ - The encoded message payload of the envelope (optional).
-- `expires` _Optional[int]_ - The expiration timestamp (optional).
-- `nonce` _Optional[int]_ - The nonce value (optional).
-- `signature` _Optional[str]_ - The envelope signature (optional).
+<Row>
+    <Properties>
+      <Property name="version" type="_int_">
+                The envelope version. 
+      </Property>
+      <Property name="sender" type="_str_">
+             The sender's address.  
+      </Property>
+    <Property name="target" type="_str_">
+             The target's address.  
+      </Property>
+      <Property name="session" type="_UUID4_">
+             The session UUID that persists for back-and-forth dialogues between agents. 
+      </Property>
+      <Property name="schema_digest" type="_str_">
+             The schema digest for the enclosed message (alias for protocol).  
+      </Property>
+      <Property name="protocol_digest" type="_Optional[str]_">
+             The digest of the protocol associated with the message (optional).  
+      </Property>
+      <Property name="payload" type="_Optional[str]_">
+             The encoded message payload of the envelope (optional).  
+      </Property>
+      <Property name="expires" type="_Optional[int]_">
+             The expiration timestamp (optional).  
+      </Property>
+      <Property name="nonce" type="_Optional[int]_">
+             The nonce value (optional). 
+      </Property>
+      <Property name="signature" type="_Optional[str]_">
+             The envelope signature (optional).
+      </Property>
+    </Properties>
+</Row>
+
 
 <a id="src.uagents.envelope.Envelope.encode_payload"></a>
 

@@ -1,3 +1,21 @@
+import {
+  Note,
+  Properties,
+  Property,
+  Warn,
+  Section,
+  ApiIntro,
+  Tag,
+  CodeHeading,
+} from "../../../../components/mdx";
+import { DropDownTabs, Tab } from "../../../../components/mdx";
+import { Row, Col } from "../../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+  ApiRequest,
+  ApiResponses,
+} from "../../../../components/api-endpoint";
+
 <a id="src.uagents.agent"></a>
 
 # Agent
@@ -6,7 +24,7 @@
 
 ## Agent Objects
 
-```python
+```py 
 class Agent(Sink)
 ```
 
@@ -14,52 +32,126 @@ An agent that interacts within a communication environment.
 
 **Attributes**:
 
-- `_name` _str_ - The name of the agent.
-- `_port` _int_ - The port on which the agent's server runs.
-- `_background_tasks` _Set[asyncio.Task]_ - Set of background tasks associated with the agent.
-- `_resolver` _Resolver_ - The resolver for agent communication.
-- `_loop` _asyncio.AbstractEventLoop_ - The asyncio event loop used by the agent.
-- `_logger` - The logger instance for logging agent activities.
-- `_endpoints` _List[dict]_ - List of endpoints at which the agent is reachable.
-- `_use_mailbox` _bool_ - Indicates if the agent uses a mailbox for communication.
-- `_agentverse` _dict_ - Agentverse configuration settings.
-- `_mailbox_client` _MailboxClient_ - The client for interacting with the agentverse mailbox.
-- `_ledger` - The client for interacting with the blockchain ledger.
-- `_almanac_contract` - The almanac contract for registering agent addresses to endpoints.
-- `_storage` - Key-value store for agent data storage.
-- `_interval_handlers` _List[Tuple[IntervalCallback, float]]_ - List of interval
-  handlers and their periods.
-- `_interval_messages` _Set[str]_ - Set of message digests that may be sent by interval tasks.
-- `_signed_message_handlers` _Dict[str, MessageCallback]_ - Handlers for signed messages.
-- `_unsigned_message_handlers` _Dict[str, MessageCallback]_ - Handlers for
-  unsigned messages.
-- `_models` _Dict[str, Type[Model]]_ - Dictionary mapping supported message digests to messages.
-- `_replies` _Dict[str, Set[Type[Model]]]_ - Dictionary of allowed reply digests for each type
-  of incoming message.
-- `_queries` _Dict[str, asyncio.Future]_ - Dictionary mapping query senders to their response
-  Futures.
-- `_dispatcher` - The dispatcher for message handling.
-- `_message_queue` - Asynchronous queue for incoming messages.
-- `_on_startup` _List[Callable]_ - List of functions to run on agent startup.
-- `_on_shutdown` _List[Callable]_ - List of functions to run on agent shutdown.
-- `_version` _str_ - The version of the agent.
-- `_protocol` _Protocol_ - The internal agent protocol consisting of all interval and message
-  handlers assigned with agent decorators.
-- `protocols` _Dict[str, Protocol]_ - Dictionary mapping all supported protocol digests to their
-  corresponding protocols.
-- `_ctx` _Context_ - The context for agent interactions.
-  
-  Properties:
-- `name` _str_ - The name of the agent.
-- `address` _str_ - The address of the agent used for communication.
-- `wallet` _LocalWallet_ - The agent's wallet for transacting on the ledger.
-- `storage` _KeyValueStore_ - The key-value store for storage operations.
-- `mailbox` _Dict[str, str]_ - The mailbox configuration for the agent (deprecated and replaced
-  by agentverse).
-- `agentverse` _Dict[str, str]_ - The agentverse configuration for the agent.
-- `mailbox_client` _MailboxClient_ - The client for interacting with the agentverse mailbox.
-- `protocols` _Dict[str, Protocol]_ - Dictionary mapping all supported protocol digests to their
-  corresponding protocols.
+<Row>
+    <Properties>
+      <Property name="_name" type="string">
+                The name of the agent.  
+      </Property>
+      <Property name="_port" type="_int_">
+                The port on which the agent's server runs.
+      </Property>
+      <Property name="_background_tasks" type="_Set[asyncio.Task]_">
+                Set of background tasks associated with the agent.
+      </Property>
+      <Property name="_resolver" type="_Resolver_">
+                The resolver for agent communication.
+      </Property>
+      <Property name="_loop" type="_asyncio.AbstractEventLoop_">
+                The asyncio event loop used by the agent.
+      </Property>
+      <Property name="_logger">
+                The logger instance for logging agent activities
+      </Property>
+      <Property name="_endpoints" type="_List[dict]_">
+                List of endpoints at which the agent is reachable.
+      </Property>
+      <Property name="_use_mailbox" type="_bool_">
+                Indicates if the agent uses a mailbox for communication.
+      </Property>
+      <Property name="_agentverse" type="_dict_">
+                Agentverse configuration settings.
+      </Property>
+      <Property name="_mailbox_client" type="_MailboxClient_">
+                The client for interacting with the agentverse mailbox.
+      </Property>
+      <Property name="_ledger">
+                The client for interacting with the blockchain ledger.
+      </Property>
+      <Property name="_almanac_contract">
+                The almanac contract for registering agent addresses to endpoints.
+      </Property>
+      <Property name="_storage">
+                Key-value store for agent data storage.
+      </Property>
+      <Property name="_interval_handlers" type="_List[Tuple[IntervalCallback, float]]_">
+                List of interval handlers and their periods.
+      </Property>
+      <Property name="_interval_messages" type="_Set[str]_">
+                Set of message digests that may be sent by interval tasks.
+      </Property>
+      <Property name="_signed_message_handlers" type="_Dict[str, MessageCallback]_">
+                Handlers for signed messages.
+      </Property>
+      <Property name="_unsigned_message_handlers" type="_Dict[str, MessageCallback]_">
+                Handlers for unsigned messages.
+      </Property>
+      <Property name="_models" type="_Dict[str, Type[Model]]_">
+                Dictionary mapping supported message digests to messages.
+      </Property>
+      <Property name="_replies" type="_Dict[str, Set[Type[Model]]]_">
+                Dictionary of allowed reply digests for each type of incoming message.
+      </Property>
+      <Property name="_queries" type="_Dict[str, asyncio.Future]_">
+                Dictionary mapping query senders to their response Futures.
+      </Property>
+      <Property name="_dispatcher">
+                The dispatcher for message handling.
+      </Property>
+      <Property name="_message_queue">
+                Asynchronous queue for incoming messages.
+      </Property>
+      <Property name="_on_startup" type="_List[Callable]_">
+                List of functions to run on agent startup.
+      </Property>
+      <Property name="_on_shutdown" type="_List[Callable]_">
+                List of functions to run on agent shutdown.
+      </Property>      
+      <Property name="_version" type="_str_">
+                The version of the agent.
+      </Property>      
+      <Property name="_protocol" type="_Protocol_">
+                The internal agent protocol consisting of all interval and message handlers assigned with agent decorators.
+      </Property>
+      <Property name="protocols" type="_Dict[str, Protocol]_">
+                Dictionary mapping all supported protocol digests to their corresponding protocols.
+      </Property>
+      <Property name="_ctx" type="_Context_">
+                The context for agent interactions.
+      </Property>
+    </Properties>
+</Row>
+
+
+**Properties**:
+
+<Row>
+    <Properties>
+      <Property name="name" type="string">
+                The name of the agent.  
+      </Property>
+      <Property name="address" type="string">
+                The address of the agent used for communication.  
+      </Property>
+      <Property name="wallet" type="_LocalWallet_">
+                The agent's wallet for transacting on the ledger.
+      </Property>
+      <Property name="storage" type="_KeyValueStore_">
+                The key-value store for storage operations.
+      </Property>
+      <Property name="mailbox" type="_Dict[str, str]_">
+                The mailbox configuration for the agent (deprecated and replaced by agentverse).
+      </Property>
+      <Property name="agentverse" type="_Dict[str, str]_">
+                The agentverse configuration for the agent.
+      </Property>
+      <Property name="mailbox_client" type="_MailboxClient_">
+               The client for interacting with the agentverse mailbox.
+      </Property>
+      <Property name="protocols" type="_Dict[str, Protocol]_">
+               Dictionary mapping all supported protocol digests to their corresponding protocols.
+      </Property>
+    </Properties>
+</Row>
 
 <a id="src.uagents.agent.Agent.__init__"></a>
 
