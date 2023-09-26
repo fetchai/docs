@@ -214,7 +214,7 @@ const items: { [key: string]: Item[] } = {
         <>Let&apos;s get yourself started started with the Fetch wallet.</>
       ),
       icon: walletIcon,
-      path: "/guides/fetch-network/fetch-wallet-getting-started",
+      path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
     },
     {
       title: "Ledger",

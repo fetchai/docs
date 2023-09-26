@@ -128,7 +128,7 @@ export const FeatureGuideTabs = () => {
           title: "Fetch Wallet 💵",
           description:
             "A guide helping you to get started with the Fetch wallet.",
-          path: "/guides/fetch-network/fetch-wallet-getting-started",
+          path: "/guides/fetch-network/fetch-walletfetch-wallet-getting-started",
         },
         {
           title: "How to convert FET to and from ERC20 🔄",
@@ -140,6 +140,16 @@ export const FeatureGuideTabs = () => {
           title: "How to get testnet tokens via the Token Faucet 💰",
           description: "Learn how to get testnet tokens using the Faucet service.",
           path: "/guides/fetch-network/ledger/faucet",
+        },
+        {
+          title: "CosmPy",
+          description: "A guide helping you to get started with CosmPy tools.",
+          path: "/guides/fetch-network/cosmpy/install",
+        },
+        {
+          title: "Jenesis",
+          description: "A guide helping you to get started with Jenesis tools.",
+          path: "/guides/fetch-network/jenesis/getting-started",
         },
       ],
     },
