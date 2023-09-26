@@ -116,7 +116,7 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "Registering Agent Services",
-          description: "Description to be added.",
+          description: "Learn how to register your agent's services.",
           path: "/guides/agentverse/registering-agent-services",
         },
       ],
@@ -135,6 +135,11 @@ export const FeatureGuideTabs = () => {
           description:
             "A guide for converting Native FET to and from ERC-20 FET.",
           path: "/guides/fetch-network/how-to-convert-fet-to-and-from-erc20",
+        },
+        {
+          title: "How to get testnet tokens via the Token Faucet 💰",
+          description: "Learn how to get testnet tokens using the Faucet service.",
+          path: "/guides/fetch-network/ledger/faucet",
         },
       ],
     },
