@@ -2,11 +2,11 @@ import { Callout } from 'nextra/components'
 
 # How to join a testnet
 
-In order to join the test network, you will need to have the **correct version of the fetchd ledger available on your system**.
+If you want to join a test network, you will need to have the **correct version of the fetchd ledger available on your system**.
 
 ## Using a local version
 
-if you have correctly followed the [installation guide ↗️](/guides/fetch-network/ledger/installation), then you should now have `fetchd` successfully installed in your path.
+If you have correctly followed the [installation ↗️](/guides/fetch-network/ledger/installation) guide, then you should now have `fetchd` successfully installed in your path.
 
 You can check this with the following command:
 
@@ -14,9 +14,11 @@ You can check this with the following command:
     fetchd version
     ```
 
-**This should print a version number that must be compatible with the network you are connecting to**.
+<Callout type="info" emoji="ℹ️">
+  This should print a version number that must be compatible with the network you are connecting to.
+</Callout>
 
-Check the [network page ↗️](/references/fetch-network/ledger/active-networks) for the list of supported versions per network.
+Check the [network page ↗️](/references/fetch-network/ledger/active-networks) for the list of supported versions for each network.
 
 ### Configuring the client fetchd
 
@@ -38,7 +40,7 @@ In the case of the **Dorado network**, this would be as follows:
 
 ### Configuring the server `fetchd`
 
-Initialize fetchd by running the following command:
+You can initialize fetchd by running the following command:
 
     ```bash
     fetchd init <moniker-name> --chain-id <chain id>
@@ -66,7 +68,7 @@ Finally, you will need to **connect fetchd** by getting it to connect to a seed 
 
 **Dorado Example**
 
-If you wish to connect to the **Dorado testnet** for example, you would need to run the following steps:
+If you wish to connect to the **Dorado testnet** for example, you would need to follow the steps provided below:
 
 1. You would need to initialize a new Fetch.ai node named `my-first-fetch-node` with the chain ID `dorado-1` using the following command:
 
@@ -83,7 +85,7 @@ If you wish to connect to the **Dorado testnet** for example, you would need to 
     curl https://storage.googleapis.com/fetch-ai-testnet-genesis/genesis-dorado-827201.json --output ~/.fetchd/config/genesis.json
     ```
 
-3. Then, you would start the Fetch.ai node with specific seed nodes on the Dorado testnet using the command:
+3. Then, you would start the Fetch.ai node with specific seed nodes on the Dorado testnet using the following command:
 
     ```bash
     # start
