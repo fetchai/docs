@@ -4,16 +4,12 @@ import { Callout } from 'nextra/components'
 
 ## Deposit Tokens
 
-To transfer funds to your account on the Fetch wallet:
+If you want to transfer funds to your Fetch wallet account:
 
-In the wallet or application you are using to send the funds, use your account's address as the destination account to which the funds must go.
-
-### Copy your account's address
-
-1. Either click on the account address at the top of the dashboard (under the account name).
-2. Or select **Deposit** and scan the QR code.
-
-Once you send the tokens, the balance should be updated.
+1. First of all, you need to enter the Fetch wallet with your credentials.
+2. Copy your account's address: you can do so by either clicking on the account address at the top of the dashboard (under the account name) or by clicking on the **Deposit** button you find at the end of the pop-up window. You can also scan the QR code. You can also buy tokens by clicking on the **Buy Tokens** button.
+3. Within the wallet or application you are using to send the funds, use the account's address just copied as the destination account to which the funds must go.
+4. Once you send the tokens, the balance should be updated within your FEtch wallet.
 
 <Callout type="error" emoji="️🚫">
   If your origin wallet says that the address (which should start with "fetch") is invalid, it is probably expecting an Ethereum address (beginning with "0x") and is most likely trying to send ERC-20 FET. In this case, you need to use the token bridge to swap your ERC-20 FET for native FET.
@@ -25,9 +21,9 @@ Once you send the tokens, the balance should be updated.
 
 ## Send Tokens
 
-To send tokens from your account:
+If you want to send tokens from your account:
 
-1. Select **Send**.
+1. First select **Send**.
 2. Fill in the details of your transaction:
 
    - **Recipient**: the address you want to send the tokens to.
@@ -36,7 +32,9 @@ To send tokens from your account:
    - **Memo (Optional)**: some transactions (e.g. to/from some exchanges) require a specific memo. If not needed, you can leave it blank.
    - **Fee**: the transaction fee. Choose from Low, Average and High.
 
-   **Usually, the lower the transaction fee, the longer you need to wait for your transaction to be settled on the network.**
+<Callout type="info" emoji="ℹ️">
+  Usually, the lower the transaction fee, the longer you need to wait for your transaction to be settled on the network.
+</Callout>
 
 3. Press **Send**.
 4. In the summary screen, review the details and if everything is correct, select **Approve**.
@@ -51,10 +49,7 @@ You can check the status of your transaction via the [explorer ↗️](https://e
 2. Make sure IBC transfers are enabled and that your selected network supports it.
 
 <Callout type="info" emoji="ℹ️">
-  To enable IBC transfers in the wallet:
-
-  - In the dashboard, click the ☰ icon in the top left, then click on **Settings**. Toggle the **Show Advanced IBC Transfers** switch on.
-
+  To enable IBC transfers in the wallet, in the dashboard, click the ☰ icon in the top left, then click on **Settings**. Toggle the **Show Advanced IBC Transfers** switch on.
   If your selected network does not support IBC transfers, you will not see an **IBC Transfer** section in the dashboard.
 </Callout>
 
@@ -95,17 +90,17 @@ Before being able to make an IBC transfer between any two chains for the first t
 <Callout type="info" emoji="ℹ️">
   To find out the IBC channel ID between any two chains:
 
-   1. Head over to [this page ↗️](https://www.mintscan.io/fetchai/relayers)
-   2. At the top, select the sending chain, for example **Fetch.AI**. Then below it, click **IBC RELAYERS**.
-   3. Select the destination chain, for example **OSMOSIS**.
-   4. You can now see the channels between the two chains. Select an active channel (in green) and note the sending chain's channel ID. For Fetch.AI to Osmosis, the sending chain's (Fetch.AI's) channel ID is `channel-10`.
-   5. Enter the channel ID in the Fetch wallet (`channel-10` in our example).
+    1. Head over to [this page ↗️](https://www.mintscan.io/fetchai/relayers)
+    2. At the top, select the sending chain, for example **Fetch.AI**. Then below it, click **IBC RELAYERS**.
+    3. Select the destination chain, for example **OSMOSIS**.
+    4. You can now see the channels between the two chains. Select an active channel (in green) and note the sending chain's channel ID. For Fetch.AI to Osmosis, the sending chain's (Fetch.AI's) channel ID is `channel-10`.
+    5. Enter the channel ID in the Fetch wallet (`channel-10` in our example).
 
   Remember to write the channel ID in lower case (i.e. `channel-X`)
 </Callout>
 
 <Callout type="warning" emoji="⚠️">
-  If there are no green channels, the relayers are temporarily inactive. You need to wait until one becomes active again.
+  If there are no green channels, the relayers are temporarily inactive, and you will need to wait until one becomes active again.
 </Callout>
 
 5. Click **Save**.
