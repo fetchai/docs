@@ -17,11 +17,93 @@ We can start by writing the code for our protocol.
 
 The Cleaning Protocol is made up of two scripts: `__init__.py` and `models.py`.
 
+#### Models
+
+First, we need to define a `models` protocol which defines the structure and relationships of users, service types, providers, and availability within the cleaning service application. The defined models and their relationships will be used for data storage, retrieval, and manipulation throughout the application's logic.
+
+1.  First of all, navigate towards the cleaning directory and create a Python script for this task and name it by running: `touch models.py`
+2.  We then import the necessary classes from `enum` and `tortoise` libraries, and then define the different data models:
+
+    ```py copy filename="models.py"
+    from enum import Enum
+
+    from tortoise import fields, models
+
+    class ServiceType(int, Enum):
+        FLOOR = 1
+        WINDOW = 2
+        LAUNDRY = 3
+        IRON = 4
+        BATHROOM = 5
+
+    class User(models.Model):
+        id = fields.IntField(pk=True)
+        name = fields.CharField(max_length=64)
+        address = fields.CharField(max_length=100)
+        created_at = fields.DatetimeField(auto_now_add=True)
+
+    class Service(models.Model):
+        id = fields.IntField(pk=True)
+        type = fields.IntEnumField(ServiceType)
+
+    class Provider(models.Model):
+        id = fields.IntField(pk=True)
+        name = fields.CharField(max_length=64)
+        location = fields.CharField(max_length=64)
+        created_at = fields.DatetimeField(auto_now_add=True)
+        availability = fields.ReverseRelation["Availability"]
+        services = fields.ManyToManyField("models.Service")
+        markup = fields.FloatField(default=1.1)
+
+    class Availability(models.Model):
+        id = fields.IntField(pk=True)
+        provider = fields.OneToOneField("models.Provider", related_name="availability")
+        max_distance = fields.IntField(default=10)
+        time_start = fields.DatetimeField()
+        time_end = fields.DatetimeField()
+        min_hourly_price = fields.FloatField(default=0.0)
+    ```
+
+    We defined the following data models:
+
+        - `ServiceType` is an enumeration class that defines different types of cleaning services. Each service type is associated with an integer value. Service types include `FLOOR`, `WINDOW`, `LAUNDRY`, `IRON`, and `BATHROOM`.
+
+        - `User` is a model representing the users of the cleaning service. It takes in the following fields:
+                - `id`: Auto-incrementing integer field serving as the primary key.
+                - `name`: Character field with a maximum length of 64 for the user's name.
+                - `address`: Character field with a maximum length of 100 for the user's address.
+                - `created_at`: DateTime field automatically set to the current timestamp when the user is created.
+
+        - `Service` is model representing types of cleaning services. It takes in the following fields:
+                - `id`: Auto-incrementing integer field serving as the primary key.
+                - `type`: Enum field storing the ServiceType enumeration values.
+
+        - `Provider` is a model representing cleaning service providers. It considers the following fields:
+                - `id`: Auto-incrementing integer field serving as the primary key.
+                - `name`: Character field with a maximum length of 64 for the provider's name.
+                - `location`: Character field with a maximum length of 64 for the provider's location.
+                - `created_at`: DateTime field automatically set to the current timestamp when the provider is created.
+                - `availability`: Reverse relation to the `Availability` model.
+                - `services`: Many-to-many relationship with the `Service` model.
+                - `markup`: Float field representing the markup applied to service prices.
+
+        - `Availability` is a model representing the availability of a cleaning service provider. It considers the following fields:
+                - `id`: Auto-incrementing integer field serving as the primary key.
+                - `provider`: One-to-one relationship to the `Provider` model.
+                - `max_distance`: Integer field representing the maximum distance a provider can travel for services.
+                - `time_start`: DateTime field indicating the start time of availability.
+                - `time_end`: DateTime field indicating the end time of availability.
+                - `min_hourly_price`: Float field representing the minimum hourly price for services.
+
+3.  Save the script.
+
+Now that we have defined the protocols for this application, we proceed by defining the user and cleaner agents.
+
 #### **init**
 
-First of all, let's define a protocol handling communication between a user requesting a cleaning service and a cleaning service provider.
+Now let's define a protocol handling communication between a user requesting a cleaning service and a cleaning service provider.
 
-1.  The first step is creating a Python script for this task and name it: `touch __init__.py`
+1.  Inside the cleaning directory, create a Python script for this task and name it by running: `touch __init__.py`
 
 2.  Let's import the necessary classes from `datetime`, `typing`, `geopy.geocoders`, `geopy.distance`, `uagents`, and `.models`. Let's then define the message models and handlers for the service request, service response, service booking, and booking response using the `uagents` library. We then proceed and create a cleaning_proto object using the uagents **Protocol** class. We give it the name `cleaning` and the version `0.1.0`. This protocol will be used to define handlers and manage communication between agents using the defined message models:
 
@@ -295,88 +377,6 @@ async def handle_book_request(ctx: Context, sender: str, msg: ServiceBooking):
     # send the response
     await ctx.send(sender, BookingResponse(success=success))
 ```
-
-#### Models
-
-We now continue and define a `models` protocol which defines the structure and relationships of users, service types, providers, and availability within the cleaning service application. The defined models and their relationships will be used for data storage, retrieval, and manipulation throughout the application's logic.
-
-1.  First of all, let's create a Python script for this task and name it: `touch models.py`
-2.  We then import the necessary classes from `enum` and `tortoise` libraries, and then define the different data models:
-
-    ```py copy filename="models.py"
-    from enum import Enum
-
-    from tortoise import fields, models
-
-    class ServiceType(int, Enum):
-        FLOOR = 1
-        WINDOW = 2
-        LAUNDRY = 3
-        IRON = 4
-        BATHROOM = 5
-
-    class User(models.Model):
-        id = fields.IntField(pk=True)
-        name = fields.CharField(max_length=64)
-        address = fields.CharField(max_length=100)
-        created_at = fields.DatetimeField(auto_now_add=True)
-
-    class Service(models.Model):
-        id = fields.IntField(pk=True)
-        type = fields.IntEnumField(ServiceType)
-
-    class Provider(models.Model):
-        id = fields.IntField(pk=True)
-        name = fields.CharField(max_length=64)
-        location = fields.CharField(max_length=64)
-        created_at = fields.DatetimeField(auto_now_add=True)
-        availability = fields.ReverseRelation["Availability"]
-        services = fields.ManyToManyField("models.Service")
-        markup = fields.FloatField(default=1.1)
-
-    class Availability(models.Model):
-        id = fields.IntField(pk=True)
-        provider = fields.OneToOneField("models.Provider", related_name="availability")
-        max_distance = fields.IntField(default=10)
-        time_start = fields.DatetimeField()
-        time_end = fields.DatetimeField()
-        min_hourly_price = fields.FloatField(default=0.0)
-    ```
-
-    We defined the following data models:
-
-        - `ServiceType` is an enumeration class that defines different types of cleaning services. Each service type is associated with an integer value. Service types include `FLOOR`, `WINDOW`, `LAUNDRY`, `IRON`, and `BATHROOM`.
-
-        - `User` is a model representing the users of the cleaning service. It takes in the following fields:
-                - `id`: Auto-incrementing integer field serving as the primary key.
-                - `name`: Character field with a maximum length of 64 for the user's name.
-                - `address`: Character field with a maximum length of 100 for the user's address.
-                - `created_at`: DateTime field automatically set to the current timestamp when the user is created.
-
-        - `Service` is model representing types of cleaning services. It takes in the following fields:
-                - `id`: Auto-incrementing integer field serving as the primary key.
-                - `type`: Enum field storing the ServiceType enumeration values.
-
-        - `Provider` is a model representing cleaning service providers. It considers the following fields:
-                - `id`: Auto-incrementing integer field serving as the primary key.
-                - `name`: Character field with a maximum length of 64 for the provider's name.
-                - `location`: Character field with a maximum length of 64 for the provider's location.
-                - `created_at`: DateTime field automatically set to the current timestamp when the provider is created.
-                - `availability`: Reverse relation to the `Availability` model.
-                - `services`: Many-to-many relationship with the `Service` model.
-                - `markup`: Float field representing the markup applied to service prices.
-
-        - `Availability` is a model representing the availability of a cleaning service provider. It considers the following fields:
-                - `id`: Auto-incrementing integer field serving as the primary key.
-                - `provider`: One-to-one relationship to the `Provider` model.
-                - `max_distance`: Integer field representing the maximum distance a provider can travel for services.
-                - `time_start`: DateTime field indicating the start time of availability.
-                - `time_end`: DateTime field indicating the end time of availability.
-                - `min_hourly_price`: Float field representing the minimum hourly price for services.
-
-3.  Save the script.
-
-Now that we have defined the protocols for this application, we proceed by defining the user and cleaner agents.
 
 ### Cleaner agent
 
