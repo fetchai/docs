@@ -143,6 +143,12 @@ export const FeatureGuideTabs = () => {
           path: "/guides/fetch-network/ledger/faucet",
         },
         {
+          title: "Ledger",
+          description:
+            "Get started with the Fetch Ledger.",
+          path: "/concepts/fetch-network/ledger/intro",
+        },
+        {
           title: "CosmPy",
           description: "A guide helping you to get started with CosmPy tools.",
           path: "/guides/fetch-network/cosmpy/install",
