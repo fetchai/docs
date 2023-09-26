@@ -138,7 +138,8 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "How to get testnet tokens via the Token Faucet 💰",
-          description: "Learn how to get testnet tokens using the Faucet service.",
+          description:
+            "Learn how to get testnet tokens using the Faucet service.",
           path: "/guides/fetch-network/ledger/faucet",
         },
         {
