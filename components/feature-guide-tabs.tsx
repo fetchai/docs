@@ -144,8 +144,7 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "Ledger",
-          description:
-            "Get started with the Fetch Ledger.",
+          description: "Get started with the Fetch Ledger.",
           path: "/concepts/fetch-network/ledger/intro",
         },
         {
