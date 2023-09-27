@@ -2,7 +2,7 @@ import { Callout } from 'nextra/components'
 
 # How to join a testnet
 
-If you want to join a test network, you will need to have the **correct version of the fetchd ledger available on your system**.
+If you want to join a test network, you will need to have the **correct version of the `fetchd` ledger available on your system**.
 
 ## Using a local version
 
@@ -20,7 +20,7 @@ You can check this with the following command:
 
 Check the [network page ↗️](/references/fetch-network/ledger/active-networks) for the list of supported versions for each network.
 
-### Configuring the client fetchd
+### Configuring the client `fetchd`
 
 In general, to configure the CLI to point at a given network it needs, as a minimum, the following configuration values:
 
@@ -40,7 +40,7 @@ In the case of the **Dorado network**, this would be as follows:
 
 ### Configuring the server `fetchd`
 
-You can initialize fetchd by running the following command:
+You can initialize `fetchd` by running the following command:
 
     ```bash
     fetchd init <moniker-name> --chain-id <chain id>
@@ -60,7 +60,7 @@ You will then need to execute the following command to **download the latest gen
     curl <rpc url>/genesis | jq '.result.genesis' > ~/.fetchd/config/genesis.json
     ```
 
-Finally, you will need to **connect fetchd** by getting it to connect to a seed node for the given network:
+Finally, you will need to **connect `fetchd`** by getting it to connect to a seed node for the given network:
 
     ```bash
     fetchd start --p2p.seeds=<network seed peers>

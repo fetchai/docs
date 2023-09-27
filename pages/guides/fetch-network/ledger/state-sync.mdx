@@ -12,9 +12,7 @@ With state-sync, it now takes only a few minutes before having an operational no
 
 ## Configuring the new node
 
-If you want to instruct the node to sync itself using a state-sync snapshot, it need some configuration in the `~/.fetchd/config/config.toml` file.
-
-To configure the new node, open this file in an editor and lookup for the `statesync` section.
+If you want to instruct the node to sync itself using a state-sync snapshot, it need some configuration in the `~/.fetchd/config/config.toml` file. To configure the new node, open this file in an editor and lookup for the `statesync` section.
 
 By default, it should looks like this:
 
@@ -57,17 +55,17 @@ By default, it should looks like this:
     chunk_fetchers = "4"
     ```
 
-A few changes will be needed needed:
+    A few changes will be needed:
 
-    - First, set `enable = true` to activate the state-sync engine.
+        - First, set `enable = true` to activate the state-sync engine.
 
-    - Then, **at least 2** rpc servers must be provided. A good place to find some is the [cosmos chain registry ↗️](https://github.com/cosmos/chain-registry/blob/master/fetchhub/chain.json#L62). Servers must be comma separated without space (i.e., `rpc_servers = "https://rpc-fetchhub.fetch.ai:443,https://fetch-rpc.polkachu.com:443"`). These servers will be used to verify the snapshots, so make sure you trust them enough for this.
+        - Then, **at least 2** rpc servers must be provided. A good place to find some is the [cosmos chain registry ↗️](https://github.com/cosmos/chain-registry/blob/master/fetchhub/chain.json#L62). Servers must be comma separated without space (i.e., `rpc_servers = "https://rpc-fetchhub.fetch.ai:443,https://fetch-rpc.polkachu.com:443"`). These servers will be used to verify the snapshots, so make sure you trust them enough for this.
 
-    - a *recent* `trust_height` and `trust_hash` are needed. Recent means it must be contained in the `trust_period` (168 hours, or ~1 week old by default). These can be obtained from a RPC server **you trust to provide you correct data** (and the 2nd RPC server from `rpc_servers` will be charged of confirming that the data are correct).
+        - a *recent* `trust_height` and `trust_hash` are needed. Recent means it must be contained in the `trust_period` (168 hours, or ~1 week old by default). These can be obtained from a RPC server **you trust to provide you correct data** (and the 2nd RPC server from `rpc_servers` will be charged of confirming that the data are correct).
 
-    - And last, set `chunk_request_timeout` to `60s` (the `10s` default value seems too short and can lead to "context deadline exceeded" timeout errors when verifying the hashes)
+        - And last, set `chunk_request_timeout` to `60s` (the `10s` default value seems too short and can lead to "context deadline exceeded" timeout errors when verifying the hashes)
 
-You can then retrieve the correct value for a **Fetch.ai RPC server**, and the current network height, using:
+You can then retrieve the correct value for a **Fetch.ai RPC server**, and the current **network height**, using:
 
     ```bash
     curl https://rpc-fetchhub.fetch.ai:443/block | jq -r '{"trusted_hash": .result.block_id.hash, "trusted_height": .result.block.header.height}'
@@ -77,7 +75,7 @@ You can then retrieve the correct value for a **Fetch.ai RPC server**, and the c
     }
     ```
 
-and set the `trusted_hash` and `trusted_height` values in the config file.
+    and set the `trusted_hash` and `trusted_height` values in the config file.
 
 Once this is set, make sure you have the correct genesis by downloading it from the RPC node:
 
@@ -102,9 +100,7 @@ The node will select the one with the `height` value the closest to the tip of t
 
 ## Configure an existing node to provide snapshots
 
-You can configure existing nodes to create snapshot from which they can start on.
-
-This requires changes in the `~/.fetchd/config/app.toml` file, in the `state-sync` section:
+You can configure existing nodes to create snapshot from which they can start on. This requires changes in the `~/.fetchd/config/app.toml` file, in the `state-sync` section:
 
     ```
     ###############################################################################
@@ -123,6 +119,6 @@ This requires changes in the `~/.fetchd/config/app.toml` file, in the `state-syn
     snapshot-keep-recent = 2
     ```
 
-Here, `snapshot-interval` must be set to a number of blocks between each snapshot creation and it must be a multiple of your node prunning settings (default is 100, so valid values are 100, 1000, 700...).
+    Here, `snapshot-interval` must be set to a number of blocks between each snapshot creation and it must be a multiple of your node pruning settings (default is 100, so valid values are 100, 1000, 700...).
 
-The number of snapshots to keep can be set with `snapshot-keep-recent`.
+    The number of snapshots to keep can be set with `snapshot-keep-recent`.
