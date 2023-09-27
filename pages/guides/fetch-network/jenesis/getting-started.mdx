@@ -1,6 +1,8 @@
 # Getting started 🎯
 
-There are multiple commands integrated into jenesis that allow you to perform a variety of tasks. These commands are:
+There are multiple commands integrated into jenesis that allow you to perform a variety of tasks.
+
+These commands are:
 
     - `new`
     - `init`
@@ -14,19 +16,19 @@ There are multiple commands integrated into jenesis that allow you to perform a 
     - `shell`
     - `network`
 
-**Let's get started!**
+**We will be exploring some of these commands below so to get you started!**
 
 ## Create a new project
 
-Create a project using the `new` command
+You can create a new project using the `new` command in the following way:
 
     ```
     jenesis new my_project [--profile my_profile] [--network network_name]
     ```
 
-This will create a new directory called `my_project`. You can use `--profile` and `--network` optional arguments to provide additional arguments for profile and network desired for the project. Whenever these arguments are not used, these will be set to `testing` and `fetchai-testnet` respectively.
+This creates a new directory called `my_project`. You can use `--profile` and `--network` optional arguments to provide additional arguments for profile and network desired for your project. Whenever these arguments are not used, these will be set to `testing` and `fetchai-testnet` respectively.
 
-Inside this directory for your projuect, a `jenesis.toml` file will be created containing the following information:
+By running the above command, a `jenesis.toml` file will be created within the directory for your project, containing the following information:
 
     ```toml
     [project]
@@ -50,23 +52,23 @@ Inside this directory for your projuect, a `jenesis.toml` file will be created c
     [profile.my_profile.contracts]
     ```
 
-The project's `name` is the argument passed to the `new` command while the authors field is populated by querying the user's GitHub username and email address. The profile's network will be filled with the relevant configuration variables. The contracts field will remain empty until new contracts are added. This `my_profile` profile will be set as the default profile, this means that every time you use a jenesis command without specifying a profile, `my_profile` will be used.
+    The project's `name` is the argument passed to the `new` command while the authors field is populated by querying the user's GitHub username and email address. The profile's network will be filled with the relevant configuration variables. The contracts field will remain empty until new contracts are added. This `my_profile` profile will be set as the default profile, this means that every time you use a jenesis command without specifying a profile, `my_profile` will be used.
 
 An empty `contracts` folder will also be created inside `my_project` directory that will eventually contain all the information needed to compile and deploy the desired contracts.
 
-The `init` command is similar to the `new`` command, but in this case, you will not need a project `name` argument since **this command is intended to run inside an existing project directory**:
+The `init` command is similar to the `new` command, but in this case, you will not need a project `name` argument since **this command is intended to run inside an existing project directory**:
 
     ```
     jenesis init [--profile my_profile] [--network network_name]
     ```
 
-This command will create the same files and folders inside your project directory as the ones described for the `new` command above.
+    This command will create the same files and folders inside your project directory as the ones described for the `new` command above.
 
-If using a cargo workspace, you just need to navigate to the top level of your project and run the `init` command shown above. This will create the `jenesis.toml` configuration file inside your workspace including all the relevant information from existing contracts.
+    If you are using a cargo workspace, you just need to navigate to the top level of your project and run the `init` command shown above. This will create the `jenesis.toml` configuration file inside your workspace including all the relevant information from existing contracts.
 
 ## Configure a network
 
-**By default, jenesis will configure the project to run on the latest stable Fetch.ai testnet**. Use `fetchai-mainnet` to configure for the Fetch.ai mainnet or directly edit the `jenesis.toml` file to configure for other networks.
+**By default, Jenesis will configure the project to run on the latest stable Fetch.ai testnet**. Use `fetchai-mainnet` to configure for the Fetch.ai mainnet or directly edit the `jenesis.toml` file to configure for other networks.
 
 To test on a local node, pass the argument `--network fetchai-localnode` when creating a project:
 
@@ -102,13 +104,13 @@ The configuration can be found under the `network` heading in the `jenesis.toml`
     debug_trace = true
     ```
 
-In particular, **to fund some accounts for testing**, replace the `genesis_accounts` field with the addresses to be funded.
+    In particular, **to fund some accounts for testing**, replace the `genesis_accounts` field with the addresses to be funded.
 
-When running any of the commands `deploy`, `run`, `shell`, and `attach`, jenesis will check for a currently running local node. If there is not one provided, a new one will be created in a docker container.
+When running any of the commands `deploy`, `run`, `shell`, and `attach`, Jenesis will check for a currently running local node. If there is not one provided, a new one will be created in a docker container.
 
 If you wish to **keep a local node running**, you need to set the `keep_running` parameter to `true`. Otherwise, nodes will be stopped after any of the command mentioned above finish running.
 
-At any time, **you can start or stop a local node by running**:
+At any time, **you can start or stop a local node by running** in the followong way:
 
     ```
     jenesis network start [--profile my_profile]
