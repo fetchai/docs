@@ -4,21 +4,21 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-Transparency is a fundamental principle in the world of Decentralized Finance (DeFi) and blockchain systems. Within the Fetch.ai ecosystem, users have the power to determine the extent of information they wish to make public. This allows them to strike a balance between transparency and privacy for each operation they conduct on the network.
+Transparency is a fundamental principle in Decentralized Finance (DeFi) and blockchain systems. Within Fetch.ai network, **users have the power to determine the extent of information they wish to make public**. This allows them to strike a balance between transparency and privacy for each operation they conduct on the network.
 
-This flexibility is made possible through the categorization of uAgents as either **public** or **private**, based on their introspectivity and protocols exposure through the [Agentverse ↗️](/concepts/agent-services/agentverse-intro) platform.
+This flexibility is made possible through the categorization of uAgents as either **public** or **private**, based on their **introspectivity** and **protocols exposure** through the [Agentverse ↗️](/concepts/agent-services/agentverse-intro) platform.
 
 ## The role of protocols and Almanac contract
 
-Within the Fetch.ai uAgents framework, a [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) establish the rules, message structure, and semantics that govern interactions. Without protocols, uAgents would struggle to understand each other's messages or coordinate effectively in the execution of tasks.
+Within the Fetch.ai uAgents Framework, a [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) establish the rules, messages structure, and semantics that govern interactions between agents. Without protocols, uAgents would struggle to understand each other's messages or coordinate effectively in the execution of tasks.
 
-On the other hand, the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) is a smart contract within the Fetch.ai ecosystem serving as a decentralized directory service, storing information about registered agents, their associated protocols manifest, and capabilities. This vital resource streamlines agent discovery and interaction. The Almanac facilitates discoverability in a manner similar to how Domain Name System (DNS) enables internet accessibility.
+On the other hand, the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) is a smart contract within the Fetch.ai ecosystem serving as a decentralized directory service, storing information about registered agents, their associated protocols manifest, and capabilities. This vital resource streamlines agent discovery and interaction. The Almanac facilitates discoverability in a way similar to how **Domain Name System (DNS)** enables internet accessibility.
 
-Within the Agentverse, protocols are represented by digests which are unique protocols' identifiers provided below each agent's information in the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer). Thanks to this feature, any user or company can directly filter out all agents based on digests and interact with any subset of agents offering a specific protocol implementation. For instance, you may be developing a taxi service application and thus may be interested in interacting with agents implementing taxi protocols to facilitate your application development.
+Within the Agentverse, protocols are represented by _digests_. These are unique protocols' identifiers provided below each agent's information in the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer). Thanks to this feature, any user or company can directly filter out all agents based on digests and interact with any subset of agents offering a specific protocol implementation. For instance, you may be developing a taxi service application and thus may be interested in interacting with agents implementing taxi protocols to facilitate your application development.
 
 ## Defining public and private agents
 
-In this context, users or companies may not be willing to share information but rather wanting to keep it private for any reason. This is achievable thanks to the possibility of _differentiating between public and private agents_. There exist two ways through which an agent can be considered **public**:
+In this context, users or companies may not be willing to share information but rather wanting to keep it private for any reason. This is achievable thanks to the possibility of _differentiating between public and private agents_. There exist _two ways_ through which an agent can be considered **public**:
 
     1. By default, at registration in the Agentverse when the protocols manifest and related digests are published, making the [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) available to any other user. This introduces such users to a way to access our registered agent's information and understand how to communicate with it.
 
@@ -27,7 +27,7 @@ In this context, users or companies may not be willing to share information but 
 In particular, public and private agents are delimited by whether or not an agent protocol specification is made private or public. Indeed, **private** agents maintain a level of privacy by not exposing their protocol manifest to external parties. Despite being private, these agents can still be discoverable via the Almanac. However, the actual protocol's details remain hidden even if the related digests are still visible, thus ensuring that only agents aware of the protocol itself can communicate with it.
 
 <Callout type="info" emoji="ℹ️">
-By default, all agents are public and contactable by everyone but you need to know how to talk to them otherwise they will not answer back to you!
+  By default, all agents are public and contactable by everyone but you need to know how to talk to them otherwise they will not answer back to you!
 </Callout>
 
 The distinction between public and private agents is valuable for users, developers, and companies within the Fetch.ai ecosystem, as it allows for a flexible approach to privacy while still enabling efficient agent interaction. It also aligns with the broader principles of decentralization and trustless interactions that underpin blockchain and decentralized systems.
