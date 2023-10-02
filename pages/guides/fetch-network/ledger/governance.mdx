@@ -4,19 +4,19 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-Governance is the mechanisms through which participants collectively make decisions about the rules, parameters, and policies that govern a given network. This can include things like protocol upgrades, parameter adjustments, and even more fundamental decisions about the network's direction and purpose. Changes are requested through governance proposals, which represent formal suggestions or requests put forth by a member or participant of a network or community to make changes to the rules, parameters, or policies that govern that network. These proposals are typically submitted to a decentralized governance system, where participants in the network have the opportunity to review, discuss, and ultimately vote on the proposed changes.
+Governance is the mechanisms through which participants collectively make decisions about the rules, parameters, and policies that govern a given network. This can include things like protocol upgrades, parameter adjustments, and even more fundamental decisions about the network's direction and purpose. Changes are requested through **governance proposals* which represent formal suggestions or requests put forth by a member or participant of a network or community to make changes to that network. These proposals are typically submitted to a decentralized governance system, where participants in the network have the opportunity to review, discuss, and ultimately vote on the proposed changes.
 
 The approval process and the required majority for a proposal to pass can vary depending on the specific governance model of the network. Once a proposal is approved, the changes outlined in the proposal are typically implemented according to the network's governance mechanisms. This could involve deploying new smart contracts, updating software, or making adjustments to on-chain parameters.
 
 ## How to take part in the governance mechanism
 
-If you wish to take part in governance, you either need to be running a **full validator node** or you need to **have delegated stake to an existing validator**.
+If you wish to take part in governance, you will either need to be running a **full validator node** or you need to **have delegated stake to an existing validator**.
 
 For additional information, visit the [validators ↗️](/concepts/fetch-network/ledger/validators) section of our documentation, or the [delegation ↗️](/guides/fetch-network/ledger/cli/delegator#how-to-delegate-tokens) guide.
 
 ## Stake delegation
 
-If you want to delegate your stake to a validator, the following command should be used:
+If you want to delegate your stake to a validator, the following CLI command should be used:
 
     ```bash
     fetchd tx staking delegate <VALOPER_ADDRESS> <AMOUNT> --from <KEY_NAME>
@@ -34,7 +34,7 @@ Have a look at our [delegation ↗️](/guides/fetch-network/ledger/cli/delegato
 
 ## Proposals overview
 
-There are **three types** of proposal:
+There are **three types** of governance proposal:
 
     1. **Text proposals**: these are the most basic type of proposal. They can be used to get the opinion from participants of the network on a given topic.
 
@@ -59,14 +59,14 @@ At the end of the voting period, the proposal is accepted if there are **more th
 
 ## Generating proposals
 
-When creating a proposal, the user will create a proposal **JSON file** with all the relevant information.
+When creating a proposal, you will create a proposal **JSON file** with all the relevant information.
 
 An example of a **text proposal** is shown below:
 
     ```json
     {
       "title": "Switch to semantic commit messages for fetchd",
-      "description": "This proposal is advocating a switch to sematic commit messages\nYou can find the full discussion here: https://github.com/fetchai/fetchd/issues/231",
+      "description": "This proposal is advocating a switch to sematic commit messages. You can find the full discussion at: https://github.com/fetchai/fetchd/issues/231",
       "type": "Text",
       "deposit": "10000000000000000000atestfet"
     }
@@ -76,13 +76,13 @@ An example of a **text proposal** is shown below:
   It is always recommended that the description of a text proposal has a link to a Github issue with the full proposal text along with the discussions about it.
 </Callout>
 
-After having created the JSON file, the user can **generate the text proposal on chain** by running the following command:
+After having created the JSON file, you can **generate the text proposal on chain** by running the following command:
 
     `fetchd tx gov submit-proposal --proposal proposal.json --from <name of signing key>`
 
 ## Increasing the deposit for a proposal
 
-If a user wants to **increase the deposit of a proposal**, they would run the following command:
+If you want to **increase the deposit of a proposal**, you could do this by running the following command:
 
     `fetchd tx gov deposit <proposalID> 100atestfet --from <key name>`
 
@@ -98,9 +98,9 @@ For additional information on how to create a governance proposal using CLI, hav
 
 ## Listing current proposals
 
-Current proposals can be retrieved by using the CLI or from the [block explorer ↗️]().
+Current proposals can be retrieved by using the **CLI** or from the **block explorer**.
 
-If you wish to **get the list of current proposals** and their corresponding _proposal-ids_, then run the following command:
+If you wish to **get the list of current proposals** and their corresponding _proposal-ids_, then you need to run the following command:
 
     `fetchd query gov proposals`
 
@@ -115,5 +115,5 @@ For instance:
     `fetchd tx gov vote 5 yes --from validator`
 
 <Callout type="info" emoji="ℹ️">
-  When using CLI commands make sure that your CLI is pointing at the correct network. See the [CLI introduction ↗️](/guides/fetch-network/ledger/cli/intro) in our documentation for more details.
+  When using CLI commands make sure that your CLI is pointing at the correct network. Check the [CLI introduction ↗️](/guides/fetch-network/ledger/cli/intro) in our documentation for more details.
 </Callout>

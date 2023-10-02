@@ -1,14 +1,14 @@
 import { Callout } from 'nextra/components'
 
-# State-sync
+# State-synchronization (state-sync)
 
 **State-sync** is a feature which allows you to quickly bootstrap a new node by allowing it to pull a _state snapshot_ taken by other nodes.
 
 <Callout type="warning" emoji="⚠️️">
-  The state sync feature is only available from `fetchd  v0.10.6` and later on. Prior versions needed to either sync from scratch or restore a [chain snapshot ↗️](/guides/fetch-network/ledger/snapshots), which both could take hours before having the node fully synced.
+  The state-sync feature is only available from `fetchd  v0.10.6` and later on. Prior versions needed to either synchronize from scratch or restore a [chain snapshot ↗️](/guides/fetch-network/ledger/snapshots), which both could take hours before having the node fully synchronized.
 </Callout>
 
-With state-sync, it now takes only a few minutes before having an operational node.
+It now takes only a few minutes before having an operational node with state-sync,
 
 ## Configuring the new node
 
@@ -57,13 +57,13 @@ By default, it should looks like this:
 
     A few changes will be needed:
 
-        - First, set `enable = true` to activate the state-sync engine.
+        - First, you will need to set `enable = true` to activate the state-sync engine.
 
-        - Then, **at least 2** rpc servers must be provided. A good place to find some is the [cosmos chain registry ↗️](https://github.com/cosmos/chain-registry/blob/master/fetchhub/chain.json#L62). Servers must be comma separated without space (i.e., `rpc_servers = "https://rpc-fetchhub.fetch.ai:443,https://fetch-rpc.polkachu.com:443"`). These servers will be used to verify the snapshots, so make sure you trust them enough for this.
+        - Then, you need to provide **at least 2** rpc servers. A good place to find some is the [cosmos chain registry ↗️](https://github.com/cosmos/chain-registry/blob/master/fetchhub/chain.json#L62). Servers must be comma separated without space (i.e., `rpc_servers = "https://rpc-fetchhub.fetch.ai:443,https://fetch-rpc.polkachu.com:443"`). These servers will be used to verify the snapshots, so make sure you trust them enough for this.
 
-        - a *recent* `trust_height` and `trust_hash` are needed. Recent means it must be contained in the `trust_period` (168 hours, or ~1 week old by default). These can be obtained from a RPC server **you trust to provide you correct data** (and the 2nd RPC server from `rpc_servers` will be charged of confirming that the data are correct).
+        - You will also need a *recent* `trust_height` and `trust_hash`. Recent means it must be contained in the `trust_period` (168 hours, or ~1 week old by default). These can be obtained from a RPC server **you trust to provide you correct data** (and the 2nd RPC server from `rpc_servers` will be charged of confirming that the data are correct).
 
-        - And last, set `chunk_request_timeout` to `60s` (the `10s` default value seems too short and can lead to "context deadline exceeded" timeout errors when verifying the hashes)
+        - And last, you need to set `chunk_request_timeout` to `60s` (the `10s` default value seems too short and can lead to "context deadline exceeded" timeout errors when verifying the hashes).
 
 You can then retrieve the correct value for a **Fetch.ai RPC server**, and the current **network height**, using:
 
@@ -77,13 +77,13 @@ You can then retrieve the correct value for a **Fetch.ai RPC server**, and the c
 
     and set the `trusted_hash` and `trusted_height` values in the config file.
 
-Once this is set, make sure you have the correct genesis by downloading it from the RPC node:
+Once this is set, you will need to make sure you have the correct genesis by downloading it from the RPC node:
 
     ```bash
     curl https://raw.githubusercontent.com/fetchai/genesis-fetchhub/fetchhub-4/fetchhub-4/data/genesis_migrated_5300200.json --output ~/.fetchd/config/genesis.json
     ```
 
-and start the node using the seeds from the chain-registry:
+You can then start the node using the seeds from the chain-registry:
 
     ```bash
     fetchd start --p2p.seeds="17693da418c15c95d629994a320e2c4f51a8069b@connect-fetchhub.fetch.ai:36456,a575c681c2861fe945f77cb3aba0357da294f1f2@connect-fetchhub.fetch.ai:36457,d7cda986c9f59ab9e05058a803c3d0300d15d8da@connect-fetchhub.fetch.ai:36458"
@@ -96,7 +96,7 @@ After the node is initialized, it will start searching for available snapshots, 
     8:22AM INF Discovered new snapshot format=1 hash="F�=\x05�Gh�{�|�����,�Q'�=]\x1a�$�b�ֿQ" height=1900 module=statesync
     ```
 
-The node will select the one with the `height` value the closest to the tip of the chain, and it will then start restoring the state, and finish syncing the few blocks remaining. If it fails to verify any blocks or hash when restoring, it will attempt to restore the next available snapshot, and, if no more are available, will fallback in discovery mode until an usable snapshot is made available.
+The node will select the one with the `height` value the closest to the tip of the chain, and it will then start restoring the state, and finish synchronizing the few blocks remaining. If it fails to verify any blocks or hash when restoring, it will attempt to restore the next available snapshot, and, if no more are available, it will fallback in discovery mode until an usable snapshot is made available.
 
 ## Configure an existing node to provide snapshots
 

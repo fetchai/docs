@@ -4,20 +4,20 @@ import { Callout } from 'nextra/components'
 
 ## Prerequisites
 
-You can start using the ledger by first having installed what follows:
+You can start using the Fetch Ledger by first installing the following:
 
     - **Go 1.18+**: installation instructions are available [here ↗️](https://golang.org/dl/).
     - **Packages**: `make`, `gcc` (on Ubuntu, install them with `sudo apt-get update && sudo apt-get install -y make gcc`).
 
 ## Building the code
 
-Download the latest released version from GitHub and build the project using the running the following command:
+You can download the latest released version from GitHub and build the project using the running the following command:
 
     ```
     git clone https://github.com/fetchai/fetchd.git && cd fetchd
     ```
 
-Then, **build the code** by running the following command:
+Then, you can **build the code** by running the following command:
 
     ```bash
     make build
@@ -25,13 +25,13 @@ Then, **build the code** by running the following command:
 
 This will generate the `./build/fetchd` binary.
 
-For non-developer users we recommend that the user installs the binaries into their system. This can be done with the following command:
+For **non-developer users**, we recommend to install the binaries into their system. This can be done with the following command:
 
     ```bash
     make install
     ```
 
-This will install the binaries in the directory specified by your `$GOBIN` environment variable (default to `~/go/bin`).
+This will install the binaries in the directory specified by your `$GOBIN` environment variable (default to `~/go/bin`):
 
     ```bash
     which fetchd
@@ -42,13 +42,13 @@ This should return a path such as `~/go/bin/fetchd` (might be different dependin
 <Callout type="info" emoji="ℹ️">
   If you get no output, or an error such as `which: no fetchd in ...`, possible cause can either be that `make install` failed with some errors or that your go binary folder (default: ~/go/bin) is not in your `PATH`.
 
-  To add the ~/go/bin folder to your PATH, add this line at the end of your ~/.bashrc:
+  You can add the ~/go/bin folder to your PATH, by adding this line at the end of your `~/.bashrc`:
 
   ```
   export PATH=$PATH:~/go/bin
   ```
 
-  and reload it with:
+  and then reload it with:
 
   ```
   source ~/.bashrc
@@ -69,7 +69,7 @@ This would print a version number that must be compatible with the network you a
   Error: failed to parse log level (main:info,state:info,:error): Unknown Level String: 'main:info,state:info,:error', defaulting to NoLevel.
 </Callout>
 
-This means that **you had a pre-stargate version of `fetchd` (≤ v0.7.x), and that you have just installed another stargate version (≥ v0.8.x)**. To solve the issue, you will need to remove the previous configuration files with the following:
+This means that **you had a pre-stargate version of `fetchd` (≤ v0.7.x), and that you have just installed another stargate version (≥ v0.8.x)**. You can solve the issue by removing the previous configuration files with the following:
 
     ```bash
     rm ~/.fetchd/config/app.toml ~/.fetchd/config/config.toml

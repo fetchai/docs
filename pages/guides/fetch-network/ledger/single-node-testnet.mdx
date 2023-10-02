@@ -2,13 +2,12 @@ import { Callout } from 'nextra/components'
 
 # How to run a single node test network
 
-Within contract development, it can be very useful to be able to run a single node network for
-testing. This document outlines the steps required in order to configure a `fetchd` network of 1 node (i.e. **single node network**).
+It can be very useful to be able to run a single node network for testing purposes when undergoing contract development. This document outlines the steps required in order to configure a `fetchd` network of 1 node (i.e. **single node network**).
 
 ## Network setup
 
 <Callout type="info" emoji="ℹ️">
-  These steps only need to be carried out **once** to setup the local network.
+  These steps only need to be carried out **once** to setup the local network correctly.
 </Callout>
 
 1. **Build the ledger from source**: follow the [installation ↗️](/guides/fetch-network/ledger/installation) instructions in order to compile the latest version of the Ledger.
@@ -26,7 +25,7 @@ testing. This document outlines the steps required in order to configure a `fetc
           - `my-local-node-name` is the moniker for the node
         </Callout>
 
-        If you want to make any updates to the genesis, it is a good opportunity to make these updates now.
+        If you want to make any updates to the genesis, it is a good time to make these updates now.
 
 4. **Create a validator key**: let's now create a validator key which will be used as the public/private keypair for our node. Let's create a new key called `validator` using the following command:
 
@@ -38,7 +37,7 @@ testing. This document outlines the steps required in order to configure a `fetc
 
         For more information, checkout the complete [keys ↗️](/guides/fetch-network/ledger/cli/keys) documentation.
 
-5. **Add the validator to the network**: let's now set the initial state for the network, using the following command allocating `100000000000000000000` `stake` tokens to the validator which can be bonded. This is performed with the following command:
+5. **Add the validator to the network**: let's now set the initial state for the network, allocating `100000000000000000000` `stake` tokens to the validator which can be bonded. This is performed with the following command:
 
        `fetchd add-genesis-account validator 100000000000000000000stake`
 
@@ -46,7 +45,7 @@ testing. This document outlines the steps required in order to configure a `fetc
           `stake` is the default test token denomination in the cosmos ecosystem, but you could use `afet`, `BTC`, and so on.
         </Callout>
 
-6. **Generate a transaction**: now, let's **generate a validator transaction**. To get your validator to sign the genesis block, and to agree that this is the correct genesis starting point, use the following command:
+6. **Generate a transaction**: now, let's **generate a validator transaction**. You can get your validator to sign the genesis block, and to agree that this is the correct genesis starting point, using the following command:
 
        `fetchd gentx validator 100000000000000000000stake --chain-id localnet-1`
 
@@ -68,7 +67,7 @@ Let's now run the network. We need to use the following command:
 
 ## Resetting the network
 
-It may happen that you may want to clear out all the data from the network and start it again. To do this in a local network, simply run the following command:
+It may happen that you may want to clear out all the data from the network and start it again. You can do this in a local network, by simply running the following command:
 
        `fetchd tendermint unsafe-reset-all`
 

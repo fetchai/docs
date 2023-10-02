@@ -5,7 +5,7 @@
 First of all, you need to have:
 
     - [installed ↗️](/guides/fetch-network/ledger/installation) `fetchd`.
-    - Configured and [connected ↗️](/guides/fetch-network/ledger/joining-testnet) your validator to the desired network.
+    - [Configured and connected ↗️](/guides/fetch-network/ledger/joining-testnet) your validator to the desired network.
 
 Also, it would be beneficial if you also explore the [CLI documentation ↗️](/guides/fetch-network/ledger/cli/intro) to understand how to correctly interact with the Fetch Ledger.
 
@@ -29,9 +29,7 @@ If you wish to create a validator, you will need to send a transaction to the ne
 
 **Dorado example**
 
-You should verify that you have some tokens available beforehand before trying to create a validator. The easiest way to do this is via the [CLI ↗️](/guides/fetch-network/ledger/cli/tokens).
-
-Below, you can find an example of a typical CLI command that registers the node as running the validator:
+You should verify that you have some tokens available before trying to create a validator. The easiest way to do this is via the [CLI ↗️](/guides/fetch-network/ledger/cli/tokens). Below, you can find an example of a typical CLI command that registers the node as running the validator:
 
     ```bash
     fetchd tx staking create-validator \
@@ -50,7 +48,9 @@ Below, you can find an example of a typical CLI command that registers the node 
 ## Edit a validator configuration
 
 It is possible that validators will need to adjust various settings about their nodes over the time.
-This can be simple things such as the associated website for a validator or more consequential actions like altering the commission rate. In either case, should a validator choose to make this update they would send an `edit-validator` transaction to the network. These transactions can be created in a similar way to the `create-validator` transaction depicted above:
+This can be _simple things_, such as the associated website for a validator, or _more consequential actions_, like altering the commission rate. In either case, should a validator choose to make this update they would send an `edit-validator` transaction to the network.
+
+These transactions can be created in a similar way to the `create-validator` transaction depicted above:
 
     ```bash
     fetchd tx staking edit-validator
@@ -64,7 +64,9 @@ This can be simple things such as the associated website for a validator or more
 
 ## Unbonding a validator
 
-Whenever and if a validator wants to stop being a validator for any reason, they can unbond some or all of their staked tokens. **Unbonding refers to the process of withdrawing or removing a certain amount of staked tokens from a validator or a network after a defined waiting period**. This operation is carried out with the following CLI command:
+Whenever and if a validator wants to stop being a validator for any reason, they can unbond some or all of their staked tokens. **Unbonding refers to the process of withdrawing or removing a certain amount of staked tokens from a validator or a network after a defined waiting period**.
+
+This operation is carried out with the following CLI command:
 
     ```bash
     fetchd tx staking unbond \
@@ -73,7 +75,7 @@ Whenever and if a validator wants to stop being a validator for any reason, they
       --from <key name>
     ```
 
-An example of this command is given in the following example:
+An instance of this command is given in the example below:
 
     ```bash
     fetchd tx staking unbond \

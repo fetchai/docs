@@ -2,13 +2,11 @@ import { Callout } from 'nextra/components'
 
 # How to join a testnet
 
-If you want to join a test network, you will need to have the **correct version of the `fetchd` ledger available on your system**.
+You can join a test network by first having the **correct version of the `fetchd` ledger available on your system**.
 
 ## Using a local version
 
-If you have correctly followed the [installation ↗️](/guides/fetch-network/ledger/installation) guide, then you should now have `fetchd` successfully installed in your path.
-
-You can check this with the following command:
+If you have correctly followed the [installation ↗️](/guides/fetch-network/ledger/installation) guide, then you should now have `fetchd` successfully installed in your path. You can check this by running the following command:
 
     ```bash
     fetchd version
@@ -18,11 +16,11 @@ You can check this with the following command:
   This should print a version number that must be compatible with the network you are connecting to.
 </Callout>
 
-Check the [network page ↗️](/references/fetch-network/ledger/active-networks) for the list of supported versions for each network.
+You can check the [network page ↗️](/references/fetch-network/ledger/active-networks) for the list of supported versions for each network.
 
 ### Configuring the client `fetchd`
 
-In general, to configure the CLI to point at a given network it needs, as a minimum, the following configuration values:
+In general, you can configure the CLI to point at a given network it needs, as a minimum, the following configuration values:
 
     ```bash
     fetchd config chain-id <chain-id>
@@ -31,7 +29,7 @@ In general, to configure the CLI to point at a given network it needs, as a mini
 
 ### Dorado example
 
-In the case of the **Dorado network**, this would be as follows:
+In the case of the **Dorado test network**, this would be as follows:
 
     ```bash
     fetchd config chain-id dorado-1
@@ -40,27 +38,27 @@ In the case of the **Dorado network**, this would be as follows:
 
 ### Configuring the server `fetchd`
 
-You can initialize `fetchd` by running the following command:
+1. You can initialize `fetchd` by running the following command:
 
     ```bash
     fetchd init <moniker-name> --chain-id <chain id>
     ```
 
-<Callout type="info" emoji="ℹ️">
-  This command setups a default/empty genesis configuration.
-</Callout>
+    <Callout type="info" emoji="ℹ️">
+      This command setups a default/empty genesis configuration.
+    </Callout>
 
-<Callout type="info" emoji="ℹ️">
-  This will initialize default configuration files under the `FETCHD_HOME` folder, which default to `~/.fetchd/`.
-</Callout>
+    <Callout type="info" emoji="ℹ️">
+      This will initialize default configuration files under the `FETCHD_HOME` folder, which default to `~/.fetchd/`.
+    </Callout>
 
-You will then need to execute the following command to **download the latest genesis file**:
+2. You will then need to execute the following command to **download the latest genesis file**:
 
     ```bash
     curl <rpc url>/genesis | jq '.result.genesis' > ~/.fetchd/config/genesis.json
     ```
 
-Finally, you will need to **connect `fetchd`** by getting it to connect to a seed node for the given network:
+3. Finally, you will need to **connect `fetchd`** by getting it to connect to a seed node for the given network:
 
     ```bash
     fetchd start --p2p.seeds=<network seed peers>
@@ -70,22 +68,23 @@ Finally, you will need to **connect `fetchd`** by getting it to connect to a see
 
 If you wish to connect to the **Dorado testnet** for example, you would need to follow the steps provided below:
 
-1. You would need to initialize a new Fetch.ai node named `my-first-fetch-node` with the chain ID `dorado-1` using the following command:
+1. You would need to initialize a new Fetch.ai node (e.g., `my-first-fetch-node`) with the chain ID `dorado-1` using the following command:
 
     ```bash
     fetchd init my-first-fetch-node --chain-id dorado-1
     ```
 
-2. You would then need to get the genesis file, which contains the initial state of the blockchain. You can get it either from the rpc interface with:
+2. You would then need to get the genesis file, which contains the initial state of the blockchain. You can get it either from the RPC interface with:
 
     ```bash
     # genesis
     curl https://rpc-dorado.fetch.ai:443 | jq '.result.genesis' > ~/.fetchd/config/genesis.json
+
     # ...or, if that's too large to download from the rpc interface as a single file...
     curl https://storage.googleapis.com/fetch-ai-testnet-genesis/genesis-dorado-827201.json --output ~/.fetchd/config/genesis.json
     ```
 
-3. Then, you would start the Fetch.ai node with specific seed nodes on the Dorado testnet using the following command:
+3. Then, you would need to start the Fetch.ai node with specific seed nodes on the Dorado testnet using the following command:
 
     ```bash
     # start
