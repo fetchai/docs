@@ -1,20 +1,25 @@
-# Utilising the Agentverse Mailbox Service 📬
+# Utilizing the Agentverse mailbox service 📬
 
 ## Introduction
 
-The **Mailroom** assists you in setting up mailboxes for local uAgents and agentverse uAgents, allowing them to have a two-way communication with each other without the need to be online constantly and without requiring your constant presence to operate. In addition to utilizing the **Mailroom**, there exists a more straightforward method for establishing one-way communication from a local uAgent to an agentverse uAgent. We will show both methods in this guide.
+The **Mailroom** assists you in setting up mailboxes for local uAgents and agentverse uAgents, allowing them to have a two-way communication with each other without the need to be online constantly and without requiring your constant presence to operate. In addition to utilizing the **Mailroom**, there exists a more straightforward method for establishing one-way communication from a local uAgent to an agentverse uAgent.
+
+**We will show both methods in this guide**.
 
 ## Agentverse and Local uAgents
 
 Facilitating communication between agentverse uAgents and local uAgents can be achieved through two methods:
 
-* **Direct Recipient Address**: You can simply initiate communication by specifying the recipient address of the agentverse uAgent in the local uAgent setup.
-* **Mailbox Communication**: To establish communication between agentverse uAgents and local uAgents through the mailbox, your local uAgents will use the Agentverse URL and API key to collect messages.
+    - **Direct Recipient Address**: you can simply initiate communication by specifying the recipient address of the agentverse uAgent in the local uAgent setup.
+
+    - **Mailbox Communication**: to establish communication between agentverse uAgents and local uAgents through the mailbox, your local uAgents will use the Agentverse URL and API key to collect messages.
 
 ## Direct Communication
+
 ### Local uAgent Setup
 
 Start by creating a local uAgent named alice with a **send_message** functionality using an `@agent.on_interval` decorator to send messages to agentverse uAgent every 5 seconds.
+
 You can leave **AGENTVERSE_AGENT_ADDRESS** empty for now until you create your agentverse uAgent in the next step.
 
     ```py copy
@@ -46,7 +51,9 @@ You can leave **AGENTVERSE_AGENT_ADDRESS** empty for now until you create your a
         alice.run()
    ```
 ### Agentverse uAgent Setup
+
 Now create an agentverse agent **bob** by selecting **+ Agent** on **Managed Agents** in the [Agentverse ↗️](https://agentverse.ai/). And add the following code to it:
+
     ```py copy
     class Message(Model):
         message: str
@@ -55,91 +62,97 @@ Now create an agentverse agent **bob** by selecting **+ Agent** on **Managed Age
     async def handle_message(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
    ```
+
 Next, run **bob** on agentverse, copy **bob's** address and paste it on **alice's** local setup. Finally, run your local uAgent and you will see **alice's** local uAgent messages printed on **bob's** agentverse terminal
 
-
 ## Mailbox Communication
+
 ### Local Agent Setup
 
 To register uAgents in the **Agentverse Mailbox Service**:
 
-1. First of all, you need to sign in at the [Agentverse ↗️](https://agentverse.ai/).
-2. After signing in, you need to head towards the upper right corner and click on your profile icon and select **API Keys**. Select **Create new key** and name it. This will generate your own **API Key** that will allow you to use the Mailbox server.
-3. You would then need to navigate to the **Mailroom** tab and select **+ Mailbox** to register a uAgent. First, you need to select a name for it and provide the uAgent's address. Finally, you will then need to include the **Mailbox Server** and **API key** just created within the script for your uAgent so for your registered uAgents to start communicating with it. This can be added to your local uAgent in the following way:
+    1. First of all, you need to sign in at the [Agentverse ↗️](https://agentverse.ai/).
 
-    ```py copy
-    # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
-    SEED_PHRASE = "put_your_seed_phrase_here"
+    2. After signing in, you need to head towards the upper right corner and click on your profile icon and select **API Keys**. Select **Create new key** and name it. This will generate your own **API Key** that will allow you to use the Mailbox server.
 
-    # Copy the address shown below
-    print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+    3. You would then need to navigate to the **Mailroom** tab and select **+ Mailbox** to register a uAgent. First, you need to select a name for it and provide the uAgent's address. Finally, you will then need to include the **Mailbox Server** and **API key** just created within the script for your uAgent so for your registered uAgents to start communicating with it. This can be added to your local uAgent in the following way:
 
-    # Then sign up at https://agentverse.ai to get an API key and register your agent
-    API_KEY = "put_your_API_key_here"
+        ```py copy
+        # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+        SEED_PHRASE = "put_your_seed_phrase_here"
+
+        # Copy the address shown below
+        print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+
+        # Then sign up at https://agentverse.ai to get an API key and register your agent
+        API_KEY = "put_your_API_key_here"
 
 
-    # Now your agent is ready to join the agentverse!
-    alice = Agent(
-        name="alice",
-        seed=SEED_PHRASE,
-        mailbox=f"{API_KEY}@wss://agentverse.ai",
-    )
-    ```
-4. Now lets finish the setup for our local uAgent **alice** by importing the necessary classes and adding functionalities for sending and receiving messages.
-    ```py copy
-    from uagents import Agent, Context, Model
-    from uagents.setup import fund_agent_if_low
-    
-    class Message(Model):
-        message: str
-    
-    BOB_ADDRESS = "paste_bob_address_here"
-    
-    SEED_PHRASE = "put_your_seed_phrase_here"
-    
-    print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
-    
-    API_KEY = "put_your_API_key_here"
-    
-    alice = Agent(
-        name="alice",
-        seed=SEED_PHRASE,
-        mailbox=f"{API_KEY}@wss://agentverse.ai",
-    )
-    
-    fund_agent_if_low(alice.wallet.address())
-    
-    @alice.on_interval(period=2.0)
-    async def send_message(ctx: Context):
-        ctx.logger.info("Sending message to bob")
-        await ctx.send(BOB_ADDRESS, Message(message="hello there bob"))
-    
-    @alice.on_message(model=Message, replies=set())
-    async def on_message(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-    
-    if __name__ == "__main__":
-        alice.run()
+        # Now your agent is ready to join the agentverse!
+        alice = Agent(
+            name="alice",
+            seed=SEED_PHRASE,
+            mailbox=f"{API_KEY}@wss://agentverse.ai",
+        )
+        ```
 
-   ```
+    4. Now lets finish the setup for our local uAgent **alice** by importing the necessary classes and adding functionalities for sending and receiving messages:
+
+        ```py copy
+        from uagents import Agent, Context, Model
+        from uagents.setup import fund_agent_if_low
+
+        class Message(Model):
+            message: str
+
+        BOB_ADDRESS = "paste_bob_address_here"
+
+        SEED_PHRASE = "put_your_seed_phrase_here"
+
+        print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+
+        API_KEY = "put_your_API_key_here"
+
+        alice = Agent(
+            name="alice",
+            seed=SEED_PHRASE,
+            mailbox=f"{API_KEY}@wss://agentverse.ai",
+        )
+
+        fund_agent_if_low(alice.wallet.address())
+
+        @alice.on_interval(period=2.0)
+        async def send_message(ctx: Context):
+            ctx.logger.info("Sending message to bob")
+            await ctx.send(BOB_ADDRESS, Message(message="hello there bob"))
+
+        @alice.on_message(model=Message, replies=set())
+        async def on_message(ctx: Context, sender: str, msg: Message):
+            ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+        if __name__ == "__main__":
+            alice.run()
+
+       ```
 ### Agentverse uAgent Setup
 
-1. Create a new agentverse uAgent **bob** by selecting **+ Agent** on **Managed Agents** in the [Agentverse ↗️](https://agentverse.ai/).
+    1. Create a new agentverse uAgent **bob** by selecting **+ Agent** on **Managed Agents** in the [Agentverse ↗️](https://agentverse.ai/).
 
-2. Then, you would need to add the following code to **bob**'s script:
+    2. Then, you would need to add the following code to **bob**'s script:
 
-    ```py copy
-    class Message(Model):
-        message: str
+        ```py copy
+        class Message(Model):
+            message: str
 
-    @agent.on_message(model=Message)
-    async def handle_message(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        @agent.on_message(model=Message)
+        async def handle_message(ctx: Context, sender: str, msg: Message):
+            ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-        await ctx.send(sender, Message(message="hello there alice"))
-    ```
+            await ctx.send(sender, Message(message="hello there alice"))
+        ```
 
-3. Next, you need to copy **bob**'s address and define it within **alice**'s code under **BOB_ADDRESS**.
-4. Once you've done this, run agentverse uAgent **bob** on the [Agentverse ↗️](https://agentverse.ai/) followed by your local uAgent **alice**. You will then be able to send messages back and forth between the two uAgents, which will be displayed on both **alice**'s and **bob**'s terminals.
+    3. Next, you need to copy **bob**'s address and define it within **alice**'s code under **BOB_ADDRESS**.
 
-For a better understanding and visualisation of the topic, you can have a look at the following section: [Communicating with other uAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents#uAgents-remote-communication-the-agentverse-mailbox-service.mdx)️ guide.
+    4. Once you've done this, run agentverse uAgent **bob** on the [Agentverse ↗️](https://agentverse.ai/) followed by your local uAgent **alice**. You will then be able to send messages back and forth between the two uAgents, which will be displayed on both **alice**'s and **bob**'s terminals.
+
+For a better understanding and visualisation of the topic, you can have a look at the following section: [Communicating with other uAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents#uAgents-remote-communication-the-agentverse-mailbox-service)️ guide.
