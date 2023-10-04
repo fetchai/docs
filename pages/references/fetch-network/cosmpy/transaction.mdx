@@ -1,164 +1,204 @@
 # cosmpy.aerial.tx
 
-Transaction
+Transaction.
 
-## TxState Objects 
+## TxState Objects
 
-```py
-class TxState(Enum)
-```
-Transaction state 
+    ```py
+    class TxState(Enum)
+    ```
 
-**Arguments:**
-- `Enum`: Draft, Sealed, Final 
+    Transaction state.
 
-## SigningMode Objects 
-```py
-class SigningMode(Enum)
-```
-Signing Mode 
+    **Arguments**:
 
-**Arguments:**
-- `Enum`: Direct 
+        - `Enum`: Draft, Sealed, Final.
 
-## SigningConfig Objects 
+## SigningMode Objects
 
-```py
-@dataclass
-class SigningCfg()
-```
-Transaction signing configuration 
+    ```py
+    class SigningMode(Enum)
+    ```
+
+    Signing Mode.
+
+    **Arguments**:
+
+        - `Enum`: Direct.
+
+## SigningConfig Objects
+
+    ```py
+    @dataclass
+    class SigningCfg()
+    ```
+
+    Transaction signing configuration.
 
 ### Direct
-```py 
-@staticmethod
-def direct(public_key: PublicKey, sequence_num: int) -> "SigningCfg"
-```
-Transaction signing configuration using Direct Mode
 
-**Arguments:** 
-- `public_key`: Public key 
-- `sequence_num`: Sequence number 
+    ```py
+    @staticmethod
+    def direct(public_key: PublicKey, sequence_num: int) -> "SigningCfg"
+    ```
 
-**Returns:** 
-Transaction signing configuration 
+    Transaction signing configuration using Direct Mode.
+
+    **Arguments**:
+
+        - `public_key`: Public key.
+        - `sequence_num`: Sequence number.
+
+    **Returns**:
+
+        Transaction signing configuration.
 
 ## Transaction Objects
-```py
-class Transaciton()
-```
-Transaction 
+
+    ```py
+    class Transaciton()
+    ```
+
+    Transaction.
 
 ### __init__
-```py
-def __init__()
-```
-Init the transaction with transaction message, state, fee and body
+
+    ```py
+    def __init__()
+    ```
+
+    Init the transaction with transaction message, state, fee and body.
 
 ### State
+
 ```py
 @property
 def state() -> TxState
 ```
-Get the transaction state 
 
-**Returns:** 
-current state of the transaction 
+    Get the transaction state.
+
+    **Returns**:
+
+        Current state of the transaction.
 
 ### Msgs
-```py
-@property
-def msgs()
-```
-Get the transaction messages 
 
-**Returns:**
-transaction message 
+    ```py
+    @property
+    def msgs()
+    ```
+
+    Get the transaction messages.
+
+    **Returns**:
+
+        Transaction messages.
 
 ### fee
-```py
-@property
-def fee() -> Optional[str]
-```
-Get the transaction fee
 
-**Returns:**
-Transaciton fee
+    ```py
+    @property
+    def fee() -> Optional[str]
+    ```
+
+    Get the transaction fee.
+
+    **Returns**:
+
+        Transaction fee.
 
 ### tx
-```py
-@property
-def tx()
-```
-Initialize
 
-**Raises:**
+    ```py
+    @property
+    def tx()
+    ```
 
-- `RuntimeError`: If the transaction has not been completed 
+    Initialize.
 
-**Returns:**
-transaction
+    **Raises**:
+
+        - `RuntimeError`: If the transaction has not been completed.
+
+    **Returns**:
+
+        Transaction.
 
 ### add_message
-```py
-def add_message(msg: Any) -> "Transaction"
-```
-Initialize 
 
-**Arguments:**
-- `msg`: Transaction message(memo)
+    ```py
+    def add_message(msg: Any) -> "Transaction"
+    ```
 
-**Raises:**
-- `RuntimeError`: If the transaction is not in the draft state
+    Initialize.
 
-**Returns:**
-transaction with message added
+    **Arguments**:
+
+        - `msg`: Transaction message(memo).
+
+    **Raises**:
+
+        - `RuntimeError`: If the transaction is not in the draft state.
+
+    **Returns**:
+
+        Transaction with message added.
 
 ### Seal
-```py 
-def seal(signing_cfgs: Union[signing_cfg, List[SigningCfg]],
-fee: str,
-gas_limit: int,
-memo: Optional[str] = None) -> "Transaciton"
-```
-Seal the transaction
 
-**Arguments:**
-- `signing_cfgs`: Signing configs 
-- `fee`: transaction fee
-- `gas_limit`: transaction gas limit 
-- `memo`: transaction memo, defaults to None
+    ```py
+    def seal(signing_cfgs: Union[signing_cfg, List[SigningCfg]],
+    fee: str,
+    gas_limit: int,
+    memo: Optional[str] = None) -> "Transaciton"
+    ```
 
-**Returns:**
-Sealed transaction 
+    Seal the transaction.
+
+    **Arguments**:
+
+        - `signing_cfgs`: signing configs.
+        - `fee`: transaction fee.
+        - `gas_limit`: transaction gas limit.
+        - `memo`: transaction memo, defaults to None.
+
+    **Returns**:
+        Sealed transaction.
 
 ### sign
 
-```py
-def sign(signer: Signer,
-chain_id: str, 
-account_number: int, 
-deterministic: bool = False) -> "Transaciton"
-```
-Sign the transaction 
+    ```py
+    def sign(signer: Signer,
+    chain_id: str,
+    account_number: int,
+    deterministic: bool = False) -> "Transaciton"
+    ```
 
-**Arguments:**
-- `signer`: Signer 
-- `chain_id`: chain id 
-- `account_number`: account number 
-- `deterministic`: deterministic, defaults to False
+    Sign the transaction.
 
-**Raises:**
-- `RuntimeError`: If transaction is not sealed 
+    **Arguments**:
 
-**Retunrs:**
-signed transaction 
+        - `signer`: signer.
+        - `chain_id`: chain id.
+        - `account_number`: account number.
+        - `deterministic`: deterministic, defaults to False.
+
+    **Raises**:
+
+        - `RuntimeError`: If transaction is not sealed.
+
+    **Retunrs**:
+
+      Signed transaction
 
 ### complete
-```py
-def complete() -> "Transaciton"
-```
-Update transaction state to Final 
+    ```py
+    def complete() -> "Transaciton"
+    ```
 
-**Returns:** 
-transaction with updated state 
+    Update transaction state to Final.
+
+    **Returns**:
+
+        Transaction with updated state.
