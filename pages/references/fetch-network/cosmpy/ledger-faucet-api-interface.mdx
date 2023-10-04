@@ -1,37 +1,42 @@
 # cosmpy.aerial.faucet
 
-Ledger faucet API Interface 
+Ledger faucet API Interface.
 
-## FaucetAPI Objects 
+## FaucetAPI Objects
 
-Faucet API 
+Faucet API
 
 ### __init__
 
-```py 
-def __init__ (net_config: NetworkConfig)
-```
-Init faucet API 
+    ```py
+    def __init__ (net_config: NetworkConfig)
+    ```
 
-**Arguments:**
-- `net_config`: Ledger network configration 
+    Init faucet API.
 
+    **Arguments**:
 
-**Raises:**
+        - `net_config`: Ledger network configration.
 
-- `ValueError`: Network config has no faucet URL set 
+    **Raises**:
+
+        - `ValueError`: Network config has no faucet URL set.
 
 ### get_wealth
-```py 
-def get_wealth(address: Union[Address, str]) -> None 
-```
-Get wealth from the faucet for the provided address 
 
-**Arguments:**
-- `address`: the address
+    ```py
+    def get_wealth(address: Union[Address, str]) -> None
+    ```
 
-**Raises:**
-- `RuntimeError`: Unable to create faucet claim 
-- `RuntimeError`: Failed to check faucet claim status 
-- `RuntimeError`: Failed to get wealth for address
-- `ValueError`: Faucet claim check timed out 
+    Get wealth from the faucet for the provided address.
+
+    **Arguments**:
+
+        - `address`: the address.
+
+    **Raises**:
+
+        - `RuntimeError`: Unable to create faucet claim.
+        - `RuntimeError`: Failed to check faucet claim status.
+        - `RuntimeError`: Failed to get wealth for address.
+        - `ValueError`: Faucet claim check timed out.
