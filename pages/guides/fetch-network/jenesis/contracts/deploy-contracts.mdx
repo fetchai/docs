@@ -1,28 +1,32 @@
-# Deploy contracts
+import { Callout } from 'nextra/components'
 
-Once we have successfully compiled our contracts, we need to make sure to fill out the necessary instantiation message information under the `init` field in the `jenesis.toml` file.
+# How to deploy contracts
 
-    > **Note: `jenesis deploy` currently requires that each contract's directory name matches the `.wasm` file name under the `artifacts` directory**.
+Once you have successfully compiled your contracts, you need to make sure to fill out the necessary instantiation message information under the `init` field in the `jenesis.toml` file.
 
-To deploy all the contracts inside a profile, we have two options:
+<Callout type="info" emoji="ℹ️">
+`jenesis deploy` currently requires that each contract's directory name matches the `.wasm` file name under the `artifacts` directory**.
+</Callout>
 
-    1. Fill the `deployer_key` field for each contract inside the `jenesis.toml` file (keys can be different for each contract) and run the following command:
+You can **deploy all the contracts inside a profile**, by follwoing one of these two options:
+
+    1. You can fill the `deployer_key` field for each contract inside the `jenesis.toml` file (keys can be different for each contract) and run the following command:
 
         ```
         jenesis deploy [--profile profile_name]
         ```
 
-    Each contract inside the specified profile will be deployed with the specified key.
+        Each contract inside the specified profile will be deployed with the specified key.
 
-    2. Simply specify a certain key as an argument of the deploy command:
+    2. You can simply specify a certain key as an argument of the deploy command:
 
         ```
         jenesis deploy key_name [--profile profile_name]
         ```
 
-    The `deployer_key` field will be ignored in this case and all contracts inside the specified profile will be deployed using the key `key_name`.
+        The `deployer_key` field will be ignored in this case and all contracts inside the specified profile will be deployed using the key `key_name`.
 
-After running either of the commands mentioned above, all the deployment information will be saved in the `jenesis.lock` file inside your project's directory:
+After running either of the commands mentioned above, all the deployment information will be saved in the `jenesis.lock` file inside your project's directory and depicted as follows:
 
     ```toml
     [profile.testing.my_first_contract]
@@ -34,9 +38,11 @@ After running either of the commands mentioned above, all the deployment informa
 
 ## Deploy contracts depending on other deployments
 
-We can point to other contract addresses in any contract's instantiation message if required.
+You can point to other contract addresses in any contract's instantiation message if required.
 
-For instance, if we have contracts `A`, `B`, and `C` within our project, but contract `A` requires contract's `B` deployment address in its instantiation message and contract `B` requires contract's `C` deployment address, these will need to be deployed in the following order: `C`, `B`, `A`. In order to provide this information to `Jenesis` we will need to specify where exactly these contract addresses need to be inserted inside the instantiation messages. We can do this by writing the `$` symbol followed by the contract name in the corresponding field in the init parameters:
+For instance, if you have contracts `A`, `B`, and `C` within our project, but contract `A` requires contract's `B` deployment address in its instantiation message and contract `B` requires contract's `C` deployment address, these will need to be deployed in the following order: `C`, `B`, `A`.
+
+In order to provide this information to `Jenesis` you will need to specify where exactly these contract addresses need to be inserted inside the instantiation messages. You can do this by writing the `$` symbol followed by the contract name in the corresponding field in the init parameters:
 
     ```toml
     [profile.testing.contracts.A.init]

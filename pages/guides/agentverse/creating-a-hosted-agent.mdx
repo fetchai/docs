@@ -1,13 +1,15 @@
-# Creating a hosted/managed agent 🤖
+import { Callout } from 'nextra/components'
+
+# Creating a hosted agent 🤖
 
 ## Introduction
 
-On the [Agentverse ↗️](https://agentverse.ai/), within the [Managed Agents ↗️](/concepts/agent-services/agent-hosting.mdx) section you are able to build and host any type of agent you wish to create. Bear in mind that managed agents are currently a beta feature and because of this, they do not fully support the complete uAgents toolset for development. Improvements and upgrades are foreseen in the future!
+On the [Agentverse ↗️](https://agentverse.ai/), within the [Managed Agents ↗️](/concepts/agent-services/agent-hosting) section you are able to build and host any type of agent you wish to create. Bear in mind that managed agents are currently a beta feature and because of this, they do not fully support the complete uAgents toolset for development. Improvements and upgrades are foreseen in the future!
 
 There are 2 different ways through which you can start creating your agents. You can either choose to build an agent:
 
-1.  from a blank script, by clicking on **+ Agents**.
-2.  from a specified use case, by clicking on **+ Use Case**.
+    1.  from a blank script, by clicking on **+ Agents**.
+    2.  from a specified use case, by clicking on **+ Use Case**.
 
 ## Creating an agent
 
@@ -16,7 +18,7 @@ Once you select it, your agent will be ready to be coded and a box will appear i
 
 By clicking on this box, the code editor will appear allowing you to code your agent straightforwardly. This is the **Agent Editor**. You can use this editor to build the code for the agent you have in mind, edit, and refine it all in one place. The Agent Editor provides you with different fundamental information about your agent, including the **agent's address** and **wallet address**.
 
-On this code editor, there is a built-in **agent object** that enables you to start coding right away! To begin, you can use the `@agent.on_interval` decorator to create a simple script that prints something on the terminal every 3 seconds.
+On this code editor, there is a built-in **agent object** that enables you to start coding right away! To begin, you can use the `@agent.on_interval` decorator to create a simple script that prints something on the terminal every 3 seconds:
 
 Here's an example:
 
@@ -25,39 +27,46 @@ Here's an example:
    async def say_hello(ctx: Context):
       print("Hello World!")
    ```
-To run the agent simply click on the Run button. To stop it click on the Stop button
 
-An additional feature of the Agent Editor is that at the end of it you can find the **Agents Logs**, which is a built-in terminal displaying the output of your script after it is being run. When running the example above you will observe "Hello World!" printed on the terminal
+To run the agent simply click on the Run button. To stop it click on the Stop button.
+
+An additional feature of the Agent Editor is that at the end of it you can find the **Agents Logs**, which is a built-in terminal displaying the output of your script after it is being run. When running the example above you will observe "Hello World!" printed on the terminal.
+
 This way, we aim at making agents' development as quick and efficient as possible. This is a great tool to determine if your code runs smoothly and to check if any error arises so for you to directly intervene and solve it if needed!
 
 ## Create an agent based on a template
 
 By choosing **+ Use Case**, you will be able to create an agent based on a specific **template**. There are different categories you can choose from:
 
-1. **Getting Started**: this category helps you in creating basic agents using the uAgents technology.
-   You can:
+    1. **Getting Started**: this category helps you in creating basic agents using the uAgents technology.
+       You can:
 
-   - Create your first agent.
-   - Send messages between two agents.
-   - Storing data.
-   - Organize your agents with protocols.
-   - Create an agent requesting data from a website.
-   - Create an agent sending tokens to another agent.
-   - Create an agent interacting with an oracle smart contract.
+           - Create your first agent.
+           - Send messages between two agents.
+           - Storing data.
+           - Organize your agents with protocols.
+           - Create an agent requesting data from a website.
+           - Create an agent sending tokens to another agent.
+           - Create an agent interacting with an oracle smart contract.
 
-2. **AI/ML**: this category allows you to develop AI/ML agents.
-   You can choose to:
+    2. **AI/ML**: this category allows you to develop AI/ML agents.
 
-   - Create an agent requesting data from an AI model.
+           You can choose to:
 
-3. **Smart Services**: this category is for building smart agents for different services.agent
-   You can choose among:
-   - **Weather Agents**: this allows you to develop agents retrieving weather data from weather services API.
-   - **Weather Data Provider and Consumer Agents**: this use case allows you to create two different agents, one providing weather data and another one consuming such data.
-   - **Weather Data Seller and Buyer Agents**: this use case allows you to create two different agents, one selling weather data and another one buying such data.
-   - **Weather Oracle Provider and Consumer Agents**: this use case allows you to create two different agents, one updating an oracle contract with weather data and another one requesting such data to the oracle by paying a small fee.
+           - Create an agent requesting data from an AI model.
 
-Whenever you choose one of the templates available to start building your agent, in the **Agent Editor** you will see some additional information appearing when clicking on the use case chosen, alongside with the code needed to make it runnable. Additionally, each template available presents a small number in the right corner indicating the number of agents available for that particular template.
+    3. **Smart Services**: this category is for building smart agents for different services.agent
+
+           You can choose among:
+
+           - **Weather Agents**: this allows you to develop agents retrieving weather data from weather services API.
+           - **Weather Data Provider and Consumer Agents**: this use case allows you to create two different agents, one providing weather data and another one consuming such data.
+           - **Weather Data Seller and Buyer Agents**: this use case allows you to create two different agents, one selling weather data and another one buying such data.
+           - **Weather Oracle Provider and Consumer Agents**: this use case allows you to create two different agents, one updating an oracle contract with weather data and another one requesting such data to the oracle by paying a small fee.
+
+<Callout type="info" emoji="ℹ️">
+  Whenever you choose one of the templates available to start building your agent, in the **Agent Editor** you will see some additional information appearing when clicking on the use case chosen, alongside with the code needed to make it runnable. Additionally, each template available presents a small number in the right corner indicating the number of agents available for that particular template.
+</Callout>
 
 ## Register Domain Name
 

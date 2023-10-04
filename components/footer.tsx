@@ -69,6 +69,10 @@ const Footer: React.FC = () => {
       description: "Careers",
       path: "https://fetch.ai/careers",
     },
+    {
+      description: "Website",
+      path: "https://fetch.ai",
+    },
   ];
 
   const legal = [
