@@ -1,112 +1,119 @@
-# cosmpy.aerial.config 
+# cosmpy.aerial.config
 
-Network configurations
+Network configurations.
 
-## NetworkConfigError Objects 
+## NetworkConfigError Objects
 
-```py  
-class NetworkConfigError(RuntimeError)
-```
+    ```py
+    class NetworkConfigError(RuntimeError)
+    ```
 
-Network config error 
+    Network config error.
 
-**Arguments:**
+    **Arguments**:
 
-- `RuntimeError:` Runtime error 
+        - `RuntimeError:` Runtime error.
 
-## NetworkConfig Objects 
+## NetworkConfig Objects
 
-```py
-@dataclass
-class NetworkConfig()
-```
+    ```py
+    @dataclass
+    class NetworkConfig()
+    ```
 
-Network configurations
+    Network configurations.
 
-**Raises:**
+    **Raises**:
 
-- `NetworkConfigError`: Network config error 
-
-- `RuntimeError`: Runtime error 
+        - `NetworkConfigError`: Network config error.
+        - `RuntimeError`: Runtime error.
 
 ### validate
 
-```py
-def validate()
-```
-Validate network configuration 
+    ```py
+    def validate()
+    ```
 
-**Raises:**
+    Validate network configuration.
 
-- `NetworkConfigError:` Network config error 
+    **Raises**:
+
+        - `NetworkConfigError:` Network config error.
 
 ### fetchai_dorado_testnet
 
-```py 
-@classmethod 
-def fetchai_dorado_testnet(cls) -> "Network Config"
-```
+    ```py
+    @classmethod
+    def fetchai_dorado_testnet(cls) -> "Network Config"
+    ```
 
-Fetchai dorado testnet. 
+    Fetchai dorado testnet.
 
-**Returns:** 
-Network configuration 
+    **Returns**:
+
+        Network configuration.
 
 ### fetchai_alpha_testnet
 
-```py
-@classmethod
-def fetchai_alpha_testnet(cls)
-```
+    ```py
+    @classmethod
+    def fetchai_alpha_testnet(cls)
+    ```
 
-Get the fetchai alpha testnet 
+    Get fetchai alpha testnet.
 
-**Raises:**
+    **Raises**:
 
-- `RuntimeError:` No beta testnet available 
+        - `RuntimeError:` No beta testnet available.
 
-### fetchai_stable_testnet 
+### fetchai_stable_testnet
 
-```py 
-@classmethod
-def fetchai_stable_testnet(cls)
-```
+    ```py
+    @classmethod
+    def fetchai_stable_testnet(cls)
+    ```
 
-Get the fetchai stable testnet 
+    Get fetchai stable testnet.
 
-**Returns:**
-fetchai stable testnet. For now dorado is fetchai stable testnet  
+    **Returns**:
+
+        Fetchai stable testnet. For now dorado is fetchai stable testnet.
 
 ### fetchai_mainnet
 
-```py 
-@classmethod
-def fetchai_mainnet(cls) -> "NetworkConfig"
-```
-Get the fetchain mainnet configuration 
+    ```py
+    @classmethod
+    def fetchai_mainnet(cls) -> "NetworkConfig"
+    ```
 
-**Returns:** 
-fetch mainnet configuration
+    Get the fetchain mainnet configuration.
+
+    **Returns**:
+
+        Fetch mainnet configuration.
 
 ### fetch_mainnet
 
-```py
-@classmethod
-def fetch_mainnet(cls) -> "NetworkConfig"
-```
-Get the fetch mainnet 
+    ```py
+    @classmethod
+    def fetch_mainnet(cls) -> "NetworkConfig"
+    ```
 
-**Returns:**
-fetch mainnet configurations
+    Get the fetch mainnet.
 
-### latest_stable_testnet 
+    **Returns**:
 
-```py
-@classmethod
-def latest_stable_testnet(cls) -> "NetworkConfig"
-```
+        Fetch mainnet configurations.
 
-Get the latest stable testnet 
+### latest_stable_testnet
 
-**Returns:**
-latest stable testnet 
+    ```py
+    @classmethod
+    def latest_stable_testnet(cls) -> "NetworkConfig"
+    ```
+
+    Get the latest stable testnet.
+
+    **Returns**:
+
+        Latest stable testnet.
