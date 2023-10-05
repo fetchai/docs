@@ -75,9 +75,11 @@ const Body = ({
     <>
       {children}
       {gitTimestampEl}
-      {themeContext.timestamp && <div className="nx-flex nx-justify-center nx-mb-6">
-        <FeedbackComponent pageUrl={route} />
-      </div>}
+      {themeContext.timestamp && (
+        <div className="nx-flex nx-justify-center nx-mb-6">
+          <FeedbackComponent pageUrl={route} />
+        </div>
+      )}
       {navigation}
     </>
   );
