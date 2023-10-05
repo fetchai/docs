@@ -137,9 +137,9 @@ const items: { [key: string]: Item[] } = {
     },
     {
       title: "DeltaV",
-      description: <>Coming soon.</>,
+      description: <>DeltaV platform operates as a search-based AI chat interface, employing natural language conversations to independently manage tasks for users.</>,
       icon: whisperAgentIcon,
-      path: "/guides",
+      path: "/concepts/deltav/intro",
     },
     {
       title: "Analytics",
@@ -203,7 +203,7 @@ const items: { [key: string]: Item[] } = {
       path: "/references/contracts/uagents-almanac/almanac-overview",
     },
     {
-      title: "Cosmpy",
+      title: "CosmPy",
       description: <>Get stated with CosmPy.</>,
       icon: cosmpyIcon,
       path: "/guides/fetch-network/cosmpy/install",
