@@ -159,7 +159,8 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "How to get testnet tokens via the token faucet 💰",
-          description: "Get testnet tokens and start developing on the Fetch.ai testnet.",
+          description:
+            "Get testnet tokens and start developing on the Fetch.ai testnet.",
           path: "/guides/fetch-network/ledger/faucet",
         },
       ],
