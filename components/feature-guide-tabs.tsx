@@ -116,12 +116,14 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "Registering agent services",
-          description: "Discover how to register and make discoverable your agent's services within the Agentverse.",
+          description:
+            "Discover how to register and make discoverable your agent's services within the Agentverse.",
           path: "/guides/agentverse/registering-agent-services",
         },
         {
           title: "Agentverse allowed imports",
-          description: "Understand what modules are provided within the Agentverse platform.",
+          description:
+            "Understand what modules are provided within the Agentverse platform.",
           path: "/guides/agentverse/registering-agent-services",
         },
       ],
