@@ -81,8 +81,7 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "Getting an agent addresses 🤖📫",
-          description:
-            "A guide teaching you how to retrieve agents addresses.",
+          description: "A guide teaching you how to retrieve agents addresses.",
           path: "guides/agents/getting-uagent-address",
         },
         {
