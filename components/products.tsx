@@ -137,7 +137,13 @@ const items: { [key: string]: Item[] } = {
     },
     {
       title: "DeltaV",
-      description: <>DeltaV platform operates as a search-based AI chat interface, employing natural language conversations to independently manage tasks for users.</>,
+      description: (
+        <>
+          DeltaV platform operates as a search-based AI chat interface,
+          employing natural language conversations to independently manage tasks
+          for users.
+        </>
+      ),
       icon: whisperAgentIcon,
       path: "/concepts/deltav/intro",
     },
