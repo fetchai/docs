@@ -76,7 +76,7 @@ const Body = ({
       {children}
       {gitTimestampEl}
       <div className="nx-flex nx-justify-center nx-mb-6">
-        <FeedbackComponent pageUrl={route}/>
+        <FeedbackComponent pageUrl={route} />
       </div>
       {navigation}
     </>

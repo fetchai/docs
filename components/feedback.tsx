@@ -1,17 +1,16 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-const FeedbackComponent = ({ pageUrl }) => {
-
-  const [feedback, setFeedback] = useState('');
+const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
+  const [feedback, setFeedback] = useState("");
   const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
   const [isInputVisible, setInputVisible] = useState(false);
-  const [feedbackType, setFeedbackType] = useState(''); // State to track feedback type
+  const [feedbackType, setFeedbackType] = useState(""); // State to track feedback type
 
   const resetState = () => {
-    setFeedback('');
+    setFeedback("");
     setIsFeedbackSubmitted(false);
     setInputVisible(false);
-    setFeedbackType('');
+    setFeedbackType("");
   };
 
   useEffect(() => {
@@ -26,13 +25,12 @@ const FeedbackComponent = ({ pageUrl }) => {
   };
 
   const handleFeedbackSubmit = async () => {
-    
     // Now you can associate feedback type, feedback and page
     try {
-      const response = await fetch('/docs/api/feedback', {
-        method: 'POST',
+      const response = await fetch("/docs/api/feedback", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ feedbackType, feedback, pageUrl }),
       });
@@ -41,9 +39,11 @@ const FeedbackComponent = ({ pageUrl }) => {
         setIsFeedbackSubmitted(true);
       } else {
         // Handle error
+        console.log("---something went wrong----");
       }
     } catch (error) {
       // Handle errors
+      console.log("---oops, something went wrong----", error);
     }
   };
 
@@ -53,12 +53,22 @@ const FeedbackComponent = ({ pageUrl }) => {
         <p>Thank you for your feedback!</p>
       ) : (
         <>
-          <h3 className="nx-text-lg nx-flex nx-justify-center ">Was this page helpful?</h3>
-          <div className={`nx-flex nx-items-center nx-space-x-4 nx-mt-4 nx-justify-center`} >
-            <div className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-green`} onClick={() => handleThumbsClick('positive')}>
+          <h3 className="nx-text-lg nx-flex nx-justify-center ">
+            Was this page helpful?
+          </h3>
+          <div
+            className={`nx-flex nx-items-center nx-space-x-4 nx-mt-4 nx-justify-center`}
+          >
+            <div
+              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-green`}
+              onClick={() => handleThumbsClick("positive")}
+            >
               👍
             </div>
-            <div className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-red-500`} onClick={() => handleThumbsClick('negative')}>
+            <div
+              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-red-500`}
+              onClick={() => handleThumbsClick("negative")}
+            >
               👎
             </div>
           </div>
