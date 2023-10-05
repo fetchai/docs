@@ -1,8 +1,8 @@
-# How to use uAgents to verify messages 📬🔐
+# How to use agents to verify messages 📬🔐
 
 ## Introduction
 
-The emergence of decentralized technologies has introduced new possibilities for secure communication and data exchange. In this guide, we will delve into the process of setting up a scenario where two uAgents communicate with each other, employing cryptographic methods to verify the messages exchanged between them. We will showcase how to create a secure messaging environment using uAgents, where messages are not only exchanged but also signed and verified to prevent unauthorized access and tampering.
+The emergence of decentralized technologies has introduced new possibilities for secure communication and data exchange. In this guide, we will delve into the process of setting up a scenario where two uAgents communicate with each other, employing cryptographic methods to verify the messages exchanged between them. We will showcase how to create a secure messaging environment using AI Agents, where messages are not only exchanged but also signed and verified to prevent unauthorized access and tampering.
 
 ## Walk-through
 
@@ -25,9 +25,9 @@ The emergence of decentralized technologies has introduced new possibilities for
 
    The message format has three attributes:
 
-   - `message`: a string representing the message text.
-   - `digest`: a string representing the SHA-256 hash of the message.
-   - `signature`: a string representing the digital signature of the hash using the sender's private key.
+       - `message`: a string representing the message text.
+       - `digest`: a string representing the SHA-256 hash of the message.
+       - `signature`: a string representing the digital signature of the hash using the sender's private key.
 
 4. Let's now define an `encode()` function used to generate the digest for each message before it is signed:
 
@@ -40,7 +40,7 @@ The emergence of decentralized technologies has introduced new possibilities for
 
    This function is used to hash a string message using the SHA-256 algorithm and return the resulting digest as bytes.
 
-5. We can now proceed and create our uAgents using the `Agent` class:
+5. We can now proceed and create our agents using the `Agent` class:
 
    ```py copy
    alice = Agent(name="alice", seed="alice recovery password")
@@ -100,7 +100,7 @@ The emergence of decentralized technologies has introduced new possibilities for
 
    This function is decorated using the `.on_message()` decorator, indicating that the function is triggered when a message is being received of type `Message`. It takes in three arguments: `ctx`, `sender`, and `msg`.
 
-   The function first verifies the authenticity of the message using the `Identity.verify_digest()` function. If the message cannot be verified, the function raises an assertion error. On the other hand, if the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message using the `ctx.logger.info()` method. It then creates a response message, `msg`, and computes its digest using the `encode` function. The response message is then sent to `alice` using the `ctx.send()` method.
+   The function first verifies the authenticity of the message using the `Identity.verify_digest()` function. If the message cannot be verified, the function raises an assertion error. On the other hand, if the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message using the `ctx.logger.info()` method. It then creates a response message, `msg`, and computes its digest using the `encode()` function. The response message is then sent to `alice` using the `ctx.send()` method.
 
 9. We can now create a `bureau` object from the `Bureau` class and then add both agents to it so for them to be run together.
 
@@ -186,9 +186,9 @@ Run the script: `python message_verification.py`.
 
 The output should be as follows:
 
-```
-[  bob]: Alice's message verified!
-[  bob]: Received message from agent1qf5gfqm48k9acegez3sg82ney2aa6l5fvpwh3n3z0ajh0nam3ssgwnn5me7: hello there bob
-[alice]: Bob's message verified!
-[alice]: Received message from agent1qvjjle8dlf22ff7zsh6wr3gl8tdepzygftdxpc2vn8539ngt962a709c90s: hello there alice
-```
+    ```
+    [  bob]: Alice's message verified!
+    [  bob]: Received message from agent1qf5gfqm48k9acegez3sg82ney2aa6l5fvpwh3n3z0ajh0nam3ssgwnn5me7: hello there bob
+    [alice]: Bob's message verified!
+    [alice]: Received message from agent1qvjjle8dlf22ff7zsh6wr3gl8tdepzygftdxpc2vn8539ngt962a709c90s: hello there alice
+    ```
