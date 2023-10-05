@@ -157,6 +157,11 @@ export const FeatureGuideTabs = () => {
           description: "A guide helping you to get started with Jenesis tools.",
           path: "/guides/fetch-network/jenesis/getting-started",
         },
+        {
+          title: "How to get testnet tokens via the token faucet 💰",
+          description: "Get testnet tokens and start developing on the Fetch.ai testnet.",
+          path: "/guides/fetch-network/ledger/faucet",
+        },
       ],
     },
   ];
