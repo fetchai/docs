@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 function LandingPage() {
   const startingGuides = [
     {
-      label: "Getting started with Agents 🛠️📲",
+      label: "Getting started with AI Agents 🛠️📲",
       path: "/guides/agents/installing-uagent",
       icon: AgentverseGettingStartedIcon,
     },
@@ -22,12 +22,12 @@ function LandingPage() {
       icon: CommunicateIcon,
     },
     {
-      label: "How to use uAgents to send tokens 📊💸",
+      label: "How to use agents to send tokens 📊💸",
       path: "guides/agents/send-tokens",
       icon: BuildChatAiIcon,
     },
     {
-      label: "How to use uAgents to verify messages 📬🔐",
+      label: "How to use agents to verify messages 📬🔐",
       path: "guides/agents/message-verification",
       icon: RevenueIcon,
     },

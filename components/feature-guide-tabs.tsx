@@ -41,7 +41,7 @@ export const FeatureGuideTabs = () => {
 
   const tabItems = [
     {
-      label: "Agents",
+      label: "AI Agents",
       content: [
         {
           title: "Installing the uAgents Framework 🛠️📲",
@@ -50,15 +50,15 @@ export const FeatureGuideTabs = () => {
           path: "guides/agents/installing-uagent",
         },
         {
-          title: "Creating your first uAgent 🤖🧑‍💻",
+          title: "Creating your first agent 🤖🧑‍💻",
           description:
             "A guide showing you how to create your first agent in few minutes.",
           path: "guides/agents/create-a-uagent",
         },
         {
-          title: "How to use uAgents to verify messages 📬🔐",
+          title: "How to use agents to verify messages 📬🔐",
           description:
-            "A guide showing you how to use uAgents to verify messages.",
+            "A guide showing you how to use agents to verify messages.",
           path: "guides/agents/message-verification",
         },
         {
@@ -68,33 +68,32 @@ export const FeatureGuideTabs = () => {
           path: "guides/agents/register-in-almanac",
         },
         {
-          title: "Communicating with other uAgents 📱🤖",
+          title: "Communicating with other agents 📱🤖",
           description:
-            "A guide showing different communication methods between uAgents.",
+            "A guide showing different communication methods between agents.",
           path: "guides/agents/communicating-with-other-agents",
         },
         {
-          title: "How to use the uAgents to simulate a cleaning scenario ✨",
+          title: "How to use the agents to simulate a cleaning scenario ✨",
           description:
-            "A guide teaching you how uAgents can be used to set up a cleaning scenario.",
+            "A guide teaching you how agents can be used to set up a cleaning scenario.",
           path: "guides/agents/cleaning-demo",
         },
         {
-          title: "Getting uAgents addresses 🤖📫",
-          description:
-            "A guide teaching you how to retrieve uAgents addresses.",
+          title: "Getting an agent addresses 🤖📫",
+          description: "A guide teaching you how to retrieve agents addresses.",
           path: "guides/agents/getting-uagent-address",
         },
         {
-          title: "How to book a table at a restaurant using uAgents",
+          title: "How to book a table at a restaurant using agents",
           description:
-            "A guide showcasing a table booking process using uAgents.",
+            "A guide showcasing a table booking process using agents.",
           path: "guides/agents/booking-demo",
         },
       ],
     },
     {
-      label: "Hosting",
+      label: "Agentverse",
       content: [
         {
           title: "Creating a hosted agent 🤖",
@@ -109,14 +108,21 @@ export const FeatureGuideTabs = () => {
           path: "/guides/agentverse/discovering-agents",
         },
         {
-          title: "Utilising the Agentverse Mailbox Service 📬",
+          title: "Utilising the Agentverse mailbox service 📬",
           description:
             "Set up mailboxes for your locally-run agents and to run them independently of your constant presence to run the server.",
           path: "/guides/agentverse/utilising-the-mailbox",
         },
         {
-          title: "Registering Agent Services",
-          description: "Description to be added.",
+          title: "Registering agent services",
+          description:
+            "Discover how to register and make discoverable your agent's services within the Agentverse.",
+          path: "/guides/agentverse/registering-agent-services",
+        },
+        {
+          title: "Agentverse allowed imports",
+          description:
+            "Understand what modules are provided within the Agentverse platform.",
           path: "/guides/agentverse/registering-agent-services",
         },
       ],
