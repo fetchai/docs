@@ -93,10 +93,11 @@ function LandingPage() {
         </div>
       </section>
 
-
-        <section className="nx-mt-60 landing-page-left-image">
+      <section className="nx-mt-60 landing-page-left-image">
         <p className={styles.subTitle}>Beginner series</p>
-        <p className={styles.description}>Comprehensive guides for people new to programming and Fetch.ai</p>
+        <p className={styles.description}>
+          Comprehensive guides for people new to programming and Fetch.ai
+        </p>
 
         <div className={styles.startGuides}>
           <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
