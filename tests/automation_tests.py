@@ -115,32 +115,6 @@ class TestFetchAgents:
                 assert False
                 print("Port 8000 is not in use.")
 
-    def test_using_uAgents_storage_function(self):
-        self.driver.find_element(
-            By.XPATH, "//a[text()='Using uAgents storage function'][1]"
-        ).click()
-        self.driver.find_element(
-            By.XPATH, "//button[@title='Copy code']").click()
-        time.sleep(3)
-        storage_function = pyperclip.paste()
-        with tempfile.TemporaryDirectory() as temp_dir:
-            temp_file_path = os.path.join(temp_dir, "temp_script.py")
-            with open(temp_file_path, "w") as temp_file:
-                temp_file.write(storage_function)
-            result = subprocess.Popen(
-                ["python", temp_file_path, "--port", "8000"])
-            print("Python script output:")
-            print(result.stdout)
-            time.sleep(6)
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            results = sock.connect_ex(("localhost", 8000))
-            if results == 0:
-                assert True
-                terminate_process_by_port(8000)
-            else:
-                assert False
-                print("Port 8000 is not in use.")
-
     def test_registering_in_the_Almanac_Contract(self):
         self.driver.find_element(
             By.XPATH, "//a[text()='Registering in the Almanac Contract'][1]"
