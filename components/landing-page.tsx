@@ -92,7 +92,6 @@ function LandingPage() {
           </div>
         </div>
       </section>
-
       <section className="nx-mt-60 landing-page-left-image">
         <p className={styles.subTitle}>Beginner series</p>
         <p className={styles.description}>
