@@ -21,6 +21,9 @@ jobs:
         with:
           python-version: 3.10.4
 
+      - name: Installing package list
+        run: apt list --installed
+
       - name: Removing previous chrome instances on runner
         run: sudo apt purge google-chrome-stable
 
