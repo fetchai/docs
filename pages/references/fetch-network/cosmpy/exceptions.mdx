@@ -1,0 +1,89 @@
+# cosmpy.aerial.exceptions
+
+## Exceptions 
+
+## QueryError Objects 
+
+    ```py
+    class QueryError(RuntimeError)
+    ```
+
+    Invalid Query Error.
+
+## NotFoundError Objects
+
+    ```py
+    class NotFoundError(QueryError)
+    ```
+
+    Not found error.
+
+## QueryTimeoutError Objects
+
+    ```py
+    class QueryTimeoutError(RuntimeError)
+    ```
+
+    Query timeout error.
+
+## BroadcastError Objects
+
+    ```py
+    class BroadcastError(RuntimeError)
+    ```
+
+    Broadcast error.
+
+### __init__
+
+    ```py
+    def __init__ (tx_hash: str, message: str)
+    ```
+
+    Init Broadcast error.
+
+    **Arguments**:
+
+        - `tx_hash`: transaction hash.
+        - `message`: message.
+
+## OutOfGasError Objects
+
+    ```py
+    class OutOfGasError(BroadcastError)
+    ```
+
+    Insufficient fees error.
+
+### __init__
+
+    ```py
+    def __init__(tx_hash: str, gas_wanted: int, gas_used: int)
+    ```
+
+    Initialize.
+
+    **Arguments**:
+
+        - `tx_hash`: transaction hash.
+        - `gas_wanted`: gas required to complete the transaction.
+        - `gas_used`: gas used.
+
+## InsufficientFeesError Objects
+
+    ```py
+    class InsufficientFeesError(BroadcastError)
+    ```
+
+### __init__
+
+    ```py
+    def __init__(tx_hash: str, minimum_required_fee: str)
+    ```
+
+    Initialize.
+
+    **Arguments**:
+
+        - `tx_hash`: transaction hash.
+        - `minimum_required_fee`: minimum required fee.

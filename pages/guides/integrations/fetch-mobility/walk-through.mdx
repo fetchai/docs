@@ -6,12 +6,12 @@ You first need to satisfy the requirements in [Getting Started ↗️](/guides/i
 
 Inside the `src` folder in the `mobility-integrations` directory for the project, you will need to create 2 different directories and a Python script:
 
-```
-cd src
-mkdir agents
-mkdir messages
-touch main.py
-```
+    ```
+    cd src
+    mkdir agents
+    mkdir messages
+    touch main.py
+    ```
 
 These directories will contain the different files you will need to correctly run the project.
 
@@ -23,17 +23,17 @@ Let's start by defining the needed agents for this and their respective behavior
 
 Within the agents folder created above, create 2 different sub-folders, one for each agent we plan to define:
 
-```
-mkdir ev_charger
-mkdir geopy_car_parking
-```
+    ```
+    mkdir ev_charger
+    mkdir geopy_car_parking
+    ```
 
 #### EV Charger agent
 
 Enter the `ev_charger` directory previously created within the `src` folder.
 
 1. Let's start by creating a Python script for the `ev_charger` agent: `touch ev_charger.py`.
-2. We then import the needed classes and create an agent named `ev_adaptor` using the `uagents` Framework.
+2. We then import the needed classes and create an agent named `ev_adaptor` using the `uagents` Framework:
 
    ```py copy
    import os
@@ -56,7 +56,7 @@ Enter the `ev_charger` directory previously created within the `src` folder.
 
    This agent is a software entity designed to interact with an external service. It is being initialized with a cryptographic seed, referred to as `EV_SEED` which is used for secure communication and validation. To ensure that the agent can perform transactions, we need to make sure that the agent's wallet balance is enough and tops up the wallet if the balance is low by running the `fund_agent_if_low()` function.
 
-3. We need to define the code for configuring the interaction with the OpenChargeMap API, which provides information about EV charging stations.
+3. We need to define the code for configuring the interaction with the OpenChargeMap API, which provides information about EV charging stations:
 
    ```py copy
    OPENCHARGEMAP_API_KEY = os.environ.get("OPENCHARGEMAP_API_KEY", "")
@@ -71,7 +71,7 @@ Enter the `ev_charger` directory previously created within the `src` folder.
 
    It retrieves the API key required for accessing the `OpenChargeMap` service from the environment variable `OPENCHARGEMAP_API_KEY`. An `assert` statement checks whether the API key is available. If the key is missing, it raises an assertion error and stops the script, notifying that the `OPENCHARGEMAP_API_KEY` environment variable is missing from the `.env` file. The base URL for the OpenChargeMap API, `OPENCHARGEMAP_API_URL`, is set to `"https://api.openchargemap.io/v3/poi?"`. This URL will be used for making API requests. A constant `MAX_RESULTS` is defined with a value of `100`, which might be used to limit the maximum number of results returned by API queries.
 
-4. We then need to define a function serving as the interface to the OpenChargeMap API to obtain data about nearby EV charging stations.
+4. We then need to define a function serving as the interface to the OpenChargeMap API to obtain data about nearby EV charging stations:
 
    ```py copy
    def get_ev_chargers(latitude: float, longitude: float, miles_radius: float) -> list:
@@ -222,7 +222,7 @@ agent.include(ev_chargers_protocol)
 Enter the `geopy_car_parking` directory previously created within `src`.
 
 1.  Let's first create a Python script within this directory and name it: `touch geopy_car_parking.py`
-2.  We then need to import the necessary classes to then set the virtual environment and initialize our agent. We need to make sure it has enough funds available.
+2.  We then need to import the necessary classes to then set the virtual environment and initialize our agent. We need to make sure it has enough funds available:
 
     ```py copy
     import os
@@ -293,7 +293,8 @@ Enter the `geopy_car_parking` directory previously created within `src`.
         return parking_data
     ```
 
-    Here, we define a `format_parking_data()` function whose primary goal is to transform the raw data received from the API into a more readable and structured format for displaying it to users. It takes in an `api_response`. This parameter represents the raw response received from the Geoapify API. It's expected to contain parking place information. The function initializes an empty list, `parking_data`, to store the formatted parking information. Two variables, `parking_name` and `parking_capacity`, are initialized with default values. These values will be used if certain properties are missing in the API response.The function iterates through the features in the API response. Each feature represents a parking place.
+    Here, we defined a `format_parking_data()` function whose primary goal is to transform the raw data received from the API into a more readable and structured format for displaying it to users. It takes in an `api_response`. This parameter represents the raw response received from the Geoapify API. It is expected to contain parking place information. The function initializes an empty list, `parking_data`, to store the formatted parking information. Two variables, `parking_name` and `parking_capacity`, are initialized with default values. These values will be used if certain properties are missing in the API response.The function iterates through the features in the API response. Each feature represents a parking place.
+
     It checks if the feature contains a `"name"` property. If so, it assigns the parking place's name to the `parking_name` variable. It extracts the address from the `"formatted"` property and assigns it to the `parking_address` variable. The address is split by commas, and only elements from the second position onwards are considered. The function then looks for information about parking capacity in the `"datasource"` property of the feature. It checks if `"capacity"` or `"parking"` data is available and assigns it to the `parking_capacity` variable accordingly. Additionally, it checks if there is an `"access"` property and ensures that it's not equal to `"yes"` to filter out irrelevant data. If this condition is met, the function continues to the next feature.
 
     Finally, the function constructs a formatted string for each parking place using the extracted data. It includes the parking place's name, capacity (if available), and address. Each formatted string is appended to the `parking_data` list, using the `.append()` method. The function returns the `parking_data` list, which now contains formatted information about parking places. This function essentially takes the complex and raw data from the Geoapify API and refines it into a list of user-friendly strings, making it easier to present parking place details to end-users.
@@ -385,8 +386,9 @@ Enter the `geopy_car_parking` directory previously created within `src`.
 
     The function wraps its main logic in a `try` block to handle exceptions:
 
-        - Radius Conversion: It calculates the search radius in meters by multiplying the `msg.radius` value by 1609. This conversion might be needed to match the units expected by the `get_parking_from_api()` function.
-        - API Request: It calls the `get_parking_from_api()` function with the user's preferences latitude, longitude, converted radius, and max result count. This function is expected to return parking data from an API and is used to retrieve parking spaces close to the user.
+        - **Radius Conversion**: it calculates the search radius in meters by multiplying the `msg.radius` value by 1609. This conversion might be needed to match the units expected by the `get_parking_from_api()` function.
+
+        - **API Request**: it calls the `get_parking_from_api()` function with the user's preferences latitude, longitude, converted radius, and max result count. This function is expected to return parking data from an API and is used to retrieve parking spaces close to the user.
 
     The function then uses the `format_parking_data()` function to format the API response data into a suitable format for user presentation. Depending on the length of the formatted response data, it prepares a response to be sent back to the user. If there is more than one parking option (`len(response) > 1`), it constructs a list of options (`KeyValue` objects) and sends it as a select-from-options response to the user. This allows the user to choose from multiple parking options. If there is only one or no parking options available, it sends a suitable response message. If any exception occurs during the execution of the try block, it logs the error and sends an error message as a response to the user. Finally, we include this `geoapi_parking_protocol` protocol in the agent using the `.include` method.
 
@@ -520,12 +522,12 @@ agent.include(geoapi_parking_protocol)
 
 Inside the messages directory previously created, we need to define 4 Python scripts for structured data models representing the different types of messages being exchanged between our agents:
 
-```
-touch __init__.py
-touch ev_charger.py
-touch general.py
-touch geoapi_parking.py
-```
+    ```
+    touch __init__.py
+    touch ev_charger.py
+    touch general.py
+    touch geoapi_parking.py
+    ```
 
 #### __init__ script
 
@@ -537,38 +539,38 @@ Inside this Python file, we need to define the following:
     from .geoapi_parking import GeoParkingRequest
     ```
 
-- `from .ev_charger import EVRequest`: This line is importing the EVRequest class (or component) from a module named `ev_charger`. The use of `.` before `ev_charger` indicates that you're importing from a module in the same package or directory as the current module.
+    - `from .ev_charger import EVRequest`: this line is importing the EVRequest class (or component) from a module named `ev_charger`. The use of `.` before `ev_charger` indicates that you're importing from a module in the same package or directory as the current module.
 
-- `from .general import *`: This line is using a wildcard `*` import to import all components (classes, functions, variables, etc.) from a module named general in the same package or directory.
+    - `from .general import *`: this line is using a wildcard `*` import to import all components (classes, functions, variables, etc.) from a module named general in the same package or directory.
 
-- `from .geoapi_parking import GeoParkingRequest`: This line is importing the `GeoParkingRequest` class from module named `geoapi_parking`.
+    - `from .geoapi_parking import GeoParkingRequest`: this line is importing the `GeoParkingRequest` class from module named `geoapi_parking`.
 
 #### ev_charger script
 
 We now need to define a data model class for representing requests related to Electric Vehicle (EV) charging. Inside this Python file, we first need to import the `Model` class from `uagents` library, and then define an `EVRequest` class. The class defines three attributes as class variables. These attributes represent the data associated with an EV charging request:
 
-- `latitude`: A floating-point number representing the latitude of the location where EV charging is requested.
-- `longitude`: A floating-point number representing the longitude of the location where EV charging is requested.
-- `miles_radius`: A floating-point number representing the search radius (in miles) to find available EV charging stations around the specified location.
+    - `latitude`: A floating-point number representing the latitude of the location where EV charging is requested.
+    - `longitude`: A floating-point number representing the longitude of the location where EV charging is requested.
+    - `miles_radius`: A floating-point number representing the search radius (in miles) to find available EV charging stations around the specified location.
 
-  ```py copy filename="ev_charger.py"
-  from uagents import Model
+      ```py copy filename="ev_charger.py"
+      from uagents import Model
 
-  class EVRequest(Model):
-      """
-      Represents an Electric Vehicle (EV) Charging Request.
+      class EVRequest(Model):
+          """
+          Represents an Electric Vehicle (EV) Charging Request.
 
-      Attributes:
-          latitude (float): The latitude of the location where EV charging is requested.
-          longitude (float): The longitude of the location where EV charging is requested.
-          miles_radius (float): The search radius (in miles) to find available EV charging stations
-                               around the specified location.
-      """
+          Attributes:
+              latitude (float): The latitude of the location where EV charging is requested.
+              longitude (float): The longitude of the location where EV charging is requested.
+              miles_radius (float): The search radius (in miles) to find available EV charging stations
+                                   around the specified location.
+          """
 
-      latitude: float
-      longitude: float
-      miles_radius: float
-  ```
+          latitude: float
+          longitude: float
+          miles_radius: float
+      ```
 
 #### general script
 
@@ -657,6 +659,7 @@ Within the geoapi_parking.py, we need to define a data model class for represent
     ```
 
     The class defines four attributes as class variables. These attributes represent the data associated with a parking request:
+
         - `latitude`: a floating-point number representing the latitude of the location for which parking is requested.
         - `longitude`: a floating-point number representing the longitude of the location for which parking is requested.
         - `radius`: an integer representing the search radius (in miles) to find parking spots around the specified location.
@@ -683,10 +686,10 @@ Now, we are ready to define the script for our `main.py` Python file originally 
         - `endpoint`: it specifies the endpoint URL where the bureau can submit information. In this case, it's set to `"http://127.0.0.1:8000/submit"`.
         - `port`: it specifies the port on which the bureau operates. In this case, it's set to `8000`.
 
-    ```py copy
-    if __name__ == "__main__":
-        bureau = Bureau(endpoint="http://127.0.0.1:8000/submit", port=8000)
-    ```
+            ```py copy
+            if __name__ == "__main__":
+                bureau = Bureau(endpoint="http://127.0.0.1:8000/submit", port=8000)
+            ```
 
 3.  We then need to add the two agents to the bureau:
 
@@ -725,12 +728,12 @@ if __name__ == "__main__":
 
 We are finally ready to run the example we presented in this guide. We would need to run the `main.py` script to do so.
 
-To run the project and its agents, first make sure to be in the right directory and that you activated the virtual environment:
+Let's then run the project and its agents. First, make sure to be in the right directory and that you activated the virtual environment:
 
-```
-cd src
-poetry shell
-python main.py
-```
+    ```
+    cd src
+    poetry shell
+    python main.py
+    ```
 
 **Now you have the agents up and running to perform mobility integrations using the provided APIs. Happy integrating! 🎉**

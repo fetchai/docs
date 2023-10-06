@@ -1,12 +1,12 @@
-# How to use uAgents to send tokens 📊💸
+# How to use agents to send tokens 📊💸
 
 ## Introduction
 
-In the world of agent-based decentralized systems, efficient communication and secure data exchange are essential. In this guide, we will walk you through the process of setting up two agents utilizing the `uagents` library to establish a dynamic workflow where one agent periodically sends payment requests to another, which in turn processes these requests, executes transactions, and provides transaction information back to sending agent.
+In the world of agent-based decentralized systems, efficient communication and secure data exchange are essential. In this guide, we will walk you through the process of setting up two AI Agents utilizing the `uagents` library to establish a dynamic workflow where one agent periodically sends payment requests to another, which in turn processes these requests, executes transactions, and provides transaction information back to sending agent.
 
 ## Walk-through
 
-1. First of all, create a Python script for this task, and name it: `touch sending_tokens.py`
+1. First of all, create a Python script for this task, and name it by running: `touch sending_tokens.py`
 2. Then, import the necessary modules from `uagents`, `uagents.network`, and `uagents.setup`. Let's then define two data models: `PaymentRequest` and `TransactionInfo`. Then, set up the values for the `AMOUNT` and `DENOM` variables, which define the default amount and denomination for the payment requests:
 
    ```py copy
@@ -30,7 +30,7 @@ In the world of agent-based decentralized systems, efficient communication and s
 
    - The `TransactionInfo` model represents information about a transaction and contains a single attribute, `tx_hash`.
 
-3. Let's define our uAgents, `alice` and `bob`. Ensure they have enough funds in their wallets to carry out transactions.
+3. Let's define our agents, `alice` and `bob`. Ensure they have enough funds in their wallets to carry out transactions:
 
    ```py copy
    alice = Agent(name="alice", seed="alice secret phrase")
@@ -40,7 +40,7 @@ In the world of agent-based decentralized systems, efficient communication and s
    fund_agent_if_low(bob.wallet.address())
    ```
 
-4. We can now define our uAgents functions.
+4. We can now define our agents functions:
 
    ```py copy
    @alice.on_interval(period=10.0)
@@ -53,7 +53,7 @@ In the world of agent-based decentralized systems, efficient communication and s
        )
    ```
 
-   This defines an event handler for alice using the `.on_interval()` decorator. This event handler is triggered at regular intervals of `10.0` seconds in this case. The event handler function is named `request_funds()` and takes a `ctx` parameter of type `Context`. Within the function, `alice` sends a payment request message to `bob` by using the `ctx.send()` method. The `ctx.send()` method is called with the recipient address, `bob.address`, which specifies that the message should be sent to `bob`. The message is an instance of the `PaymentRequest()` model. It contains `alice`'s wallet address (`ctx.wallet.address()`), the amount (`AMOUNT`), and the denomination (`DENOM`).
+   This defines an event handler for `alice` using the `.on_interval()` decorator. This event handler is triggered at regular intervals of `10.0` seconds in this case. The event handler function is named `request_funds()` and takes a `ctx` parameter of type `Context`. Within the function, `alice` sends a payment request message to `bob` by using the `ctx.send()` method. The `ctx.send()` method is called with the recipient address, `bob.address`, which specifies that the message should be sent to `bob`. The message is an instance of the `PaymentRequest()` model. It contains `alice`'s wallet address (`ctx.wallet.address()`), the amount (`AMOUNT`), and the denomination (`DENOM`).
 
 5. We can now define a `confirm_transaction()` message handler for `alice` to handle incoming messages from `bob` of type `TransactionInfo`:
 
@@ -98,7 +98,7 @@ In the world of agent-based decentralized systems, efficient communication and s
 
    Once the transaction is completed, `bob` sends a message back to `alice` to inform her about the transaction, using `ctx.send()`. The message is created using the `TransactionInfo` model with the `tx_hash` obtained from the transaction response. The `ctx.send()` method is used to send this message to alice using her address (`alice.address`).
 
-7. We are now ready to use the Bureau class to create a `bureau` object and add both uAgents to it so for them to be run together.
+7. We are now ready to use the Bureau class to create a `bureau` object and add both uAgents to it so for them to be run together:
 
    ```py copy
    bureau = Bureau()
@@ -109,7 +109,7 @@ In the world of agent-based decentralized systems, efficient communication and s
        bureau.run()
    ```
 
-The overall code for this example should look as follows:
+The overall script for this example should look as follows:
 
 ```py copy filename="sending_tokens.py"
 from uagents import Agent, Bureau, Context, Model
@@ -176,8 +176,8 @@ Run the script: `python sending_tokens.py`
 
 The output should be as follows:
 
-```
-[  bob]: Received payment request from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: wallet_address='fetch1967p3vkp0yngdfturv4ypq2p4g760ml705wcxy' amount=100 denom='atestfet'
-[alice]: Received transaction info from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: tx_hash='DB662CCF415C7B0C9A02928967BE1817506D02A041AA05CA48DCE5CF87D5A638'
-[alice]: Transaction was successful: {'receiver': 'fetch1967p3vkp0yngdfturv4ypq2p4g760ml705wcxy', 'amount': '100atestfet'}
-```
+    ```
+    [  bob]: Received payment request from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: wallet_address='fetch1967p3vkp0yngdfturv4ypq2p4g760ml705wcxy' amount=100 denom='atestfet'
+    [alice]: Received transaction info from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: tx_hash='DB662CCF415C7B0C9A02928967BE1817506D02A041AA05CA48DCE5CF87D5A638'
+    [alice]: Transaction was successful: {'receiver': 'fetch1967p3vkp0yngdfturv4ypq2p4g760ml705wcxy', 'amount': '100atestfet'}
+    ```

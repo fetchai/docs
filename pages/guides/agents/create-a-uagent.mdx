@@ -1,22 +1,22 @@
-# Creating your first uAgent 🤖🧑‍💻
+# Creating your first agent 🤖🧑‍💻
 
 ## Introduction
 
-The uAgents Framework makes it easy to build agents for all kinds of decentralized use cases.
+The uAgents Framework makes it easy to build AI Agents for all kinds of decentralized use cases.
 
 In this guide we want to show you the steps needed for _creating your first uAgent in a blink of an eye!_
 
 **Let's get started!**
 
-## Create a uAgent saying hello and its name
+## Create an agent saying hello and its name
 
 ### Walk-through
 
-Here, we want to show how to create your first uAgent using the tools provided by Fetch.ai `uagents` library. You can create your first uAgent by following the steps below:
+Here, we want to show how to create your first agent using the tools provided by Fetch.ai `uagents` library. You can create your first agent by following the steps below:
 
-1. First of all, let's create a Python script for this task, and name it: `touch agent.py`
+1. First of all, let's create a Python script for this task, and name it by running: `touch agent.py`
 
-2. We then need to import the `Agent` and `Context` classes from the `uagents` library, and then create a uAgent using the class `Agent`:
+2. We then need to import the `Agent` and `Context` classes from the `uagents` library, and then create an agent using the class `Agent`:
 
    ```py copy
    from uagents import Agent, Context
@@ -36,7 +36,7 @@ Here, we want to show how to create your first uAgent using the tools provided b
        alice.run()
    ```
 
-   The `.on_interval()` decorator defines a periodic behavior for this agent. In this case, the agent will execute the `say_hello()` function every 2 seconds. The `Context` object is a collection of data and functions related to the agent. In this case, we just use the agent's name, `alice`. The agent executes the function and uses the `ctx.logger.info()` method to print the message.
+   The `.on_event("startup")` decorator defines a behavior for this agent when it is run. In this case, the agent will execute the `say_hello()` function when the agent is started. The `Context` object is a collection of data and functions related to the agent. In this case, we just use the agent's `name`, `alice`. The agent executes the function and uses the `ctx.logger.info()` method to print the message.
 
 4. Save the script.
 
@@ -63,8 +63,8 @@ Run the script: `python agent.py`
 
 The output would be:
 
-```
-[alice]: hello, my name is alice
-```
+    ```
+    [alice]: hello, my name is alice
+    ```
 
-_**Congratulations, you have just created your first uAgent!**_
+**Congratulations, you have just created your first uAgent!**

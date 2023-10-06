@@ -1,16 +1,18 @@
-# How to book a table at a restaurant using uAgents
+# How to book a table at a restaurant using agents
 
 ## Introduction
 
-In this guide, we want to show how to set up the code to create a restaurant booking service with two uAgents: a **restaurant** with tables available, and a **user** requesting table availability.
+In this guide, we want to show how to set up the code to create a restaurant booking service with two AI Agents: a **restaurant** with tables available, and a **user** requesting table availability.
 
-We also want to define 2 specific **protocols**, one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). Then we will need to define two uAgents scripts, **restaurant** and **user**, which will make use of the protocols to query and book a table.
+We also want to define 2 specific **protocols**, one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). Then we will need to define two agents scripts, **restaurant** and **user**, which will make use of the protocols to query and book a table.
 
 ## Walk-through
 
 1. First of all, we need to navigate towards the directory you created for your project and create a folder for this task: `mkdir booking_demo`.
+
 2. Inside this folder we will create another folder for our `protocols`: `mkdir protocols`.
-3. After having defined our protocols, we will create 2 scripts, one for our `restaurant` and the other one for `user` uAgents. These uAgents will make use of the protocols to query, check, confirm and book an available table at the restaurant.
+
+3. After having defined our protocols, we will create 2 scripts, one for our `restaurant` and the other one for `user` agents. These agents will make use of the protocols to query, check, confirm and book an available table at the restaurant.
 
 We can start by writing the code for our 2 protocols.
 
@@ -21,7 +23,7 @@ We can start by writing the code for our 2 protocols.
 Let's start by defining the protocol for querying availability of tables at the restaurant:
 
 1. First of all, we need to navigate towards the protocols folder: `cd protocols`
-2. Let's then create a Python script named, and name it: `touch query.py`
+2. Let's then create a Python script and name it by running: `touch query.py`
 3. In the text editor application, we proceed and define the `table querying protocol`.
 4. We now need to import necessary classes and define the _message data models_. Then, create an instance of the `Protocol` class and name it `query_proto`:
 
@@ -68,7 +70,7 @@ Let's start by defining the protocol for querying availability of tables at the 
            for (
                num,
                status,
-           ) in ctx.storage._data.items()  # pylint: disable=protected-access
+           ) in ctx.storage._data.items()
            if isinstance(num, int)
        }
 
@@ -134,7 +136,7 @@ async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest
         for (
             num,
             status,
-        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+        ) in ctx.storage._data.items()
         if isinstance(num, int)
     }
     available_tables = []
@@ -161,7 +163,7 @@ async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQuer
 We can now proceed by writing the booking protocol script for booking the table at the restaurant.
 
 1. First of all, navigate towards the protocols folder: `cd protocols`
-2. In here, let's create a Python script and name it: `touch book.py`
+2. In here, let's create a Python script and name it by running: `touch book.py`
 3. In the text editor application, we can proceed to define the **table booking protocol**. We need to import the necessary classes and define the _message data models_. In this case, the booking protocol consists of two message models: `BookTableRequest` and `BookTableResponse`. Then create an instance of the `Protocol` class and name it `book_proto`:
 
    ```py copy
@@ -183,7 +185,7 @@ We can now proceed by writing the booking protocol script for booking the table 
    - `BookTableRequest`: this represents the request to book a table. It includes attributes: `table_number` to be booked, `time_start` of the booking, and the `duration` of the booking.
    - `BookTableResponse`: this contains the response to the table booking request. It includes a boolean attribute `success`, indicating whether the booking was successful or not.
 
-4. Let's now define the message handler function:
+4. Let's now define a message handler function:
 
    ```py copy
    @book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
@@ -193,7 +195,7 @@ We can now proceed by writing the booking protocol script for booking the table 
            for (
                num,
                status,
-           ) in ctx.storage._data.items()  # pylint: disable=protected-access
+           ) in ctx.storage._data.items()
            if isinstance(num, int)
        }
        table = tables[msg.table_number]
@@ -222,14 +224,16 @@ The overall script should look as follows:
 
 ```py copy filename="book.py"
 from uagents import Context, Model, Protocol
-
 from .query import TableStatus
+
 class BookTableRequest(Model):
     table_number: int
     time_start: int
     duration: int
+
 class BookTableResponse(Model):
     success: bool
+
 book_proto = Protocol()
 @book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
 async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
@@ -238,7 +242,7 @@ async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
         for (
             num,
             status,
-        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+        ) in ctx.storage._data.items()
         if isinstance(num, int)
     }
     table = tables[msg.table_number]
@@ -255,11 +259,11 @@ async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
     await ctx.send(sender, BookTableResponse(success=success))
 ```
 
-### Restaurant uAgent
+### Restaurant Agent
 
-We are now ready to define our restaurant uAgent.
+We are now ready to define our `restaurant` agent.
 
-1. Let's now create a Python script in `booking_demo` folder, and name it: `touch restaurant.py`
+1. Let's now create a Python script in `booking_demo` folder, and name it by running: `touch restaurant.py`
 2. We then need to import the necessary classes from the `uagents` library and the two protocols we previously defined:
 
    ```py copy
@@ -343,10 +347,10 @@ if __name__ == "__main__":
 
 ### User uAgent
 
-We can finally define the script for our user uAgent querying and booking a table at the restaurant.
+We can finally define the script for our `user` agent querying and booking a table at the restaurant.
 
 1. First of all, let's create a Python script in `booking_demo` folder, and name it: `touch user.py`
-2. We then need to import necessary classes from the `uagents` library and the two protocols defined above. We also need the restaurant agent's address to be able to communicate with it:
+2. We then need to import necessary classes from the `uagents` library and the two protocols defined above. We also need the `restaurant` agent's address to be able to communicate with it:
 
    ```py copy
    from uagents import Agent, Context
@@ -369,7 +373,7 @@ We can finally define the script for our user uAgent querying and booking a tabl
    fund_agent_if_low(user.wallet.address())
    ```
 
-3. Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. If the request has not been completed before, we send the request to the restaurant agent. Then create an `interval()` function which performs a table query request on a defined period to the restaurant, to query the availability of a table given the `table_query` parameters:
+3. Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. If the request has not been completed before, we send the request to the restaurant agent. Then create an `interval()` function which performs a table query request on a defined period to the `restaurant` agent, to query the availability of a table given the `table_query` parameters:
 
    ```py copy
    table_query = QueryTableRequest(
@@ -405,9 +409,9 @@ We can finally define the script for our user uAgent querying and booking a tabl
            ctx.storage.set("completed", True)
    ```
 
-   This function activates when a message is received back from the `restaurant` agent. `handle_query_response()` will evaluate if there is a table available, and if so, respond with a `BookTableRequest` to complete the reservation.
+   This function activates when a message is received back from the `restaurant` agent. `handle_query_response()` function will evaluate if there is a table available, and if so, it responds with a `BookTableRequest` to complete the reservation.
 
-5. Let's then define a function which will handle messages from the restaurant agent on whether the reservation was successful or not:
+5. Let's then define a function which will handle messages from the `restaurant` agent on whether the reservation was successful or not:
 
    ```py copy
    @user.on_message(BookTableResponse, replies=set())
@@ -500,21 +504,21 @@ if __name__ == "__main__":
 
 Run the `restaurant` agent and then the `user` agent from different terminals:
 
-- Terminal 1: `python restaurant.py`
+    - Terminal 1: `python restaurant.py`
 
-- Terminal 2: `python user.py`
+    - Terminal 2: `python user.py`
 
 The output should be as follows, depending on the terminal:
 
 - **Restaurant**
 
-```
-[restaurant]: Query: guests=3 time_start=19 duration=2. Available tables: [2].
-```
+    ```
+    [restaurant]: Query: guests=3 time_start=19 duration=2. Available tables: [2].
+    ```
 
 - **User**
 
-```
-[ user]: There is a free table, attempting to book one now
-[ user]: Table reservation was successful
-```
+    ```
+    [ user]: There is a free table, attempting to book one now
+    [ user]: Table reservation was successful
+    ```

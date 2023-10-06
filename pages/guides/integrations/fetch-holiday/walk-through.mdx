@@ -885,7 +885,6 @@ We are now ready to write the code for our main script. In the `src` folder in `
    from agents.destinations.top_destinations import agent as top_destinations_agent
    from agents.flights.flights import agent as flights_agent
 
-
    if __name__ == "__main__":
        bureau = Bureau(endpoint="http://127.0.0.1:8000/submit", port=8000)
        print(f"Adding top activities agent to Bureau: {top_activities_agent.address}")
@@ -905,9 +904,9 @@ Once you finalized the `main.py` script, you will need to run the project and it
 
 You need to look for the following output in the logs:
 
-```
-Adding top destinations agent to Bureau: {top_destinations_agent.address}
-```
+    ```
+    Adding top destinations agent to Bureau: {top_destinations_agent.address}
+    ```
 
 Copy the `{top_destinations_agent.address}` value and paste it somewhere safe. You will need it in the following step.
 
@@ -956,9 +955,9 @@ Now that we have set up the integrations, let's run a client script that will sh
 
 Open a new terminal (let the previous one be as is), and navigate to the `src` folder to run the client script.
 
-```
-cd src
-poetry run python top_dest_client.py
-```
+    ```
+    cd src
+    poetry run python top_dest_client.py
+    ```
 
-Once you hit enter, a request will be sent to the top destinations agent every 10 seconds, and you will be able to see your results in the console!
+**Once you hit enter, a request will be sent to the top destinations agent every 10 seconds, and you will be able to see your results in the console!**

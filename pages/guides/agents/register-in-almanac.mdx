@@ -1,18 +1,20 @@
+import { Callout } from 'nextra/components'
+
 # Registering in the Almanac Contract
 
 ## Introduction
 
-The Almanac contract requires uAgents to register using their **Agent Address** and pay a fee for registration to be found by other agents on the network. Therefore, it is essential for uAgents to have enough funds available in their **Fetch Network Address**.
+The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract requires agents to register using their **Agent Address** and pay a fee for registration to be found by other agents on the network. Therefore, it is essential for uAgents to have enough funds available in their **Fetch Network Address**.
 
-For further information on **uAgents addresses**, have a look at our [addresses guide ↗️](/guides/agents/getting-uagent-address.md).
+For further information on **Agents addresses**, have a look at our [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address).
 
-As highlighted in [Registration and Endpoints Weighting ↗️](/references/contracts/uagents-almanac/endpoints.md), uAgents can communicate by querying the Almanac and retrieving an `endpoint` from the recipient uAgent. Therefore, we need to specify the service endpoints when defining our uAgent.
+As highlighted in [Registration and Endpoints Weighting ↗️](/references/contracts/uagents-almanac/endpoints), agents can communicate by querying the Almanac and retrieving an endpoint from the recipient uAgent. Therefore, we need to specify the service endpoints when defining our agents.
 
 ## Walk-through
 
-1. First of all, create a Python script and name it: `touch registration.py`
+1. First of all, create a Python script and name it by running: `touch registration.py`
 
-2. Then, import the **Agent** class from the `uagents` library to create our uAgent, and the `fund_agent_if_low` class from the `uagents.setup` module, which we can use _on the Fetch.ai testnet_ to run the function `fund_agent_if_low`. This function will check if you have enough tokens to register in the Almanac contract. If not it will add tokens to your `Fetch Network address`. Then, create a agent, alice, providing `name`, `port`, `seed`, and `endpoint`.
+2. Then, import the `Agent` class from the `uagents` library to create our agent, and the `fund_agent_if_low` class from the `uagents.setup` module. This function will check if you have enough tokens to register in the Almanac contract, if not it will add testnet tokens to your `Fetch Network address`. Then, create an agent, `alice`, providing `name`, `port`, `seed`, and `endpoint`:
 
    ```py copy filename="registration.py"
    from uagents.setup import fund_agent_if_low
@@ -28,6 +30,11 @@ As highlighted in [Registration and Endpoints Weighting ↗️](/references/cont
    fund_agent_if_low(alice.wallet.address())
    ```
 
-   Here we defined a local http address, but you can also define a remote address to allow agent communication over different machines through the internet. Once you run your script, your uAgent will start the registration process, the balance of the uAgent's wallet will be checked and be funded if needed. Then, we will be ready to start to a remote communication with other uAgents registered within the Almanac contract.
+   Here we defined a local http address, but you can also define a remote address to allow agent communication over different machines through the internet.
+   
+   Once you run your script, your agent will start the registration process automatically, the balance of the agent's wallet will be checked and funded if needed. Finally, it will try to register on the Almanac contract. Then, we will be ready to start to a remote communication with other agents registered within the Almanac contract.
 
-For further information on how to set up your uAgents and register them into the Almanac to allow for remote communication, visit the [Communicating with other uAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents.md) guide.
+<Callout type="info" emoji="ℹ️">
+  For further information on how to set up your uAgents and register them into the Almanac to allow for remote communication, visit the [Communicating with other uAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents) guide.
+</Callout>
+

@@ -137,9 +137,15 @@ const items: { [key: string]: Item[] } = {
     },
     {
       title: "DeltaV",
-      description: <>Coming soon.</>,
+      description: (
+        <>
+          DeltaV platform operates as a search-based AI chat interface,
+          employing natural language conversations to independently manage tasks
+          for users.
+        </>
+      ),
       icon: whisperAgentIcon,
-      path: "/guides",
+      path: "/concepts/deltav/intro",
     },
     {
       title: "Analytics",
@@ -150,10 +156,10 @@ const items: { [key: string]: Item[] } = {
   ],
   "AI Agent Services": [
     {
-      title: "Hosting",
+      title: "Agentverse Hosting",
       description: (
         <>
-          The Agentverse hosting platform enables all users to get started
+          The Agentverse Hosting platform enables all users to get started
           quickly and to deploy agents to the cloud to start connecting and
           automating.
         </>
@@ -162,7 +168,7 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-hosting",
     },
     {
-      title: "Mailbox",
+      title: "Agentverse Mailbox",
       description: (
         <>
           Set up mailboxes for your local agents and to run them independently
@@ -173,13 +179,13 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-mail",
     },
     {
-      title: "Agent APIs",
+      title: "Agentverse APIs",
       description: <>Understand and use the Agentverse APIs.</>,
       icon: apiAgentIcon,
       path: "/apis/agentverse",
     },
     {
-      title: "Explorer",
+      title: "Agentverse Explorer",
       description: (
         <>
           Learn to use the Agentverse Explorer to start an interaction with
@@ -203,7 +209,7 @@ const items: { [key: string]: Item[] } = {
       path: "/references/contracts/uagents-almanac/almanac-overview",
     },
     {
-      title: "Cosmpy",
+      title: "CosmPy",
       description: <>Get stated with CosmPy.</>,
       icon: cosmpyIcon,
       path: "/guides/fetch-network/cosmpy/install",
@@ -214,13 +220,13 @@ const items: { [key: string]: Item[] } = {
         <>Let&apos;s get yourself started started with the Fetch wallet.</>
       ),
       icon: walletIcon,
-      path: "/guides/fetch-network/fetch-wallet-getting-started",
+      path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
     },
     {
       title: "Ledger",
-      description: <>Coming soon.</>,
+      description: <>Get started with the Fetch Ledger.</>,
       icon: ledgerIcon,
-      path: "",
+      path: "/concepts/fetch-network/ledger/intro",
     },
   ],
 };

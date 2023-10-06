@@ -1,27 +1,33 @@
-# Communicating with other uAgents 📱🤖
+import { Callout } from 'nextra/components'
+
+# Communicating with other agents 📱🤖
 
 ## Introduction
 
-Communication is an essential feature of any agent network. It allows agents to work together, exchange information, and collaborate towards common goals. Within the uAgents (micro-agents) Framework, there are various ways through which uAgents can communicate, each offering unique advantages and use cases.
+Communication is an essential feature of any agent network. It allows agents to work together, exchange information, and collaborate towards common goals. Within the uAgents (micro-agents) Framework, there are various ways through which agents can communicate, each offering unique advantages and use cases.
 
-In this guide, we will explore two methods of communication between uAgents:
+In this guide, we will explore two methods of communication between agents:
 
-- Local communication.
-- Remote communication via the [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)️, and the Agentverse [Mailroom / IoT Gateway 📫 ↗️](/concepts/agent-services/agent-mail)️ service.
+    - **Local communication**.
+    - **Remote communication** via the [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)️, and the Agentverse [Mailroom / IoT Gateway 📫 ↗️](/concepts/agent-services/agent-mail)️ service.
 
-We want to start by introducing you to the concept of **local communication**. This is the first step you would need to undertake to familiarize yourself with the code syntax we will be using in the **remote communication** section. Moreover, local communication is important for debugging purposes.
+We want to start by introducing you to the concept of **local communication**. This is the first step you would need to undertake to familiarize yourself with the code syntax we will be using in the **remote communication** section.
+
+<Callout type="info" emoji="ℹ️">
+  Local communication is important for debugging purposes.
+</Callout>
 
 **Let's get started!**
 
-## uAgents: Local Communication
+## AI Agents: Local Communication
 
 ### Walk-through
 
-The first step to better understand how uAgents communicate is to introduce how 2 uAgents perform a local communication. Let’s consider a basic example in which two uAgents say hello to each other.
+The first step to better understand how agents communicate is to introduce how 2 agents perform a local communication. Let’s consider a basic example in which two agents say hello to each other.
 
-1. First of all, let's create a Python script for this task and name it: `touch agents_communication.py`
+1. First of all, let's create a Python script for this task and name it by running: `touch agents_communication.py`
 
-2. Then, let's import these necessary classes from the uagents library: `Agent`, `Context`, `Bureau`, and `Model` Let's then define the message structure for messages to be exchanged between the uAgents using the class `Model`. Then, we would need to create the uAgents, `alice` and `bob`, with name and seed parameters.
+2. Then, let's import these necessary classes from the `uagents` library: `Agent`, `Context`, `Bureau`, and `Model` Let's then define the message structure for messages to be exchanged between the agents using the class `Model`. Then, we would need to create the agents instances, `alice` and `bob`, with `name` and `seed` parameters.
 
    ```py copy
    from uagents import Agent, Bureau, Context, Model
@@ -33,7 +39,7 @@ The first step to better understand how uAgents communicate is to introduce how 
    bob = Agent(name="bob", seed="bob recovery phrase")
    ```
 
-3. Let's now define `alice`'s behaviors. We need to define a function for `alice` to send messages to bob periodically:
+3. Let's now define `alice`'s behaviors. We need to define a function for `alice` to send messages to `bob` periodically:
 
    ```py copy
    @alice.on_interval(period=3.0)
@@ -64,7 +70,7 @@ The first step to better understand how uAgents communicate is to introduce how 
 
    Here, we have defined a coroutine `bob_message_handler()` function that serves as the message handler for `bob`. It is triggered whenever bob receives a message of type `Message` from other agents. The function logs the received message and its sender using the `ctx.logger.info()` method. Finally, we make `bob` compose a response message to be sent back using the `ctx.send()` method with `alice.address` as the recipient address and an instance of the `Message` model as the message payload.
 
-6. Let's then use the `Bureau` class to create a `Bureau` object. This will allow us to run uAgents together in the same script.
+6. Let's then use the `Bureau` class to create a `Bureau` object. This will allow us to run agents together in the same script.
 
    ```py copy
    bureau = Bureau()
@@ -112,35 +118,35 @@ We are now ready to run the script: `python agents_communication.py`
 
 The output would be:
 
-```
-[alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
-[  bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
-[alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
-[  bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
-[alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
-```
+    ```
+    [alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
+    [  bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
+    [alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
+    [  bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
+    [alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
+    ```
 
-## uAgents Remote Communication: the Almanac Contract
+## AI Agents Remote Communication: the Almanac Contract
 
-Remote uAgents communication is achieved by registering the uAgents into the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview.md)️ and then querying it to retrieve an HTTP endpoint from the recipient uAgent. Registration in the Almanac requires paying a small fee, so make sure to have enough funds to allow for this.
+Remote agents communication is achieved by registering the agents into the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview)️ and then querying it to retrieve an HTTP endpoint from the recipient agent. [Registration in the Almanac ↗️](/guides/agents/register-in-almanac) requires paying a small fee, so make sure to have enough funds to allow for this.
 
-Whenever a uAgent registers in the Almanac, it must specify the service [endpoints ↗️](/references/contracts/uagents-almanac/endpoints.md)️ alongside a weight parameter for each endpoint provided. Agents trying to communicate with your uAgent, will choose the service endpoints using a weighted random selection.
+Whenever an agent registers in the Almanac, it must specify the service [endpoints ↗️](/references/contracts/uagents-almanac/endpoints)️ alongside a weight parameter for each endpoint provided. Agents trying to communicate with your agent, will choose the service endpoints using a weighted random selection.
 
-Here, we show you how to create two uAgents and make them remotely communicate by registering and using the Almanac Contract.
+Here, we show you how to create two agents and make them remotely communicate by registering and using the Almanac Contract.
 
 ### Walk-through
 
-The first step would be to create two different Python scripts for this task, each one representing a remote uAgent:
+The first step would be to create two different Python scripts for this task, each one representing a remote agent:
 
-Bob: `touch remote_agents_bob.py`
+    Bob: `touch remote_agents_bob.py`
 
-Alice: `touch remote_agents_alice.py`
+    Alice: `touch remote_agents_alice.py`
 
 Let's start by defining the script for **alice**.
 
 #### Alice
 
-1. In `remote_agents_alice.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between agents using the class `Model`, as well as the `RECIPIENT_ADDRESS`. This is the address to which `alice` will send messages:
+1. In `remote_agents_alice.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between agents using the class `Model`, as well as the `RECIPIENT_ADDRESS` (bob's address). Note that if you don't know bob's address yet, you can use `print(bob.address)` after defining agent `bob` to get this information. This is the address towards which `alice` will send messages:
 
    ```py copy
    from uagents import Agent, Context, Model
@@ -152,7 +158,7 @@ Let's start by defining the script for **alice**.
    RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
    ```
 
-2. Let's now create our uAgent, `alice`, by providing `name`, `seed`, `port`, and `endpoint`. Also, make sure it has enough funds to register in the Almanac contract:
+2. Let's now create our agent, `alice`, by providing `name`, `seed`, `port`, and `endpoint`. Also, make sure it has enough funds to register in the Almanac contract:
 
    ```py copy
    alice = Agent(
@@ -230,7 +236,7 @@ We can now proceed by writing the script for agent `bob`.
 
 #### Bob
 
-1. In `remote_agents_bob.py` script, import the necessary classes from the `uagents` and `uagents.setup`. Then, define the message structure for messages to be exchanged between the uAgents using the `Model` class, as well as our second uAgent, `bob`, by providing `name`, `seed`, `port`, and `endpoint`. Make sure it has enough funds to register in the Almanac contract.
+1. In `remote_agents_bob.py` script, import the necessary classes from the `uagents` and `uagents.setup`. Then, define the message structure for messages to be exchanged between the agents using the `Model` class, as well as our second uAgent, `bob`, by providing `name`, `seed`, `port`, and `endpoint`. Make sure it has enough funds to register in the Almanac contract:
 
    ```py copy
    from uagents import Agent, Context, Model
@@ -266,7 +272,7 @@ We can now proceed by writing the script for agent `bob`.
 
 3. Save the script.
 
-The overall script for bob should be looking as follows:
+The overall script for `bob` should be looking as follows:
 
 ```py copy filename="remote_agents_bob.py"
 from uagents.setup import fund_agent_if_low
@@ -298,9 +304,9 @@ if __name__ == "__main__":
 
 In different terminal windows, first run `bob` and then `alice`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal:
 
-Terminal 1: `python remote_agents_bob.py`
+    Terminal 1: `python remote_agents_bob.py`
 
-Terminal 2: `python remote_agents_alice.py`
+    Terminal 2: `python remote_agents_alice.py`
 
 The output will depend on the terminal:
 
@@ -320,19 +326,19 @@ The output will depend on the terminal:
   [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
   ```
 
-## uAgents Remote Communication: the AgentVerse Mailbox Service
+## AI Agents Remote Communication: the AgentVerse Mailbox Service
 
-uAgents can communicate remotely by also using the [Agentverse ↗️](https://agentverse.ai/)️. The Agentverse is a platform that aims at creating a decentralized network of agents capable of communicating and interacting with each other. Agents in the Agentverse can send and receive messages, execute tasks, and collaborate with other agents to achieve various goals.
+Agents can communicate remotely by also using the [Agentverse ↗️](/concepts/agent-services/agentverse-intro)️. The Agentverse is a platform that aims at creating a decentralized network of agents capable of communicating and interacting with each other. Agents in the Agentverse can send and receive messages, execute tasks, and collaborate with other agents to achieve various goals.
 
-In this guide, we want to show how to enable remote communications between uAgents using the [Agentverse Mailbox Service ↗️](/guides/agentverse/utilising-the-mailbox)️.
+In this guide, we want to show how to enable remote communications between agents using the [Agentverse Mailbox Service ↗️](/guides/agentverse/utilising-the-mailbox)️.
 
 ### Walk-through
 
-We make use of the **uAgents Remote Communication** guide above, but now, we specify the **Mailbox** server and the **API Key** for our uAgents.
+We make use of the **AI Agents Remote Communication** guide above, but now, we specify the **Mailbox** server and the **API Keys** for our agents.
 
 #### Alice
 
-1. First of all, let's create a script for `alice`: `touch alice.py`
+1. First of all, let's create a script for `alice` by running: `touch alice.py`
 
 2. We need to import the necessary classes from `uagents` (`Agent`, `Context`, `Model`) and `uagents.setup` (`fund_agent_if_low`), and define the `Message` class for messages to be exchanged between our uAgents. We also need to generate a secure `SEED_PHRASE` (e.g., https://pypi.org/project/mnemonic/) and get the address of our agent, which is needed to register it to create a `Mailbox`, alongside a name (i.e., `alice` in this case). Following this, we would need to sign up at [Agentverse ↗️](https://agentverse.ai/) to get an `API key`:
 
@@ -350,7 +356,7 @@ We make use of the **uAgents Remote Communication** guide above, but now, we spe
    API_KEY = "put_your_API_key_here"
    ```
 
-3. \_Now your agent is ready to join the Agentverse!\_\_ We can now register our uAgent, `alice`, by providing `name`, `seed`, and `mailbox`. Make sure your agent has enough funds for this:
+3. _Now your agent is ready to join the Agentverse!_ We can now register our uAgent, `alice`, by providing `name`, `seed`, and `mailbox`. Make sure your agent has enough funds for this:
 
    ```py copy
    agent = Agent(
@@ -362,7 +368,7 @@ We make use of the **uAgents Remote Communication** guide above, but now, we spe
    fund_agent_if_low(agent.wallet.address())
    ```
 
-   On the _Fetch.ai testnet_, you can use the `fund_agent_if_low` function. This one checks if the balance of the uAgent’s wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
+   On the _Fetch.ai testnet_, you can use the `fund_agent_if_low` function. This one checks if the balance of the agent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency.
 
 4. Let's define a message handler function for `alice`:
 
@@ -416,13 +422,15 @@ if __name__ == "__main__":
     agent.run()
 ```
 
-**Remember that you need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly.**
+    <Callout type="info" emoji="ℹ️">
+      Remember that you need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly.
+    </Callout>
 
 #### Bob
 
-1. Let's now create another Python script for **bob**: `touch bob.py`
+1. Let's now create another Python script for **bob** by running: `touch bob.py`
 
-2. We can now import the necessary classes from `uagents` and `uagents.setup`, and define the `Message` class for messages to be exchanged between our uAgents. We then need to define `ALICE_ADDRESS` by copying the address generated in the script for `alice` above, as well as generate a second `SEED_PHRASE` (e.g. https://pypi.org/project/mnemonic/), and get the address for our agent, which is needed to register it to create a `Mailbox`, alongside a name (i.e., `bob` in this case). Like for `alice`, head towards the [Agentverse ↗️](https://agentverse.ai/)️ to get the `API key` for `bob`:
+2. We can now import the necessary classes from `uagents` and `uagents.setup`, and define the `Message` class for messages to be exchanged between our agents. We then need to define `ALICE_ADDRESS` by copying the address generated in the script for `alice` above, as well as generate a second `SEED_PHRASE` (e.g. https://pypi.org/project/mnemonic/), and get the address for our agent, which is needed to register it to create a `Mailbox`, alongside a name (i.e., `bob` in this case). Like for `alice`, head towards the [Agentverse ↗️](https://agentverse.ai/)️ to get the `API key` for `bob`:
 
    ```py copy
    from uagents import Agent, Context, Model
@@ -440,7 +448,7 @@ if __name__ == "__main__":
    API_KEY = "put_your_API_key_here"
    ```
 
-3. _Now your agent is ready to join the Agentverse!_ Let's register this second uAgent, `bob`, by providing `name`, `seed`, and `mailbox` server:
+3. _Now your agent is ready to join the Agentverse!_ Let's register this second agent, `bob`, by providing `name`, `seed`, and `mailbox` server:
 
    ```py copy
    agent = Agent(
@@ -462,9 +470,9 @@ if __name__ == "__main__":
        await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
    ```
 
-   Here, we have defined a `send_message()` coroutine function that is scheduled to run periodically every 2 seconds using the `.on_interval()` decorator. Inside the coroutine function, a message of type `Message` is sent to `alice`'s address using the `ctx.send(9`) method.
+   Here, we have defined a `send_message()` coroutine function that is scheduled to run periodically every 2 seconds using the `.on_interval()` decorator. Inside the coroutine function, a message of type `Message` is sent to `alice`'s address using the `ctx.send()` method.
 
-5. Let's now define a message handler for **bob** to handle incoming messages:
+5. Let's now define a message handler for `bob` to handle incoming messages:
 
    ```py copy
    @agent.on_message(model=Message, replies=set())
@@ -475,7 +483,7 @@ if __name__ == "__main__":
        agent.run()
    ```
 
-   Here, we have set up an `on_message()` function for bob to handle messages of type `Message`. When a message of this type is received by `bob`, the message handler function logs the sender's address and the content of the message using `ctx.logger.info()` method.
+   Here, we have set up an `on_message()` function for `bob` to handle messages of type `Message`. When a message of this type is received by `bob`, the message handler function logs the sender's address and the content of the message using `ctx.logger.info()` method.
 
 6. Save the script.
 
@@ -517,15 +525,17 @@ if __name__ == "__main__":
     bob.run()
 ```
 
-**Remember that you need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly. Here, you also need to provide bob with an ALICE_ADDRESS field.**
+<Callout type="info" emoji="ℹ️">
+  Remember that you need to generate your SEED_PHRASE and API_KEY and substitute these into the above required fields for the script to run correctly. Here, you also need to provide bob with an ALICE_ADDRESS field.
+</Callout>
 
 #### Run the scripts
 
 Now, we are ready to run our scripts. Run `alice` and `bob` from different terminals. The received messages will print out in each terminal:
 
-Bob: `python bob.py`
+    Bob: `python bob.py`
 
-Alice: `python alice.py`
+    Alice: `python alice.py`
 
 The output should be as follows depending on the terminal:
 
@@ -551,15 +561,15 @@ The output should be as follows depending on the terminal:
 
 ## Conclusion
 
-In this comprehensive guide, we explored two different methods of communication for uAgents using the uagents library:
+In this comprehensive guide, we explored two different methods of communication for AI Agents using the `uagents` library:
 
 - **Local communication**.
 - **Remote communication** via the Almanac Contract or the AgentVerse Mailbox Service.
 
-For _local communication_, we learned how to use the uagents library to create two uAgents, **alice** and **bob**, and enable them to exchange messages with one another. We defined the message structure using the `Model` class and implemented message handlers for both agents. By running the script we observed their real-time message exchange.
+For _local communication_, we learned how to use the `uagents` library to create two agents, `alice` and `bob`, and enable them to exchange messages with one another. We defined the message structure using the `Model` class and implemented message handlers for both agents. By running the script we observed their real-time message exchange.
 
-Next, we delved into _remote communication_, which facilitates interaction between uAgents through the Almanac Contract. This method requires registering the agents in the Almanac Contract and querying for **HTTP endpoints** for communication. By running the scripts separately, we could observe the real-time messages exchange, fostering a decentralized network of interacting agents.
+Next, we delved into _remote communication_, which facilitates interaction between agents through the Almanac Contract. This method requires registering the agents in the Almanac Contract and querying for **HTTP endpoints** for communication. By running the scripts separately, we could observe the real-time messages exchange, fostering a decentralized network of interacting agents.
 
-In addition, we introduced the _AgentVerse Mailbox Service_ to facilitate remote communication through the usage of the _AgentVerse Explorer_. We demonstrated the communication process by creating **alice** and **bob** scripts and utilizing their respective API keys to communicate remotely via such service. The decentralized network enabled messages transfer and information sharing between the remote agents. By following this last approach, users can leverage the power of the _AgentVerse Explorer_ to build intricate networks of remotely interacting uAgents.
+In addition, we introduced the [Agentverse mailbox service ↗️](/concepts/agent-services/agent-mail) to facilitate remote communication through the usage of the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer). We demonstrated the communication process by creating `alice` and `bob` scripts and utilizing their respective API keys to communicate remotely via such service. The decentralized network enabled messages transfer and information sharing between the remote agents. By following this last approach, users can leverage the power of the Agentverse Explorer to build intricate networks of remotely interacting agents.
 
 This opens up a world of possibilities for collaborative decision-making, distributed problem-solving, and decentralized coordination across a myriad of applications and domains. With this newfound knowledge, developers can harness the potential of autonomous agents to create innovative solutions and use cases in a rapidly evolving digital and decentralized landscape.
