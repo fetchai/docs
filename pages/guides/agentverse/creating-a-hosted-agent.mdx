@@ -6,19 +6,25 @@ import { Callout } from 'nextra/components'
 
 On the [Agentverse ↗️](https://agentverse.ai/), within the [Managed Agents ↗️](/concepts/agent-services/agent-hosting) section you are able to build and host any type of agent you wish to create. Bear in mind that managed agents are currently a beta feature and because of this, they do not fully support the complete uAgents toolset for development. Improvements and upgrades are foreseen in the future!
 
-There are 2 different ways through which you can start creating your agents. You can either choose to build an agent:
+There are 2 different ways through which you can start creating your agents.
 
-    1.  from a blank script, by clicking on **+ Agents**.
-    2.  from a specified use case, by clicking on **+ Use Case**.
+You can either choose to build an agent:
+
+    1.  From a blank script, by clicking on **+ Agents**.
+    2.  From a specified use case, by clicking on **+ Use Case**.
 
 ## Creating an agent
 
-By choosing the **+ Agents**, you will first need to provide a name for the agent you plan to build.
+By choosing the **+ Agents** button, you will first need to provide a name for the agent you plan to build.
 Once you select it, your agent will be ready to be coded and a box will appear in the **Managed Agents** page with different data being displayed about the agent you have just created, including the agent's **name** and **address**.
 
 By clicking on this box, the code editor will appear allowing you to code your agent straightforwardly. This is the **Agent Editor**. You can use this editor to build the code for the agent you have in mind, edit, and refine it all in one place. The Agent Editor provides you with different fundamental information about your agent, including the **agent's address** and **wallet address**.
 
-On this code editor, there is a built-in **agent object** that enables you to start coding right away! To begin, you can use the `@agent.on_interval` decorator to create a simple script that prints something on the terminal every 3 seconds:
+<Callout type="info" emoji="ℹ️">
+  The Agent Editor provides you with the possibility of structuring your project into multiple file windows located on the left side of the Editor window. You just need to provide a name to the new file being added.
+</Callout>
+
+On this code editor, there is a built-in **agent.py** file that enables you to start coding straight away! To begin, you can use the `@agent.on_interval` decorator to create a simple script that prints something on the terminal every 3 seconds:
 
 Here's an example:
 
@@ -28,11 +34,13 @@ Here's an example:
       print("Hello World!")
    ```
 
-To run the agent simply click on the Run button. To stop it click on the Stop button.
+To run the agent, simply click on the **Run** button. You can stop the script by clicking on the **Stop** button.
 
 An additional feature of the Agent Editor is that at the end of it you can find the **Agents Logs**, which is a built-in terminal displaying the output of your script after it is being run. When running the example above you will observe "Hello World!" printed on the terminal.
 
-This way, we aim at making agents' development as quick and efficient as possible. This is a great tool to determine if your code runs smoothly and to check if any error arises so for you to directly intervene and solve it if needed!
+<Callout type="info" emoji="ℹ️">
+  This way, we aim at making agents' development as quick and efficient as possible. This is a great tool to determine if your code runs smoothly and to check if any error arises so for you to directly intervene and solve it if needed!
+</Callout>
 
 ## Create an agent based on a template
 
@@ -70,4 +78,8 @@ By choosing **+ Use Case**, you will be able to create an agent based on a speci
 
 ## Register Domain Name
 
-You can also provide a **Web3 Agent Name** to your agent. To do so, just click on **+ Register Domain Name** and fill in the dedicated field for this. This way, your agent will be given a unique name, making it easier for other agents to find and communicate with it. The only requirement is _the name being in lowercase with no whitespaces in between_.
+You can also provide a **Web3 Agent Name** to your agent. To do so, just click on **+ Register Web3 Name** and fill in the dedicated field for this. This way, your agent will be given a unique name, making it easier for other agents to find and communicate with it.
+
+<Callout type="warning" emoji="⚠️">
+  The only requirement is _the name being in lowercase with no whitespaces in between_.
+</Callout>
