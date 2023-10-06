@@ -143,6 +143,17 @@ export const FeatureGuideTabs = () => {
           path: "/guides/fetch-network/how-to-convert-fet-to-and-from-erc20",
         },
         {
+          title: "How to get testnet tokens via the Token Faucet 💰",
+          description:
+            "Learn how to get testnet tokens using the Faucet service.",
+          path: "/guides/fetch-network/ledger/faucet",
+        },
+        {
+          title: "Ledger",
+          description: "Get started with the Fetch Ledger.",
+          path: "/concepts/fetch-network/ledger/intro",
+        },
+        {
           title: "CosmPy",
           description: "A guide helping you to get started with CosmPy tools.",
           path: "/guides/fetch-network/cosmpy/install",
@@ -151,6 +162,12 @@ export const FeatureGuideTabs = () => {
           title: "Jenesis",
           description: "A guide helping you to get started with Jenesis tools.",
           path: "/guides/fetch-network/jenesis/getting-started",
+        },
+        {
+          title: "How to get testnet tokens via the token faucet 💰",
+          description:
+            "Get testnet tokens and start developing on the Fetch.ai testnet.",
+          path: "/guides/fetch-network/ledger/faucet",
         },
       ],
     },
