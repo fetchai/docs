@@ -156,10 +156,10 @@ const items: { [key: string]: Item[] } = {
   ],
   "AI Agent Services": [
     {
-      title: "Hosting",
+      title: "Agentverse Hosting",
       description: (
         <>
-          The Agentverse hosting platform enables all users to get started
+          The Agentverse Hosting platform enables all users to get started
           quickly and to deploy agents to the cloud to start connecting and
           automating.
         </>
@@ -168,7 +168,7 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-hosting",
     },
     {
-      title: "Mailbox",
+      title: "Agentverse Mailbox",
       description: (
         <>
           Set up mailboxes for your local agents and to run them independently
@@ -179,13 +179,13 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-mail",
     },
     {
-      title: "Agent APIs",
+      title: "Agentverse APIs",
       description: <>Understand and use the Agentverse APIs.</>,
       icon: apiAgentIcon,
       path: "/apis/agentverse",
     },
     {
-      title: "Explorer",
+      title: "Agentverse Explorer",
       description: (
         <>
           Learn to use the Agentverse Explorer to start an interaction with

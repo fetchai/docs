@@ -94,7 +94,7 @@ export const FeatureGuideTabs = () => {
       ],
     },
     {
-      label: "Hosting",
+      label: "Agentverse",
       content: [
         {
           title: "Creating a hosted agent 🤖",
@@ -109,14 +109,21 @@ export const FeatureGuideTabs = () => {
           path: "/guides/agentverse/discovering-agents",
         },
         {
-          title: "Utilising the Agentverse Mailbox Service 📬",
+          title: "Utilising the Agentverse mailbox service 📬",
           description:
             "Set up mailboxes for your locally-run agents and to run them independently of your constant presence to run the server.",
           path: "/guides/agentverse/utilising-the-mailbox",
         },
         {
-          title: "Registering Agent Services",
-          description: "Description to be added.",
+          title: "Registering agent services",
+          description:
+            "Discover how to register and make discoverable your agent's services within the Agentverse.",
+          path: "/guides/agentverse/registering-agent-services",
+        },
+        {
+          title: "Agentverse allowed imports",
+          description:
+            "Understand what modules are provided within the Agentverse platform.",
           path: "/guides/agentverse/registering-agent-services",
         },
       ],
