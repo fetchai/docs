@@ -33,6 +33,14 @@ function LandingPage() {
     },
   ];
 
+  const beginnerGuides = [
+    {
+      label: "AI Agents 101 🤖",
+      path: "/guides/agent-courses/introductory-course",
+      icon: AgentverseGettingStartedIcon,
+    },
+  ];
+
   const GuideBox = ({
     guide,
   }: {
@@ -79,6 +87,20 @@ function LandingPage() {
         <div className={styles.startGuides}>
           <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
             {startingGuides.map((guide, index) => {
+              return <GuideBox key={index} guide={guide} />;
+            })}
+          </div>
+        </div>
+      </section>
+
+
+        <section className="nx-mt-60 landing-page-left-image">
+        <p className={styles.subTitle}>Beginner series</p>
+        <p className={styles.description}>Comprehensive guides for people new to programming and Fetch.ai</p>
+
+        <div className={styles.startGuides}>
+          <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
+            {beginnerGuides.map((guide, index) => {
               return <GuideBox key={index} guide={guide} />;
             })}
           </div>
