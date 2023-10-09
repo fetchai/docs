@@ -20,70 +20,26 @@ In practical terms, agents enable individuals and organizations to automate a wi
 
 ## Setup and installation 🛠️
 
-Setups are the initial hurdle of any software endeavor. Just like in soccer where a proper goal-keeper is half the team, a smooth initial setup is half the journey. And since teamwork makes the dream work, if you face any unexpected challenges join our [Discord ↗️](https://discord.gg/fetchai) where a team member will assist you.
+Setups are the initial hurdle of any software endeavor. We were once new to programming, just like you. Because we know what a challenge it can be, do reach out to us on our [Discord ↗️](https://discord.gg/fetchai) where a team member will assist you.
 
     <Callout type="info" emoji="ℹ️">
-      If you are new to Python development this is everything you need to know in a nutshell. [Python ↗️](https://www.python.org/downloads/) is an interpreted language and requires a Python interpreter and tools to manage your virtual environments and packages. Python is also an ecosystem full of useful downloadable packages.
+      This guide primarily uses the python programming language [Python ↗️](https://www.python.org/downloads/) there are plenty of programming languages out there, but we think python is particulary good to learn with, but also build great to build AI agents with too.
     </Callout>
 
-Here, you can find a list of all the tools you may need to maximize your productivity and master the creation of agents:
+This guide uses the following tools:
 
-    1. **IDEs**: Visual Studio Code or PyCharm (any will work).
+    1. **IDEs**: Visual Studio Code or PyCharm (any will work, even notepad).
     2. **Homebrew**: latest version.
     3. **PyEnv**: latest version.
     4. **Python**: 3.8+.
     5. **Poetry**: latest version
 
-### Homebrew
+All commands unless stated are to be run in a terminal window.
+
+
+### installing brew
 
 We recommend starting with Homebrew since it will help you easily install all other software. Homebrew is a package manager for MacOS that simplifies the installation and management of software and packages on Mac computers through the command line.
-
-Here are the most useful commands you will need:
-
-    - **Installing Homebrew from your terminal**: `brew install`
-    - **Listing all of your available packages**: `brew list`
-    - **Opening the help menu in the terminal**: `brew help`
-    - **Update all package definitions and Homebrew**: `brew update`
-
-    <Callout type="info" emoji="ℹ️">
-      For more information on Homebrew explore their [website ↗️](https://brew.sh/).
-    </Callout>
-
-### PyEnv
-
-We recommend using PyEnv since it will help you manage installed Python interpreters. [PyEnv ↗️](https://pypi.org/project/pyenv/) is a Python version management tool that allows you to easily switch between different versions of Python on your computer. It helps developers work with multiple Python versions and ensures compatibility for various projects. Here, there are the most useful commands you will need:
-
-    - **Setting a shell-specific Python version**: `pyenv shell`
-    - **Setting the global version of Python**: `pyenv --global version `
-    - **Listing all Python versions known to PyEnv**: `pyenv --versions`
-
-### Poetry
-
-We recommend using poetry since it will simplify the development process. [Poetry ↗️](https://python-poetry.org/) is a package and dependency management tool for Python that can work with virtual environments.
-
-You can install Poetry [here ↗️](https://python-poetry.org/docs/), or by using Homebrew.
-
-<Callout type="info" emoji="ℹ️">
-  In Python development, a virtual environment is a self-contained, isolated environment within a computer's operating system that allows you to install and manage software packages and dependencies independently of the system-wide Python environment.
-</Callout>
-
-Below, you can find some of the main commands used with Poetry:
-
-    - **Create a new Pytohn project template**: `poetry new project-name`
-    - **Initialize a new Python project in the current directory**: `poetry init`
-
-        <Callout type="info" emoji="ℹ️">
-          This command guides you through the process of setting up your project and creating a pyproject.toml configuration file.
-        </Callout>
-
-    - **Install project dependencies**: `poetry install`
-    - **Add a new dependency to your project**: `poetry add package-name`
-    - **Update project dependencies**: `poetry update `
-    - **Activate a virtual environment for your project**: `poetry shell`
-
-## Full setup sequence
-
-You will need to start by installing Homebrew through the terminal, and then run the `brew update` command to ensure you are up-to-date with the latest version.
 
 You can install simply paste this command in your terminal, you can verify it [here ↗️](https://brew.sh/):
 
@@ -96,6 +52,13 @@ Then, ensure Homebrew is updated by running:
     ```
     brew update
     ```
+
+    <Callout type="info" emoji="ℹ️">
+      For more information on Homebrew explore their [website ↗️](https://brew.sh/).
+    </Callout>
+
+
+### installing pyenv
 
 Now, you need to proceed by installing PyEnv. This will help you manage different Python interpreters:
 
@@ -132,6 +95,8 @@ As the final step, we want to ensure the global version of Python we are working
     pyenv versions #Here we verify if it's set up correctly
     ```
 
+### Installing poetry
+
 As our next step, we will install Poetry which will greatly help us in managing all of the Python specific packages. You can install Poetry run the following in your Zsh terminal:
 
     ```
@@ -140,15 +105,27 @@ As our next step, we will install Poetry which will greatly help us in managing 
 
 You can find more information [here ↗️](https://python-poetry.org/docs/#installation)
 
-Once you have installed everything, simply open your IDE and set yourself up for your first project.
-You can perform this by creating a folder/directory where you would wish to store your project, and then run the following sequence of commands:
+
+### Initialising the project
+
+Now we've got all our necessary tools installed, let's create your working directory and initalise poetry 🎉
+
+Make sure you're in a path you're comfortable with, check this by typing `pwd` into terminal, ideally you'd see something like `/Users/Jessica/Documents`
+
+Now let's make a folder to work in:
+
+`mkdir development/agent-demo`
+
+Let's cd into `cd development/agent-demo` and let's also check the path with `pwd`.
+
+If you're happy with the install location for the project, let's go ahead an initalise poetry.
 
     ```
     poetry init
     ```
 
     <Callout type="info" emoji="ℹ️">
-      This will open up the setup wizard, simply follow the steps. During the setu sequence you'll be asked which dependies you'd want to see installed. At this point simply select uagents. The wizard will ask for a _name_, a _version_, an _author_, a _license_ and most importantly the _dependencies_ for your project.
+      This will open up the setup wizard, simply follow the steps. During the setup sequence you'll be asked which dependies you'd want to see installed. At this point simply select uagents. The wizard will ask for a _name_, a _version_, an _author_, a _license_ and most importantly the _dependencies_ for your project.
     </Callout>
 
 At this stage input uagents, once you have completed the initialization, run:
@@ -161,24 +138,9 @@ You will see the installation occur in accordance with the **pyproject.toml** fi
 
 Now, you have finalised the installation and you can begin creating your first agent!
 
-## Alternative setup
-
-For those who already have Python installed and work within a pre-existing setup, an alternative procedure is to use PIP combined with any other virtual environment manager.
-
-### PIP (Python Installs Packages)
-
-[PIP ↗️](https://pypi.org/project/pip/) is a command-line tool which allows you to install, manage, and remove Python packages (i.e., libraries and modules) from the Python Package Index (PyPI) or other package repositories.
-The following are different commands you can run using PIP:
-
-    - **Installing packages**: `pip install package-name`
-    - **Upgrading packages**: `pip install --upgrade package-name>`
-    - **Listing installed packages**: `pip list`
-    - **Show installed package**: `pip show package-name`
-    - **Uninstalling Packages**: `pip uninstall package-name`
-
 ## Overview of the uAgents Framework
 
-As previously specified, the uAgents Framework is a Python library designed for creating intelligent and autonomous agents in decentralized environments. It prioritizes security through cryptography for message and asset protection. It enables easy collaboration between agents in distributed networks via the Almanac contract. Agents find applications in various domains and fields, including:
+As previously specified, the uAgents Framework is a Python library designed for creating intelligent and autonomous agents in decentralized environments. It prioritizes security through cryptography for message and asset protection. It enables easy collaboration between agents in distributed networks via the [Almanac contract ↗](https://fetch.ai/docs/references/contracts/uagents-almanac/almanac-overview). Agents find applications in various domains and fields, including:
 
 - **IoT usage**: it allows agents to represent physical objects, making it suitable for Internet of Things (IoT) applications, enabling interactions with real-world devices.
 
@@ -232,6 +194,8 @@ Messages consist of key-value pairs in JSON format and are enclosed in envelopes
     </Callout>
 
 If you wish to learn more, explore our [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) document in the [References ↗️](/references) section of our documentation.
+
+If you're new to JSON please see an example [here ↗️](https://www.w3schools.com/whatis/whatis_json.asp)
 
 #### Almanac contract (search and discovery): overview
 
