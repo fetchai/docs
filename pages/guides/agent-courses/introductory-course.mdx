@@ -342,7 +342,7 @@ Copy the above into `duo_agent.py` and run with `poetry run python duo_agent.py`
 
 ### Agent communication
 
-We now introduce the `Model` class, enabling effective communication between different agents. The `Model` class allows us to establish a structured message format, which provides an adequate framework for passing messages:
+We now introduce the `Model` class, enabling effective communication between different agents, the `Model` class allows us to establish a structured message format.
 
     ```py copy
     from uagents import Agent, Bureau, Context, Model
@@ -359,7 +359,7 @@ We need to define a function for `alice` to send messages to `bob` periodically,
         await ctx.send(bob.address, Message(message="hello there bob"))
     ```
 
-We then need a way for Bob to receive these messages, wecan do this but creating a function for `bob` to handle all incoming messages from other agents. We will do this through a `on_message()` decorator that will activate the `message_handler()` once `bob` receives a message of type `Message`:
+We then need a way for Bob to receive these messages, we can do this but creating a function for `bob` to handle all incoming messages from other agents. We will do this through a `on_message()` decorator that will activate the `message_handler()` once `bob` receives a message of type `Message`:
 
     ```py copy
     @bob.on_message(model=Message)
