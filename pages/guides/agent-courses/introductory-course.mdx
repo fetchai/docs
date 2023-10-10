@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # AI Agents 101 🤖
 
 ## Getting started with AI agents 🎯
@@ -97,8 +99,10 @@ As our next step, we will install Poetry which will greatly help us in managing 
     curl -sSL https://install.python-poetry.org | python3 -
     ```
 
-You can find more information [here ↗️](https://python-poetry.org/docs/#installation)
 
+    <Callout type="info" emoji="ℹ️">
+     For an extended exploration within poetry please visit their website where you'll be able to quickly resolve any installation related questions. You can find more information [here ↗️](https://python-poetry.org/docs/#installation)
+    </Callout>
 
 ### Initialising the project
 
@@ -343,6 +347,7 @@ Copy the above into `duo_agent.py` and run with `poetry run python duo_agent.py`
 ### Agent communication
 
 We now introduce the `Model` class, enabling effective communication between different agents, the `Model` class allows us to establish a structured message format.
+Let's create a new script for the agent communication example with `touch agent_communication.py`
 
     ```py copy
     from uagents import Agent, Bureau, Context, Model
@@ -351,7 +356,7 @@ We now introduce the `Model` class, enabling effective communication between dif
         message: str
     ```
 
-We need to define a function for `alice` to send messages to `bob` periodically, to do this we define the function  `send_message()` function using the `Context` class to make our agent `alice` send a message to `bob` on interval:
+We need to define a function for `alice` to send messages to `bob` periodically, to do this we define the `send_message()` function using the `Context` class to make our agent `alice` send a message to `bob` on interval:
 
     ```py copy
     @alice.on_interval(period=3.0)
@@ -429,13 +434,17 @@ The output would be:
     [ bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
     ```
 
+To run the full script copy the complete script code into your `agent_communication.py` file and run it with the `poetry run python agent_communication.py` command. 
+
 #### Enabling search and discovery for your Agent (Almanac registration)
 
 Agent registration in the Almanac contract is a key feature which enables discoverability of agents as well enabled remote agent communication. In order to register agents must pay a small fee therefore, your agents need to have funds available in their Fetch address. Luckily in this demo we utilise the free testnet environment to simulate real world transactions. When using the testnet, you can use the function `fund_agent_if_low()` to fund your agent.
 
 Following the existing sequence we firstly import, then instantiate and in this specific example include a function that ensures that agents have a non-zero balance. This function will check if you have enough tokens to register in the Almanac. If not it will add tokens to your Fetch address.
 
-uAgents can communicate by querying the Almanac contract and retrieving an HTTP endpoint from the recipient uAgent. Therefore, we need to specify the service endpoints when defining an agent at registration.
+uAgents can communicate by querying the Almanac contract and retrieving an HTTP endpoint from the recipient uAgent. Therefore, we need to specify the service endpoints when defining an agent at registration. 
+
+Just like we did in our past examples let's create a file for our program with the `touch almanac_registration.py` command. 
 
     <Callout type="info" emoji="ℹ️">
       HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. These endpoints define the entry points for various operations or functions offered by a web service or application.
@@ -459,6 +468,8 @@ Thus, at registration, we will have what follows:
 
     Here, we defined a local http address but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed to your agent so you don't have to fund different addresses each time you run your agent.
 
+    To run the script use the `poetry run python almanac_registration.py` command. 
+
 #### Remote agent communication
 
 As previously specified, uAgents can interact remotely. To achieve this, we simply need to know an agent's address and query the rest of its information in the Almanac contract. To simulate a remote context, you can create two agents operating on separate ports and terminals within the same device. This mirrors real-world scenarios where agents communicate efficiently across diverse geographic locations, enhancing collaboration and expanding the reach of intelligent systems.
@@ -466,6 +477,8 @@ As previously specified, uAgents can interact remotely. To achieve this, we simp
 In this example, we provide two scripts for two separate agents. To establish a line of remote communication both agents should be registered on the Almanac contract and should possess non-zero balances.
 
 We first introduce `alice`. Following the existing frame of development, we first import the required modules, we then instantiate the `Model` class to define a `Message` data model for messages to be exchanged between our agents, and provide a recipient address for reference. Then, we create our agent `alice`, by providing needed information for registration, and also making sure it has enough balance in its wallet:
+
+Let's create the Alice's script with the `touch remote_alice.py` command. 
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -499,6 +512,8 @@ We first introduce `alice`. Following the existing frame of development, we firs
 
 Similarly, we also need to define a script for `bob` so to create a remote communication with `alice` agent:
 
+Once again let's use the `touch remote_bob.py` command. 
+
     ```py
     from uagents.setup import fund_agent_if_low
     from uagents import Agent, Context, Model
@@ -525,7 +540,9 @@ Similarly, we also need to define a script for `bob` so to create a remote commu
         bob.run()
     ```
 
-In different terminal windows, first run `bob` and then `alice`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two agents in parallel terminals use the `python script name.py` format . For example `python alice.py`. The output would be:
+In different terminal windows, first run `remote_bob.py` and then `remote_alice.py`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two agents in parallel terminals use the `poetry run python remote_alice.py` and `poetry run python remote_bob.py` . 
+
+Once you've ran both agents the expected output would be:
 
 **Alice**:
 
@@ -545,7 +562,13 @@ In different terminal windows, first run `bob` and then `alice`. They will regis
 
 ## Agents and storage 
 
-Agents within the uAgents Framework possess the capability to locally store information in a JSON file, ensuring data retrieval as needed. This storage functionality serves as a fundamental component for agents to maintain a state, recollect prior interactions, and base decisions on historical data. The objective behind integrating storage features is to empower agents to preserve and leverage information over time, facilitating the recollection of past interactions and context for more informed decision-making. This capacity to learn from past experiences enables agents to adapt and refine their behavior and decision processes.
+Agents within the uAgents Framework possess the capability to locally store information in a JSON file, ensuring data retrieval as needed. This storage functionality serves as a fundamental component for agents to maintain a state, recollect prior interactions, and base decisions on historical data. 
+
+The objective behind integrating storage features is to empower agents to preserve and leverage information over time, facilitating the recollection of past interactions and context for more informed decision-making. This capacity to learn from past experiences enables agents to adapt and refine their behavior and decision processes.
+
+    <Callout type="info" emoji="ℹ️">
+      JavaScript Object Notation (JSON) is a standard text-based format for representing structured data based on JavaScript object syntax. It is commonly used for transmitting data in web applications (e.g., sending some data from the server to the client, so it can be displayed on a web page, or vice versa).
+    </Callout>
 
 Retrieving or setting storage information within the Framework is achieved through two distinct methods:
 
@@ -553,6 +576,8 @@ Retrieving or setting storage information within the Framework is achieved throu
     - `ctx.storage.set()` for setting data.
 
 An example to better understand the concept of storage is provided below. In this example we have a full script for an agent holding a number, incrementing it by one and adding it to its storage is also provided:
+
+Exactly like our previous examples we'll first create the python file that contains the script using the `touch storage.py` command in our terminal. 
 
     ```py copy filename="storage.py"
     from uagents import Agent, Context
@@ -580,13 +605,19 @@ The output would be:
     ...
     ```
 
+To execute the storage agent, simply employ the standard method we've demonstrated: `poetry run python storage.py`
+
 #### Booking a table at a restaurant
 
-We now want to show how to set up the code to create a **restaurant booking service with two uAgents**: a `restaurant` with tables available, and a `user` requesting table availability.
+We now want to show how to set up the code to create a **restaurant booking service with two **uAgents**: a `restaurant` with tables available, and a `user` requesting table availability.
 
 We will accomplish this by defining 2 specific protocols, one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). We will then need to define two uAgents, `restaurant` and `user`, which will make use of the protocols to query and book a table.
 
-We can start by writing the code for our 2 protocols.
+     <Callout type="info" emoji="ℹ️">
+      The μAgents framework facilitates communication between agents by organizing message types and handlers within protocols. Agents that share the same protocol can easily interact with one another. For a deeper dive on protocols visit our [Github ↗️](https://github.com/fetchai/uAgents/blob/main/python/docs/agent-protocols.md)
+    </Callout>
+
+We can start by writing the code for our 2 protocols. In this example take the initiative and create your python file for the protocols. 
 
 ##### Table querying protocol
 
@@ -663,7 +694,9 @@ Let's then define the message handlers for the `query_proto` protocol:
         await ctx.send(sender, TotalQueries(total_queries=total_queries))
     ```
 
-    Here, the `handle_query_request()` function is the message handler function defined using the `on_message()` decorator. It handles the QueryTableRequest messages and replies with a `QueryTableResponse` message. The handler processes the table availability query based on the provided parameters, checks the table statuses stored in the agent's storage, and sends the available table numbers as a response to the querying agent. Additionally, the handler tracks the total number of queries made and increments the count in storage. On the other hand, `handle_get_total_queries()` is the message handler function defined using the `on_query()` decorator. It handles the `GetTotalQueries` query and replies with a `TotalQueries` message containing the total number of queries made to the system. The handler retrieves the total query count from the agent's storage and responds with the count.
+    Here, the `handle_query_request()` function is the message handler function defined using the `on_message()` decorator. It handles the QueryTableRequest messages and replies with a `QueryTableResponse` message. The handler processes the table availability query based on the provided parameters, checks the table statuses stored in the agent's storage, and sends the available table numbers as a response to the querying agent. 
+    
+    Additionally, the handler tracks the total number of queries made and increments the count in storage. On the other hand, `handle_get_total_queries()` is the message handler function defined using the `on_query()` decorator. It handles the `GetTotalQueries` query and replies with a `TotalQueries` message containing the total number of queries made to the system. The handler retrieves the total query count from the agent's storage and responds with the count.
 
 The overall script should look as follows:
 
@@ -720,6 +753,7 @@ The overall script should look as follows:
         total_queries = int(ctx.storage.get("total_queries") or 0)
         await ctx.send(sender, TotalQueries(total_queries=total_queries))
     ```
+
 
 ### Table booking protocol
 
@@ -816,7 +850,9 @@ The overall script should be:
 
 ### Restaurant agent
 
-We are now ready to define our `restaurant` agent. We need to import the necessary classes from the `uagents` library and the two protocols we previously defined and define our `restaurant` agent, making sure it has enough balance in its wallet for registration:
+Now, let's move forward by creating our restaurant agent in a separate file. In this step, we'll reimport the essential classes from the uAgents library and reintegrate the two protocols we've previously designed. 
+
+As we define our restaurant agent, it's vital to ensure it possesses sufficient funds in its wallet for the registration process. Remember to use the `fund_agent_if_low` method for this. 
 
     ```py copy
     rom uagents import Agent
@@ -891,7 +927,7 @@ The overall script would be as follow:
 
 We can now define the script for our `user` agent querying and booking a table at the `restaurant`.
 
-We need to import necessary classes from the `uagents` library and the two protocols we previously defined. We also need the `restaurant` agent's address to be able to communicate with it:
+Once we've imported the necessary classes from the `uagents` library and the two protocols we previously defined. We also need the `restaurant` agent's address to be able to communicate with it:
 
     ```py copy
     from uagents import Agent, Context
@@ -914,7 +950,7 @@ We need to import necessary classes from the `uagents` library and the two proto
     fund_agent_if_low(user.wallet.address())
     ```
 
-Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. Then, we need to create an `interval()` function which performs a table query request on a defined period to the `restaurant`, to query the availability of a table given the `table_query` parameters:
+Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. Then, we need to create an `on_interval()` function which peridotically queries the `restaurant`, asking for the availability of a table given the `table_query` parameters:
 
     ```py copy
     table_query = QueryTableRequest(
@@ -1037,9 +1073,9 @@ The overall script would be:
         user.run()
     ```
 
-We are ready to run the example. Run the `restaurant` agent and then the `user` agent from different terminals. In order to run parallel Python scripts in dual terminals, use the `python script-name.py` format. For example, if you name your scripts `restaurantAgent.py` and `userAgent.py` you can use the `python restaurantAgent.py` and `python userAgent.py` to run them in parallel terminals.
+We are ready to run the example. Run the `restaurant` agent and then the `user` agent from different terminals. Similarly to all other examples use the `poetry run python script name.py` command. 
 
-The output should be as follows, depending on the terminal:
+The output should be as follows:
 
 **Restaurant**:
 
@@ -1053,6 +1089,7 @@ The output should be as follows, depending on the terminal:
     [ user]: There is a free table, attempting to book one now
     [ user]: Table reservation was successful
     ```
+
 
 ### From novice to navigator: your course conclusion and beyond!
 
