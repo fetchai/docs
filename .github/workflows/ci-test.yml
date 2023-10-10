@@ -1,0 +1,40 @@
+name: CI-tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.10.4
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10.4
+
+      - name: Install copy paste mechanism
+        run: sudo apt-get install xsel
+
+      - name: Create virtual environment
+        run: python -m venv venv
+
+      - name: Activate virtual environment
+        run: source venv/bin/activate
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install uagents pyperclip pytest psutil
+
+      - name: Run your tests
+        run: |
+          python -m pytest tests/automation_code.py
