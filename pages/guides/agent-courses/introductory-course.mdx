@@ -116,7 +116,7 @@ Now, let's create a folder to work in: `mkdir development/agent-demo`
 
 Let's change directory (using `cd` command) into `cd development/agent-demo`. Then, let's check the path with `pwd` command.
 
-If you're happy with the install location for the project, let's go ahead an initialize Poetry:
+If you're happy with the install location for the project, let's go ahead and initialize Poetry:
 
     ```
     poetry init
@@ -242,7 +242,7 @@ To get an action to happen on start up, we can add a decorator to a function:
 
     Let's update `alice_agent.py` with the above.
 
-    Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the imported agent python library knows to act in a certain way on the declared functions. To find out more about decorators, take a look as [Primer on Python decorators  ↗️](https://realpython.com/primer-on-python-decorators/).
+    Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the imported agent python library knows to act in a certain way on the declared functions. To find out more about decorators, take a look at [Primer on Python decorators  ↗️](https://realpython.com/primer-on-python-decorators/).
 
     In our example above, the `on_event()` decorator specifies that the agent should run an `introduce_agent()` function when the agent starts up, which will then return a message presenting the agent with its name and address by using the `Context` class used to retrieve the agent's related name and address using the `ctx.name` and `ctx.address` methods.
 
@@ -255,7 +255,7 @@ This time, the output will be:
 
 #### Printing agent's addresses
 
-As we have mentioned earlier, every uAgent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses. You can use the python internal function `print()` to print a string representation of any object:
+Sometimes we just need to see what a value looks like; helpfully python has an inbuilt function `print()`. As we have mentioned earlier, every uAgent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses, so let's print them to console to see their differences.
 
     ```py copy
     from uagents import Agent
@@ -279,6 +279,10 @@ Interval tasks execute a specific task or set of instructions at a predefined ti
 Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more.
 
 In the following example, we define an interval task by setting up an `on_interval()` decorator with a timer that triggers the task repetition. In this case a `say_hello()` function is being repeated at a specified time interval, and the output is printed on the terminal using the `ctx.logger.info()` method of the `Context` class.
+
+    <Callout type="info" emoji="ℹ️">
+      The Context class in the uagents library plays a pivotal role by overseeing message handling and serving as a central hub for essential agent functionalities such as storage, wallet, ledger, and identity management.
+    </Callout>
 
 As an introductory example, we consider an agent that periodically prints hello and its name on the console:
 
@@ -464,7 +468,12 @@ Thus, at registration, we will have what follows:
     fund_agent_if_low(alice.wallet.address())
     ```
 
-    Here, we defined a local http address but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed to your agent so you don't have to fund different addresses each time you run your agent.
+    Here, we defined a local http address but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your agent so you don't have to fund different addresses each time you run your agent.
+
+        <Callout type="info" emoji="ℹ️">
+          A seed phrase is a series of random words (typically 12 or 24) that provide the data needed to recover a lost or broken crypto wallet. It is also known as a mnemonic phrase and is best understood as a security measure for self-custodied digital assets. Agents have a crypto wallet address, and possessing the seed phrase enables the restoration of an agent's wallet address. 
+        </Callout>
+
 
     To run the script use the `poetry run python almanac_registration.py` command. 
 
@@ -561,10 +570,6 @@ Once you've ran both agents the expected output would be:
 Agents within the uAgents Framework possess the capability to locally store information in a JSON file, ensuring data retrieval as needed. This storage functionality serves as a fundamental component for agents to maintain a state, recollect prior interactions, and base decisions on historical data. 
 
 The objective behind integrating storage features is to empower agents to preserve and leverage information over time, facilitating the recollection of past interactions and context for more informed decision-making. This capacity to learn from past experiences enables agents to adapt and refine their behavior and decision processes.
-
-    <Callout type="info" emoji="ℹ️">
-      JavaScript Object Notation (JSON) is a standard text-based format for representing structured data based on JavaScript object syntax. It is commonly used for transmitting data in web applications (e.g., sending some data from the server to the client, so it can be displayed on a web page, or vice versa).
-    </Callout>
 
 Retrieving or setting storage information within the Framework is achieved through two distinct methods:
 
