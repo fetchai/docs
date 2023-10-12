@@ -27,7 +27,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
   const handleFeedbackSubmit = async () => {
     // Now you can associate feedback type, feedback and page
     try {
-      const response = await fetch("/docs/api/feedback", {
+      const response = await fetch("http://localhost:8000/api/feedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,13 +60,13 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
             className={`nx-flex nx-items-center nx-space-x-4 nx-mt-4 nx-justify-center`}
           >
             <div
-              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-green`}
+              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-green nx-cursor-pointer`}
               onClick={() => handleThumbsClick("positive")}
             >
               👍
             </div>
             <div
-              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-red-500`}
+              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-red-500 nx-cursor-pointer`}
               onClick={() => handleThumbsClick("negative")}
             >
               👎
