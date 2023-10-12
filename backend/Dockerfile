@@ -1,22 +1,22 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM bitnami/minideb:bullseye-amd64
+ENV PATH="$PATH:/root/.local/bin"
 
-# Set the working directory to /app
+RUN apt-get update && \
+    apt-get install -y tree python3 python3-distutils curl postgresql-client gcc python3.9-dev && \
+    curl -sSL https://install.python-poetry.org | python3 -
+
+
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# install the dependencies
+ADD pyproject.toml poetry.lock /app/
+RUN poetry install --only main
 
-# Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
-RUN pip install alembic
-RUN pip install pg8000
+# add the main codebase
+ADD . /app
 
+EXPOSE 8000
+ENV PYTHONUNBUFFERED=1
+ENTRYPOINT ["poetry", "run"]
+CMD ["uvicorn", "main:app", "--host=0.0.0.0"]
 
-RUN chmod +x startup.sh
-
-# Make port 80 available to the world outside this container
-EXPOSE 80
-
-# Run app.py when the container launches
-CMD ["./startup.sh"]

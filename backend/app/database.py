@@ -1,11 +1,27 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from typing import Optional
 
-# Define the database URL. Replace with your actual database URL.
-DATABASE_URL = "postgresql+pg8000://user:pass@db/feedback"
+import aiopg
+import psycopg2
 
-# Create a SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
+_pool: Optional[aiopg.Pool] = None
 
-# Create a session class for database interactions
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+async def get_db() -> aiopg.Pool:
+    global _pool
+
+    if _pool is None:
+        _pool = await aiopg.create_pool()
+
+    return _pool
+
+
+async def maybe_get_db() -> Optional[aiopg.Pool]:
+    try:
+        return await get_db()
+    except psycopg2.OperationalError:
+        return None
+
+
+def clear_db():
+    global _pool
+    _pool = None

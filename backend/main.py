@@ -1,16 +1,10 @@
+import aiopg as aiopg
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
-from . import models
+from app import models
 from pydantic import BaseModel
-from .database import SessionLocal  # Import your database session here
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+from app.database import get_db
+import aiopg
 
 app = FastAPI()
 
@@ -24,25 +18,34 @@ app.add_middleware(
     allow_origin_regex="https?://.*",  # You can specify a regex for allowed origins
 )
 
+
 class FeedbackRequest(BaseModel):
     feedbackType: str
     description: str
     pageUrl: str
     # userId: int #will integrate userId later once done
 
+
 @app.get("/_ping")
 def ping():
     return {"message": "ping recieved"}
 
+
 @app.post("/api/feedback")
-def submit_feedback(feedback_data: FeedbackRequest, db: Session = Depends(get_db)):
-    db_feedback = models.Feedback(
-        feedback_type=feedback_data.feedbackType,
-        description=feedback_data.description,
-        page_url=feedback_data.pageUrl,
-        # userId=feedback_data.userId
-    )
-    db.add(db_feedback)
-    db.commit()
-    db.refresh(db_feedback)
+async def submit_feedback(feedback_data: FeedbackRequest, db: aiopg.Pool = Depends(get_db)):
+    with (await db.cursor()) as cur:
+        await cur.execute(
+            """
+            INSERT INTO feedbacks(feedback_type, description, page_url)
+            VALUES (%s, %s, %s);
+            """,
+            (
+                feedback_data.feedbackType,
+                feedback_data.description,
+                feedback_data.pageUrl,
+            )
+        )
+
+        await cur.execute("COMMIT")
+
     return {"message": "Feedback submitted successfully"}
