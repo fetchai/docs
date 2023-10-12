@@ -2,7 +2,7 @@
 
 The versions of both the GraphQL API and the Indexer itself can be retrieved simply using the following query on the GraphQL playground.
 
-## Example:
+## Example
 
     ```graphql
     query ReleaseVersionTest {
@@ -27,24 +27,25 @@ Each of these version numbers are stored as the value to the key `"version"` wit
 ### The __metadata_ entity
 
 The `_metadata` entity has further utility beyond the scope of the example query given prior. Using any of the relevant fields from the type definition below, internal states and config information can be retrieved with ease.
-```
-type _metadata {
-        lastProcessedHeight: Int
-        lastProcessedTimestamp: Date
-        targetHeight: Int
-        chain: String
-        specName: String
-        genesisHash: String
-        indexerHealthy: Boolean
-        indexerNodeVersion: String
-        queryNodeVersion: String
-        rowCountEstimate: [TableEstimate]
-        dynamicDatasources: String
-      }
-```
+
+    ```
+    type _metadata {
+            lastProcessedHeight: Int
+            lastProcessedTimestamp: Date
+            targetHeight: Int
+            chain: String
+            specName: String
+            genesisHash: String
+            indexerHealthy: Boolean
+            indexerNodeVersion: String
+            queryNodeVersion: String
+            rowCountEstimate: [TableEstimate]
+            dynamicDatasources: String
+          }
+    ```
 #### Example
 
-If a developer was curious about the `chain-id` or whether the Indexer has passed any health checks, using `indexerHealthy`, these values can be returned within the playground or otherwise connected projects.
+If a developer is curious about the `chain-id` or whether the Indexer has passed any health checks, he can use `indexerHealthy`. These values can be returned within the playground or otherwise connected projects.
 
     ```graphql
     query ReleaseVersionTest {
