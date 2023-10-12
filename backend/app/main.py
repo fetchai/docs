@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from . import models
 from pydantic import BaseModel
@@ -12,6 +13,16 @@ def get_db():
         db.close()
 
 app = FastAPI()
+
+# Configure CORS middleware to allow all origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can specify a list of allowed origins
+    allow_methods=["*"],  # "*" allows all methods, or you can specify specific methods
+    allow_headers=["*"],  # "*" allows all headers, or you can specify specific headers
+    allow_credentials=True,  # Allow cookies and credentials
+    allow_origin_regex="https?://.*",  # You can specify a regex for allowed origins
+)
 
 class FeedbackRequest(BaseModel):
     feedbackType: str

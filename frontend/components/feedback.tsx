@@ -32,7 +32,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ feedbackType, feedback, pageUrl }),
+        body: JSON.stringify({ feedbackType, description: feedback, pageUrl }),
       });
 
       if (response.ok) {
