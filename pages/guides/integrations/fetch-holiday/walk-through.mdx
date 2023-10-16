@@ -1,6 +1,6 @@
 # Walk-through 📝
 
-You first need to satisfy the requirements in [Getting Started ↗️](/guides/integrations/fetch-holiday/getting-started) section for this example.
+You first need to satisfy the requirements in [Getting Started 🎯↗️](/guides/integrations/fetch-holiday/getting-started) section for this example.
 
 ## Organize the project
 
@@ -114,7 +114,7 @@ Let's start by defining the script for a top activities agent which provides tou
    agent.include(top_activities_protocol)
    ```
 
-   We defined a function named `get_top_activity()` that will handle `TopActivities` messages as definded by the `.on_message()` decorator. The function then logs information about the received message, sender, and session using `ctx.logger.info()` method. The code then checks if `msg.preferred_activities` is provided. If it is, a message about preferred activities is generated. We proceed by generating the input for the language model using the filled prompt as input to the language model for generating a response. The code then parses the output using the output parser previously defined. The parsed result is used to create a list of options, each represented as a `KeyValue` object. The code then logs the result and the corresponding options. A response is sent back to the sender using `ctx.send()` method. The response includes the options generated from the parsed output and specifies the response type as `UAgentResponseType.FINAL_OPTIONS`.
+   We defined a function named `get_top_activity()` that will handle `TopActivities` messages as defined by the `.on_message()` decorator. The function then logs information about the received message, sender, and session using `ctx.logger.info()` method. The code then checks if `msg.preferred_activities` is provided. If it is, a message about preferred activities is generated. We proceed by generating the input for the language model using the filled prompt as input to the language model for generating a response. The code then parses the output using the output parser previously defined. The parsed result is used to create a list of options, each represented as a `KeyValue` object. The code then logs the result and the corresponding options. A response is sent back to the sender using `ctx.send()` method. The response includes the options generated from the parsed output and specifies the response type as `UAgentResponseType.FINAL_OPTIONS`.
 
    Any exceptions that may occur during this process are logged as warnings, and an error response is sent back to the sender. We finally use the `.include()` method to include the `TopActivities` protocol in the agent, ensuring it's ready to handle messages of this type.
 
