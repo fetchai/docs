@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components'
 
 ## Getting started with AI agents 🎯
 
-This course is designed to guide and instruct you through your initial agent development journey. As you move along through it you will begin creating increasingly sophisticated agents. This guide is written towards a beginner programmer, but there is plenty of information in here to help the seasoned developer too. If there is any terminology you're unsure about, please reach out to us on [Discord ↗️](https://discord.gg/fetchai) where a team member will happily help.
+This course is designed to guide and instruct you through your initial AI Agent development journey. As you move along through it you will begin creating increasingly sophisticated agents. This guide is written towards a beginner programmer, but there is plenty of information in here to help the seasoned developer as well. If there is any terminology you're unsure about, please reach out to us on [Discord ↗️](https://discord.gg/fetchai) where a team member will happily help.
 
 The course encompasses _definitions_, _essential concepts_, _best practices_, and _guides you through the installation, setup_, and _creation_ of progressively intricate and valuable agents.
 
@@ -126,7 +126,7 @@ If you're happy with the install location for the project, let's go ahead and in
       This will open up the setup wizard, simply follow the steps. During the setup sequence you'll be asked which dependencies you would want to see installed. At this point simply select `uagents`. The wizard will ask for a _name_, a _version_, an _author_, a _license_ and most importantly the _dependencies_ for your project.
     </Callout>
 
-At this stage input uagents, once you have completed the initialization, run:
+Once you have completed the initialization, run:
 
     ```
     poetry install
@@ -134,11 +134,11 @@ At this stage input uagents, once you have completed the initialization, run:
 
 You will see the installation occur in accordance with the **pyproject.toml** file.
 
-Now, you have finalised the installation, you can begin creating your first agent!
+Now, you have finalised the installation, you can begin creating your first AI Agent!
 
 ## Overview of the uAgents Framework
 
-As previously specified, the uAgents Framework is a Python library designed for creating intelligent and autonomous agents in decentralized environments. It prioritizes security through cryptography for message and asset protection. It enables easy collaboration between agents in distributed networks via the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview). Agents find applications in various domains and fields, including:
+As previously specified, the [uAgents Framework ↗️](https://pypi.org/project/uagents/) is a Python library designed for creating intelligent and autonomous agents in decentralized environments. It prioritizes security through cryptography for message and asset protection. It enables easy collaboration between agents in distributed networks via the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview). Agents find applications in various domains and fields, including:
 
     - **IoT usage**: it allows agents to represent physical objects, making it suitable for Internet of Things (IoT) applications, enabling interactions with real-world devices.
 
@@ -152,13 +152,13 @@ As previously specified, the uAgents Framework is a Python library designed for 
 
 #### Addresses
 
-In the uAgents Framework, every agent is identified by a unique address - think of this as unique string of characters - which serves as an identifier for the agent in a decentralized environment. There are two types of addresses within the Framework:
+In the uAgents Framework, every agent is identified by a unique address (think of this as unique string of characters - which serves as an identifier for the agent in a decentralized environment). There are two types of addresses within the Framework:
 
-   **uAgent Address**
+1. **uAgent Address**
 
-   This is the primary identifier for the agent, allowing it to interact with other agents, exchange messages, and engage in decentralized network activities, ensuring secure communication.
+    This is the primary identifier for the agent, allowing it to interact with other agents, exchange messages, and engage in decentralized network activities, ensuring secure communication.
 
-   **Fetch Address**
+2. **Fetch Address**
 
     This cryptographic public address is linked to the agent and its wallet on the Fetch.ai blockchain. It enables various functionalities, including interaction with the Fetch ledger, registration in the Almanac contract, and performing operations like token or asset transfers on the blockchain, playing a crucial role in the agent's functionality.
 
@@ -166,7 +166,7 @@ If you wish to learn more, explore our [Getting an agent addresses 🤖📫 ↗�
 
 #### Storage
 
-Agents in the uAgents Framework can store information in a JSON file, which they can retrieve as needed. This storage is crucial for agents to maintain a state, remember past interactions, and make informed decisions based on historical data. It helps agents retain and utilize information over time, remember past interactions and decisions, and learn from their experiences
+AI Agents in the uAgents Framework can store information in a JSON file, which they can retrieve as needed. This storage is crucial for agents to maintain a state, remember past interactions, and make informed decisions based on historical data. It helps agents retain and utilize information over time, remember past interactions and decisions, and learn from their experiences
 
 If you wish to learn more, explore our [Using agents storage function ↗️](/guides/agents/storage-function) guide or the [agents storage ↗️](/references/uagents/uagents-protocols/storage) documentation in the [References ↗️](/references) section of our documentation. If you're new to JSON please see an example [here ↗️](https://www.w3schools.com/whatis/whatis_json.asp).
 
@@ -187,14 +187,14 @@ The Exchange protocol facilitates efficient communication among agents by using 
     - Signature for authentication.
 
     <Callout type="info" emoji="ℹ️">
-      The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON-formatted data. These details ensure consistent and standardized communication within the Fetch.ai uAgents ecosystem.
+      The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON-formatted data. These details ensure consistent and standardized communication within the Fetch.ai agents ecosystem.
     </Callout>
 
 Further information can be found in our [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) reference documentation.
 
 #### Almanac contract, registering, searching and discovery
 
-Your agent can be found by other agents and services,if it is registered on the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview. The Almanac is a smart contract on the Fetch.ai blockchain, think of this as a dynamic table of who is who, and when querying this contract returns are list of agents. These queries can be very specific to find exact agent information.
+Your agent can be found by other agents and services, if it is registered in the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overviewO). The Almanac is a smart contract on the Fetch.ai blockchain, think of this as a dynamic table of who is who, and when querying this contract returns are list of agents. These queries can be very specific to find exact agent information.
 
 Registrations are time-limited to address the challenge of managing a large agent ecosystem. Agents must periodically re-register to keep their information current. When registration expires, queries for that agent will no longer return their details, ensuring the accuracy and relevance of available uAgents information. With this information agents are able to communicate with one another. Of course, there's a lot more to this but to really get an understanding, please visit [Registering in the Almanac contract ↗️](/guides/agents/register-in-almanac) guide.
 
@@ -216,13 +216,13 @@ let's create with `touch alice_agent.py` and paste in the following:
 
 You can run this with `poetry run python alice_agent.py` but it won't do much, yet!
 
-If you're not too familiar with classes in python, take a look [w3schools Python classes ↗️](https://www.w3schools.com/python/python_classes.asp).
+If you're not too familiar with classes in Python, take a look [w3schools Python classes ↗️](https://www.w3schools.com/python/python_classes.asp).
 
 ### Creating a second agent and starting an interaction
 
-Let's get Alice to do something! We're going to get Alice on start-up to introduce introduce themselves and provide their address by printing both, on the terminal.
+Let's get Alice to do something! We're going to get Alice, on startup, to introduce itself and provide its address by printing both, on the terminal.
 
-To get an action to happen on start up, we can add a decorator to a function:
+To get an action to happen on start up, we can add a decorator to a function in the following way:
 
     ```py copy
     # Import the required classes
@@ -255,7 +255,7 @@ This time, the output will be:
 
 #### Printing agent's addresses
 
-Sometimes we just need to see what a value looks like; helpfully python has an inbuilt function `print()`. As we have mentioned earlier, every uAgent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses, so let's print them to console to see their differences.
+Sometimes we just need to see what a value looks like. Helpfully Python has an in-built function `print()` that allows us to perform such an action. As we have mentioned earlier, every uAgent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses, so let's print them in the console to see their differences.
 
     ```py copy
     from uagents import Agent
@@ -272,6 +272,8 @@ You can update, and run `alice_agent.py` if you wish to see print output of anyt
     uAgent address: agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
     Fetch network address: fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
     ```
+
+Checkout our [Getting an agent addresses 🤖📫↗️](/guides/agents/getting-uagent-address) guide for an indepth understanding of these concepts.
 
 ### Agents and interval tasks
 
@@ -335,7 +337,7 @@ Let's create a new script for these agents with: `touch duo_agent.py`
         bureau.run()
     ```
 
-Copy the above into `duo_agent.py` and run with `poetry run python duo_agent.py`, the output should be similar too:
+Copy the above into `duo_agent.py` and run with `poetry run python duo_agent.py`, the output should be similar to:
 
     ```
     [alice] Hello, my name is alice
@@ -444,7 +446,7 @@ Agent registration in the Almanac contract is a key feature which enables discov
 
 Following the existing sequence we firstly import, then instantiate and in this specific example include a function that ensures that agents have a non-zero balance. This function will check if you have enough tokens to register in the Almanac. If not it will add tokens to your Fetch address.
 
-uAgents can communicate by querying the Almanac contract and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
+AI Agents can communicate by querying the Almanac contract and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
 
 Just like we did in our past examples, let's create a file for our program with the `touch almanac_registration.py` command.
 
@@ -549,21 +551,23 @@ In different terminal windows, first run `remote_bob.py` and then `remote_alice.
 
 Once you've ran both agents the expected output would be:
 
-**Alice**:
+    **Alice**:
 
-    ```
-    [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
-    [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
-    [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
-    ```
+        ```
+        [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
+        [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
+        [alice]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there alice
+        ```
 
-**Bob**:
+    **Bob**:
 
-    ```
-    [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
-    [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
-    [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
-    ```
+        ```
+        [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
+        [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
+        [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
+        ```
+
+Checkout our [Communicating with other agents 📱🤖↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding AI Agents communication, both locally and remotely.
 
 ## Agents and storage 
 
@@ -609,7 +613,6 @@ The output would be:
 To execute the storage agent, simply employ the standard method we've demonstrated: `poetry run python storage.py`
 
 #### Booking a table at a restaurant
-
 
 We now want to show how to set up the code to create a **restaurant booking service with two **uAgents**: a `restaurant` with tables available, and a `user` requesting table availability.
 
@@ -1078,24 +1081,24 @@ We are ready to run the example. Run the `restaurant` agent and then the `user` 
 
 The output should be as follows:
 
-**Restaurant**:
+    **Restaurant**:
 
-    ```
-    [restaurant]: Query: guests=3 time_start=19 duration=2. Available tables: [2].
-    ```
+        ```
+        [restaurant]: Query: guests=3 time_start=19 duration=2. Available tables: [2].
+        ```
 
-**User**:
+    **User**:
 
-    ```
-    [ user]: There is a free table, attempting to book one now
-    [ user]: Table reservation was successful
-    ```
+        ```
+        [ user]: There is a free table, attempting to book one now
+        [ user]: Table reservation was successful
+        ```
 
 ### From novice to navigator: your course conclusion and beyond!
 
 We appreciate your active participation in our introductory course on AI agents. The knowledge you've acquired here forms a robust basis for your future development endeavors.
 
-Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of AI agents by exploring our dedicated [AI Agents documentation ↗️](/concepts/agents/agents) and [GitHub ↗️](https://github.com/fetchai/uAgents) repository.
+Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of AI agents by exploring our dedicated [AI Agents ↗️](/concepts/agents/agents) documentation and [GitHub ↗️](https://github.com/fetchai/uAgents) repository. Also, do not forget to checkout our full list of [AI Agents guides ↗️](/guides) delving into the development of AI Agents and concepts explained in this introductory course, but in a more detailed manner, so for you to build up your knowledge and get used to this technology.
 
 Additionally, join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun!
 
