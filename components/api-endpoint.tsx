@@ -1,5 +1,5 @@
 import { Code, Pre } from "nextra/components";
-import React from "react";
+import React, { useState } from "react";
 import {
   ApiIntro,
   Col,
@@ -9,6 +9,7 @@ import {
   Tab,
   DropDownTabs,
 } from "./mdx";
+import axios from "axios";
 
 interface PropertyType {
   name: string;
@@ -192,6 +193,36 @@ export const ApiRequest: React.FC<{
   samplePayload?: unknown;
   properties?: PropertyType[];
 }> = (properties) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bearerToken, setBearerToken] = useState("");
+  const [response, setResponse] = useState("");
+
+  const openModal = () => {
+    setIsModalOpen(true);
+    // Clear previous response
+    setResponse("");
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const hitRequest = async () => {
+    try {
+      const response = await axios({
+        method: properties.method,
+        url: properties.apiUrl + properties.path,
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+        },
+        data: properties.samplePayload,
+      });
+      setResponse(JSON.stringify(response.data, null, 2));
+    } catch (error) {
+      setResponse(`Error: ${error.message}`);
+    }
+  };
+
   return (
     <>
       <Row>
@@ -221,6 +252,12 @@ export const ApiRequest: React.FC<{
           ) : undefined}
         </Col>
         <Col>
+          <button
+            className="nx-bg-blue-500 hover:nx-bg-blue-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
+            onClick={openModal}
+          >
+            Try it Out
+          </button>
           <DropDownTabs>
             <Tab heading="Curl">
               <CurlCodeTab
@@ -246,6 +283,42 @@ export const ApiRequest: React.FC<{
           </DropDownTabs>
         </Col>
       </Row>
+
+      {isModalOpen && (
+        <div className="nx-fixed nx-inset-0 nx-flex nx-items-center nx-justify-center nx-z-50">
+          <div className="nx-modal nx-bg-white nx-w-96 nx-p-4 nx-rounded nx-shadow-lg">
+            <h2 className="nx-text-2xl nx-font-bold nx-mb-4">Try it Out</h2>
+            <input
+              type="text"
+              placeholder="Bearer Token"
+              value={bearerToken}
+              onChange={(e) => setBearerToken(e.target.value)}
+              className="nx-border nx-border-gray-300 nx-rounded nx-w-full nx-py-2 nx-px-3 nx-mb-4"
+            />
+            {/* Add input fields for sample payload here if needed */}
+            <button
+              className="nx-bg-blue-500 hover:nx-bg-blue-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
+              onClick={hitRequest}
+            >
+              Hit Request
+            </button>
+            {response && (
+              <div className="nx-mt-4">
+                <h3 className="nx-text-xl nx-font-semibold">Response:</h3>
+                <div className="nx-border nx-border-gray-300 nx-rounded nx-p-2 nx-mt-2">
+                  <pre className="nx-whitespace-pre-wrap">{response}</pre>
+                </div>
+              </div>
+            )}
+            <button
+              className="nx-mt-4 nx-bg-red-500 hover:nx-bg-red-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
