@@ -27,7 +27,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
   const handleFeedbackSubmit = async () => {
     // Now you can associate feedback type, feedback and page
     try {
-      const response = await fetch("/docs/api/feedback", {
+      const response = await fetch("https://profilio-staging.sandbox-london-b.fetch-ai.com/api/feedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
