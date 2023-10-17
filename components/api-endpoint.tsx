@@ -193,6 +193,78 @@ export const ApiRequest: React.FC<{
   samplePayload?: unknown;
   properties?: PropertyType[];
 }> = (properties) => {
+  return (
+    <>
+      <Row>
+        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl">
+          Request
+        </h1>
+      </Row>
+      <Row>
+        <Col>
+          {properties.description ? (
+            <ApiIntro>{properties.description}</ApiIntro>
+          ) : undefined}
+          {properties.properties && properties.properties.length > 0 ? (
+            <Properties>
+              {properties.properties.map((property) => {
+                return (
+                  <Property
+                    key={property.name}
+                    name={property.name}
+                    type={property.type}
+                  >
+                    {property.description}
+                  </Property>
+                );
+              })}
+            </Properties>
+          ) : undefined}
+        </Col>
+        <Col>
+          <DropDownTabs>
+            <Tab heading="Curl">
+              <CurlCodeTab
+                method={properties.method}
+                url={properties.apiUrl + properties.path}
+                samplePayload={properties.samplePayload}
+              />
+            </Tab>
+            <Tab heading="Python">
+              <PythonCodeTab
+                method={properties.method}
+                url={properties.apiUrl + properties.path}
+                samplePayload={properties.samplePayload}
+              />
+            </Tab>
+            <Tab heading="Javascript">
+              <JavascriptCodeTab
+                method={properties.method}
+                url={properties.apiUrl + properties.path}
+                samplePayload={properties.samplePayload}
+              />
+            </Tab>
+          </DropDownTabs>
+        </Col>
+      </Row>
+
+      
+    </>
+  );
+};
+
+export const ApiEndpointRequestResponse: React.FC<{
+  apiUrl: string;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  path: string;
+  description: string;
+  samplePayload?: unknown;
+  responses?: unknown;
+  responseProperties?: PropertyType[];
+  responseDescription?: string;
+  properties?: PropertyType[];
+}> = (properties) => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bearerToken, setBearerToken] = useState("");
   const [response, setResponse] = useState("");
@@ -226,65 +298,23 @@ export const ApiRequest: React.FC<{
   return (
     <>
       <Row>
-        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl">
-          Request
-        </h1>
-      </Row>
-      <Row>
-        <Col>
-          {properties.description ? (
-            <ApiIntro>{properties.description}</ApiIntro>
-          ) : undefined}
-          {properties.properties && properties.properties.length > 0 ? (
-            <Properties>
-              {properties.properties.map((property) => {
-                return (
-                  <Property
-                    key={property.name}
-                    name={property.name}
-                    type={property.type}
-                  >
-                    {property.description}
-                  </Property>
-                );
-              })}
-            </Properties>
-          ) : undefined}
-        </Col>
-        <Col>
+        <p className="nx-endpoint nx-text-base">
+          <span className="nextra-content nx-font-medium">Endpoint: </span>
+          <span className="nx-endpoint-method nx-text-fetch-main">
+            {properties.method}
+          </span>{" "}
+          <span className="nx-text-purple nx-font-normal">
+            {properties.path}
+          </span>
           <button
             className="nx-bg-blue-500 hover:nx-bg-blue-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
             onClick={openModal}
           >
-            Try it Out
+            Run Code
           </button>
-          <DropDownTabs>
-            <Tab heading="Curl">
-              <CurlCodeTab
-                method={properties.method}
-                url={properties.apiUrl + properties.path}
-                samplePayload={properties.samplePayload}
-              />
-            </Tab>
-            <Tab heading="Python">
-              <PythonCodeTab
-                method={properties.method}
-                url={properties.apiUrl + properties.path}
-                samplePayload={properties.samplePayload}
-              />
-            </Tab>
-            <Tab heading="Javascript">
-              <JavascriptCodeTab
-                method={properties.method}
-                url={properties.apiUrl + properties.path}
-                samplePayload={properties.samplePayload}
-              />
-            </Tab>
-          </DropDownTabs>
-        </Col>
-      </Row>
+        </p>
 
-      {isModalOpen && (
+        {isModalOpen && (
         <div className="nx-fixed nx-inset-0 nx-flex nx-items-center nx-justify-center nx-z-50">
           <div className="nx-modal nx-bg-white nx-w-96 nx-p-4 nx-rounded nx-shadow-lg">
             <h2 className="nx-text-2xl nx-font-bold nx-mb-4">Try it Out</h2>
@@ -319,33 +349,6 @@ export const ApiRequest: React.FC<{
           </div>
         </div>
       )}
-    </>
-  );
-};
-
-export const ApiEndpointRequestResponse: React.FC<{
-  apiUrl: string;
-  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-  path: string;
-  description: string;
-  samplePayload?: unknown;
-  responses?: unknown;
-  responseProperties?: PropertyType[];
-  responseDescription?: string;
-  properties?: PropertyType[];
-}> = (properties) => {
-  return (
-    <>
-      <Row>
-        <p className="nx-endpoint nx-text-base">
-          <span className="nextra-content nx-font-medium">Endpoint: </span>
-          <span className="nx-endpoint-method nx-text-fetch-main">
-            {properties.method}
-          </span>{" "}
-          <span className="nx-text-purple nx-font-normal">
-            {properties.path}
-          </span>
-        </p>
       </Row>
 
       <ApiRequest
