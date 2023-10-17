@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 function LandingPage() {
   const startingGuides = [
     {
-      label: "Getting started with Agents 🛠️📲",
+      label: "Getting started with AI Agents 🛠️📲",
       path: "/guides/agents/installing-uagent",
       icon: AgentverseGettingStartedIcon,
     },
@@ -22,14 +22,22 @@ function LandingPage() {
       icon: CommunicateIcon,
     },
     {
-      label: "How to use uAgents to send tokens 📊💸",
+      label: "How to use agents to send tokens 📊💸",
       path: "guides/agents/send-tokens",
       icon: BuildChatAiIcon,
     },
     {
-      label: "How to use uAgents to verify messages 📬🔐",
+      label: "How to use agents to verify messages 📬🔐",
       path: "guides/agents/message-verification",
       icon: RevenueIcon,
+    },
+  ];
+
+  const beginnerGuides = [
+    {
+      label: "AI Agents 101 🤖",
+      path: "/guides/agent-courses/introductory-course",
+      icon: AgentverseGettingStartedIcon,
     },
   ];
 
@@ -79,6 +87,20 @@ function LandingPage() {
         <div className={styles.startGuides}>
           <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
             {startingGuides.map((guide, index) => {
+              return <GuideBox key={index} guide={guide} />;
+            })}
+          </div>
+        </div>
+      </section>
+      <section className="nx-mt-60 landing-page-left-image">
+        <p className={styles.subTitle}>Beginner series</p>
+        <p className={styles.description}>
+          Comprehensive guides for people new to programming and Fetch.ai
+        </p>
+
+        <div className={styles.startGuides}>
+          <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
+            {beginnerGuides.map((guide, index) => {
               return <GuideBox key={index} guide={guide} />;
             })}
           </div>
