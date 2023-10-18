@@ -244,7 +244,11 @@ const InnerLayout = ({
                 />
               ) : null
             }
-            tags={activePath[activePath.length - 1].tags}
+            tags={
+              activePath[activePath.length - 1].tags
+                ? activePath[activePath.length - 1].tags
+                : null
+            }
           >
             <MDXProvider
               components={getComponents({
