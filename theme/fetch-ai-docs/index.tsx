@@ -23,12 +23,19 @@ import { getComponents } from "./mdx-components";
 import { renderComponent } from "./utils";
 import React from "react";
 import FeedbackComponent from "components/feedback";
+import type { Item } from "nextra/normalize-pages";
+
+type MyItem = Item & {
+  // Add or modify properties as needed
+  tags?: string[];
+};
 
 interface BodyProps {
   themeContext: PageTheme;
   breadcrumb: ReactNode;
   timestamp?: number;
   navigation: ReactNode;
+  tags: string[] | null;
   children: ReactNode;
 }
 
@@ -44,6 +51,7 @@ const Body = ({
   breadcrumb,
   timestamp,
   navigation,
+  tags,
   children,
 }: BodyProps): ReactElement => {
   const config = useConfig();
@@ -68,11 +76,35 @@ const Body = ({
       <div className="nx-mt-16" />
     );
 
+  const tagColors = [
+    "bg-red-500",
+    "bg-blue-500",
+    "bg-purple",
+    "bg-green",
+    "bg-orange",
+    "bg-pink",
+    "bg-teal",
+  ];
+  const tagsComponent = tags && (
+    <div className="nx-mt-10 nx-mb-8 flex flex-wrap nx-gap-4">
+      {tags.map((tag, index) => (
+        <span
+          key={index}
+          className={`nx-text-white nx-text-sm nx-font-medium nx-rounded-xxl nx-px-4 nx-py-2 nx-mr-2 nx-mb-2 nx-${
+            tagColors[index % tagColors.length]
+          }`}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
   const routeOriginal = useFSRoute();
   const [route] = routeOriginal.split("#");
 
   const content = (
     <>
+      {tagsComponent}
       {children}
       {gitTimestampEl}
       {themeContext.timestamp && (
@@ -136,16 +168,32 @@ const InnerLayout = ({
     flatDirectories,
     flatDocsDirectories,
     directories,
-  } = useMemo(
-    () =>
-      normalizePages({
-        list: pageMap,
-        locale,
-        defaultLocale,
-        route: fsPath,
-      }),
-    [pageMap, locale, defaultLocale, fsPath],
-  );
+  } = useMemo(() => {
+    const normalized = normalizePages({
+      list: pageMap,
+      locale,
+      defaultLocale,
+      route: fsPath,
+    });
+
+    // Assuming activePath needs to be converted to MyItem[]
+    const myActivePath: MyItem[] = normalized.activePath.map((item) => {
+      // You may need to perform additional conversions here
+      return item as MyItem;
+    });
+
+    return {
+      activeType: normalized.activeType,
+      activeIndex: normalized.activeIndex,
+      activeThemeContext: normalized.activeThemeContext,
+      activePath: myActivePath,
+      docsDirectories: normalized.docsDirectories,
+      flatDirectories: normalized.flatDirectories,
+      flatDocsDirectories: normalized.flatDocsDirectories,
+      directories: normalized.directories,
+      topLevelNavbarItems: normalized.topLevelNavbarItems,
+    };
+  }, [pageMap, locale, defaultLocale, fsPath]);
 
   const themeContext = { ...activeThemeContext, ...frontMatter };
   const hideSidebar =
@@ -226,6 +274,7 @@ const InnerLayout = ({
                 />
               ) : null
             }
+            tags={activePath.at(-1).tags && activePath.at(-1).tags}
           >
             <MDXProvider
               components={getComponents({

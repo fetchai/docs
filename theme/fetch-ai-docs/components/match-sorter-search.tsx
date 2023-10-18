@@ -21,7 +21,7 @@ export function MatchSorterSearch({
       // (similar to what we already do to render the hash links in sidebar)
       // We could also try to search the entire string text from each page
       search
-        ? matchSorter(directories, search, { keys: ["title"] }).map(
+        ? matchSorter(directories, search, { keys: ["tags", "title"] }).map(
             ({ route, title }) => ({
               id: route + title,
               route,
