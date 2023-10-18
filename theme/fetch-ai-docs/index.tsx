@@ -28,6 +28,7 @@ interface BodyProps {
   breadcrumb: ReactNode;
   timestamp?: number;
   navigation: ReactNode;
+  tags: string[] | null;
   children: ReactNode;
 }
 
@@ -43,6 +44,7 @@ const Body = ({
   breadcrumb,
   timestamp,
   navigation,
+  tags,
   children,
 }: BodyProps): ReactElement => {
   const config = useConfig();
@@ -67,8 +69,29 @@ const Body = ({
       <div className="nx-mt-16" />
     );
 
+  const tagColors = [
+    'bg-red-500',
+    'bg-blue-500',
+    'bg-purple',
+    'bg-green',
+    'bg-orange',
+    'bg-pink',
+    'bg-teal'
+  ];
+  const tagsComponent = tags && <div className="nx-mt-10 nx-mb-8 flex flex-wrap nx-gap-4">
+      {tags.map((tag, index) => (
+        <span
+          key={index}
+          className={`nx-text-white nx-text-sm nx-font-medium nx-rounded-xxl nx-px-4 nx-py-2 nx-mr-2 nx-mb-2 nx-${tagColors[index % tagColors.length]}`}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+
   const content = (
     <>
+      {tagsComponent}
       {children}
       {gitTimestampEl}
       {navigation}
@@ -217,6 +240,7 @@ const InnerLayout = ({
                 />
               ) : null
             }
+            tags={activePath[activePath.length -1].tags}
           >
             <MDXProvider
               components={getComponents({
