@@ -22,6 +22,7 @@ import { ActiveAnchorProvider, ConfigProvider, useConfig } from "./contexts";
 import { getComponents } from "./mdx-components";
 import { renderComponent } from "./utils";
 import React from "react";
+import FeedbackComponent from "components/feedback";
 
 interface BodyProps {
   themeContext: PageTheme;
@@ -67,10 +68,18 @@ const Body = ({
       <div className="nx-mt-16" />
     );
 
+  const routeOriginal = useFSRoute();
+  const [route] = routeOriginal.split("#");
+
   const content = (
     <>
       {children}
       {gitTimestampEl}
+      {themeContext.timestamp && (
+        <div className="nx-flex nx-justify-center nx-mb-6">
+          <FeedbackComponent pageUrl={route} />
+        </div>
+      )}
       {navigation}
     </>
   );
