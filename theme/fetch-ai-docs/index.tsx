@@ -23,6 +23,12 @@ import { getComponents } from "./mdx-components";
 import { renderComponent } from "./utils";
 import React from "react";
 import FeedbackComponent from "components/feedback";
+import type { Item } from "nextra/normalize-pages";
+
+type MyItem = Item & {
+  // Add or modify properties as needed
+  tags?: string[];
+};
 
 interface BodyProps {
   themeContext: PageTheme;
@@ -162,16 +168,33 @@ const InnerLayout = ({
     flatDirectories,
     flatDocsDirectories,
     directories,
-  } = useMemo(
-    () =>
-      normalizePages({
-        list: pageMap,
-        locale,
-        defaultLocale,
-        route: fsPath,
-      }),
-    [pageMap, locale, defaultLocale, fsPath],
-  );
+    topLevelNavbarItems,
+  } = useMemo(() => {
+    const normalized = normalizePages({
+      list: pageMap,
+      locale,
+      defaultLocale,
+      route: fsPath,
+    });
+
+    // Assuming activePath needs to be converted to MyItem[]
+    const myActivePath: MyItem[] = normalized.activePath.map((item) => {
+      // You may need to perform additional conversions here
+      return item as MyItem;
+    });
+
+    return {
+      activeType: normalized.activeType,
+      activeIndex: normalized.activeIndex,
+      activeThemeContext: normalized.activeThemeContext,
+      activePath: myActivePath,
+      docsDirectories: normalized.docsDirectories,
+      flatDirectories: normalized.flatDirectories,
+      flatDocsDirectories: normalized.flatDocsDirectories,
+      directories: normalized.directories,
+      topLevelNavbarItems: normalized.topLevelNavbarItems,
+    };
+  }, [pageMap, locale, defaultLocale, fsPath]);
 
   const themeContext = { ...activeThemeContext, ...frontMatter };
   const hideSidebar =
