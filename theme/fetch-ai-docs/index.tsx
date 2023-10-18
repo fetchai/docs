@@ -168,7 +168,6 @@ const InnerLayout = ({
     flatDirectories,
     flatDocsDirectories,
     directories,
-    topLevelNavbarItems,
   } = useMemo(() => {
     const normalized = normalizePages({
       list: pageMap,
@@ -275,11 +274,7 @@ const InnerLayout = ({
                 />
               ) : null
             }
-            tags={
-              activePath[activePath.length - 1].tags
-                ? activePath[activePath.length - 1].tags
-                : null
-            }
+            tags={activePath.at(-1).tags && activePath.at(-1).tags}
           >
             <MDXProvider
               components={getComponents({
