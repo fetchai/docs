@@ -85,7 +85,7 @@ const Body = ({
     "bg-red-150",
   ];
   const tagsComponent = tags && (
-    <div className="nx-mt-4 nx-mb-4 nx-flex nx-flex-wrap nx-gap-2">
+    <div className="nx-mt-4 nx-mb-4 nx-flex nx-flex-wrap nx-gap-2 nx-max-w-50rem">
       {tags.map((tag, index) => (
         <span
           key={index}
