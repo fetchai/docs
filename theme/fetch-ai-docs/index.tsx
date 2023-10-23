@@ -77,20 +77,19 @@ const Body = ({
     );
 
   const tagColors = [
-    "bg-red-500",
-    "bg-blue-500",
-    "bg-purple",
-    "bg-green",
+    "bg-indigo",
     "bg-orange",
-    "bg-pink",
-    "bg-teal",
+    "bg-light-green",
+    "bg-blue-150",
+    "bg-yellow-150",
+    "bg-red-150",
   ];
   const tagsComponent = tags && (
-    <div className="nx-mt-10 nx-mb-8 flex flex-wrap nx-gap-4">
+    <div className="nx-mt-4 nx-mb-4 nx-flex nx-flex-wrap nx-gap-2">
       {tags.map((tag, index) => (
         <span
           key={index}
-          className={`nx-text-white nx-text-sm nx-font-medium nx-rounded-xxl nx-px-4 nx-py-2 nx-mr-2 nx-mb-2 nx-${
+          className={`nx-text-fetch-main nx-text-sm nx-font-normal nx-rounded nx-px-4 nx-py-2 nx-${
             tagColors[index % tagColors.length]
           }`}
         >
