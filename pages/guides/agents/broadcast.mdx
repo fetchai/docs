@@ -14,7 +14,7 @@ import { Callout } from 'nextra/components'
 
 2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library, and the `fund_agent_if_low` from `uagents.setup`. Then, let's create the 3 different agents using the class `Agent`. Each agent is initialized with a unique name and a seed phrase for wallet recovery. Additionally, if an agent's wallet balance is low, the `fund_agent_if_low()` function is called to add funds to their wallet:
 
-   ```py copy
+    ```py copy
     from uagents import Agent, Bureau, Context, Model, Protocol
     from uagents.setup import fund_agent_if_low
 
@@ -25,22 +25,21 @@ import { Callout } from 'nextra/components'
     fund_agent_if_low(alice.wallet.address())
     fund_agent_if_low(bob.wallet.address())
     fund_agent_if_low(charles.wallet.address())
-   ```
+    ```
 
    It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address)️. Otherwise, random addresses will be generated every time you run the agent.
 
 3. Let's then define two message data models to define the type of messages being handled and exchanged by the agents. We define a `BroadcastExampleRequest` and a `BroadcastExampleResponse` data models. Finally, create a `protocol` named `proto` with version `1.0`:
 
-   ```py copy
-   class BroadcastExampleRequest(Model):
-    pass
+    ```py copy
+    class BroadcastExampleRequest(Model):
+        pass
 
     class BroadcastExampleResponse(Model):
         text: str
 
     proto = Protocol(name="proto", version="1.0")
-  ```
-
+    ```
 4. Let's now define a message handler function for incoming messages of type `BroadcastExampleRequest` in the protocol:
 
     ```py copy
@@ -87,7 +86,7 @@ import { Callout } from 'nextra/components'
     bureau.add(charles)
 
     if __name__ == "__main__":
-    bureau.run()
+        bureau.run()
     ```
 
     The bureau is assigned to listen on `port=8000` and specifies an `endpoint` at `"http://localhost:8000/submit"` for submitting data.
