@@ -17,14 +17,24 @@ We then define the [protocol ↗️](/references/uagents/uagents-protocols/agent
     class Request(Model):
         message: str
 
-
     @simples.on_message(model=Request, replies={UAgentResponse})
     async def handle_message(ctx: Context, sender: str, msg: Request):
         await ctx.send(sender, UAgentResponse(message="0", type=UAgentResponseType.FINAL))
 
     ```
 
-Currently for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` as this is the defined model that are reinforced. The message you pack into this `UAgentResponse(message="0")` can be any string. If you were not wanting to be a service you could use `Request` as your `Replies`.
+Currently for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` as this is the defined model that are reinforced.
+
+    <Callout type="info" emoji="ℹ️">
+      `UAgentResponseType` is used to represent different response types of the agent. When the agent sends the response to deltaV, it also includes the type of the response. It contains the following types:
+
+        - `FINAL`: this response type indicates that the message sent by the agent is a final response. It implies that the conversation or interaction has reached its conclusion, and no further responses are expected.
+        - `ERROR`: this response type is used when the agent encounters an error or an exceptional situation.
+        - `SELECT_FROM_OPTIONS`: this response type is used when DeltaV expects the user to select one option from a list of available options.
+        - `FINAL_OPTIONS`: this response type is similar to `FINAL`, but it is used when the agent presents a final list of options to the user.
+    </Callout>
+
+The message you pack into this `UAgentResponse(message="0")` can be any string. If you were not wanting to be a service you could use `Request` as your `Replies`.
 
     ```py copy filename="agent.py"
     from simple_protocol import simples
@@ -95,7 +105,7 @@ If you want an agent to periodically send a message to your service, you can use
     @agent.on_interval(period=3.0)
     async def send_message(ctx: Context):
         await ctx.send('YOUR AGENT ADDRESS', Request(message="hello there bob"))
-        ctx.logger.info(f"Message has been sent to basicaly zero")
+        ctx.logger.info(f"Message has been sent to basically zero")
     ````
 
 ## Find your service on DeltaV
