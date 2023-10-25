@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/Fa";
 
 const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
   const [feedback, setFeedback] = useState("");
@@ -55,9 +56,11 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
   };
 
   return (
-    <div>
+    <div className="nx-w-full">
       {isFeedbackSubmitted ? (
-        <p>Thank you for your feedback!</p>
+        <p className="nx-flex nx-justify-center">
+          Thank you for your feedback!
+        </p>
       ) : (
         <>
           <h3 className="nx-text-lg nx-flex nx-justify-center ">
@@ -67,28 +70,28 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
             className={`nx-flex nx-items-center nx-space-x-4 nx-mt-4 nx-justify-center`}
           >
             <div
-              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-green`}
+              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-border-green nx-cursor-pointer`}
               onClick={() => handleThumbsClick("positive")}
             >
-              👍
+              <FaRegThumbsDown />
             </div>
             <div
-              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-bg-red-500`}
+              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-border-red nx-cursor-pointer`}
               onClick={() => handleThumbsClick("negative")}
             >
-              👎
+              <FaRegThumbsUp />
             </div>
           </div>
           {isInputVisible && (
-            <div className="nx-mt-4 nx-flex nx-flex-col nx-justify-center">
+            <div className="nx-mt-4 nx-flex nx-flex-col nx-w-full">
               <textarea
-                className="nx-rounded-lg nx-border nx-border-gray-300 nx-bg-gray-100 nx-p-4 nx-shadow-inner"
+                className="nx-rounded-lg nx-border nx-border-gray-300 nx-bg-gray-100 nx-p-4 nx-shadow-inner nx-max-w-532px nx-w-full nx-mx-auto nx-min-h-132px"
                 placeholder="Enter your feedback..."
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
               />
               <button
-                className="nx-mt-4 nx-bg-purple nx-hover:nx-bg-purple-600 nx-text-white nx-font-bold nx-py-2 nx-px-4 nx-rounded-xxl"
+                className="nx-mt-4 nx-bg-submit-feedback nx-text-white nx-font-bold nx-py-2 nx-px-4 nx-rounded-xxl nx-max-w-180px nx-mx-auto nx-w-full"
                 onClick={handleFeedbackSubmit}
               >
                 Submit Feedback
