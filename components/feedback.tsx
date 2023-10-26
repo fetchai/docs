@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/Fa";
+import {
+  FaRegThumbsUp,
+  FaRegThumbsDown,
+  FaThumbsUp,
+  FaThumbsDown,
+} from "react-icons/Fa";
 
 const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
   const [feedback, setFeedback] = useState("");
@@ -69,18 +74,34 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
           <div
             className={`nx-flex nx-items-center nx-space-x-4 nx-mt-4 nx-justify-center`}
           >
-            <div
-              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-border-green nx-cursor-pointer`}
-              onClick={() => handleThumbsClick("positive")}
-            >
-              <FaRegThumbsDown />
-            </div>
-            <div
-              className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-border-red nx-cursor-pointer`}
-              onClick={() => handleThumbsClick("negative")}
-            >
-              <FaRegThumbsUp />
-            </div>
+            {feedbackType == "positive" ? (
+              <div
+                className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-bg-green`}
+              >
+                <FaThumbsUp className="nx-text-white" />
+              </div>
+            ) : (
+              <div
+                className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-border-green nx-cursor-pointer`}
+                onClick={() => handleThumbsClick("positive")}
+              >
+                <FaRegThumbsUp />
+              </div>
+            )}
+            {feedbackType == "negative" ? (
+              <div
+                className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-bg-red`}
+              >
+                <FaThumbsDown className="nx-text-white" />
+              </div>
+            ) : (
+              <div
+                className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-border-red nx-cursor-pointer`}
+                onClick={() => handleThumbsClick("negative")}
+              >
+                <FaRegThumbsDown />
+              </div>
+            )}
           </div>
           {isInputVisible && (
             <div className="nx-mt-4 nx-flex nx-flex-col nx-w-full">
