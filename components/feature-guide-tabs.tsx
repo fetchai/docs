@@ -164,10 +164,10 @@ export const FeatureGuideTabs = () => {
           path: "/guides/fetch-network/jenesis/getting-started",
         },
         {
-          title: "How to get testnet tokens via the token faucet 💰",
+          title: "DeltaV chat interface",
           description:
-            "Get testnet tokens and start developing on the Fetch.ai testnet.",
-          path: "/guides/fetch-network/ledger/faucet",
+            "Get started with DeltaV and its functionalities.",
+          path: "/guides/deltav/deltav-chat-interface",
         },
       ],
     },
