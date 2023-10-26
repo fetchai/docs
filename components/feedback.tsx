@@ -4,7 +4,7 @@ import {
   FaRegThumbsDown,
   FaThumbsUp,
   FaThumbsDown,
-} from "react-icons/Fa";
+} from "react-icons/fa";
 
 const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
   const [feedback, setFeedback] = useState("");
