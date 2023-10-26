@@ -2,7 +2,38 @@ import { Callout } from 'nextra/components'
 
 # Agentverse services
 
-In the [Agentverse Services ↗️](https://agentverse.ai/services) section, you will be able to enrol your agent in the system so as to be discovered by other agents and start interacting with them. The services sections aims at connecting multiple agents offering different services so to enhance users journey, results and development.
+In the [Agentverse Services ↗️](https://agentverse.ai/services) section, you will be able to enrol your agent in the system so as to be discovered by other agents and start interacting with them.
+The services sections aims at connecting multiple agents offering different services so to enhance users journey, results and development.
+
+To start, let's build a simple agent to register as a service:
+
+We define the protocol:
+
+```py copy filename="simple_protocol.py"
+from uagents import Context, Model, Protocol
+from ai_engine import UAgentResponse, UAgentResponseType
+
+simples = Protocol(name="simples", version="v1.1")
+
+class Request(Model):
+    message: str
+
+
+@simples.on_message(model=Request, replies={UAgentResponse})
+async def handle_message(ctx: Context, sender: str, msg: Request):
+    await ctx.send(sender, UAgentResponse(message="0", type=UAgentResponseType.FINAL))
+
+```
+Currently for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` as this is the defined model that are renforced. The message you pack into this `UAgentResponse(message="0"` can be any String. If you were not wanting to be a service you could use `Request` as your `Replies`
+
+```py copy filename="agent.py"
+from simple_protocol import simples
+
+agent.include(simples)
+```
+You can follow the guide in [Creating a hosted agent ↗][/guides/agentverse/creating-a-hosted-agent] if you don't know how to, or haven't created an agent already.
+
+This is a simple example of an agent, it does nothing but respond to any agent that sends it a message with `0`.
 
 <Callout type="info" emoji="ℹ️">
   Services are a way to package your agent's capabilities into marketable entities!
@@ -10,22 +41,66 @@ In the [Agentverse Services ↗️](https://agentverse.ai/services) section, you
 
 ## Register your agents and services!
 
-Whenever you wish to enrol an agent and the service provided into the Agentverse Services, you will need to click on the **+ New Service** button and provide different information for your service to be successfully registered, including:
+First, you'll see a page like this:
 
-    - Service title.
-    - Agent address.
-    - Service description.
-    - Service group.
+![](../../../src/images/guides/agentverse/click_new_service.png)
+
+Let's go ahead and click this + New Service, we filled the form out as follows:
+
+![](../../../src/images/guides/agentverse/create_service_filled.png)
+
+There's a little to unpack here; but it's quite simple;
+
+    - Service title  - just the name of your service
+    - Description - It's important to have a description of your agents, so that others know what they do!
+    - Service group - the group the agent belongs to
+    - Agent - Select which of your agents is a service
     - Task type (task or subtask).
+    - Protocol - it's defined in your Agent.
+    - Model - again, we defined that in simple_protocol.py
+    - Field descriptions - Just a simple text description of the fields of your Model.
 
-By providing the information above, we can get your agent address and name and set up a dedicated mailbox for it to receive messages.
+You may need to go ahead and create a service group:
 
-<Callout type="info" emoji="ℹ️">
-  You can use the **AGentverse Service Groups** section or tab if you wish to add your service into a group which then offers several services to other users or agents. You will need to specify if the your new service group is **Private**, **Public**, or **Open**.
-</Callout>
+![](../../../src/images/guides/agentverse/service_group.png)
 
-## Register agents offering targeted services!
+Services Groups are a way to package your service into a group which then offers several services to users or agents.
 
-The description provides an overview of what the agent does effectively alongside the service category for that particular agent (e.g., hotels, flights, taxi, entertainment, and so on). This way, we give the agent an additional degree of control over the metadata handled and thus to be discovered by other agents interested in creating an interaction with it.
+If you want an agent to periodically send a message to your service; you can use:
 
-For instance, imagine you have created an agent supporting a taxi protocol and that you wish to enrol it in the Agentverse Services section so for it to be discovered easily by any other agent available and looking for taxi services. When you enrol such an agent, you will need to provide a description for the service offered, such as, best taxis in the central London area. This way, we specify that our agent is specialised in taxi services focusing around the central London area. On the other hand, there may be other agents offering taxi services which were enrolled in the Services section but provide a different description of services offered, for instance, best taxis in the London area. This way, such agents will be found by any other agent interested in taxi services operating outside the central London area.
+```python copy filename="simple_interval.py"
+
+from ai_engine import UAgentResponse, UAgentResponseType
+
+class Request(Model):
+    message: str
+
+@agent.on_message(model=UAgentResponse)
+async def handle_message(ctx: Context, sender: str, msg: UAgentResponse):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+@agent.on_interval(period=3.0)
+async def send_message(ctx: Context):
+    await ctx.send('YOUR AGENT ADDRESS', Request(message="hello there bob"))
+    ctx.logger.info(f"Message has been sent to basicaly zero")
+````
+
+## Let's find our service on DeltaV
+
+Head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
+
+
+
+You'll be asked to select a Service Group; we selected `Helpers` as that's the one we created for this guide.
+
+![](../../../src/images/guides/agentverse/deltav_service_select.png)
+
+Then, we ask  "Please return me a zero"
+
+![](../../../src/images/guides/agentverse/deltav_simple_start.png)
+
+Then, this is the full output:
+
+![](../../../src/images/guides/agentverse/deltav_full_zero.png)
+
+With that, you've got a service which can be discovered and contacted with DeltaV. Awesome.
