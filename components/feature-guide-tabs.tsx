@@ -165,8 +165,7 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "DeltaV chat interface",
-          description:
-            "Get started with DeltaV and its functionalities.",
+          description: "Get started with DeltaV and its functionalities.",
           path: "/guides/deltav/deltav-chat-interface",
         },
       ],
