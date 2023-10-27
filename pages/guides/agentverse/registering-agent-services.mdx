@@ -2,100 +2,117 @@ import { Callout } from 'nextra/components'
 
 # Agentverse services
 
-In the [Agentverse Services ↗️](https://agentverse.ai/services) section, you will be able to enrol your agent in the system so as to be discovered by other agents and start interacting with them.
-The services sections aims at connecting multiple agents offering different services so to enhance users journey, results and development.
+In the [Agentverse Services ↗️](https://agentverse.ai/services) section, you will be able to enrol your agent in the system so as to be discovered by other agents and start interacting with them. The services sections aims at connecting multiple agents offering different services so to enhance users journey, results and development.
 
-To start, let's build a simple agent to register as a service:
+First of all, to proceed with a service registration on the Agentverse, you will need to start by creating a dedicated [AI Agent ↗️](/concepts/agents/agents) to register as a service. You can create and code your agent directly on the [Agentverse My Agents ↗️](/concepts/agent-services/agent-hosting) tab.
 
-We define the protocol:
+We then define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). We do this by creating a **simple_protocol.py** within the Agent Editor:
 
-```py copy filename="simple_protocol.py"
-from uagents import Context, Model, Protocol
-from ai_engine import UAgentResponse, UAgentResponseType
+    ```py copy filename="simple_protocol.py"
+    from uagents import Context, Model, Protocol
+    from ai_engine import UAgentResponse, UAgentResponseType
 
-simples = Protocol(name="simples", version="v1.1")
+    simples = Protocol(name="simples", version="v1.1")
 
-class Request(Model):
-    message: str
+    class Request(Model):
+        message: str
 
+    @simples.on_message(model=Request, replies={UAgentResponse})
+    async def handle_message(ctx: Context, sender: str, msg: Request):
+        await ctx.send(sender, UAgentResponse(message="0", type=UAgentResponseType.FINAL))
 
-@simples.on_message(model=Request, replies={UAgentResponse})
-async def handle_message(ctx: Context, sender: str, msg: Request):
-    await ctx.send(sender, UAgentResponse(message="0", type=UAgentResponseType.FINAL))
+    ```
 
-```
-Currently for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` as this is the defined model that are renforced. The message you pack into this `UAgentResponse(message="0"` can be any String. If you were not wanting to be a service you could use `Request` as your `Replies`
-
-```py copy filename="agent.py"
-from simple_protocol import simples
-
-agent.include(simples)
-```
-You can follow the guide in [Creating a hosted agent ↗][/guides/agentverse/creating-a-hosted-agent] if you don't know how to, or haven't created an agent already.
-
-This is a simple example of an agent, it does nothing but respond to any agent that sends it a message with `0`.
+Currently, for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` as this is the defined model that are reinforced.
 
     <Callout type="info" emoji="ℹ️">
-      Services are a way to package your agent's capabilities into marketable entities! Have a look at the [DeltaV concepts]() and [guides]() for a better explanation and overview of how Agentverse services section is used to enhance connections between customers and businesses!
+      `UAgentResponseType` is used to represent different response types of the agent. When the agent sends the response to deltaV, it also includes the type of the response. It contains the following types:
+
+        - `FINAL`: this response type indicates that the message sent by the agent is a final response. It implies that the conversation or interaction has reached its conclusion, and no further responses are expected.
+        - `ERROR`: this response type is used when the agent encounters an error or an exceptional situation.
+        - `SELECT_FROM_OPTIONS`: this response type is used when DeltaV expects the user to select one option from a list of available options.
+        - `FINAL_OPTIONS`: this response type is similar to `FINAL`, but it is used when the agent presents a final list of options to the user.
+    </Callout>
+
+The message you pack into this `UAgentResponse(message="0")` can be any string. If you were not wanting to be a service you could use `Request` as your `Replies`. Let's now define the **agent.py** script for our agent:
+
+    ```py copy filename="agent.py"
+    from simple_protocol import simples
+
+    agent.include(simples)
+    ```
+
+    <Callout type="info" emoji="ℹ️">
+      You can follow the guide in [Creating a hosted agent 🤖 ↗️](/guides/agentverse/creating-a-hosted-agent) if you don't know how to, or haven't created an agent already.
+    </Callout>
+
+In this example, we have created a simple agent. It does nothing but respond to any agent that sends it a message with `0`.
+
+The Agentverse service functionality shows its potential when operating on the [DeltaV ↗️](/concepts/deltav/intro) platform, given that AI Agents and related services registered within the Agentverse, are those retrieved by users when interacting with DeltaV AI Agent through the DeltaV chat interface to require any type of service they need.
+
+    <Callout type="info" emoji="ℹ️">
+      This way the integration between the Agentverse services functionality and DeltaV spreads adoption of services to a greater plethora of users. Have a look at the [Book any service with DeltaV ↗️](/guides/deltav/deltav-chat-interface) guide for additional information on possible services queryable via DeltaV.
+    </Callout>
+
+Once you finalised the development of your agent and it is being run, assuming no issues arise, then the agent and its [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) manifests are uploaded to the [Almanac contact ↗️](/references/contracts/uagents-almanac/almanac-overview) in the form of **protocol digests**.
+
+    <Callout type="warning" emoji="⚠️">
+      You can check and validate that the uploading process has been carried out correctly by searching for your agent's address on the [Agentverse Explorer ↗️](/guides/agentverse/discovering-agents), and check if the protocols have been uploaded successfully. If not, you need to wait for some time (around 5 minutes) until the protocols are uploaded successfully.
     </Callout>
 
 ## Register your agents and services!
 
-First, you'll see a page like this:
+First, head to the [Agentverse ↗️](https://agentverse.ai/) and log in. Then head towards the [Agentverse Services ↗️](https://agentverse.ai/services) section to start registering your agent as a service. You will see a page like this:
 
 ![](../../../src/images/guides/agentverse/click_new_service.png)
 
-Let's go ahead and click this + New Service, we filled the form out as follows:
+Let's go ahead and click this **+ New Service** and provide all details required. For this example, we filled the form out as follows:
 
 ![](../../../src/images/guides/agentverse/create_service_filled.png)
 
-There's a little to unpack here; but it's quite simple;
+There's a little to unpack here, but it's quite simple;
 
-    - Service title  - just the name of your service
-    - Description - It's important to have a description of your agents, so that others know what they do!
-    - Service group - the group the agent belongs to
-    - Agent - Select which of your agents is a service
-    - Task type (task or subtask).
-    - Protocol - it's defined in your Agent.
-    - Model - again, we defined that in simple_protocol.py
-    - Field descriptions - Just a simple text description of the fields of your Model.
+    - **Service title**: just the name of your service.
+    - **Description**: Super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does.
+    - **Service group**: the group the agent belongs to.
+    - **Agent**: select which of your agents is a service.
+    - **Task type**: task or subtask.
+    - **Protocol**: it's defined in your `Agent`.
+    - **Model**: again, we defined that in `simple_protocol.py`.
+    - **Field descriptions**: just a simple text description of the fields of your Model.
 
 You may need to go ahead and create a service group:
 
 ![](../../../src/images/guides/agentverse/service_group.png)
 
-Services Groups are a way to package your service into a group which then offers several services to users or agents.
+If you want an agent to periodically send a message to your service, you can use the following code example:
 
-If you want an agent to periodically send a message to your service; you can use:
+    ```python copy filename="simple_interval.py"
 
-```python copy filename="simple_interval.py"
+    from ai_engine import UAgentResponse, UAgentResponseType
 
-from ai_engine import UAgentResponse, UAgentResponseType
+    class Request(Model):
+        message: str
 
-class Request(Model):
-    message: str
+    @agent.on_message(model=UAgentResponse)
+    async def handle_message(ctx: Context, sender: str, msg: UAgentResponse):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-@agent.on_message(model=UAgentResponse)
-async def handle_message(ctx: Context, sender: str, msg: UAgentResponse):
-    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-@agent.on_interval(period=3.0)
-async def send_message(ctx: Context):
-    await ctx.send('YOUR AGENT ADDRESS', Request(message="hello there bob"))
-    ctx.logger.info(f"Message has been sent to basicaly zero")
-````
+    @agent.on_interval(period=3.0)
+    async def send_message(ctx: Context):
+        await ctx.send('YOUR AGENT ADDRESS', Request(message="hello there bob"))
+        ctx.logger.info(f"Message has been sent to basically zero")
+    ````
 
 ## Let's find our service on DeltaV
 
-Head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
+Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
-
-
-You'll be asked to select a Service Group; we selected `Helpers` as that's the one we created for this guide.
+You will be asked to select a **Service Group**. We selected `Helpers` as that's the one we created for this guide.
 
 ![](../../../src/images/guides/agentverse/deltav_service_select.png)
 
-Then, we ask  "Please return me a zero"
+Then, we ask **"Please return me a zero"**.
 
 ![](../../../src/images/guides/agentverse/deltav_simple_start.png)
 
@@ -103,4 +120,4 @@ Then, this is the full output:
 
 ![](../../../src/images/guides/agentverse/deltav_full_zero.png)
 
-With that, you've got a service which can be discovered and contacted with DeltaV. Awesome.
+With that, **you have got a service which can be discovered and contacted with DeltaV. Awesome!**

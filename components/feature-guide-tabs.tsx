@@ -163,6 +163,14 @@ export const FeatureGuideTabs = () => {
           description: "A guide helping you to get started with Jenesis tools.",
           path: "/guides/fetch-network/jenesis/getting-started",
         },
+<<<<<<< HEAD
+=======
+        {
+          title: "DeltaV chat interface",
+          description: "Get started with DeltaV and its functionalities.",
+          path: "/guides/deltav/deltav-chat-interface",
+        },
+>>>>>>> 3e7bc917bb00375e7083fd127984223a33a674c2
       ],
     },
   ];
