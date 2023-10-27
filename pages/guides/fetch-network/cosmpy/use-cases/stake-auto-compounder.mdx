@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The Stake Auto-Compounder is a CosmPy based use case developed using Python and designed to automate the process of staking tokens in a blockchain network, claiming rewards, and compounding those rewards by re-delegating them to a validator. When an account delegates tokens to a network's validator, it will start generating rewards proportionally to the amount of [`Stake` ↗️]️(/guides/fetch-network/cosmpy/staking) delegated. But since rewards aren not automatically added to your stake and therefore do not contribute to future rewards, we can perform a compounding strategy to generate exponential rewards.
+The Stake Auto-Compounder is a CosmPy based use case developed using Python and designed to automate the process of staking tokens in a blockchain network, claiming rewards, and compounding those rewards by re-delegating them to a validator. When an account delegates tokens to a network's validator, it will start generating rewards proportionally to the amount of [`Stake` ↗️](/guides/fetch-network/cosmpy/staking) delegated. But since rewards aren not automatically added to your stake and therefore do not contribute to future rewards, we can perform a compounding strategy to generate exponential rewards.
 
 ## Delegate your tokens
 
-The first thing we need to do is delegate some tokens to a `validator`. You can do so by using a [`Wallet` ↗️]️(/guides/fetch-network/cosmpy/creating-wallet)️ and specifying the validator address and amount. you can delegate tokens to a specific validator by using the `delegate_tokens` method of the `ledger_client` object and specifying the validator's address, the amount of tokens and the wallet from which the delegation is made:
+The first thing we need to do is delegate some tokens to a `validator`. You can do so by using a [`Wallet` ↗️](/guides/fetch-network/cosmpy/creating-wallet) and specifying the validator address and amount. you can delegate tokens to a specific validator by using the `delegate_tokens` method of the `ledger_client` object and specifying the validator's address, the amount of tokens and the wallet from which the delegation is made:
 
     ```py copy
     validators = ledger_client.query_validators()
@@ -22,7 +22,7 @@ The first thing we need to do is delegate some tokens to a `validator`. You can 
     tx.wait_to_complete()
     ```
 
-## Auto compounder
+## Auto-compounder
 
 We can write a script helping us claiming rewards and delegating the rewarded tokens back to the `validator` of choice. This way we keep growing our `Stake` given the generated compounded rewards on such staked amount. We first need to define the `time limit` and the compounding `period`.
 
