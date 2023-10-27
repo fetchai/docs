@@ -1,18 +1,18 @@
 # Walk-through 📝
 
-You first need to satisfy the requirements in [Getting Started ↗️](/guides/integrations/fetch-holiday/getting-started) section for this example.
+You first need to satisfy the requirements in [Getting Started 🎯↗️](/guides/integrations/fetch-holiday/getting-started) section for this example.
 
 ## Organize the project
 
 Inside the `src` folder in the `fetch-holiday` directory for the project, you will need to create 3 different directories and a Python script:
 
-```
-cd src
-mkdir agents
-mkdir messages
-mkdir utils
-touch main.py
-```
+    ```
+    cd src
+    mkdir agents
+    mkdir messages
+    mkdir utils
+    touch main.py
+    ```
 
 These directories will contain the different files you will need to correctly run the project.
 
@@ -22,11 +22,11 @@ These directories will contain the different files you will need to correctly ru
 
 Let's start by defining the needed agents for this and their respective behaviors and functions. Within the agents folder created above, create 3 different sub-folders, one for each agent we plan to define:
 
-```
-mkdir activities
-mkdir destinations
-mkdir flights
-```
+    ```
+    mkdir activities
+    mkdir destinations
+    mkdir flights
+    ```
 
 #### Top activities agent
 
@@ -36,31 +36,30 @@ Let's start by defining the script for a top activities agent which provides tou
 
 2. Paste in the following snippet:
 
-   ```py copy
-   from langchain.chat_models import ChatOpenAI
-   from langchain.agents import load_tools
-   from langchain.agents import initialize_agent
-   from langchain.output_parsers import CommaSeparatedListOutputParser
-   from langchain.prompts import PromptTemplate
-   from messages import UAgentResponse, UAgentResponseType, TopActivities, KeyValue
-   from uagents import Agent, Context, Protocol
-   from uagents.setup import fund_agent_if_low
-   import os
+    ```py copy
+    from langchain.chat_models import ChatOpenAI
+    from langchain.agents import load_tools
+    from langchain.agents import initialize_agent
+    from langchain.output_parsers import CommaSeparatedListOutputParser
+    from langchain.prompts import PromptTemplate
+    from messages import UAgentResponse, UAgentResponseType, TopActivities, KeyValue
+    from uagents import Agent, Context, Protocol
+    from uagents.setup import fund_agent_if_low
+    import os
 
-   TOP_ACTIVITIES_SEED = os.getenv("TOP_ACTIVITIES_SEED", "top_activities really secret phrase :)")
+    TOP_ACTIVITIES_SEED = os.getenv("TOP_ACTIVITIES_SEED", "top_activities really secret phrase :)")
 
-   agent = Agent(
-       name="top_activities",
-       seed=TOP_ACTIVITIES_SEED
-   )
+    agent = Agent(
+        name="top_activities",
+        seed=TOP_ACTIVITIES_SEED
+    )
 
-   fund_agent_if_low(agent.wallet.address())
-   ```
+    fund_agent_if_low(agent.wallet.address())
+    ```
 
-We've just imported all the necessary modules, created an agent named `top_activities` using a secret [seed ↗](https://en.wikipedia.org/wiki/Random_seed) , and with ` fund_agent_if_low(agent.wallet.address())` made sure that this agent has enough funds to register in the [Almanac contract ↗](/references/contracts/uagents-almanac/almanac-overview.mdx):
+    We've just imported all the necessary modules, created an agent named `top_activities` using a secret [seed ↗](https://en.wikipedia.org/wiki/Random_seed) , and with ` fund_agent_if_low(agent.wallet.address())` made sure that this agent has enough funds to register in the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
 
-
-3. Next let's then define an **output parser** using  `CommaSeparatedListOutputParser` from the Langchain library we just imported. This helps parse the results from the agent's response. Then we define a **prompt template** by using a `PromptTemplate` instance, which provides a structured message that explains the agent's role and expectations. It includes placeholders for variables like `city`, `date`, and `preferred_activities_str`:
+3. Next, let's then define an **output parser** using  `CommaSeparatedListOutputParser` from the Langchain library we just imported. This helps parse the results from the agent's response. Then we define a **prompt template** by using a `PromptTemplate` instance, which provides a structured message that explains the agent's role and expectations. It includes placeholders for variables like `city`, `date`, and `preferred_activities_str`:
 
    ```py copy
    output_parser = CommaSeparatedListOutputParser()
@@ -115,7 +114,7 @@ We've just imported all the necessary modules, created an agent named `top_activ
    agent.include(top_activities_protocol)
    ```
 
-   We defined a function named `get_top_activity()` that will handle `TopActivities` messages as definded by the `.on_message()` decorator. The function then logs information about the received message, sender, and session using `ctx.logger.info()` method. The code then checks if `msg.preferred_activities` is provided. If it is, a message about preferred activities is generated. We proceed by generating the input for the language model using the filled prompt as input to the language model for generating a response. The code then parses the output using the output parser previously defined. The parsed result is used to create a list of options, each represented as a `KeyValue` object. The code then logs the result and the corresponding options. A response is sent back to the sender using `ctx.send()` method. The response includes the options generated from the parsed output and specifies the response type as `UAgentResponseType.FINAL_OPTIONS`.
+   We defined a function named `get_top_activity()` that will handle `TopActivities` messages as defined by the `.on_message()` decorator. The function then logs information about the received message, sender, and session using `ctx.logger.info()` method. The code then checks if `msg.preferred_activities` is provided. If it is, a message about preferred activities is generated. We proceed by generating the input for the language model using the filled prompt as input to the language model for generating a response. The code then parses the output using the output parser previously defined. The parsed result is used to create a list of options, each represented as a `KeyValue` object. The code then logs the result and the corresponding options. A response is sent back to the sender using `ctx.send()` method. The response includes the options generated from the parsed output and specifies the response type as `UAgentResponseType.FINAL_OPTIONS`.
 
    Any exceptions that may occur during this process are logged as warnings, and an error response is sent back to the sender. We finally use the `.include()` method to include the `TopActivities` protocol in the agent, ensuring it's ready to handle messages of this type.
 
