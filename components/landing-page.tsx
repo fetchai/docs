@@ -22,13 +22,13 @@ function LandingPage() {
       icon: CommunicateIcon,
     },
     {
-      label: "How to use agents to send tokens 📊💸",
-      path: "guides/agents/send-tokens",
+      label: "Creating an Agentverse agent 🤖",
+      path: "/guides/agentverse/creating-a-hosted-agent",
       icon: BuildChatAiIcon,
     },
     {
-      label: "How to use agents to verify messages 📬🔐",
-      path: "guides/agents/message-verification",
+      label: "Agentverse services: register your services on the Agentverse!",
+      path: "/guides/agentverse/registering-agent-services",
       icon: RevenueIcon,
     },
   ];
