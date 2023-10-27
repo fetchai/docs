@@ -6,7 +6,7 @@ In the [Agentverse Services ↗️](https://agentverse.ai/services) section, you
 
 First of all, to proceed with a service registration on the Agentverse, you will need to start by creating a dedicated [AI Agent ↗️](/concepts/agents/agents) to register as a service. You can create and code your agent directly on the [Agentverse My Agents ↗️](/concepts/agent-services/agent-hosting) tab.
 
-We then define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols):
+We then define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). We do this by creating a **simple_protocol.py** within the Agent Editor:
 
     ```py copy filename="simple_protocol.py"
     from uagents import Context, Model, Protocol
@@ -23,7 +23,7 @@ We then define the [protocol ↗️](/references/uagents/uagents-protocols/agent
 
     ```
 
-Currently for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` as this is the defined model that are reinforced.
+Currently, for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` as this is the defined model that are reinforced.
 
     <Callout type="info" emoji="ℹ️">
       `UAgentResponseType` is used to represent different response types of the agent. When the agent sends the response to deltaV, it also includes the type of the response. It contains the following types:
@@ -34,7 +34,7 @@ Currently for a service to be allowed you must import and use `UAgentResponse, U
         - `FINAL_OPTIONS`: this response type is similar to `FINAL`, but it is used when the agent presents a final list of options to the user.
     </Callout>
 
-The message you pack into this `UAgentResponse(message="0")` can be any string. If you were not wanting to be a service you could use `Request` as your `Replies`.
+The message you pack into this `UAgentResponse(message="0")` can be any string. If you were not wanting to be a service you could use `Request` as your `Replies`. Let's now define the **agent.py** script for our agent:
 
     ```py copy filename="agent.py"
     from simple_protocol import simples
@@ -46,9 +46,9 @@ The message you pack into this `UAgentResponse(message="0")` can be any string. 
       You can follow the guide in [Creating a hosted agent 🤖 ↗️](/guides/agentverse/creating-a-hosted-agent) if you don't know how to, or haven't created an agent already.
     </Callout>
 
-This is a simple example of an agent, it does nothing but respond to any agent that sends it a message with `0`.
+In this example, we have created a simple agent. It does nothing but respond to any agent that sends it a message with `0`.
 
-The Agentverse Section shows its potential when operating on the [DeltaV ↗️](/concepts/deltav/intro) platform, given that AI Agents and related services registered within the Agentverse, are those retrieved by users when interacting with DeltaV AI Agent through the DeltaV chat interface to require any type of service they need.
+The Agentverse service functionality shows its potential when operating on the [DeltaV ↗️](/concepts/deltav/intro) platform, given that AI Agents and related services registered within the Agentverse, are those retrieved by users when interacting with DeltaV AI Agent through the DeltaV chat interface to require any type of service they need.
 
     <Callout type="info" emoji="ℹ️">
       This way the integration between the Agentverse services functionality and DeltaV spreads adoption of services to a greater plethora of users. Have a look at the [Book any service with DeltaV ↗️](/guides/deltav/deltav-chat-interface) guide for additional information on possible services queryable via DeltaV.
@@ -57,7 +57,7 @@ The Agentverse Section shows its potential when operating on the [DeltaV ↗️]
 Once you finalised the development of your agent and it is being run, assuming no issues arise, then the agent and its [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) manifests are uploaded to the [Almanac contact ↗️](/references/contracts/uagents-almanac/almanac-overview) in the form of **protocol digests**.
 
     <Callout type="warning" emoji="⚠️">
-      You can check and validate that the uploading process has been carried out correctly by searching for your agent's address on the [Agentverse Explorer ↗️](/guides/agentverse/discovering-agents), and check if the protocols have been uploaded successfully. If not, you need to wait for some time (around 8 minutes) until the protocols are uploaded successfully.
+      You can check and validate that the uploading process has been carried out correctly by searching for your agent's address on the [Agentverse Explorer ↗️](/guides/agentverse/discovering-agents), and check if the protocols have been uploaded successfully. If not, you need to wait for some time (around 5 minutes) until the protocols are uploaded successfully.
     </Callout>
 
 ## Register your agents and services!
@@ -89,7 +89,7 @@ You may need to go ahead and create a service group:
       **Services Groups** are a way to package your service into a group which then offers several services to users or agents.
     </Callout>
 
-If you want an agent to periodically send a message to your service, you can use:
+If you want an agent to periodically send a message to your service, you can use the following code example:
 
     ```python copy filename="simple_interval.py"
 
