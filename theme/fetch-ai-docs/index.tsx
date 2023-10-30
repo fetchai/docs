@@ -134,7 +134,7 @@ const Body = ({
     <article
       className={cn(
         classes.main,
-        "nextra-content nx-flex nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-min-w-0 nx-justify-center nx-pb-8 nx-pr-[calc(env(safe-area-inset-right)-1.5rem)]",
+        "nextra-content nx-flex nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-min-w-0 nx-pb-8 nx-pr-[calc(env(safe-area-inset-right)-1.5rem)]",
         themeContext.typesetting === "article" &&
           "nextra-body-typesetting-article",
       )}
@@ -241,12 +241,7 @@ const InnerLayout = ({
           flatDirectories,
           items: docsDirectories,
         })}
-      <div
-        className={cn(
-          "nx-mx-auto nx-flex",
-          themeContext.layout !== "raw" && "nx-max-w-[90rem]",
-        )}
-      >
+      <div className="nx-mx-auto nx-flex">
         <ActiveAnchorProvider>
           <Sidebar
             docsDirectories={docsDirectories}
