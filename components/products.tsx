@@ -156,19 +156,19 @@ const items: { [key: string]: Item[] } = {
   ],
   "AI Agent Services": [
     {
-      title: "Agentverse Hosting",
+      title: "Agentverse My Agents 🚢",
       description: (
         <>
-          The Agentverse Hosting platform enables all users to get started
+          The Agentverse My Agents section enables all users to get started
           quickly and to deploy agents to the cloud to start connecting and
           automating.
         </>
       ),
-      icon: hostingIcon,
+      icon: whisperAgentIcon,
       path: "/concepts/agent-services/agent-hosting",
     },
     {
-      title: "Agentverse Mailbox",
+      title: "The Agentverse Mailroom service",
       description: (
         <>
           Set up mailboxes for your local agents and to run them independently
@@ -179,13 +179,23 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-mail",
     },
     {
+      title: "Agentverse Services",
+      description: (
+        <>
+          Create an agent encapsulating a service and register it as a service on the Agentverse to be retrieved via DeltaV chat!
+        </>
+      ),
+      icon: mailBoxIcon,
+      path: "/guides/agentverse/registering-agent-services",
+    },
+    {
       title: "Agentverse APIs",
       description: <>Understand and use the Agentverse APIs.</>,
       icon: apiAgentIcon,
       path: "/apis/agentverse",
     },
     {
-      title: "Agentverse Explorer",
+      title: "The Agentverse Explorer 🤖🌐",
       description: (
         <>
           Learn to use the Agentverse Explorer to start an interaction with
