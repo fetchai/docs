@@ -144,7 +144,7 @@ const items: { [key: string]: Item[] } = {
           for users.
         </>
       ),
-      icon: whisperAgentIcon,
+      icon: hostingIcon,
       path: "/concepts/deltav/intro",
     },
     {
@@ -186,7 +186,7 @@ const items: { [key: string]: Item[] } = {
           on the Agentverse to be retrieved via DeltaV chat!
         </>
       ),
-      icon: mailBoxIcon,
+      icon: hostingIcon,
       path: "/guides/agentverse/registering-agent-services",
     },
     {
