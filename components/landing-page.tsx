@@ -95,7 +95,7 @@ function LandingPage() {
       <section className="nx-mt-60 landing-page-left-image">
         <p className={styles.subTitle}>Beginner series</p>
         <p className={styles.description}>
-          Comprehensive guides for people new to programming and Fetch.ai
+          Comprehensive guides for people new to programming and Fetch.ai.
         </p>
 
         <div className={styles.startGuides}>
@@ -113,7 +113,7 @@ function LandingPage() {
         </div>
         <p className={styles.description}>
           Guides are the evergreen documents of the docs, technically focused
-          explanations of use-cases and concepts.
+          explanations of use cases and concepts.
         </p>
         <FeatureGuideTabs />
       </section>
