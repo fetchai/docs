@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The **Agentverse Mailroom** assists you in setting up mailboxes for local and Agentverse agents, allowing them to have a two-way communication with each other without the need to be online constantly and without requiring your constant presence to operate. In addition to utilizing the **Mailroom**, there exists a more straightforward method for establishing one-way communication from a local agent to an Agentverse agent.
+The **Agentverse Mailroom** assists you in setting up mailboxes for local and Agentverse agents, allowing them to have a two-way communication with each other without the need to be constantly online and without requiring your constant presence to operate. In addition to utilizing the **Mailroom**, there exists a more straightforward method for establishing one-way communication from a local agent to an Agentverse agent.
 
 **We will show both methods in this guide**.
 
@@ -57,17 +57,17 @@ Now create an Agentverse agent `bob` by selecting **+ Agent** on **Managed Agent
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
    ```
 
-Next, run **bob** on the Agentverse. Copy `bob`'s address and paste it on `alice`'s local setup. Finally, run your local agent and you will see `alice`'s local agent messages printed on `bob`'s Agentverse terminal (i.e. the **Agents Logs**).
+Next, run **bob** on the Agentverse. Copy `bob`'s address and paste it on `alice`'s local setup, under the `AGENTVERSE_AGENT_ADDRESS` field. Finally, run your local agent and you will see `alice`'s local agent messages printed on `bob`'s Agentverse terminal (i.e. the **Agents Logs**).
 
 ## Mailbox communication
 
 ### Local agent setup
 
-To register agents in the **Agentverse mailbox service**:
+You can register agents in the **Agentverse mailbox service** in the following way:
 
     1. First of all, you need to sign in at the [Agentverse ↗️](https://agentverse.ai/).
 
-    2. After signing in, you need to head towards the upper right corner and click on your profile icon and select **API Keys**. Select **Create new key** and name it. This will generate your own **API Key** that will allow you to use the Mailbox server.
+    2. After signing in, you need to head towards the upper right corner and click on your profile icon and select **API Keys**. Select **Create new key** and give it a name. This will generate your own **API Key** that will allow you to use the Mailbox server.
 
     3. You would then need to navigate to the **Mailroom** tab and select **+ Mailbox** to register an agent. First, you need to select a name for it and provide the agent's address. Finally, you will then need to include the **Mailbox Server** and **API key** just created within the script for your agent so for your registered agents to start communicating with it. This can be added to your local agent in the following way:
 
@@ -89,7 +89,7 @@ To register agents in the **Agentverse mailbox service**:
         )
         ```
 
-    4. Now lets finish the setup for our local agent, `alice` by importing the necessary classes and adding functionalities for sending and receiving messages:
+    4. Now, let's finish the setup for our local agent `alice` by importing the necessary classes and adding functionalities for sending and receiving messages:
 
         ```py copy
         from uagents import Agent, Context, Model
@@ -129,7 +129,7 @@ To register agents in the **Agentverse mailbox service**:
        ```
 ### Agentverse agent setup
 
-    1. Create a new Agentverse agent `bob` by selecting **+ Agent** on **Managed Agents** in the [Agentverse ↗️](https://agentverse.ai/).
+    1. Let's create a new Agentverse agent `bob` by selecting **+ Agent** on **Managed Agents** in the [Agentverse ↗️](https://agentverse.ai/).
 
     2. Then, you would need to add the following code to `bob`'s script:
 
@@ -148,4 +148,4 @@ To register agents in the **Agentverse mailbox service**:
 
     4. Once you've done this, run Agentverse agent `bob` on the [Agentverse ↗️](https://agentverse.ai/) followed by your local agent, `alice`. You will then be able to send messages back and forth between the two agents, which will be displayed on both `alice`'s and `bob`'s terminals.
 
-For a better understanding and visualisation of the topic, you can have a look at the following section: [Communicating with other agents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents#uAgents-remote-communication-the-agentverse-mailbox-service)️ guide.
+For a better understanding and visualisation of the topic, you can also have a look at the following guide: [Communicating with other agents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents#uAgents-remote-communication-the-agentverse-mailbox-service).

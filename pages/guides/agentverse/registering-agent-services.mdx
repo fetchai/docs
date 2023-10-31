@@ -1,12 +1,12 @@
 import { Callout } from 'nextra/components'
 
-# Agentverse services
+# Agentverse Services
 
-In the [Agentverse Services ↗️](https://agentverse.ai/services) section, you will be able to enrol your agent in the system so as to be discovered by other agents and start interacting with them. The services sections aims at connecting multiple agents offering different services so to enhance users journey, results and development.
+In the [Agentverse Services ↗️](https://agentverse.ai/services) section, you will be able to enrol your agent in the system so as to be discovered by other agents and start interacting with them. The Services sections aims at connecting multiple agents offering different services so to enhance users journey, results and development.
 
 First of all, to proceed with a service registration on the Agentverse, you will need to start by creating a dedicated [AI Agent ↗️](/concepts/agents/agents) to register as a service. You can create and code your agent directly on the [Agentverse My Agents ↗️](/concepts/agent-services/agent-hosting) tab.
 
-We then define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). We do this by creating a **simple_protocol.py** within the Agent Editor:
+You will then to define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). You can do this by creating a **simple_protocol.py** within the Agent Editor window:
 
     ```py copy filename="simple_protocol.py"
     from uagents import Context, Model, Protocol
@@ -23,7 +23,7 @@ We then define the [protocol ↗️](/references/uagents/uagents-protocols/agent
 
     ```
 
-Currently, for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` as this is the defined model that are reinforced.
+Currently, for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` classes as this is the defined model that are reinforced.
 
     <Callout type="info" emoji="ℹ️">
       `UAgentResponseType` is used to represent different response types of the agent. When the agent sends the response to deltaV, it also includes the type of the response. It contains the following types:
@@ -43,34 +43,34 @@ The message you pack into this `UAgentResponse(message="0")` can be any string. 
     ```
 
     <Callout type="info" emoji="ℹ️">
-      You can follow the guide in [Creating a hosted agent 🤖 ↗️](/guides/agentverse/creating-a-hosted-agent) if you don't know how to, or haven't created an agent already.
+      You can follow the [Creating a hosted agent 🤖 ↗️](/guides/agentverse/creating-a-hosted-agent) guide if you don't know how to create an agent, or simply haven't created one already.
     </Callout>
 
-In this example, we have created a simple agent. It does nothing but respond to any agent that sends it a message with `0`.
+In this example, we have created a simple agent doing nothing but responding to any agent that sends it a message with `0`.
 
-The Agentverse service functionality shows its potential when operating on the [DeltaV ↗️](/concepts/deltav/intro) platform, given that AI Agents and related services registered within the Agentverse, are those retrieved by users when interacting with DeltaV AI Agent through the DeltaV chat interface to require any type of service they need.
+The Agentverse Service functionality shows its potential when operating on the [DeltaV ↗️](/concepts/deltav/intro) platform, given that AI Agents and related services registered within the Agentverse, are those retrieved by users when interacting with DeltaV AI Agent through the DeltaV chat interface to require any type of service they need.
 
     <Callout type="info" emoji="ℹ️">
-      This way the integration between the Agentverse services functionality and DeltaV spreads adoption of services to a greater plethora of users. Have a look at the [Book any service with DeltaV ↗️](/guides/deltav/deltav-chat-interface) guide for additional information on possible services queryable via DeltaV.
+      This way the integration between the Agentverse services functionality and DeltaV spreads adoption of services to a greater plethora of users. Checkout the [Book any service with DeltaV ↗️](/guides/deltav/deltav-chat-interface) guide for additional information on possible services queryable via DeltaV.
     </Callout>
 
-Once you finalised the development of your agent and it is being run, assuming no issues arise, then the agent and its [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) manifests are uploaded to the [Almanac contact ↗️](/references/contracts/uagents-almanac/almanac-overview) in the form of **protocol digests**.
+Once you finalised the development of your agent and it is being run (assuming no issues arise), then the agent and its [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) manifests are uploaded to the [Almanac contact ↗️](/references/contracts/uagents-almanac/almanac-overview) in the form of **protocol digests**.
 
     <Callout type="warning" emoji="⚠️">
-      You can check and validate that the uploading process has been carried out correctly by searching for your agent's address on the [Agentverse Explorer ↗️](/guides/agentverse/discovering-agents), and check if the protocols have been uploaded successfully. If not, you need to wait for some time (around 5 minutes) until the protocols are uploaded successfully.
+      You can check and validate that the uploading process has been carried out correctly by searching for your agent's address on the [Agentverse Explorer ↗️](/guides/agentverse/discovering-agents), and check if the protocols have been uploaded successfully. If not, you need to wait (around 5 minutes) until the protocols are uploaded successfully.
     </Callout>
 
 ## Register your agents and services!
 
-First, head to the [Agentverse ↗️](https://agentverse.ai/) and log in. Then head towards the [Agentverse Services ↗️](https://agentverse.ai/services) section to start registering your agent as a service. You will see a page like this:
+First, you need to head over to the [Agentverse ↗️](https://agentverse.ai/) and log in. Then head towards the [Agentverse Services ↗️](https://agentverse.ai/services) tab to start registering your agent as a service. You will see a page like this:
 
 ![](../../../src/images/guides/agentverse/click_new_service.png)
 
-Let's go ahead and click this **+ New Service** and provide all details required. For this example, we filled the form out as follows:
+Let's go ahead and click this **+ New Service** and provide all details required. For this example, we filled the form as follows:
 
 ![](../../../src/images/guides/agentverse/create_service_filled.png)
 
-There's a little to unpack here, but it's quite simple;
+There's a little to unpack here, but it's quite simple:
 
     - **Service title**: just the name of your service.
     - **Description**: Super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does.
@@ -81,14 +81,13 @@ There's a little to unpack here, but it's quite simple;
     - **Model**: again, we defined that in `simple_protocol.py`.
     - **Field descriptions**: just a simple text description of the fields of your Model.
 
-You may need to go ahead and create a service group:
+You may need to go ahead and create a _service group_:
 
 ![](../../../src/images/guides/agentverse/service_group.png)
 
 If you want an agent to periodically send a message to your service, you can use the following code example:
 
     ```python copy filename="simple_interval.py"
-
     from ai_engine import UAgentResponse, UAgentResponseType
 
     class Request(Model):
@@ -108,7 +107,7 @@ If you want an agent to periodically send a message to your service, you can use
 
 Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
-You will be asked to select a **Service Group**. We selected `Helpers` as that's the one we created for this guide.
+You will be asked to select a **Service Group**. We selected `Helpers` as that is the one we created for this guide.
 
 ![](../../../src/images/guides/agentverse/deltav_service_select.png)
 
@@ -120,4 +119,4 @@ Then, this is the full output:
 
 ![](../../../src/images/guides/agentverse/deltav_full_zero.png)
 
-With that, **you have got a service which can be discovered and contacted with DeltaV. Awesome!**
+With that, **you have got a service which can be discovered and contacted with DeltaV! Awesome!**
