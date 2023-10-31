@@ -114,7 +114,8 @@ export const FeatureGuideTabs = () => {
           path: "/guides/agentverse/utilising-the-mailbox",
         },
         {
-          title: "Agentverse Services: register your services on the Agentverse!",
+          title:
+            "Agentverse Services: register your services on the Agentverse!",
           description:
             "Discover how to register and make discoverable your agents' services within the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-services",
@@ -155,7 +156,8 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "CosmPy",
-          description: "A guide helping you to get started with CosmPy library.",
+          description:
+            "A guide helping you to get started with CosmPy library.",
           path: "/guides/fetch-network/cosmpy/install",
         },
         {

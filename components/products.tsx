@@ -127,7 +127,8 @@ const items: { [key: string]: Item[] } = {
       title: "Context building and smart routing",
       description: (
         <>
-          Understand the concepts of context building and smart routing within the AI Engine abilities!
+          Understand the concepts of context building and smart routing within
+          the AI Engine abilities!
         </>
       ),
       icon: insightsAgentIcon,
@@ -138,7 +139,8 @@ const items: { [key: string]: Item[] } = {
       description: (
         <>
           DeltaV platform operates as a search-based AI chat interface,
-          employing natural language conversations to query for services execution.
+          employing natural language conversations to query for services
+          execution.
         </>
       ),
       icon: whisperAgentIcon,
@@ -156,9 +158,8 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse Hosting",
       description: (
         <>
-          The Agentverse My Agents tab enables all users to get started
-          quickly and to deploy agents to the cloud to start connecting and
-          automating.
+          The Agentverse My Agents tab enables all users to get started quickly
+          and to deploy agents to the cloud to start connecting and automating.
         </>
       ),
       icon: hostingIcon,
