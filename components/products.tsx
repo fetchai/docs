@@ -127,9 +127,7 @@ const items: { [key: string]: Item[] } = {
       title: "Context building and smart routing",
       description: (
         <>
-          In the realm of the AI Engine&apos;s capabilities, the process of
-          discovering new information takes a main stage, elevating user
-          experiences to new heights.
+          Understand the concepts of context building and smart routing within the AI Engine abilities!
         </>
       ),
       icon: insightsAgentIcon,
@@ -140,8 +138,7 @@ const items: { [key: string]: Item[] } = {
       description: (
         <>
           DeltaV platform operates as a search-based AI chat interface,
-          employing natural language conversations to independently manage tasks
-          for users.
+          employing natural language conversations to query for services execution.
         </>
       ),
       icon: whisperAgentIcon,
@@ -159,7 +156,7 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse Hosting",
       description: (
         <>
-          The Agentverse Hosting platform enables all users to get started
+          The Agentverse My Agents tab enables all users to get started
           quickly and to deploy agents to the cloud to start connecting and
           automating.
         </>
@@ -224,7 +221,7 @@ const items: { [key: string]: Item[] } = {
     },
     {
       title: "Ledger",
-      description: <>Get started with the Fetch Ledger.</>,
+      description: <>Get started with the Fetch ledger.</>,
       icon: ledgerIcon,
       path: "/concepts/fetch-network/ledger/intro",
     },

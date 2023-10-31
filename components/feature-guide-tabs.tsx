@@ -98,7 +98,7 @@ export const FeatureGuideTabs = () => {
         {
           title: "Creating a hosted agent 🤖",
           description:
-            "Use the Agentverse Hosting service to develop your agents directly on the Agentverse platform.",
+            "Use the Agentverse My Agents tab to develop your agents directly on the Agentverse platform.",
           path: "/guides/agentverse/creating-a-hosted-agent",
         },
         {
@@ -114,9 +114,9 @@ export const FeatureGuideTabs = () => {
           path: "/guides/agentverse/utilising-the-mailbox",
         },
         {
-          title: "Registering agent services",
+          title: "Agentverse Services: register your services on the Agentverse!",
           description:
-            "Discover how to register and make discoverable your agent's services within the Agentverse.",
+            "Discover how to register and make discoverable your agents' services within the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-services",
         },
         {
@@ -150,12 +150,12 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "Ledger",
-          description: "Get started with the Fetch Ledger.",
+          description: "Get started with the Fetch ledger.",
           path: "/concepts/fetch-network/ledger/intro",
         },
         {
           title: "CosmPy",
-          description: "A guide helping you to get started with CosmPy tools.",
+          description: "A guide helping you to get started with CosmPy library.",
           path: "/guides/fetch-network/cosmpy/install",
         },
         {
