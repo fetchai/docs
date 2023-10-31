@@ -102,13 +102,13 @@ First, we need to define a `models` protocol which defines the structure and rel
 
 Now that we have defined the protocols for this application, we proceed by defining the user and cleaner agents.
 
-#### **init**
+#### init
 
 Now let's define a protocol handling communication between a user requesting a cleaning service and a cleaning service provider.
 
 1.  Inside the cleaning directory, create a Python script for this task and name it by running: `touch __init__.py`
 
-2.  Let's import the necessary classes from `datetime`, `typing`, `geopy.geocoders`, `geopy.distance`, `uagents`, and `.models`. Let's then define the message models and handlers for the service request, service response, service booking, and booking response using the `uagents` library. We then proceed and create a cleaning_proto object using the uagents **Protocol** class. We give it the name `cleaning` and the version `0.1.0`. This protocol will be used to define handlers and manage communication between agents using the defined message models:
+2.  Let's import the necessary classes from `datetime`, `typing`, `geopy.geocoders`, `geopy.distance`, `uagents`, and `.models`. Let's then define the message models and handlers for the service request, service response, service booking, and booking response using the `uagents` library. We then proceed and create a cleaning_proto object using the agents **Protocol** class. We give it the name `cleaning` and the version `0.1.0`. This protocol will be used to define handlers and manage communication between agents using the defined message models:
 
     ```py copy
     from datetime import datetime, timedelta
