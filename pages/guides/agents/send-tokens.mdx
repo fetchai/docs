@@ -115,6 +115,7 @@ The overall script for this example should look as follows:
 from uagents import Agent, Bureau, Context, Model
 from uagents.network import wait_for_tx_to_complete
 from uagents.setup import fund_agent_if_low
+
 class PaymentRequest(Model):
     wallet_address: str
     amount: int
@@ -128,8 +129,10 @@ DENOM = "atestfet"
 
 alice = Agent(name="alice", seed="alice secret phrase")
 bob = Agent(name="bob", seed="bob secret phrase")
+
 fund_agent_if_low(alice.wallet.address())
 fund_agent_if_low(bob.wallet.address())
+
 @alice.on_interval(period=10.0)
 async def request_funds(ctx: Context):
     await ctx.send(
@@ -164,6 +167,7 @@ async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
 bureau = Bureau()
 bureau.add(alice)
 bureau.add(bob)
+
 if __name__ == "__main__":
     bureau.run()
 ```

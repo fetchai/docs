@@ -2,7 +2,9 @@
 
 ## Deploy a smart contract
 
-CosmPy offers the possibility to easily deploy **smart contracts** using `LedgerContract` object. For this, you will need the **path** to where the contract is stored (in this case `simple.wasm`), a [`LedgerClient` ↗️](/guides/fetch-network/cosmpy/establishing-node-connection) and a [Wallet ↗️](/guides/fetch-network/cosmpy/creating-wallet):
+CosmPy offers the possibility to easily deploy **smart contracts** using the `LedgerContract` object. For this, you will need the **path** to where the contract is stored (in this case `simple.wasm`), a [`LedgerClient` ↗️](/guides/fetch-network/cosmpy/establishing-node-connection) and a [Wallet ↗️](/guides/fetch-network/cosmpy/creating-wallet).
+
+The example below shows how to achieve this:
 
     ```py copy
     from cosmpy.aerial.contract import LedgerContract
@@ -36,7 +38,7 @@ We can also query the values of the contract's state variables using the `query`
 
 ### Set contract's state variables
 
-We can update the contract's state variables by using the `execute` method and by providing a dictionary specifying the update wanted. Use the wait_to_complete() method to wait for the execution to finish.
+We can update the contract's state variables by using the `execute` method and by providing a dictionary specifying the update wanted. Use the `wait_to_complete()` method to wait for the execution to finish.
 
 The following code sets the state variable `value` to `foobar`:
 
@@ -59,7 +61,7 @@ We can clear the contract's state variables using the `execute` method in the fo
     contract.execute({"clear": {}}, wallet).wait_to_complete()
     ```
 
-Then, we can check if operations went smoothly by running:
+Then, we can check if the operation was correctly executed by running what follows:
 
     ```py copy
     result = contract.query({"get": {"owner": wallet}})

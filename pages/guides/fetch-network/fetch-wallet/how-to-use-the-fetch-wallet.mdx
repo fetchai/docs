@@ -9,10 +9,14 @@ If you want to transfer funds to your Fetch wallet account:
     1. First of all, you need to enter the Fetch wallet with your credentials.
     2. Copy your account's address: you can do so by either clicking on the account address at the top of the dashboard (under the account name) or by clicking on the **Deposit** button you find at the end of the pop-up window. You can also scan the QR code. You can also buy tokens by clicking on the **Buy Tokens** button.
     3. Within the wallet or application you are using to send the funds, use the account's address just copied as the destination account to which the funds must go.
-    4. Once you send the tokens, the balance should be updated within your FEtch wallet.
+    4. Once you send the tokens, the balance should be updated within your Fetch wallet.
 
         <Callout type="error" emoji="️🚫">
-          If your origin wallet says that the address (which should start with "fetch") is invalid, it is probably expecting an Ethereum address (beginning with "0x") and is most likely trying to send ERC-20 FET. In this case, you need to use the token bridge to swap your ERC-20 FET for native FET.
+          If your origin wallet says that the address (which should start with "fetch") is invalid, it is probably expecting an Ethereum address (beginning with "0x") and is most likely trying to send ERC-20 FET. In this case, you need to use the token bridge to swap your ERC-20 FET for native FET .
+        </Callout>
+
+        <Callout type="info" emoji="ℹ️">
+          For information on ERC-20 and native FET tokens, head over to the [Native and ERC-20 FET tokens ↗️](/concepts/fetch-network/native-and-erc20-fet-tokens) page.
         </Callout>
 
         <Callout type="warning" emoji="⚠️">
@@ -40,7 +44,7 @@ If you want to send tokens from your account:
     4. In the summary screen, review the details and if everything is correct, select **Approve**.
 
         <Callout type="info" emoji="ℹ️">
-        You can check the status of your transaction via the [explorer ↗️](https://explore-fetchhub.fetch.ai/).
+          You can check the status of your transaction via the [explorer ↗️](https://explore-fetchhub.fetch.ai/).
         </Callout>
 
 ## IBC transfer
@@ -48,17 +52,17 @@ If you want to send tokens from your account:
     1. Ensure you are logged into the wallet.
     2. Make sure IBC transfers are enabled and that your selected network supports it.
 
-    <Callout type="info" emoji="ℹ️">
-      To enable IBC transfers in the wallet, in the dashboard, click the ☰ icon in the top left, then click on **Settings**. Toggle the **Show Advanced IBC Transfers** switch on.
+        <Callout type="info" emoji="ℹ️">
+          To enable IBC transfers in the wallet, in the dashboard, click the ☰ icon in the top left, then click on **Settings**. Toggle the **Show Advanced IBC Transfers** switch on.
 
-      If your selected network does not support IBC transfers, you will not see an **IBC Transfer** section in the dashboard.
-    </Callout>
+          If your selected network does not support IBC transfers, you will not see an **IBC Transfer** section in the dashboard.
+        </Callout>
 
     3. Click the **Transfer** button in the **IBC Transfer** section.
     4. Fill in the details of your transaction:
 
         - **Destination Chain**: the destination blockchain.
-        - **Recipient**: the address you want to send the tokens to
+        - **Recipient**: the address you want to send the tokens to.
         - **Memo (Optional)**: an optional memo.
 
         <Callout type="info" emoji="ℹ️">
@@ -68,6 +72,9 @@ If you want to send tokens from your account:
     5. Press **Next**.
     6. In the next page, provide the following:
 
+        * **Token**: the denomination or type of the tokens being sent.
+        * **Amount**: the number of tokens to be sent.
+        * **Fee**: the transaction fee. Choose from **Low**, **Average**, **High**.
         - **Token**: the denomination or type of the tokens being sent
         - **Amount**: the number of tokens to be sent
         - **Fee**: the transaction fee. Choose from **Low**, **Average**, **High**.
@@ -91,15 +98,14 @@ Before being able to make an IBC transfer between any two chains for the first t
         <Callout type="info" emoji="ℹ️">
           To find out the IBC channel ID between any two chains:
 
-            1. Head over to [this page ↗️](https://www.mintscan.io/fetchai/relayers)
+            1. Head over to this [page ↗️](https://www.mintscan.io/fetchai/relayers).
             2. At the top, select the sending chain, for example **Fetch.AI**. Then below it, click **IBC RELAYERS**.
             3. Select the destination chain, for example **OSMOSIS**.
             4. You can now see the channels between the two chains. Select an active channel (in green) and note the sending chain's channel ID. For Fetch.AI to Osmosis, the sending chain's (Fetch.AI's) channel ID is `channel-10`.
             5. Enter the channel ID in the Fetch wallet (`channel-10` in our example).
+        </Callout>
 
           Remember to write the channel ID in lower case (i.e. `channel-X`)
-
-        </Callout>
 
         <Callout type="warning" emoji="⚠️">
           If there are no green channels, the relayers are temporarily inactive, and you will need to wait until one becomes active again.
