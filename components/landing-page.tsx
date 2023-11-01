@@ -22,7 +22,7 @@ function LandingPage() {
       icon: CommunicateIcon,
     },
     {
-      label: "Creating an Agentverse agent 🤖",
+      label: "Creating an Agentverse hosted agent 🤖",
       path: "/guides/agentverse/creating-a-hosted-agent",
       icon: BuildChatAiIcon,
     },

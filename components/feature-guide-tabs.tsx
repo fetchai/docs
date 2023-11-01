@@ -96,31 +96,31 @@ export const FeatureGuideTabs = () => {
       label: "Agentverse",
       content: [
         {
-          title: "Creating a hosted agent 🤖",
+          title: "Creating an Agentverse hosted agent 🤖",
           description:
-            "Use the Agentverse Hosting service to develop your agents directly on the Agentverse platform.",
+            "Use the **Agentverse: My Agents** service to develop your agents directly on the Agentverse platform.",
           path: "/guides/agentverse/creating-a-hosted-agent",
         },
         {
-          title: "Discovering agents 🔎",
+          title: "Discovering agents on the Agentverse Explorer 🔎",
           description:
-            "Learn to use the Agentverse Explorer to start an interaction with other registered agents.",
+            "Learn to use the **Agentverse: Explorer** to start an interaction with other registered agents.",
           path: "/guides/agentverse/discovering-agents",
         },
         {
-          title: "Utilising the Agentverse mailbox service 📬",
+          title: "Utilizing the Agentverse Mailroom service 📬",
           description:
-            "Set up mailboxes for your locally-run agents and to run them independently of your constant presence to run the server.",
+            "Set up Agentverse mailboxes for your locally-run agents and to run them independently of your constant presence to run the server.",
           path: "/guides/agentverse/utilising-the-mailbox",
         },
         {
-          title: "Registering agent services",
+          title: "Registering agent services on the Agentverse",
           description:
             "Discover how to register and make discoverable your agent's services within the Agentverse.",
           path: "/guides/agentverse/registering-agent-services",
         },
         {
-          title: "Agentverse allowed imports",
+          title: "Agentverse: allowed imports",
           description:
             "Understand what modules are provided within the Agentverse platform.",
           path: "/guides/agentverse/registering-agent-services",

@@ -1,4 +1,4 @@
-# Utilizing the Agentverse mailbox service 📬
+# Utilizing the Agentverse Mailroom service 📬
 
 ## Introduction
 
@@ -17,7 +17,7 @@ Facilitating communication between Agentverse agents and local agents can be ach
 ## Direct communication
 ### Local agent setup
 
-Let's now start by creating a local agent named `alice` with a `send_message()` function using an `@agent.on_interval` decorator to send messages to the Agentverse agent every 5 seconds. You can leave `AGENTVERSE_AGENT_ADDRESS` empty for now until you create your Agentverse agent in the next step:
+Let's now start by creating a local agent named `alice` with a `send_message()` function using an `@agent.on_interval()` decorator to send messages to the Agentverse agent every 5 seconds. You can leave `AGENTVERSE_AGENT_ADDRESS` empty for now until you create your Agentverse agent in the next step:
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -46,7 +46,7 @@ Let's now start by creating a local agent named `alice` with a `send_message()` 
    ```
 ### Agentverse agent setup
 
-Now create an Agentverse agent `bob` by selecting **+ Agent** on **Managed Agents** in the [Agentverse ↗️](https://agentverse.ai/). Then, add the following code to it:
+Now create an Agentverse agent `bob` by selecting **+ Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, add the following code to it:
 
     ```py copy
     class Message(Model):
@@ -129,7 +129,7 @@ You can register agents in the **Agentverse mailbox service** in the following w
        ```
 ### Agentverse agent setup
 
-    1. Let's create a new Agentverse agent `bob` by selecting **+ Agent** on **Managed Agents** in the [Agentverse ↗️](https://agentverse.ai/).
+    1. Let's create a new Agentverse agent `bob` by selecting **+ Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/).
 
     2. Then, you would need to add the following code to `bob`'s script:
 
