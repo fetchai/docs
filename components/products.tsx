@@ -154,9 +154,9 @@ const items: { [key: string]: Item[] } = {
       path: "/guides",
     },
   ],
-  "AI Agent Services": [
+  "Agentverse components": [
     {
-      title: "Agentverse My Agents 🚢",
+      title: "Agentverse: My Agents 🚢",
       description: (
         <>
           The Agentverse My Agents section enables all users to get started
@@ -168,7 +168,7 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-hosting",
     },
     {
-      title: "The Agentverse Mailroom service",
+      title: "Agentverse: Mailroom / IoT Gateway 📫",
       description: (
         <>
           Set up mailboxes for your local agents and to run them independently
@@ -179,7 +179,7 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-mail",
     },
     {
-      title: "Agentverse Services",
+      title: "Agentverse: Services",
       description: (
         <>
           Create an agent encapsulating a service and register it as a service
@@ -196,7 +196,7 @@ const items: { [key: string]: Item[] } = {
       path: "/apis/agentverse",
     },
     {
-      title: "The Agentverse Explorer 🤖🌐",
+      title: "Agentverse: Explorer 🤖🌐",
       description: (
         <>
           Learn to use the Agentverse Explorer to start an interaction with
