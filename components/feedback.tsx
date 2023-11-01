@@ -11,12 +11,14 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
   const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
   const [isInputVisible, setInputVisible] = useState(false);
   const [feedbackType, setFeedbackType] = useState(""); // State to track feedback type
+  const [maliciousStringDetected, setMaliciousStringDetected] = useState(false); // State to track malicious string detection
 
   const resetState = () => {
     setFeedback("");
     setIsFeedbackSubmitted(false);
     setInputVisible(false);
     setFeedbackType("");
+    setMaliciousStringDetected(false);
   };
 
   useEffect(() => {
@@ -30,8 +32,22 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
     setInputVisible(true);
   };
 
+  const isMaliciousString = (text) => {
+    // Define a regular expression to match potentially harmful characters
+    const harmfulCharsPattern = /[\';"\\]/;
+
+    // Check if the input text contains any harmful characters
+    return harmfulCharsPattern.test(text);
+  };
+
   const handleFeedbackSubmit = async () => {
-    // Now you can associate feedback type, feedback and page
+    if (isMaliciousString(feedback)) {
+      // Display an error message and do not make the API call
+      setMaliciousStringDetected(true);
+      return;
+    }
+
+    // Make the API call only if no malicious string is detected
     try {
       const response = await fetch(
         "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/feedback",
@@ -74,7 +90,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
           <div
             className={`nx-flex nx-items-center nx-space-x-4 nx-mt-4 nx-justify-center`}
           >
-            {feedbackType == "positive" ? (
+            {feedbackType === "positive" ? (
               <div
                 className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-bg-green`}
               >
@@ -88,7 +104,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
                 <FaRegThumbsUp />
               </div>
             )}
-            {feedbackType == "negative" ? (
+            {feedbackType === "negative" ? (
               <div
                 className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-bg-red`}
               >
@@ -106,11 +122,21 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
           {isInputVisible && (
             <div className="nx-mt-4 nx-flex nx-flex-col nx-w-full">
               <textarea
-                className="nx-rounded-lg nx-border nx-border-gray-300 nx-bg-gray-100 nx-p-4 nx-shadow-inner nx-max-w-532px nx-w-full nx-mx-auto nx-min-h-132px"
+                className={`nx-rounded-lg nx-border nx-border-gray-300 nx-bg-gray-100 nx-p-4 nx-shadow-inner nx-max-w-532px nx-w-full nx-mx-auto nx-min-h-132px ${
+                  maliciousStringDetected ? "nx-border-red" : ""
+                }`}
                 placeholder="Enter your feedback..."
                 value={feedback}
-                onChange={(e) => setFeedback(e.target.value)}
+                onChange={(e) => {
+                  setFeedback(e.target.value);
+                  setMaliciousStringDetected(false); // Clear the malicious string detection status when the text changes
+                }}
               />
+              {maliciousStringDetected && (
+                <p className="nx-text-red-500 nx-text-sm nx-mx-auto">
+                  Malicious string detected in the feedback.
+                </p>
+              )}
               <button
                 className="nx-mt-4 nx-bg-submit-feedback nx-text-white nx-font-bold nx-py-2 nx-px-4 nx-rounded-xxl nx-max-w-180px nx-mx-auto nx-w-full"
                 onClick={handleFeedbackSubmit}
