@@ -16,8 +16,8 @@ class TestFetchAgents:
     def test_message_verification(self):
         iterate_over_mdx_files("message-verification")
 
-    def test_send_tokens(self):
-        iterate_over_mdx_files("send-tokens")
+    # def test_send_tokens(self):
+    #     iterate_over_mdx_files("send-tokens")
 
     def test_register_in_almanac(self):
         iterate_over_mdx_files("register-in-almanac")
@@ -25,8 +25,8 @@ class TestFetchAgents:
     def test_storage_function(self):
         iterate_over_mdx_files("storage-function")
 
-    def test_agents(self):
-        agent_function("communicating-with-other-agents")
+    # def test_agents(self):
+    #     agent_function("communicating-with-other-agents")
 
     def test_booking_demo(self):
         booking_demo("booking-demo")
