@@ -52,19 +52,19 @@ export const FeatureGuideTabs = () => {
         {
           title: "Creating your first agent 🤖🧑‍💻",
           description:
-            "A guide showing you how to create your first agent in few minutes.",
+            "A guide showing how to create your first agent in few minutes.",
           path: "guides/agents/create-a-uagent",
         },
         {
           title: "How to use agents to verify messages 📬🔐",
           description:
-            "A guide showing you how to use agents to verify messages.",
+            "A guide showing how to use agents to verify messages.",
           path: "guides/agents/message-verification",
         },
         {
           title: "Registering in the Almanac contract",
           description:
-            "A guide showing you how to correctly register within the Almanac contract.",
+            "A guide showing how to correctly register within the Almanac contract.",
           path: "guides/agents/register-in-almanac",
         },
         {
@@ -76,12 +76,12 @@ export const FeatureGuideTabs = () => {
         {
           title: "How to use the agents to simulate a cleaning scenario ✨",
           description:
-            "A guide teaching you how agents can be used to set up a cleaning scenario.",
+            "A guide teaching how agents can be used to set up a cleaning scenario.",
           path: "guides/agents/cleaning-demo",
         },
         {
           title: "Getting an agent addresses 🤖📫",
-          description: "A guide teaching you how to retrieve agents addresses.",
+          description: "A guide teaching how to retrieve agents addresses.",
           path: "guides/agents/getting-uagent-address",
         },
         {
@@ -98,13 +98,13 @@ export const FeatureGuideTabs = () => {
         {
           title: "Creating an Agentverse hosted agent 🤖",
           description:
-            "Use the **Agentverse: My Agents** service to develop your agents directly on the Agentverse platform.",
+            "Use the Agentverse: My Agents service to develop agents directly on the Agentverse platform.",
           path: "/guides/agentverse/creating-a-hosted-agent",
         },
         {
           title: "Discovering agents on the Agentverse Explorer 🔎",
           description:
-            "Learn to use the **Agentverse: Explorer** to start an interaction with other registered agents.",
+            "Learn to use the Agentverse: Explorer to start an interaction with other registered agents.",
           path: "/guides/agentverse/discovering-agents",
         },
         {
@@ -133,7 +133,7 @@ export const FeatureGuideTabs = () => {
         {
           title: "Fetch Wallet 💵",
           description:
-            "A guide helping you to get started with the Fetch wallet.",
+            "A guide to get started with the Fetch wallet.",
           path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
         },
         {
@@ -155,12 +155,12 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "CosmPy",
-          description: "A guide helping you to get started with CosmPy tools.",
+          description: "A guide to get started with CosmPy tools.",
           path: "/guides/fetch-network/cosmpy/install",
         },
         {
           title: "Jenesis",
-          description: "A guide helping you to get started with Jenesis tools.",
+          description: "A guide to get started with Jenesis tools.",
           path: "/guides/fetch-network/jenesis/getting-started",
         },
         {
