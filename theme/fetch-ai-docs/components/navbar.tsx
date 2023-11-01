@@ -92,7 +92,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           "contrast-more:nx-shadow-[0_0_0_1px_#000] contrast-more:dark:nx-shadow-[0_0_0_1px_#fff]",
         )}
       />
-      <nav className="nx-mx-auto nx-mt-6 nx-py-4 nx-max-w-[90rem] nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
+      <nav className="nx-mx-auto nx-mt-6 nx-py-4 nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
         <div className="nx-flex">
           {config.logoLink ? (
             <Anchor
@@ -145,7 +145,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           </button>
         </div>
 
-        {items.map((pageOrMenu) => {
+        {items.map((pageOrMenu, index) => {
           if (pageOrMenu.display === "hidden") return null;
 
           if (pageOrMenu.type === "menu") {
@@ -189,11 +189,12 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                 classes.link,
                 "nx-relative nx-mr-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block",
                 !isActive || page.newWindow ? classes.inactive : classes.active,
+                index === 0 && !isActive && "-nx-ml-4", // Align the first item to the left
               )}
               newWindow={page.newWindow}
               aria-current={!page.newWindow && isActive}
             >
-              <span className="nx-absolute nx-inset-x-0 nx-text-center nx-text-base">
+              <span className="nx-absolute nx-inset-x-0 nx-text-base nx-text-center">
                 {page.title}
               </span>
               <span className="nx-invisible nx-text-base">{page.title}</span>
