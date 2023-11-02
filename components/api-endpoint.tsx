@@ -247,8 +247,6 @@ export const ApiRequest: React.FC<{
           </DropDownTabs>
         </Col>
       </Row>
-
-      
     </>
   );
 };
@@ -264,15 +262,18 @@ export const ApiEndpointRequestResponse: React.FC<{
   responseDescription?: string;
   properties?: PropertyType[];
 }> = (properties) => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bearerToken, setBearerToken] = useState("");
-  const [response, setResponse] = useState("");
+  const [requestPayload, setRequestPayload] = useState(
+    JSON.stringify(properties.samplePayload, null, 2),
+  );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [actualResponse, setActualResponse] = useState("");
 
   const openModal = () => {
     setIsModalOpen(true);
-    // Clear previous response
-    setResponse("");
   };
 
   const closeModal = () => {
@@ -281,20 +282,28 @@ export const ApiEndpointRequestResponse: React.FC<{
 
   const hitRequest = async () => {
     try {
+      setLoading(true);
+      setError("");
+
+      const requestPayloadJSON = JSON.parse(requestPayload);
+
       const response = await axios({
         method: properties.method,
         url: properties.apiUrl + properties.path,
         headers: {
           Authorization: `Bearer ${bearerToken}`,
         },
-        data: properties.samplePayload,
+        data: requestPayloadJSON,
       });
-      setResponse(JSON.stringify(response.data, null, 2));
+
+      const responseText = JSON.stringify(response.data, null, 2);
+      setActualResponse(responseText);
     } catch (error) {
-      setResponse(`Error: ${error.message}`);
+      setError(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
-
   return (
     <>
       <Row>
@@ -306,51 +315,123 @@ export const ApiEndpointRequestResponse: React.FC<{
           <span className="nx-text-purple nx-font-normal">
             {properties.path}
           </span>
-          <button
-            className="nx-bg-blue-500 hover:nx-bg-blue-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
-            onClick={openModal}
-          >
-            Run Code
-          </button>
-        </p>
-
-        {isModalOpen && (
-        <div className="nx-fixed nx-inset-0 nx-flex nx-items-center nx-justify-center nx-z-50">
-          <div className="nx-modal nx-bg-white nx-w-96 nx-p-4 nx-rounded nx-shadow-lg">
-            <h2 className="nx-text-2xl nx-font-bold nx-mb-4">Try it Out</h2>
-            <input
-              type="text"
-              placeholder="Bearer Token"
-              value={bearerToken}
-              onChange={(e) => setBearerToken(e.target.value)}
-              className="nx-border nx-border-gray-300 nx-rounded nx-w-full nx-py-2 nx-px-3 nx-mb-4"
-            />
-            {/* Add input fields for sample payload here if needed */}
+          {isModalOpen ? (
             <button
-              className="nx-bg-blue-500 hover:nx-bg-blue-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
-              onClick={hitRequest}
+              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl"
+              onClick={closeModal}
             >
-              Hit Request
+              Cancel
             </button>
-            {response && (
-              <div className="nx-mt-4">
-                <h3 className="nx-text-xl nx-font-semibold">Response:</h3>
-                <div className="nx-border nx-border-gray-300 nx-rounded nx-p-2 nx-mt-2">
-                  <pre className="nx-whitespace-pre-wrap">{response}</pre>
+          ) : (
+            <button
+              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl"
+              onClick={openModal}
+            >
+              Run Code
+            </button>
+          )}
+        </p>
+      </Row>
+
+      {isModalOpen && (
+        <div className="nx-bg-grey nx-px-6 nx-py-8 nx-rounded nx-mt-12">
+          <div className="nx-bg-white nextra-content nx-py-2 nx-px-4 nx-rounded">
+            Parameters
+          </div>
+
+          <div className="nx-flex nx-flex-col nx-text-sm">
+            <div className="nx-flex nx-mt-4 nx-ml-4">
+              <div className="nx-w-1/4">
+                <p className="nextra-content nx-text-sm">Name</p>
+              </div>
+              <div className="nx-w-3/4">
+                <p className="nextra-content nx-text-sm">Description</p>
+              </div>
+            </div>
+            <div className="nx-mt-2 nx-mb-4 nx-border-t nx-border-gray-300" />
+
+            {/* Bearer Token required */}
+            <div className="nx-flex nx-items-center  nx-ml-4">
+              <div className="nx-w-1/4">
+                <p className="nextra-content nx-text-sm">
+                  Bearer Token required
+                </p>
+              </div>
+              <div className="nx-w-3/4">
+                <input
+                  type="text"
+                  placeholder="Bearer Token"
+                  value={bearerToken}
+                  onChange={(e) => setBearerToken(e.target.value)}
+                  className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nx-mt-2 nx-w-full"
+                />
+              </div>
+            </div>
+
+            {/* Additional Sample Payload */}
+            <div className="nx-flex nx-items-center  nx-ml-4">
+              <div className="nx-w-1/4">
+                <p className="nextra-content nx-text-sm">
+                  Additional Sample Payload
+                </p>
+              </div>
+              <div className="nx-w-3/4">
+                <textarea
+                  value={requestPayload}
+                  onChange={(e) => setRequestPayload(e.target.value)}
+                  className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nextra-content nx-mt-2 nx-h-24 nx-w-full"
+                />
+              </div>
+            </div>
+
+            {/* Execute Button */}
+            <div className="nx-flex  nx-ml-4">
+              <div className="nx-w-1/4">
+                <button
+                  className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm nx-mt-6"
+                  onClick={hitRequest}
+                >
+                  Execute
+                </button>
+              </div>
+            </div>
+
+            {loading && <div className="nx-mt-4  nx-ml-4">Loading...</div>}
+
+            {error && (
+              <div className="nx-mt-4 nx-text-red-500  nx-ml-4">
+                Error: {error}
+              </div>
+            )}
+
+            {/* Display Actual Response */}
+            {actualResponse && (
+              <div className="nx-mt-6">
+                <div className="nx-bg-white nextra-content nx-text-base nx-py-2 nx-px-4 nx-rounded">
+                  Actual Response
+                </div>
+                <div className="nx-bg-white nx-rounded nx-p-2 nx-mt-4">
+                  <pre className="nx-whitespace-pre-wrap">{actualResponse}</pre>
                 </div>
               </div>
             )}
-            <button
-              className="nx-mt-4 nx-bg-red-500 hover:nx-bg-red-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
-              onClick={closeModal}
-            >
-              Close
-            </button>
+
+            {/* Display Sample Response if Available */}
+            {properties.responses && (
+              <div className="nx-mt-6">
+                <div className="nx-bg-white nextra-content nx-text-base nx-py-2 nx-px-4 nx-rounded">
+                  Sample Response
+                </div>
+                <div className="nx-bg-white nx-rounded nx-p-2 nx-mt-4">
+                  <pre className="nx-whitespace-pre-wrap">
+                    {JSON.stringify(properties.responses, null, 2)}
+                  </pre>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
-      </Row>
-
       <ApiRequest
         apiUrl={properties.apiUrl}
         method={properties.method}
