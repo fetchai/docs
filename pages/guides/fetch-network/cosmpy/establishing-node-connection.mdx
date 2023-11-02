@@ -1,6 +1,8 @@
+import { Callout } from 'nextra/components'
+
 # Connecting to a blockchain 🔗
 
-Once you have installed CosmPy, you can connect and begin interacting with Cosmos-based blockchains, by running the following:
+Once you have installed CosmPy, you can **connect and begin interacting with Cosmos-based blockchains**. You can do so by running the following command:
 
     ```py copy
     import cosmpy
@@ -10,7 +12,11 @@ Once you have installed CosmPy, you can connect and begin interacting with Cosmo
     ledger_client = LedgerClient(NetworkConfig.fetch_mainnet())
     ```
 
-In the code snippet above, we are using the `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. For ease of use network configurations are provided automatically. For example, `NetworkConfig.fetch_mainnet()` is the configuration for the Fetch ledger. However, CosmPy allows you to customize the network configuration and interact with other chains. You can explore a full list of chain identifiers, denominations and endpoints at [chain registry ↗️](https://github.com/cosmos/chain-registry/).
+In the code snippet above, we are using the `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. For ease of use, network configurations are provided automatically. For instance, `NetworkConfig.fetch_mainnet()` is the configuration for the [Fetch ledger ↗️](/concepts/fetch-network/ledger/intro). However, CosmPy allows you to customize the network configuration and interact with other chains.
+
+    <Callout type="info" emoji="ℹ️">
+      You can explore a full list of chain identifiers, denominations and endpoints at [chain registry ↗️](https://github.com/cosmos/chain-registry/).
+    </Callout>
 
 Below, you can find an example of a custom network configuration:
 
