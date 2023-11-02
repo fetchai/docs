@@ -57,8 +57,7 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "How to use agents to verify messages 📬🔐",
-          description:
-            "A guide showing how to use agents to verify messages.",
+          description: "A guide showing how to use agents to verify messages.",
           path: "guides/agents/message-verification",
         },
         {
@@ -132,8 +131,7 @@ export const FeatureGuideTabs = () => {
       content: [
         {
           title: "Fetch Wallet 💵",
-          description:
-            "A guide to get started with the Fetch wallet.",
+          description: "A guide to get started with the Fetch wallet.",
           path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
         },
         {
