@@ -158,14 +158,9 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse: My Agents 🚢",
       description: (
         <>
-<<<<<<< HEAD
-          The Agentverse My Agents tab enables all users to get started quickly
-          and to deploy agents to the cloud to start connecting and automating.
-=======
           The Agentverse My Agents section enables all users to get started
           quickly and to deploy agents to the cloud to start connecting and
           automating.
->>>>>>> 47e08f098d20d082ae74b915eb22cadd1445194d
         </>
       ),
       icon: hostingIcon,
