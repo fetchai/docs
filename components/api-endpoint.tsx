@@ -325,7 +325,7 @@ export const ApiEndpointRequestResponse: React.FC<{
 
   const [actualResponse, setActualResponse] = useState("");
   const [pathParameters, setPathParameters] = useState(
-    properties.pathParameters ? properties.pathParameters : {},
+    properties.pathParameters || {},
   );
 
   const openModal = () => {
