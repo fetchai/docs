@@ -10,6 +10,8 @@ import {
   DropDownTabs,
 } from "./mdx";
 import axios from "axios";
+import Tooltip from "./tooltip";
+import Link from "next/link";
 
 interface PropertyType {
   name: string;
@@ -351,11 +353,50 @@ export const ApiEndpointRequestResponse: React.FC<{
             <div className="nx-mt-2 nx-mb-4 nx-border-t nx-border-gray-300" />
 
             {/* Bearer Token required */}
-            <div className="nx-flex nx-items-center  nx-ml-4">
-              <div className="nx-w-1/4">
+            <div className="md:nx-flex nx-block nx-items-center  nx-ml-4">
+              <div className="nx-flex nx-gap-2 nx-w-1/4">
                 <p className="nextra-content nx-text-sm">
                   Bearer Token required
                 </p>
+                <Tooltip>
+                  <p className="nx-text-sm nx-font-bold nx-text-gray-800 nx-pb-1">
+                    To access your Agentverse account, please follow these
+                    steps:
+                  </p>
+                  <ol className="nx-text-xs nx-leading-4 nx-text-gray-600 nx-pb-3 nx-list-decimal nx-mt-2 nx-p-[10px]">
+                    <li>
+                      Log in to your{" "}
+                      <Link
+                        target="_blank"
+                        className="nx-text-blue-500"
+                        href="https://agentverse.ai/"
+                      >
+                        Agentverse
+                      </Link>{" "}
+                      account.
+                    </li>
+                    <li>
+                      Once logged in, open the developer tools in your web
+                      browser.
+                    </li>
+                    <li>
+                      In the developer tools, navigate to the{" "}
+                      <b>Applications</b> tab
+                    </li>
+                    <li>
+                      Within the Applications tab, you will find a section for{" "}
+                      <b>cookies</b>.
+                    </li>
+                    <li>
+                      Look for a specific cookie named <b>Fauna</b> Name. This
+                      cookie contains your Fauna token
+                    </li>
+                    <li>Copy the value of the <b>Fauna</b> token from the cookie.</li>
+                    <li>
+                      Paste the copied <b>Fauna</b> token here.
+                    </li>
+                  </ol>
+                </Tooltip>
               </div>
               <div className="nx-w-3/4">
                 <input
