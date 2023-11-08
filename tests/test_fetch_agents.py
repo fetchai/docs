@@ -1,6 +1,6 @@
 from utils import iterate_over_mdx_files, agent_function
 
-from protocols_agents import booking_demo, cleaning_demo
+from protocols_agents import booking_demo , cleaning_demo
 
 
 class TestFetchAgents:

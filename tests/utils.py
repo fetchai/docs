@@ -19,7 +19,6 @@ def create_files(code_blocks, file_name):
         if not is_valid_python_code(code_content):
             assert False
         formatted_code = format_str(code_content, mode=FileMode())
-        print(formatted_code, "code")
         code_file_path = os.path.join(OUTPUT_FOLDER, block_filename)
         with open(code_file_path, "w") as f:
             f.write(formatted_code)
