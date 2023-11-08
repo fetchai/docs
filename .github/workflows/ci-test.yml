@@ -34,13 +34,13 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install uagents pyperclip pytest psutil tortoise-orm geopy black
-          
+
       - name: Run tests for agents
         run: |
           cd tests
           python -m pytest -s test_fetch_agents.py
-      
-      - name : Run tests for cosmpy
-        run: | 
+
+      - name: Run tests for cosmpy
+        run: |
           cd tests
           python -m pytest -s test_cosmpy.py
