@@ -17,7 +17,7 @@ const TooltipComponent = ({ children }: { children: React.ReactNode }) => {
         const touchThreshold = 350;
         setBoundary(distanceToBottom <= touchThreshold);
       }
-    }
+    };
     window.addEventListener("scroll", handleScroll);
     handleScroll();
 
