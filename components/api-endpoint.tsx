@@ -391,7 +391,9 @@ export const ApiEndpointRequestResponse: React.FC<{
                       Look for a specific cookie named <b>Fauna</b> Name. This
                       cookie contains your Fauna token
                     </li>
-                    <li>Copy the value of the <b>Fauna</b> token from the cookie.</li>
+                    <li>
+                      Copy the value of the <b>Fauna</b> token from the cookie.
+                    </li>
                     <li>
                       Paste the copied <b>Fauna</b> token here.
                     </li>
