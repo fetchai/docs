@@ -1,17 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const TooltipComponent = ({ children }: { children: React.ReactNode }) => {
   const [tooltip, setTooltip] = useState(false);
+  const [boundary, setBoundary] = useState(false);
+
   const showTooltip = () => {
     setTooltip(true);
   };
+
+  const tooltipRef = useRef(null);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (tooltipRef.current) {
+        const componentRect = tooltipRef.current.getBoundingClientRect();
+        const distanceToBottom = window.innerHeight - componentRect.bottom;
+        const touchThreshold = 350;
+        setBoundary(distanceToBottom <= touchThreshold);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const hideTooltip = () => {
     setTooltip(false);
   };
   return (
     <div>
-      <div className="nx-container mx-auto px-6 flex flex-col items-start nx-pl-12 md:nx-pl-0 md:items-center">
+      <div className="flex flex-col items-start px-6 mx-auto nx-container nx-pl-12 md:nx-pl-0 md:items-center">
         <div className="nx-flex-col md:nx-flex-row nx-flex nx-items-center md:nx-justify-center">
           <a
             tabIndex={0}
@@ -22,7 +42,7 @@ const TooltipComponent = ({ children }: { children: React.ReactNode }) => {
             onFocus={showTooltip}
             onMouseOut={hideTooltip}
           >
-            <div className="nx-cursor-pointer">
+            <div ref={tooltipRef} className="nx-cursor-pointer">
               <svg
                 aria-haspopup="true"
                 xmlns="http://www.w3.org/2000/svg"
@@ -46,10 +66,12 @@ const TooltipComponent = ({ children }: { children: React.ReactNode }) => {
               <div
                 id="tooltip"
                 role="tooltip"
-                className="nx-z-20 nx-w-64 nx-absolute nx-transition nx-duration-150 nx-ease-in-out nx-left-0 nx-ml-8 nx-shadow-lg nx-bg-white nx-p-4 nx-rounded"
+                className={`nx-z-20 ${
+                  boundary && "nx-bottom-10"
+                } nx-w-64 nx-absolute nx-transition nx-duration-150 nx-ease-in-out nx-left-0 nx-ml-8 nx-shadow-lg nx-bg-white nx-p-4 nx-rounded`}
               >
                 <svg
-                  className="nx-absolute nx-left-0 nx-ml-2 nx-bottom-0 nx-top-0 h-full"
+                  className="h-full nx-absolute nx-left-0 nx-ml-2 nx-bottom-0 nx-top-0"
                   width="9px"
                   height="16px"
                   viewBox="0 0 9 16"
