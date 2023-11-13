@@ -114,19 +114,22 @@ export const FeatureGuideTabs = () => {
           path: "/guides/agentverse/utilising-the-mailbox",
         },
         {
-          title: "Agentverse Services: register your services on the Agentverse!",
+          title:
+            "Agentverse Services: register your services on the Agentverse!",
           description:
             "Discover how to register and make discoverable your agents' services within the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-services",
         },
         {
-          title: "Agentverse Services: register a coin toss agent as a service 🪙",
+          title:
+            "Agentverse Services: register a coin toss agent as a service 🪙",
           description:
             "Create and make an coin toss service discoverable on the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-coin-toss",
         },
         {
-          title: "Agentverse Services: register a dice roll agent as a service 🎲",
+          title:
+            "Agentverse Services: register a dice roll agent as a service 🎲",
           description:
             "Create and make an dice roll service discoverable on the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-dice-roll",
