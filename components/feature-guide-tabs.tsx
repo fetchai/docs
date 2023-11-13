@@ -57,8 +57,7 @@ export const FeatureGuideTabs = () => {
         },
         {
           title: "How to use agents to verify messages 📬🔐",
-          description:
-            "A guide showing how to use agents to verify messages.",
+          description: "A guide showing how to use agents to verify messages.",
           path: "guides/agents/message-verification",
         },
         {
