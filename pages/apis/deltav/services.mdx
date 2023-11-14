@@ -46,6 +46,8 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
         DELETE /v1beta1/services/:service_id
 
         POST /v1beta1/services/service-sg/
+
+        DELETE /v1beta1/services/service-sg/:service_id/:service_group_id
         ```
     </Col>
 
@@ -144,13 +146,13 @@ properties={[
   responseDescription="Returns the newly created Service object"
 />
 
-## Get all services for a user
+## Get all services of a user
 
 <ApiEndpointRequestResponse
   apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
   method="GET"
   path="/v1beta1/services"
-  description="Retrieves all services for a user authenticated through JWT."
+  description="Retrieves all services of a user authenticated through JWT."
   responses={[
     {
         "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
@@ -178,7 +180,7 @@ properties={[
   apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
   method="GET"
   path="/v1beta1/services/:service_id"
-  description="Fetches a specific service identified by the service_id for a user authenticated through JWT."
+  description="Fetches a specific service of a user authenticated through JWT identified by the service_id."
   responses={
     {
         "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
@@ -358,7 +360,7 @@ properties={[
   apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
   method="DELETE"
   path="/v1beta1/services/:service_id"
-  description="Delete a specific service identified by the service_id for a user authenticated through JWT."
+  description="Delete a specific service of a user authenticated through JWT identified by the service_id."
   responses={
     {}
   }
@@ -371,7 +373,7 @@ properties={[
   apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
   method="POST"
   path="/v1beta1/services/service-sg/"
-  description="Creates the connection between a service and a service group for a user authenticated through JWT."
+  description="Creates the connection between a service and a service group of a user authenticated through JWT."
 properties={[
     {
       name: "service",
@@ -398,4 +400,17 @@ properties={[
     }
   }
   responseDescription="Returns the id of the service and the service group for which we created the connection."
+/>
+
+## Delete a service-service group connection
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="DELETE"
+  path="/v1beta1/services/service-sg/:service_id/:service_group_id"
+  description="Deletes the connection between a service and a service group of a user authenticated through JWT."
+  responses={
+    {}
+  }
+  responseDescription="Returns an empty JSON object."
 />
