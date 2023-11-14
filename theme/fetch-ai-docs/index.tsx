@@ -148,7 +148,6 @@ const Body = ({
   );
 };
 
-// Example code in your docs page (assuming you use JavaScript to manage the last visited timestamp)
 const setLastVisitedTimestamp = () => {
   const now = new Date();
   setCookie("lastVisitedTimestamp", now.toISOString());
@@ -166,7 +165,6 @@ const InnerLayout = ({
   const fsPath = useFSRoute();
 
   useEffect(() => {
-    // Call setLastVisitedTimestamp when the docs page is loaded
     setLastVisitedTimestamp();
   }, []);
 
