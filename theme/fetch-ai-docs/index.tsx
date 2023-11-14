@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import type { NextraThemeLayoutProps, PageOpts } from "nextra";
 import type { ReactElement, ReactNode } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import "focus-visible";
 import cn from "clsx";
 import { useFSRoute, useMounted } from "nextra/hooks";
@@ -24,6 +24,7 @@ import { renderComponent } from "./utils";
 import React from "react";
 import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
+import { setCookie } from "cookies-next";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -147,6 +148,12 @@ const Body = ({
   );
 };
 
+// Example code in your docs page (assuming you use JavaScript to manage the last visited timestamp)
+const setLastVisitedTimestamp = () => {
+  const now = new Date();
+  setCookie("lastVisitedTimestamp", now.toISOString());
+};
+
 const InnerLayout = ({
   pageMap,
   frontMatter,
@@ -157,6 +164,11 @@ const InnerLayout = ({
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   const fsPath = useFSRoute();
+
+  useEffect(() => {
+    // Call setLastVisitedTimestamp when the docs page is loaded
+    setLastVisitedTimestamp();
+  }, []);
 
   const {
     activeType,
