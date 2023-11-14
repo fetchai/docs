@@ -17,26 +17,56 @@ interface PropertyType {
   description: string;
 }
 
+// Helper function to replace path parameters in the URL
+const replacePathParameters = (
+  path: string,
+  pathParameters: Record<string, string> = {},
+) => {
+  let updatedPath = path;
+  for (const param in pathParameters) {
+    updatedPath = updatedPath.replace(`{${param}}`, pathParameters[param]);
+  }
+  return updatedPath;
+};
+
 const PythonCodeTab: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   url: string;
   samplePayload?: unknown;
-}> = ({ method, url, samplePayload }) => {
+  pathParameters?: Record<string, string>;
+}> = ({ method, url, samplePayload, pathParameters }) => {
   let code = ``;
+  let actualUrl = url;
+  // Replace path parameters in the URL
+  for (const param in pathParameters) {
+    actualUrl = actualUrl.replace(`{${param}}`, `{pathParameters.${param}}`);
+  }
   code = samplePayload
     ? `\
 import requests
 
 data = ${JSON.stringify(samplePayload, undefined, 4)}
 
-requests.${method.toLowerCase()}("${url}", json=data, headers={
+${
+  pathParameters
+    ? `pathParameters = ${JSON.stringify(pathParameters, undefined, 4)}`
+    : ``
+}
+
+requests.${method.toLowerCase()}("${actualUrl}", json=data, headers={
     "Authorization": "bearer <your token here>"
 }
     `
     : `\
 import requests
 
-requests.${method.toLowerCase()}("${url}",, headers={
+${
+  pathParameters
+    ? `pathParameters = ${JSON.stringify(pathParameters, undefined, 4)}`
+    : ``
+}
+
+requests.${method.toLowerCase()}("${actualUrl}",, headers={
     "Authorization": "bearer <your token here>"
 }
     `;
@@ -59,13 +89,24 @@ const JavascriptCodeTab: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   url: string;
   samplePayload?: unknown;
-}> = ({ method, url, samplePayload }) => {
+  pathParameters?: Record<string, string>;
+}> = ({ method, url, samplePayload, pathParameters }) => {
   let code = ``;
+  let actualUrl = url;
+  // Replace path parameters in the URL
+  for (const param in pathParameters) {
+    actualUrl = actualUrl.replace(`{${param}}`, `{pathParameters.${param}}`);
+  }
   code = samplePayload
     ? `\
 body = ${JSON.stringify(samplePayload, undefined, 4)}
+${
+  pathParameters
+    ? `pathParameters = ${JSON.stringify(pathParameters, undefined, 4)}`
+    : ``
+}
 
-await fetch("${url}", {
+await fetch("${actualUrl}", {
   method: ${method.toLowerCase()},
   headers: {
     Authorization: Bearer <your token here>
@@ -73,7 +114,13 @@ await fetch("${url}", {
   body
 })`
     : `\
-await fetch("${url}", {
+${
+  pathParameters
+    ? `pathParameters = ${JSON.stringify(pathParameters, undefined, 4)}`
+    : ``
+}
+
+await fetch("${actualUrl}", {
   method: ${method.toLowerCase()},
   headers: {
     Authorization: Bearer <your token here>
@@ -192,6 +239,7 @@ export const ApiRequest: React.FC<{
   description: string;
   samplePayload?: unknown;
   properties?: PropertyType[];
+  pathParameters?: Record<string, string>;
 }> = (properties) => {
   return (
     <>
@@ -235,6 +283,7 @@ export const ApiRequest: React.FC<{
                 method={properties.method}
                 url={properties.apiUrl + properties.path}
                 samplePayload={properties.samplePayload}
+                pathParameters={properties.pathParameters}
               />
             </Tab>
             <Tab heading="Javascript">
@@ -242,6 +291,7 @@ export const ApiRequest: React.FC<{
                 method={properties.method}
                 url={properties.apiUrl + properties.path}
                 samplePayload={properties.samplePayload}
+                pathParameters={properties.pathParameters}
               />
             </Tab>
           </DropDownTabs>
@@ -261,16 +311,22 @@ export const ApiEndpointRequestResponse: React.FC<{
   responseProperties?: PropertyType[];
   responseDescription?: string;
   properties?: PropertyType[];
+  pathParameters?: Record<string, string>;
 }> = (properties) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bearerToken, setBearerToken] = useState("");
   const [requestPayload, setRequestPayload] = useState(
-    JSON.stringify(properties.samplePayload, null, 2),
+    properties.samplePayload
+      ? JSON.stringify(properties.samplePayload, null, 2)
+      : `{}`,
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [actualResponse, setActualResponse] = useState("");
+  const [pathParameters, setPathParameters] = useState(
+    properties.pathParameters || {},
+  );
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -287,9 +343,13 @@ export const ApiEndpointRequestResponse: React.FC<{
 
       const requestPayloadJSON = JSON.parse(requestPayload);
 
+      const apiUrlWithParams =
+        properties.apiUrl +
+        replacePathParameters(properties.path, pathParameters);
+
       const response = await axios({
         method: properties.method,
-        url: properties.apiUrl + properties.path,
+        url: apiUrlWithParams,
         headers: {
           Authorization: `Bearer ${bearerToken}`,
         },
@@ -368,21 +428,48 @@ export const ApiEndpointRequestResponse: React.FC<{
               </div>
             </div>
 
+            {/* Render Path Parameters as input fields */}
+            {Object.keys(pathParameters).map((paramName) => (
+              <div className="nx-flex nx-items-center nx-ml-4" key={paramName}>
+                <div className="nx-w-1/4">
+                  <p className="nextra-content nx-text-sm">
+                    {paramName} required
+                  </p>
+                </div>
+                <div className="nx-w-3/4">
+                  <input
+                    type="text"
+                    placeholder={paramName}
+                    value={pathParameters[paramName]}
+                    onChange={(e) => {
+                      // Update the path parameter value
+                      const updatedPathParameters = { ...pathParameters };
+                      updatedPathParameters[paramName] = e.target.value;
+                      setPathParameters(updatedPathParameters);
+                    }}
+                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nx-mt-2 nx-w-full"
+                  />
+                </div>
+              </div>
+            ))}
+
             {/* Additional Sample Payload */}
-            <div className="nx-flex nx-items-center  nx-ml-4">
-              <div className="nx-w-1/4">
-                <p className="nextra-content nx-text-sm">
-                  Additional Sample Payload
-                </p>
+            {requestPayload && (
+              <div className="nx-flex nx-items-center  nx-ml-4">
+                <div className="nx-w-1/4">
+                  <p className="nextra-content nx-text-sm">
+                    Additional Sample Payload
+                  </p>
+                </div>
+                <div className="nx-w-3/4">
+                  <textarea
+                    value={requestPayload}
+                    onChange={(e) => setRequestPayload(e.target.value)}
+                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nextra-content nx-mt-2 nx-h-24 nx-w-full"
+                  />
+                </div>
               </div>
-              <div className="nx-w-3/4">
-                <textarea
-                  value={requestPayload}
-                  onChange={(e) => setRequestPayload(e.target.value)}
-                  className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nextra-content nx-mt-2 nx-h-24 nx-w-full"
-                />
-              </div>
-            </div>
+            )}
 
             {/* Execute Button */}
             <div className="nx-flex  nx-ml-4">
@@ -417,7 +504,7 @@ export const ApiEndpointRequestResponse: React.FC<{
             )}
 
             {/* Display Sample Response if Available */}
-            {properties.responses && (
+            {!actualResponse && properties.responses && (
               <div className="nx-mt-6">
                 <div className="nx-bg-white nextra-content nx-text-base nx-py-2 nx-px-4 nx-rounded">
                   Sample Response
@@ -439,6 +526,7 @@ export const ApiEndpointRequestResponse: React.FC<{
         description={properties.description}
         samplePayload={properties.samplePayload ?? undefined}
         properties={properties.properties ?? undefined}
+        pathParameters={properties.pathParameters ?? undefined}
       />
       {properties.responses ? (
         <ApiResponses
