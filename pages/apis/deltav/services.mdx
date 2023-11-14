@@ -1,0 +1,401 @@
+import {
+  Note,
+  Properties,
+  Property,
+  Warn,
+  Section,
+  ApiIntro,
+  Tag,
+  CodeHeading,
+} from "../../../components/mdx";
+import { DropDownTabs, Tab } from "../../../components/mdx";
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+  ApiRequest,
+  ApiResponses,
+} from "../../../components/api-endpoint";
+
+# DeltaV Services API
+
+<div className="nx-text-fetch-content">
+  Most of the endpoints depends on various instances and are considered parameters for the actual endpoint, but these are not meant to be passed directly by the user.
+
+Instead, these instance-dependent elements are integrated and managed directly by the backend system. We refer to them as `*name_parameter`, where the asterisk (\*) is used to denote a specific instance-dependent parameter that the route relies on.
+
+Mind that: to access these APIs, user must be **authenticated** and have the **correct permissions**.
+
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The DeltaV Chat API allows you to interact with the DeltaV backend, allowing you to interact with your agents and more.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        POST /v1beta1/services
+
+        GET /v1beta1/services
+
+        GET /v1beta1/services/:service_id
+
+        PUT /v1beta1/services
+
+        DELETE /v1beta1/services/:service_id
+
+        POST /v1beta1/services/service-sg/
+        ```
+    </Col>
+
+</Row>
+
+## Create a service
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1beta1/services"
+  description="Create a new service for a user authenticated through JWT."
+properties={[
+    {
+      name: "agent",
+      type: "string",
+      description:
+        "Address of agent.",
+    },
+    {
+      name: "name",
+      type: "string",
+      description: "Name of service.",
+    },
+    {
+      name: "description",
+      type: "string",
+      description:
+        "Description of service.",
+    },
+    {
+      name: "protocolDigest",
+      type: "string",
+      description: "Digest of protocol associated with the agent.",
+    },
+    {
+      name: "modelDigest",
+      type: "string",
+      description:
+        "Digest of model associated with the protocol.",
+    },
+    {
+      name: "modelName",
+      type: "string",
+      description: "Request model name and protocol name separated my a slash character.",
+    },
+    {
+      name: "fields",
+      type: "JSON",
+      description:
+        "Properties of all request model fields as a list. Every element contains the name of the respective field, the fact that the field is required or not (true/false), the type of the field, and the description.",
+    },
+    {
+      name: "taskType",
+      type: "string",
+      description: "Type of the service. Can be task or subtask.",
+    },
+  ]}
+  samplePayload={{
+    "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+    "name": "Stock price service",
+    "description": "Retrieves the stock price of a share.",
+    "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+    "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+    "modelName": "StockPrice/StocksProtocol",
+    "fields": [{"name": "symbol", "required": true, "field_type": "string", "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."}],
+    "taskType": "task"
+  }}
+  responses={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price service",
+        "description": "Retrieves the stock price of a share.",
+        "category": null,
+        "location": null,
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "taskType": "task",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_conversions": 0,
+        "conversion_rate": 0.0,
+        "uptime": 0.0
+    }
+  }
+  responseDescription="Returns the newly created Service object"
+/>
+
+## Get all services for a user
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1beta1/services"
+  description="Retrieves all services for a user authenticated through JWT."
+  responses={[
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price service",
+        "description": "Retrieves the stock price of a share.",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46"
+    },
+    {
+        "uuid": "ebfa27ec-c978-4109-bb77-9d1809e3b0f6",
+        "agent": "agent1q0vmxjv06dwdlppuvspmfyff4ys2t4mdndpa09gulpsuq90n22xqy8k89l8",
+        "name": "Flights service",
+        "description": "Searches for flight offers.",
+        "created_at": "2023-10-22T21:08:47",
+        "updated_at": "2023-10-22T21:08:47"
+    },
+  ]}
+  responseDescription="Returns a list of Service objects associated with the user"
+/>
+
+## Fetch a service
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1beta1/services/:service_id"
+  description="Fetches a specific service identified by the service_id for a user authenticated through JWT."
+  responses={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price service",
+        "description": "Retrieves the stock price of a share.",
+        "category": null,
+        "location": null,
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "taskType": "task",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_conversions": 0,
+        "conversion_rate": 0.0,
+        "uptime": 0.0
+    }
+  }
+  responseDescription="Returns a service identified by a specific session_id."
+/>
+
+## Update a service
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="PUT"
+  path="/v1beta1/services"
+  description="Update a service of a user authenticated through JWT."
+  properties={[
+    {
+      name: "uuid",
+      type: "string",
+      description:
+        "Uuid of service in UUID4 format.",
+    },
+    {
+      name: "agent",
+      type: "string",
+      description:
+        "Address of agent.",
+    },
+    {
+      name: "name",
+      type: "string",
+      description: "Name of service.",
+    },
+    {
+      name: "description",
+      type: "string",
+      description:
+        "Description of service.",
+    },
+    {
+      name: "protocolDigest",
+      type: "string",
+      description: "Digest of protocol associated with the agent.",
+    },
+    {
+      name: "modelDigest",
+      type: "string",
+      description:
+        "Digest of model associated with the protocol.",
+    },
+    {
+      name: "modelName",
+      type: "string",
+      description: "Request model name and protocol name separated my a slash character.",
+    },
+    {
+      name: "fields",
+      type: "JSON",
+      description:
+        "Properties of all request model fields as a list. Every element contains the name of the respective field, the fact that the field is required or not (true/false), the type of the field, and the description.",
+    },
+    {
+      name: "taskType",
+      type: "string",
+      description: "Type of the service. Can be task or subtask.",
+    },
+    {
+      name: "created_at",
+      type: "datetime",
+      description:
+        "The timestamp when the service was created. The timestamp is in ISO 8601 format.",
+    },
+    {
+      name: "updated_at",
+      type: "datetime",
+      description: "The timestamp when the service was updated. The timestamp is in ISO 8601 format.",
+    },
+    {
+      name: "num_conversions",
+      type: "integer",
+      description: "Number of conversions.",
+    },
+    {
+      name: "conversion_rate",
+      type: "float",
+      description:
+        "Conversion rate.",
+    },
+    {
+      name: "uptime",
+      type: "float",
+      description: "Uptime.",
+    },
+  ]}
+  samplePayload={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price service modified name",
+        "description": "Retrieves the stock price of a share.",
+        "category": null,
+        "location": null,
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "taskType": "task",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_conversions": 0,
+        "conversion_rate": 0.0,
+        "uptime": 0.0
+    }
+  }
+  responses={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price service modified name",
+        "description": "Retrieves the stock price of a share.",
+        "category": null,
+        "location": null,
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "taskType": "task",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_conversions": 0,
+        "conversion_rate": 0.0,
+        "uptime": 0.0
+    }
+  }
+  responseDescription="Returns the updated Service object"
+/>
+
+## Delete a service
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="DELETE"
+  path="/v1beta1/services/:service_id"
+  description="Delete a specific service identified by the service_id for a user authenticated through JWT."
+  responses={
+    {}
+  }
+  responseDescription="Return an empty JSON object."
+/>
+
+## Create a service-service group connection
+
+<ApiEndpointRequestResponse
+  apiUrl="engine-canary.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1beta1/services/service-sg/"
+  description="Creates the connection between a service and a service group for a user authenticated through JWT."
+properties={[
+    {
+      name: "service",
+      type: "string",
+      description:
+        "Id of a service in UUID4 format.",
+    },
+    {
+      name: "serviceGroup",
+      type: "string",
+      description: "Id of a service group in UUID4 format.",
+    },
+  ]}
+  samplePayload={
+    {
+        "service": "beac0677-85fd-4bc5-820a-71038e355f2e",
+        "serviceGroup": "21d05673-3956-4d7d-81ef-8961b182fa37"
+    }
+  }
+  responses={
+    {
+        "service": "beac0677-85fd-4bc5-820a-71038e355f2e",
+        "serviceGroup": "21d05673-3956-4d7d-81ef-8961b182fa37"
+    }
+  }
+  responseDescription="Returns the id of the service and the service group for which we created the connection."
+/>
