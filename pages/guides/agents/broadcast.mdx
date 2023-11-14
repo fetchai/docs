@@ -1,0 +1,166 @@
+import { Callout } from 'nextra/components'
+
+# AI Agents: broadcast 📡
+
+## Introduction
+
+**Protocols** cover a very important role within the uAgents Framework. [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) define the standards through which agents communication takes place. In this example, we will be showcasing a scenario where three agents, named `alice`, `bob`, and `charles`, use a custom protocol to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all agents using the protocol.
+
+**Let's get started!**
+
+## Walk-through
+
+1. First of all, let's create a Python script for this task, and name it: `touch broadcast.py`
+
+2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library, and the `fund_agent_if_low` from `uagents.setup`. Then, let's create the 3 different agents using the class `Agent`. Each agent is initialized with a unique name and a seed phrase for wallet recovery. Additionally, if an agent's wallet balance is low, the `fund_agent_if_low()` function is called to add funds to their wallet:
+
+    ```py copy
+    from uagents import Agent, Bureau, Context, Model, Protocol
+    from uagents.setup import fund_agent_if_low
+
+    alice = Agent(name="alice", seed="alice recovery phrase")
+    bob = Agent(name="bob", seed="bob recovery phrase")
+    charles = Agent(name="charles", seed="charles recovery phrase")
+
+    fund_agent_if_low(alice.wallet.address())
+    fund_agent_if_low(bob.wallet.address())
+    fund_agent_if_low(charles.wallet.address())
+    ```
+
+   It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address)️. Otherwise, random addresses will be generated every time you run the agent.
+
+3. Let's then define two message data models to define the type of messages being handled and exchanged by the agents. We define a `BroadcastExampleRequest` and a `BroadcastExampleResponse` data models. Finally, create a `protocol` named `proto` with version `1.0`:
+
+    ```py copy
+    class BroadcastExampleRequest(Model):
+        pass
+
+    class BroadcastExampleResponse(Model):
+        text: str
+
+    proto = Protocol(name="proto", version="1.0")
+    ```
+4. Let's now define a message handler function for incoming messages of type `BroadcastExampleRequest` in the protocol:
+
+    ```py copy
+    @proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
+    async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
+        await ctx.send(sender, BroadcastExampleResponse(text=f"Hello from {ctx.name}"))
+    ```
+
+    Here we defined a `handle_request()` function which is used whenever a request is received. This sends a response back to the sender. This function is decorated with the `.on_message()` decorator indicating that this function is triggered whenever a message of type `BroadcastExampleRequest` is received. The function sends a response containing a greeting message with the name of the agent that sent the request in the first place.
+
+5. Now, we need to include the `protocol` into the agents. Specifically, the protocol is included in both `alice` and `bob` agents. This means they will follow the rules defined in the protocol when communicating:
+
+    ```py copy
+    alice.include(proto)
+    bob.include(proto)
+    ```
+
+    <Callout type="info" emoji="ℹ️">
+      After the first registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) smart contract, it will take about 5 minutes before the agents can be found through the protocol.
+    </Callout>
+
+6. It is now time to define the behavior and function of `charles` agent.
+
+    ```py copy
+    @charles.on_interval(period=5.0)
+    async def say_hello(ctx: Context):
+        await ctx.experimental_broadcast(proto.digest, message=BroadcastExampleRequest())
+
+    @charles.on_message(model=BroadcastExampleResponse)
+    async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
+    ctx.logger.info(f"Received response from {sender}: {msg.text}")
+    ```
+
+   In the first part, we use the `.on_interval()` decorator to define an interval behavior for this agent when the script is being run. In this case, the agent will execute the `say_hello()` function every 5 seconds. The `Context` object is a collection of data and functions related to the agent. Inside the `say_hello()` function, the agent uses the `ctx.experimental_broadcast()` method to send a broadcast message. The message is of type `BroadcastExampleRequest()` and it is being sent using the protocol's digest (`proto.digest`).
+
+    Then, we defined a `.on_message()` decorator which decorates `handle_response()` function. This function handles all incoming messages of type `BroadcastExampleResponse from other agents. When a response is received, it logs the information. Inside the `handle_response()` function, the agent logs an informational message using `ctx.logger.info()` method to print the sender and the content of the message. The message includes the sender's name and the text content of the response message.
+
+7. We are now ready to set up a `Bureau` object for agents to be run together at the same time, and we add `alice`, `bob`, and `charles` to it using the `bureau.add()` method:
+
+    ```py copy
+    bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
+    bureau.add(alice)
+    bureau.add(bob)
+    bureau.add(charles)
+
+    if __name__ == "__main__":
+        bureau.run()
+    ```
+
+    The bureau is assigned to listen on `port=8000` and specifies an `endpoint` at `"http://localhost:8000/submit"` for submitting data.
+
+8. Save the script.
+
+The overall script should look as follows:
+
+```py copy filename="broadcast.py"
+from uagents import Agent, Bureau, Context, Model, Protocol
+from uagents.setup import fund_agent_if_low
+
+alice = Agent(name="alice", seed="alice recovery phrase")
+bob = Agent(name="bob", seed="bob recovery phrase")
+charles = Agent(name="charles", seed="charles recovery phrase")
+
+fund_agent_if_low(alice.wallet.address())
+fund_agent_if_low(bob.wallet.address())
+fund_agent_if_low(charles.wallet.address())
+
+class BroadcastExampleRequest(Model):
+    pass
+
+class BroadcastExampleResponse(Model):
+    text: str
+
+proto = Protocol(name="proto", version="1.0")
+
+@proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
+async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
+    await ctx.send(sender, BroadcastExampleResponse(text=f"Hello from {ctx.name}"))
+
+alice.include(proto)
+bob.include(proto)
+
+@charles.on_interval(period=5)
+async def say_hello(ctx: Context):
+    await ctx.experimental_broadcast(proto.digest, message=BroadcastExampleRequest())
+
+@charles.on_message(model=BroadcastExampleResponse)
+async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
+    ctx.logger.info(f"Received response from {sender}: {msg.text}")
+
+bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
+bureau.add(alice)
+bureau.add(bob)
+bureau.add(charles)
+
+if __name__ == "__main__":
+    bureau.run()
+```
+
+## Run the script
+
+Make sure to have activated your virtual environment correctly.
+
+Run the script: `python broadcast.py`
+
+The output would be:
+
+    ```
+    [setup]: Adding testnet funds to agent...
+    [setup]: Adding testnet funds to agent...complete
+    [alice]: Registering on almanac contract...
+    [alice]: Registering on almanac contract...complete
+    [  bob]: Registering on almanac contract...
+    [  bob]: Registering on almanac contract...complete
+    [charles]: Registering on almanac contract...
+    [charles]: Registering on almanac contract...complete
+    [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    [charles]: Received response from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: Hello from bob
+    [charles]: Received response from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: Hello from alice
+    [charles]: Received response from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: Hello from bob
+    [charles]: Received response from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: Hello from alice
+    [charles]: Received response from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: Hello from bob
+    [charles]: Received response from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: Hello from alice
+    ```

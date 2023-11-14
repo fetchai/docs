@@ -1,41 +1,41 @@
-# Registration and Endpoints Weighting
+# Registration and endpoints weighting
 
-uAgents can communicate in a remote fashion with one another across different locations on the internet. This is achievable by using the **Agent address** to _register into the Almanac contract_ ( by first paying a small fee), and then _querying the Almanac to retrieve an HTTP endpoint_ of a recipient uAgent.
+Agents can communicate in a remote fashion with one another across different locations on the internet. This is achievable by using the **Agent address** to register into the [Almanac contract ↗️](/guides/agents/register-in-almanac) (by first paying a small fee), and then _querying the Almanac to retrieve an HTTP endpoint_ of a recipient agent.
 
-Whenever uAgents registers in the Almanac, they must specify the service **endpoints** it provides alongside a **weight parameter** for each endpoint provided. Then, when any agent tries to communicate with this uAgent, the service endpoint will be chosen using a weighted random selection.
+Whenever agents registers in the Almanac, they must specify the service **endpoints** it provides alongside a **weight parameter** for each endpoint provided. Then, when any agent tries to communicate with this agent, the service endpoint will be chosen using a weighted random selection.
 
-For additional information on **uAgents addresses**, have a look at our [guide ↗️](/guides/agents/getting-uagent-address.md)
+For additional information on **Agents addresses**, have a look at our [addresses guide ↗️](/guides/agents/getting-uagent-address).
 
 ## Endpoint weighting
 
-There exist _two format_ options when defining your agent's endpoints: 
+There exist _two format_ options when defining your agent's endpoints:
 
-- **List format**: This defines the uAgent's endpoints as a list of strings. The weights will be automatically assigned a value of 1.
+    - **List format**: This defines the agent's endpoints as a list of strings. The weights will be automatically assigned a value of 1.
 
-    ```py copy
-    agent = Agent(
-        name="alice",
-        port=8000,
-        seed="agent secret phrase",
-        endpoint=["http://127.0.0.1:8000/submit","http://127.0.0.1:8001/submit"]
-    )
-    ```
+          ```py copy
+          agent = Agent(
+              name="alice",
+              port=8000,
+              seed="agent secret phrase",
+              endpoint=["http://127.0.0.1:8000/submit","http://127.0.0.1:8001/submit"]
+          )
+          ```
 
-- **Dictionary format**: This defines the uAgent's endpoints in a Dict format, specifying the weight for each endpoint. If the weight parameter is not specified, it will be assigned a value of 1.
+    - **Dictionary format**: This defines the agent's endpoints in a Dict format, specifying the weight for each endpoint. If the weight parameter is not specified, it will be assigned a value of 1.
 
-    ```py copy
-    agent = Agent(
-        name="alice",
-        port=8000,
-        seed="agent recovery seed phrase",
-        endpoint={
-            "http://127.0.0.1:8000/submit": {"weight": 2},
-            "http://127.0.0.1:8001/submit": {}, # weight value = 1
-        },
-    )
-    ```
+          ```py copy
+          agent = Agent(
+              name="alice",
+              port=8000,
+              seed="agent recovery seed phrase",
+              endpoint={
+                  "http://127.0.0.1:8000/submit": {"weight": 2},
+                  "http://127.0.0.1:8001/submit": {}, # weight value = 1
+              },
+          )
+          ```
 
 You can now head towards the following dedicated guides showing you how to:
 
-- [Register in the Almanac Contract ↗️](/guides/agents/register-in-almanac).
-- [Communicating with other μAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents).
+    - [Register in the Almanac contract ↗️](/guides/agents/register-in-almanac).
+    - [Communicating with other agents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents).

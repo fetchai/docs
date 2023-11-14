@@ -19,7 +19,7 @@ jobs:
       - name: Setup Gcloud Auth
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: '${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}'
+          credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
 
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
@@ -62,7 +62,6 @@ jobs:
           rm -rf /tmp/.buildx-website-cache
           mv /tmp/.buildx-website-cache-new /tmp/.buildx-website-cache
 
-
   deploy:
     name: Deployment
     runs-on: ubuntu-latest
@@ -79,7 +78,7 @@ jobs:
       - name: Setup Gcloud Auth
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: '${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}'
+          credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
 
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v1

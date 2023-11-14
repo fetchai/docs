@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
-import apiAgentIcon from '../src/svgs/agents-api.svg'
-import insightsAgentIcon from '../src/svgs/agents-insights.svg'
-import whisperAgentIcon from '../src/svgs/agents-whisper.svg'
-import walletIcon from '../src/svgs/wallet.svg'
-import mailBoxIcon from '../src/svgs/mailbox.svg'
-import authenticationIcon from '../src/svgs/authentication.svg'
-import explorerIcon from '../src/svgs/explorer.svg'
-import almanacIcon from '../src/svgs/almanac.svg'
-import styles from './tab.module.css'
-import { useRouter } from 'next/navigation'
+import React, { ReactNode, useEffect, useState } from "react";
+import Image from "next/image";
+import apiAgentIcon from "../src/svgs/api-agents.svg";
+import insightsAgentIcon from "../src/svgs/context-control.svg";
+import whisperAgentIcon from "../src/svgs/delta-v.svg";
+import walletIcon from "../src/svgs/wallet.svg";
+import cosmpyIcon from "../src/svgs/cosmpy.svg";
+import analyticsIcon from "../src/svgs/analytics.svg";
+import hostingIcon from "../src/svgs/hosting.svg";
+import mailBoxIcon from "../src/svgs/mailbox.svg";
+import explorerIcon from "../src/svgs/explorer.svg";
+import almanacIcon from "../src/svgs/almanac.svg";
+import synergyIcon from "../src/svgs/synergy.svg";
+import ledgerIcon from "../src/svgs/ledger.svg";
+import styles from "./tab.module.css";
+import { useRouter } from "next/navigation";
 
 interface Item {
   title: string;
@@ -18,38 +22,87 @@ interface Item {
   path: string; // Link to the content
 }
 
-interface SectionProps {
+interface SectionProperties {
   heading: string;
   items: Item[];
 }
 
-const Item = ({ item, index }) => {
-
+const Item = ({
+  item,
+  index,
+}: {
+  item: {
+    icon: string;
+    title: string;
+    path: string;
+    description: ReactNode;
+  };
+  index: number;
+}) => {
   const [hover, setHover] = useState<boolean>(false);
-  const router = useRouter()
+  const router = useRouter();
   return (
-    <div key={index} className="nx-p-4 nx-flex nx-cursor-pointer" onClick={() => router.push(item.path)} onMouseOver={() => {setHover(true)}} onMouseLeave={() => {setHover(false)}}>
-      <Image src={item.icon} alt={`Icon for ${item.title}`} className={styles.productIcon} />
+    <div
+      key={index}
+      className="nx-p-4 nx-flex nx-cursor-pointer"
+      onClick={() => router.push(item.path)}
+      onMouseOver={() => {
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        setHover(false);
+      }}
+    >
+      <Image
+        src={item.icon}
+        alt={`Icon for ${item.title}`}
+        className={styles.productIcon}
+      />
       <div>
-        <h3 className={hover ? "nx-text-purple nx-text-lg nx-font-medium nx-mb-2" : "nx-text-black nx-text-lg nx-font-medium nx-mb-2"}>{item.title}</h3>
+        <h3
+          className={
+            hover
+              ? "nx-text-purple nx-text-lg nx-font-medium nx-mb-2"
+              : "nx-text-black nx-text-lg nx-font-medium nx-mb-2"
+          }
+        >
+          {item.title}
+        </h3>
         <p className="nx-text-gray-500 nx-text-base nx-font-light">
-          <>
-            {item.description}
-          </>
+          <>{item.description}</>
         </p>
       </div>
     </div>
   );
 };
 
-const Section: React.FC<SectionProps> = ({ heading, items }) => {
+const Section: React.FC<SectionProperties> = ({ heading, items }) => {
+  useEffect(() => {
+    // Check if there is a hash fragment in the URL
+    if (window.location.hash) {
+      // Get the ID of the section corresponding to the hash fragment
+      const sectionId = window.location.hash.slice(1);
 
+      // Find the section element by its ID
+      // eslint-disable-next-line unicorn/prefer-query-selector
+      const sectionElement = document.getElementById(sectionId);
+
+      // Scroll to the section if it exists
+      if (sectionElement) {
+        sectionElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []); // This effect runs once when the component mounts
+
+  const sectionId = heading.replaceAll(" ", "").toLowerCase();
   return (
-    <div className="nx-my-8" >
-      <h2 className={"nx-text-lg nx-font-medium nx-text-fetch-light-grey"}>{heading}</h2>
+    <div id={sectionId} className="nx-my-8">
+      <h2 className={"nx-text-lg nx-font-medium nx-text-fetch-light-grey"}>
+        {heading}
+      </h2>
       <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-3 nx-gap-4 nx-mt-4">
         {items.map((item, index) => (
-          <Item item={item} index={index}/>
+          <Item key={index} item={item} index={index} />
         ))}
       </div>
     </div>
@@ -57,23 +110,135 @@ const Section: React.FC<SectionProps> = ({ heading, items }) => {
 };
 
 const items: { [key: string]: Item[] } = {
-  'AI Engine': [
-    { title: 'Synergy of agent-based services and AI Engine ecosystem', description: (<>Discover how the AI Engine facilitates interactions by discovering user preferences, transforming raw data into actionable insights through collaboration with agent-based services.</>), icon: apiAgentIcon , path: "/concepts/ai-engine/the-synergetic-power-of-agent-based-services-in-the-ai-engine-ecosystem"},
-    { title: 'Context building and smart routing', description: (<>In the realm of the AI Engine's capabilities, the process of discovering new information takes a main stage, elevating user experiences to new heights.</>),icon: insightsAgentIcon , path: "/concepts/ai-engine/context-building-and-smart-routing"},
-    { title: 'DeltaV', description: (<>Coming soon.</>),icon: whisperAgentIcon , path: "/guides"},
-    { title: 'Analytics', description: (<>Coming soon.</>),icon: walletIcon , path: "/guides"},
-    ],
-  'AI Agent Services': [
-    { title: 'Hosting', description: (<>The Agentverse hosting platform enables all users to get started quickly and to deploy agents to the cloud to start connecting and automating.</>),icon: walletIcon , path: "/concepts/agent-services/agent-hosting"},
-    { title: 'Mailbox', description: (<>Set up mailboxes for your local agents and to run them independently of your constant presence to run the server.</>),icon: mailBoxIcon , path: "/concepts/agent-services/agent-mail"},
-    { title: 'Agent APIs', description: (<>Understand and use the Agentverse APIs.</>),icon: authenticationIcon , path: "/apis/agentverse"},
-    { title: 'Explorer', description: (<>Learn to use the Agentverse Explorer to start an interaction with other registered agents.</>),icon: walletIcon , path: "/concepts/agent-services/agent-explorer"},
+  "AI Engine": [
+    {
+      title: "Synergy of agent-based services and AI Engine ecosystem",
+      description: (
+        <>
+          Discover how the AI Engine facilitates interactions by discovering
+          user preferences, transforming raw data into actionable insights
+          through collaboration with agent-based services.
+        </>
+      ),
+      icon: synergyIcon,
+      path: "/concepts/ai-engine/the-synergetic-power-of-agent-based-services-in-the-ai-engine-ecosystem",
+    },
+    {
+      title: "Context building and smart routing",
+      description: (
+        <>
+          In the realm of the AI Engine&apos;s capabilities, the process of
+          discovering new information takes a main stage, elevating user
+          experiences to new heights.
+        </>
+      ),
+      icon: insightsAgentIcon,
+      path: "/concepts/ai-engine/context-building-and-smart-routing",
+    },
+    {
+      title: "DeltaV",
+      description: (
+        <>
+          DeltaV platform operates as a search-based AI chat interface,
+          employing natural language conversations to independently manage tasks
+          for users.
+        </>
+      ),
+      icon: whisperAgentIcon,
+      path: "/concepts/deltav/intro",
+    },
+    {
+      title: "Analytics",
+      description: <>Coming soon.</>,
+      icon: analyticsIcon,
+      path: "/guides",
+    },
   ],
-  'Open Network': [
-    { title: 'Almanac', description: (<>Use the Almanac contract to query a particular agent's information.</>),icon: almanacIcon , path: "/references/contracts/uagents-almanac/almanac-overview"},
-    { title: 'Cosmpy', description: (<>Get stated with CosmPy.</>),icon: walletIcon , path: "/guides/fetch-network/cosmpy/install"},
-    { title: 'Wallet', description: (<>Let's get yourself started started with the Fetch wallet.</>),icon: walletIcon , path: "/guides/fetch-network/fetch-wallet-getting-started"},
-    { title: 'Ledger', description: (<>Coming soon.</>),icon: almanacIcon , path: ""},
+  "Agentverse components": [
+    {
+      title: "Agentverse: My Agents 🚢",
+      description: (
+        <>
+          The Agentverse My Agents section enables all users to get started
+          quickly and to deploy agents to the cloud to start connecting and
+          automating.
+        </>
+      ),
+      icon: hostingIcon,
+      path: "/concepts/agent-services/agent-hosting",
+    },
+    {
+      title: "Agentverse: Mailroom / IoT Gateway 📫",
+      description: (
+        <>
+          Set up mailboxes for your local agents and to run them independently
+          of your constant presence to run the server.
+        </>
+      ),
+      icon: mailBoxIcon,
+      path: "/concepts/agent-services/agent-mail",
+    },
+    {
+      title: "Agentverse: Services",
+      description: (
+        <>
+          Create an agent encapsulating a service and register it as a service
+          on the Agentverse to be retrieved via DeltaV chat!
+        </>
+      ),
+      icon: whisperAgentIcon,
+      path: "/guides/agentverse/registering-agent-services",
+    },
+    {
+      title: "Agentverse APIs",
+      description: <>Understand and use the Agentverse APIs.</>,
+      icon: apiAgentIcon,
+      path: "/apis/agentverse",
+    },
+    {
+      title: "Agentverse: Explorer 🤖🌐",
+      description: (
+        <>
+          Learn to use the Agentverse Explorer to start an interaction with
+          other registered agents.
+        </>
+      ),
+      icon: explorerIcon,
+      path: "/concepts/agent-services/agent-explorer",
+    },
+  ],
+  "Open Network": [
+    {
+      title: "Almanac",
+      description: (
+        <>
+          Use the Almanac contract to query a particular agent&apos;s
+          information.
+        </>
+      ),
+      icon: almanacIcon,
+      path: "/references/contracts/uagents-almanac/almanac-overview",
+    },
+    {
+      title: "CosmPy",
+      description: <>Get stated with CosmPy.</>,
+      icon: cosmpyIcon,
+      path: "/guides/fetch-network/cosmpy/install",
+    },
+    {
+      title: "Wallet",
+      description: (
+        <>Let&apos;s get yourself started started with the Fetch wallet.</>
+      ),
+      icon: walletIcon,
+      path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
+    },
+    {
+      title: "Ledger",
+      description: <>Get started with the Fetch Ledger.</>,
+      icon: ledgerIcon,
+      path: "/concepts/fetch-network/ledger/intro",
+    },
   ],
 };
 
@@ -82,7 +247,9 @@ const IndexPage: React.FC = () => {
     <div className="nx-container nx-mx-auto nx-py-8">
       {Object.entries(items).map(([heading, itemList], index) => (
         <div key={heading}>
-          {index !== 0 && <div className="nx-mt-16 nx-mb-16 nx-border-t nx-border-gray-300" />}
+          {index !== 0 && (
+            <div className="nx-mt-16 nx-mb-16 nx-border-t nx-border-gray-300" />
+          )}
           <Section heading={heading} items={itemList} />
         </div>
       ))}

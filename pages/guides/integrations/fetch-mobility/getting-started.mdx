@@ -1,45 +1,70 @@
-# Getting started 🎯
-## Prerequisites
+import { Callout } from 'nextra/components'
+
+# AI Agents Mobility Integrations 🚗🔌
+
+## Introduction 🚀
+
+Mobility solutions are essential and pivotal in today's fast-paced world. To simplify and enhance the integration of mobility services, we present the uAgents Mobility Integrations guide. This one offers a practical example featuring two key agents: **ev_charger** and **geoapi_car_parking** agents.
+
+The **ev_charger** agent empowers users to find available EV chargers in a specific region within a given radius. Leveraging the OpenChargeMap API, it provides real-time access to vital charging information. Whether you are planning a cross-country electric vehicle journey or simply seeking a charging point in your neighborhood, this agent has you covered.
+
+On the other hand, the **geoapi_car_parking** agent addresses the challenge of parking space availability. By inputting latitude, longitude, and a radius, users can effortlessly locate nearby parking spaces. This agent taps into Geoapify's resources, ensuring accurate and up-to-date parking information for your convenience.
+
+Getting started with these agents is straightforward. By following a few simple steps, you can access the data you need to make informed mobility decisions. From obtaining API keys to setting up the environment and running the project, our guide walks you through the process, enabling you to integrate these agents into your mobility solutions straightforwardly.
+
+In this guide, we'll take you through each step, ensuring you have the tools and knowledge necessary to harness the power of these agents. So, whether you're a developer creating innovative mobility apps or an individual looking for the nearest charging station or parking spot, join us on this journey to unlock a world of mobility possibilities.
+
+**Let's get started!**
+
+## Getting started 🎯
+
+### Prerequisites
 
 Before starting, you will need the following:
 
-- [Python ↗️](https://www.python.org/downloads/) 3.8+.
-- [Poetry ↗️](https://python-poetry.org/).
-- [uAgents framework ↗️](https://pypi.org/project/uagents/).
+    - [Python ↗️](https://www.python.org/downloads/) 3.8+.
+    - [Poetry ↗️](https://python-poetry.org/).
+    - [uAgents framework ↗️](https://pypi.org/project/uagents/).
 
-## Set up the project and virtual environment
+### Set up the project and virtual environment
 
 First of all, create a `mobility-integrations` folder for your project files: `mkdir mobility-integrations`. Then, create another `src` sub-folder within it for your scripts: `mkdir src`.
 
 To run the example, you will need **API keys** from:
 
-1. **OPENCHARGEMAP API KEY**
-    - Visit the [OpenChargeMap API ↗️](https://openchargemap.org/site/develop/api).
-    - If you don't have an account, create one by signing up.
-    - Once you are logged in, click on the MY PROFILE > my apps at the top.
-    - Click on REGISTER AN APPLICATION button.
-    - Fill out the required information in the form, including the purpose of using the API, and submit the request.
-    - Once approved, you will see your `OPENCHARGEMAP_API_KEY` under MY API KEYS.
+    1. **OPENCHARGEMAP API KEY**
 
-2. **GEOAPI API KEY 🗺️**
-    - Go to the [Geoapify ↗️](https://www.geoapify.com/).
-    - Sign in to your Google account or create a new one if you don't have an existing account.
-    - Once you are logged in, create a new project by clicking on the "Add a new project" button under the Projects section.
-    - Give your project a name and click "OK" to create the new project.
-    - Your `GEOAPI_API_KEY` will be generated. Copy this key and keep it secure, as it will be used to access Geoapify Projects and other services.
+       - Visit the [OpenChargeMap API ↗️](https://openchargemap.org/site/develop/api).
+       - If you don't have an account, create one by signing up.
+       - Once you are logged in, click on the MY PROFILE > my apps at the top.
+       - Click on REGISTER AN APPLICATION button.
+       - Fill out the required information in the form, including the purpose of using the API, and submit the request.
+       - Once approved, you will see your `OPENCHARGEMAP_API_KEY` under MY API KEYS.
+
+    2. **GEOAPI API KEY 🗺️**
+
+       - Go to the [Geoapify ↗️](https://www.geoapify.com/).
+       - Sign in to your Google account or create a new one if you don't have an existing account.
+       - Once you are logged in, create a new project by clicking on the "Add a new project" button under the Projects section.
+       - Give your project a name and click "OK" to create the new project.
+       - Your `GEOAPI_API_KEY` will be generated. Copy this key and keep it secure, as it will be used to access Geoapify Projects and other services.
 
 Once you retrieve the information above, create a `.env` file in the `mobility-integrations` directory and export the obtained API keys as environment variables:
 
-```
-export OPENCHARGEMAP_API_KEY="{GET THE API KEY}"
-export GEOAPI_API_KEY="{GET THE API KEY}"
-```
+    ```
+    export OPENCHARGEMAP_API_KEY="{GET THE API KEY}"
+    export GEOAPI_API_KEY="{GET THE API KEY}"
+    ```
 
 To use the environment variables from `.env` file and install the project dependencies:
 
-```
-source .env
-poetry install
-```
+    ```
+    source .env
+    poetry install
+    ```
 
 We can now start defining our agents and messages data model.
+
+    <Callout type="info" emoji="ℹ️">
+      Checkout our [GitHub repository ↗️](https://github.com/fetchai/uAgents/tree/main/integrations/mobility-integrations) for the AI Agents mobility integrations to get yourself started and checkout the [dedicated guide ↗️](/guides/integrations/fetch-mobility/walk-through) to help you understand how to proceed with this integration.
+    </Callout>

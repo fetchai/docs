@@ -1,35 +1,36 @@
-import { matchSorter } from 'match-sorter'
-import type { Item as NormalItem } from 'nextra/normalize-pages'
-import type { ReactElement } from 'react'
-import { useMemo, useState } from 'react'
-import type { SearchResult } from '../types'
-import { HighlightMatches } from './highlight-matches'
-import { Search } from './search'
+import { matchSorter } from "match-sorter";
+import React from "react";
+import type { Item as NormalItem } from "nextra/normalize-pages";
+import type { ReactElement } from "react";
+import { useMemo, useState } from "react";
+import type { SearchResult } from "../types";
+import { HighlightMatches } from "./highlight-matches";
+import { Search } from "./search";
 
 export function MatchSorterSearch({
   className,
-  directories
+  directories,
 }: {
-  className?: string
-  directories: NormalItem[]
+  className?: string;
+  directories: NormalItem[];
 }): ReactElement {
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState("");
   const results = useMemo<SearchResult[]>(
     () =>
       // Will need to scrape all the headers from each page and search through them here
       // (similar to what we already do to render the hash links in sidebar)
       // We could also try to search the entire string text from each page
       search
-        ? matchSorter(directories, search, { keys: ['title'] }).map(
+        ? matchSorter(directories, search, { keys: ["tags", "title"] }).map(
             ({ route, title }) => ({
               id: route + title,
               route,
-              children: <HighlightMatches value={title} match={search} />
-            })
+              children: <HighlightMatches value={title} match={search} />,
+            }),
           )
         : [],
-    [search, directories]
-  )
+    [search, directories],
+  );
 
   return (
     <Search
@@ -39,5 +40,5 @@ export function MatchSorterSearch({
       overlayClassName="nx-w-full"
       results={results}
     />
-  )
+  );
 }
