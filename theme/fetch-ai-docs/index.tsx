@@ -278,7 +278,7 @@ const InnerLayout = ({
                 />
               ) : null
             }
-            tags={activePath.at(-1).tags && activePath.at(-1).tags}
+            tags={activePath.at(-1)?.tags ?? undefined}
           >
             <MDXProvider
               components={getComponents({
