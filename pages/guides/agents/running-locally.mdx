@@ -1,95 +1,92 @@
 import { Callout } from 'nextra/components'
 
-    <Callout type="info" emoji="ℹ️">
-      This is a work in progress article, and will be expanded rapidly.
-    </Callout>
-
-# Running locally
-
-Sometimes you'll want to run an agent on your own hardware or infrastructure; luckily this is very easy to do on any system that support Python 3.10
+# Local AI Agents and Agentverse Services registration
 
 ## Introduction
 
-This system is pretty simple, as to get you started as quickly as possible. We're going to run this agent on any device you'd like, in this scenario we're running on a vm bu you could run this on yur laptop, raspberry pi or tweak for agentverse. On startup our script will register our agent to the Almanc, and then our agent will be available to communicate with other agents. To get this agent to be DeltaV accessible,  we will also go to agentverse to create a new service for the agent, to then allow this agent to be found in DeltaV.
+It may be possible that you develop your AI Agents locally and then want to register them as a service on the [Agentverse ↗️](/concepts/agent-services/agentverse-intro) to be discoverable via [DeltaV ↗️](/concepts/deltav/intro). Luckily this is very easy to do on any system that support **Python 3.10 +**.
 
+This guide is pretty simple and quickly showcases how to get started as quickly as possible. You can run the following AI Agent on any device you desire. For this example, we will be running on a virtual machine but you could run this on your laptop, Raspberry Pi or tweak for the Agentverse.
 
-## The agent:
+On startup, our script will register our agent in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), and then our agent will be available to communicate with any other agents registered within it. To get this agent to be DeltaV accessible, we will also need to go to the [Agentverse ↗️](https://agentverse.ai/) to create a **New Service Group** for the agent to be added in, so to then allow it to be found via DeltaV chat interface.
 
-```py copy filename="agent.py"
-from uagents.setup import fund_agent_if_low
-from uagents import Agent, Context, Protocol, Model
-import random
-from pydantic import Field
-from ai_engine import UAgentResponse, UAgentResponseType
-import sys
+    <Callout type="warning" emoji="⚠️">
+      This is a work in progress article, and content will be expanded rapidly.
+    </Callout>
 
-dungeons = Agent(
-    name="dungeonsanddragonsdiceroll",
-    port=6145,
-    seed="RANDOM STRINGS",
-    endpoint=["http://YOUR_IP:6145/submit"],
-)
+## The AI Agent and its functions
 
-fund_agent_if_low(dungeons.wallet.address())
+For this example, let's consider you need an agent helping you in rolling a dice for your Dungeons & Dragons match. You can easily adopt the [uAgents ↗️](/concepts/agents/agents) and the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) packages to create an AI Agent that can handle dice roll requests inputs.
 
+We begin by importing the needed classes and define an agent named `"dungeonsanddragonsdiceroll"`. We also make sure to fund the agent's wallet address to ensure it has the necessary funds by calling the `fund_agent_if_low()` function:
 
-@dungeons.on_event("startup")
-async def hi(ctx: Context):
-    ctx.logger.info(dungeons.address)
+    ```py copy filename="agent.py"
+    from uagents.setup import fund_agent_if_low
+    from uagents import Agent, Context, Protocol, Model
+    import random
+    from pydantic import Field
+    from ai_engine import UAgentResponse, UAgentResponseType
+    import sys
 
-
-class Request(Model):
-    dice_sides: int = Field(description="How many sides does your dice need?")
-
-
-dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
-
-
-@dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
-async def roll_dice(ctx: Context, sender: str, msg: Request):
-    result = str(random.randint(1, msg.dice_sides))
-    message = f"Dice roll result: {result}"
-    await ctx.send(
-        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+    dungeons = Agent(
+        name="dungeonsanddragonsdiceroll",
+        port=6145,
+        seed="RANDOM STRINGS",
+        endpoint=["http://YOUR_IP:6145/submit"],
     )
 
+    fund_agent_if_low(dungeons.wallet.address())
 
-dungeons.include(dice_roll_protocol, publish_manifest=True)
+    @dungeons.on_event("startup")
+    async def hi(ctx: Context):
+        ctx.logger.info(dungeons.address)
 
-dungeons.run()
- ```
+    class Request(Model):
+        dice_sides: int = Field(description="How many sides does your dice need?")
 
-A few things to note; you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`.
+    dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
 
-The agent is initialised with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an int as seen in the `Request` object.
+    @dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
+    async def roll_dice(ctx: Context, sender: str, msg: Request):
+        result = str(random.randint(1, msg.dice_sides))
+        message = f"Dice roll result: {result}"
+        await ctx.send(
+            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+        )
 
-Our `on_message` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of  `UAgentResponse` which is essential to communicate with DeltaV.
+    dungeons.include(dice_roll_protocol, publish_manifest=True)
 
-`.run()` initialises the agent.
+    dungeons.run()
+    ```
 
-Finally, we  run our agent as follows: `python agent.py`
+A few things to note: you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`.
 
-Expected output:
+The agent is initialized with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We then proceed and define our [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) , which is just an `int` as specified in the `Request` class. The `Request` model is defined using Pydantic to handle dice roll requests, specifying the number of sides the dice should have.
 
-```
-INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
-INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
-INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
-INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
-INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-```
+Our `.on_message()` decorator, is applied to the `roll_dice()` message handler function for incoming messages following the `Request` model. It doesn't do much other than returning a number between 1 and the defined `dice_sides` from the message inclusive. Upon receiving a `Request` message, the agent generates a random dice roll result and sends it back as a response of type `UAgentResponse` to the sender. This response type is essential to communicate with DeltaV. The `.include()` method is used to include the `dice_roll_protocol` within the `dungeons` agent, enabling it to handle dice roll requests. The `.run()` initialises the agent.
 
-## creating a service group
+Finally, we can save the script and run our agent. Open your terminal and enter the correct directory for your project. Run the following: `python agent.py`
 
-For this example we set up a really simple service for a pre-existing service group, for further information on services and service groups see [Registering Agent Services ↗️](guides/agentverse/registering-agent-services#register-your-agents-and-services)
+The expected output should be as follows:
+
+    ```
+    INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
+    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
+    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
+    INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
+    INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    ```
+
+## Agentverse Services: creating a service group
+
+For this example, we have set up a really simple service for a pre-existing service group. For further information on services and service groups, checkout the dedicated guide for [registering Agentverse agents as a service ↗️](/guides/agentverse/registering-agent-services).
 
 ![](../../../src/images/guides/uagent/servicefordungeons.png)
 
-## Interacting on deltav
+## Interacting with DeltaV
 
-Then we head over to deltav.agentverse.ai and get the ai-engine to interact with our agent on our behalf.
+Let's then head over [DeltaV ↗️](https://deltav.agentverse.ai/login) and get the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) to interact with our agent on our behalf.
 
 ![](../../../src/images/guides/uagent/dungeonsdeltav.png)
-
 
 It's recommended you alter the contract slightly, and follow the above steps so that you can run an agent, create a service for the agent and then have that agent accessible by DeltaV.
