@@ -25,6 +25,7 @@ import React from "react";
 import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
+import { UserInfoProvider } from "./contexts/context-provider";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -302,9 +303,11 @@ export default function Layout({
   ...context
 }: NextraThemeLayoutProps): ReactElement {
   return (
-    <ConfigProvider value={context}>
-      <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
-    </ConfigProvider>
+    <UserInfoProvider>
+      <ConfigProvider value={context}>
+        <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
+      </ConfigProvider>
+    </UserInfoProvider>
   );
 }
 
