@@ -1,0 +1,111 @@
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+} from "../../../components/api-endpoint";
+
+
+# AI-Engine LLM API
+
+
+<div className="nx-text-fetch-content">
+  This API provides access to open source LLM models.
+  Available models:
+    * Mistral 7B: mistral-v0-7b-instruct
+    * LLama2 70B chat: llama2-v0-70b-chat-gptq
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The LLM API allows to use open source LLM for completion. 
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        POST /v1beta1/engine/llm/completion
+        ```
+    </Col>
+
+</Row>
+
+## Generate text using our API 
+
+In order to get completion from LLM, similar to OpenAI completion API, you need to post a JSON, to the endpoint,
+you will get back a json response. The response can be either the result or a 429 status message telling you our backend is scaling
+GPU-s to fulfill your request. You should try again when you are getting scaling response, with exponential backoff
+strategy. If the cluster needs to provision new GPU-s the startup time varies between 2-20 minutes.
+
+Two open source model is currently available in using this API (we will expand this to more models):
+  * Mistral 7B: the id you need to use in the request **mistral-v0-7b-instruct**
+  * LLama2 70B chat: the id you need to use in the request **llama2-v0-70b-chat-gptq**
+
+The **header** field in the request can be anything, usually general instruction for the LLM how to behave. For example:
+
+You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature. If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
+### LLM Completion
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1beta1/engine/llm/completion"
+  description="Request LLM completion"
+  properties={[
+    {
+      name: "model",
+      type: "string",
+      description: "Select which model you want to use to handle your request. Available options: mistral-v0-7b-instruct, llama2-v0-70b-chat-gptq",
+    },
+    {
+      name: "header",
+      type: "string",
+      description: "The header for the LLM, giving general instruction for the model. See above the example.",
+    },
+    {
+      name: "prompt",
+      type: "string",
+      description:
+        "The actual prompt you want to give to the system, specifying what you want from the LLM to do.",
+    },
+    {
+      name: "complete",
+      type: "string",
+      description:
+        "Can be left as empty string, use if you want to specify how the LLM should start to respond.",
+    },
+    {
+      name: "max_tokens",
+      type: "int",
+      description:
+        "What is the maximum number of tokens the model should generate. Can vary from a few til thousands. Approximation: 1000 token is roughly 750 word",
+    },
+    {
+      name: "temperature",
+      type: "float",
+      description:
+        "Configures how creative the model should be. Needs to be between 0 and 0.99! Set it to 0, for the most 'deterministic' behavior.",
+    },
+    {
+      name: "stop",
+      type: "[]string",
+      description: "Optional list of stop words.",
+    }
+  ]}
+  samplePayload={{
+    model: "mistral-v0-7b-instruct",
+    header: "You are a helpful AI assistant, answering user questions honestly. You follow user instruction as the user wants.",
+    prompt: "What is an large language model?",
+    complete: "",
+    max_tokens: 100,
+    temperature: 0.0,
+  }}
+   responses={[
+    {
+      status: "OK",
+      time: 3.2,
+      completion: "Large language model is a machine learning model, capable of generating text and following instructions.",
+      completion_tokens: 20,
+      prompt_tokens: 30
+    }
+  ]}
+  responseDescription="Returns completion results from the LLM. If we need to scale our cluster for more GPU compute, you are getting 429 (HTTP_429_TOO_MANY_REQUESTS) status from the endpoint."
+/>
