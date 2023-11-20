@@ -35,6 +35,7 @@ export interface UserInformation {
   signOut(): void;
   isLoading: boolean;
   isLoggedIn: boolean;
+  isFetchAccount: boolean;
 }
 
 const DEFAULT_USER: User = {
@@ -56,6 +57,7 @@ export const UserContext = React.createContext<UserInformation>({
   signOut: () => {},
   isLoading: false,
   isLoggedIn: false,
+  isFetchAccount: false,
 });
 
 export function useUserContext() {
@@ -69,6 +71,7 @@ export const UserInfoProvider: React.FC<{
   const context = data as UserInformation;
 
   const [user, setUser] = useState<User>(context?.user ?? DEFAULT_USER);
+  const [isFetchAccount, setIsFetchAccount] = useState<boolean>(false);
   const [credentials, setCredentials] = useState<Credentials>(
     context?.credentials ?? DEFAULT_CREDENTIALS,
   );
@@ -89,10 +92,12 @@ export const UserInfoProvider: React.FC<{
     setCredentials(DEFAULT_CREDENTIALS);
   };
 
+  const userEmail = context?.user?.email;
   useEffect(() => {
     if (
       context?.user != undefined &&
       context?.credentials != undefined &&
+      context?.isLoggedIn !== undefined &&
       context?.credentials?.expiresAt > credentials?.expiresAt &&
       context?.credentials.expiresAt > Date.now()
     ) {
@@ -106,7 +111,11 @@ export const UserInfoProvider: React.FC<{
     ) {
       resetUserName();
     }
-
+    if (userEmail && userEmail.includes("fetch.ai")) {
+      setIsFetchAccount(true);
+    } else {
+      setIsFetchAccount(false);
+    }
     const monitor = setInterval(async () => {
       if (credentials?.expiresAt > 0 && credentials?.expiresAt <= Date.now()) {
         resetUserName();
@@ -141,6 +150,7 @@ export const UserInfoProvider: React.FC<{
     context?.credentials?.apiKey,
     context?.user?.email,
     context?.user?.walletAddress,
+    context?.isLoggedIn,
   ]);
 
   return (
@@ -151,6 +161,7 @@ export const UserInfoProvider: React.FC<{
         signOut,
         isLoading,
         isLoggedIn,
+        isFetchAccount,
       }}
     >
       {children}
