@@ -8,7 +8,7 @@ It may be possible that you develop your AI Agents locally and then want to regi
 
 This guide is pretty simple and quickly showcases how to get started as quickly as possible. You can run the following AI Agent on any device you desire. For this example, we will be running on a virtual machine but you could run this on your laptop, Raspberry Pi or tweak for the Agentverse.
 
-On startup, our script will register our agent in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), and then our agent will be available to communicate with any other agents registered within it. To get this agent to be DeltaV accessible, we will also need to go to the [Agentverse ↗️](https://agentverse.ai/) to create a **New Service Group** for the agent to be added in, so to then allow it to be found via DeltaV chat interface.
+On startup, our script will register our agent in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), and then our agent will be available to communicate with any other agents registered within it. We can then get this agent to be DeltaV accessible. All we need to do is going to the [Agentverse ↗️](https://agentverse.ai/), and create a **New Service Group** for the agent to be added in. This will make it easily found via DeltaV chat interface.
 
     <Callout type="warning" emoji="⚠️">
       This is a work in progress article, and content will be expanded rapidly.
@@ -18,7 +18,7 @@ On startup, our script will register our agent in the [Almanac ↗️](/referenc
 
 For this example, let's consider you need an agent helping you in rolling a dice for your Dungeons & Dragons match. You can easily adopt the [uAgents ↗️](/concepts/agents/agents) and the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) packages to create an AI Agent that can handle dice roll requests based on the number of faces your dice should have.
 
-We begin by importing the needed classes and define an agent named `"dungeonsanddragonsdiceroll"` using the `Agent` class. We also make sure to fund the agent's wallet address to ensure it has the necessary funds by calling the `fund_agent_if_low()` function:
+To begin with, let's start by importing the needed classes and define an agent named `"dungeonsanddragonsdiceroll"`. We do so by using the `Agent` class. We also make sure to fund the agent's wallet address to ensure it has the necessary funds by calling the `fund_agent_if_low()` function. Have a look at the code below:
 
     ```py copy filename="agent.py"
     from uagents.setup import fund_agent_if_low
@@ -59,13 +59,11 @@ We begin by importing the needed classes and define an agent named `"dungeonsand
     dungeons.run()
     ```
 
-A few things to note: you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`.
+    A few things to note here: you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`. The agent is initialized with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We then define our `dice_roll_protocol` [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols), which is just an `int` as specified in the `Request` class. The `Request` model is defined using `Pydantic` library to handle dice roll requests, specifying the number of sides the dice should have.
 
-The agent is initialized with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We then proceed and define our [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) , which is just an `int` as specified in the `Request` class. The `Request` model is defined using Pydantic to handle dice roll requests, specifying the number of sides the dice should have.
+    Afterwards, we use the `.on_message()` decorator and apply it to the `roll_dice()` message handler function for incoming messages following the `Request` model. It doesn't do much other than returning a number between 1 and the defined `dice_sides` from the message inclusive. Upon receiving a `Request` message, the agent generates a random dice roll result and sends it back as a response of type `UAgentResponse` to the sender. This response type is essential to communicate with DeltaV. The `.include()` method is used to include the `dice_roll_protocol` within the `dungeons` agent, enabling it to handle dice roll requests. The `.run()` initialises the agent.
 
-Our `.on_message()` decorator, is applied to the `roll_dice()` message handler function for incoming messages following the `Request` model. It doesn't do much other than returning a number between 1 and the defined `dice_sides` from the message inclusive. Upon receiving a `Request` message, the agent generates a random dice roll result and sends it back as a response of type `UAgentResponse` to the sender. This response type is essential to communicate with DeltaV. The `.include()` method is used to include the `dice_roll_protocol` within the `dungeons` agent, enabling it to handle dice roll requests. The `.run()` initialises the agent.
-
-Finally, we can save the script and run our agent. Open your terminal and enter the correct directory for your project. Run the following: `python agent.py`
+Finally, we can save the script and run our agent. Open your terminal and run the following: `python agent.py`
 
 The expected output should be as follows:
 
@@ -89,4 +87,6 @@ Let's then head over [DeltaV ↗️](https://deltav.agentverse.ai/login) and get
 
 ![](../../../src/images/guides/uagent/dungeonsdeltav.png)
 
-It's recommended you alter the contract slightly, and follow the above steps so that you can run an agent, create a service for the agent and then have that agent accessible by DeltaV.
+    <Callout type="warning" emoji="⚠️">
+      It's recommended you alter the contract slightly, and follow the above steps so that you can run an agent, create a service for the agent and then have that agent accessible by DeltaV.
+    </Callout>
