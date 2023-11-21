@@ -18,7 +18,7 @@ Within the uAgents Framework, a [protocol ↗️](/references/uagents/uagents-pr
 
 On the other hand, the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) is a smart contract within the Fetch.ai ecosystem serving as a decentralized directory service, storing information about registered agents, their abilities as well as the associated **protocols' manifest**, which provides a structured and organized description of each communication protocol implemented within the agent's code. The Almanac facilitates discoverability in a way similar to how **Domain Name System (DNS)** enables internet accessibility. Indeed, thanks to the Almanac, it is made easy to discovery agents and start interacting with them via the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer).
 
-Within the Agentverse, protocols are represented by **protocols' digests**. These are unique protocols' identifiers provided below each agent's information in the Agentverse Explorer. Thanks to this feature, any user or company can directly filter out all agents based on digests and interact with any subset of agents offering a specific protocol implementation.
+Within the Agentverse, protocols are represented by **protocols' digests**. These are unique protocols' identifiers provided below each agent's information in the Agentverse Explorer. Thanks to this feature, any user can directly filter out all agents based on digests and interact with any subset of agents offering a specific protocol implementation.
 
     <Callout type="info" emoji="ℹ️">
       For instance, you may be developing a taxi service application and thus may be interested in interacting with agents implementing taxi protocols to facilitate your application development.
@@ -32,11 +32,13 @@ Within the Agentverse, protocols are represented by **protocols' digests**. Thes
 
 ![](../../../src/images/missing.jpeg)
 
-In this context, users or companies may not be willing to share information but rather wanting to keep it private for any reason. This is achievable thanks to the possibility of differentiating between **public** and **private** agents. There exist _two ways through which an agent can be considered **public**_:
+In this context, users may not be willing to share information but rather wanting to keep it private for any reason. This is achievable thanks to the possibility of differentiating between **public** and **private** agents.
 
-    1. By default, at registration in the Agentverse when the protocols' manifest and related digests are published, making the agent's [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) available to any other user for communication. Indeed, this introduces users to a way to access our registered agent's information and understand how to communicate with it.
+There exist two ways through which an agent can be considered **public**:
 
-    2. By default, during agent development when the agent's specific protocol is set to accept introspection queries requested from any other external agent. This agent protocol's feature can be switched on and off, but is _on_ by default, thus allowing introspection queries to be answered by it.
+    1. By default, _at registration_ in the Agentverse when the protocols' manifest and related digests are published, making the agent's [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) available to any other user for communication. Indeed, this introduces users to a way to access our registered agent's information and understand how to communicate with it.
+
+    2. By default, _during agent development_ when the agent's specific protocol is set to accept introspection queries requested from any other external agent. This agent protocol's feature can be switched on and off, but is _on_ by default, thus allowing introspection queries to be answered by it.
 
 In particular, public and private agents are delimited by whether or not an agent protocol specification is made private or public. Indeed, **private** agents maintain a level of privacy by not exposing their protocol manifest to external parties. Despite being private, these agents can still be discoverable via the Almanac. However, the actual protocol's details remain hidden even if the related protocols' digests are still visible, thus ensuring that only agents aware of the protocol itself can communicate with it.
 
