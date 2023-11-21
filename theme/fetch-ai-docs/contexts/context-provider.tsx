@@ -67,7 +67,7 @@ export function useUserContext() {
 export const UserInfoProvider: React.FC<{
   children?: React.ReactNode | undefined;
 }> = ({ children }) => {
-  const { data, isLoading } = useSWR("docs/api/profile", fetchJson);
+  const { data, isLoading } = useSWR("/docs/api/profile", fetchJson);
   const context = data as UserInformation;
 
   const [user, setUser] = useState<User>(context?.user ?? DEFAULT_USER);
@@ -81,7 +81,7 @@ export const UserInfoProvider: React.FC<{
   const signOut = async () => {
     setUser(DEFAULT_USER);
     setCredentials(DEFAULT_CREDENTIALS);
-    mutate(await fetchJson("docs/api/signout", { method: "POST" }), {
+    mutate(await fetchJson("/docs/api/signout", { method: "POST" }), {
       revalidate: true,
     });
     setIsLoggedIn(false);

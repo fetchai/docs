@@ -25,11 +25,12 @@ import React from "react";
 import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
-import { UserInfoProvider } from "./contexts/context-provider";
+import { UserInfoProvider, useUserContext } from "./contexts/context-provider";
 
 type MyItem = Item & {
   // Add or modify properties as needed
   tags?: string[];
+  permission: string[];
 };
 
 interface BodyProps {
@@ -164,6 +165,7 @@ const InnerLayout = ({
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   const fsPath = useFSRoute();
+  const context = useUserContext();
 
   useEffect(() => {
     setLastVisitedTimestamp();
@@ -215,9 +217,12 @@ const InnerLayout = ({
   const isRTL = localeConfig
     ? localeConfig.direction === "rtl"
     : config.direction === "rtl";
-
   const direction = isRTL ? "rtl" : "ltr";
 
+  const check = activePath.at(-1)?.permission?.length
+    ? activePath.at(-1)?.permission.includes("fetch.ai") &&
+      context.isFetchAccount
+    : true;
   return (
     // This makes sure that selectors like `[dir=ltr] .nextra-container` work
     // before hydration as Tailwind expects the `dir` attribute to exist on the
@@ -244,7 +249,6 @@ const InnerLayout = ({
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet"
       />
-
       <Head />
       <Banner />
       {themeContext.navbar &&
@@ -263,33 +267,35 @@ const InnerLayout = ({
             includePlaceholder={themeContext.layout === "default"}
           />
           <SkipNavContent />
-          <Body
-            themeContext={themeContext}
-            breadcrumb={
-              activeType !== "page" && themeContext.breadcrumb ? (
-                <Breadcrumb activePath={activePath} />
-              ) : null
-            }
-            timestamp={timestamp}
-            navigation={
-              activeType !== "page" && themeContext.pagination ? (
-                <NavLinks
-                  flatDirectories={flatDocsDirectories}
-                  currentIndex={activeIndex}
-                />
-              ) : null
-            }
-            tags={activePath.at(-1)?.tags ?? undefined}
-          >
-            <MDXProvider
-              components={getComponents({
-                isRawLayout: themeContext.layout === "raw",
-                components: config.components,
-              })}
+          {check && (
+            <Body
+              themeContext={themeContext}
+              breadcrumb={
+                activeType !== "page" && themeContext.breadcrumb ? (
+                  <Breadcrumb activePath={activePath} />
+                ) : null
+              }
+              timestamp={timestamp}
+              navigation={
+                activeType !== "page" && themeContext.pagination ? (
+                  <NavLinks
+                    flatDirectories={flatDocsDirectories}
+                    currentIndex={activeIndex}
+                  />
+                ) : null
+              }
+              tags={activePath.at(-1)?.tags ?? undefined}
             >
-              {children}
-            </MDXProvider>
-          </Body>
+              <MDXProvider
+                components={getComponents({
+                  isRawLayout: themeContext.layout === "raw",
+                  components: config.components,
+                })}
+              >
+                {children}
+              </MDXProvider>
+            </Body>
+          )}
         </ActiveAnchorProvider>
       </div>
       {themeContext.footer &&
