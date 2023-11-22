@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Script from "next/script";
 import type { NextraThemeLayoutProps, PageOpts } from "nextra";
 import type { ReactElement, ReactNode } from "react";
 import { useEffect, useMemo } from "react";
@@ -235,6 +236,18 @@ const InnerLayout = ({
           className="nextra-iframe-google-tag"
         ></iframe>
       </noscript>
+
+      <Script src="https://www.googletagmanager.com/gtag/js?id=GTM-PRBVQNSV" />
+      <Script id="google-analytics">
+        {`
+         window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+        
+            gtag('config', 'GTM-PRBVQNSV');
+        `}
+      </Script>
+
       <link
         href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap"
         rel="stylesheet"
