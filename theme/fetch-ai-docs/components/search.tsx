@@ -80,12 +80,51 @@ export function Search({
     };
   }, []);
 
+  useEffect(() => {
+    const handleRouteChange = async (url) => {
+      console.log(typeof input.current.value);
+
+      if (input.current.value !== "") {
+        try {
+          const response = await fetch(
+            "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/search",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                search_term: input.current.value,
+                selected_path: url,
+              }),
+            },
+          );
+
+          if (!response.ok) {
+            console.log("---something went wrong----");
+          }
+        } catch (error) {
+          // Handle errors
+          console.log("---oops, something went wrong----", error);
+        }
+      }
+
+      onChange("");
+    };
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method:
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [router, input]);
+
   const finishSearch = useCallback(() => {
     input.current?.blur();
-    onChange("");
     setShow(false);
     setMenu(false);
-  }, [onChange, setMenu]);
+  }, [value, setMenu]);
 
   const handleActive = useCallback(
     (e: { currentTarget: { dataset: DOMStringMap } }) => {
