@@ -16,7 +16,7 @@ On startup, our script will register our agent in the [Almanac ↗️](/referenc
 
 ## Walk-through: the AI Agent
 
-For this example, let's consider you need an agent helping you in rolling a dice for your Dungeons & Dragons match. You can easily adopt the [uAgents ↗️](/concepts/agents/agents) and the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) packages to create an AI Agent that can handle dice roll requests based on the number of faces your dice should have.
+For this example, let's consider you need an agent helping you in rolling a dice for your Dungeons & Dragons match. You can easily adopt [AI Agents ↗️](/concepts/agents/agents) and the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) packages to create an AI Agent that can handle dice roll requests based on the number of faces your dice should have.
 
 To begin with, let's start by importing the needed classes and define an agent named `"dungeonsanddragonsdiceroll"`. We do so by using the `Agent` class. We also make sure to fund the agent's wallet address to ensure it has the necessary funds by calling the `fund_agent_if_low()` function. Have a look at the code below:
 
@@ -59,9 +59,18 @@ To begin with, let's start by importing the needed classes and define an agent n
     dungeons.run()
     ```
 
-    A few things to note here: you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`. The agent is initialized with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We then define our `dice_roll_protocol` [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols), which is just an `int` as specified in the `Request` class. The `Request` model is defined using `Pydantic` library to handle dice roll requests, specifying the number of sides the dice should have.
+    _A few things to note here_: you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`. The agent is initialized with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We then define our `dice_roll_protocol` [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols), which is just an `int` as specified in the `Request` class. The `Request` model is defined using `Pydantic` library to handle dice roll requests, specifying the number of sides the dice should have.
 
     Afterwards, we use the `.on_message()` decorator and apply it to the `roll_dice()` message handler function for incoming messages following the `Request` model. It doesn't do much other than returning a number between 1 and the defined `dice_sides` from the message inclusive. Upon receiving a `Request` message, the agent generates a random dice roll result and sends it back as a response of type `UAgentResponse` to the sender. This response type is essential to communicate with DeltaV. The `.include()` method is used to include the `dice_roll_protocol` within the `dungeons` agent, enabling it to handle dice roll requests. The `.run()` initialises the agent.
+
+    <Callout type="info" emoji="ℹ️">
+      `UAgentResponseType` is used to represent different response types of the agent. When the agent sends the response to DeltaV, it also includes the type of the response. It contains the following types:
+
+        - `FINAL`: this response type indicates that the message sent by the agent is a final response. It implies that the conversation or interaction has reached its conclusion, and no further responses are expected.
+        - `ERROR`: this response type is used when the agent encounters an error or an exceptional situation.
+        - `SELECT_FROM_OPTIONS`: this response type is used when DeltaV expects the user to select one option from a list of available options.
+        - `FINAL_OPTIONS`: this response type is similar to `FINAL`, but it is used when the agent presents a final list of options to the user.
+    </Callout>
 
 Finally, we can save the script and run our agent. Open your terminal and run the following: `python agent.py`
 
@@ -72,7 +81,7 @@ The expected output should be as follows:
     INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
     INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
     INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
-    INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
     ```
 
 ## Agentverse Services: creating a service group
@@ -83,7 +92,7 @@ For this example, we have set up a really simple service for a pre-existing serv
 
 ## Interacting with DeltaV
 
-Let's then head over [DeltaV ↗️](https://deltav.agentverse.ai/login) and get the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) to interact with our agent on our behalf.
+We are now ready to head over [DeltaV ↗️](https://deltav.agentverse.ai/login) and get the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) to interact with our agent on our behalf.
 
 ![](../../../src/images/guides/uagent/dungeonsdeltav.png)
 
