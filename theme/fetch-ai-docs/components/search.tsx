@@ -308,7 +308,7 @@ export function Search({
               {renderComponent(config.search.loading)}
             </span>
           ) : // eslint-disable-next-line unicorn/no-nested-ternary
-          results.length > 0 ? (
+          results.length > 0 && value.length > 1 ? (
             results.map(({ route, prefix, children, id }, i) => (
               <Fragment key={id}>
                 {prefix}
