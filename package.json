@@ -8,9 +8,14 @@
     "start": "next start",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "test": "jest --maxWorkers=4",
+    "test:ci": "jest --maxWorkers=50%",
+    "test:watch": "jest --watch --maxWorkers=4",
+    "test:coverage": "jest --coverage --maxWorkers=4"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.23.3",
     "@headlessui/react": "^1.7.15",
     "@monaco-editor/react": "^4.5.1",
     "@popperjs/core": "^2.11.6",
@@ -27,6 +32,7 @@
     "intersection-observer": "^0.12.2",
     "match-sorter": "^6.3.1",
     "next": "^13.4.10",
+    "next-router-mock": "^0.9.10",
     "next-seo": "^6.0.0",
     "next-themes": "^0.2.1",
     "nextra": "^2.10.0",
@@ -44,6 +50,10 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.1.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/jest": "^29.5.8",
     "@types/node": "18.11.10",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "eslint": "^8.49.0",
@@ -53,6 +63,8 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-unicorn": "^48.0.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "tailwindcss": "^3.3.3",
     "typescript": "^4.9.5"
   }

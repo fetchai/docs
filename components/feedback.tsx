@@ -82,6 +82,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
               </div>
             ) : (
               <div
+                data-testid="thumbs-up"
                 className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-border-green nx-cursor-pointer`}
                 onClick={() => handleThumbsClick("positive")}
               >
@@ -96,6 +97,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
               </div>
             ) : (
               <div
+                data-testid="thumbs-down"
                 className={`nx-w-12 nx-h-12 nx-flex nx-items-center nx-justify-center nx-rounded-full nx-border nx-border-red nx-cursor-pointer`}
                 onClick={() => handleThumbsClick("negative")}
               >
@@ -106,12 +108,14 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
           {isInputVisible && (
             <div className="nx-mt-4 nx-flex nx-flex-col nx-w-full">
               <textarea
+                data-testid="feedback-textarea"
                 className="nx-rounded-lg nx-border nx-border-gray-300 nx-bg-gray-100 nx-p-4 nx-shadow-inner nx-max-w-532px nx-w-full nx-mx-auto nx-min-h-132px"
                 placeholder="Enter your feedback..."
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
               />
               <button
+                data-testid="submit-feedback"
                 className="nx-mt-4 nx-bg-submit-feedback nx-text-white nx-font-bold nx-py-2 nx-px-4 nx-rounded-xxl nx-max-w-180px nx-mx-auto nx-w-full"
                 onClick={handleFeedbackSubmit}
               >

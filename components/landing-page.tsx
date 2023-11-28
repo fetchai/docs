@@ -52,6 +52,7 @@ function LandingPage() {
 
     return (
       <div
+        data-testid="guide-box"
         className={hover ? styles.hoverGuideBox : styles.guideBox}
         onClick={() => {
           router.push(guide.path);

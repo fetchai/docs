@@ -66,9 +66,11 @@ export function Collapse({
       ref={containerRef}
       className="nx-transform-gpu nx-overflow-hidden nx-transition-all nx-ease-in-out motion-reduce:nx-transition-none"
       style={initialOpen.current || horizontal ? undefined : { height: 0 }}
+      data-testid="collapse-container"
     >
       <div
         ref={innerRef}
+        data-testid="collapse-inner"
         className={cn(
           "nx-transition-opacity nx-duration-500 nx-ease-in-out motion-reduce:nx-transition-none",
           isOpen ? "nx-opacity-100" : "nx-opacity-0",

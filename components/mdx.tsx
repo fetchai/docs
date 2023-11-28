@@ -154,7 +154,7 @@ export function DropDownTabs({ children }: { children: any }) {
   return (
     <div>
       <select
-        className="nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium nx-bg-white nx-border nx-border-black/10 outline-none pr-6"
+        className="pr-6 outline-none nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium nx-bg-white nx-border nx-border-black/10"
         value={selectedTab}
         onChange={handleTabChange}
       >

@@ -16,6 +16,7 @@ export const GuideBox = ({
 
   return (
     <section
+      data-testid={`guideBox-${content.title}`}
       className={hover ? styles.hoverGuideBox : styles.guideBox}
       onClick={() => {
         router.push(content.path);
@@ -196,6 +197,7 @@ export const FeatureGuideTabs = () => {
               onChange={(event) =>
                 setActiveTab(Number.parseInt(event.target.value))
               }
+              data-testid="select-element"
             >
               {tabItems.map((tab, index) => (
                 <option key={index} value={index}>
