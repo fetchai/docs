@@ -2,144 +2,31 @@
 
 In the [Agentverse ↗️](https://agentverse.ai/) code editor, you have the freedom to import and utilize a selected set of modules to create your code, while maintaining security and control. These pre-approved modules offer a diverse range of functionalities, allowing you to build complex agents.
 
-**The listed modules include**:
+**The modules available with an explicit import statement include**:
 
-- `uagents`: build fast and lightweight agents for decentralized scenarios using the μAgents framework. Checkout the [μAgents ↗](/concepts#μagents) documentation for more information.
+- `uagents`: build fast and lightweight agents for decentralized scenarios using the μAgents framework. Checkout the [uagents package ↗️](https://pypi.org/project/uagents/). **Available classes**: `Model`, `Context`, `Protocol`.
 
-  - Available classes: `Model`, `Context`, `Protocol`.
+- `json`: simply interact with JSON data structures. **Available functions**: `dumps`, `loads`.
 
-  **Example**:
+- `requests`: interact with HTTP requests and responses. **Available functions**: `get`, `post`, `put`, `patch`, `delete`.
 
-      ```py copy
-      from uagents import Context, Model
+- `cosmpy`: a Python library for interacting with Cosmos-based blockchains. Checkout the [CosmPy package ↗️](https://pypi.org/project/cosmpy/). **Full access to all functions and features**.
 
-      class Message(Model):
-          text: str
+- `datetime`: handle date and time operations with ease. **Full access to all functions and features**.
 
-      @agent.on_interval(period=2.0)
-      async def print_message(ctx: Context):
-          msg = Message(text=f"Hello there my wallet address is {ctx.wallet}.")
-          print(msg.text)
-      ```
+- `enum`: create enumerations with symbolic names and unique values. **Full access to all functions and features**.
 
-- `json`: simply interact with JSON data structures.
+- `pydantic`: ensure data validation and settings management. **Full access to all functions and features**.
 
-  - Available functions: `dumps`, `loads`.
+- `math`: ensure access to various mathematical functions and constants for performing mathematical operations in Python. **Full access to all functions and features**.
 
-  **Example**:
+- `time`: provides various time-related functionalities, including getting the current time, pausing execution, measuring time durations, and converting between different time representations. **Full access to all functions and features**.
 
-      ```py copy
-      import json
+- `uuid`: provides functions for generating universally unique identifiers (UUIDs) in Python. **Full access to all functions and features**.
 
-      some_json =  '{ "agent":"Alice", "age":"1 day"}'
+- `ai_engine`: adds types required by AI Engine to AI Agents. Checkout the [uagents-ai-engine package ↗️](https://pypi.org/project/uagents-ai-engine//). **Full access to all functions and features**.
 
-      # JSON to python dictionary
-      python_dict = json.loads(some_json)
-      print(python_dict["age"])
-
-      # python dictionary to JSON:
-      some_json_2 = json.dumps(python_dict)
-
-      # the result is a JSON string equal to some_json:
-      print(some_json_2)
-      ```
-
-- `requests`: interact with HTTP requests and responses.
-
-  - Available functions: `get`, `post`, `put`, `patch`, `delete`.
-
-  **Example**:
-
-      ```py copy
-      import requests
-
-      response = requests.get('https://api.github.com')
-      if response.status_code == 200:
-          print('Success!')
-      elif response.status_code == 404:
-          print('Not Found.')
-
-      print(response.headers)
-      ```
-
-- `cosmpy`: a Python library for interacting with Cosmos-based blockchains. Checkout [CosmPy ↗](/guides/fetch-network/cosmpy/install) documentation for more information.
-
-  - Full access to all functions and features.
-
-  **Example**:
-
-      ```py copy
-      from cosmpy import aerial
-
-      # Define network configuration, faucet and ledger
-      network = aerial.client.NetworkConfig.fetchai_stable_testnet()
-      faucet_api = aerial.faucet.FaucetApi(network)
-      ledger = aerial.client.LedgerClient(network)
-
-      MINIMUM_BALANCE = 100000000000000000
-
-      @agent.on_interval(period=20.0)
-      async def get_tokens(ctx: Context):
-
-          agent_balance = ledger.query_bank_balance(ctx.wallet)
-
-          if agent_balance < MINIMUM_BALANCE:
-              print("Providing wealth to agent...")
-              faucet_api.get_wealth(ctx.wallet)
-      ```
-
-- `datetime`: handle date and time operations with ease.
-
-  - Full access to all functions and features.
-
-  **Example**:
-
-      ```py copy
-      import datetime
-
-      today = datetime.datetime.now()
-      print(f"Today is: {today.year}:{today.month}:{today.day}")
-      ```
-
-- `enum`: create enumerations with symbolic names and unique values.
-
-  - Full access to all functions and features.
-
-  **Example**:
-
-      ```py copy
-      from enum import Enum
-
-      class Agent(Enum):
-          alice = 1
-          bob = 2
-          carl = 3
-
-      print(Agent.bob.value)
-      ```
-
-- `pydantic`: ensure data validation and settings management.
-
-  - Full access to all functions and features.
-
-  **Example**:
-
-      ```py copy
-      from pydantic import BaseModel
-
-      data = {
-          "name": "alice",
-          "age": 21
-      }
-
-      class User(BaseModel):
-          name: str
-          age: int
-
-      user = User(**data)
-
-      print(user)
-      ```
+- `random`: provides various functions for generating random data, including integers, floating-point numbers, and selecting random elements from sequences. **Full access to all functions and features**.
 
 ## Multi-file Support:
 
