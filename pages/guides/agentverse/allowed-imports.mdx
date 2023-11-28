@@ -39,25 +39,4 @@ The Agentverse code editor enhances your agent development experience with multi
 
 If you want to create **new files** you just need to click on **+ New File** on [Agentverse ↗️](https://agentverse.ai/) inside your managed agent.
 
-You can create a Python message file with the following `Model` class:
-
-    ```py copy
-    from uagents import Model
-
-    class Sentence(Model):
-        text: str
-    ```
-
-Then, you can just import the `Sentence` data model to your `agent.py` file and make use of it:
-
-    ```py copy
-    from uagents import Context
-    from message import Sentence
-
-    @agent.on_interval(period=2.0)
-    async def print_message(ctx: Context):
-        msg = Sentence(text=f"Hello there my wallet address is {ctx.wallet}.")
-        print(msg.text)
-    ```
-
 Explore the resources at the [Agentverse guides ↗️](/guides#agentverse) and [Agentverse concepts ↗️](/concepts#agentverse) for additional guides and documentation resources!
