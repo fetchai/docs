@@ -135,8 +135,6 @@ const indexData = async (dir) => {
               .replace(/^-/, "")}`,
             content: section.content,
           });
-
-          console.log("------record.length----", records.length);
         }
       }
     }

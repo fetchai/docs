@@ -136,51 +136,54 @@ export const InstantAlgoliaSearch = () => {
               </div>
 
               <ul role="listbox" aria-labelledby="search-label">
-                {(hitsForRoute as any[]).map((hit) => (
-                  <li
-                    role="option"
-                    aria-selected="false"
-                    className="nx-relative nx-border-grey-200 nx-bg-search-result"
-                    key={hit.objectId}
-                  >
-                    <a
-                      className="nx-flex nx-justify-between nx-items-center nx-leading-normal nx-py-2 nx-px-6 nx-transition-colors nx-duration-5 nx-ease-out nx-overflow-hidden nx-text-grey-900 nx-bg-transparent"
-                      href={hit.path}
+                {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (hitsForRoute as any[]).map((hit) => (
+                    <li
+                      role="option"
+                      aria-selected="false"
+                      className="nx-relative nx-border-grey-200 nx-bg-search-result"
+                      key={hit.objectId}
                     >
-                      <div className="nx-flex nx-flex-col nx-relative w-full">
-                        <div className="nx-text-base nx-font-semibold nx-text-fetch-main">
-                          {hit.title.replaceAll("#", "")}
-                        </div>
+                      <a
+                        className="nx-flex nx-justify-between nx-items-center nx-leading-normal nx-py-2 nx-px-6 nx-transition-colors nx-duration-5 nx-ease-out nx-overflow-hidden nx-text-grey-900 nx-bg-transparent"
+                        href={hit.path}
+                      >
+                        <div className="nx-flex nx-flex-col nx-relative w-full">
+                          <div className="nx-text-base nx-font-semibold nx-text-fetch-main">
+                            {hit.title.replaceAll("#", "")}
+                          </div>
 
-                        <div className="nx-relative w-full nx-text-sm nx-leading-tight nx-mt-4 nx-xl:mt-2 nx-mb-2">
-                          <MDXProvider
-                            components={getComponents({
-                              isRawLayout: false,
-                              components: config.components,
-                            })}
-                          >
-                            <div
-                              className="nx-flex-grow-1 nx-text-fetch-content nx-font-normal nx-text-fetch-main nx-text-sm"
-                              dangerouslySetInnerHTML={{
-                                __html: markdownToHTML(hit.content).slice(
-                                  0,
-                                  2000,
-                                ),
-                              }}
-                            />
-                          </MDXProvider>
+                          <div className="nx-relative w-full nx-text-sm nx-leading-tight nx-mt-4 nx-xl:mt-2 nx-mb-2">
+                            <MDXProvider
+                              components={getComponents({
+                                isRawLayout: false,
+                                components: config.components,
+                              })}
+                            >
+                              <div
+                                className="nx-flex-grow-1 nx-text-fetch-content nx-font-normal nx-text-fetch-main nx-text-sm"
+                                dangerouslySetInnerHTML={{
+                                  __html: markdownToHTML(hit.content).slice(
+                                    0,
+                                    2000,
+                                  ),
+                                }}
+                              />
+                            </MDXProvider>
+                          </div>
+                          <div className="nx-text-sm nx-text-grey-600">
+                            {hit.path
+                              .replace(/^\/docs\//, "")
+                              .split("/")
+                              .join(" > ")}
+                          </div>
                         </div>
-                        <div className="nx-text-sm nx-text-grey-600">
-                          {hit.path
-                            .replace(/^\/docs\//, "")
-                            .split("/")
-                            .join(" > ")}
-                        </div>
-                      </div>
-                    </a>
-                    <div className="nx-border-b" />
-                  </li>
-                ))}
+                      </a>
+                      <div className="nx-border-b" />
+                    </li>
+                  ))
+                }
               </ul>
             </div>
           ))}
