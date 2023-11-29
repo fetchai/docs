@@ -202,10 +202,10 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           );
         })}
 
-        {renderComponent(config.search.component, {
+        {/* {renderComponent(config.search.component, {
           directories: flatDirectories,
           className: "md:nx-hidden nx-mt-6 nx-mb-2",
-        })}
+        })} */}
       </nav>
     </div>
   );
