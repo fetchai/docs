@@ -171,7 +171,7 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse: Mailroom / IoT Gateway 📫",
       description: (
         <>
-          Set up mailboxes for your local agents so that your agent doesn't need to accessible all the time.
+          Set up mailboxes for your local agents so that your agent doesn&apos;t need to accessible all the time.
         </>
       ),
       icon: mailBoxIcon,
