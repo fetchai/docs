@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
 import apiAgentIcon from "../src/svgs/api-agents.svg";
-import insightsAgentIcon from "../src/svgs/context-control.svg";
+import p from "../src/svgs/context-control.svg";
 import whisperAgentIcon from "../src/svgs/delta-v.svg";
 import walletIcon from "../src/svgs/wallet.svg";
 import cosmpyIcon from "../src/svgs/cosmpy.svg";
