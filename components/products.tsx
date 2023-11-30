@@ -139,7 +139,7 @@ const items: { [key: string]: Item[] } = {
         </>
       ),
       icon: whisperAgentIcon,
-      path: "/concepts/ai-engine/deltav",
+      path: "https://deltav.agentverse.ai/login",
     },
     {
       title: "Analytics",
@@ -165,8 +165,8 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse: Mailroom / IoT Gateway 📫",
       description: (
         <>
-          Set up mailboxes for your local agents and to run them independently
-          of your constant presence to run the server.
+          Set up mailboxes for your local agents so that your agent doesn&apos;t
+          need to accessible all the time.
         </>
       ),
       icon: mailBoxIcon,
@@ -221,9 +221,7 @@ const items: { [key: string]: Item[] } = {
     },
     {
       title: "Wallet",
-      description: (
-        <>Let&apos;s get yourself started started with the Fetch wallet.</>
-      ),
+      description: <>Let&apos;s get started with the Fetch wallet.</>,
       icon: walletIcon,
       path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
     },
