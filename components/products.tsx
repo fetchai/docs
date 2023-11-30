@@ -171,7 +171,8 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse: Mailroom / IoT Gateway 📫",
       description: (
         <>
-          Set up mailboxes for your local agents so that your agent doesn&apos;t need to accessible all the time.
+          Set up mailboxes for your local agents so that your agent doesn&apos;t
+          need to accessible all the time.
         </>
       ),
       icon: mailBoxIcon,
@@ -226,9 +227,7 @@ const items: { [key: string]: Item[] } = {
     },
     {
       title: "Wallet",
-      description: (
-        <>Let&apos;s get started with the Fetch wallet.</>
-      ),
+      description: <>Let&apos;s get started with the Fetch wallet.</>,
       icon: walletIcon,
       path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
     },
