@@ -114,9 +114,7 @@ const items: { [key: string]: Item[] } = {
     {
       title: "Introducing the AI Engine",
       description: (
-        <>
-          Introducing the AI Engine and its role in DeltaV functionalities.
-        </>
+        <>Introducing the AI Engine and its role in DeltaV functionalities.</>
       ),
       icon: whisperAgentIcon,
       path: "/concepts/ai-engine/ai-engine-intro",
@@ -125,7 +123,8 @@ const items: { [key: string]: Item[] } = {
       title: "Powering connections and smart operations in DeltaV",
       description: (
         <>
-          Explore the integration of AI Engine within DeltaV, enabling connections between users and agent-based services.
+          Explore the integration of AI Engine within DeltaV, enabling
+          connections between users and agent-based services.
         </>
       ),
       icon: synergyIcon,
