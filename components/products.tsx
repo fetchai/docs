@@ -112,40 +112,35 @@ const Section: React.FC<SectionProperties> = ({ heading, items }) => {
 const items: { [key: string]: Item[] } = {
   "AI Engine": [
     {
-      title: "Synergy of agent-based services and AI Engine ecosystem",
+      title: "Introducing the AI Engine",
       description: (
         <>
-          Discover how the AI Engine facilitates interactions by discovering
-          user preferences, transforming raw data into actionable insights
-          through collaboration with agent-based services.
+          Introducing the AI Engine and its role in DeltaV functionalities.
+        </>
+      ),
+      icon: whisperAgentIcon,
+      path: "/concepts/ai-engine/ai-engine-intro",
+    },
+    {
+      title: "Powering connections and smart operations in DeltaV",
+      description: (
+        <>
+          Explore the integration of AI Engine within DeltaV, enabling connections between users and agent-based services.
         </>
       ),
       icon: synergyIcon,
-      path: "/concepts/ai-engine/the-synergetic-power-of-agent-based-services-in-the-ai-engine-ecosystem",
-    },
-    {
-      title: "Context building and smart routing",
-      description: (
-        <>
-          In the realm of the AI Engine&apos;s capabilities, the process of
-          discovering new information takes a main stage, elevating user
-          experiences to new heights.
-        </>
-      ),
-      icon: insightsAgentIcon,
-      path: "/concepts/ai-engine/context-building-and-smart-routing",
+      path: "/concepts/ai-engine/powering-connections-and-smart-operations-in-deltav",
     },
     {
       title: "DeltaV",
       description: (
         <>
-          DeltaV platform operates as a search-based AI chat interface,
-          employing natural language conversations to independently manage tasks
-          for users.
+          DeltaV operates as a search-based AI chat interface, employing natural
+          language conversations to manage tasks for users.
         </>
       ),
       icon: whisperAgentIcon,
-      path: "/concepts/deltav/intro",
+      path: "/concepts/ai-engine/deltav",
     },
     {
       title: "Analytics",
