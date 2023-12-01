@@ -6,6 +6,14 @@ import {
   FaThumbsDown,
 } from "react-icons/fa";
 
+const isMaliciousString = (text) => {
+  // Define a regular expression to match potentially harmful characters
+  const harmfulCharsPattern = /["';\\]/;
+
+  // Check if the input text contains any harmful characters
+  return harmfulCharsPattern.test(text);
+};
+
 const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
   const [feedback, setFeedback] = useState("");
   const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
@@ -30,14 +38,6 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
     // Set the feedback type and open the input box when thumbs up or thumbs down is clicked
     setFeedbackType(type);
     setInputVisible(true);
-  };
-
-  const isMaliciousString = (text) => {
-    // Define a regular expression to match potentially harmful characters
-    const harmfulCharsPattern = /[\';"\\]/;
-
-    // Check if the input text contains any harmful characters
-    return harmfulCharsPattern.test(text);
   };
 
   const handleFeedbackSubmit = async () => {
