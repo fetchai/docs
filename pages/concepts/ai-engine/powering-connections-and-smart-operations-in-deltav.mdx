@@ -8,21 +8,25 @@ This system is equipped with personalized capabilities facilitated by an interna
 
 ## Establishing connections
 
-The AI Engine introduces users and developers into a unified ecosystem of agent-based services. Once an agent and its services are registered within the [Agentverse ↗️](/concepts/agent-services/agentverse-intro) and also the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), these becomes an integral part of the AI Engine's landscape, coordinating dynamic connections between users and services. For example, when you ask to DeltaV agent what the weather will be like tomorrow at your location, it connects to a registered agent and gets the latitude and longitude for where you are right now. The weather prediction for that particular day is then retrieved by this agent through a connection to another registered agent that specializes in weather-related services.
+The AI Engine introduces users and developers into a unified ecosystem of agent-based services. Once an agent and its services are registered within the [Agentverse ↗️](/concepts/agent-services/agentverse-intro), and consequently the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), these becomes an integral part of the AI Engine's landscape, coordinating dynamic connections between users and services. For example, when you ask to DeltaV agent what the weather will be like tomorrow at your location, it connects to a registered agent in the Almanac and gets the latitude and longitude for where you are right now. The weather prediction for that particular day is then retrieved by the chat agent through a connection to another registered agent that specializes in weather-related services.
 
 ## Intent's architecture
 
-At the heart of the AI Engine's operation lies a sophisticated architecture comprising two fundamental components: **Objectives** and **Tasks**.
+At the heart of the AI Engine's operation lies an architecture comprising the following components:
 
     - **Objectives** are the encapsulation of the general goals of the user provided in natural language through DeltaV chat.
 
     - **Tasks** form a dynamic sequence of steps that drive the accomplishment of these defined objectives. Tasks involve intricate processes, including resource allocation and interdependencies managed by agent-based services.
 
+    - **Subtasks** are auxiliary or secondary tasks typically linked to and reliant on the completion of a primary task, often requiring specific context or information to execute.
+
+In this context, a task refers to an agent or service that provides a specific user-requested action or information directly accessible through DeltaV. Conversely, a Subtask also responds to user inquiries within DeltaV but typically offers additional or complementary services, often reliant on prior context or supplementary information for its execution. For instance, while a Task could be an agent providing the user's current bank balance, a Subtask might involve converting the bank balance into a different currency, requiring additional context or user input.
+
 ## Deconstructing tasks: context building and smart routing
 
 ![](../../../src/images/missing.jpeg)
 
-Finding new information is a key focus of the AI Engine to enhance the user journey significantly. This is crucial for the execution of services, such reserving a hotel room for your holiday in a specified city. In a setting where reservations are centralized, this appears like a simple operation. But to make that booking successful, the AI Engine must be able to comprehend the user's input and objectives and communicate with several agents. It is at this stage that the AI Engine **comprehension and planning** ability is very important: the user's goal is broken down into a number of smaller tasks and sub-tasks, each representing an integral step towards the desired final outcome. This coordination can be carried out automatically, or in specific situations when the AI Engine is unsure, it can need user input to confirm task selection.
+Finding new information is a key focus of the AI Engine to enhance the user journey significantly. This is crucial for the execution of services, such as reserving a hotel room for your holiday in a specified city. In a setting where reservations are centralized, this appears like a simple operation. But to make that booking successful, the AI Engine must be able to comprehend the user's input and objectives and communicate with several agents. It is at this stage that the AI Engine **comprehension and planning** ability is very important: the user's goal is broken down into a number of smaller tasks and sub-tasks, each representing an integral step towards the desired final outcome. This coordination can be carried out automatically, or in specific situations when the AI Engine is unsure, it can need user input to confirm task selection.
 
 **Context building** plays a crucial role allowing the AI Engine to continuously improve its comprehension by transforming data. Contextual building is the ongoing process within the AI Engine involving the constantly improvement of the knowledge base during the AI Engine session. In other words, context building is the continuous act of gathering and/or transforming new knowledge to complete a task. 
 
