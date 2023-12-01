@@ -10,6 +10,8 @@ import {
   DropDownTabs,
 } from "./mdx";
 import axios from "axios";
+import Tooltip from "./tooltip";
+import Link from "next/link";
 
 interface PropertyType {
   name: string;
@@ -17,26 +19,56 @@ interface PropertyType {
   description: string;
 }
 
+// Helper function to replace path parameters in the URL
+const replacePathParameters = (
+  path: string,
+  pathParameters: Record<string, string> = {},
+) => {
+  let updatedPath = path;
+  for (const param in pathParameters) {
+    updatedPath = updatedPath.replace(`{${param}}`, pathParameters[param]);
+  }
+  return updatedPath;
+};
+
 const PythonCodeTab: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   url: string;
   samplePayload?: unknown;
-}> = ({ method, url, samplePayload }) => {
+  pathParameters?: Record<string, string>;
+}> = ({ method, url, samplePayload, pathParameters }) => {
   let code = ``;
+  let actualUrl = url;
+  // Replace path parameters in the URL
+  for (const param in pathParameters) {
+    actualUrl = actualUrl.replace(`{${param}}`, `{pathParameters.${param}}`);
+  }
   code = samplePayload
     ? `\
 import requests
 
 data = ${JSON.stringify(samplePayload, undefined, 4)}
 
-requests.${method.toLowerCase()}("${url}", json=data, headers={
+${
+  pathParameters
+    ? `pathParameters = ${JSON.stringify(pathParameters, undefined, 4)}`
+    : ``
+}
+
+requests.${method.toLowerCase()}("${actualUrl}", json=data, headers={
     "Authorization": "bearer <your token here>"
 }
     `
     : `\
 import requests
 
-requests.${method.toLowerCase()}("${url}",, headers={
+${
+  pathParameters
+    ? `pathParameters = ${JSON.stringify(pathParameters, undefined, 4)}`
+    : ``
+}
+
+requests.${method.toLowerCase()}("${actualUrl}",, headers={
     "Authorization": "bearer <your token here>"
 }
     `;
@@ -59,13 +91,24 @@ const JavascriptCodeTab: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   url: string;
   samplePayload?: unknown;
-}> = ({ method, url, samplePayload }) => {
+  pathParameters?: Record<string, string>;
+}> = ({ method, url, samplePayload, pathParameters }) => {
   let code = ``;
+  let actualUrl = url;
+  // Replace path parameters in the URL
+  for (const param in pathParameters) {
+    actualUrl = actualUrl.replace(`{${param}}`, `{pathParameters.${param}}`);
+  }
   code = samplePayload
     ? `\
 body = ${JSON.stringify(samplePayload, undefined, 4)}
+${
+  pathParameters
+    ? `pathParameters = ${JSON.stringify(pathParameters, undefined, 4)}`
+    : ``
+}
 
-await fetch("${url}", {
+await fetch("${actualUrl}", {
   method: ${method.toLowerCase()},
   headers: {
     Authorization: Bearer <your token here>
@@ -73,7 +116,13 @@ await fetch("${url}", {
   body
 })`
     : `\
-await fetch("${url}", {
+${
+  pathParameters
+    ? `pathParameters = ${JSON.stringify(pathParameters, undefined, 4)}`
+    : ``
+}
+
+await fetch("${actualUrl}", {
   method: ${method.toLowerCase()},
   headers: {
     Authorization: Bearer <your token here>
@@ -192,37 +241,8 @@ export const ApiRequest: React.FC<{
   description: string;
   samplePayload?: unknown;
   properties?: PropertyType[];
+  pathParameters?: Record<string, string>;
 }> = (properties) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bearerToken, setBearerToken] = useState("");
-  const [response, setResponse] = useState("");
-
-  const openModal = () => {
-    setIsModalOpen(true);
-    // Clear previous response
-    setResponse("");
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const hitRequest = async () => {
-    try {
-      const response = await axios({
-        method: properties.method,
-        url: properties.apiUrl + properties.path,
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-        },
-        data: properties.samplePayload,
-      });
-      setResponse(JSON.stringify(response.data, null, 2));
-    } catch (error) {
-      setResponse(`Error: ${error.message}`);
-    }
-  };
-
   return (
     <>
       <Row>
@@ -252,12 +272,6 @@ export const ApiRequest: React.FC<{
           ) : undefined}
         </Col>
         <Col>
-          <button
-            className="nx-bg-blue-500 hover:nx-bg-blue-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
-            onClick={openModal}
-          >
-            Try it Out
-          </button>
           <DropDownTabs>
             <Tab heading="Curl">
               <CurlCodeTab
@@ -271,6 +285,7 @@ export const ApiRequest: React.FC<{
                 method={properties.method}
                 url={properties.apiUrl + properties.path}
                 samplePayload={properties.samplePayload}
+                pathParameters={properties.pathParameters}
               />
             </Tab>
             <Tab heading="Javascript">
@@ -278,47 +293,12 @@ export const ApiRequest: React.FC<{
                 method={properties.method}
                 url={properties.apiUrl + properties.path}
                 samplePayload={properties.samplePayload}
+                pathParameters={properties.pathParameters}
               />
             </Tab>
           </DropDownTabs>
         </Col>
       </Row>
-
-      {isModalOpen && (
-        <div className="nx-fixed nx-inset-0 nx-flex nx-items-center nx-justify-center nx-z-50">
-          <div className="nx-modal nx-bg-white nx-w-96 nx-p-4 nx-rounded nx-shadow-lg">
-            <h2 className="nx-text-2xl nx-font-bold nx-mb-4">Try it Out</h2>
-            <input
-              type="text"
-              placeholder="Bearer Token"
-              value={bearerToken}
-              onChange={(e) => setBearerToken(e.target.value)}
-              className="nx-border nx-border-gray-300 nx-rounded nx-w-full nx-py-2 nx-px-3 nx-mb-4"
-            />
-            {/* Add input fields for sample payload here if needed */}
-            <button
-              className="nx-bg-blue-500 hover:nx-bg-blue-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
-              onClick={hitRequest}
-            >
-              Hit Request
-            </button>
-            {response && (
-              <div className="nx-mt-4">
-                <h3 className="nx-text-xl nx-font-semibold">Response:</h3>
-                <div className="nx-border nx-border-gray-300 nx-rounded nx-p-2 nx-mt-2">
-                  <pre className="nx-whitespace-pre-wrap">{response}</pre>
-                </div>
-              </div>
-            )}
-            <button
-              className="nx-mt-4 nx-bg-red-500 hover:nx-bg-red-600 nx-text-white nx-font-semibold nx-py-2 nx-px-4 nx-rounded"
-              onClick={closeModal}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 };
@@ -333,7 +313,59 @@ export const ApiEndpointRequestResponse: React.FC<{
   responseProperties?: PropertyType[];
   responseDescription?: string;
   properties?: PropertyType[];
+  pathParameters?: Record<string, string>;
 }> = (properties) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bearerToken, setBearerToken] = useState("");
+  const [requestPayload, setRequestPayload] = useState(
+    properties.samplePayload
+      ? JSON.stringify(properties.samplePayload, null, 2)
+      : `{}`,
+  );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [actualResponse, setActualResponse] = useState("");
+  const [pathParameters, setPathParameters] = useState(
+    properties.pathParameters || {},
+  );
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const hitRequest = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const requestPayloadJSON = JSON.parse(requestPayload);
+
+      const apiUrlWithParams =
+        properties.apiUrl +
+        replacePathParameters(properties.path, pathParameters);
+
+      const response = await axios({
+        method: properties.method,
+        url: apiUrlWithParams,
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+        },
+        data: requestPayloadJSON,
+      });
+
+      const responseText = JSON.stringify(response.data, null, 2);
+      setActualResponse(responseText);
+    } catch (error) {
+      setError(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <Row>
@@ -345,9 +377,191 @@ export const ApiEndpointRequestResponse: React.FC<{
           <span className="nx-text-purple nx-font-normal">
             {properties.path}
           </span>
+          {isModalOpen ? (
+            <button
+              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl"
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
+          ) : (
+            <button
+              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl"
+              onClick={openModal}
+            >
+              Run Code
+            </button>
+          )}
         </p>
       </Row>
 
+      {isModalOpen && (
+        <div className="nx-bg-grey nx-px-6 nx-py-8 nx-rounded nx-mt-12">
+          <div className="nx-bg-white nextra-content nx-py-2 nx-px-4 nx-rounded">
+            Parameters
+          </div>
+
+          <div className="nx-flex nx-flex-col nx-text-sm">
+            <div className="nx-flex nx-mt-4 nx-ml-4">
+              <div className="nx-w-1/4">
+                <p className="nextra-content nx-text-sm">Name</p>
+              </div>
+              <div className="nx-w-3/4">
+                <p className="nextra-content nx-text-sm">Description</p>
+              </div>
+            </div>
+            <div className="nx-mt-2 nx-mb-4 nx-border-t nx-border-gray-300" />
+
+            {/* Bearer Token required */}
+            <div className="md:nx-flex nx-block nx-items-center  nx-ml-4">
+              <div className="nx-flex nx-gap-2 nx-w-1/4">
+                <p className="nextra-content nx-text-sm">
+                  Bearer Token required
+                </p>
+                <Tooltip>
+                  <p className="nx-text-sm nx-font-bold nx-text-gray-800 nx-pb-1">
+                    To access your Agentverse account, please follow these
+                    steps:
+                  </p>
+                  <ol className="nx-text-xs nx-leading-4 nx-text-gray-600 nx-pb-3 nx-list-decimal nx-mt-2 nx-p-[10px]">
+                    <li>
+                      Log in to your{" "}
+                      <Link
+                        target="_blank"
+                        className="nx-text-blue-500"
+                        href="https://agentverse.ai/"
+                      >
+                        Agentverse
+                      </Link>{" "}
+                      account.
+                    </li>
+                    <li>
+                      Once logged in, open the developer tools in your web
+                      browser.
+                    </li>
+                    <li>
+                      In the developer tools, navigate to the{" "}
+                      <b>Applications</b> tab
+                    </li>
+                    <li>
+                      Within the Applications tab, you will find a section for{" "}
+                      <b>cookies</b>.
+                    </li>
+                    <li>
+                      Look for a specific cookie named <b>Fauna</b> Name. This
+                      cookie contains your Fauna token
+                    </li>
+                    <li>
+                      Copy the value of the <b>Fauna</b> token from the cookie.
+                    </li>
+                    <li>
+                      Paste the copied <b>Fauna</b> token here.
+                    </li>
+                  </ol>
+                </Tooltip>
+              </div>
+              <div className="nx-w-3/4">
+                <input
+                  type="text"
+                  placeholder="Bearer Token"
+                  value={bearerToken}
+                  onChange={(e) => setBearerToken(e.target.value)}
+                  className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nx-mt-2 nx-w-full"
+                />
+              </div>
+            </div>
+
+            {/* Render Path Parameters as input fields */}
+            {Object.keys(pathParameters).map((paramName) => (
+              <div className="nx-flex nx-items-center nx-ml-4" key={paramName}>
+                <div className="nx-w-1/4">
+                  <p className="nextra-content nx-text-sm">
+                    {paramName} required
+                  </p>
+                </div>
+                <div className="nx-w-3/4">
+                  <input
+                    type="text"
+                    placeholder={paramName}
+                    value={pathParameters[paramName]}
+                    onChange={(e) => {
+                      // Update the path parameter value
+                      const updatedPathParameters = { ...pathParameters };
+                      updatedPathParameters[paramName] = e.target.value;
+                      setPathParameters(updatedPathParameters);
+                    }}
+                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nx-mt-2 nx-w-full"
+                  />
+                </div>
+              </div>
+            ))}
+
+            {/* Additional Sample Payload */}
+            {requestPayload && (
+              <div className="nx-flex nx-items-center  nx-ml-4">
+                <div className="nx-w-1/4">
+                  <p className="nextra-content nx-text-sm">
+                    Additional Sample Payload
+                  </p>
+                </div>
+                <div className="nx-w-3/4">
+                  <textarea
+                    value={requestPayload}
+                    onChange={(e) => setRequestPayload(e.target.value)}
+                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nextra-content nx-mt-2 nx-h-24 nx-w-full"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Execute Button */}
+            <div className="nx-flex  nx-ml-4">
+              <div className="nx-w-1/4">
+                <button
+                  className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm nx-mt-6"
+                  onClick={hitRequest}
+                >
+                  Execute
+                </button>
+              </div>
+            </div>
+
+            {loading && <div className="nx-mt-4  nx-ml-4">Loading...</div>}
+
+            {error && (
+              <div className="nx-mt-4 nx-text-red-500  nx-ml-4">
+                Error: {error}
+              </div>
+            )}
+
+            {/* Display Actual Response */}
+            {actualResponse && (
+              <div className="nx-mt-6">
+                <div className="nx-bg-white nextra-content nx-text-base nx-py-2 nx-px-4 nx-rounded">
+                  Actual Response
+                </div>
+                <div className="nx-bg-white nx-rounded nx-p-2 nx-mt-4">
+                  <pre className="nx-whitespace-pre-wrap">{actualResponse}</pre>
+                </div>
+              </div>
+            )}
+
+            {/* Display Sample Response if Available */}
+            {!actualResponse && properties.responses && (
+              <div className="nx-mt-6">
+                <div className="nx-bg-white nextra-content nx-text-base nx-py-2 nx-px-4 nx-rounded">
+                  Sample Response
+                </div>
+                <div className="nx-bg-white nx-rounded nx-p-2 nx-mt-4">
+                  <pre className="nx-whitespace-pre-wrap">
+                    {JSON.stringify(properties.responses, null, 2)}
+                  </pre>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       <ApiRequest
         apiUrl={properties.apiUrl}
         method={properties.method}
@@ -355,6 +569,7 @@ export const ApiEndpointRequestResponse: React.FC<{
         description={properties.description}
         samplePayload={properties.samplePayload ?? undefined}
         properties={properties.properties ?? undefined}
+        pathParameters={properties.pathParameters ?? undefined}
       />
       {properties.responses ? (
         <ApiResponses

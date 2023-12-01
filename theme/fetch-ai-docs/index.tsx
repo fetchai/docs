@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import type { NextraThemeLayoutProps, PageOpts } from "nextra";
 import type { ReactElement, ReactNode } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import "focus-visible";
 import cn from "clsx";
 import { useFSRoute, useMounted } from "nextra/hooks";
@@ -24,6 +24,7 @@ import { renderComponent } from "./utils";
 import React from "react";
 import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
+import { setCookie } from "cookies-next";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -147,6 +148,11 @@ const Body = ({
   );
 };
 
+const setLastVisitedTimestamp = () => {
+  const now = new Date();
+  setCookie("lastVisitedTimestamp", now.toISOString());
+};
+
 const InnerLayout = ({
   pageMap,
   frontMatter,
@@ -157,6 +163,10 @@ const InnerLayout = ({
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   const fsPath = useFSRoute();
+
+  useEffect(() => {
+    setLastVisitedTimestamp();
+  }, []);
 
   const {
     activeType,
@@ -219,7 +229,7 @@ const InnerLayout = ({
       />
       <noscript>
         <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-PRBVQNSV"
+          src="https://www.googletagmanager.com/ns.html?id=GTM-MVT793SR"
           height="0"
           width="0"
           className="nextra-iframe-google-tag"
@@ -268,7 +278,7 @@ const InnerLayout = ({
                 />
               ) : null
             }
-            tags={activePath.at(-1).tags && activePath.at(-1).tags}
+            tags={activePath.at(-1)?.tags ?? undefined}
           >
             <MDXProvider
               components={getComponents({
