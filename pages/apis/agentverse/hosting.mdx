@@ -374,7 +374,18 @@ import {
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
+    {
+      name: "code",
+      type: "string",
+      description:
+        "The code for a specific agent on the Agentverse where 'string' represents the code read from a file.",
+    },
   ]}
+    samplePayload={{
+    code:
+       
+"\n# Congratulations on creating your first agent!\n#\n# This agent simply writes a greeting in the logs on a scheduled time interval.\n#\n# In this example we will use:\n# - 'agent': this is your instance of the 'Agent' class that we will give an 'on_interval' task\n# - 'ctx': this is the agent's 'Context', which gives you access to all the agent's important functions\n\n# A decorator (marked by the '@' symbol) just wraps the function defined under it in another function.\n# This decorator tells your agent to run the function on a time interval with the specified 'period' in seconds.\n# These functions must be 'async' because agents need to be able to perform many tasks concurrently.\n@agent.on_interval(period=3.0)\nasync def say_hello(ctx: Context):\n    # ctx.logger is a standard Python logger that can log text with various levels of urgency\n    # (exception, warning, info, debug). Here we will just use the 'info' level to write a greeting\n    ctx.logger.info(f\"Hello, I'm an agent and my address is {ctx.address}.\")\n",
+  }}
   pathParameters={{
     agentAddress:
       "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
