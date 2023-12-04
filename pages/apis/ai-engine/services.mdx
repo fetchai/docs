@@ -166,7 +166,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
   method="GET"
-  path="/v1beta1/services/:service_id"
+  path="/v1beta1/services/{service_id}"
   description="Fetches a specific service of a user authenticated through JWT identified by the service_id."
   responses={
     {
@@ -195,6 +195,7 @@ properties={[
         "uptime": 0.0
     }
   }
+  pathParameters={{service_id:"your_service_id",}}
   responseDescription="Returns a service identified by a specific session_id."
 />
 
@@ -346,11 +347,12 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
   method="DELETE"
-  path="/v1beta1/services/:service_id"
+  path="/v1beta1/services/{service_id}"
   description="Delete a specific service of a user authenticated through JWT identified by the service_id."
   responses={
     {}
   }
+  pathParameters={{service_id:"your_service_id",}}
   responseDescription="Returns an empty JSON object."
 />
 
@@ -394,10 +396,14 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
   method="DELETE"
-  path="/v1beta1/services/service-sg/:service_id/:service_group_id"
+  path="/v1beta1/services/service-sg/{service_id}/{service_group_id}"
   description="Deletes the connection between a service and a service group of a user authenticated through JWT."
   responses={
     {}
   }
+  pathParameters={{
+    service_id:"your_service_id",
+    service_group_id:"your_service_group_id"
+    }}
   responseDescription="Returns an empty JSON object."
 />
