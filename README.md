@@ -1,5 +1,20 @@
 # Fetch.ai Documentation Repo
 
+## Updating docs 
+
+### creating docs for fetch.ai employees: 
+
+Select the appropriate place and create a new file ending in `.mdx`. Then, update the `_meta.json` at the same level as the create file. You'll need to add your newly created page to the meta file like below:
+
+```
+{
+  "example": {
+    "title": "example page for employees",
+    "permission": ["fetch.ai"]
+  }
+}
+```
+
 ## Deployments
 
 ### Staging Website
