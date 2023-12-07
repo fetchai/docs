@@ -8,6 +8,8 @@ import type { ReactElement, ReactNode } from "react";
 import { useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
+import router from "next/router";
+import { useUserContext } from "../contexts/context-provider";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -77,11 +79,24 @@ function NavbarMenu({
   );
 }
 
+const handleOpen = () => {
+  const currentProtocol = window.location.protocol;
+  const currentHostname = window.location.hostname;
+  const currentPort = window.location.port;
+  const redirectUri = `${currentProtocol}//${currentHostname}:${currentPort}/docs/auth`;
+  const loginUrl =
+    `https://accounts.fetch.ai/login/` +
+    `?redirect_uri=${encodeURIComponent(redirectUri)}` +
+    `&client_id=docs` +
+    `&response_type=code`;
+  router.push(loginUrl);
+};
+
 export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const config = useConfig();
   const activeRoute = useFSRoute();
   const { menu, setMenu } = useMenu();
-
+  const context = useUserContext();
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -132,6 +147,21 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               {renderComponent(config.chat.icon)}
             </Anchor>
           ) : null}
+          {context.isLoggedIn ? (
+            <button
+              onClick={context.signOut}
+              className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm"
+            >
+              Sign Out
+            </button>
+          ) : (
+            <button
+              onClick={handleOpen}
+              className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm"
+            >
+              Sign In
+            </button>
+          )}
 
           {renderComponent(config.navbar.extraContent)}
 

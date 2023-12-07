@@ -46,10 +46,32 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 ## Starting your session
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1beta1/engine/chat/sessions"
   description="Start a new session for a user authenticated through JWT."
+    properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description: "Contains the data for the type of payload being sent.",
+    },
+    {
+      name: "email",
+      type: "email",
+      description: "The email of the user",
+    },
+    {
+      name: "request_model",
+      type: "string",
+      description:
+        "The request model wherein the user wants to interact.",
+    },
+  ]}
+    samplePayload={{
+    email: "your_email_address",
+    requestedModel: "talkative-01"
+  }}
   responses={[
     {
       session_id: "c320b5c4-518c-428b-889d-3cb8403901c0",
@@ -68,7 +90,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 ## Get all sessions for a user
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1beta1/engine/chat/sessions"
   description="Retrieves all sessions for a user authenticated through JWT."
@@ -109,9 +131,9 @@ There are 4 types of messages that can be sent to the backend:
 ### Sending start message
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="POST"
-  path="/v1beta1/engine/chat/sessions/:session_id/submit"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
   description="Sending start message"
   properties={[
     {
@@ -136,6 +158,12 @@ There are 4 types of messages that can be sent to the backend:
       description:
         "The context of the conversation. This is used to give information about the user to the agent.",
     },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
   ]}
   samplePayload={{
     payload: {
@@ -145,15 +173,19 @@ There are 4 types of messages that can be sent to the backend:
         "User full Name: Test User\nUser email: user@user.com\nUser location: latitude=51.5072, longitude=0.1276\n",
     },
   }}
+    pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
   responseDescription="On a successful request, there is no response"
 />
 
 ### Sending user message
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="POST"
-  path="/v1beta1/engine/chat/sessions/:session_id/submit"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
   description="Send an answer to a question asked by the agent"
   properties={[
     {
@@ -172,6 +204,12 @@ There are 4 types of messages that can be sent to the backend:
       description:
         "The user response to a question asked by the agent or to confirm the context",
     },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
   ]}
   samplePayload={{
     payload: {
@@ -179,15 +217,19 @@ There are 4 types of messages that can be sent to the backend:
       user_message: "The booking is for 2 people",
     },
   }}
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
   responseDescription="On a successful request, there is no response"
 />
 
 ### Sending user json message
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="POST"
-  path="/v1beta1/engine/chat/sessions/:session_id/submit"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
   description="Request for creating a new agent"
   properties={[
     {
@@ -219,6 +261,12 @@ There are 4 types of messages that can be sent to the backend:
       description:
         "The selection of the user from the list of options. The selection is an array of integers or UUID4",
     },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
 
 ]}
 samplePayload={{
@@ -230,15 +278,19 @@ samplePayload={{
       },
     },
   }}
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
 responseDescription="On a successful request, there is no response"
 />
 
 ### Sending stop message
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="POST"
-  path="/v1beta1/engine/chat/sessions/:session_id/submit"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
   description="Request for creating a new agent"
   properties={[
     {
@@ -252,11 +304,21 @@ responseDescription="On a successful request, there is no response"
       type: "string",
       description: "The type of message being sent.",
     },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
   ]}
   samplePayload={{
     payload: {
       type: "stop",
     },
+  }}
+      pathParameters={{
+    session_id:
+      "your_session_id",
   }}
   responseDescription="On a successful request, there is no response"
 />
@@ -264,18 +326,22 @@ responseDescription="On a successful request, there is no response"
 ## Delete a session for a user
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="DELETE"
-  path="/v1beta1/engine/chat/sessions/:session_id"
+  path="/v1beta1/engine/chat/sessions/{session_id}"
   description="Delete a specific session given a session id for a user authenticated through JWT."
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
 />
 
 ## Fetch new messages sent by agent
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="GET"
-  path="/v1beta1/engine/chat/sessions/:session_id/responses"
+  path="/v1beta1/engine/chat/sessions/{session_id}/responses"
   description="Fetches new messages for a specific session identified by the session_id"
   responses={[
     {
@@ -283,15 +349,19 @@ responseDescription="On a successful request, there is no response"
         '{"message_id": "c5c27376-0edc-41db-ae7b-980b4a6bfe8b", "timestamp": "2023-08-31T13:10:48.941865", "score": 0.0, "type": "agent_json", "agent_json": {"type": "task_list", "text": "Found tasks for your objective. Please select.", "options": [{"key": 0, "value": "TopActivities/TopActivities"}, {"key": 1, "value": "Flights/Flights"}, {"key": 2, "value": "Hotels/Hotels"}], "context_json": null}}',
     },
   ]}
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
   responseDescription="Return an agent_response object containing the agent response in JSON format, which can be parsed to retrieve the agent message. It can be an AgentMessage or an AgentJsonMessage. They are almost similar to user_message and user_json_message, but they are sent by the agent."
 />
 
 ## Fetch recent messages given a timestamp
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="GET"
-  path="/v1beta1/engine/chat/sessions/:session_id/messages?from_timestamp=2023-08-31T13:26:30.941865"
+  path="/v1beta1/engine/chat/sessions/{session_id}/messages?from_timestamp=2023-08-31T13:26:30.941865"
   description="Fetches agent messages filtered by timestamps for a specific session identified by the session_id"
   properties={[
     {
@@ -300,7 +370,17 @@ responseDescription="On a successful request, there is no response"
       description:
         "The timestamp from which to fetch the agent messages. The timestamp is in ISO 8601 format.",
     },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
   ]}
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
   responses={[
     {
       session_id: "063fcfef-a3ec-46c4-aa8e-c9a51b6f24b7",
@@ -341,10 +421,14 @@ responseDescription="On a successful request, there is no response"
 ## Fetch all messages sent by agent in a session
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="GET"
-  path="/v1beta1/engine/chat/sessions/:session_id/messages/all"
+  path="/v1beta1/engine/chat/sessions/{session_id}/messages/all"
   description="Fetches agent messages filtered by timestamps for a specific session identified by the session_id"
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
   responses={[
     {
       session_id: "063fcfef-a3ec-46c4-aa8e-c9a51b6f24b7",
@@ -411,10 +495,17 @@ responseDescription="On a successful request, there is no response"
 ## Provide feedback for a session
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
+  apiUrl="https://agentverse.ai"
   method="POST"
-  path="/v1beta1/engine/chat/sessions/:session_id/feedback"
+  path="/v1beta1/engine/chat/sessions/{session_id}/feedback"
   description="Give feedback for a specific session identified by the session_id"
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+      samplePayload={{
+    feedback: "positive",
+  }}
   properties={[
     {
       name: "models",
@@ -423,9 +514,15 @@ responseDescription="On a successful request, there is no response"
         "Contains the list of models that the user wants to query for remaining tokens. It is an array of strings where each string is the name of the model.",
     },
     {
-      name: "email",
+      name: "feedback",
       type: "string",
-      description: "The email of the user",
+      description: "The feedback of the user. It can be positive or negative.",
+    },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
     },
   ]}
   responses={{
@@ -440,9 +537,9 @@ responseDescription="On a successful request, there is no response"
 ## Retrieve remaining tokens
 
 <ApiEndpointRequestResponse
-  apiUrl="https://engine-canary.sandbox-london-b.fetch-ai.com"
-  method="POST"
-  path="/v1beta1/engine/chat/remaining_tokens?models=talkative-01,creative-01&email=user@user.com"
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/credit/remaining_tokens?models=talkative-01,creative-01&email=user@user.com"
   description="Request for retrieving the amount of tokens left for each model"
   properties={[
     {
