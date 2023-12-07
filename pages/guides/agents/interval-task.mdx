@@ -2,14 +2,14 @@
 
 ## Introduction
 
-Agents can perform an _interval task_ to periodically perform actions with a specified time interval. An interval task is achieved thanks to an `on_interval()` decorator which periodically repeats a given function for the agent. For instance, an agent could send a message every 2 seconds to another agent.
+Sometimes an agent will need to perform a task periodically. To do this we can use the `on_interval()` decorator which periodically repeats a given function for the agent. For instance, an agent could send a message every 2 seconds to another agent.
 
 **Let's get started and create our first interval task!**
 
 ## Walk-through
 
-1. First of all, we would need to create a Python script for this task, and name it by running: `touch interval-task.py`
-2. Let's then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
+1. Let's create a Python script for this task, and name it by running: `touch interval-task.py`
+2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
 
    ```py copy
    from uagents import Agent, Context
@@ -28,7 +28,7 @@ Agents can perform an _interval task_ to periodically perform actions with a spe
        alice.run()
    ```
 
-   We can use the `.on_interval()` decorator to repeat a task in a specified time period. In this case, we will just define a `say_hello()` function to send a message every 2 seconds, saying hello and printing the name of the agent retrieved using `ctx.name()` method. The output will be printed out using the `ctx.logger.info()` method.
+   The output will be printed out using the `ctx.logger.info()` method.
 
 4. Save the script.
 
@@ -48,8 +48,6 @@ if __name__ == "__main__":
 ```
 
 ## Run the script
-
-On your terminal, make sure to have activated the virtual environment correctly.
 
 Run the script: `python interval-task.py`
 
