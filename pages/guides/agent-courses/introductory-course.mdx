@@ -4,47 +4,39 @@ import { Callout } from 'nextra/components'
 
 ## Getting started with AI agents 🎯
 
-This course is designed to guide and instruct you through your initial AI Agent development journey. As you move along through it you will begin creating increasingly sophisticated agents. This guide is written towards a beginner programmer, but there is plenty of information in here to help the seasoned developer as well. If there is any terminology you're unsure about, please reach out to us on [Discord ↗️](https://discord.gg/fetchai) where a team member will happily help.
-
-The course encompasses _definitions_, _essential concepts_, _best practices_, and _guides you through the installation, setup_, and _creation_ of progressively intricate and valuable agents.
+This course is designed to guide and instruct you through your first AI Agent development journey. As you go on through the course, you will be able to create increasingly complex agents and use cases. This guide is aimed at beginner programmers, but it contains a lot of information for experienced developers too. If you are unsure about certain terms or topics, contact us on [Discord ↗️] (https://discord.gg/fetchai) where a team member will be happy to help you.
 
 ## Introduction to AI agents
 
-The [uAgents Framework ↗️](/concepts/agents/agents) is a lightweight framework that allows individuals and enterprises to create and deploy AI agents in a variety of industries including in decentralized contexts.
+The [uAgents Framework ↗️](/concepts/agents/agents) is a lightweight framework enabling individuals and organizations to create and deploy AI Agents in a variety of contexts, including decentralized ones. **AI Agents** are programs designed to operate freely in a decentralized landscape based on the user's objectives. AI Agents can connect, search, and transact to create dynamic markets. These can be programmed with logic to interact with their environment and with other agents in the network and perform operations without requiring human participation.
 
-    <Callout type="info" emoji="ℹ️">
-      By definition, AI Agents are software entities that carry out some set of operations on behalf of a user or another program with some degree of independence or autonomy, and in doing so, they employ knowledge or representation of the user's goals or desires.
-    </Callout>
+Agents enable individuals and organizations to automate a wide range of workflows, from simple to complex, using a combination of artificial intelligence, API calls, blockchain technology and sophisticated business logic.
 
-In practical terms, agents enable individuals and organizations to automate a wide range of workflows, from simple to complex, by leveraging a combination of artificial intelligence, API calls, blockchain technology and sophisticated business logic. 
+## Setup your machine 🛠️
 
-## Setup and installation 🛠️
+For this course we will be using [Python ↗️](https://www.python.org/downloads/) programming language. Plenty of programming languages are available, but we think Python is particularly good to learn and build great AI Agents.
 
-Let's get started! For this course we will be using the Python programming language [Python ↗️](https://www.python.org/downloads/). There are plenty of programming languages available, but we think Python is particularly good to learn with, but also build great to build AI agents with too.
+This guide covers:
 
-This guide uses the following tools:
-
-    1. **IDEs**: Visual Studio Code or PyCharm (any will work, even notepad).
+    1. **IDEs**: Visual Studio Code or PyCharm (any will work, even Notepad).
     2. **Homebrew**: latest version.
     3. **PyEnv**: latest version.
     4. **Python**: 3.8+.
-    5. **Poetry**: latest version
+    5. **Poetry**: latest version.
 
     <Callout type="warning" emoji="⚠️">
-      All commands unless stated are to be run in a terminal window.
+      All commands, unless stated, are to be run in a terminal window.
     </Callout>
 
-### Installing Homebrew
+### Install Homebrew
 
-We recommend starting with Homebrew since it will help you easily install all other software. Homebrew is a package manager for MacOS that simplifies the installation and management of software and packages on Mac computers through the command line.
-
-You can install simply paste this command in your terminal, you can verify it [here ↗️](https://brew.sh/):
+We recommend starting with Homebrew as it helps you to install all other software easily. Homebrew is a package manager for MacOS that simplifies the installation and management of software and packages on Mac computers via the command line. You can install it by simply running this command in your terminal; you can verify it [here ↗️](https://brew.sh/):
 
     ```
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-Then, ensure Homebrew is updated by running:
+Then, let's ensure Homebrew is updated. Just run:
 
     ```
     brew update
@@ -54,18 +46,15 @@ Then, ensure Homebrew is updated by running:
       For more information on Homebrew explore their [website ↗️](https://brew.sh/).
     </Callout>
 
-
 ### Installing PyEnv
 
-Now, you need to proceed by installing PyEnv. This will help you manage different Python interpreters:
+Now, you need to install PyEnv, which is a simple tool to manage multiple versions of Python. Just run:
 
     ```
     brew install pyenv
     ```
 
-Once you have installed PyEnv you can configure its shell environment. You can achieve this by running this sequence of commands. These commands configure your shell environment (specifically for the **Zsh shell**) to work seamlessly with PyEnv. They set up environment variables, modify the PATH, and initialize pyenv so that you can easily manage and switch between different Python versions using pyenv.
-
-You can verify them [here ↗️](https://github.com/pyenv/pyenv#installation):
+Once you have installed PyEnv you can configure its shell environment.
 
     ```
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
@@ -73,48 +62,60 @@ You can verify them [here ↗️](https://github.com/pyenv/pyenv#installation):
     echo 'eval "$(pyenv init -)"' >> ~/.zshrc
     ```
 
-As your next step, you will need to install a version of Python 3.8 or above. In this example we have provided the 3.10 version:
+These commands configure your shell environment (specifically for the **Zsh shell**) to work with PyEnv. These set up environment variables, modify the PATH, and initialize PyEnv so that you can easily manage and switch between different Python versions.
+
+    <Callout type="info" emoji="ℹ️">
+      You can verify all steps [here ↗️](https://github.com/pyenv/pyenv#installation).
+    </Callout>
+
+You are now ready to install Python. You need to install a version of Python 3.8 or above (for this example, we use version 3.10):
 
     ```
     pyenv install 3.10
     ```
 
-For additional help, run the following command:
+You can get help or check a command insights by running:
 
     ```
     pyenv help
     ```
 
-As the final step, we want to ensure the global version of Python we are working with is not the default system one. You can achieve this by running the following commands:
+Now, let's ensure the global version of Python you are working with is not the default one in the system. Run the following:
 
     ```
-    pyenv --global 3.10 #Here we set the global interpreter
-    pyenv versions #Here we verify if it's set up correctly
+    pyenv --global 3.10 # this sets the global interpreter
+    pyenv versions # this verifies if it is set up correctly
     ```
 
-### Installing Poetry
+### Install Poetry
 
-As our next step, we will install Poetry which will greatly help us in managing all of the Python specific packages. You can install Poetry run the following in your Zsh terminal:
+You now need to install Poetry. Poetry is used for managing Python project dependencies, handling virtual environments, packaging, and publishing Python libraries or applications. You can install Poetry by running the following command in your Zsh terminal:
 
     ```
     curl -sSL https://install.python-poetry.org | python3 -
     ```
 
     <Callout type="info" emoji="ℹ️">
-      For an extended exploration within poetry please visit their website where you'll be able to quickly resolve any installation related questions. You can find more information [here ↗️](https://python-poetry.org/docs/#installation)
+      If you would like to learn more about Poetry, visit the [website ↗️](https://python-poetry.org/docs/#installation) where you can quickly find answers to all your questions.
     </Callout>
 
-### Initializing the project
+### Initialize your project with Poetry
 
-Now that we've got all our necessary tools installed, let's create your working directory and initialize Poetry 🎉
+You now have all our necessary tools installed and you are ready to initialize your project. First, let's create a working directory and initialize Poetry 🎉!
 
-    <Callout type="info" emoji="ℹ️">
-      Make sure you're in a path you're comfortable with, check this by typing `pwd` into terminal, ideally you'd see something like `/Users/Jessica/Documents`
-    </Callout>
+First, you need to create a working directory for your project using `mkdir` command. Then, you will need to change directory to this one, using `cd` command:
 
-Now, let's create a folder to work in: `mkdir development/agent-demo`
+    ```
+    mkdir development/agent-demo
+    cd development/agent-demo
+    ```
 
-Let's change directory (using `cd` command) into `cd development/agent-demo`. Then, let's check the path with `pwd` command.
+You can ensure you're in the correct directory by checking your current path. Just run:
+
+    ```
+    pwd
+    # Example output: /Users/Jessica/Documents
+    ```
 
 If you're happy with the install location for the project, let's go ahead and initialize Poetry:
 
@@ -123,80 +124,72 @@ If you're happy with the install location for the project, let's go ahead and in
     ```
 
     <Callout type="info" emoji="ℹ️">
-      This will open up the setup wizard, simply follow the steps. During the setup sequence you'll be asked which dependencies you would want to see installed. At this point simply select `uagents`. The wizard will ask for a _name_, a _version_, an _author_, a _license_ and most importantly the _dependencies_ for your project.
+      Follow the setup wizard to provide details including project name, version, author, license, and select dependencies (e.g., uagents).
     </Callout>
 
-Once you have completed the initialization, run:
+Once you complete the initialization, run:
 
     ```
     poetry install
     ```
 
-You will see the installation occur in accordance with the **pyproject.toml** file.
+This command will install the dependencies specified in the **pyproject.toml** file.
 
-Now, you have finalised the installation, you can begin creating your first AI Agent!
+**With this, you have finalized the installation process. You can now start creating your first AI Agent!**
 
 ## Overview of the uAgents Framework
 
-As previously specified, the [uAgents Framework ↗️](https://pypi.org/project/uagents/) is a Python library designed for creating intelligent and autonomous agents in decentralized environments. It prioritizes security through cryptography for message and asset protection. It enables easy collaboration between agents in distributed networks via the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview). Agents find applications in various domains and fields, including:
+The [uAgents Framework ↗️](https://pypi.org/project/uagents/) is the fundamental infrastructure in Fetch.ai's ecosystem that is essential for the creation and deployment of decentralized AI Agents. It serves as a base system that provides the tools, protocols and functionalities necessary for the development of autonomous agents. The framework is integrated with several key components of the Fetch.ai ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) and the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
 
-    - **IoT usage**: it allows agents to represent physical objects, making it suitable for Internet of Things (IoT) applications, enabling interactions with real-world devices.
-
-    - **AI integration**: the Framework supports agents as wrappers for AI models, allowing developers to incorporate AI capabilities into their agent-based systems.
-
-    - **Automation through APIs**: agents can automate tasks through APIs, facilitating integration with external systems for applications requiring automated interactions.
-
-    - **Blockchain integration**: it embraces blockchain technology, enabling DeFi agent development and innovative primitives for secure and transparent financial transactions in decentralized ecosystems.
+Users can provide natural language input via the [DeltaV ↗️](/concepts/ai-engine/deltav) chat interface to request the execution of a task. This input is translated by the AI Engine which works out the required goals and translates the input into a series of executable tasks. These tasks are then assigned to the most adequate AI Agents registered in the Almanac contract. This is a repository where important information about registered agents is stored to improve communication between agents within the Fetch.ai network. The Framework is also integrated with [Agentverse ↗️](/concepts/agent-services/agentverse-intro), a cloud-based platform that provides developers with a single environment for developing, managing and deploying AI Agents.
 
 ### Key concepts
 
 #### Addresses
 
-In the uAgents Framework, every agent is identified by a unique address (think of this as unique string of characters - which serves as an identifier for the agent in a decentralized environment). There are two types of addresses within the Framework:
+AI Agents developed with the uAgents Framework are identified by **two types of addresses**:
 
-1. **uAgent Address**
+    1. **uAgent Address**: this is the primary agent identifier. It allows it to interact with other agents, exchange messages, and participate in decentralized network activities to ensure secure communication.
 
-    This is the primary identifier for the agent, allowing it to interact with other agents, exchange messages, and engage in decentralized network activities, ensuring secure communication.
+    2. **Fetch Address**: this cryptographic public address is linked to the agent and its wallet on the Fetch.ai blockchain. It enables various functionalities, including interacting with the Fetch ledger, registering in the Almanac contract and performing operations such as token or asset transfers on the blockchain.
 
-2. **Fetch Address**
-
-    This cryptographic public address is linked to the agent and its wallet on the Fetch.ai blockchain. It enables various functionalities, including interaction with the Fetch ledger, registration in the Almanac contract, and performing operations like token or asset transfers on the blockchain, playing a crucial role in the agent's functionality.
-
-If you wish to learn more, explore our [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address) guide.
+These addresses serve as identifiers for each agent in a decentralized environment. If you want to learn more, read our guide: [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address).
 
 #### Storage
 
-AI Agents in the uAgents Framework can store information in a JSON file, which they can retrieve as needed. This storage is crucial for agents to maintain a state, remember past interactions, and make informed decisions based on historical data. It helps agents retain and utilize information over time, remember past interactions and decisions, and learn from their experiences
+AI Agents can store information in a **JSON file** that they can freely retrieve when needed. **Storage** is critical for agents to maintain state, remember past interactions and make informed decisions based on historical data.
 
-If you wish to learn more, explore our [Using agents storage function ↗️](/guides/agents/storage-function) guide or the [agents storage ↗️](/references/uagents/uagents-protocols/storage) documentation in the [References ↗️](/references) section of our documentation. If you're new to JSON please see an example [here ↗️](https://www.w3schools.com/whatis/whatis_json.asp).
+If you wish to learn more, explore our [Using agents storage function ↗️](/guides/agents/storage-function) guide or the [agents storage ↗️](/references/uagents/uagents-protocols/storage) documentation. If you are new to JSON please see an example [here ↗️](https://www.w3schools.com/whatis/whatis_json.asp).
 
 #### Protocols
 
-The Framework provides strong support for organizing message types and their handlers within Protocols. Protocols are sets of rules governing data transmission, reception, and interpretation between devices or systems. They define communication format, timing, sequencing, and error handling. Protocols enable standardized communication, ensuring accurate and reliable data exchange. Agents using the same protocol can communicate directly, promoting efficient interactions within the system.
+The uAgents Framework provides comprehensive support for the organization of message types and their handlers within **protocols**. Protocols are sets of rules that govern the transmission, reception and interpretation of data between devices or systems. They define the communication format, timing, sequence and error handling. Protocols enable standardized communication and ensure accurate and reliable data exchange. Agents using the same protocol can communicate directly with each other, which promotes efficient interaction within the system.
 
-If you're looking to become an expert in Fetch.ai's agent technology, we strongly recommend reading our [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) references.
+If you want to become an expert in Fetch.ai's agent technology, we strongly recommend that you read our [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) documentation.
 
 #### Exchange protocol
 
-The Exchange protocol facilitates efficient communication among agents by using standardized messaging techniques. It involves packaging messages in envelopes, encoding them, and transmitting them via HTTP to designated endpoints. Messages consist of key-value pairs in JSON format and are enclosed in envelopes with metadata. **Envelope** contain:
+The **Exchange Protocol** facilitates efficient communication between agents by using standardized messaging techniques. Messages are packaged in envelopes, encoded and transmitted to specific endpoints via HTTP. Messages consist of key-value pairs in JSON format and are packaged in envelopes with metadata. **Envelopes** contain:
 
-    - Sender and recipient addresses,
-    - Message schema,
-    - Payload,
-    - Expiration time,
+    - Sender and recipient addresses.
+    - Message schema.
+    - Payload.
+    - Expiration time.
     - Signature for authentication.
 
-        <Callout type="info" emoji="ℹ️">
-          The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON-formatted data. These details ensure consistent and standardized communication within the Fetch.ai uAgents ecosystem.
-        </Callout>
-
-Further information can be found in our [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) reference documentation.
+The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON formatted data. These details ensure consistent and standardized communication within the Fetch.ai uAgents ecosystem. For more information, see our [Exchange Protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) documentation.
 
 #### Almanac contract, registering, searching and discovery
 
-Your agent can be found by other agents and services, if it is registered in the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overviewO). The Almanac is a smart contract on the Fetch.ai blockchain, think of this as a dynamic table of who is who, and when querying this contract returns are list of agents. These queries can be very specific to find exact agent information.
+The [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) is an important component in Fetch.ai's ecosystem. It operates as a blockchain-based repository where agents register, exchange information and establish communication. Registration in the Almanac is mandatory so that agents can participate in remote interactions and become discoverable through the Agentverse Explorer.
 
-Registrations are time-limited to address the challenge of managing a large agent ecosystem. Agents must periodically re-register to keep their information current. When registration expires, queries for that agent will no longer return their details, ensuring the accuracy and relevance of available uAgents information. With this information agents are able to communicate with one another. Of course, there's a lot more to this but to really get an understanding, please visit [Registering in the Almanac contract ↗️](/guides/agents/register-in-almanac) guide.
+Agents keep their registrations up to date within certain block limits to ensure the accuracy and relevance of their data. Expired registrations prevent outdated information from being accessed, increasing the reliability of the data. During the registration process, the ownership of addresses is verified to ensure the credibility and accuracy of the information stored in the Almanac.
+
+The agents registered in the Almanac provide service endpoints for remote communication, which contain weighted parameters that enable effective interaction. As a central hub, the Almanac facilitates the discovery of endpoints based on these assigned weights. This structured approach promotes efficient agent interactions and a robust environment for the development of AI agents within Fetch.ai's decentralized network. Users can navigate the Agentverse Explorer and filter agents based on different protocols customized to their specific application requirements.
+
+    <Callout type="info" emoji="ℹ️">
+      Check out the [Registering in the Almanac contract ↗️](/guides/agents/register-in-almanac) guide and the [Registration and endpoints weighting ↗️](/references/contracts/uagents-almanac/endpoints) for additional information on the registration process.
+    </Callout>
 
 ## Coding and implementation
 
