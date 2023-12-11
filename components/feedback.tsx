@@ -40,6 +40,13 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
     setInputVisible(true);
   };
 
+  const handleTextareaBlur = () => {
+    if (isMaliciousString(feedback)) {
+      // Display an error message and mark the string as malicious
+      setMaliciousStringDetected(true);
+    }
+  };
+
   const handleFeedbackSubmit = async () => {
     if (isMaliciousString(feedback)) {
       // Display an error message and do not make the API call
@@ -131,6 +138,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
                   setFeedback(e.target.value);
                   setMaliciousStringDetected(false); // Clear the malicious string detection status when the text changes
                 }}
+                onBlur={handleTextareaBlur}
               />
               {maliciousStringDetected && (
                 <p className="nx-text-red-500 nx-text-sm nx-mx-auto">
@@ -138,8 +146,11 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
                 </p>
               )}
               <button
-                className="nx-mt-4 nx-bg-submit-feedback nx-text-white nx-font-bold nx-py-2 nx-px-4 nx-rounded-xxl nx-max-w-180px nx-mx-auto nx-w-full"
+                className={`nx-mt-4 nx-bg-submit-feedback nx-text-white nx-font-bold nx-py-2 nx-px-4 nx-rounded-xxl nx-max-w-180px nx-mx-auto nx-w-full ${
+                  maliciousStringDetected ? "nx-bg-gray-400" : ""
+                }`}
                 onClick={handleFeedbackSubmit}
+                disabled={maliciousStringDetected}
               >
                 Submit Feedback
               </button>
