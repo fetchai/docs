@@ -6,7 +6,7 @@ import {
   connectHits,
 } from "react-instantsearch-dom";
 import algoliasearch from "algoliasearch/lite";
-// import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MDXProvider } from "nextra/mdx";
 import { getComponents } from "../mdx-components";
@@ -15,6 +15,7 @@ import { remark } from "remark";
 import remarkHTML from "remark-html";
 import React from "react";
 import type { Item as NormalItem } from "nextra/normalize-pages";
+import { Input } from "./input";
 
 type MyItem = NormalItem & {
   // Add or modify properties as needed
@@ -38,11 +39,11 @@ export const InstantAlgoliaSearch = ({
   directories: MyItem[];
 }) => {
   const config = useConfig();
-  // const router = useRouter()
+  const router = useRouter();
   const [show, setShow] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // const [searchValue, setSearchValue] = useState("")
+  const inputId = "search-input"; // Unique ID for the input
 
   // Close dropdown on outside click
   const handleClickOutside = useCallback(
@@ -65,45 +66,45 @@ export const InstantAlgoliaSearch = ({
     };
   }, [handleClickOutside]);
 
-  // useEffect(() => {
-  //   const handleRouteChange = async (url) => {
-  //     if (searchValue !== "") {
-  //       try {
-  //         const response = await fetch(
-  //           "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/search",
-  //           {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify({
-  //               search_term: searchValue,
-  //               selected_path: url,
-  //             }),
-  //           },
-  //         )
+  const onClickSearchResult = async (path) => {
+    // Access the input value using document.querySelector with type casting
+    const searchInput =
+      document.querySelector<HTMLInputElement>("#search-input");
+    const searchValue = searchInput ? searchInput.value : "";
 
-  //         if (!response.ok) {
-  //           console.log("---something went wrong----")
-  //         }
-  //       } catch (error) {
-  //         // Handle errors
-  //         console.log("---oops, something went wrong----", error)
-  //       }
-  //     }
-  //   }
-  //   router.events.on("routeChangeStart", handleRouteChange)
+    if (searchValue !== "") {
+      try {
+        const response = await fetch(
+          "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/search",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              search_term: searchValue,
+              selected_path: path,
+            }),
+          },
+        );
 
-  //   // If the component is unmounted, unsubscribe
-  //   // from the event with the `off` method:
-  //   return () => {
-  //     router.events.off("routeChangeStart", handleRouteChange)
-  //   }
-  // }, [router, searchValue])
+        if (!response.ok) {
+          console.log("---something went wrong----");
+        }
+      } catch (error) {
+        // Handle errors
+        console.log("---oops, something went wrong----", error);
+      }
+    }
+
+    const actualPath = path.split("/docs")[1];
+    router.push(actualPath);
+  };
 
   // Custom SearchBox component with a controlled input
   const SearchBox = connectSearchBox(({ currentRefinement, refine }) => (
-    <input
+    <Input
+      id={inputId}
       type="search"
       value={currentRefinement}
       onChange={(event) => {
@@ -188,9 +189,9 @@ export const InstantAlgoliaSearch = ({
                       className="nx-relative nx-border-grey-200 nx-bg-search-result"
                       key={hit.objectId}
                     >
-                      <a
+                      <div
                         className="nx-flex nx-justify-between nx-items-center nx-leading-normal nx-py-2 nx-px-6 nx-transition-colors nx-duration-5 nx-ease-out nx-overflow-hidden nx-text-grey-900 nx-bg-transparent"
-                        href={hit.path}
+                        onClick={() => onClickSearchResult(hit.path)}
                       >
                         <div className="nx-flex nx-flex-col nx-relative w-full">
                           <div className="nx-text-base nx-font-semibold nx-text-fetch-main">
@@ -225,7 +226,7 @@ export const InstantAlgoliaSearch = ({
                               .join(" > ")}
                           </div>
                         </div>
-                      </a>
+                      </div>
                       <div className="nx-border-b" />
                     </li>
                   ))
