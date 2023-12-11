@@ -10,6 +10,7 @@ import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import router from "next/router";
 import { useUserContext } from "../contexts/context-provider";
+import AccountMenu from "components/account-menu";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -97,6 +98,11 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const activeRoute = useFSRoute();
   const { menu, setMenu } = useMenu();
   const context = useUserContext();
+
+  const handleSignOut = () => {
+    context.signOut();
+    router.push("/");
+  };
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -148,12 +154,11 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
             </Anchor>
           ) : null}
           {context.isLoggedIn ? (
-            <button
-              onClick={context.signOut}
-              className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm"
-            >
-              Sign Out
-            </button>
+            <AccountMenu
+              email={context?.user?.email}
+              logo={context?.user?.avatarHref}
+              signOut={handleSignOut}
+            />
           ) : (
             <button
               onClick={handleOpen}

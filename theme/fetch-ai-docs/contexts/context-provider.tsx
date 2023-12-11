@@ -138,6 +138,7 @@ export const UserInfoProvider: React.FC<{
       ...user,
       email: context?.user?.email,
       walletAddress: context?.user?.walletAddress,
+      avatarHref: context?.user?.avatarHref,
     });
     setCredentials({
       ...credentials,
