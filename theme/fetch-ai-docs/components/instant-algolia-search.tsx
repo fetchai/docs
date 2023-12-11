@@ -241,10 +241,7 @@ export const InstantAlgoliaSearch = ({
 
   return (
     <InstantSearch searchClient={searchClient} indexName={indexName}>
-      <div
-        className="nextra-search nx-relative nx-footer-width-50 nx-mr-4"
-        ref={dropdownRef}
-      >
+      <div className="nextra-search nx-relative nx-mr-4" ref={dropdownRef}>
         <Configure hitsPerPage={10} />
         <SearchBox />
         <CustomHits />
