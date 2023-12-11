@@ -4,17 +4,15 @@ import { Callout } from 'nextra/components'
 
 ## Getting started with AI agents 🎯
 
-This course is designed to guide and instruct you through your first AI Agent development journey. As you go on through the course, you will be able to create increasingly complex agents and use cases. This guide is aimed at beginner programmers, but it contains a lot of information for experienced developers too. If you are unsure about certain terms or topics, contact us on [Discord ↗️] (https://discord.gg/fetchai) where a team member will be happy to help you.
+This course guides you through your first AI Agent development journey. As you move on, you will be able to create increasingly complex agents and use cases. This guide is aimed at beginner programmers, but it contains a lot of information for experienced developers too. If you are unsure about certain terms or topics, contact us on [Discord ↗️] (https://discord.gg/fetchai) where a team member will be happy to help you.
 
 ## Introduction to AI agents
 
-The [uAgents Framework ↗️](/concepts/agents/agents) is a lightweight framework enabling individuals and organizations to create and deploy AI Agents in a variety of contexts, including decentralized ones. **AI Agents** are programs designed to operate freely in a decentralized landscape based on the user's objectives. AI Agents can connect, search, and transact to create dynamic markets. These can be programmed with logic to interact with their environment and with other agents in the network and perform operations without requiring human participation.
-
-Agents enable individuals and organizations to automate a wide range of workflows, from simple to complex, using a combination of artificial intelligence, API calls, blockchain technology and sophisticated business logic.
+The [uAgents Framework ↗️](/concepts/agents/agents) is a lightweight framework enabling individuals and organizations to create and deploy AI Agents in a variety of contexts, including decentralized ones. **AI Agents** are programs designed to operate freely in a decentralized landscape based on the user's objectives. AI Agents can connect, search, and transact to create dynamic markets. These can be programmed with logic to interact with their environment and with other agents in the network and perform operations without requiring human participation. Agents enable individuals and organizations to automate a wide range of workflows, from simple to complex, using a combination of artificial intelligence, API calls, blockchain technology and sophisticated business logic.
 
 ## Setup your machine 🛠️
 
-For this course we will be using [Python ↗️](https://www.python.org/downloads/) programming language. Plenty of programming languages are available, but we think Python is particularly good to learn and build great AI Agents.
+For this course we will use [Python ↗️](https://www.python.org/downloads/) programming language. Plenty of programming languages are available, but we think Python is particularly good to learn and build great AI Agents.
 
 This guide covers:
 
@@ -30,13 +28,15 @@ This guide covers:
 
 ### Install Homebrew
 
-We recommend starting with Homebrew as it helps you to install all other software easily. Homebrew is a package manager for MacOS that simplifies the installation and management of software and packages on Mac computers via the command line. You can install it by simply running this command in your terminal; you can verify it [here ↗️](https://brew.sh/):
+We recommend starting with Homebrew as it helps you to install all other software easily. Homebrew is a package manager for MacOS that simplifies the installation and management of software and packages on Mac computers via the command line.
+
+You can install it by simply running this command in your terminal; you can verify it [here ↗️](https://brew.sh/):
 
     ```
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-Then, let's ensure Homebrew is updated. Just run:
+Let's then ensure Homebrew is updated:
 
     ```
     brew update
@@ -48,13 +48,13 @@ Then, let's ensure Homebrew is updated. Just run:
 
 ### Installing PyEnv
 
-Now, you need to install PyEnv, which is a simple tool to manage multiple versions of Python. Just run:
+Now, you need to install PyEnv. It is a simple tool to manage multiple versions of Python. Just run:
 
     ```
     brew install pyenv
     ```
 
-Once you have installed PyEnv you can configure its shell environment.
+Once you have installed PyEnv you can configure its shell environment:
 
     ```
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
@@ -68,7 +68,7 @@ These commands configure your shell environment (specifically for the **Zsh shel
       You can verify all steps [here ↗️](https://github.com/pyenv/pyenv#installation).
     </Callout>
 
-You are now ready to install Python. You need to install a version of Python 3.8 or above (for this example, we use version 3.10):
+You are now ready to **install Python**. You need to install a version of Python 3.8 or above (for this example, we use version 3.10):
 
     ```
     pyenv install 3.10
@@ -80,7 +80,7 @@ You can get help or check a command insights by running:
     pyenv help
     ```
 
-Now, let's ensure the global version of Python you are working with is not the default one in the system. Run the following:
+Let's now ensure the **global version of Python** you are working with is not the default one in the system. Run:
 
     ```
     pyenv --global 3.10 # this sets the global interpreter
@@ -89,7 +89,9 @@ Now, let's ensure the global version of Python you are working with is not the d
 
 ### Install Poetry
 
-You now need to install Poetry. Poetry is used for managing Python project dependencies, handling virtual environments, packaging, and publishing Python libraries or applications. You can install Poetry by running the following command in your Zsh terminal:
+You now need to install Poetry. Poetry is used for managing Python project dependencies, handling virtual environments, packaging, and publishing Python libraries or applications.
+
+You can install Poetry by running the following command in your Zsh terminal:
 
     ```
     curl -sSL https://install.python-poetry.org | python3 -
@@ -101,7 +103,7 @@ You now need to install Poetry. Poetry is used for managing Python project depen
 
 ### Initialize your project with Poetry
 
-You now have all our necessary tools installed and you are ready to initialize your project. First, let's create a working directory and initialize Poetry 🎉!
+You now have all our necessary tools installed and you are ready to initialize your project. Let's create a working directory and initialize Poetry 🎉!
 
 First, you need to create a working directory for your project using `mkdir` command. Then, you will need to change directory to this one, using `cd` command:
 
@@ -110,21 +112,21 @@ First, you need to create a working directory for your project using `mkdir` com
     cd development/agent-demo
     ```
 
-You can ensure you're in the correct directory by checking your current path. Just run:
+You can ensure you are in the correct directory by checking your current path:
 
     ```
     pwd
     # Example output: /Users/Jessica/Documents
     ```
 
-If you're happy with the install location for the project, let's go ahead and initialize Poetry:
+If you are happy with the install location for the project, go ahead and initialize Poetry:
 
     ```
     poetry init
     ```
 
     <Callout type="info" emoji="ℹ️">
-      Follow the setup wizard to provide details including project name, version, author, license, and select dependencies (e.g., uagents).
+      Follow the setup wizard to provide details including project name, version, author, license, and select dependencies (in your case, `uagents`).
     </Callout>
 
 Once you complete the initialization, run:
@@ -139,9 +141,7 @@ This command will install the dependencies specified in the **pyproject.toml** f
 
 ## Overview of the uAgents Framework
 
-The [uAgents Framework ↗️](https://pypi.org/project/uagents/) is the fundamental infrastructure in Fetch.ai's ecosystem that is essential for the creation and deployment of decentralized AI Agents. It serves as a base system that provides the tools, protocols and functionalities necessary for the development of autonomous agents. The framework is integrated with several key components of the Fetch.ai ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) and the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
-
-Users can provide natural language input via the [DeltaV ↗️](/concepts/ai-engine/deltav) chat interface to request the execution of a task. This input is translated by the AI Engine which works out the required goals and translates the input into a series of executable tasks. These tasks are then assigned to the most adequate AI Agents registered in the Almanac contract. This is a repository where important information about registered agents is stored to improve communication between agents within the Fetch.ai network. The Framework is also integrated with [Agentverse ↗️](/concepts/agent-services/agentverse-intro), a cloud-based platform that provides developers with a single environment for developing, managing and deploying AI Agents.
+The [uAgents Framework ↗️](https://pypi.org/project/uagents/) is the fundamental infrastructure in Fetch.ai's ecosystem for the creation and deployment of AI Agents. It serves as a base framework providing the tools, protocols and functionalities necessary for the development of autonomous agents. The Framework is integrated with several key components of the Fetch.ai ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) and the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview). This is a repository where important information about registered agents is stored to improve communication between agents within the Fetch.ai network. The Framework is also integrated with [Agentverse ↗️](/concepts/agent-services/agentverse-intro), a cloud-based platform that provides developers with a single environment for developing, managing and deploying AI Agents.
 
 ### Key concepts
 
@@ -149,11 +149,13 @@ Users can provide natural language input via the [DeltaV ↗️](/concepts/ai-en
 
 AI Agents developed with the uAgents Framework are identified by **two types of addresses**:
 
-    1. **uAgent Address**: this is the primary agent identifier. It allows it to interact with other agents, exchange messages, and participate in decentralized network activities to ensure secure communication.
+    1. **uAgent Address**: the primary agent identifier; it allows it to interact with other agents, exchange messages, and participate in decentralized network activities.
 
-    2. **Fetch Address**: this cryptographic public address is linked to the agent and its wallet on the Fetch.ai blockchain. It enables various functionalities, including interacting with the Fetch ledger, registering in the Almanac contract and performing operations such as token or asset transfers on the blockchain.
+    2. **Fetch Address**: this cryptographic public address is linked to the agent and its wallet on the Fetch.ai blockchain; it enables various functionalities, including interacting with the Fetch ledger, registering in the Almanac contract and performing operations such as token or asset transfers on the blockchain.
 
-These addresses serve as identifiers for each agent in a decentralized environment. If you want to learn more, read our guide: [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address).
+These addresses serve as identifiers for each agent within the Fetch.ai Ecosystem.
+
+Check out the [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address) guide to learn more on this topic.
 
 #### Storage
 
@@ -181,7 +183,7 @@ The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for m
 
 #### Almanac contract, registering, searching and discovery
 
-The [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) is an important component in Fetch.ai's ecosystem. It operates as a blockchain-based repository where agents register, exchange information and establish communication. Registration in the Almanac is mandatory so that agents can participate in remote interactions and become discoverable through the Agentverse Explorer.
+The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is an important component in Fetch.ai Ecosystem. It operates as a blockchain-based repository where agents register, exchange information and establish communication. Registration in the Almanac is mandatory so that agents can participate in remote interactions and become discoverable through the Agentverse Explorer.
 
 Agents keep their registrations up to date within certain block limits to ensure the accuracy and relevance of their data. Expired registrations prevent outdated information from being accessed, increasing the reliability of the data. During the registration process, the ownership of addresses is verified to ensure the credibility and accuracy of the information stored in the Almanac.
 
@@ -195,27 +197,30 @@ The agents registered in the Almanac provide service endpoints for remote commun
 
 ### Create your first agent
 
-Creating your first agent is a straightforward process. You can start by importing the required modules. In our case, we would need to import the `Agent` module from the `uagents` library, and proceed to instantiate it by providing a `name`. The following code exemplifies the creation of the simplest possible agent:
+Creating your first agent is a straightforward process. First of all, we need to create a Python file for this example. We can do this by running: `touch alice_agent.py`.
 
-let's create with `touch alice_agent.py` and paste in the following:
+
+We can now code our agent. Let's start by importing the required modules. In our case, we would need to import the `Agent` module from the `uagents` library, and proceed to instantiate the agent by providing a `name`. The following code exemplifies the creation of the simplest possible agent:
 
     ```py copy
     # Import the required classes
-    from uagents import Agent, Context
+    from uagents import Agent
 
-    # Instantiate your first Agent and give it a name
-    agent = Agent(name="alice")
+    # Initialize your first Agent and give it a name
+    alice = Agent(name="alice", seed="alice recovery phrase")
     ```
 
 You can run this with `poetry run python alice_agent.py` but it won't do much, yet!
 
-If you're not too familiar with classes in Python, take a look [w3schools Python classes ↗️](https://www.w3schools.com/python/python_classes.asp).
+    <Callout type="info" emoji="ℹ️">
+      If you're not too familiar with classes in Python, take a look [w3schools Python classes ↗️](https://www.w3schools.com/python/python_classes.asp).
+    </Callout>
 
-### Creating a second agent and starting an interaction
+### Create a second agent and start an interaction
 
-Let's get Alice to do something! We're going to get Alice, on startup, to introduce itself and provide its address by printing both, on the terminal.
+Let's get Alice to do something! We're going to get Alice, on startup, to introduce itself and provide its address by printing both, on the terminal window. We can add a `on_event("startup")` decorator to make the agent run a function when run.
 
-To get an action to happen on start up, we can add a decorator to a function in the following way:
+Let's update `alice_agent.py` with the code snippet below:
 
     ```py copy
     # Import the required classes
@@ -233,13 +238,16 @@ To get an action to happen on start up, we can add a decorator to a function in 
         agent.run()
     ```
 
-    Let's update `alice_agent.py` with the above.
+Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the imported agent python library knows to act in a certain way on the declared functions.
 
-    Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the imported agent python library knows to act in a certain way on the declared functions. To find out more about decorators, take a look at [Primer on Python decorators  ↗️](https://realpython.com/primer-on-python-decorators/).
+    <Callout type="info" emoji="ℹ️">
+      To find out more about decorators, take a look at [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/).
+    </Callout>
 
-    In our example above, the `on_event()` decorator specifies that the agent should run an `introduce_agent()` function when the agent starts up, which will then return a message presenting the agent with its name and address by using the `Context` class used to retrieve the agent's related name and address using the `ctx.name` and `ctx.address` methods.
+In our example above, the `on_event()` decorator specifies that the agent should run an `introduce_agent()` function when the agent starts up. This function will then return a message presenting the agent with its name and address by using the `Context` class, which is used to retrieve the agent's related name and address using the `ctx.name` and `ctx.address` methods.
 
 Let's run the `alice_agent.py` script again: `poetry run python alice_agent.py`.
+
 This time, the output will be:
 
     ```
@@ -248,7 +256,7 @@ This time, the output will be:
 
 #### Printing agent's addresses
 
-Sometimes we just need to see what a value looks like. Helpfully Python has an in-built function `print()` that allows us to perform such an action. As we have mentioned earlier, every uAgent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses, so let's print them in the console to see their differences.
+Sometimes we just need to see what a value looks like. We can quickly do so in Python by using the in-built function `print()`. This allows you to perform such an action. As we have mentioned earlier, every AI Agent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses. We have showed above how to check for an agent address using the `ctx.address` method of the `Context` class. Let's now print them in the console to see their differences using the `print()` function:
 
     ```py copy
     from uagents import Agent
@@ -259,27 +267,22 @@ Sometimes we just need to see what a value looks like. Helpfully Python has an i
     print("Fetch network address: ", alice.wallet.address())
     ```
 
-You can update, and run `alice_agent.py` if you wish to see print output of anything. The output of the above would look like this:
+The output of the above would look similar to:
 
     ```
     uAgent address: agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
     Fetch network address: fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
     ```
 
-Checkout our [Getting an agent addresses 🤖📫↗️](/guides/agents/getting-uagent-address) guide for an indepth understanding of these concepts.
+    <Callout type="info" emoji="ℹ️">
+      Checkout our [Getting an agent addresses 🤖📫↗️](/guides/agents/getting-uagent-address) guide for an indepth understanding of these topics.
+    </Callout>
 
 ### Agents and interval tasks
 
-Interval tasks execute a specific task or set of instructions at a predefined time interval. They are especially useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications.
-Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more.
+Interval tasks are tasks or set of instructions executed at predefined time intervals. These are useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more.
 
-In the following example, we define an interval task by setting up an `on_interval()` decorator with a timer that triggers the task repetition. In this case a `say_hello()` function is being repeated at a specified time interval, and the output is printed on the terminal using the `ctx.logger.info()` method of the `Context` class.
-
-    <Callout type="info" emoji="ℹ️">
-      The Context class in the uagents library plays a pivotal role by overseeing message handling and serving as a central hub for essential agent functionalities such as storage, wallet, ledger, and identity management.
-    </Callout>
-
-As an introductory example, we consider an agent that periodically prints hello and its name on the console:
+If you want to create an interval task, you need to use an `on_interval()` decorator to set up an interval with a timer that triggers the task repetition. As an introductory example, we can consider an agent periodically printing hello and its name on the console. In this case, we apply the decorator to a `say_hello()` function which will be repeated at the specified time interval:
 
     ```py copy
     from uagents import Agent, Context
@@ -294,7 +297,13 @@ As an introductory example, we consider an agent that periodically prints hello 
         agent.run()
     ```
 
-The output would look like this:
+The output will be printed on your terminal every 2 seconds using the `ctx.logger.info()` method of the `Context` class.
+
+    <Callout type="info" emoji="ℹ️">
+      The `Context` class in the `uagents` library plays a central role by overseeing message handling and serving as a central hub for essential agent functionalities such as storage, wallet, ledger, and identity management.
+    </Callout>
+
+The output would look as follows:
 
     ```
     hello, my name is alice
@@ -304,9 +313,11 @@ The output would look like this:
 
 ### Agent interactions and interval tasks
 
-Considering the previous example, we now introduce a second agent and demonstrate how these can interact. In this scenario, we create two agents, each one with a name and seed phrase, and enable them to periodically engage with each other by defining the required logic and functions. Additionally, we introduce the `Bureau` class, this helper class enables agents within the same program to be run together from the same script, removing individual python scripts per an agent as we have before.
+We can now introduce a second agent to demonstrate how two agents can interact with one another. Considering the previous example, we create two agents, each one with a name and seed phrase, and enable them to periodically engage with each other. We need to introduce the `Bureau` class which enables agents, within the same program, to be run together from the same script.
 
-Let's create a new script for these agents with: `touch duo_agent.py`
+Let's create a new Python file for these agents: `touch duo_agent.py`.
+
+The script will look as follows:
 
     ```py copy
     from uagents import Agent, Context, Bureau
@@ -330,7 +341,9 @@ Let's create a new script for these agents with: `touch duo_agent.py`
         bureau.run()
     ```
 
-Copy the above into `duo_agent.py` and run with `poetry run python duo_agent.py`, the output should be similar to:
+You can now run the script: `poetry run python duo_agent.py`.
+
+The output would look as follows:
 
     ```
     [alice] Hello, my name is alice
@@ -343,17 +356,23 @@ Copy the above into `duo_agent.py` and run with `poetry run python duo_agent.py`
 
 ### Agent communication
 
-We now introduce the `Model` class, enabling effective communication between different agents, the `Model` class allows us to establish a structured message format.
-Let's create a new script for the agent communication example with `touch agent_communication.py`
+We can now introduce how to enable effective communication between different agents. To do so, we need to introduce the `Model` class which allows to create a structured message format for messages to be exchanged between the agents.
+
+Let's create a new script for this example: `touch agent_communication.py`.
+
+We can now define the `Message` data model and our two agents:
 
     ```py copy
     from uagents import Agent, Bureau, Context, Model
 
     class Message(Model):
         message: str
+
+    alice = Agent(name="alice", seed="alice recovery phrase")
+    bob = Agent(name="bob", seed="bob recovery phrase")
     ```
 
-We need to define a function for `alice` to send messages to `bob` periodically, to do this we define the `send_message()` function using the `Context` class to make our agent `alice` send a message to `bob` on interval:
+We need to define a function for `alice` to send messages to `bob` periodically. We can do this by defining a `send_message()` function using the `Context` class and make `alice` send a message to `bob` on an interval:
 
     ```py copy
     @alice.on_interval(period=3.0)
@@ -361,7 +380,7 @@ We need to define a function for `alice` to send messages to `bob` periodically,
         await ctx.send(bob.address, Message(message="hello there bob"))
     ```
 
-We then need a way for Bob to receive these messages, we can do this but creating a function for `bob` to handle all incoming messages from other agents. We will do this through a `on_message()` decorator that will activate the `message_handler()` once `bob` receives a message of type `Message`:
+We then need a way for Bob to receive these messages. We can do this by creating a function for `bob` to handle all incoming messages from other agents.  We can do this with a `on_message()` decorator that will activate the `message_handler()` function once `bob` receives a message matching the `Message` data model we previously defined:
 
     ```py copy
     @bob.on_message(model=Message)
@@ -370,7 +389,7 @@ We then need a way for Bob to receive these messages, we can do this but creatin
         await ctx.send(alice.address, Message(message="hello there alice"))
     ```
 
-We finally need to define a message handler function for `alice` to handle all response messages from `bob`:
+We then need to define a message handler function for `alice` to handle response messages from `bob`. We do so using a `on_message()` decorator:
 
     ```py copy
     @alice.on_message(model=Message)
@@ -389,38 +408,9 @@ Finally, we need to add both agents to the `Bureau` in order to run them from th
         bureau.run()
     ```
 
-The complete script for this example is provided below: 
+We can now run the script. Just run: `poetry run python agent_communication.py` in your terminal.
 
-    ```py copy filename="agents_communication.py"
-    from uagents import Agent, Bureau, Context, Model
-
-    class Message(Model):
-        message: str
-
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    bob = Agent(name="bob", seed="bob recovery phrase")
-
-    @alice.on_interval(period=3.0)
-    async def send_message(ctx: Context):
-       await ctx.send(bob.address, Message(message="hello there bob"))
-
-    @alice.on_message(model=Message)
-    async def alice_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    @bob.on_message(model=Message)
-    async def bob_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-        await ctx.send(alice.address, Message(message="hello there alice"))
-
-    bureau = Bureau()
-    bureau.add(alice)
-    bureau.add(bob)
-    if __name__ == "__main__":
-        bureau.run()
-    ```
-
-The output would be:
+The output would look as follows:
 
     ```
     [alice]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there alice
@@ -431,27 +421,27 @@ The output would be:
     [ bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
     ```
 
-To run the full script copy the complete script code into your `agent_communication.py` file and run it with the `poetry run python agent_communication.py` command. 
-
 #### Enabling search and discovery for your Agent (Almanac registration)
 
-Agent registration in the Almanac contract is a key feature which enables discoverability of agents as well enabled remote agent communication. In order to register agents must pay a small fee therefore, your agents need to have funds available in their Fetch address. Luckily in this demo we utilise the free testnet environment to simulate real world transactions. When using the testnet, you can use the function `fund_agent_if_low()` to fund your agent.
+Agent registration in the Almanac contract is a key feature which enables discoverability of agents as well enabled remote agent communication. To register, agents must pay a small fee. Therefore your agents need to have funds available in their Fetch wallet address. Luckily in this demo we utilise the testnet environment to simulate real world transactions.
 
-Following the existing sequence we firstly import, then instantiate and in this specific example include a function that ensures that agents have a non-zero balance. This function will check if you have enough tokens to register in the Almanac. If not it will add tokens to your Fetch address.
+    <Callout type="info" emoji="ℹ️">
+      When using the testnet, you can use the function `fund_agent_if_low()` to fund your agent.
+    </Callout>
 
-AI Agents can communicate by querying the Almanac contract and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
-
-Just like we did in our past examples, let's create a file for our program with the `touch almanac_registration.py` command.
+We first import, then initialize our agents and include a function ensuring that agents have non-zero balances in their wallets. This function will check if you have enough tokens to register in the Almanac. If not it will add tokens to your Fetch wallet address. AI Agents can communicate by querying the Almanac contract and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
 
     <Callout type="info" emoji="ℹ️">
       HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. These endpoints define the entry points for various operations or functions offered by a web service or application.
     </Callout>
 
-Thus, at registration, we will have what follows:
+Just like we did before, let's create a Python script for this example: `touch almanac_registration.py`.
 
-    ```py copy
+We will have what follows:
+
+    ```py copy filename="almanac_registration.py"
     from uagents.setup import fund_agent_if_low
-    from uagents import Agent
+    from uagents import Agent, Context, Protocol
 
     alice = Agent(
         name="alice",
@@ -461,28 +451,34 @@ Thus, at registration, we will have what follows:
     )
 
     fund_agent_if_low(alice.wallet.address())
+
+    @alice.on_interval(period=3)
+    async def hi(ctx: Context):
+        ctx.logger.info(f"Hello")
+
+    alice.run()
     ```
 
-    Here, we defined a local http address but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your agent so you don't have to fund different addresses each time you run your agent.
+Here, we defined a local http address but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your agent so you don't have to fund different addresses each time you run your agent.
 
-        <Callout type="info" emoji="ℹ️">
-          A seed phrase is a series of random words (typically 12 or 24) that provide the data needed to recover a lost or broken crypto wallet. It is also known as a mnemonic phrase and is best understood as a security measure for self-custodied digital assets. Agents have a crypto wallet address, and possessing the seed phrase enables the restoration of an agent's wallet address. 
-        </Callout>
+    <Callout type="info" emoji="ℹ️">
+      A seed phrase is a series of random words (typically 12 or 24) that provide the data needed to recover a lost or broken crypto wallet. It is also known as a mnemonic phrase and is best understood as a security measure for self-custody of digital assets. Agents have a crypto wallet address, and having the seed phrase enables the restoration of an agent's wallet address.
+    </Callout>
 
-
-    To run the script use the `poetry run python almanac_registration.py` command. 
+To run the script use the `poetry run python almanac_registration.py` command.
 
 #### Remote agent communication
 
-As previously specified, AI Agents can interact remotely. To achieve this, we simply need to know an agent's address and query the rest of its information in the Almanac contract. To simulate a remote context, you can create two agents operating on separate ports and terminals within the same device. This mirrors real-world scenarios where agents communicate efficiently across diverse geographic locations, enhancing collaboration and expanding the reach of intelligent systems.
+AI Agents can also interact **remotely**. To achieve a remote communication, we simply need an agent's address and query the rest of its information in the Almanac contract. You can create two agents operating on separate ports and terminals within the same device. This mirrors a real-world scenario in which these agents communicate across different geographic locations.
 
-In this example, we provide two scripts for two separate agents. To establish a line of remote communication both agents should be registered on the Almanac contract and should possess non-zero balances.
+In this example, we provide two scripts for two agents. To establish a line of remote communication both agents need to be registered on the Almanac contract and need to have non-zero balances in their Fetch wallet addresses.
 
-We first introduce `alice`. Following the existing frame of development, we first import the required modules, we then instantiate the `Model` class to define a `Message` data model for messages to be exchanged between our agents, and provide a recipient address for reference. Then, we create our agent `alice`, by providing needed information for registration, and also making sure it has enough balance in its wallet:
+We can start with `alice` agent. Let's create a Python script for it: `touch remote_alice.py`.
 
-Let's create the Alice's script with the `touch remote_alice.py` command. 
+We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our agents. We also need to provide Bob's address as a recipient address for reference. We can then create our agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. The script would be as follows:
 
-    ```py copy
+
+    ```py copy filename="remote_alice.py"
     from uagents import Agent, Context, Model
     from uagents.setup import fund_agent_if_low
 
@@ -512,9 +508,9 @@ Let's create the Alice's script with the `touch remote_alice.py` command.
         alice.run()
     ```
 
-Similarly, we also need to define a script for `bob` so to create a remote communication with `alice` agent. Instead of creating and manually writing out the same script we can copy  and rename alice's file and modify the agent's name, seed, port, decorator as well as the message content.
+Similarly, we need to define a script for `bob` so to create a remote communication with `alice` agent. Let's create a Python script for it: `touch remote_bob.py`. Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
 
-    ```py
+    ```py copy filename="remote_bob.py"
     from uagents.setup import fund_agent_if_low
     from uagents import Agent, Context, Model
 
@@ -560,22 +556,26 @@ Once you've ran both agents the expected output would be:
         [  bob]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there bob
         ```
 
-Checkout our [Communicating with other agents 📱🤖↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding AI Agents communication, both locally and remotely.
+    <Callout type="info" emoji="ℹ️">
+      Checkout our [Communicating with other agents 📱🤖↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding AI Agents communication both locally and remotely.
+    </Callout>
 
 ## Agents and storage 
 
-Agents within the uAgents Framework possess the capability to locally store information in a JSON file, ensuring data retrieval as needed. This storage functionality serves as a fundamental component for agents to maintain a state, recollect prior interactions, and base decisions on historical data. 
+Agents within the uAgents Framework have the ability to store information locally within a JSON file. This ensures data retrieval as needed. This storage functionality serves as a fundamental component for agents to maintain a state, recollect prior interactions, and base decisions on historical data.
 
-The objective behind integrating storage features is to empower agents to preserve and leverage information over time, facilitating the recollection of past interactions and context for more informed decision-making. This capacity to learn from past experiences enables agents to adapt and refine their behavior and decision processes.
+The aim behind integrating storage features is to empower agents to preserve and leverage information over time, facilitating the recollection of past interactions and context for more informed decision-making. This capacity to learn from past experiences enables agents to adapt and refine their behavior and decision processes.
 
-Retrieving or setting storage information within the Framework is achieved through two distinct methods:
+Retrieving or setting storage information within the Framework is achieved through two methods:
 
     - `ctx.storage.get()` for retrieval.
     - `ctx.storage.set()` for setting data.
 
-An example to better understand the concept of storage is provided below. In this example we have a full script for an agent holding a number, incrementing it by one and adding it to its storage is also provided.
+An example is provided below. In this example we have a full script for an agent holding a number, incrementing it by one and saving the new number to its storage.
 
-Exactly like our previous examples, we'll first create the python file that contains the script using the `touch storage.py` command in our terminal:
+Exactly like our previous examples, we first create the Python file containing the script. Run: `touch storage.py` in your terminal.
+
+The script for this example is:
 
     ```py copy filename="storage.py"
     from uagents import Agent, Context
@@ -594,6 +594,7 @@ Exactly like our previous examples, we'll first create the python file that cont
         alice.run()
     ```
 
+We can then run the script: `poetry run python storage.py`
 The output would be:
 
     ```
@@ -602,8 +603,6 @@ The output would be:
     [alice]: My count is: 3
     ...
     ```
-
-To execute the storage agent, simply employ the standard method we've demonstrated: `poetry run python storage.py`
 
 #### Booking a table at a restaurant
 
