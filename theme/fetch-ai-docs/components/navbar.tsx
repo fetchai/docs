@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import cn from "clsx";
-import React from "react";
+import React, { useState } from "react";
 import { useFSRoute } from "nextra/hooks";
 import { ArrowRightIcon, MenuIcon } from "nextra/icons";
 import type { Item, MenuItem, PageItem } from "nextra/normalize-pages";
@@ -11,6 +11,16 @@ import { Anchor } from "./anchor";
 import router from "next/router";
 import { useUserContext } from "../contexts/context-provider";
 import AccountMenu from "components/account-menu";
+import { Listbox } from "@headlessui/react";
+import { RiArrowDropDownLine } from "react-icons/ri";
+
+const people = [
+  { id: 1, name: "Durward Reynolds", unavailable: false },
+  { id: 2, name: "Kenton Towne", unavailable: false },
+  { id: 3, name: "Therese Wunsch", unavailable: false },
+  { id: 4, name: "Benedict Kessler", unavailable: true },
+  { id: 5, name: "Katelyn Rohan", unavailable: false },
+];
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -98,7 +108,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const activeRoute = useFSRoute();
   const { menu, setMenu } = useMenu();
   const context = useUserContext();
-
+  const [selectedPerson, setSelectedPerson] = useState(people[0]);
   const handleSignOut = () => {
     context.signOut();
     router.push("/");
@@ -215,28 +225,49 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           const isActive =
             page.route === activeRoute ||
             activeRoute.startsWith(page.route + "/");
-
           return (
-            <Anchor
-              href={href}
-              key={href}
-              className={cn(
-                classes.link,
-                "nx-relative nx-mr-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block",
-                !isActive || page.newWindow ? classes.inactive : classes.active,
-                index === 0 && !isActive && "-nx-ml-4", // Align the first item to the left
-              )}
-              newWindow={page.newWindow}
-              aria-current={!page.newWindow && isActive}
-            >
-              <span className="nx-absolute nx-inset-x-0 nx-text-base nx-text-center">
-                {page.title}
-              </span>
-              <span className="nx-invisible nx-text-base">{page.title}</span>
-            </Anchor>
+            <>
+              <Anchor
+                href={href}
+                key={href}
+                className={cn(
+                  classes.link,
+                  "nx-relative nx-mr-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block",
+                  !isActive || page.newWindow
+                    ? classes.inactive
+                    : classes.active,
+                  index === 0 && !isActive && "-nx-ml-4", // Align the first item to the left
+                )}
+                newWindow={page.newWindow}
+                aria-current={!page.newWindow && isActive}
+              >
+                <span className="nx-absolute nx-inset-x-0 nx-text-base nx-text-center">
+                  {page.title}
+                </span>
+                <span className="nx-invisible nx-text-base">{page.title}</span>
+              </Anchor>
+            </>
           );
         })}
-
+        <span className="nx-relative">
+          <Listbox value={selectedPerson} onChange={setSelectedPerson}>
+            <Listbox.Button className="nx-relative nx-text-gray-600 nx-rounded-lg nx-border nx-px-2 nx-py-1 nx-border-gray-600 ">
+              {selectedPerson.name}
+            </Listbox.Button>
+            <Listbox.Options className="pr-6 outline-none nx-left-0 nx-absolute nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium nx-bg-white nx-border">
+              {people.map((person) => (
+                <Listbox.Option
+                  key={person.id}
+                  value={person}
+                  disabled={person.unavailable}
+                  className="nx-text-base nx-text-gray-500 nx-py-1 nx-w-full "
+                >
+                  {person.name}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </Listbox>
+        </span>
         {renderComponent(config.search.component, {
           directories: flatDirectories,
           className: "md:nx-hidden nx-mt-6 nx-mb-2",

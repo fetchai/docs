@@ -9,6 +9,7 @@ import { MDXProvider } from "nextra/mdx";
 import "./polyfill";
 import type { PageTheme } from "nextra/normalize-pages";
 import { normalizePages } from "nextra/normalize-pages";
+
 import {
   Banner,
   Breadcrumb,
@@ -26,6 +27,8 @@ import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
 import { UserInfoProvider, useUserContext } from "./contexts/context-provider";
+import Bookmark from "./components/bookmark";
+import useBookMark from "theme/use-book-mark";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -48,7 +51,16 @@ const classes = {
   ),
   main: cn("nx-w-full nx-break-words"),
 };
+function isLinkInResponse(response) {
+  // Flatten the array of arrays into a single array
+  console.log(response, "lll")
+  const flattenedArray = response?.flat();
+  console.log(flattenedArray)
+  // Check if the targetURL is present in the flattened array
+  const isPresent = flattenedArray?.includes(window.location.href);
 
+  return isPresent;
+}
 const Body = ({
   themeContext,
   breadcrumb,
@@ -57,6 +69,11 @@ const Body = ({
   tags,
   children,
 }: BodyProps): ReactElement => {
+  const context = useUserContext();
+  const {
+    state: { bookMarks },
+    action: { onClickBookMark },
+  } = useBookMark(context);
   const config = useConfig();
   const mounted = useMounted();
 
@@ -92,9 +109,8 @@ const Body = ({
       {tags.map((tag, index) => (
         <span
           key={index}
-          className={`nx-text-fetch-main nx-text-sm nx-font-normal nx-rounded nx-px-4 nx-py-2 nx-${
-            tagColors[index % tagColors.length]
-          }`}
+          className={`nx-text-fetch-main nx-text-sm nx-font-normal nx-rounded nx-px-4 nx-py-2 nx-${tagColors[index % tagColors.length]
+            }`}
         >
           {tag}
         </span>
@@ -103,7 +119,6 @@ const Body = ({
   );
   const routeOriginal = useFSRoute();
   const [route] = routeOriginal.split("#");
-
   const content = (
     <>
       {tagsComponent}
@@ -118,35 +133,42 @@ const Body = ({
     </>
   );
 
+  const bookMark = isLinkInResponse(bookMarks)
   const body = config.main?.({ children: content }) || content;
-
   if (themeContext.layout === "full") {
     return (
-      <article
-        className={cn(
-          classes.main,
-          "nextra-content nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]",
-        )}
-      >
-        {body}
-      </article>
+      <>
+        <article
+          className={cn(
+            classes.main,
+            "nextra-content nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]",
+          )}
+        >
+          {body}
+        </article>
+      </>
     );
   }
 
   return (
-    <article
-      className={cn(
-        classes.main,
-        "nextra-content nx-flex nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-min-w-0 nx-pb-8 nx-pr-[calc(env(safe-area-inset-right)-1.5rem)]",
-        themeContext.typesetting === "article" &&
+    <>
+      <article
+        className={cn(
+          classes.main,
+          "nextra-content nx-flex nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-min-w-0 nx-pb-8 nx-pr-[calc(env(safe-area-inset-right)-1.5rem)]",
+          themeContext.typesetting === "article" &&
           "nextra-body-typesetting-article",
-      )}
-    >
-      <main className="nx-w-full nx-min-w-0 nx-max-w-6xl nx-px-6 nx-pt-4 md:nx-px-12">
-        {breadcrumb}
-        {body}
-      </main>
-    </article>
+        )}
+      >
+        <main className="nx-w-full nx-min-w-0 nx-max-w-6xl nx-px-6 nx-pt-4 md:nx-px-12">
+          {breadcrumb}
+          {body}
+        </main>
+      </article>
+      <div>
+        <Bookmark bookMark={bookMark} onClickBookMark={onClickBookMark} />
+      </div>
+    </>
   );
 };
 
@@ -221,7 +243,7 @@ const InnerLayout = ({
 
   const check = activePath.at(-1)?.permission?.length
     ? activePath.at(-1)?.permission.includes("fetch.ai") &&
-      context.isFetchAccount
+    context.isFetchAccount
     : true;
   return (
     // This makes sure that selectors like `[dir=ltr] .nextra-container` work
