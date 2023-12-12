@@ -62,7 +62,7 @@ Once you have installed PyEnv you can configure its shell environment:
     echo 'eval "$(pyenv init -)"' >> ~/.zshrc
     ```
 
-These commands configure your shell environment (specifically for the **Zsh shell**) to work with PyEnv. These set up environment variables, modify the PATH, and initialize PyEnv so that you can easily manage and switch between different Python versions.
+These commands configure your shell environment (specifically the **Zsh shell**) to work with PyEnv. These commands set up environment variables, modify the PATH, and initialize PyEnv so that you can easily manage and switch between different Python versions.
 
     <Callout type="info" emoji="ℹ️">
       You can verify all steps [here ↗️](https://github.com/pyenv/pyenv#installation).
@@ -141,7 +141,7 @@ This command will install the dependencies specified in the **pyproject.toml** f
 
 ## Overview of the uAgents Framework
 
-The [uAgents Framework ↗️](https://pypi.org/project/uagents/) is the fundamental infrastructure in Fetch.ai's ecosystem for the creation and deployment of AI Agents. It serves as a base framework providing the tools, protocols and functionalities necessary for the development of autonomous agents. The Framework is integrated with several key components of the Fetch.ai ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) and the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview). This is a repository where important information about registered agents is stored to improve communication between agents within the Fetch.ai network. The Framework is also integrated with [Agentverse ↗️](/concepts/agent-services/agentverse-intro), a cloud-based platform that provides developers with a single environment for developing, managing and deploying AI Agents.
+The [uAgents Framework ↗️](https://pypi.org/project/uagents/) is the fundamental infrastructure in Fetch.ai's ecosystem for the creation and deployment of AI Agents. It serves as a base framework providing the tools, protocols and functionalities necessary for the development of autonomous agents. The Framework is integrated with several key components of the Fetch.ai ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) and the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview). This is a repository where important information about registered agents is stored to improve communication between agents within the Fetch.ai network. The Framework is also integrated with the [Agentverse ↗️](/concepts/agent-services/agentverse-intro), a cloud-based platform that provides developers with a single environment for developing, managing and deploying AI Agents.
 
 ### Key concepts
 
@@ -155,13 +155,17 @@ AI Agents developed with the uAgents Framework are identified by **two types of 
 
 These addresses serve as identifiers for each agent within the Fetch.ai Ecosystem.
 
-Check out the [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address) guide to learn more on this topic.
+    <Callout type="info" emoji="ℹ️">
+      Check out the [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address) guide to learn more on this topic.
+    </Callout>
 
 #### Storage
 
 AI Agents can store information in a **JSON file** that they can freely retrieve when needed. **Storage** is critical for agents to maintain state, remember past interactions and make informed decisions based on historical data.
 
-If you wish to learn more, explore our [Using agents storage function ↗️](/guides/agents/storage-function) guide or the [agents storage ↗️](/references/uagents/uagents-protocols/storage) documentation. If you are new to JSON please see an example [here ↗️](https://www.w3schools.com/whatis/whatis_json.asp).
+    <Callout type="info" emoji="ℹ️">
+      If you wish to learn more, explore our [Using agents storage function ↗️](/guides/agents/storage-function) guide or the [agents storage ↗️](/references/uagents/uagents-protocols/storage) documentation. If you are new to JSON please see an example [here ↗️](https://www.w3schools.com/whatis/whatis_json.asp).
+    </Callout>
 
 #### Protocols
 
@@ -179,11 +183,15 @@ The **Exchange Protocol** facilitates efficient communication between agents by 
     - Expiration time.
     - Signature for authentication.
 
-The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON formatted data. These details ensure consistent and standardized communication within the Fetch.ai uAgents ecosystem. For more information, see our [Exchange Protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) documentation.
+The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON formatted data. These details ensure consistent and standardized communication within the Fetch.ai uAgents ecosystem.
+
+    <Callout type="info" emoji="ℹ️">
+      For more information, see our [Exchange Protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) documentation.
+    </Callout>
 
 #### Almanac contract, registering, searching and discovery
 
-The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is an important component in Fetch.ai Ecosystem. It operates as a blockchain-based repository where agents register, exchange information and establish communication. Registration in the Almanac is mandatory so that agents can participate in remote interactions and become discoverable through the Agentverse Explorer.
+The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is an important component in Fetch.ai Ecosystem. It operates as a blockchain-based repository where agents register, exchange information and establish communication. Registration in the Almanac is mandatory so that agents can participate in remote interactions and become discoverable through the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer).
 
 Agents keep their registrations up to date within certain block limits to ensure the accuracy and relevance of their data. Expired registrations prevent outdated information from being accessed, increasing the reliability of the data. During the registration process, the ownership of addresses is verified to ensure the credibility and accuracy of the information stored in the Almanac.
 
@@ -197,8 +205,7 @@ The agents registered in the Almanac provide service endpoints for remote commun
 
 ### Create your first agent
 
-Creating your first agent is a straightforward process. First of all, we need to create a Python file for this example. We can do this by running: `touch alice_agent.py`.
-
+Creating your first agent is a straightforward process. First of all, we need to create a Python file for this example. We can do this by running: `touch alice_agent.py`
 
 We can now code our agent. Let's start by importing the required modules. In our case, we would need to import the `Agent` module from the `uagents` library, and proceed to instantiate the agent by providing a `name`. The following code exemplifies the creation of the simplest possible agent:
 
@@ -254,7 +261,7 @@ This time, the output will be:
     Hello, I'm agent alice and my address is agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t.
     ```
 
-#### Printing agent's addresses
+### Printing agent's addresses
 
 Sometimes we just need to see what a value looks like. We can quickly do so in Python by using the in-built function `print()`. This allows you to perform such an action. As we have mentioned earlier, every AI Agent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses. We have showed above how to check for an agent address using the `ctx.address` method of the `Context` class. Let's now print them in the console to see their differences using the `print()` function:
 
@@ -421,7 +428,7 @@ The output would look as follows:
     [ bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
     ```
 
-#### Enabling search and discovery for your Agent (Almanac registration)
+### Enabling search and discovery for your Agent (Almanac registration)
 
 Agent registration in the Almanac contract is a key feature which enables discoverability of agents as well enabled remote agent communication. To register, agents must pay a small fee. Therefore your agents need to have funds available in their Fetch wallet address. Luckily in this demo we utilise the testnet environment to simulate real world transactions.
 
@@ -467,7 +474,7 @@ Here, we defined a local http address but you could also define a remote address
 
 To run the script use the `poetry run python almanac_registration.py` command.
 
-#### Remote agent communication
+### Remote agent communication
 
 AI Agents can also interact **remotely**. To achieve a remote communication, we simply need an agent's address and query the rest of its information in the Almanac contract. You can create two agents operating on separate ports and terminals within the same device. This mirrors a real-world scenario in which these agents communicate across different geographic locations.
 
@@ -560,7 +567,7 @@ Once you've ran both agents the expected output would be:
       Checkout our [Communicating with other agents 📱🤖↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding AI Agents communication both locally and remotely.
     </Callout>
 
-## Agents and storage 
+### Agents and storage
 
 Agents within the uAgents Framework have the ability to store information locally within a JSON file. This ensures data retrieval as needed. This storage functionality serves as a fundamental component for agents to maintain a state, recollect prior interactions, and base decisions on historical data.
 
@@ -573,9 +580,7 @@ Retrieving or setting storage information within the Framework is achieved throu
 
 An example is provided below. In this example we have a full script for an agent holding a number, incrementing it by one and saving the new number to its storage.
 
-Exactly like our previous examples, we first create the Python file containing the script. Run: `touch storage.py` in your terminal.
-
-The script for this example is:
+We first create the Python file containing the script. Run: `touch storage.py` in your terminal. The script for this example is:
 
     ```py copy filename="storage.py"
     from uagents import Agent, Context
@@ -604,21 +609,17 @@ The output would be:
     ...
     ```
 
-#### Booking a table at a restaurant
+### Booking a table at a restaurant
 
-We now want to show how to set up the code to create a **restaurant booking service with two **uAgents**: a `restaurant` with tables available, and a `user` requesting table availability.
+We now want to show how to set up the code to create a **restaurant booking service with two **AI Agents**: a `restaurant` with tables available and a `user` requesting a table availability.
 
-We will accomplish this by defining 2 specific protocols, one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). We will then need to define two agents, `restaurant` and `user`, which will make use of the protocols to query and book a table.
+We can do this by defining 2 specific protocols: one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). We then need to define two agents, `restaurant` and `user`, which will make use of the protocols to query and book a table.
 
-     <Callout type="info" emoji="ℹ️">
-       The uAgents Framework facilitates communication between agents by organizing message types and handlers within protocols. Agents that share the same protocol can easily interact with one another. For a deeper dive on protocols, visit our [references documentation ↗️](/references/uagents/uagents-protocols/exchange-protocol) and the [AI Agents guides ↗️](/guides#agents) for a practical visualization of protocols implementation, in particular the [How to use the agents to simulate a cleaning scenario ↗️]() and the How to book a table at a restaurant using agents which is being treated in this guide.
-     </Callout>
+We can start by writing the code for our two protocols.
 
-We can start by writing the code for our 2 protocols. In this example take the initiative and create your python file for the protocols. 
+#### Table querying protocol
 
-##### Table querying protocol
-
-Let's start by defining the protocol for querying availability of tables at the restaurant. We start by importing the necessary classes and defining the message data models for types of messages being handled. Then, we proceed to create an instance of the Protocol class and name it `query_proto`.
+Let's start by defining the protocol for querying availability of tables at the restaurant. We start by importing the necessary classes and defining the message data models for types of messages being handled. We then proceed and create an instance of the `Protocol` class and name it `query_proto`:
 
     ```py copy
     from typing import List
@@ -691,7 +692,7 @@ Let's then define the message handlers for the `query_proto` protocol:
         await ctx.send(sender, TotalQueries(total_queries=total_queries))
     ```
 
-    Here, the `handle_query_request()` function is the message handler function defined using the `on_message()` decorator. It handles the QueryTableRequest messages and replies with a `QueryTableResponse` message. The handler processes the table availability query based on the provided parameters, checks the table statuses stored in the agent's storage, and sends the available table numbers as a response to the querying agent. 
+    Here, the `handle_query_request()` function is the message handler function defined using the `on_message()` decorator. It handles the `QueryTableRequest` messages and replies with a `QueryTableResponse` message. The handler processes the table availability query based on the provided parameters, checks the table status stored in the agent's storage, and sends the available table numbers as a response to the querying agent.
     
     Additionally, the handler tracks the total number of queries made and increments the count in storage. On the other hand, `handle_get_total_queries()` is the message handler function defined using the `on_query()` decorator. It handles the `GetTotalQueries` query and replies with a `TotalQueries` message containing the total number of queries made to the system. The handler retrieves the total query count from the agent's storage and responds with the count.
 
@@ -751,7 +752,7 @@ The overall script should look as follows:
         await ctx.send(sender, TotalQueries(total_queries=total_queries))
     ```
 
-### Table booking protocol
+#### Table booking protocol
 
 We can now proceed by writing the booking protocol script for booking the table at the restaurant. We first need to import the necessary classes and define the message data models. In this case, the booking protocol consists of two message models: `BookTableRequest` and `BookTableResponse`. Then, create an instance of the `Protocol` class and name it `book_proto`:
 
@@ -803,7 +804,7 @@ Let's now define the message handler function:
         await ctx.send(sender, BookTableResponse(success=success))
     ```
 
-    The `handle_book_request()` handler first retrieves table statuses from the agent's storage and converts them into a dictionary with integer keys (table numbers) and `TableStatus` values. The `TableStatus` class is imported from the query module. Next, the handler gets the table associated with the requested `table_number` from the tables dictionary. The handler checks if the requested time_start falls within the availability period of the table. If the table is available for the requested booking duration, the handler sets success to True, updates the table's `time_start` to reflect the end of the booking, and saves the updated table information in the agent's storage using `ctx.storage.set()`. If the table is not available for the requested booking, the handler sets success to `False`. The handler sends a `BookTableResponse` message back to the sender with the success status of the booking using the `ctx.send()` method.
+    The `handle_book_request()` handler first retrieves table statuses from the agent's storage and converts them into a dictionary with integer keys (table numbers) and `TableStatus` values. The `TableStatus` class is imported from the query module. Next, the handler gets the table associated with the requested `table_number` from the tables dictionary. The handler checks if the requested time_start falls within the availability period of the table. If the table is available for the requested booking duration, the handler sets success to `True`, updates the table's `time_start` to reflect the end of the booking, and saves the updated table information in the agent's storage using `ctx.storage.set()`. If the table is not available for the requested booking, the handler sets success to `False`. The handler sends a `BookTableResponse` message back to the sender with the success status of the booking using the `ctx.send()` method.
 
 The overall script should be: 
 
@@ -844,11 +845,9 @@ The overall script should be:
         await ctx.send(sender, BookTableResponse(success=success))
     ```
 
-### Restaurant agent
+#### Restaurant agent
 
-Now, let's move forward by creating our restaurant agent in a separate file. In this step, we'll reimport the essential classes from the uAgents library and reintegrate the two protocols we've previously designed. 
-
-As we define our restaurant agent, it's vital to ensure it possesses sufficient funds in its wallet for the registration process. Remember to use the `fund_agent_if_low` method for this. 
+Let's now move forward and create our restaurant agent in a separate file. In this step, we'll import the essential classes from the `uagents` library and reintegrate the two protocols we've previously coded. As we define our `restaurant` agent, it's vital to ensure it possesses sufficient funds in its wallet for the registration process. Remember to use the `fund_agent_if_low` method for this.
 
     ```py copy
     rom uagents import Agent
@@ -885,9 +884,10 @@ Let's build the `restaurant` agent from above protocols and set the table availa
     ```
 
 The `restaurant` agent is now online and ready to receive messages.
+
 The overall script would be as follow:
 
-    ```py copy filename="restaurantAgent.py"
+    ```py copy filename="restaurant_agent.py"
     from uagents import Agent, Context
     from uagents.setup import fund_agent_if_low
     from protocols.book import book_proto
@@ -919,7 +919,7 @@ The overall script would be as follow:
         restaurant.run()
     ```
 
-### User agent
+#### User agent
 
 We can now define the script for our `user` agent querying and booking a table at the `restaurant`.
 
@@ -1001,7 +1001,7 @@ Let's then define a function which will handle messages from the `restaurant` ag
 
 The overall script would be:
 
-    ```py copy filename="userAgent.py"
+    ```py copy filename="user_agent.py"
     from protocols.book import BookTableRequest, BookTableResponse
     from protocols.query import (
         QueryTableRequest,
@@ -1069,9 +1069,9 @@ The overall script would be:
         user.run()
     ```
 
-We are ready to run the example. Run the `restaurant` agent and then the `user` agent from different terminals. Similarly to all other examples use the `poetry run python script name.py` command. 
+We are ready to run the example.
 
-The output should be as follows:
+Run the `restaurant` agent and then the `user` agent from different terminals. The output should be as follows:
 
     **Restaurant**:
 
@@ -1086,12 +1086,12 @@ The output should be as follows:
         [ user]: Table reservation was successful
         ```
 
-### From novice to navigator: your course conclusion and beyond!
+## From novice to navigator: your course conclusion and beyond!
 
-We appreciate your active participation in our introductory course on AI agents. The knowledge you've acquired here forms a robust basis for your future development endeavors.
+We appreciate your active participation in our introductory course on AI agents. The knowledge you've acquired here forms a robust basis for your future AI Agents development endeavors.
 
-Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of AI agents by exploring our dedicated [AI Agents ↗️](/concepts/agents/agents) documentation and [GitHub ↗️](https://github.com/fetchai/uAgents) repository. Also, do not forget to checkout our full list of [AI Agents guides ↗️](/guides) delving into the development of AI Agents and concepts explained in this introductory course, but in a more detailed manner, so for you to build up your knowledge and get used to this technology.
+Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of AI agents by exploring our dedicated [AI Agents ↗️](/concepts/agents/agents) documentation and [GitHub ↗️](https://github.com/fetchai/uAgents) repository. Also, do not forget to checkout our full list of [AI Agents guides ↗️](/guides) diving into the development of AI Agents and concepts explained in this introductory course, but in a more detailed manner.
 
-Additionally, join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun!
+Join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun!
 
-There, you can not only star the project but also access a treasure trove of valuable resources that will supercharge your journey in agent development. Seize this opportunity to transform your ideas into innovative agents. We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.
+There, you can not only star the project but also access valuable resources that will enhance your agent development journey. We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.
