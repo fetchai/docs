@@ -7,7 +7,7 @@ import type { FC, ReactNode } from "react";
 import { isValidElement } from "react";
 import { z } from "zod";
 import { Anchor, Footer, Navbar, TOC } from "./components";
-import { MatchSorterSearch } from "./components/match-sorter-search";
+import { InstantAlgoliaSearch } from "./components/instant-algolia-search";
 import type { NavBarProps } from "./components/navbar";
 import { themeOptionsSchema, ThemeSwitch } from "./components/theme-switch";
 import type { TOCProps } from "./components/toc";
@@ -273,10 +273,8 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     ),
   },
   search: {
-    component: function Search({ className, directories }) {
-      return (
-        <MatchSorterSearch className={className} directories={directories} />
-      );
+    component: function Search({ directories }) {
+      return <InstantAlgoliaSearch directories={directories} />;
     },
     emptyResult: (
       <span className="nx-block nx-select-none nx-p-8 nx-text-center nx-text-sm nx-text-gray-400">
