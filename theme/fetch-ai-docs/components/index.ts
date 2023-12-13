@@ -9,6 +9,7 @@ export { NavLinks } from "./nav-links";
 export { Navbar } from "./navbar";
 export { NotFoundPage } from "./not-found";
 export { Search } from "./search";
+export { InstantAlgoliaSearch } from "./instant-algolia-search";
 export { Select } from "./select";
 export { ServerSideErrorPage } from "./server-side-error";
 export { Sidebar } from "./sidebar";
