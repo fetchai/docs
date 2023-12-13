@@ -128,11 +128,11 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
             </div>
           )}
 
-          {renderComponent(config.search.component, {
-            directories: flatDirectories,
-            className:
-              "nx-hidden md:nx-inline-block mx-min-w-[280px] nx-mr-4 nx-mt-05",
-          })}
+          <div className="nx-hidden md:nx-inline-block nx-footer-width-50">
+            {renderComponent(config.search.component, {
+              directories: flatDirectories,
+            })}
+          </div>
 
           {config.project.link ? (
             <Anchor
@@ -237,10 +237,12 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           );
         })}
 
-        {renderComponent(config.search.component, {
-          directories: flatDirectories,
-          className: "md:nx-hidden nx-mt-6 nx-mb-2",
-        })}
+        <div className="md:nx-hidden nx-mt-6 nx-mb-2">
+          {renderComponent(config.search.component, {
+            directories: flatDirectories,
+            // className: "md:nx-hidden nx-mt-6 nx-mb-2",
+          })}
+        </div>
       </nav>
     </div>
   );
