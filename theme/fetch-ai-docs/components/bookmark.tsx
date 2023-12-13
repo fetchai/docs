@@ -45,9 +45,11 @@ const Bookmark = ({
   const [isVisible, setIsVisible] = useState(bookMark);
   const context = useUserContext();
 
+  const pathname = typeof window !== "undefined" && window?.location?.pathname
+
   useEffect(() => {
     setIsVisible(bookMark);
-  }, [bookMark]);
+  }, [bookMark, pathname]);
   const handleToggleBookmark = async () => {
     const newVisibilityState = !isVisible;
     onClickBookMark(newVisibilityState);

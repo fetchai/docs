@@ -12,7 +12,6 @@ import router from "next/router";
 import { useUserContext } from "../contexts/context-provider";
 import AccountMenu from "components/account-menu";
 import { Listbox } from "@headlessui/react";
-import { RiArrowDropDownLine } from "react-icons/ri";
 
 const people = [
   { id: 1, name: "Durward Reynolds", unavailable: false },
@@ -251,18 +250,32 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
         })}
         <span className="nx-relative">
           <Listbox value={selectedPerson} onChange={setSelectedPerson}>
-            <Listbox.Button className="nx-relative nx-text-gray-600 nx-rounded-lg nx-border nx-px-2 nx-py-1 nx-border-gray-600 ">
+            <Listbox.Button className="nx-relative nx-appearance-none nx-rounded-xxl nx-transition-colors  nx-bg-black/[.05] nx-text-gray-600  nx-rounded-full nx-border nx-px-2 nx-py-1 nx-border-gray-600 ">
               {selectedPerson.name}
             </Listbox.Button>
-            <Listbox.Options className="pr-6 outline-none nx-left-0 nx-absolute nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium nx-bg-white nx-border">
+            <Listbox.Options className="pr-6 outline-none nx-left-0 nx-absolute nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium  nx-bg-white nx-border">
               {people.map((person) => (
                 <Listbox.Option
                   key={person.id}
                   value={person}
                   disabled={person.unavailable}
-                  className="nx-text-base nx-text-gray-500 nx-py-1 nx-w-full "
+                  className={({ active }) =>
+                    `nx-text-base nx-text-gray-500  nx-w-full nx-select-none nx-py-2  ${
+                      active ? ' nx-bg-slate-900 nx-text-slate-900' : 'nx-text-gray-900'
+                    }`
+                  }
                 >
-                  {person.name}
+                   {({ selected }) => (
+                    <>
+                      <span
+                        className={` nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate ${
+                          selected ? 'nx-font-medium' : 'nx-font-normal'
+                        }`}
+                      >
+                        {person.name}
+                      </span>
+                    </>
+                  )}
                 </Listbox.Option>
               ))}
             </Listbox.Options>

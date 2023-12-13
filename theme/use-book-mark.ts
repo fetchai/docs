@@ -5,7 +5,7 @@ const useBookMark = (context, is_visible) => {
   const fetchBookMarks = async (context) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/bookmarks?user_email=${context?.user?.email}&is_visible=${is_visible}`,
+        `http://localhost:8000//api/bookmarks?user_email=${context?.user?.email}&is_visible=${is_visible}`,
         {
           method: "GET",
           headers: {
@@ -20,11 +20,13 @@ const useBookMark = (context, is_visible) => {
     }
   };
 
+  const pathname = typeof window !== "undefined" && window?.location?.pathname
+
   useEffect(() => {
     if (context?.user?.email) {
       fetchBookMarks(context);
     }
-  }, [context?.user?.email]);
+  }, [context?.user?.email, pathname]);
 
   const onClickBookMark = async (newVisibilityState: boolean) => {
     try {
