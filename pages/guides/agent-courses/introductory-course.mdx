@@ -2,35 +2,28 @@ import { Callout } from 'nextra/components'
 
 # AI Agents 101 🤖
 
-## Get started with AI agents 🎯
+## Overview
 
-This course guides you through your first AI Agent development journey. As you move on, you will be able to create increasingly complex agents and use cases. This guide is aimed at beginner programmers, but it contains a lot of information for experienced developers too. If you are unsure about certain terms or topics, contact us on [Discord ↗️] (https://discord.gg/fetchai).
+Welcome to **AI Agents 101**! This course is designed to introduce you to the development of AI agents, providing a comprehensive guide from foundational concepts to practical implementation. Whether you're a beginner in programming or an experienced developer, this course caters to various skill levels, offering a pathway to create increasingly sophisticated AI agents and explore diverse use cases.
 
-## Introduction to AI agents
+If you encounter uncertainties or have questions about specific terms or topics throughout the course, our support team is available on [Discord ↗️](https://discord.gg/fetchai) to assist you.
 
-The [uAgents Framework ↗️](/concepts/agents/agents) is a lightweight framework that enables individuals and organizations to create and deploy AI Agents in a variety of contexts, including decentralized contexts. **AI Agents** are programs designed to operate freely in a decentralized landscape based on the user's goals. AI Agents can connect, search and transact to create dynamic markets. They can be programmed with logic to interact with their environment and with other agents in the network to perform operations without human involvement. Agents enable individuals and businesses to automate a wide range of workflows by combining artificial intelligence, API calls, blockchain technology and sophisticated business logic.
+## Introduction to AI Agents
 
-## Setup your machine 🛠️
+In this course, you'll delve into the world of AI Agents using the [uAgents Framework ↗️](/concepts/agents/agents). AI Agents are specialized programs able to operate autonomously within decentralized landscapes, aligned with user-defined objectives. These agents have the ability to connect, search, transact, and establish dynamic markets. By leveraging artificial intelligence, API calls, blockchain technology, and intricate business logic, AI Agents automate diverse workflows, facilitating interactions with their environment and other networked agents sans human intervention.
 
-For this course we will use [Python ↗️](https://www.python.org/downloads/) programming language. Plenty of programming languages are available, but we think Python is particularly good to learn and build great AI Agents.
+## Set up your development environment 🛠️
+### Prerequisites
 
-This guide also covers:
+Before embarking on this course, ensure your machine meets the following requirements:
 
-    1. **IDEs**: Visual Studio Code or PyCharm (any will work, even Notepad).
-    2. **Homebrew**: latest version.
-    3. **PyEnv**: latest version.
-    4. **Python**: 3.8+.
-    5. **Poetry**: latest version.
+    1. **Python 3.8+**: download and install Python from [Python's official website ↗️](https://www.python.org/downloads/)
+    2. **Preferred IDE**: Visual Studio Code or PyCharm (alternative options like Notepad are feasible).
 
-    <Callout type="warning" emoji="⚠️">
-      All commands, unless stated, are to be run in a terminal window.
-    </Callout>
+### Set up development tools
+#### Installing Homebrew
 
-### Install Homebrew
-
-We recommend starting with **Homebrew** as it helps you to install all other software easily. Homebrew is a package manager for MacOS that simplifies the installation and management of software and packages on Mac computers via the command line.
-
-You can install it by running:
+**Homebrew** streamlines software installations on MacOS via the command line. To install and update Homebrew, execute the following commands:
 
     ```
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -46,7 +39,7 @@ You can verify it [here ↗️](https://brew.sh/). Let's then ensure Homebrew is
       For more information on Homebrew explore their [website ↗️](https://brew.sh/).
     </Callout>
 
-### Installing PyEnv
+#### Installing PyEnv
 
 Now, you need to install **PyEnv**. It is a simple tool to manage multiple versions of Python. Run:
 
@@ -66,7 +59,7 @@ Once you have installed PyEnv you can configure the shell environment:
       These commands configure your shell environment (specifically the **Zsh shell**) to work with PyEnv. These commands set up environment variables, modify the PATH, and initialize PyEnv so that you can easily manage and switch between different Python versions. You can verify all steps [here ↗️](https://github.com/pyenv/pyenv#installation).
     </Callout>
 
-You are now ready to **install Python**. You need to install a version of Python 3.8 or above (for this example, we use version 3.10):
+You are now ready to **install Python** if you haven't done it yet. You need to install a version of Python 3.8 or above (for this example, we use version 3.10):
 
     ```
     pyenv install 3.10
@@ -85,7 +78,7 @@ Let's now ensure the **global version of Python** you are working with is not th
     pyenv versions # this verifies if it is set up correctly
     ```
 
-### Install Poetry
+#### Installing Poetry
 
 You now need to install **Poetry**. Poetry is used for managing Python project dependencies, handling virtual environments, packaging, and publishing Python libraries or applications.
 
@@ -99,7 +92,7 @@ You can install Poetry by running the following command:
       If you would like to learn more about Poetry, visit the [website ↗️](https://python-poetry.org/docs/#installation) for further information.
     </Callout>
 
-### Initialize your project with Poetry
+#### Initialize your project with Poetry
 
 You now have all necessary tools installed. You are ready to initialize your project! Let's create a working directory and initialize Poetry 🎉.
 
@@ -135,17 +128,16 @@ Once you complete the initialization, run:
 
 This command will install the dependencies specified in the **pyproject.toml** file.
 
-**With this, you have finalized the installation process. You can now start creating your first AI Agent!**
+**Congratulations! You've completed the installation process. You're now all set to embark on creating your first AI Agent!**
 
 ## Overview of the uAgents Framework
 
-The [uAgents Framework ↗️](https://pypi.org/project/uagents/) is the fundamental infrastructure in Fetch.ai's ecosystem for the creation and deployment of AI Agents. It serves as a base framework providing the tools, protocols and functionalities necessary for the development of autonomous agents. The Framework is integrated with several key components of the Fetch.ai ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) and the [Agentverse ↗️](/concepts/agent-services/agentverse-intro), which is a cloud-based platform providing developers with a single environment for developing, managing and deploying AI Agents.
+The [uAgents Framework ↗️](https://pypi.org/project/uagents/) provides the essential infrastructure for creating and deploying AI Agents within Fetch.ai Ecosystem. It offers a comprehensive toolkit, protocols, and functionalities crucial for developing autonomous agents. The uAgents Framework is integrated with several components of the Fetch.ai Ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) and the [Agentverse ↗️](/concepts/agent-services/agentverse-intro), which is a cloud-based platform providing developers with a single environment for developing, managing and deploying AI Agents.
 
-### Key concepts
-
+### Core concepts
 #### Addresses
 
-AI Agents developed with the uAgents Framework are identified by **two types of addresses** (these serve as identifiers for each agent within the Fetch.ai Ecosystem):
+AI Agents are identified by **two types of addresses**, serving as identifiers for each agent within the Fetch.ai Ecosystem:
 
     1. **uAgent Address**: the primary agent identifier; it allows it to interact with other agents, exchange messages, and participate in decentralized network activities
 
@@ -157,10 +149,10 @@ AI Agents developed with the uAgents Framework are identified by **two types of 
 
 #### Storage
 
-AI Agents can store information in **JSON files** that they can freely retrieve when needed. **Storage** is critical for agents to maintain state, remember past interactions and make informed decisions based on historical data.
+AI Agents can store information in **JSON files** that they can freely retrieve when needed. Storage plays a critical role in maintaining agent state, retaining past interactions, and facilitating informed decision-making based on historical data.
 
     <Callout type="info" emoji="ℹ️">
-      If you wish to learn more, explore our [Using agents storage function ↗️](/guides/agents/storage-function) guide or the [agents storage ↗️](/references/uagents/uagents-protocols/storage) documentation. If you are new to JSON, please see an example [here ↗️](https://www.w3schools.com/whatis/whatis_json.asp).
+      Discover more about agents' storage functions through our [Using agents storage function ↗️](/guides/agents/storage-function) guide or the [agents storage ↗️](/references/uagents/uagents-protocols/storage) documentation. If you are new to JSON, please see an example [here ↗️](https://www.w3schools.com/whatis/whatis_json.asp).
     </Callout>
 
 #### Protocols
@@ -200,7 +192,6 @@ The agents registered in the Almanac provide service endpoints for remote commun
     </Callout>
 
 ## Coding and implementation
-
 ### Create your first agent
 
 Creating your first agent is a straightforward process. First of all, we need to create a Python file for this example. We can do this by running: `touch alice_agent.py`
@@ -1084,7 +1075,7 @@ Run the `restaurant` agent and then the `user` agent from different terminals. T
 
 ## From novice to navigator: your course conclusion and beyond!
 
-We appreciate your active participation in our introductory course on AI agents. The knowledge you've acquired here forms a robust basis for your future AI Agents development endeavors.
+We appreciate your active participation in our introductory course on AI agents! The knowledge you've acquired here forms a robust basis for your future AI Agents development endeavors.
 
 Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of AI agents by exploring our dedicated [AI Agents ↗️](/concepts/agents/agents) documentation and [GitHub ↗️](https://github.com/fetchai/uAgents) repository. Also, do not forget to checkout our full list of [AI Agents guides ↗️](/guides) diving into the development of AI Agents and concepts explained in this introductory course, but in a more detailed manner.
 
