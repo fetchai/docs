@@ -295,10 +295,6 @@ export function Navbar({
             </Listbox>
           </span>
         )}
-        {renderComponent(config.search.component, {
-          directories: flatDirectories,
-          className: "md:nx-hidden nx-mt-6 nx-mb-2",
-        })}
         <div className="md:nx-hidden nx-mt-6 nx-mb-2">
           {renderComponent(config.search.component, {
             directories: flatDirectories,
