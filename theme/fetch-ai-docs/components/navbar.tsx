@@ -25,11 +25,11 @@ export type NavBarProps = {
 
 const classes = {
   link: cn(
-    "nx-text-sm contrast-more:nx-text-gray-700 contrast-more:dark:nx-text-gray-100 nx-mt-4 nx-px-4"
+    "nx-text-sm contrast-more:nx-text-gray-700 contrast-more:dark:nx-text-gray-100 nx-mt-4 nx-px-4",
   ),
   active: cn("nx-font-medium nx-subpixel-antialiased grey-background"),
   inactive: cn(
-    "nx-text-gray-600 hover:nx-text-gray-800 dark:nx-text-gray-400 dark:hover:nx-text-gray-200"
+    "nx-text-gray-600 hover:nx-text-gray-800 dark:nx-text-gray-400 dark:hover:nx-text-gray-200",
   ),
 };
 
@@ -44,7 +44,7 @@ function NavbarMenu({
 }): ReactElement {
   const { items, route } = menu;
   const routes = Object.fromEntries(
-    (menu.children || []).map((route) => [route.name, route])
+    (menu.children || []).map((route) => [route.name, route]),
   );
 
   return (
@@ -54,7 +54,7 @@ function NavbarMenu({
           className={cn(
             className,
             "-nx-ml-2 nx-hidden nx-items-center nx-whitespace-nowrap nx-rounded nx-p-2 md:nx-inline-flex",
-            classes.inactive
+            classes.inactive,
           )}
         >
           {children}
@@ -71,7 +71,7 @@ function NavbarMenu({
                   href={item.href || routes[key]?.route || route + "/" + key}
                   className={cn(
                     "nx-relative nx-hidden nx-w-full nx-select-none nx-whitespace-nowrap nx-text-gray-600 hover:nx-text-gray-900 dark:nx-text-gray-400 dark:hover:nx-text-gray-100 md:nx-inline-block",
-                    "nx-py-1.5 nx-transition-colors ltr:nx-pl-3 ltr:nx-pr-9 rtl:nx-pr-3 rtl:nx-pl-9"
+                    "nx-py-1.5 nx-transition-colors ltr:nx-pl-3 ltr:nx-pr-9 rtl:nx-pr-3 rtl:nx-pl-9",
                   )}
                   newWindow={item.newWindow}
                 >
@@ -118,7 +118,7 @@ export function Navbar({
           "nextra-nav-container-blur",
           "nx-pointer-events-none nx-absolute nx-z-[-1] nx-h-full nx-w-full nx-bg-white dark:nx-bg-dark",
           "nx-shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] dark:nx-shadow-[0_-1px_0_rgba(255,255,255,.1)_inset]",
-          "contrast-more:nx-shadow-[0_0_0_1px_#000] contrast-more:dark:nx-shadow-[0_0_0_1px_#fff]"
+          "contrast-more:nx-shadow-[0_0_0_1px_#000] contrast-more:dark:nx-shadow-[0_0_0_1px_#fff]",
         )}
       />
       <nav className="nx-mx-auto nx-py-4 nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
@@ -256,7 +256,7 @@ export function Navbar({
                 className={cn(
                   classes.link,
                   "nx-flex nx-gap-1",
-                  classes.inactive
+                  classes.inactive,
                 )}
                 menu={menu}
               >
@@ -291,7 +291,7 @@ export function Navbar({
                   !isActive || page.newWindow
                     ? classes.inactive
                     : classes.active,
-                  index === 0 && !isActive && "-nx-ml-4" // Align the first item to the left
+                  index === 0 && !isActive && "-nx-ml-4", // Align the first item to the left
                 )}
                 newWindow={page.newWindow}
                 aria-current={!page.newWindow && isActive}
