@@ -29,6 +29,7 @@ import { setCookie } from "cookies-next";
 import { UserInfoProvider, useUserContext } from "./contexts/context-provider";
 import Bookmark from "./components/bookmark";
 import useBookMark from "theme/use-book-mark";
+import { isLinkInResponse } from "./helpers";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -43,24 +44,17 @@ interface BodyProps {
   navigation: ReactNode;
   tags: string[] | null;
   children: ReactNode;
+  onClickBookMark: (val: boolean) => void;
+  bookMark: boolean;
 }
 
 const classes = {
   toc: cn(
-    "nextra-toc nx-order-last nx-hidden nx-w-64 nx-shrink-0 xl:nx-block print:nx-hidden"
+    "nextra-toc nx-order-last nx-hidden nx-w-64 nx-shrink-0 xl:nx-block print:nx-hidden",
   ),
   main: cn("nx-w-full nx-break-words"),
 };
-function isLinkInResponse(response) {
-  // Flatten the array of arrays into a single array
-  console.log(response, "lll");
-  const flattenedArray = response?.flat();
-  console.log(flattenedArray);
-  // Check if the targetURL is present in the flattened array
-  const isPresent = flattenedArray?.includes(window.location.pathname);
 
-  return isPresent;
-}
 const Body = ({
   themeContext,
   breadcrumb,
@@ -68,19 +62,15 @@ const Body = ({
   navigation,
   tags,
   children,
+  bookMark,
+  onClickBookMark,
 }: BodyProps): ReactElement => {
-  const context = useUserContext();
-  const {
-    state: { bookMarks },
-    action: { onClickBookMark },
-  } = useBookMark(context, true);
   const config = useConfig();
   const mounted = useMounted();
 
   if (themeContext.layout === "raw") {
     return <div className={classes.main}>{children}</div>;
   }
-
   const date =
     themeContext.timestamp && config.gitTimestamp && timestamp
       ? new Date(timestamp)
@@ -134,7 +124,6 @@ const Body = ({
     </>
   );
 
-  const bookMark = isLinkInResponse(bookMarks);
   const body = config.main?.({ children: content }) || content;
   if (themeContext.layout === "full") {
     return (
@@ -142,7 +131,7 @@ const Body = ({
         <article
           className={cn(
             classes.main,
-            "nextra-content nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]"
+            "nextra-content nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]",
           )}
         >
           {body}
@@ -158,7 +147,7 @@ const Body = ({
           classes.main,
           "nextra-content nx-flex nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-min-w-0 nx-pb-8 nx-pr-[calc(env(safe-area-inset-right)-1.5rem)]",
           themeContext.typesetting === "article" &&
-            "nextra-body-typesetting-article"
+            "nextra-body-typesetting-article",
         )}
       >
         <main className="nx-w-full nx-min-w-0 nx-max-w-6xl nx-px-6 nx-pt-4 md:nx-px-12">
@@ -185,10 +174,15 @@ const InnerLayout = ({
   timestamp,
   children,
 }: PageOpts & { children: ReactNode }): ReactElement => {
+  const context = useUserContext();
+  const {
+    state: { bookMarks },
+    action: { onClickBookMark, fetchBookMarks },
+  } = useBookMark(context);
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   const fsPath = useFSRoute();
-  const context = useUserContext();
+  const bookMark = isLinkInResponse(bookMarks);
 
   useEffect(() => {
     setLastVisitedTimestamp();
@@ -278,6 +272,8 @@ const InnerLayout = ({
         renderComponent(config.navbar.component, {
           flatDirectories,
           items: docsDirectories,
+          bookMark,
+          fetchBookMarks,
         })}
       <div className="nx-mx-auto nx-flex">
         <ActiveAnchorProvider>
@@ -308,6 +304,8 @@ const InnerLayout = ({
                 ) : null
               }
               tags={activePath.at(-1)?.tags ?? undefined}
+              onClickBookMark={onClickBookMark}
+              bookMark={bookMark}
             >
               <MDXProvider
                 components={getComponents({

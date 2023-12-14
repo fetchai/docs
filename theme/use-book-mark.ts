@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
 
-const useBookMark = (context, is_visible) => {
-  const [bookMarks, setBookMarks] = useState();
-  const fetchBookMarks = async (context) => {
+const useBookMark = (context) => {
+  const [bookMarks, setBookMarks] = useState<undefined | boolean>();
+  const fetchBookMarks = async (context, isBookMark) => {
     try {
       const response = await fetch(
-        `http://localhost:8000//api/bookmarks?user_email=${context?.user?.email}&is_visible=${is_visible}`,
+        `http://localhost:8000/api/bookmarks?user_email=${context?.user?.email}&is_visible=${isBookMark}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const bookmark = await response.json();
       setBookMarks(bookmark);
+      return bookmark;
     } catch (error) {
-      console.log("---oops, something went wrong----", error);
+      console.log("oops, something went wrong", error);
     }
   };
 
-  const pathname = typeof window !== "undefined" && window?.location?.pathname
+  const pathname = typeof window !== "undefined" && window?.location?.pathname;
 
   useEffect(() => {
     if (context?.user?.email) {
-      fetchBookMarks(context);
+      fetchBookMarks(context, true);
     }
   }, [context?.user?.email, pathname]);
 
@@ -41,13 +42,16 @@ const useBookMark = (context, is_visible) => {
           is_visible: newVisibilityState,
         }),
       });
+
+      const bookmark = await fetchBookMarks(context, newVisibilityState);
+      setBookMarks(bookmark);
     } catch (error) {
-      console.log("---oops, something went wrong----", error);
+      console.log("something went wrong", error);
     }
   };
   return {
     state: { bookMarks },
-    action: { onClickBookMark },
+    action: { onClickBookMark, fetchBookMarks },
   };
 };
 
