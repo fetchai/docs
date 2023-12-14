@@ -14,6 +14,7 @@ import { Listbox } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { handleSignin } from "../helpers";
 import { capitalizeWords } from "../helpers";
+import { IoBookmarks } from "react-icons/io5";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -96,7 +97,7 @@ export function Navbar({
   const { menu, setMenu } = useMenu();
   const context = useUserContext();
   const router = useRouter();
-  const [selectedItem, setSelectedItem] = useState("Bookmarks");
+  const [selectedItem, setSelectedItem] = useState("B");
   const [bookMarksList, setbookMarksLists] = useState<string[]>([]);
   const handleSignOut = () => {
     context.signOut();
@@ -134,12 +135,73 @@ export function Navbar({
               {renderComponent(config.logo)}
             </div>
           )}
-
           <div className="nx-hidden md:nx-inline-block nx-footer-width-50">
             {renderComponent(config.search.component, {
               directories: flatDirectories,
             })}
           </div>
+
+          {context.isLoggedIn && (
+            <span className="nx-relative">
+              <Listbox value={selectedItem} onChange={setSelectedItem}>
+                <Listbox.Button className="">
+                  {/* {selectedItem} */}
+                  <IoBookmarks
+                    style={{
+                      fontSize: "21px",
+                      marginTop: "5px",
+                      marginRight: "5px",
+                    }}
+                  />
+                </Listbox.Button>
+                <Listbox.Options
+                  style={{ left: "-4rem", top: "40px" }}
+                  className="pr-6 outline-none nx-left-[-1rem] nx-top-3 nx-absolute nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium  nx-bg-white nx-border "
+                >
+                  {bookMarksList.length === 0 && (
+                    <Listbox.Option
+                      value="Bookmarks"
+                      className=" nx-text-sm nx-text-gray-500  nx-w-full nx-select-none nx-py-2"
+                    >
+                      <>
+                        <span className="nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate">
+                          No Bookmarks Yet
+                        </span>
+                      </>
+                    </Listbox.Option>
+                  )}
+                  {bookMarksList?.map((item: string, index: number) => (
+                    <Listbox.Option
+                      key={index}
+                      value="Bookmarks"
+                      className={({ active }) =>
+                        `nx-text-sm nx-text-gray-500  nx-w-full nx-select-none nx-py-2  ${
+                          active
+                            ? " nx-bg-slate-900 nx-text-slate-900"
+                            : "nx-text-gray-900"
+                        }`
+                      }
+                    >
+                      {({ selected }) => (
+                        <>
+                          <span
+                            onClick={() =>
+                              router.push(item.replace("/docs", ""))
+                            }
+                            className={` nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate ${
+                              selected ? "nx-font-medium" : "nx-font-normal"
+                            }`}
+                          >
+                            {capitalizeWords(item.match(/[^/]+$/)[0])}
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </Listbox>
+            </span>
+          )}
 
           {config.project.link ? (
             <Anchor
@@ -150,7 +212,6 @@ export function Navbar({
               {renderComponent(config.project.icon)}
             </Anchor>
           ) : null}
-
           {config.chat.link ? (
             <Anchor
               className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
@@ -174,9 +235,7 @@ export function Navbar({
               Sign In
             </button>
           )}
-
           {renderComponent(config.navbar.extraContent)}
-
           <button
             type="button"
             aria-label="Menu"
@@ -246,7 +305,7 @@ export function Navbar({
             </>
           );
         })}
-        {context.isLoggedIn && (
+        {/* {context.isLoggedIn && (
           <span className="nx-relative">
             <Listbox value={selectedItem} onChange={setSelectedItem}>
               <Listbox.Button className="nx-relative nx-appearance-none nx-rounded-xxl nx-transition-colors  nx-bg-black/[.05] nx-text-gray-600  nx-rounded-full nx-border nx-px-2 nx-py-1 nx-border-gray-600 ">
@@ -294,7 +353,7 @@ export function Navbar({
               </Listbox.Options>
             </Listbox>
           </span>
-        )}
+        )} */}
         <div className="md:nx-hidden nx-mt-6 nx-mb-2">
           {renderComponent(config.search.component, {
             directories: flatDirectories,
