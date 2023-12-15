@@ -10,8 +10,8 @@ import {
   DropDownTabs,
 } from "./mdx";
 import axios from "axios";
-import Tooltip from "./tooltip";
-import Link from "next/link";
+import { useUserContext } from "theme/fetch-ai-docs/contexts/context-provider";
+import router from "next/router";
 
 interface PropertyType {
   name: string;
@@ -29,6 +29,19 @@ const replacePathParameters = (
     updatedPath = updatedPath.replace(`{${param}}`, pathParameters[param]);
   }
   return updatedPath;
+};
+
+const handleSignin = () => {
+  const currentProtocol = window.location.protocol;
+  const currentHostname = window.location.hostname;
+  const currentPort = window.location.port;
+  const redirectUri = `${currentProtocol}//${currentHostname}:${currentPort}/docs/auth`;
+  const loginUrl =
+    `https://accounts.fetch.ai/login/` +
+    `?redirect_uri=${encodeURIComponent(redirectUri)}` +
+    `&client_id=docs` +
+    `&response_type=code`;
+  router.push(loginUrl);
 };
 
 const PythonCodeTab: React.FC<{
@@ -316,7 +329,6 @@ export const ApiEndpointRequestResponse: React.FC<{
   pathParameters?: Record<string, string>;
 }> = (properties) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bearerToken, setBearerToken] = useState("");
   const [requestPayload, setRequestPayload] = useState(
     properties.samplePayload
       ? JSON.stringify(properties.samplePayload, null, 2)
@@ -338,6 +350,8 @@ export const ApiEndpointRequestResponse: React.FC<{
     setIsModalOpen(false);
   };
 
+  const context = useUserContext();
+
   const hitRequest = async () => {
     try {
       setLoading(true);
@@ -353,7 +367,7 @@ export const ApiEndpointRequestResponse: React.FC<{
         method: properties.method,
         url: apiUrlWithParams,
         headers: {
-          Authorization: `Bearer ${bearerToken}`,
+          Authorization: `Bearer ${context?.credentials?.apiKey}`,
         },
         data: requestPayloadJSON,
       });
@@ -412,65 +426,6 @@ export const ApiEndpointRequestResponse: React.FC<{
             </div>
             <div className="nx-mt-2 nx-mb-4 nx-border-t nx-border-gray-300" />
 
-            {/* Bearer Token required */}
-            <div className="md:nx-flex nx-block nx-items-center  nx-ml-4">
-              <div className="nx-flex nx-gap-2 nx-w-1/4">
-                <p className="nextra-content nx-text-sm">
-                  Bearer Token required
-                </p>
-                <Tooltip>
-                  <p className="nx-text-sm nx-font-bold nx-text-gray-800 nx-pb-1">
-                    To access your Agentverse account, please follow these
-                    steps:
-                  </p>
-                  <ol className="nx-text-xs nx-leading-4 nx-text-gray-600 nx-pb-3 nx-list-decimal nx-mt-2 nx-p-[10px]">
-                    <li>
-                      Log in to your{" "}
-                      <Link
-                        target="_blank"
-                        className="nx-text-blue-500"
-                        href="https://agentverse.ai/"
-                      >
-                        Agentverse
-                      </Link>{" "}
-                      account.
-                    </li>
-                    <li>
-                      Once logged in, open the developer tools in your web
-                      browser.
-                    </li>
-                    <li>
-                      In the developer tools, navigate to the{" "}
-                      <b>Applications</b> tab
-                    </li>
-                    <li>
-                      Within the Applications tab, you will find a section for{" "}
-                      <b>cookies</b>.
-                    </li>
-                    <li>
-                      Look for a specific cookie named <b>Fauna</b> Name. This
-                      cookie contains your Fauna token
-                    </li>
-                    <li>
-                      Copy the value of the <b>Fauna</b> token from the cookie.
-                    </li>
-                    <li>
-                      Paste the copied <b>Fauna</b> token here.
-                    </li>
-                  </ol>
-                </Tooltip>
-              </div>
-              <div className="nx-w-3/4">
-                <input
-                  type="text"
-                  placeholder="Bearer Token"
-                  value={bearerToken}
-                  onChange={(e) => setBearerToken(e.target.value)}
-                  className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nx-mt-2 nx-w-full"
-                />
-              </div>
-            </div>
-
             {/* Render Path Parameters as input fields */}
             {Object.keys(pathParameters).map((paramName) => (
               <div className="nx-flex nx-items-center nx-ml-4" key={paramName}>
@@ -519,7 +474,7 @@ export const ApiEndpointRequestResponse: React.FC<{
               <div className="nx-w-1/4">
                 <button
                   className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm nx-mt-6"
-                  onClick={hitRequest}
+                  onClick={context?.isLoggedIn ? hitRequest : handleSignin}
                 >
                   Execute
                 </button>
