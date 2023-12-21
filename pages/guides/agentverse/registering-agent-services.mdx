@@ -12,7 +12,7 @@ You will then to define the [protocol ↗️](/references/uagents/uagents-protoc
     from uagents import Context, Model, Protocol
     from ai_engine import UAgentResponse, UAgentResponseType
 
-    simples = Protocol(name="simples", version="v1.1")
+    simples = Protocol(name="simples", version="1.1")
 
     class Request(Model):
         message: str
@@ -47,7 +47,7 @@ The message you pack into this `UAgentResponse(message="0")` can be any string. 
 
 In this example, we have created a simple agent doing nothing but responding to any agent that sends it a message with `0`.
 
-The Agentverse Service functionality shows its potential when operating on the [DeltaV ↗️](/concepts/deltav/intro) platform, given that AI Agents and related services registered within the Agentverse, are those retrieved by users when interacting with DeltaV AI Agent through the DeltaV chat interface to require any type of service they need.
+The Agentverse Service functionality shows its potential when operating on the [DeltaV ↗️](/concepts/deltav/intro) platform. This because AI Agents registered within the Agentverse, are those retrieved by the AI Engine when users interact with DeltaV chat interface to require a type of service they need.
 
     <Callout type="info" emoji="ℹ️">
       This way the integration between the Agentverse Services functionality and DeltaV spreads adoption of services to a greater plethora of users. Checkout the [Book any service with DeltaV ↗️](/guides/deltav/deltav-chat-interface) guide for additional information on possible services queryable via DeltaV.
@@ -136,6 +136,8 @@ You will be asked to select a **Service Group**. We selected `Helpers` as that i
 Then, we ask **"Please return me a zero"**:
 
 ![](../../../src/images/guides/agentverse/deltav_simple_start.png)
+
+![](../../../src/images/guides/agentverse/deltav_confirm.png)
 
 Then, this is the full output:
 
