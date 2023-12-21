@@ -6,42 +6,46 @@ import { Callout } from 'nextra/components'
 
 In the [Agentverse ↗️](https://agentverse.ai/), you can create and host any type of agent you want to create in the [My Agents ↗️](/concepts/agent-services/agent-hosting). Note that managed agents are currently a beta feature and therefore do not fully support the entire [AI Agents ↗️](/concepts/agents/agents) toolset for development. Improvements and upgrades are planned for the future!
 
-There are 2 different ways you can start creating your agents. You can either choose to create an agent:
+Click on the **+ New Agent**. Here, there are 2 different ways you can start creating your agents. You can either choose to create an agent:
 
-    1.  From a blank script, by clicking on **+ Agents**.
-    2.  From a specified use case, by clicking on **+ Use Case**.
+    1.  From a **Blank Agent**.
+    2.  From a **Skeleton Agent**.
 
-## Creating an agent
+## Creating an agent from a blank script
 
-You can create your AI Agent from a blank script by navigating towards the [Agentverse ↗️](https://agentverse.ai/), [sign in ↗️](/concepts/agent-services/getting-started) and choosing the **My Agents** tab. Here, click on the **+ Agents** button.
+You can create your AI Agent from a blank script by navigating towards the [Agentverse ↗️](https://agentverse.ai/), [signing in ↗️](/concepts/agent-services/getting-started) and choosing the **My Agents** tab.
 
 ![](../../../src/images/agentverse/create-agent/agentverse-myagent_1.png)
 
-By choosing the **+ Agents** button, you will first need to provide a name for the agent you plan to build. For instance, let's create an agent named **alice**.
+Here, click on the **+ New Agent** button and choose **Blank Agent**.
 
 ![](../../../src/images/agentverse/create-agent/agentverse-myagent_2.png)
 
-Once you select it, your agent will be ready to be coded and a box will appear in the **My Agents** page with different data being displayed about the agent you have just created, including the agent's **name** and **address**.
+You will need to provide a name for the agent you wish to create.
+
+![](../../../src/images/agentverse/create-agent/agentverse-myagent_2a.png)
+
+Once you select it, your agent will be ready to be coded and a box will appear in the **My Agents** page with different data being displayed about the agent you have just created, including the **name** and **address** of the agent.
 
 ![](../../../src/images/agentverse/create-agent/agentverse-myagent_3.png)
 
-If you click on this box, the code editor will be displayed, with which you can easily code your agent. This is the **Agent Editor**. With this editor, you can create, edit and refine the code for the agent you have in mind in one place. The agent editor provides you with various basic information about your agent, including the **agent address** and **wallet address**.
+If you click on this box, the code editor will be displayed. This is the **Agent Editor**, and it allows you to create, edit and refine the code for the agent you have in mind all in one place. The agent editor provides you with various basic information about your agent, including the **agent address** and **wallet address**. You can also **Enable Wallet Messaging** to allow your agent to communicate via the [Fetch wallet ↗️](/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started).
 
     <Callout type="info" emoji="ℹ️">
       For additional information on AI Agent addresses, have a look at our dedicated documentation: [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address).
     </Callout>
 
-The Agent Editor has an integrated **agent.py** file that allows you to start programming immediately! The Agent Editor offers you the option of structuring your project into several file windows, which are located on the left-hand side of the editor window. All you have to do is enter a name for the new file to be added. An additional feature of the Agent Editor is that at the bottom of the editor you will find the **Agent Logs**, a built-in terminal that displays the output of your script after it has been executed.
+The Agent Editor has an integrated **agent.py** file that allows you to start programming immediately! The Agent Editor offers you the option of structuring your project into several file windows, which are located on the left-hand side of the editor window. All you have to do is enter a name for the new file to be added. An additional feature of the Agent Editor is the **Agent Logs**; a built-in terminal that displays the output of your script after it has been executed.
 
     <Callout type="info" emoji="ℹ️">
-      This way, we aim at making agents' development as quick and efficient as possible. This is a great tool to determine if your code runs smoothly and to check if any error arises so for you to directly intervene and solve it if needed!
+      This way, we aim at making agents' development as quick and efficient as possible. This is a great tool to determine if your code runs smoothly and to check if any error arises and solve it if needed!
     </Callout>
 
 ![](../../../src/images/agentverse/create-agent/agentverse-myagent_4.png)
 
 ## Create your first hosted agent on the Agentverse!
 
-You are now ready to start using the Agentverse to create and edit your agents in few minutes! To begin with, you can create a simple agent printing **"Hello world!"** in the Agent Logs on an interval of 3 seconds by using the `.on_interval()` decorator.
+You are now ready to start using the Agentverse to create and edit your agents in few minutes! Let's begin with creating a simple agent printing **"Hello world!"** in the Agent Logs on an interval of 3 seconds by using the `.on_interval()` decorator.
 
 Here's an example:
 
@@ -59,15 +63,13 @@ The output will be printed in the Agent Logs window:
 
 ## Create an agent based on a template
 
-You can also create an agent by choosing **+ Use Case** button. In this case you will be able to create an agent based on a specific **template**.
+You can also create an agent by choosing **Skeleton Agent** or one of the template options available within the **Getting Started**, **DeltaV Integration**, **Smart Services** or the **AI/ML** tabs. A description of each template agent is provided when hovering above the option you want to choose.
 
 ![](../../../src/images/agentverse/create-agent/agentverse-myagent_7.png)
 
 There are different categories you can choose from:
 
-![](../../../src/images/agentverse/create-agent/agentverse-myagent_8.png)
-
-    1. **Getting Started**: this category helps you in creating basic agents using the uAgents technology.
+    1. **Getting Started**: this category helps you in creating basic agents using the AI Agents technology.
        You can:
 
            - Create your first agent.
@@ -88,29 +90,36 @@ There are different categories you can choose from:
 
            You can choose among:
 
-           - _Weather Agents_: this allows you to develop agents retrieving weather data from weather services API.
-           - _Weather Data Provider and Consumer Agents_: this use case allows you to create two different agents, one providing weather data and another one consuming such data.
-           - _Weather Data Seller and Buyer Agents_: this use case allows you to create two different agents, one selling weather data and another one buying such data.
-           - _Weather Oracle Provider and Consumer Agents_: this use case allows you to create two different agents, one updating an oracle contract with weather data and another one requesting such data to the oracle by paying a small fee.
+           - _Weather data agent_: this allows you to develop agents retrieving weather data from weather services API.
+           - _Weather data provider and consumer agents_: this use case allows you to create two different agents, one providing weather data and another one consuming such data.
+           - _Weather data seller and buyer agents_: this use case allows you to create two different agents, one selling weather data and another one buying such data.
+           - _Weather oracle provider and consumer agents_: this use case allows you to create two different agents, one updating an oracle contract with weather data and another one requesting such data to the oracle by paying a small fee.
+           - _MongoDB Atlas integration_: this use case shows how to use MongoDB Atlas as a backend for agent storage with a restaurant booking example.
+           - _PlanetScale integration_: this use case shows how to use PlanetScale as a backend for agent storage with a restaurant booking example.
 
-    4. **DeltaV examples**: this category allows you to develop AI Agents offering different services which are then made available through the [DeltaV ↗️](/concepts/deltav/intro) Chat based on a given template. These agents and related services need to register within the dedicated [Agentverse: Services ↗️](/guides/agentverse/registering-agent-services) tab first so for them to be available for queries from users operating and interacting DeltaV AI Agent.
+    4. **DeltaV Integration**: this category allows you to develop AI Agents offering different services which are then made available through the [DeltaV ↗️](/concepts/deltav/intro) chat based on a given template. These agents and related services need to register within the dedicated [Agentverse: Services ↗️](/guides/agentverse/registering-agent-services) tab first so for them to be available for queries from users operating and interacting DeltaV AI Agent.
 
            You can choose to:
 
-           - Create a DeltaV compatible agent requesting stock price of a share.
+           - _Stock Price Agent_: create a DeltaV compatible agent requesting stock price of a share.
+           - _Coin Toss Agent_: create a DeltaV compatible agent tossing a coin for you.
+           - _Dice Roll Agent_: create a DeltaV compatible agent rolling a dice for you.
+           - _EV Charger Agent_: create a DeltaV compatible agent to find nearby EV charging stations via DeltaV chat.
+           - _Geocode Agent_: create a DeltaV compatible agent to find the latitude and longitude of a given address using DeltaV chat.
+           - _Restaurant Agent_: create a DeltaV compatible agent to find the nearby restaurants based on a location using DeltaV chat.
 
-Let's assume you want to create your agent using the **Your first agent template**g from the **Getting Started** window.
+Let's assume you want to create your agent using the **Your first agent template** from the **Getting Started** window.
 Each template available presents a small number in the bottom right corner indicating the number of agents available for that particular template.
 
-![](../../../src/images/agentverse/create-agent/agentverse-myagent_9.png)
+![](../../../src/images/agentverse/create-agent/agentverse-myagent_8.png)
 
 Whenever you choose one of the templates available to start building your agent, in the Agent Editor you will see some additional information appearing when clicking on the use case chosen, alongside with the baseline code needed to make it runnable. You can use this as a starting point for your ideas.
 
-![](../../../src/images/agentverse/create-agent/agentverse-myagent_10.png)
+![](../../../src/images/agentverse/create-agent/agentverse-myagent_9.png)
 
 The output in this case would be the following:
 
-![](../../../src/images/agentverse/create-agent/agentverse-myagent_11.png)
+![](../../../src/images/agentverse/create-agent/agentverse-myagent_10.png)
 
 ## Register Domain Name
 

@@ -20,7 +20,6 @@ You will then to define the [protocol ↗️](/references/uagents/uagents-protoc
     @simples.on_message(model=Request, replies={UAgentResponse})
     async def handle_message(ctx: Context, sender: str, msg: Request):
         await ctx.send(sender, UAgentResponse(message="0", type=UAgentResponseType.FINAL))
-
     ```
 
 Currently, for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` classes as this is the defined model that are reinforced.
