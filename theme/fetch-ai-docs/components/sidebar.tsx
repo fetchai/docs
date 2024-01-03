@@ -440,7 +440,7 @@ export function Sidebar({
       />
       <aside
         className={cn(
-          "nextra-sidebar-container nx-flex nx-flex-col nx-bg-gray-100 nx-p-3",
+          "nextra-sidebar-container nx-sidebar-scrollable nx-flex nx-flex-col nx-bg-gray-100 nx-p-3",
           "md:nx-top-16 md:nx-shrink-0 motion-reduce:nx-transform-none",
           "nx-transform-gpu nx-transition-all nx-ease-in-out",
           "print:nx-hidden md:nx-w-64",
