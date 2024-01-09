@@ -64,9 +64,9 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            feedbackType,
+            feedback_type: feedbackType,
             description: feedback,
-            pageUrl,
+            page_url: pageUrl,
           }),
         },
       );
