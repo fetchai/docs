@@ -31,17 +31,20 @@ const useBookMark = (context) => {
 
   const onClickBookMark = async (newVisibilityState: boolean) => {
     try {
-      await fetch("https://profilio-staging.sandbox-london-b.fetch-ai.com/api/bookmark", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      await fetch(
+        "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/bookmark",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_email: context?.user?.email,
+            saved_path: window.location.pathname,
+            is_visible: newVisibilityState,
+          }),
         },
-        body: JSON.stringify({
-          user_email: context?.user?.email,
-          saved_path: window.location.pathname,
-          is_visible: newVisibilityState,
-        }),
-      });
+      );
 
       const bookmark = await fetchBookMarks(context, newVisibilityState);
       setBookMarks(bookmark);
