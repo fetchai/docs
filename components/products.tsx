@@ -179,7 +179,7 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-mail",
     },
     {
-      title: "Agentverse: Services",
+      title: "Agentverse Services: register your services on the Agentverse!",
       description: (
         <>
           Create an agent encapsulating a service and register it as a service
@@ -193,7 +193,7 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse APIs",
       description: <>Understand and use the Agentverse APIs.</>,
       icon: apiAgentIcon,
-      path: "/apis/agentverse",
+      path: "/apis#agentverse-apis",
     },
     {
       title: "Agentverse: Explorer 🤖🌐",
