@@ -102,9 +102,9 @@ export const FeatureGuideTabs = () => {
           path: "/guides/agentverse/creating-a-hosted-agent",
         },
         {
-          title: "Discovering agents 🔎",
+          title: "Discovering agents on the Agentverse Explorer 🔎",
           description:
-            "Learn to use the Agentverse Explorer to start an interaction with other registered agents.",
+            "Learn to use the Agentverse: Explorer tab to start an interaction with other registered agents.",
           path: "/guides/agentverse/discovering-agents",
         },
         {
