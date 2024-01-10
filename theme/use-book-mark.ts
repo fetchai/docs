@@ -5,7 +5,7 @@ const useBookMark = (context) => {
   const fetchBookMarks = async (context, isBookMark) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/bookmarks?user_email=${context?.user?.email}&is_visible=${isBookMark}`,
+        `https://profilio-staging.sandbox-london-b.fetch-ai.com/api/bookmarks?user_email=${context?.user?.email}&is_visible=${isBookMark}`,
         {
           method: "GET",
           headers: {
@@ -31,7 +31,7 @@ const useBookMark = (context) => {
 
   const onClickBookMark = async (newVisibilityState: boolean) => {
     try {
-      await fetch("http://localhost:8000/api/bookmark", {
+      await fetch("https://profilio-staging.sandbox-london-b.fetch-ai.com/api/bookmark", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
