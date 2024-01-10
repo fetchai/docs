@@ -108,9 +108,9 @@ export const FeatureGuideTabs = () => {
           path: "/guides/agentverse/discovering-agents",
         },
         {
-          title: "Utilising the Agentverse mailbox service 📬",
+          title: "Utilizing the Agentverse Mailroom service 📬",
           description:
-            "Set up mailboxes for your locally-run agents and to run them independently of your constant presence to run the server.",
+            "Set up Agentverse mailboxes for your locally-run agents and to run them independently of your constant presence to run the server.",
           path: "/guides/agentverse/utilising-the-mailbox",
         },
         {
