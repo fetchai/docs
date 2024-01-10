@@ -96,9 +96,9 @@ export const FeatureGuideTabs = () => {
       label: "Agentverse",
       content: [
         {
-          title: "Creating a hosted agent 🤖",
+          title: "Creating an Agentverse hosted agent 🤖",
           description:
-            "Use the Agentverse Hosting service to develop your agents directly on the Agentverse platform.",
+            "Use the Agentverse: My Agents tab to develop agents directly on the Agentverse platform.",
           path: "/guides/agentverse/creating-a-hosted-agent",
         },
         {
