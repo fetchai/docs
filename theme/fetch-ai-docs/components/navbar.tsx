@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import cn from "clsx";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFSRoute } from "nextra/hooks";
 import { ArrowRightIcon, MenuIcon } from "nextra/icons";
 import type { Item, MenuItem, PageItem } from "nextra/normalize-pages";
@@ -8,13 +8,19 @@ import type { ReactElement, ReactNode } from "react";
 import { useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
-import router from "next/router";
 import { useUserContext } from "../contexts/context-provider";
 import AccountMenu from "components/account-menu";
+import { Listbox } from "@headlessui/react";
+import { useRouter } from "next/router";
+import { handleSignin } from "../helpers";
+import { capitalizeWords } from "../helpers";
+import { IoBookmarks } from "react-icons/io5";
 
 export type NavBarProps = {
   flatDirectories: Item[];
   items: (PageItem | MenuItem)[];
+  bookMark: boolean;
+  fetchBookMarks: (context: unknown, isBookMark: unknown) => Promise<[string]>;
 };
 
 const classes = {
@@ -80,29 +86,31 @@ function NavbarMenu({
   );
 }
 
-const handleOpen = () => {
-  const currentProtocol = window.location.protocol;
-  const currentHostname = window.location.hostname;
-  const currentPort = window.location.port;
-  const redirectUri = `${currentProtocol}//${currentHostname}:${currentPort}/docs/auth`;
-  const loginUrl =
-    `https://accounts.fetch.ai/login/` +
-    `?redirect_uri=${encodeURIComponent(redirectUri)}` +
-    `&client_id=docs` +
-    `&response_type=code`;
-  router.push(loginUrl);
-};
-
-export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
+export function Navbar({
+  flatDirectories,
+  items,
+  bookMark,
+  fetchBookMarks,
+}: NavBarProps): ReactElement {
   const config = useConfig();
   const activeRoute = useFSRoute();
   const { menu, setMenu } = useMenu();
   const context = useUserContext();
-
+  const router = useRouter();
+  const [selectedItem, setSelectedItem] = useState("Bookmarks");
+  const [bookMarksList, setbookMarksLists] = useState<string[]>([]);
   const handleSignOut = () => {
     context.signOut();
     router.push("/");
   };
+  const fetchBookMarksData = async () => {
+    const response = await fetchBookMarks(context, true);
+    const bookmark = await response;
+    setbookMarksLists(bookmark);
+  };
+  useEffect(() => {
+    fetchBookMarksData();
+  }, [bookMark]);
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -114,7 +122,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
         )}
       />
       <nav className="nx-mx-auto nx-py-4 nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
-        <div className="nx-flex">
+        <div className="nx-flex nx-items-center">
           {config.logoLink ? (
             <Anchor
               href={typeof config.logoLink === "string" ? config.logoLink : "/"}
@@ -127,12 +135,72 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               {renderComponent(config.logo)}
             </div>
           )}
-
           <div className="nx-hidden md:nx-inline-block nx-footer-width-50">
             {renderComponent(config.search.component, {
               directories: flatDirectories,
             })}
           </div>
+
+          {context.isLoggedIn && (
+            <span className="nx-relative">
+              <Listbox value={selectedItem} onChange={setSelectedItem}>
+                <Listbox.Button className="">
+                  <IoBookmarks
+                    style={{
+                      fontSize: "21px",
+                      marginTop: "5px",
+                      marginRight: "5px",
+                    }}
+                  />
+                </Listbox.Button>
+                <Listbox.Options
+                  style={{ left: "-4rem", top: "40px" }}
+                  className="pr-6 outline-none nx-left-[-1rem] nx-top-3 nx-absolute nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium  nx-bg-white nx-border "
+                >
+                  {bookMarksList.length === 0 && (
+                    <Listbox.Option
+                      value="Bookmarks"
+                      className=" nx-text-sm nx-text-gray-500  nx-w-full nx-select-none nx-py-2"
+                    >
+                      <>
+                        <span className="nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate">
+                          No Bookmarks Yet
+                        </span>
+                      </>
+                    </Listbox.Option>
+                  )}
+                  {bookMarksList?.map((item: string, index: number) => (
+                    <Listbox.Option
+                      key={index}
+                      value="Bookmarks"
+                      className={({ active }) =>
+                        `nx-text-sm nx-text-gray-500  nx-w-full nx-select-none nx-py-2  ${
+                          active
+                            ? " nx-bg-slate-900 nx-text-slate-900"
+                            : "nx-text-gray-900"
+                        }`
+                      }
+                    >
+                      {({ selected }) => (
+                        <>
+                          <span
+                            onClick={() =>
+                              router.push(item.replace("/docs", ""))
+                            }
+                            className={` nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate ${
+                              selected ? "nx-font-medium" : "nx-font-normal"
+                            }`}
+                          >
+                            {capitalizeWords(item.match(/[^/]+$/)[0])}
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </Listbox>
+            </span>
+          )}
 
           {config.project.link ? (
             <Anchor
@@ -143,7 +211,6 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               {renderComponent(config.project.icon)}
             </Anchor>
           ) : null}
-
           {config.chat.link ? (
             <Anchor
               className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
@@ -161,15 +228,13 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
             />
           ) : (
             <button
-              onClick={handleOpen}
+              onClick={handleSignin}
               className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm"
             >
               Sign In
             </button>
           )}
-
           {renderComponent(config.navbar.extraContent)}
-
           <button
             type="button"
             aria-label="Menu"
@@ -215,28 +280,30 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           const isActive =
             page.route === activeRoute ||
             activeRoute.startsWith(page.route + "/");
-
           return (
-            <Anchor
-              href={href}
-              key={href}
-              className={cn(
-                classes.link,
-                "nx-relative nx-mr-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block",
-                !isActive || page.newWindow ? classes.inactive : classes.active,
-                index === 0 && !isActive && "-nx-ml-4", // Align the first item to the left
-              )}
-              newWindow={page.newWindow}
-              aria-current={!page.newWindow && isActive}
-            >
-              <span className="nx-absolute nx-inset-x-0 nx-text-base nx-text-center">
-                {page.title}
-              </span>
-              <span className="nx-invisible nx-text-base">{page.title}</span>
-            </Anchor>
+            <>
+              <Anchor
+                href={href}
+                key={href}
+                className={cn(
+                  classes.link,
+                  "nx-relative nx-mr-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block",
+                  !isActive || page.newWindow
+                    ? classes.inactive
+                    : classes.active,
+                  index === 0 && !isActive && "-nx-ml-4", // Align the first item to the left
+                )}
+                newWindow={page.newWindow}
+                aria-current={!page.newWindow && isActive}
+              >
+                <span className="nx-absolute nx-inset-x-0 nx-text-base nx-text-center">
+                  {page.title}
+                </span>
+                <span className="nx-invisible nx-text-base">{page.title}</span>
+              </Anchor>
+            </>
           );
         })}
-
         <div className="md:nx-hidden nx-mt-6 nx-mb-2">
           {renderComponent(config.search.component, {
             directories: flatDirectories,
