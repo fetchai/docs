@@ -21,10 +21,10 @@ type MyItem = NormalItem & {
   // Add or modify properties as needed
   tags?: string[];
 };
-// Replace with your Algolia credentials
+// Search API key and application ID below
 const searchClient = algoliasearch(
-  "13E7QJOAO8",
-  "f44d72000628d2f2015a86151815153a",
+  "J27DIPDG4S",
+  "601cad4cf7041d99c1bdf42f4d4843d6",
 );
 const indexName = "first_index";
 
