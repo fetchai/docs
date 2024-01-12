@@ -5,7 +5,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import striptags from "striptags";
 
-const client = algoliasearch("13E7QJOAO8", "f44d72000628d2f2015a86151815153a");
+const client = algoliasearch("J27DIPDG4S", "xxxx");
 const index = client.initIndex("first_index");
 
 const docsPath = path.join(process.cwd(), "pages");
