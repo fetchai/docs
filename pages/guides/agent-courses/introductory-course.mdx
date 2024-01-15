@@ -10,7 +10,7 @@ If you encounter uncertainties or have questions about specific terms or topics 
 
 ## Introduction to AI Agents
 
-In this course, you'll delve into the world of AI Agents using the [uAgents Framework ↗️](/concepts/agents/agents). AI Agents are specialized programs able to operate autonomously within decentralized landscapes, aligned with user-defined objectives. These agents have the ability to connect, search, transact, and establish dynamic markets. By leveraging artificial intelligence, API calls, blockchain technology, and intricate business logic, AI Agents automate diverse workflows, facilitating interactions with their environment and other networked agents sans human intervention.
+In this course, you'll delve into the world of AI Agents using the [uAgents Framework ↗️](/concepts/agents/agents). AI Agents are  programs able to operate autonomously within decentralized landscapes, aligned with user-defined objectives. These agents have the ability to connect, search, transact, establish dynamic markets and so on. By leveraging artificial intelligence, API calls, blockchain technology, and business logic, AI Agents automate multiple workflows. The aim is to facilitate interactions with their environment and other networked agents without human intervention.
 
 ## Set up your development environment 🛠️
 ### Prerequisites
@@ -132,7 +132,7 @@ This command will install the dependencies specified in the **pyproject.toml** f
 
 ## Overview of the uAgents Framework
 
-The [uAgents Framework ↗️](/concepts/agents/agents) provides the essential infrastructure for creating and deploying AI Agents within Fetch.ai Ecosystem. It offers a comprehensive toolkit, protocols, and functionalities crucial for developing autonomous agents. The uAgents Framework is integrated with several components of the Fetch.ai Ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) and the [Agentverse ↗️](/concepts/agent-services/agentverse-intro), which is a cloud-based platform providing developers with a single environment for developing, managing and deploying AI Agents.
+The [uAgents Framework ↗️](/concepts/agents/agents) provides the essential infrastructure for creating and deploying AI Agents within Fetch.ai Ecosystem. It offers a comprehensive toolkit, protocols, and functionalities crucial for developing autonomous agents. The uAgents Framework is integrated with several components of the Fetch.ai Ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) and the [Agentverse ↗️](/concepts/agent-services/agentverse-intro).
 
     <Callout type="info" emoji="ℹ️">
       Check out the official [uAgents Python package ↗️](https://pypi.org/project/uagents/) and start developing your ideas using this library!
@@ -169,7 +169,7 @@ The uAgents Framework provides comprehensive support for the organization of mes
 
 #### Exchange protocol
 
-The **Exchange Protocol** facilitates efficient communication between agents by using standardized messaging techniques. Messages are packaged in envelopes, encoded and transmitted to specific endpoints via HTTP. Messages consist of key-value pairs in JSON format and are packaged in envelopes with metadata. **Envelopes** contain:
+The **Exchange Protocol** facilitates efficient communication between agents by using standardized messaging techniques. Messages are packed in envelopes which are encoded and transmitted to specific endpoints via HTTP. Messages consist of key-value pairs (in JSON format) and are packed in envelopes with metadata. **Envelopes** contain:
 
     - Sender and recipient addresses.
     - Message schema.
@@ -177,7 +177,7 @@ The **Exchange Protocol** facilitates efficient communication between agents by 
     - Expiration time.
     - Signature for authentication.
 
-The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON formatted data. These details ensure consistent and standardized communication within the Fetch.ai uAgents ecosystem.
+The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON formatted data. These details ensure consistent and standardized communication within the Fetch.ai agents ecosystem.
 
     <Callout type="info" emoji="ℹ️">
       For more information, see our [Exchange Protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) documentation.
@@ -187,9 +187,9 @@ The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for m
 
 The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is an important component in Fetch.ai Ecosystem. It operates as a blockchain-based repository where agents register, exchange information and establish communication. Registration in the Almanac is mandatory so that agents can participate in remote interactions and become discoverable through the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer).
 
-Agents keep their registrations up to date within certain block limits to ensure the accuracy and relevance of their data. Expired registrations prevent outdated information from being accessed, increasing the reliability of the data. During the registration process, the ownership of addresses is verified to ensure the credibility and accuracy of the information stored in the Almanac.
+Agents keep their registrations up-to-date within certain block limits to ensure the accuracy and relevance of their data. Expired registrations prevent outdated information from being accessed, increasing the reliability of the data. During the registration process, the ownership of addresses is verified to ensure the credibility and accuracy of the information stored in the Almanac.
 
-The agents registered in the Almanac provide service endpoints for remote communication, which contain weighted parameters that enable effective interaction. As a central hub, the Almanac facilitates the discovery of endpoints based on these assigned weights. This structured approach promotes efficient agent interactions and a robust environment for the development of AI agents within Fetch.ai's decentralized network. Users can navigate the Agentverse Explorer and filter agents based on different protocols customized to their specific application requirements.
+The agents registered in the Almanac provide service endpoints for remote communication, which contain weighted parameters that enable effective interaction. As a central hub, the Almanac facilitates the discovery of endpoints based on these assigned weights. This structured approach promotes efficient agent interactions and a robust environment for the development of AI agents within Fetch.ai's decentralized network.
 
     <Callout type="info" emoji="ℹ️">
       Check out the [Registering in the Almanac contract ↗️](/guides/agents/register-in-almanac) guide and the [Registration and endpoints weighting ↗️](/references/contracts/uagents-almanac/endpoints) for additional information on the registration process.
@@ -218,7 +218,7 @@ You can run this with `poetry run python alice_agent.py` but it won't do much, y
 
 ### Create a second agent and start an interaction
 
-Let's get Alice to do something! We're going to get Alice, on startup, to introduce itself and provide its address by printing both, on the terminal window. We can add a `on_event("startup")` decorator to make the agent run a function when run.
+Let's get Alice to do something! We're going to get Alice, on start up, to introduce itself and provide its address by printing both, on the terminal window. We can add a `on_event("startup")` decorator to make the agent run the defined function when it is run.
 
 Let's update `alice_agent.py` with the code snippet below:
 
@@ -256,7 +256,7 @@ This time, the output will be:
 
 ### Printing agent's addresses
 
-Sometimes we just need to see what a value looks like. We can quickly do so in Python by using the `print()` in-built function. As we have mentioned earlier, every AI Agent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses. We have showed above how to check for an uAgent address using the `ctx.address` method of the `Context` class. Let's now print them in the console to see their differences using the `print()` function:
+Sometimes, we just need to see what a value looks like. We can quickly do so in Python by using the `print()` in-built function. As we have mentioned earlier, every AI Agent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses. We have showed above how to check for an uAgent address using the `ctx.address` method of the `Context` class. Let's now print them in the console to see their differences using the `print()` function:
 
     ```py copy
     from uagents import Agent
@@ -275,7 +275,7 @@ The output of the above would look similar to:
     ```
 
     <Callout type="info" emoji="ℹ️">
-      Checkout our [Getting an agent addresses 🤖📫↗️](/guides/agents/getting-uagent-address) guide for an indepth understanding of these topics.
+      Checkout our [Getting an agent addresses 🤖📫↗️](/guides/agents/getting-uagent-address) guide for an in-depth understanding of these topics.
     </Callout>
 
 ### Agents and interval tasks
@@ -356,7 +356,7 @@ The output would look as follows:
 
 ### Agent communication
 
-We can now introduce how to enable effective communication between different agents. To do so, we need to introduce the `Model` class which allows to create a structured message format for messages to be exchanged between the agents.
+We can now show how to enable effective communication between different agents. To do so, we need to introduce the `Model` class which allows to create a structured message format for messages to be exchanged between the agents.
 
 Let's create a new script for this example: `touch agent_communication.py`.
 
