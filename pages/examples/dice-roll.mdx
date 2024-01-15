@@ -1,0 +1,57 @@
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permisions.
+To enable this on deltaV you will need to create a service. You will need to run this file on a device you are able to open a port on.
+
+#### Guide:
+
+[Communicating with other agents ↗️](/pages/guides/agents/running-locally.mdx)
+
+#### Supporting documentation:
+[Creating an agent↗️](/pages/guides/agents/create-a-uagent.mdx)
+
+[Register in Almanac ↗️](/guides/agents/register-in-almanac)
+
+[Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+## The agent:
+
+```py copy filename="agent.py"
+from uagents.setup import fund_agent_if_low
+from uagents import Agent, Context, Protocol, Model
+import random
+from pydantic import Field
+from ai_engine import UAgentResponse, UAgentResponseType
+import sys
+
+dungeons = Agent(
+    name="dungeonsanddragonsdiceroll",
+    port=6145,
+    seed="RANDOM STRINGS",
+    endpoint=["http://YOUR_IP:6145/submit"],
+)
+
+fund_agent_if_low(dungeons.wallet.address())
+
+@dungeons.on_event("startup")
+async def hi(ctx: Context):
+    ctx.logger.info(dungeons.address)
+
+class Request(Model):
+    dice_sides: int = Field(description="How many sides does your dice need?")
+
+dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
+
+@dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
+async def roll_dice(ctx: Context, sender: str, msg: Request):
+    result = str(random.randint(1, msg.dice_sides))
+    message = f"Dice roll result: {result}"
+    await ctx.send(
+        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+    )
+
+
+dungeons.include(dice_roll_protocol, publish_manifest=True)
+
+dungeons.run()
+ ``
