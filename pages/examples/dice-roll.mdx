@@ -1,20 +1,27 @@
+# Register a dice roll agent as a service
+
 ## Introduction
 
-This file can be run on any platform supporting Python, with the necessary install permisions.
-To enable this on deltaV you will need to create a service. You will need to run this file on a device you are able to open a port on.
+This file can be run on any platform supporting Python, with the necessary install permissions.
+To enable this on [DeltaV ↗️](/concepts/ai-engine/deltav) you will need to create and register a service. You will need to run this file on a device you are able to open a port on.
 
-#### Guide:
+### Guide
 
-[Communicating with other agents ↗️](/pages/guides/agents/running-locally.mdx)
+- [Register a dice roll agent as a service ↗️](/guides/agentverse/registering-agent-dice-roll)
 
-#### Supporting documentation:
-[Creating an agent↗️](/pages/guides/agents/create-a-uagent.mdx)
+### Supporting documentation
 
-[Register in Almanac ↗️](/guides/agents/register-in-almanac)
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
 
-[Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 
-## The agent:
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+- [Agentverse Services ↗️](/concepts/agent-services/services)
+
+- [Register a Service on the Agentverse ↗️](/guides/agentverse/registering-agent-services)
+
+### The agent
 
 ```py copy filename="agent.py"
 from uagents.setup import fund_agent_if_low
@@ -54,4 +61,4 @@ async def roll_dice(ctx: Context, sender: str, msg: Request):
 dungeons.include(dice_roll_protocol, publish_manifest=True)
 
 dungeons.run()
- ``
+```
