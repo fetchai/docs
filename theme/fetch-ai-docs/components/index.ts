@@ -16,3 +16,4 @@ export { Sidebar } from "./sidebar";
 export { SkipNavContent, SkipNavLink } from "./skip-nav";
 export { ThemeSwitch } from "./theme-switch";
 export { TOC } from "./toc";
+export { Progressbar } from "./progress-bar";
