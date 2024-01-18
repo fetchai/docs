@@ -5,4 +5,14 @@ const withNextra = require("nextra")({
 
 module.exports = withNextra({
   basePath: "/docs",
+
+  async redirects() {
+    return [
+      {
+        source: "/concepts/deltav/intro",
+        destination: "/concepts/ai-engine/deltav",
+        permanent: true,
+      },
+    ];
+  },
 });
