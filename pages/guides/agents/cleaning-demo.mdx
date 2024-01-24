@@ -24,8 +24,11 @@ The **Cleaning Protocol** is made up of two scripts: `__init__.py` and `models.p
 
 First, we need to define a `models` protocol which defines the structure and relationships of users, service types, providers, and availability within the cleaning service application. The defined models and their relationships will be used for data storage, retrieval, and manipulation throughout the application's logic.
 
-1.  First of all, navigate towards the cleaning directory and create a Python script for this task and name it by running: `touch models.py`
-2.  We then import the necessary classes from `enum` and `tortoise` libraries, and then define the different data models:
+1.  First of all, navigate towards the cleaning directory and create a Python script for this task and name it by running: `touch models.py`.
+
+2.  Install tortoise using `pip install tortoise-orm`. (It is an easy-to-use Object-Relational Mapping (ORM) library for Python that simplifies database interactions.)
+
+3.  We then import the necessary classes from `enum` and `tortoise` libraries, and then define the different data models:
 
     ```py copy filename="models.py"
     from enum import Enum
@@ -98,7 +101,7 @@ First, we need to define a `models` protocol which defines the structure and rel
                 - `time_end`: DateTime field indicating the end time of availability.
                 - `min_hourly_price`: Float field representing the minimum hourly price for services.
 
-3.  Save the script.
+4.  Save the script.
 
 Now that we have defined the protocols for this application, we proceed by defining the user and cleaner agents.
 
@@ -106,9 +109,11 @@ Now that we have defined the protocols for this application, we proceed by defin
 
 Now let's define a protocol handling communication between a user requesting a cleaning service and a cleaning service provider.
 
-1.  Inside the cleaning directory, create a Python script for this task and name it by running: `touch __init__.py`
+1.  Inside the cleaning directory, create a Python script for this task and name it by running: `touch __init__.py`.
 
-2.  Let's import the necessary classes from `datetime`, `typing`, `geopy.geocoders`, `geopy.distance`, `uagents`, and `.models`. Let's then define the message models and handlers for the service request, service response, service booking, and booking response using the `uagents` library. We then proceed and create a cleaning_proto object using the agents **Protocol** class. We give it the name `cleaning` and the version `0.1.0`. This protocol will be used to define handlers and manage communication between agents using the defined message models:
+2.  Install geopy using `pip install geopy` in your terminal.(Geopy helps to know details about location and also calculate distance between two places.)
+
+3.  Let's import the necessary classes from `datetime`, `typing`, `geopy.geocoders`, `geopy.distance`, `uagents`, and `.models`. Let's then define the message models and handlers for the service request, service response, service booking, and booking response using the `uagents` library. We then proceed and create a cleaning_proto object using the agents **Protocol** class. We give it the name `cleaning` and the version `0.1.0`. This protocol will be used to define handlers and manage communication between agents using the defined message models:
 
     ```py copy
     from datetime import datetime, timedelta
@@ -148,7 +153,7 @@ Now let's define a protocol handling communication between a user requesting a c
     cleaning_proto = Protocol(name=PROTOCOL_NAME, version=PROTOCOL_VERSION)
     ```
 
-3.  We would then need to define an `in_service_region` function, which determines whether a user's location is within the service area of a cleaning service provider. This function uses the `geopy` library for geolocation-related calculations and comparisons:
+4.  We would then need to define an `in_service_region` function, which determines whether a user's location is within the service area of a cleaning service provider. This function uses the `geopy` library for geolocation-related calculations and comparisons:
 
     ```py copy
     def in_service_region(
@@ -182,7 +187,7 @@ Now let's define a protocol handling communication between a user requesting a c
 
     The function starts by creating a geolocator object from the `Nominatim` class with a user agent string `micro_agents`. The `geolocator` is then used to obtain the geographical coordinates (latitude and longitude) of both the user's location and the provider's location. The function checks whether the geocoding for both locations was successful. If either location is not found, it raises a `RuntimeError` with a relevant error message. The geographical coordinates of the user's location and the provider's location are used to calculate the distance (in miles) between them using the `geodesic` function from the `geopy.distance` module. The calculated distance is stored in the `service_distance` variable. Finally, the function compares the calculated `service_distance` with the maximum distance allowed for the provider's availability: if the calculated distance is less than or equal to the provider's maximum distance, the user's location is considered within the service range, and the `in_range` variable is set to `True`. Otherwise, the `in_range` variable is set to `False`. The function returns the value of `in_range`, which indicates whether the user's location is within the service area of the provider.
 
-4.  We then need to define an event handler using the `@cleaning_proto.on_message` decorator. This handler is responsible for processing incoming service requests, evaluates various conditions, and generates appropriate responses indicating whether the request is accepted and proposing a price if applicable. It takes in `ServiceRequest` messages and generates `ServiceResponse` messages as responses:
+5.  We then need to define an event handler using the `@cleaning_proto.on_message` decorator. This handler is responsible for processing incoming service requests, evaluates various conditions, and generates appropriate responses indicating whether the request is accepted and proposing a price if applicable. It takes in `ServiceRequest` messages and generates `ServiceResponse` messages as responses:
 
     ```py copy
     @cleaning_proto.on_message(model=ServiceRequest, replies=ServiceResponse)
@@ -226,7 +231,7 @@ Now let's define a protocol handling communication between a user requesting a c
 
     If all conditions are met, the handler sets `accept` to `True` and calculates the proposed `price` based on the markup and availability's minimum hourly price. If any condition is not met, the handler sets `accept` to `False` and the `price` to `0`. Finally, the handler sends a `ServiceResponse` message back to the sender with the calculated `accept` flag and `price`. The handler logs relevant information using the `ctx.logger.info()` method.
 
-5.  We then define another event handler, `handle_book_request()` function, using the `@cleaning_proto.on_message()` decorator. This handler processes incoming booking requests, evaluates various conditions, and generates appropriate responses indicating whether the service request was successful. It is triggered whenever a `ServiceBooking` message is received and generates a `BookingResponse` messages as response:
+6.  We then define another event handler, `handle_book_request()` function, using the `@cleaning_proto.on_message()` decorator. This handler processes incoming booking requests, evaluates various conditions, and generates appropriate responses indicating whether the service request was successful. It is triggered whenever a `ServiceBooking` message is received and generates a `BookingResponse` messages as response:
 
     ```py copy
     @cleaning_proto.on_message(model=ServiceBooking, replies=BookingResponse)
@@ -263,7 +268,7 @@ Now let's define a protocol handling communication between a user requesting a c
 
     If the booking request meets the conditions for success, the handler updates the availability's start time to account for the duration of the service, and then saves the updated availability information. It then uses the `ctx.logger.info()` method to log that the task has been accepted and availability has been updated. Regardless of success, the handler sends a `BookingResponse` message back to the sender with a flag indicating whether the booking request was successful or not.
 
-6.  Save the script.
+7.  Save the script.
 
 The overall script should look as follows:
 
