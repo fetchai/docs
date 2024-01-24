@@ -25,7 +25,9 @@ The **Cleaning Protocol** is made up of two scripts: `__init__.py` and `models.p
 First, we need to define a `models` protocol which defines the structure and relationships of users, service types, providers, and availability within the cleaning service application. The defined models and their relationships will be used for data storage, retrieval, and manipulation throughout the application's logic.
 
 1.  First of all, navigate towards the cleaning directory and create a Python script for this task and name it by running: `touch models.py`.
-2.  Install tortoise orm library using `pip install tortoise-orm` in your terminal. (Tortoise is an easy-to-use Object-Relational Mapping (ORM) library for Python that simplifies database interactions).
+
+2.  Install tortoise using `pip install tortoise-orm`. (It is an easy-to-use Object-Relational Mapping (ORM) library for Python that simplifies database interactions.)
+
 3.  We then import the necessary classes from `enum` and `tortoise` libraries, and then define the different data models:
 
     ```py copy filename="models.py"
@@ -107,8 +109,10 @@ Now that we have defined the protocols for this application, we proceed by defin
 
 Now let's define a protocol handling communication between a user requesting a cleaning service and a cleaning service provider.
 
-1.  Inside the cleaning directory, create a Python script for this task and name it by running: `touch __init__.py`
-2.  Install geopy library using `pip install geopy` in your terminal. (Geopy library gives information about location and to calculate distance between two locations).
+1.  Inside the cleaning directory, create a Python script for this task and name it by running: `touch __init__.py`.
+
+2.  Install geopy using `pip install geopy` in your terminal.(Geopy helps to know details about location and also calculate distance between two places.)
+
 3.  Let's import the necessary classes from `datetime`, `typing`, `geopy.geocoders`, `geopy.distance`, `uagents`, and `.models`. Let's then define the message models and handlers for the service request, service response, service booking, and booking response using the `uagents` library. We then proceed and create a cleaning_proto object using the agents **Protocol** class. We give it the name `cleaning` and the version `0.1.0`. This protocol will be used to define handlers and manage communication between agents using the defined message models:
 
     ```py copy
