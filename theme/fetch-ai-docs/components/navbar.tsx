@@ -155,12 +155,12 @@ export function Navbar({
                 </Listbox.Button>
                 <Listbox.Options
                   style={{ left: "-4rem", top: "40px" }}
-                  className="pr-6 outline-none nx-left-[-1rem] nx-top-3 nx-absolute nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium  nx-bg-white nx-border "
+                  className="pr-6 outline-none nx-left-[-1rem] nx-z-10 nx-top-3 nx-absolute nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium  nx-bg-white nx-border "
                 >
                   {bookMarksList.length === 0 && (
                     <Listbox.Option
                       value="Bookmarks"
-                      className=" nx-text-sm nx-text-gray-500  nx-w-full nx-select-none nx-py-2"
+                      className=" nx-text-sm nx-text-gray-500 nx-w-full nx-select-none nx-py-2"
                     >
                       <>
                         <span className="nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate">
@@ -187,7 +187,7 @@ export function Navbar({
                             onClick={() =>
                               router.push(item.replace("/docs", ""))
                             }
-                            className={` nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate ${
+                            className={` hoverSpan nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate ${
                               selected ? "nx-font-medium" : "nx-font-normal"
                             }`}
                           >
