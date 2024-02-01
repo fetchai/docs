@@ -2,9 +2,10 @@ import { Callout } from 'nextra/components'
 
 # Using News API to build network of tasks and subtasks in Agentverse
 
-##Introduction
+## Introduction
 
-This agent newtwork helps users to read news of different types including Categorical, Country based or Keyword related news. There are three layers of services to let users read news. These services altogether return news of specific type and subtype based on user preference. 
+This agent network helps users to read news of different types including Categorical, Country based or Keyword related news. There are three layers of services to let users read news. These services altogether return news of specific type and subtype based on user preference.
+
 Three different layers of subtasks are included in this News Reading System, Generate News subtask, and Generate {news_type} subtasks. For workflow of user requests please refer below flow chart.
 
 ![](../../../src/images/guides/agentverse/Utilizing-API-to-build-network-of-task-and-subtask/news-reading-system-flowchart.drawio.png)
@@ -12,7 +13,8 @@ Three different layers of subtasks are included in this News Reading System, Gen
 ## Task and Subtask
 
 The task and subtask descriptions and names should be relevant to make it easy for the LLM to identify the type of subtask to trigger and when. Descriptions of tasks and subtasks should always indicate when specific subtasks should be triggered. In this case one of multiple subtasks is to be triggered, it should be provided in the dictionary to enhance the LLM's understanding. For instance, you can refer to the example below where the "Generate News" subtask triggers one of the "Generate news_type subtasks”  based on the user’s requirement.
-Field description is another feature of services which should mention use of subtasks in a clear and concise way. Refer [Agentverser Services ↗️](/concepts/agent-services/services) for more details on tasks and subtasks.
+
+Field description is another feature of services which should mention use of subtasks in a clear and concise way. Refer [Agentverse Services ↗️](/concepts/agent-services/services) for more details on tasks and subtasks.
 
 ## News API
 
@@ -31,16 +33,16 @@ This agent helps users to **read news** according to their willingness. This age
         
         # After running this agent, it can be registered to DeltaV on Agentverse's Services tab. For registration you will have to use the agent's address. 
 
-        #Import required libraries
+        # Import required libraries
         import requests
         import json
         from ai_engine import UAgentResponse, UAgentResponseType
 
-        #Define News Reading Model
+        # Define News Reading Model
         class News(Model):
             news : str
 
-        #Define Protocol for news reading system
+        # Define Protocol for news reading system
         news_protocol = Protocol("News System")
 
         # Define a handler for the News system protocol
@@ -54,7 +56,7 @@ This agent helps users to **read news** according to their willingness. This age
             #sending final response to the DeltaV GUI
             await ctx.send(sender, UAgentResponse(message = final_news, type = UAgentResponseType.FINAL))
 
-        # Include the 'Generate News' protocol in your agent
+        # Include the Generate News protocol in your agent
         agent.include(news_protocol)
     ```
 Now click on the **Run** button in the upper right corner of the editor so that you have your news system agent agent up and running!
@@ -68,17 +70,17 @@ This agent asks users for the type of news they want to read today from options 
         
         # After running this agent, it can be registered to DeltaV on Agentverse's Services tab. For registration you will have to use the agent's address. 
 
-        #Import required libraries
+        # Import required libraries
         import requests
         import json
         from ai_engine import UAgentResponse, UAgentResponseType
 
-        #Define News Generating Model
+        # Define News Generating Model
         class GenerateNews(Model):
         news_type: str
         news : str
 
-        #Define Generate news protocol
+        # Define Generate news protocol
         generate_news_protocol = Protocol("Generate News")
 
         # Define a handler for the News generation protocol
@@ -324,6 +326,7 @@ This subtask is triggered if the user wants to read keyword specific news, asks 
         # Include the 'Generate Keyword News' protocol in your agent
         agent.include(generate_news_keyw_protocol)
     ```
+
 Now click on the **Run** button in the upper right corner of the editor so that you have your news system agent agent up and running!
 
 ## Registering Services 
@@ -440,4 +443,4 @@ The news will be passed from Generate news_type subtask > Generate News Subtask 
 
 With that, **you have got a news reading service which can be discovered and contacted with DeltaV. Awesome!**
 
-**Note :** If one of multiple subtask is to be triggered, it should be mentioned in dictionary rather than writing a description of each as it confuses the DeltaV LLM model. If we mention **"Trigger generate categorical subtask for user selecting categorical news and triggere generate regional for user selecting regional news and so on...."**, will lead to either untracability of subtask or wrong selection of subtasks.
+**Note :** If one of multiple subtask is to be triggered, it should be mentioned in dictionary rather than writing a description of each as it confuses the DeltaV LLM model. If we mention **"Trigger generate categorical subtask for user selecting categorical news and trigger generate regional for user selecting regional news and so on...."**, will lead to either untracability of subtask or wrong selection of subtasks.
