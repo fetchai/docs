@@ -14,16 +14,27 @@ For instance, consider the following service:
 
 Providing a detailed field description is important to correctly execute the service.
 
+For task and subtask network please refer below example :
 
- - two example of a task and subtask with highlighting difference of model descriptions
+### Task
 
-Field descriptions:
+This service helps user to read news of specific type. This service calls for subtask to generate news.
+Always provide a comprehensive description of triggering the subtask in the field description to ensure that the subtask is always initiated.
 
-_news_ - This field describes the news which will be generated from the Generate News subtask. It should never be asked from the user directly and should always be provided by the respective subtasks. All news articles generated are presented as strings.
+![](../../../src/images/guides/services/the-importance-of-descriptions/news-reading-system.png)
 
-_news_type_ - This field represents the type of news selected by the user, such as categorical, regional, or keyword news. It should always be provided by the user and determines which subtask will be triggered for news generation.
+_news_ - This field describes the news that will be presented to the user. It should be mentioned that it should be always provided by triggering of subtask.
 
+### Subtask
 
+This service helps task to generate news and send it to task or another subtask.
+Below example asks user for news category they want to read and provide news to task.
+
+![](../../../src/images/guides/services/the-importance-of-descriptions/generate-categorical-news.png)
+
+_category_ - This field describes the category for which user wants to read the news. It should be mentioned that it should be always provided by user.
+
+**Note :** Always include the subtask trigger in the field description. When selecting one of multiple subtasks, use different names for each subtask to avoid confusion for LLM.
 
 ## Service registration examples
 
