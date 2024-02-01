@@ -1,40 +1,42 @@
+import { Callout } from 'nextra/components'
+
 # The importance of a good field description
 
 ## The importance of describing your fields in a service
 
-Whenever you are creating an agent service and you want to register it on the Agentverse to make it available on DeltaV, you are required to provide multiple information for the service in question. Among all information you need to provide, the **description** of your service is super important and thus it has to be detailed. Indeed, detailed descriptions would help users to understand the functionality of the service. This clarity ensures users can interact with the system effectively and know what to expect.
+When crafting an agent service for registration on the [Agentverse ↗️](https://agentverse.ai/), providing comprehensive information, especially in the description section, is paramount. A detailed service **description** not only elucidates the functionality of the service but also aids users in grasping its essence. This clarity fosters effective interactions, empowering users to navigate the system with confidence, knowing precisely what to anticipate.
 
-Also, the **field description** is very important and has to be detailed as much as possible. Field descriptions refer to the explanation provided for each field or parameter used taken into account within the service; it serves as a guide for users, developers, and AI Engine to understand the purpose, usage, and expected values of each field.
+Similarly, the field description needs to be detailed enough. This because it serves as a guiding beacon for users, developers, and LLM alike. Each field's explanation elucidates its purpose, usage, and expected inputs, streamlining interactions and facilitating execution. Enhanced understanding of field descriptions enables the LLM (i.e., the AI Engine) to interpret user requests accurately, thereby ensuring accurate service delivery.
 
-A well written field description enhances the AI Engine understanding of the type of Task or Subtask the service requires for execution. This would help in the accurate interpretation and execution of users' requests. For improved clarity, reinforcing key words with repetition alongside the descriptions is crucial. A clear and descriptive field description reduces ambiguity and prevent misunderstandings, both for users and the AI Engine. This clarity is crucial for smooth interactions and accurate delivery of the service.
+For optimal clarity, reinforcing key concepts could be done through repetition of keywords within the description. Such an approach minimizes ambiguity and mitigates the risk of misunderstandings. Whether for users or LLM, a clear and descriptive field description lay the foundation for smooth interactions and reliable service delivery.
 
-For instance, consider the following service:
+Consider the following service:
 
 ![](../../../src/images/guides/services/the-importance-of-descriptions/coin-toss-service-description.png)
 
-Providing a detailed field description is important to correctly execute the service.
+Providing a detailed field description is important to correctly execute the service. A well written field description enhances the LLM understanding of the type of **Task** or **Subtask** the service requires for execution. This would help in the accurate interpretation and execution of users' requests.
 
-For task and subtask network please refer below example :
+**It is possible to call subtasks from tasks or subtasks by specifying this within the field description itself**. For task and subtask network please refer below example.
 
 ### Task
 
-This service helps user to read news of specific type. This service calls for subtask to generate news.
-Always provide a comprehensive description of triggering the subtask in the field description to ensure that the subtask is always initiated.
+This service helps user to read news of a specific type. This service calls for a subtask to generate news. Remember to always provide a comprehensive description for triggering the subtask in the field description so to ensure that the subtask is always initiated.
 
 ![](../../../src/images/guides/services/the-importance-of-descriptions/news-reading-system.png)
 
-_news_ - This field describes the news that will be presented to the user. It should be mentioned that it should be always provided by triggering of subtask.
+_news_: this field describes the news that will be presented to the user. It should be mentioned that it should be always provided by triggering of subtask. In our case, a good field description would be: "".
 
 ### Subtask
 
-This service helps task to generate news and send it to task or another subtask.
-Below example asks user for news category they want to read and provide news to task.
+This service helps task to generate news and send it to task or another subtask. Below, there is an example where the users ask for news category they want to read and provide news to task.
 
 ![](../../../src/images/guides/services/the-importance-of-descriptions/generate-categorical-news.png)
 
-_category_ - This field describes the category for which user wants to read the news. It should be mentioned that it should be always provided by user.
+_category_: this field describes the category for which the user wants to read the news. It should be mentioned that it should be always provided by user. In our case, a good field description would be: "".
 
-**Note :** Always include the subtask trigger in the field description. When selecting one of multiple subtasks, use different names for each subtask to avoid confusion for LLM.
+    <Callout type="info" emoji="ℹ️">
+      Remember to always include the subtask trigger in the field description. This is very important to ensure that the subtask is being called. When selecting one of multiple subtasks, you need to use different names for each subtask. This way, we avoid confusion for the LLM.
+    </Callout>
 
 ## Service registration examples
 
@@ -44,10 +46,3 @@ For additional information and guidelines on how to register a service on the Ag
    - [Register a dice roll agent as a service ↗️](/guides/agentverse/registering-agent-dice-roll).
    - [Register a coin toss agent as a service ↗️](/guides/agentverse/registering-agent-coin-toss).
    - [Using News API to build network of tasks and subtasks in Agentverse ↗️](/guides/services/utilizing-api-to-build-network-of-task-and-subtask)
-
-
-
-
-
-
-
