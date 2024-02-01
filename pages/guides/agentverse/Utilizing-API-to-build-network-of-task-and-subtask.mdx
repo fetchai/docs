@@ -93,12 +93,12 @@ This agent asks users for the type of news they want to read today from options 
                 ctx.logger.info(f'Generate News \n {msg.news}')
                 message = msg.news
             # Send a successful response with the generated news
-            await ctx.send(
-                sender,
-                UAgentResponse(
-                    message= message,
-                    type=UAgentResponseType.FINAL
-                    )
+                await ctx.send(
+                    sender,
+                    UAgentResponse(
+                        message= message,
+                        type=UAgentResponseType.FINAL
+                        )
                     )
             # Handle any exceptions that occur during news generation
             except Exception as exc:
