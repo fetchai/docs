@@ -12,7 +12,7 @@ const useContentVisited = (context) => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const visitedContent = await response.json();
       setContentVisited(visitedContent);
@@ -44,7 +44,7 @@ const useContentVisited = (context) => {
             saved_path: contentPath,
             is_visible: true,
           }),
-        }
+        },
       );
 
       const visitedContent = await fetchContentVisited(context);

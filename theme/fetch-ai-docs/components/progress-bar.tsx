@@ -6,7 +6,9 @@ export function Progressbar() {
   const { scrollYProgress } = useScroll();
 
   return (
-    <motion.div className={cn("progress-bar")} style={{ scaleX: scrollYProgress }} />
+    <motion.div
+      className={cn("progress-bar")}
+      style={{ scaleX: scrollYProgress }}
+    />
   );
 }
-

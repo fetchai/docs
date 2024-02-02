@@ -222,7 +222,7 @@ function Separator({ title }: { title: string }): ReactElement {
         "[word-break:break-word]",
         title
           ? "nx-mt-5 nx-mb-2 nx-px-2 nx-py-1.5 nx-text-sm nx-font-semibold nx-text-gray-900 first:nx-mt-0 dark:nx-text-gray-100"
-          : "nx-my-4"
+          : "nx-my-4",
       )}
     >
       {title ? (
@@ -388,7 +388,7 @@ export function Sidebar({
   asPopover = false,
   headings,
   includePlaceholder,
-  contentVisited
+  contentVisited,
 }: SideBarProps): ReactElement {
   const config = useConfig();
   const { menu, setMenu } = useMenu();
