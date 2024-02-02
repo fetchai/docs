@@ -15,7 +15,9 @@ export const handleSignin = () => {
 
 export const isLinkInResponse = (response) => {
   const flattenedArray = response?.flat();
-  const isPresent = flattenedArray?.includes(window.location.pathname);
+  const isPresent = flattenedArray?.includes(
+    typeof window === "undefined" ? "" : window.location.pathname,
+  );
   return isPresent;
 };
 

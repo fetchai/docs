@@ -472,10 +472,7 @@ export function Sidebar({
               setFocused(item);
             }}
           >
-            <div
-              className={cn("nx-sidebar-scrollable")}
-              ref={sidebarRef}
-            >
+            <div className={cn("nx-sidebar-scrollable")} ref={sidebarRef}>
               {/* without asPopover check <Collapse />'s inner.clientWidth on `layout: "raw"` will be 0 and element will not have width on initial loading */}
               {!asPopover && (
                 <Collapse isOpen horizontal>

@@ -52,19 +52,18 @@ export const FeatureGuideTabs = () => {
         {
           title: "Creating your first agent 🤖🧑‍💻",
           description:
-            "A guide showing you how to create your first agent in few minutes.",
+            "A guide showing how to create your first agent in few minutes.",
           path: "guides/agents/create-a-uagent",
         },
         {
           title: "How to use agents to verify messages 📬🔐",
-          description:
-            "A guide showing you how to use agents to verify messages.",
+          description: "A guide showing how to use agents to verify messages.",
           path: "guides/agents/message-verification",
         },
         {
           title: "Registering in the Almanac contract",
           description:
-            "A guide showing you how to correctly register within the Almanac contract.",
+            "A guide showing how to correctly register agents within the Almanac contract.",
           path: "guides/agents/register-in-almanac",
         },
         {
@@ -76,12 +75,12 @@ export const FeatureGuideTabs = () => {
         {
           title: "How to use the agents to simulate a cleaning scenario ✨",
           description:
-            "A guide teaching you how agents can be used to set up a cleaning scenario.",
+            "A guide teaching how agents can be used to set up a cleaning scenario.",
           path: "guides/agents/cleaning-demo",
         },
         {
           title: "Getting an agent addresses 🤖📫",
-          description: "A guide teaching you how to retrieve agents addresses.",
+          description: "A guide showing how to retrieve agents addresses.",
           path: "guides/agents/getting-uagent-address",
         },
         {
