@@ -6,21 +6,21 @@ import { Callout } from 'nextra/components'
 
 At registration of an agent service on the [Agentverse ↗️](https://agentverse.ai/), providing comprehensive information, especially in the description section, is paramount. A detailed service **description** not only elucidates the functionality of the service but also aids users in grasping its essence. This clarity fosters effective interactions, empowering users to navigate the system with confidence, knowing precisely what to anticipate.
 
-Similarly, the **field description** of the service needs to be detailed enough. This because it serves as a guiding beacon for users, developers, and LLM alike. Each field's explanation elucidates the purpose, usage, and expected inputs, streamlining interactions and facilitating execution. Enhanced understanding of field descriptions enables the LLM (i.e., the AI Engine) to interpret user requests accurately, thereby ensuring accurate service delivery.
+Similarly, the **field description** of the service needs to be detailed enough so to provide a clear picture of each data `Model` the service requires for it to be executable. Hence, these descriptions serve as a guiding beacon for users, developers, and LLM alike. Each field explanation elucidates the purpose, usage, and expected inputs required by each Model class, streamlining interactions and facilitating execution. Enhanced understanding of field descriptions enables the LLM (i.e., the AI Engine) to interpret user requests accurately, thereby ensuring accurate service delivery.
 
 For clarity, reinforcing key concepts could be done through repetition of keywords within the description. Such an approach minimizes ambiguity and mitigates the risk of misunderstandings. Whether for users or LLM, a clear and descriptive field description lay the foundation for smooth interactions and reliable service delivery.
 
-Consider the following service:
+Consider the following [service ↗️](/guides/agentverse/registering-agent-coin-toss#run-your-coin-toss-agent):
 
-![](../../../src/images/guides/services/the-importance-of-descriptions/coin-toss-service-description.png)
+![](../../../src/images/guides/services/the-importance-of-descriptions/dice-roll-service-description.png)
 
-Providing a detailed field description is important to correctly execute the service. A well written field description enhances the LLM understanding of the type of **Task** or **Subtask** the service requires for execution. This would help in the accurate interpretation and execution of users' requests.
+Providing a detailed field description for the `num_rolls` data `Model` is important to correctly execute the service. A well written field description enhances the LLM understanding of the type of **Task** or **Subtask** the service requires for execution. This would help in the accurate interpretation and execution of users' requests.
 
-**It is possible to call subtasks from tasks or subtasks by specifying this within the field description itself**. For task and subtask network please refer to the below example.
+**It is possible to call subtasks from tasks or subtasks by specifying this within the field description itself**. For task and subtask network please refer to the below examples.
 
 ### Task
 
-This service helps user to read news of a specific type. This service calls for a subtask to generate news.
+This service helps user to read news of a specific type. This service calls for a subtask to generate news. For a better understanding, you can find the overall guide for this example [here ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#news-reading-agent).
 
     <Callout type="info" emoji="ℹ️">
       Remember to always provide a comprehensive description for triggering the subtask in the field description so to ensure that the subtask is always initiated.
@@ -28,18 +28,18 @@ This service helps user to read news of a specific type. This service calls for 
 
 ![](../../../src/images/guides/services/the-importance-of-descriptions/news-reading-system.png)
 
-_news_: this field describes the news that will be presented to the user. It should be mentioned that it should be always provided by triggering of subtask. In our case, a good field description would be: **Describes the news which will be generate from the "Generate News" subtask. Always go for "Generate News" subtask only never ask this field from user. All the news articles generated are presented as strings**.
+The field description for the `news` data model describes the news that will be presented to the user. It should be mentioned that it should be always provided by triggering of subtask. In our case, a good field description would be: **Describes the news which will be generate from the "Generate News" subtask. Always go for "Generate News" subtask only never ask this field from user. All the news articles generated are presented as strings**.
 
 ### Subtask
 
-This service helps task to generate news and send it to task or another subtask. Below, there is an example where the users ask for news category they want to read and provide news to task.
+This service helps task to generate news and send it to task or another subtask. Below, there is an example where the users ask for news category they want to read and provide news to task. For a better understanding, you can find the overall guide for this example [here ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#generate-categorical-news).
 
 ![](../../../src/images/guides/services/the-importance-of-descriptions/generate-categorical-news.png)
 
-_category_: this field describes the category for which the user wants to read the news. It should be mentioned that it should be always provided by user. In our case, a good field description would be: **Describes the category provided by user about which he want to get news for. This should always be provided by user in all cases. This task responds to "Generate News" subtask. This should be from options business, entertainment, general, health, science, sports, technology**.
+The field description for the `category` data model describes the category for which the user wants to read the news. It should be mentioned that it should be always provided by user. In our case, a good field description would be: **Describes the category provided by user about which he want to get news for. This should always be provided by user in all cases. This task responds to "Generate News" subtask. This should be from options business, entertainment, general, health, science, sports, technology**.
 
     <Callout type="info" emoji="ℹ️">
-      Remember to always include the subtask trigger in the field description. This is very important to ensure that the subtask is being called. When selecting one of multiple subtasks, you need to use different names for each subtask. This way, we avoid confusion for the LLM.
+      _Remember to always include the subtask trigger in the field description_. This is very important to ensure that the subtask is being called. When selecting one of multiple subtasks, you need to use different names for each subtask. This way, we avoid confusion for the LLM.
     </Callout>
 
 ## Service registration examples
