@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useBookMark = (context) => {
-  const [bookMarks, setBookMarks] = useState<undefined | boolean>();
+  const [bookMarks, setBookMarks] = useState<undefined | string[]>([]);
   const fetchBookMarks = async (context, isBookMark) => {
     try {
       const response = await fetch(
@@ -13,11 +13,18 @@ const useBookMark = (context) => {
           },
         },
       );
-      const bookmark = await response.json();
-      setBookMarks(bookmark);
-      return bookmark;
+      if (response.status === 200) {
+        const bookmark = await response.json();
+        setBookMarks(bookmark);
+        return bookmark;
+      } else {
+        setBookMarks([]);
+        return [];
+      }
     } catch (error) {
+      setBookMarks([]);
       console.log("oops, something went wrong", error);
+      return [];
     }
   };
 
