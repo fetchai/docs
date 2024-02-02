@@ -79,7 +79,7 @@ const Body = ({
   useEffect(() => {
     setMatchingTagRoute(null);
   }, [tags]);
-  
+
   if (themeContext.layout === "raw") {
     return <div className={classes.main}>{children}</div>;
   }
@@ -100,7 +100,7 @@ const Body = ({
 
   const handleTagClick = (tag: string) => {
     const filteredRoutes = directoriesWithTags.filter((directory) =>
-      directory.tags.includes(tag)
+      directory.tags.includes(tag),
     );
     setMatchingTagRoute(filteredRoutes);
   };
@@ -258,7 +258,7 @@ const InnerLayout = ({
     };
   }, [pageMap, locale, defaultLocale, fsPath]);
 
-  const directoriesWithTags = flatDirectories
+  const directoriesWithTags = (flatDirectories as MyItem[])
     .filter((directory) => !!("tags" in directory))
     .map(({ route, tags }) => ({ route, tags }));
 

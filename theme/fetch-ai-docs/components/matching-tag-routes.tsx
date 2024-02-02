@@ -2,7 +2,7 @@
 import { GuideBox } from "components/feature-guide-tabs";
 import { Button } from "nextra/components";
 import React, { ReactElement, useEffect, useState } from "react";
-import { FaBars, FaThLarge , FaAngleUp, FaAngleDown} from "react-icons/fa";
+import { FaBars, FaThLarge, FaAngleUp, FaAngleDown } from "react-icons/fa";
 import { useRouter } from "next/router";
 import fetchJson from "src/lib/fetch-json";
 
@@ -38,7 +38,7 @@ export function MatchingRoutesComponent({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetchGuide();
+        const response = (await fetchGuide()) as { guide: string };
         const regex = /{{([\S\s]*?)}}/gm;
         const matches = response.guide.match(regex);
         const jsonData = matches.map((item) =>
@@ -51,8 +51,8 @@ export function MatchingRoutesComponent({
               .replaceAll("title", '"title"')
               .replaceAll("description", '"description"')
               .replaceAll("path", '"path"')
-              .replaceAll(",}", "}")
-          )
+              .replaceAll(",}", "}"),
+          ),
         );
         setContent(jsonData);
       } catch (error) {
@@ -76,7 +76,7 @@ export function MatchingRoutesComponent({
       title: "Default Title",
       description: "Default Description",
     };
-  }
+  };
 
   return (
     <div>

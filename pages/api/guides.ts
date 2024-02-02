@@ -2,16 +2,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import fs from "node:fs";
 import path from "node:path";
 
-async function findGuideByPath(
-  filePath: string,
-): Promise<unknown> {
-    const content = fs.readFileSync(filePath, "utf8");
-    return content;
+async function findGuideByPath(filePath: string): Promise<unknown> {
+  const content = fs.readFileSync(filePath, "utf8");
+  return content;
 }
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const filePath = path.join(process.cwd(), "/pages/guides.mdx");
 
