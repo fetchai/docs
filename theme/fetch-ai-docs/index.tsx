@@ -16,6 +16,7 @@ import {
   Head,
   MatchingRoutesComponent,
   NavLinks,
+  Progressbar,
   Sidebar,
   SkipNavContent,
 } from "./components";
@@ -31,6 +32,7 @@ import { UserInfoProvider, useUserContext } from "./contexts/context-provider";
 import Bookmark from "./components/bookmark";
 import useBookMark from "theme/use-book-mark";
 import { isLinkInResponse } from "./helpers";
+import useContentVisited from "theme/use-content-visited";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -213,6 +215,10 @@ const InnerLayout = ({
     state: { bookMarks },
     action: { onClickBookMark, fetchBookMarks },
   } = useBookMark(context);
+  const {
+    state: { contentVisited },
+    action: { onClickSetContentVisited, fetchContentVisited },
+  } = useContentVisited(context);
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   const fsPath = useFSRoute();
@@ -306,6 +312,7 @@ const InnerLayout = ({
       />
       <Head />
       <Banner />
+      <Progressbar />
       {themeContext.navbar &&
         renderComponent(config.navbar.component, {
           flatDirectories,
@@ -322,6 +329,8 @@ const InnerLayout = ({
             headings={headings}
             asPopover={hideSidebar}
             includePlaceholder={themeContext.layout === "default"}
+            contentVisited={contentVisited}
+            fetchContentVisited={fetchContentVisited}
           />
           <SkipNavContent />
           {check && (
@@ -338,6 +347,8 @@ const InnerLayout = ({
                   <NavLinks
                     flatDirectories={flatDocsDirectories}
                     currentIndex={activeIndex}
+                    onClickSetContentVisited={onClickSetContentVisited}
+                    fetchedContentVisited={contentVisited}
                   />
                 ) : null
               }
