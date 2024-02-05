@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import type { NextraThemeLayoutProps, PageOpts } from "nextra";
 import type { ReactElement, ReactNode } from "react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "focus-visible";
 import cn from "clsx";
 import { useFSRoute, useMounted } from "nextra/hooks";
@@ -14,6 +14,7 @@ import {
   Banner,
   Breadcrumb,
   Head,
+  MatchingRoutesComponent,
   NavLinks,
   Sidebar,
   SkipNavContent,
@@ -46,6 +47,10 @@ interface BodyProps {
   children: ReactNode;
   onClickBookMark: (val: boolean) => void;
   bookMark: boolean;
+  directoriesWithTags: {
+    route: string;
+    tags: string[];
+  }[];
 }
 
 const classes = {
@@ -64,9 +69,16 @@ const Body = ({
   children,
   bookMark,
   onClickBookMark,
+  directoriesWithTags,
 }: BodyProps): ReactElement => {
   const config = useConfig();
   const mounted = useMounted();
+  const [matchingTagRoute, setMatchingTagRoute] =
+    useState<{ route: string; tags: string[] }[]>();
+
+  useEffect(() => {
+    setMatchingTagRoute(null);
+  }, [tags]);
 
   if (themeContext.layout === "raw") {
     return <div className={classes.main}>{children}</div>;
@@ -86,6 +98,13 @@ const Body = ({
       <div className="nx-mt-16" />
     );
 
+  const handleTagClick = (tag: string) => {
+    const filteredRoutes = directoriesWithTags.filter((directory) =>
+      directory.tags.includes(tag),
+    );
+    setMatchingTagRoute(filteredRoutes);
+  };
+
   const tagColors = [
     "bg-indigo",
     "bg-orange",
@@ -103,16 +122,22 @@ const Body = ({
             tagColors[index % tagColors.length]
           }`}
         >
-          {tag}
+          <button onClick={() => handleTagClick(tag)}>{tag}</button>
         </span>
       ))}
     </div>
   );
+
   const routeOriginal = useFSRoute();
   const [route] = routeOriginal.split("#");
   const content = (
     <>
       {tagsComponent}
+      {matchingTagRoute ? (
+        <MatchingRoutesComponent routes={matchingTagRoute} />
+      ) : (
+        ""
+      )}
       {children}
       {gitTimestampEl}
       {themeContext.timestamp && (
@@ -233,6 +258,10 @@ const InnerLayout = ({
     };
   }, [pageMap, locale, defaultLocale, fsPath]);
 
+  const directoriesWithTags = (flatDirectories as MyItem[])
+    .filter((directory) => !!("tags" in directory))
+    .map(({ route, tags }) => ({ route, tags }));
+
   const themeContext = { ...activeThemeContext, ...frontMatter };
   const hideSidebar =
     !themeContext.sidebar ||
@@ -315,6 +344,7 @@ const InnerLayout = ({
               tags={activePath.at(-1)?.tags ?? undefined}
               onClickBookMark={onClickBookMark}
               bookMark={bookMark}
+              directoriesWithTags={directoriesWithTags}
             >
               <MDXProvider
                 components={getComponents({

@@ -3,6 +3,7 @@ export { Banner } from "./banner";
 export { Breadcrumb } from "./breadcrumb";
 export { Collapse } from "./collapse";
 export { Footer } from "./footer";
+export { MatchingRoutesComponent } from "./matching-tag-routes";
 export { Head } from "./head";
 export { Input } from "./input";
 export { NavLinks } from "./nav-links";
