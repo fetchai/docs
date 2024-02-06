@@ -202,6 +202,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
                   directories={item.children}
                   base={item.route}
                   anchors={anchors}
+                  // filesVisited={contentVisited}
                 />
               ) : null}
             </Collapse>
@@ -240,9 +241,11 @@ function Separator({ title }: { title: string }): ReactElement {
 function File({
   item,
   anchors,
+  filesVisited,
 }: {
   item: PageItem | Item;
   anchors: Heading[];
+  filesVisited: string[];
 }): ReactElement {
   const route = useFSRoute();
   const onFocus = useContext(OnFocusItemContext);
@@ -274,7 +277,9 @@ function File({
         }}
       >
         {renderComponent(config.sidebar.titleComponent, {
-          title: item.title,
+          title: filesVisited?.some((file) => file == item.title)
+            ? `${item.title} ✅`
+            : item.title,
           type: item.type,
           route: item.route,
         })}
@@ -315,6 +320,7 @@ function File({
 interface MenuProps {
   directories: PageItem[] | Item[];
   anchors: Heading[];
+  filesVisited?: string[];
   base?: string;
   className?: string;
   onlyCurrentDocs?: boolean;
@@ -337,6 +343,7 @@ function Menu({
   anchors,
   className,
   onlyCurrentDocs,
+  filesVisited,
 }: MenuProps): ReactElement {
   const context = useUserContext();
   return (
@@ -352,7 +359,12 @@ function Menu({
                 <Folder key={item.name} item={item} anchors={anchors} />
               )
             : permissionCheck && (
-                <File key={item.name} item={item} anchors={anchors} />
+                <File
+                  key={item.name}
+                  item={item}
+                  anchors={anchors}
+                  filesVisited={filesVisited}
+                />
               )
           : null;
       })}
@@ -367,6 +379,8 @@ interface SideBarProps {
   asPopover?: boolean;
   headings: Heading[];
   includePlaceholder: boolean;
+  contentVisited: string[];
+  fetchContentVisited: (context: unknown) => Promise<[string]>;
 }
 
 export function Sidebar({
@@ -374,6 +388,7 @@ export function Sidebar({
   asPopover = false,
   headings,
   includePlaceholder,
+  contentVisited,
 }: SideBarProps): ReactElement {
   const config = useConfig();
   const { menu, setMenu } = useMenu();
@@ -467,6 +482,7 @@ export function Sidebar({
                     directories={docsDirectories}
                     // When the viewport size is larger than `md`, hide the anchors in
                     // the sidebar when `floatTOC` is enabled.
+                    filesVisited={contentVisited}
                     anchors={config.toc.float ? [] : anchors}
                     onlyCurrentDocs
                   />
@@ -477,6 +493,7 @@ export function Sidebar({
                 // The mobile dropdown menu, shows all the directories.
                 directories={docsDirectories}
                 // Always show the anchor links on mobile (`md`).
+                filesVisited={contentVisited}
                 anchors={anchors}
               />
             </div>
