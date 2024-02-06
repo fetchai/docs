@@ -4,6 +4,15 @@
 
 In this guide we will show how to set up protocols and different AI Agents to implement a cleaning service between clients and cleaning service providers using the `uagents` library.
 
+### What you need
+
+For this example, you need to have installed multiple libraries. Below, you can find the ones you need and related commands to install them directly from the terminal:
+
+    1. [**uagents** ↗️](/guides/agents/installing-uagent).
+    2. **tortoise**: `pip install tortoise-orm`.
+    3. **geopy**: `pip install geopy`.
+    4. **pytz**: `pip install pytz`.
+
 ## Walk-through
 
 1. First of all, you need to navigate towards the directory you created for your project and create a folder for this task: `mkdir cleaning_demo`.
@@ -26,9 +35,7 @@ First, we need to define a `models` protocol which defines the structure and rel
 
 1.  First of all, navigate towards the cleaning directory and create a Python script for this task and name it by running: `touch models.py`.
 
-2.  Install tortoise using `pip install tortoise-orm`. (It is an easy-to-use Object-Relational Mapping (ORM) library for Python that simplifies database interactions.)
-
-3.  We then import the necessary classes from `enum` and `tortoise` libraries, and then define the different data models:
+2.  We then import the necessary classes from `enum` and `tortoise` libraries, and then define the different data models:
 
     ```py copy filename="models.py"
     from enum import Enum

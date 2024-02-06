@@ -33,9 +33,9 @@ async def hi(ctx: Context):
 alice.run()
    ```
 
-There's a few things happening in this script; we initalise Alice with an endpoint. An endpoint is the address in which other agents can send messages to where Alice will be listening. As highlighted in [Registration and Endpoints Weighting ↗️](/references/contracts/uagents-almanac/endpoints), agents can communicate by querying the Almanac and retrieving an endpoint from the recipient uAgent. Therefore, we need to specify the service endpoints when defining our agents.
+There's a few things happening in this script; we initialize Alice with an endpoint. An endpoint is the address in which other agents can send messages to where Alice will be listening. As highlighted in [Registration and Endpoints Weighting ↗️](/references/contracts/uagents-almanac/endpoints), agents can communicate by querying the Almanac and retrieving an endpoint from the recipient uAgent. Therefore, we need to specify the service endpoints when defining our agents.
 
-We also have to define `alice.run()` this `.run()` fuction tells the uAgent library to run the agent, but more importantly tells the uAgnet library to register the agent to the Almanac.
+We also have to define `alice.run()`. This `.run()` function runs the agent, but more importantly this registers the agent to the Almanac when code is initialized.
 
 Once you run your script, your agent will start the registration process automatically, the balance of the agent's wallet will be checked and funded if needed. Finally, it will try to register on the Almanac contract. Then, we will be ready to start to a remote communication with other agents registered within the Almanac contract.
 
@@ -44,4 +44,3 @@ Once you run your script, your agent will start the registration process automat
     communication, visit the [Communicating with other uAgents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents)
     guide.
 </Callout>
-
