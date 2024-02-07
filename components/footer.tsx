@@ -104,7 +104,7 @@ const Footer: React.FC = () => {
               </p>
               <div className="nx-mt-8">
                 <p className="nx-text-gray-600 nx-text-sm">
-                  © 2023 Fetch.ai. All rights reserved.
+                  © 2024 Fetch.ai. All rights reserved.
                 </p>
               </div>
 
