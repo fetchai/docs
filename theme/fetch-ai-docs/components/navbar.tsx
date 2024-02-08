@@ -281,27 +281,23 @@ export function Navbar({
             page.route === activeRoute ||
             activeRoute.startsWith(page.route + "/");
           return (
-            <>
-              <Anchor
-                href={href}
-                key={href}
-                className={cn(
-                  classes.link,
-                  "nx-relative nx-mr-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block",
-                  !isActive || page.newWindow
-                    ? classes.inactive
-                    : classes.active,
-                  index === 0 && !isActive && "-nx-ml-4", // Align the first item to the left
-                )}
-                newWindow={page.newWindow}
-                aria-current={!page.newWindow && isActive}
-              >
-                <span className="nx-absolute nx-inset-x-0 nx-text-base nx-text-center">
-                  {page.title}
-                </span>
-                <span className="nx-invisible nx-text-base">{page.title}</span>
-              </Anchor>
-            </>
+            <Anchor
+              href={href}
+              key={href}
+              className={cn(
+                classes.link,
+                "nx-relative nx-mr-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block",
+                !isActive || page.newWindow ? classes.inactive : classes.active,
+                index === 0 && !isActive && "-nx-ml-4", // Align the first item to the left
+              )}
+              newWindow={page.newWindow}
+              aria-current={!page.newWindow && isActive}
+            >
+              <span className="nx-absolute nx-inset-x-0 nx-text-base nx-text-center">
+                {page.title}
+              </span>
+              <span className="nx-invisible nx-text-base">{page.title}</span>
+            </Anchor>
           );
         })}
         <div className="md:nx-hidden nx-mt-6 nx-mb-2">

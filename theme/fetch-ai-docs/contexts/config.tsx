@@ -51,7 +51,15 @@ function validateMeta(pageMap: PageMapItem[]) {
     if (pageMapItem.kind === "Meta") {
       for (const [key, data] of Object.entries(pageMapItem.data)) {
         try {
-          metaSchema.parse(data);
+          if (typeof data === "string") {
+            metaSchema.parse(data);
+          } else if (typeof data === "object") {
+            for (const [, deepData] of Object.entries(data)) {
+              if (typeof data === "string") {
+                metaSchema.parse(deepData);
+              }
+            }
+          }
         } catch (error) {
           console.error(
             `Error validating _meta.json file for "${key}" property.\n\n${normalizeZodMessage(
