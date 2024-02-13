@@ -23,6 +23,11 @@ module.exports = withNextra({
         destination: "/concepts/agents/agents#why-ai-agents",
         permanent: true,
       },
+      {
+        source: "/guides/integrations/:path*",
+        destination: "https://fetch.ai/integrations",
+        permanent: true,
+      },
     ];
   },
 });
