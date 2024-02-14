@@ -74,7 +74,7 @@ export const InstantAlgoliaSearch = ({
 
     if (searchValue !== "") {
       try {
-        const response = await fetch(`${process.env.BACKEND_URL}/api/search`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

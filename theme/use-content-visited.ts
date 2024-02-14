@@ -6,7 +6,7 @@ const useContentVisited = (context) => {
   const fetchContentVisited = async (context) => {
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/page-view/?user_email=${context?.user?.email}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/?user_email=${context?.user?.email}`,
         {
           method: "GET",
           headers: {
@@ -32,7 +32,7 @@ const useContentVisited = (context) => {
 
   const onClickSetContentVisited = async (contentPath: string) => {
     try {
-      await fetch(`${process.env.BACKEND_URL}/api/page-view/`, {
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

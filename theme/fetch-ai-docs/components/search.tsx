@@ -87,7 +87,7 @@ export function Search({
       if (input.current.value !== "") {
         try {
           const response = await fetch(
-            `${process.env.BACKEND_URL}/api/search`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search`,
             {
               method: "POST",
               headers: {
