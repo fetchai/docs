@@ -57,7 +57,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
     // Make the API call only if no malicious string is detected
     try {
       const response = await fetch(
-        "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/feedback",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/feedback`,
         {
           method: "POST",
           headers: {
