@@ -74,16 +74,19 @@ export const InstantAlgoliaSearch = ({
 
     if (searchValue !== "") {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              search_term: searchValue,
+              selected_path: path,
+            }),
           },
-          body: JSON.stringify({
-            search_term: searchValue,
-            selected_path: path,
-          }),
-        });
+        );
 
         if (!response.ok) {
           console.log("---something went wrong----");
