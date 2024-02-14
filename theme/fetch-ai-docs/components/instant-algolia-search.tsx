@@ -74,19 +74,16 @@ export const InstantAlgoliaSearch = ({
 
     if (searchValue !== "") {
       try {
-        const response = await fetch(
-          "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/search",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              search_term: searchValue,
-              selected_path: path,
-            }),
+        const response = await fetch(`${process.env.BACKEND_URL}/api/search`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+          body: JSON.stringify({
+            search_term: searchValue,
+            selected_path: path,
+          }),
+        });
 
         if (!response.ok) {
           console.log("---something went wrong----");

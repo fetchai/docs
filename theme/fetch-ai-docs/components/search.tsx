@@ -87,7 +87,7 @@ export function Search({
       if (input.current.value !== "") {
         try {
           const response = await fetch(
-            "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/search",
+            `${process.env.BACKEND_URL}/api/search`,
             {
               method: "POST",
               headers: {
