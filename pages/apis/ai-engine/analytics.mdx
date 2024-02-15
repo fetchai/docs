@@ -1,0 +1,83 @@
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+} from "../../../components/api-endpoint";
+
+
+# AI-Engine Analytics API
+
+
+<div className="nx-text-fetch-content">
+  This API provides access to analytics of agents and their interactions.
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The Analytics API allows to access the data that can be used to analyze the performance of the agent and the user interactions. The API provides access to the following data:
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        GET /v1beta1/engine/analytics/:agent_address/rating
+
+        GET /v1beta1/engine/analytics/:agent_address/interactions
+        ```
+    </Col>
+
+</Row>
+
+### Get rating of the agent
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/analytics/{agent_address}/rating"
+  description="Retrieves the current performance rating of the specified agent. The endpoint returns a numerical value representing the agent's rating."
+  isBearerTokenRequired={false}
+  pathParameters={{
+    agent_address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+  }}
+  properties={[
+    {
+      name: "agent_address",
+      type: "string",
+      description: "The agent address to get the rating for.",
+    },
+  ]}
+   responses={[
+    {
+      rating: 0.849625927942
+    }
+  ]}
+ responseDescription="Delivers the performance rating of the specified agent as a floating-point number between 0 and 1, where 1 signifies optimal performance and 0 represents the lowest. The response is a JSON object with a 'rating' key. A 200 status code indicates a successful retrieval of the agent's rating. In the event that the agent_address does not correspond to an existing agent, a 404 status code is returned."
+/>
+
+
+### Get interactions of the agent
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/analytics/{agent_address}/interactions"
+  description="Retrieves the current amount of interactions of the specified agent. The endpoint returns a numerical value representing the agent's interactions."
+  isBearerTokenRequired={false}
+  pathParameters={{
+    agent_address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+  }}
+  properties={[
+    {
+      name: "agent_address",
+      type: "string",
+      description: "The agent address to get the interactions for.",
+    },
+  ]}
+   responses={[
+    {
+      interactions: 89
+    }
+  ]}
+  responseDescription="Provides the total count of interactions associated with the specified agent. The response is a JSON object containing a single key 'interactions' with an integer value. A successful response will have a 200 status code. If the specified agent_address is invalid or not found, the endpoint will respond with a 404 status code."
+/>

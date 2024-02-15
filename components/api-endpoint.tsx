@@ -23,7 +23,7 @@ interface PropertyType {
 // Helper function to replace path parameters in the URL
 const replacePathParameters = (
   path: string,
-  pathParameters: Record<string, string> = {},
+  pathParameters: Record<string, string> = {}
 ) => {
   let updatedPath = path;
   for (const param in pathParameters) {
@@ -315,19 +315,21 @@ export const ApiEndpointRequestResponse: React.FC<{
   responseDescription?: string;
   properties?: PropertyType[];
   pathParameters?: Record<string, string>;
-}> = (properties) => {
+  isBearerTokenRequired?: boolean;
+}> = ({ isBearerTokenRequired = true, ...properties }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [requestPayload, setRequestPayload] = useState(
     properties.samplePayload
       ? JSON.stringify(properties.samplePayload, null, 2)
-      : `{}`,
+      : `{}`
   );
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [bearerToken, setBearerToken] = useState("");
   const [actualResponse, setActualResponse] = useState("");
   const [pathParameters, setPathParameters] = useState(
-    properties.pathParameters || {},
+    properties.pathParameters || {}
   );
 
   const openModal = () => {
@@ -417,8 +419,7 @@ export const ApiEndpointRequestResponse: React.FC<{
               </div>
             </div>
             <div className="nx-mt-2 nx-mb-4 nx-border-t nx-border-gray-300" />
-
-            {!context?.isLoggedIn && (
+            {!context?.isLoggedIn && isBearerTokenRequired && (
               <div className="md:nx-flex nx-block nx-items-center nx-ml-4">
                 <div className="nx-flex nx-gap-2 nx-w-1/4">
                   <p className="nextra-content nx-text-sm">
@@ -467,6 +468,7 @@ export const ApiEndpointRequestResponse: React.FC<{
                     </ol>
                   </Tooltip>
                 </div>
+
                 <div className="nx-w-3/4">
                   <input
                     type="text"
