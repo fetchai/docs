@@ -75,7 +75,7 @@ export const InstantAlgoliaSearch = ({
     if (searchValue !== "") {
       try {
         const response = await fetch(
-          "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/search",
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search`,
           {
             method: "POST",
             headers: {

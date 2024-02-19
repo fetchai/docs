@@ -6,7 +6,7 @@ const useContentVisited = (context) => {
   const fetchContentVisited = async (context) => {
     try {
       const response = await fetch(
-        `https://profilio-staging.sandbox-london-b.fetch-ai.com/api/page-view/?user_email=${context?.user?.email}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/?user_email=${context?.user?.email}`,
         {
           method: "GET",
           headers: {
@@ -32,20 +32,17 @@ const useContentVisited = (context) => {
 
   const onClickSetContentVisited = async (contentPath: string) => {
     try {
-      await fetch(
-        "https://profilio-staging.sandbox-london-b.fetch-ai.com/api/page-view/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_email: context?.user?.email,
-            saved_path: contentPath,
-            is_visible: true,
-          }),
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          user_email: context?.user?.email,
+          saved_path: contentPath,
+          is_visible: true,
+        }),
+      });
 
       const visitedContent = await fetchContentVisited(context);
       setContentVisited(visitedContent);
