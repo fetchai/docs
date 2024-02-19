@@ -229,7 +229,7 @@ Let's update `alice_agent.py` with the code snippet below:
     agent = Agent(name="alice")
 
     # Provide your Agent with a job
-    @alice.on_event("startup")
+    @agent.on_event("startup")
     async def introduce_agent(ctx: Context):
         ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}.")
 
@@ -306,9 +306,9 @@ The output will be printed on your terminal every 2 seconds using the `ctx.logge
 The output would look as follows:
 
     ```
-    hello, my name is alice
-    hello, my name is alice
-    hello, my name is alice
+    hello, my name is agent
+    hello, my name is agent
+    hello, my name is agent
     ```
 
 ### Agent interactions and interval tasks
