@@ -231,7 +231,7 @@ To get an action to happen on start up, we can add a decorator to a function in 
     agent = Agent(name="alice")
 
     # Provide your Agent with a job
-    @alice.on_event("startup")
+    @agent.on_event("startup")
     async def introduce_agent(ctx: Context):
         ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}.")
 
@@ -304,9 +304,9 @@ As an introductory example, we consider an agent that periodically prints hello 
 The output would look like this:
 
     ```
-    hello, my name is alice
-    hello, my name is alice
-    hello, my name is alice
+    hello, my name is agent
+    hello, my name is agent
+    hello, my name is agent
     ```
 
 ### Agent interactions and interval tasks
