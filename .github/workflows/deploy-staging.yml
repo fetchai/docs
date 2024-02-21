@@ -75,8 +75,8 @@ jobs:
       - name: Deploy to Staging
         env:
           IMAGE_TAG: ${{ steps.lookup.outputs.version }}
-          HELM_NAME: docs
-          NAMESPACE: website-staging
+          HELM_NAME: staging
+          NAMESPACE: docs-staging
           GKE_PROJECT: fetch-ai-sandbox
           GKE_CLUSTER: london-b
           GKE_ZONE: europe-west2-b
@@ -87,6 +87,6 @@ jobs:
             --zone $GKE_ZONE \
             --project $GKE_PROJECT
           helm upgrade --install --wait --timeout 300s $HELM_NAME \
-            ./k8s/integrations/ \
+            ./k8s/docs/ \
             --set-string website.image.tag=$IMAGE_TAG \
             -n $NAMESPACE
