@@ -46,10 +46,6 @@ jobs:
           key: ${{ runner.os }}-buildx-image-${{ github.sha }}
           restore-keys: ${{ runner.os }}-buildx-image
 
-      - name: Set Prod envs
-          env:
-            BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
-
       - name: Build and Push Images
         uses: docker/build-push-action@v3
         with:
