@@ -23,7 +23,7 @@ interface PropertyType {
 // Helper function to replace path parameters in the URL
 const replacePathParameters = (
   path: string,
-  pathParameters: Record<string, string> = {}
+  pathParameters: Record<string, string> = {},
 ) => {
   let updatedPath = path;
   for (const param in pathParameters) {
@@ -152,12 +152,14 @@ const CurlCodeTab: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   url: string;
   samplePayload?: unknown;
-}> = ({ method, url, samplePayload }) => {
+  isBearerTokenRequired?: boolean;
+}> = ({ method, url, samplePayload, isBearerTokenRequired }) => {
   let code = `\
 curl \\
 -X ${method} \\
--H Authorization: bearer <your token here> \\
-${url}`;
+${
+  isBearerTokenRequired ? `-H Authorization: bearer <your token here> \\n` : ""
+}${url}`;
 
   if (samplePayload) {
     code += ` \\\n -d '${JSON.stringify(samplePayload)}'`;
@@ -243,6 +245,7 @@ export const ApiRequest: React.FC<{
   samplePayload?: unknown;
   properties?: PropertyType[];
   pathParameters?: Record<string, string>;
+  isBearerTokenRequired?: boolean;
 }> = (properties) => {
   return (
     <>
@@ -279,6 +282,7 @@ export const ApiRequest: React.FC<{
                 method={properties.method}
                 url={properties.apiUrl + properties.path}
                 samplePayload={properties.samplePayload}
+                isBearerTokenRequired={properties.isBearerTokenRequired}
               />
             </Tab>
             <Tab heading="Python">
@@ -318,10 +322,10 @@ export const ApiEndpointRequestResponse: React.FC<{
   isBearerTokenRequired?: boolean;
 }> = ({ isBearerTokenRequired = true, ...properties }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [requestPayload, setRequestPayload] = useState(
+  const [requestPayload, setRequestPayload] = useState<string | null>(
     properties.samplePayload
       ? JSON.stringify(properties.samplePayload, null, 2)
-      : `{}`
+      : null,
   );
 
   const [loading, setLoading] = useState(false);
@@ -329,7 +333,7 @@ export const ApiEndpointRequestResponse: React.FC<{
   const [bearerToken, setBearerToken] = useState("");
   const [actualResponse, setActualResponse] = useState("");
   const [pathParameters, setPathParameters] = useState(
-    properties.pathParameters || {}
+    properties.pathParameters || {},
   );
 
   const openModal = () => {
@@ -347,7 +351,7 @@ export const ApiEndpointRequestResponse: React.FC<{
       setLoading(true);
       setError("");
 
-      const requestPayloadJSON = JSON.parse(requestPayload);
+      const requestPayloadJSON = JSON.parse(requestPayload || "{}");
 
       const apiUrlWithParams =
         properties.apiUrl +
@@ -580,6 +584,7 @@ export const ApiEndpointRequestResponse: React.FC<{
         samplePayload={properties.samplePayload ?? undefined}
         properties={properties.properties ?? undefined}
         pathParameters={properties.pathParameters ?? undefined}
+        isBearerTokenRequired={isBearerTokenRequired}
       />
       {properties.responses ? (
         <ApiResponses
