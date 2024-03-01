@@ -14,7 +14,7 @@ Three different layers of subtasks are included in this **News Reading System**,
 
 ## Task and Subtask
 
-The **task** and **subtask** descriptions and names should be relevant to make it easy for the LLM to identify the type of subtask to trigger and when. Descriptions of tasks and subtasks should always indicate when specific subtasks should be triggered. In this case one of multiple subtasks is to be triggered, it should be provided in the dictionary to enhance the LLM's understanding. For instance, you can refer to the example below where the "Generate News" subtask triggers one of the "Generate news_type subtasks”  based on the user’s requirement.
+The **task** and **subtask** descriptions and names should be relevant to make it easy for the LLM to identify the type of subtask to trigger and when. Descriptions of tasks and subtasks should always indicate when specific subtasks should be triggered. In this case one of multiple subtasks is to be triggered, it should be provided in the dictionary to enhance the LLM's understanding. For instance, you can refer to the example below where the **Generate News subtask** triggers one of the **Generate news_type subtasks**  based on the user’s requirement.
 
 Field description is another feature of services which should mention use of subtasks in a clear and concise way. Refer [Agentverse Services ↗️](/guides/services/services) for more details on tasks and subtasks.
 
@@ -24,11 +24,11 @@ Login to [News API ↗️](https://newsapi.org/docs/endpoints/top-headlines) and
 
 ## Agents
 
-For this navigate to [your agents ↗️](https://agentverse.ai/agents) and click on the **New Agent** button. Click on blank agent and name them as mentioned in titles below:
+For this navigate to [Agenverse My Agents ↗️](https://agentverse.ai/agents) tab and click on the **New Agent** button. Click on blank agent and name them as mentioned in titles below.
 
 ### News Reading Agent
 
-This agent helps users to read news according to their willingness. This agent triggers the news generating subtask and asks the user for the news type they want to read today. This agent responds to the final result to the deltaV GUI as well.
+This agent helps users to read news according to their willingness. This agent triggers the news generating subtask and asks the user for the news type they want to read today. This agent responds to the final result to the [DeltaV ↗️](/concepts/ai-engine/deltav) GUI as well.
 
     ```python copy filename="agent.py"
 
@@ -68,7 +68,7 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 ### News Generating Agent
 
-This agent asks users for the type of news they want to read today from options like categorical, country related or keyword related. It then directs the user request to relevant subtasks to generate that type of news and respond it back to the News Reading system.
+This agent asks users for the type of news they want to read today from options like **categorical**, **country** related or **keyword** related. It then directs the user request to relevant subtasks to generate that type of news and respond it back to the News Reading system.
 
     ```python copy filename="agent.py"
     # Here we demonstrate how we can create a news generating agent that is compatible with DeltaV.
@@ -129,13 +129,13 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 ### Generate Categorical News
 
-This subtask is triggered if the user wants to read categorical news and it asks the user for the category of news they want from options business, entertainment, general, health, science, sports, technology and return specific news to Generate News subtask.
+This subtask is triggered if the user wants to read categorical news and it asks the user for the category of news they want from options business, entertainment, general, health, science, sports, technology and return specific news to **Generate News subtask**.
 
     ```python copy filename="agent.py"
     # Here we demonstrate how we can create a categorical news generating agent that is compatible with DeltaV.
     # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
 
-    #importing libraries
+    # Importing libraries
     import requests
     import json
     from ai_engine import UAgentResponse, UAgentResponseType
@@ -194,7 +194,7 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 ### Generate Regional News
 
-This subtask is triggered if the user wants to read regional or country specific news, asks the user for the country they want to read news about and returns specific news to Generate News subtask.
+This subtask is triggered if the user wants to read regional or country specific news, asks the user for the country they want to read news about and returns specific news to **Generate News subtask**.
 
     ```python copy filename="agent.py"
     # Import libraries
@@ -272,7 +272,7 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 ### Generate Keyword News
 
-This subtask is triggered if the user wants to read keyword specific news, asks the user for the keyword they want to read news about and returns specific news to Generate News subtask.
+This subtask is triggered if the user wants to read keyword specific news, asks the user for the keyword they want to read news about and returns specific news to **Generate News subtask**.
 
     ```python copy filename="agent.py"
     # Import libraries
@@ -336,7 +336,7 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 ## Registering Services
 
 Let's navigate to the [Agentverse Services ↗️](https://agentverse.ai/services) section to start registering your agent as a service.
-After clicking the **+ New Service** button provide all details required - fill the form out as mentioned below for each task and subtask:
+After clicking the **+ New Service** button provide all details required - fill the form out as mentioned below for each _task_ and _subtask_.
 
 ### News Reading System
 
@@ -353,34 +353,34 @@ Click **Save** button after filling out the form.
 ### Generate News Subtask
 
     - **Service title**: just the name of your service; in this example let's call it **Generate News Subtask**.
-    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does; in this example we can specify something like "Task to generate the news based on the news type given by user and respective subtask should always being triggered. Keys and values of news_type and receptive subtask to be triggered always are below:
+    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does; in this example we can specify something like "**Task to generate the news based on the news type given by user and respective subtask should always being triggered. Keys and values of news_type and receptive subtask to be triggered always are below:**
 
         **(Categorical : Generate Categorical Subtask,**
         **Country : Generate Country Subtask,**
         **Keyword : Generate Keyword Subtask)**
 
-    always execute relevant subtask for news type provided."
+    **always execute relevant subtask for news type provided.**"
 
     - **Service group**: the group the to be created service belongs to; click on the **Add new Service Group** option and let's create a service group with the name **News**.
     - **Agent**: select your newly created **News Generating Agent** agent from the list.
     - **Task type**: Subtask.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your news generating agent ↗️](/guides/services/utilizing-api-to-build-network-of-task-and-subtask#news-generating-agent).
     - **Field descriptions**: Below are the field descriptions for News reading system.
-        _news_ - This is the news provided by respective subtask which will be triggered on basis of news type provided by user. This should be never asked to user and _Keys_ - values of news type and respective subtask to be executed always - are given below:
+        - _news_ - **This is the news provided by respective subtask which will be triggered on basis of news type provided by user. This should be never asked to user and _Keys_ - values of news type and respective subtask to be executed always - are given below:**
 
-        **(Categorical : Generate Categorical Subtask,**
-        **Country : Generate Country Subtask,**
-        **Keyword : Generate Keyword Subtask)**
+            **(Categorical : Generate Categorical Subtask,**
+            **Country : Generate Country Subtask,**
+            **Keyword : Generate Keyword Subtask)**
 
-        never to be asked by user and provided by respective subtasks.
+        **never to be asked by user and provided by respective subtasks**.
 
-        _news_type_ - This is the news type given by user from option categorical, regional or keyword news. Keys and values of news type provided by and respective subtask to be triggered always are given below:
+        - _news_type_ - **This is the news type given by user from option categorical, regional or keyword news. Keys and values of news type provided by and respective subtask to be triggered always are given below:**
 
-        **(Categorical : Generate Categorical Subtask,**
-        **Country : Generate Country Subtask,**
-        **Keyword : Generate Keyword Subtask)**
+            **(Categorical : Generate Categorical Subtask,**
+            **Country : Generate Country Subtask,**
+            **Keyword : Generate Keyword Subtask)**
 
-        this should always be provided by user.
+        **this should always be provided by user**.
 
 Click **Save** button after filling out the form.
 
@@ -393,7 +393,7 @@ Click **Save** button after filling out the form.
     - **Task type**: Subtask.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your generate categorical agent ↗️](/guides/services/utilizing-api-to-build-network-of-task-and-subtask#generate-categorical-news).
     - **Field descriptions**:
-        _category_ - describes the category provided by user about which he want to get news for. This should always be provided by user in all cases. This task responds to Generate News Subtask. This should be from options business, entertainment, general, health, science, sports, technology.
+        - _category_ - **This describes the category provided by user about which he want to get news for. This should always be provided by user in all cases. This task responds to Generate News Subtask. This should be from options business, entertainment, general, health, science, sports, technology**.
 
 Click **Save** button after filling out the form.
 
@@ -406,7 +406,7 @@ Click **Save** button after filling out the form.
     - **Task type**: Subtask.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your generate regional agent ↗️](/guides/services/utilizing-api-to-build-network-of-task-and-subtask#generate-regional-news).
     - **Field descriptions**:
-        _country_ - describes the country provided by user about which he wants to get news for. This should always be provided by user in all cases. This task responds to Generate News Subtask always and not News Reading System. "What is the country you want to know news about?" is the question asked to users.
+        - _country_ - **This describes the country provided by user about which he wants to get news for. This should always be provided by user in all cases. This task responds to Generate News Subtask always and not News Reading System. "What is the country you want to know news about?" is the question asked to users**.
 
 Click **Save** button after filling out the form.
 
@@ -419,7 +419,7 @@ Click **Save** button after filling out the form.
     - **Task type**: Subtask.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your generate keyword agent ↗️](/guides/services/utilizing-api-to-build-network-of-task-and-subtask#generate-keyword-news).
     - **Field descriptions**:
-        _keyword_ - describes the keyword provided by user about which he want to get news for. This should always be provided by user in all cases. This task responds to Generate News Subtask.
+        - _keyword_ - **This describes the keyword provided by user about which he want to get news for. This should always be provided by user in all cases. This task responds to Generate News Subtask**.
 
 Click **Save** button after filling out the form
 
@@ -438,14 +438,14 @@ Let's select it.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/selection-of-news-reading-system-service.png)
 
-Subtask **Generate News Subtask** will be triggered once we select **News Reading System** and it will provide options as mentioned in field description for Generate News Subtask.
+Subtask **Generate News Subtask** will be triggered once we select **News Reading System** and it will provide options as mentioned in field description for **Generate News Subtask**.
 
 Select the news type you want to read.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/generate-news-subtask.png)
 
-Once you select the news type respective subtask will be triggered as mentioned in [task description ↗️](/guides/services/utilizing-api-to-build-network-of-task-and-subtask#generate-news-subtask) for Generate news_type subtask.
-The respective Generate news_type subtask will ask for category, country or keyword based on news type selected and will generate top 10 news related to news subtype provided.
+Once you select the news type respective subtask will be triggered as mentioned in [task description ↗️](/guides/services/utilizing-api-to-build-network-of-task-and-subtask#generate-news-subtask) for **Generate news_type subtask**.
+The respective **Generate news_type subtask** will ask for _category_, _country_ or _keyword_ based on news type selected and will generate _top 10 news_ related to news subtype provided.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/generate-news-type-subtask.png)
 
