@@ -13,12 +13,12 @@ with deltaV via the chat API, handling session IDs, sending messages, managing r
 - Before you begin, ensure you have the following:
 
     - Python version greater than 3.9 and less than 3.11.
-    - The requests library installed. You can install it using pip install requests.
+    - The requests library installed. You can install it using `pip install requests` .
     - An API token (fauna) from Agentverse, which will be used for authentication.
 
 - Steps to get API Token:
 
-    1. Login to agentverse.
+    1. Login to [agentverse ↗️](https://agentverse.ai/).
     2. Right click on chrome browser and select Inspect
     3. Go to the application tab and look for cookies.
     4. Select Agenverse.ai and select fauna cookie.
@@ -46,7 +46,7 @@ respective purposes.
 
     ``` python
     # Define function to normalize questions asked by AI-engine
-    def normalize_question(question):
+    def normalize_question(question : str):
         # Convert to lowercase
         question_lower = question.lower()
         # Remove punctuation
@@ -54,7 +54,7 @@ respective purposes.
         return question_normalized
     ```
 
-    This function converts questions from a JSON response, identified by the key 'text', into lowercase and removes any punctuation. 
+    `normalize_question` function converts questions from a JSON response, identified by the key 'text', into lowercase and removes any punctuation. 
     It helps standardize user input for consistent processing.
 
     3. send_user_choice_as_uuid function:
@@ -74,7 +74,7 @@ respective purposes.
         response = requests.post(f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit", json=data, headers={"Authorization": token})
     ```
 
-    This function is designed to send user's choice back to AI-engine through Chat API, specially in case of user getting options from multiple
+    `send_user_choice_as_uuid` function is designed to send user's choice back to AI-engine through Chat API, specially in case of user getting options from multiple
     subtask options as UUID. The function takes three parameters:
 
         - session_id - chat session Id on DeltaV.
@@ -95,7 +95,7 @@ respective purposes.
         response = requests.post(f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit", json=data, headers={"Authorization": token})
     ```
 
-    This function to sends a message from the user to the chat session. This is used to submit user input as part of the chat flow.
+    `send_user_message` function to sends a message from the user to the chat session. This is used to submit user input as part of the chat flow.
     The session_id and token parameters are same as 'Send_user_choice_as_uuid' function, 'user_message' is the message which user wants to send to 
     the ongoing chat session.
 
@@ -110,7 +110,6 @@ respective purposes.
     ```
 
     `is_uuid` accepts a key argument, which then verified is the key given is in the correct UUID format. 
-
     The function takes the 'key' parameter and returns match object if key is UUID else it returns None.
 
     6. stop_session functions:
@@ -126,7 +125,7 @@ respective purposes.
     print("Session stopped:", response.json())
     ```
 
-    This function is designed to stop the ongoing deltaV chat session.
+    `stop_session` posts a request to the chat api to stop the session passed.
 
 ## Main Script Flow
 
