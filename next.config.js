@@ -28,6 +28,12 @@ module.exports = withNextra({
         destination: "https://fetch.ai/integrations",
         permanent: true,
       },
+
+      {
+        source: "/concepts/agent-services/services",
+        destination: "/guides/services/services",
+        permanent: true,
+      },
     ];
   },
 });
