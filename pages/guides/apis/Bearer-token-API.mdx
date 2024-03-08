@@ -1,0 +1,237 @@
+import { Callout } from 'nextra/components'
+
+# Obtaining a Bearer Token Programmatically for Agentverse API Requests
+
+This guide explains how to programmatically get a bearer token for making an API requests to Agentverse using [OAuth 2.0 ↗️](https://oauth.net/2/) authorization code flow.
+This process involves runnning a local server to handle OAuth redirection and exchange an authorization access token and refresh tokens.
+
+## Prerequisites
+
+    1. Python version greater than 3.9 and less than 3.11.
+    2. The **requests** library installed. You can install it using `pip install requests`.
+    3. OAuth client ID for agentverse, token URL and fauna url.
+
+## Script breakdown
+
+    - Importing required libraries
+
+    ``` python
+    # Import required libraries
+    import threading
+    import time
+    import requests
+    import urllib.parse
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+    ```
+
+    The script relies on Python libraries to: 
+        1. **threading:** Handle concurrent tasks 
+        2. **time:** Measure time
+        3. **requests:** Make web requests
+        4. **urllib.parse:** Parse URLs
+        5. **http.server:** Run an HTTP server locally 
+        
+    These libraries enable the script to handle OAuth callbacks, exchange tokens, and manage web requests effectively.
+
+    - Parameters for OAuth 2.0 Authorization flow.
+
+    ``` python
+    # Constants for the OAuth flow and API interaction
+    FAUNA_URL = 'https://accounts.fetch.ai'
+    SCOPE = 'av'
+    CLIENT_ID = 'agentverse'
+    TOKEN_URL = f'{FAUNA_URL}/v1/tokens'
+    REDIRECT_URI = 'http://localhost:8555'
+    access_code = None 
+    ```
+
+    Set up parameters for the OAuth flow and API interaction:
+
+        1. **FAUNA_URL:** Base URL for agentverse authentication.
+        2. **SCOPE:** The Scope of access request.
+        3. **CLIENT_ID:** OAuth Client ID for agentverse.
+        4. **TOKEN_URL:** Full URL to request tokens from Agentverse.
+        5. **REDIRECT_URI:** The local server endpoint to receive the OAuth callback.
+    
+    - HTTP server setup  for OAuth redirect
+
+    ```python
+    # Define OAuth Server to create HTTP server and isten to OAuth redirect URI
+    class OAuthServer(BaseHTTPRequestHandler):
+    def log_message(self, format, *args):
+        # Suppress default logging for clarity
+        return
+
+    def do_GET(self):
+        global access_code
+        parsed = urllib.parse.urlparse(self.path)
+        params = urllib.parse.parse_qs(parsed.query)
+        if 'code' in params:
+            access_code = params['code'][0]
+            with open('access_code.txt', 'w') as f:
+                f.write(access_code)
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b'Authentication successful, you may now close this tab.')
+        else:
+            self.send_response(400)
+            self.end_headers()
+            self.wfile.write(b'Missing authorization code.')
+    ```
+
+    This section introduces the OAuthServer class, which extends BaseHTTPRequestHandler to create an HTTP server that listens for a redirect
+    URI with an authorization code in the OAuth 2.0 flow. Upon receiving a GET request, the server verifies the presence of a 'code' parameter. 
+    If found, the server saves this authorization code to a file named access_code.txt and notifies the user via the web browser of successful authentication. 
+    In case the 'code' parameter is missing, indicating an OAuth flow issue, the server sends an error message to the browser. This configuration 
+    is essential for securely obtaining an authorization code without direct exposure in the client application.
+
+    - Function to start HTTPServer
+
+    ```python
+    # Function to start Server
+    def start_server():
+        # Initialize the HTTPServer object with localhost address and OAuthServer request handler
+        server = HTTPServer(('127.0.0.1', 8555), OAuthServer)
+        # Start the HTTP server in a new thread to allow concurrent operations
+        threading.Thread(target=server.serve_forever).start()
+        # Return the server object for later shutdown if necessary
+        return server
+    ```
+
+    The `start_server` function launches a local HTTP server that listens on localhost (127.0.0.1) at port 8555. It uses the **OAuthServer** class to handle 
+    incoming HTTP requests, particularly for OAuth redirection. The server runs on a separate thread, allowing the main program to continue execution without 
+    blocking. This server is essential for intercepting the OAuth callback containing the authorization code.
+
+    <Callout type="warning" emoji="⚠️">
+    Make sure to use port which is not in use.
+    </Callout>
+
+    -  Function to get tokens for authentication
+
+    ``` python
+    def get_tokens(auth_code):
+        # Make a POST request to the OAuth server to exchange the authorization code for tokens
+        response = requests.post(
+            TOKEN_URL,  # URL to request the tokens
+            json={
+                'grant_type': 'authorization_code',  # Indicating the type of request
+                'code': auth_code,  # The authorization code received from the OAuth flow
+                'client_id': CLIENT_ID,  # Your application's client ID
+                'redirect_uri': REDIRECT_URI,  # The URI where the OAuth server redirected after authorization
+                'scope': SCOPE,  # The scope of the access request
+            }
+        )
+        response.raise_for_status()  # Raises an exception for HTTP error codes
+        return response.json()  # Returns the token information as a JSON object
+    ```
+
+    The `get_tokens` function makes POST request to the **TOKEN_URL** to exchange an authorization code for access and refresh tokens.
+    It sends necessary details like grant_type, code, client_id, redirect_uri, and scope as JSON. If the request is successful, it returns 
+    the response in JSON format containing the tokens. If the request fails, raise_for_status() will raise an exception.
+
+    - Function to get Authentication URL
+
+    ```python
+    def get_auth_url():
+        return f'{FAUNA_URL}/login/?{urllib.parse.urlencode({"redirect_uri": REDIRECT_URI, "client_id": CLIENT_ID, "response_type": "code", "scope": SCOPE})}'
+    ```
+
+    The `get_auth_url` function constructs and returns the URL needed to start the OAuth 2.0 authorization process. This URL directs users to the 
+    login page of the OAuth provider (in this case, represented by FAUNA_URL).
+
+    - Function to shutdown server
+
+    ```python
+    def shutdown_server(server):
+        server.shutdown()
+    ```
+
+    The `shutdown_server` function is typically used in scripts or applications that start an HTTP server temporarily and need to stop it safely once specific 
+    interactions such as user authentication via OAuth, are complete.
+
+## Whole Script
+
+    ```python filename = faunatoken.py
+    # Import required libraries
+    import threading
+    import time
+    import requests
+    import urllib.parse
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+
+    # Constants for the OAuth flow and API interaction
+    FAUNA_URL = 'https://accounts.fetch.ai'
+    SCOPE = 'av'
+    CLIENT_ID = 'agentverse'
+    TOKEN_URL = f'{FAUNA_URL}/v1/tokens'
+    REDIRECT_URI = 'http://localhost:8555'
+    access_code = None 
+
+    # Define OAuth Server to create HTTP server and isten to OAuth redirect URI
+    class OAuthServer(BaseHTTPRequestHandler):
+    def log_message(self, format, *args):
+        # Suppress default logging for clarity
+        return
+
+    def do_GET(self):
+        global access_code
+        parsed = urllib.parse.urlparse(self.path)
+        params = urllib.parse.parse_qs(parsed.query)
+        if 'code' in params:
+            access_code = params['code'][0]
+            with open('access_code.txt', 'w') as f:
+                f.write(access_code)
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b'Authentication successful, you may now close this tab.')
+        else:
+            self.send_response(400)
+            self.end_headers()
+            self.wfile.write(b'Missing authorization code.')
+
+    # Function to start Server
+    def start_server():
+        # Initialize the HTTPServer object with localhost address and OAuthServer request handler
+        server = HTTPServer(('127.0.0.1', 8555), OAuthServer)
+        # Start the HTTP server in a new thread to allow concurrent operations
+        threading.Thread(target=server.serve_forever).start()
+        # Return the server object for later shutdown if necessary
+        return server
+
+    # Function to get tokens
+    def get_tokens(auth_code):
+        # Make a POST request to the OAuth server to exchange the authorization code for tokens
+        response = requests.post(
+            TOKEN_URL,  # URL to request the tokens
+            json={
+                'grant_type': 'authorization_code',  # Indicating the type of request
+                'code': auth_code,  # The authorization code received from the OAuth flow
+                'client_id': CLIENT_ID,  # Your application's client ID
+                'redirect_uri': REDIRECT_URI,  # The URI where the OAuth server redirected after authorization
+                'scope': SCOPE,  # The scope of the access request
+            }
+        )
+        response.raise_for_status()  # Raises an exception for HTTP error codes
+        return response.json()  # Returns the token information as a JSON object
+
+    # function to get authentication url
+    def get_auth_url():
+        return f'{FAUNA_URL}/login/?{urllib.parse.urlencode({"redirect_uri": REDIRECT_URI, "client_id": CLIENT_ID, "response_type": "code", "scope": SCOPE})}'
+
+    # function to shutdown server
+    def shutdown_server(server):
+        server.shutdown()    
+    ```
+
+
+## Guide to fetch and use bearer token
+
+    1. Set Up the OAuth Token Script (faunatoken.py).
+    2. Create Your API Request Script.
+    3. Start the OAuth Flow.
+    4. Capture the Authorization Code.
+    5. Exchange the Authorization Code for Tokens.
+    6. Make Authenticated API Requests.
+    7. Shut Down the Server.
+    8. Run Your Scripts.
+     
