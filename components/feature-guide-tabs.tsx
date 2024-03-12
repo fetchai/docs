@@ -41,7 +41,7 @@ export const FeatureGuideTabs = () => {
 
   const tabItems = [
     {
-      label: "AI Agents",
+      label: "Agents",
       content: [
         {
           title: "Installing the uAgents Framework 🛠️📲",

@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 function LandingPage() {
   const startingGuides = [
     {
-      label: "Getting started with AI Agents 🛠️📲",
+      label: "Getting started with Agents 🛠️📲",
       path: "/guides/agents/installing-uagent",
       icon: AgentverseGettingStartedIcon,
     },
@@ -35,7 +35,7 @@ function LandingPage() {
 
   const beginnerGuides = [
     {
-      label: "AI Agents 101 🤖",
+      label: "Agents 101 🤖",
       path: "/guides/agent-courses/introductory-course",
       icon: AgentverseGettingStartedIcon,
     },
