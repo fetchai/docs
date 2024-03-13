@@ -2,7 +2,8 @@
 import "../styles/globals.css";
 import Script from "next/script";
 import { useEffect } from "react";
-// ID is fetched from env.local created at project root to maintain security + ability to easily change in the future
+
+// ID is fetched from .env.local created at project root to maintain security + ability to easily change in the future
 export default function MyApp({ Component, pageProps }) {
   const googleAnalyticsTrackingId =
     process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID;
