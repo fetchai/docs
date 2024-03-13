@@ -72,10 +72,22 @@ export function MatchingRoutesComponent({
         };
       }
     }
+
+    const { title, description } = createTitle(searchPath);
     return {
-      title: "Default Title",
-      description: "Default Description",
+      title: title,
+      description: description,
     };
+  };
+
+  const createTitle = (route) => {
+    const pathArray = route.split("/");
+    const title = pathArray.at(-1).replaceAll("-", " ");
+    let description = pathArray.join(">");
+    if (description.charAt(0) === ">") {
+      description = description.slice(1);
+    }
+    return { title, description };
   };
 
   return (
@@ -136,51 +148,55 @@ export function MatchingRoutesComponent({
       {viewType === "list"
         ? !isListViewCollapsed && (
             <ul>
-              {routes.map((routeInfo, index) => (
-                <li
-                  className="list-view nx-mt-4"
-                  key={index}
-                  onClick={() => {
-                    router.push(routeInfo.route);
-                  }}
-                >
-                  <p
-                    style={{
-                      color: "rgba(11, 23, 66, 0.8)",
-                      fontSize: "24px",
-                      fontWeight: "400",
+              {routes.map((routeInfo, index) => {
+                const guideInfo = findGuideByPath(content, routeInfo.route);
+                return (
+                  <li
+                    className="list-view nx-mt-4"
+                    key={index}
+                    onClick={() => {
+                      router.push(routeInfo.route);
                     }}
                   >
-                    {findGuideByPath(content, routeInfo.route).title}
-                  </p>
-                  <p
-                    style={{
-                      color: "rgba(11, 23, 66, 0.8)",
-                      fontSize: "18px",
-                      fontWeight: "300",
-                    }}
-                  >
-                    {" "}
-                    {findGuideByPath(content, routeInfo.route).description}
-                  </p>
-                </li>
-              ))}
+                    <p
+                      style={{
+                        color: "rgba(11, 23, 66, 0.8)",
+                        fontSize: "24px",
+                        fontWeight: "400",
+                      }}
+                    >
+                      {guideInfo.title}
+                    </p>
+                    <p
+                      style={{
+                        color: "rgba(11, 23, 66, 0.8)",
+                        fontSize: "18px",
+                        fontWeight: "300",
+                      }}
+                    >
+                      {guideInfo.description}
+                    </p>
+                  </li>
+                );
+              })}
             </ul>
           )
         : !isListViewCollapsed && (
             <div className="nx-mt-4">
               <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
-                {routes.map((routeInfo, index) => (
-                  <GuideBox
-                    key={index}
-                    content={{
-                      title: findGuideByPath(content, routeInfo.route).title,
-                      description: findGuideByPath(content, routeInfo.route)
-                        .description,
-                      path: routeInfo.route,
-                    }}
-                  />
-                ))}
+                {routes.map((routeInfo, index) => {
+                  const guideInfo = findGuideByPath(content, routeInfo.route);
+                  return (
+                    <GuideBox
+                      key={index}
+                      content={{
+                        title: guideInfo.title,
+                        description: guideInfo.description,
+                        path: routeInfo.route,
+                      }}
+                    />
+                  );
+                })}
               </div>
             </div>
           )}
