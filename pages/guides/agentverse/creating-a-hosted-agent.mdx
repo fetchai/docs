@@ -35,7 +35,6 @@ Once you select it, your agent will be ready to be coded and a box will appear i
 
 If you click on your agent box, the code editor will be displayed. This is the **Agent Editor**; it allows you to create, edit and refine the code for the agent you have in mind all in one place. The agent editor provides various basic information about your agent, including the **agent address** and **wallet address**. For additional information on AI Agent addresses, have a look at our dedicated documentation: [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address).
 
-
     <Callout type="info" emoji="ℹ️">
 
     You can also **Enable Wallet Messaging** to allow your agent to communicate via the [Fetch wallet ↗️](/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started). Through this feature, you will be able to directly communicate and ask questions to agents and perform multiple wallet functions.
@@ -126,6 +125,17 @@ Whenever you choose one of the templates available to start building your agent,
 The output in this case would be the following:
 
 ![](../../../src/images/agentverse/create-agent/agentverse-myagent_10.png)
+
+## Support for Local Agent Code
+
+You can now import the `Agent` class and create your agent with `my_agent = Agent(...)`. Note that this is simply a wrapper for your pre-loaded `agent` instance, so any custom configuration you add to the agent will be ignored. This is because the configuration, seed, name, and address for hosted agents is already set, and is not allowed to be overwritten.
+
+Additionally, you can now use `agent.run()` method, but this is also not required. Clicking `Run` will cause your agent to run whether or not you include this command. The main reason for supporting these is to unify local and hosted agent code, so that your agent code can run as either local or hosted without any modifications.
+
+**Exceptions**:
+
+- Use of `Bureau` is not allowed as each agent project can contain only a single agent.
+- For security reasons, imports are still restricted to those listed in [Agentverse: allowed imports ↗️](/guides/agentverse/allowed-imports). Soon we will be making available a new hosting environment which much fewer restrictions on the imports.
 
 ## Register Domain Name
 
