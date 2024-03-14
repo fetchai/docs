@@ -29,6 +29,11 @@ module.exports = withNextra({
         permanent: true,
       },
       {
+        source: "/concepts/agent-services/services",
+        destination: "/guides/services/services",
+        permanent: true,
+      },
+      {
         source: "/apis/agentverse",
         destination: "/apis/agentverse/almanac",
         permanent: true,
