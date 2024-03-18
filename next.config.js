@@ -28,10 +28,19 @@ module.exports = withNextra({
         destination: "https://fetch.ai/integrations",
         permanent: true,
       },
-
       {
         source: "/concepts/agent-services/services",
         destination: "/guides/services/services",
+        permanent: true,
+      },
+      {
+        source: "/apis/agentverse",
+        destination: "/apis/agentverse/almanac",
+        permanent: true,
+      },
+      {
+        source: "/apis/ai-engine",
+        destination: "/apis/ai-engine/chat",
         permanent: true,
       },
     ];
