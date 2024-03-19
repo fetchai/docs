@@ -62,6 +62,7 @@ function LandingPage() {
         onMouseLeave={() => {
           setHover(false);
         }}
+        id={guide.label.toLowerCase().split(" ").join("-")}
       >
         <Image
           src={guide.icon}
