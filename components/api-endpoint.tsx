@@ -18,12 +18,13 @@ interface PropertyType {
   name: string;
   type: string;
   description: string;
+  required?: boolean;
 }
 
 // Helper function to replace path parameters in the URL
 const replacePathParameters = (
   path: string,
-  pathParameters: Record<string, string> = {},
+  pathParameters: Record<string, string> = {}
 ) => {
   let updatedPath = path;
   for (const param in pathParameters) {
@@ -158,7 +159,7 @@ const CurlCodeTab: React.FC<{
 curl \\
 -X ${method} \\
 ${
-  isBearerTokenRequired ? `-H Authorization: bearer <your token here> \\n` : ""
+  isBearerTokenRequired ? `-H Authorization: bearer <your token here> \\\n` : ""
 }${url}`;
 
   if (samplePayload) {
@@ -216,6 +217,7 @@ export const ApiResponses: React.FC<{
                   <Property
                     key={property.name}
                     name={property.name}
+                    required={property?.required}
                     type={property.type}
                   >
                     {property.description}
@@ -266,6 +268,7 @@ export const ApiRequest: React.FC<{
                   <Property
                     key={property.name}
                     name={property.name}
+                    required={property?.required}
                     type={property.type}
                   >
                     {property.description}
@@ -325,7 +328,7 @@ export const ApiEndpointRequestResponse: React.FC<{
   const [requestPayload, setRequestPayload] = useState<string | null>(
     properties.samplePayload
       ? JSON.stringify(properties.samplePayload, null, 2)
-      : null,
+      : null
   );
 
   const [loading, setLoading] = useState(false);
@@ -333,7 +336,7 @@ export const ApiEndpointRequestResponse: React.FC<{
   const [bearerToken, setBearerToken] = useState("");
   const [actualResponse, setActualResponse] = useState("");
   const [pathParameters, setPathParameters] = useState(
-    properties.pathParameters || {},
+    properties.pathParameters || {}
   );
 
   const openModal = () => {

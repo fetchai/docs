@@ -35,6 +35,8 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
         GET /v1beta1/engine/chat/sessions/:session_id/messages/all
 
+        GET /v1beta1/engine/chat/sessions/:session_id/new-messages
+
         POST /v1beta1/engine/chat/sessions/:session_id/feedback
 
         GET /v1beta1/engine/chat/remaining_tokens
@@ -491,6 +493,104 @@ responseDescription="On a successful request, there is no response"
   ]}
   responseDescription="Return all the messages sent by the agent for a specific session."
 />
+
+## Retrieve new messages sent by agent (with possible duplicate or missed messages)
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/chat/sessions/{session_id}/new-messages"
+  description="Retrieves a batch of new messages since the last retrieved message for a specific chat session."
+  properties={[
+    {
+      name: "session_id",
+      type: "UUID4",
+      description:
+        "The unique identifier of the chat session. It must be a valid UUID4 string.",
+    },
+    {
+      name: "last_message_id",
+      type: "string",
+      required: false,
+      description:
+        "The message ID of the last message that was retrieved. This is optional and, if provided, the service will return messages that were sent after this message.",
+    },
+  ]}
+  pathParameters={{
+    session_id: "your_session_id",
+  }}
+  queryParameters={[
+    {
+      name: "last_message_id",
+      description: "The message ID to start fetching messages from. If omitted, all messages will be fetched."
+    }
+  ]}
+  responses={[
+    {
+      status: 200,
+      agent_response: [
+        {
+          "session_id": "063fcfef-a3ec-46c4-aa8e-c9a51b6f24b7",
+          "messages": [
+            {
+              "message_id": "24df920c-a8eb-41cb-aa10-4283d0602d5e",
+              "timestamp": "2023-08-31T13:26:23.238697",
+              "score": 0,
+              "type": "agent_json",
+              "agent_json": {
+                "type": "task_list",
+                "text": "Found tasks for your objective. Please select.",
+                "options": [
+                  {
+                    "key": 0,
+                    "value": "TopActivities/TopActivities"
+                  },
+                  {
+                    "key": 1,
+                    "value": "Flights/Flights"
+                  },
+                  {
+                    "key": 2,
+                    "value": "Hotels/Hotels"
+                  }
+                ],
+                "context_json": null
+              }
+            },
+            {
+              "message_id": "922c9be4-28dd-4fdb-9b91-fc26f360d86c",
+              "timestamp": "2023-08-31T13:26:42.093485",
+              "score": 0,
+              "type": "agent_info",
+              "agent_info": "I start building the context to execute 'TopActivities/TopActivities' task.."
+            },
+            {
+              "message_id": "2969efc7-4a8b-46e1-8c9e-fb86dbe3f5fb",
+              "timestamp": "2023-08-31T13:26:51.744958",
+              "score": 0,
+              "type": "agent_json",
+              "agent_json": {
+                "type": "context_json",
+                "text": "Can you confirm the following context?",
+                "options": null,
+                "context_json": {
+                  "digest": "model:77dcd01525f6f2f58bc5035942725bd57be171a9af44d2f19b796a01bd52cd91",
+                  "args": {
+                    "city": "London",
+                    "date": "[date]",
+                    "preferred_activities": ""
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+    },
+  ]}
+  responseDescription="Returns a list of new messages for the session, if specified then returns the messages since the last checked message. If there are no new messages, an empty list is returned. If the session is not found, a 404 error with a descriptive message is returned."
+/>
+
 
 ## Provide feedback for a session
 
