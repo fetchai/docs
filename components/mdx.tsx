@@ -130,7 +130,7 @@ export function Tabs({
                   " nx-focus:outline-none nx-focus:ring-2",
                   selected
                     ? "nx-shadow"
-                    : "nx-text-white-100 nx-hover:bg-white/[0.12] nx-hover:text-white"
+                    : "nx-text-white-100 nx-hover:bg-white/[0.12] nx-hover:text-white",
                 )
               }
             >
@@ -143,7 +143,7 @@ export function Tabs({
             <HeadlessTab.Panel
               key={index}
               className={classNames(
-                "nx-p-3 nx-ring-opacity-60 nx-ring-offset-2 nx-ring-offset-blue-400 nx-focus:outline-none nx-focus:ring-2"
+                "nx-p-3 nx-ring-opacity-60 nx-ring-offset-2 nx-ring-offset-blue-400 nx-focus:outline-none nx-focus:ring-2",
               )}
             >
               {child.props.children}
@@ -176,7 +176,7 @@ export function DropDownTabs({ children }: { children: any }) {
         ))}
       </select>
       {React.Children.map(children, (child, index) =>
-        index === selectedTab ? child.props.children : undefined
+        index === selectedTab ? child.props.children : undefined,
       )}
     </div>
   );
