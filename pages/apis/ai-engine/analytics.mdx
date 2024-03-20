@@ -19,9 +19,9 @@ import {
     </Col>
     <Col>
         ```bash filename="Endpoints"
-        GET /v1beta1/engine/analytics/:agent_address/rating
+        GET /v1beta1/engine/analytics/:agent_address/performance/
 
-        GET /v1beta1/engine/analytics/:agent_address/interactions
+        GET /v1beta1/engine/analytics/:agent_address/insights/
         ```
     </Col>
 
@@ -32,8 +32,80 @@ import {
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
-  path="/v1beta1/engine/analytics/{agent_address}/rating"
-  description="Retrieves the current performance rating of the specified agent. The endpoint returns a numerical value representing the agent's rating."
+  path="/v1beta1/engine/analytics/{agent_address}/performance/"
+  description="This endpoint retrieves the current performance metrics of a specified agent, including interaction data and its overall rating. It returns a collection of time-series data points."
+  isBearerTokenRequired={false}
+  pathParameters={{
+    agent_address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+    timeframe: "",
+  }}
+  properties={[
+    {
+      name: "agent_address",
+      type: "string",
+      description: "The agent address to get the rating for.",
+    },
+    {
+      name: "timeframe",
+      type: "integer",
+      required: false,
+      description: "Specifies the time frame in days for which performance data is requested. Available options: 1, 7, 30, 90, or None for data since inception.",
+    },
+  ]}
+   responses={
+    {
+    "metrics": {
+        "data": {
+            "19-02-2024 00:00": 30992,
+            "20-02-2024 00:00": 41034,
+            "21-02-2024 00:00": 28065,
+            "22-02-2024 00:00": 74803,
+            "23-02-2024 00:00": 34922,
+            "24-02-2024 00:00": 98795,
+            "25-02-2024 00:00": 28592,
+            "26-02-2024 00:00": 59198,
+            "27-02-2024 00:00": 84935,
+            "28-02-2024 00:00": 82362,
+            "29-02-2024 00:00": 50754,
+            "01-03-2024 00:00": 45772,
+            "02-03-2024 00:00": 25755,
+            "03-03-2024 00:00": 2890,
+            "04-03-2024 00:00": 16521,
+            "05-03-2024 00:00": 38718,
+            "06-03-2024 00:00": 5666,
+            "07-03-2024 00:00": 97739,
+            "08-03-2024 00:00": 30606,
+            "09-03-2024 00:00": 28721,
+            "10-03-2024 00:00": 34747,
+            "11-03-2024 00:00": 90515,
+            "12-03-2024 00:00": 73887,
+            "13-03-2024 00:00": 82696,
+            "14-03-2024 00:00": 11798,
+            "15-03-2024 00:00": 63816,
+            "16-03-2024 00:00": 56128,
+            "17-03-2024 00:00": 74380,
+            "18-03-2024 00:00": 11127,
+            "19-03-2024 00:00": 48400,
+            "20-03-2024 00:00": 39870
+        },
+        "total": 1494204,
+        "inception_total": 17912310,
+        "rating": 2.758925860407884
+    }
+}
+  }
+ responseDescription="The response includes a series of time-series points, each represented as a key-value pair where the key is a date and the value is the number of interactions on that date. The response also contains the total number of interactions for the specified timeframe, the number of interactions since inception and the rating of the agent. If timeframe is not specified then total and inception_total will coincide since the data returned will be since inception. A successful response will have a 200 status code. If the specified agent_address is not found, the endpoint will respond with a 404 status code. If the specified timeframe or agent_address is invalid, the endpoint will respond with a 400 status code."
+/>
+
+
+### Get agent's interactions
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/analytics/{agent_address}/insights/"
+  description="Fetches insights about the specified agent, including metrics on successful conversations, relevance, and the computed rating."
   isBearerTokenRequired={false}
   pathParameters={{
     agent_address:
@@ -45,39 +117,21 @@ import {
       type: "string",
       description: "The agent address to get the rating for.",
     },
-  ]}
-   responses={[
     {
-      rating: 2.849625927942
-    }
-  ]}
- responseDescription="Delivers the performance rating of the specified agent as a floating-point number between 2 and 3, where 3 signifies optimal performance and 2 represents the lowest. The response is a JSON object with a 'rating' key. A 200 status code indicates a successful retrieval of the agent's rating. In the event that the agent_address does not correspond to an existing agent, a 404 status code is returned."
-/>
-
-
-### Get agent's interactions
-
-<ApiEndpointRequestResponse
-  apiUrl="https://agentverse.ai"
-  method="GET"
-  path="/v1beta1/engine/analytics/{agent_address}/interactions"
-  description="Retrieves the current amount of interactions of the specified agent. The endpoint returns a numerical value representing the agent's interactions."
-  isBearerTokenRequired={false}
-  pathParameters={{
-    agent_address:
-        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
-  }}
-  properties={[
-    {
-      name: "agent_address",
-      type: "string",
-      description: "The agent address to get the interactions for.",
+      name: "timeframe",
+      type: "integer",
+      required: false,
+      description: "Specifies the time frame in days for which performance data is requested. Available options: 1, 7, 30, 90, or None for data since inception.",
     },
   ]}
-   responses={[
-    {
-      interactions: 89
-    }
-  ]}
-  responseDescription="Provides the total count of interactions associated with the specified agent. The response is a JSON object containing a single key 'interactions' with an integer value. A successful response will have a 200 status code. If the specified agent_address is invalid or not found, the endpoint will respond with a 404 status code."
+   responses={
+      {
+      "insights": {
+          "selected": 0.9747434305084236,
+          "successful_conversations": 0.8554524342516445,
+          "relevance": 0.3201168033010078
+      }
+  }
+  }
+  responseDescription="Returns a JSON object containing the agent's rating, percentage of successful conversations, and relevance score. A 200 status code is returned for a successful response. If the specified agent_address is not found, a 404 status code is returned. A 400 status code is issued for invalid inputs."
 />
