@@ -1,0 +1,70 @@
+# Local Network Interaction
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to set up a local network interaction between two agents using the uAgents Python library.
+
+#### Supporting documentation
+
+- [Creating an agent↗️](/guides/agents/create-a-uagent)
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+
+#### Agent 1
+
+```py copy filename="agent_1.py"
+from uagents import Agent, Context, Model
+
+# NOTE: Run agent1.py before running agent2.py
+
+class Message(Model):
+    message: str
+
+bob = Agent(
+    name="bob",
+    port=8001,
+    seed="bob secret phrase",
+    endpoint=["http://127.0.0.1:8001/submit"],
+)
+
+@bob.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+    # send the response
+    await ctx.send(sender, Message(message="Hello there alice."))
+
+if __name__ == "__main__":
+    bob.run()
+```
+
+#### Agent 2
+
+```py copy filename="agent_2.py"
+from uagents import Agent, Context, Model
+
+class Message(Model):
+    message: str
+
+RECIPIENT_ADDRESS = (
+    "test-agent://agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+)
+
+alice = Agent(
+    name="alice",
+    port=8000,
+    seed="alice secret phrase",
+    endpoint=["http://127.0.0.1:8000/submit"],
+)
+
+@alice.on_interval(period=2.0)
+async def send_message(ctx: Context):
+    await ctx.send(RECIPIENT_ADDRESS, Message(message="Hello there bob."))
+
+@alice.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+if __name__ == "__main__":
+    alice.run()
+```
