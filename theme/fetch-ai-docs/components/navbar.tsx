@@ -126,7 +126,7 @@ export function Navbar({
           {config.logoLink ? (
             <Anchor
               href={typeof config.logoLink === "string" ? config.logoLink : "/"}
-              className="nx-flex nx-items-center hover:nx-opacity-75 ltr:nx-mr-auto rtl:nx-ml-auto"
+              className="nx-flex nx-items-center ltr:nx-mr-auto rtl:nx-ml-auto"
             >
               {renderComponent(config.logo)}
             </Anchor>

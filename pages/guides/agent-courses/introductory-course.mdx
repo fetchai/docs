@@ -1,16 +1,16 @@
 import { Callout } from 'nextra/components'
 
-# AI Agents 101 🤖
+# Agents 101 🤖
 
 ## Overview
 
-Welcome to **AI Agents 101**! This course is designed to introduce you to the development of AI agents, providing a comprehensive guide from foundational concepts to practical implementation. Whether you're a beginner in programming or an experienced developer, this course caters to various skill levels, offering a pathway to create increasingly sophisticated AI agents and explore diverse use cases.
+Welcome to **Agents 101**! This course is designed to introduce you to the development of Agents, providing a comprehensive guide from foundational concepts to practical implementation. Whether you're a beginner in programming or an experienced developer, this course caters to various skill levels, offering a pathway to create increasingly sophisticated Agents and explore diverse use cases.
 
 If you encounter uncertainties or have questions about specific terms or topics throughout the course, our support team is available on [Discord ↗️](https://discord.gg/fetchai) to assist you.
 
-## Introduction to AI Agents
+## Introduction to Agents
 
-In this course, you'll delve into the world of AI Agents using the [uAgents Framework ↗️](/concepts/agents/agents). AI Agents are  programs able to operate autonomously within decentralized landscapes, aligned with user-defined objectives. These agents have the ability to connect, search, transact, establish dynamic markets and so on. By leveraging artificial intelligence, API calls, blockchain technology, and business logic, AI Agents automate multiple workflows. The aim is to facilitate interactions with their environment and other networked agents without human intervention.
+In this course, you'll delve into the world of Agents using the [uAgents Framework ↗️](/concepts/agents/agents). Agents are  programs able to operate autonomously within decentralized landscapes, aligned with user-defined objectives. These agents have the ability to connect, search, transact, establish dynamic markets and so on. By leveraging artificial intelligence, API calls, blockchain technology, and business logic, Agents automate multiple workflows. The aim is to facilitate interactions with their environment and other networked agents without human intervention.
 
 ## Set up your development environment 🛠️
 ### Prerequisites
@@ -132,7 +132,7 @@ This command will install the dependencies specified in the **pyproject.toml** f
 
 ## Overview of the uAgents Framework
 
-The [uAgents Framework ↗️](/concepts/agents/agents) provides the essential infrastructure for creating and deploying AI Agents within Fetch.ai Ecosystem. It offers a comprehensive toolkit, protocols, and functionalities crucial for developing autonomous agents. The uAgents Framework is integrated with several components of the Fetch.ai Ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) and the [Agentverse ↗️](/concepts/agent-services/agentverse-intro).
+The [uAgents Framework ↗️](/concepts/agents/agents) provides the essential infrastructure for creating and deploying Agents within Fetch.ai Ecosystem. It offers a comprehensive toolkit, protocols, and functionalities crucial for developing autonomous agents. The uAgents Framework is integrated with several components of the Fetch.ai Ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) and the [Agentverse ↗️](/concepts/agent-services/agentverse-intro).
 
     <Callout type="info" emoji="ℹ️">
       Check out the official [uAgents Python package ↗️](https://pypi.org/project/uagents/) and start developing your ideas using this library!
@@ -141,7 +141,7 @@ The [uAgents Framework ↗️](/concepts/agents/agents) provides the essential i
 ### Core concepts
 #### Addresses
 
-AI Agents are identified by **two types of addresses**, serving as identifiers for each agent within the Fetch.ai Ecosystem:
+Agents are identified by **two types of addresses**, serving as identifiers for each agent within the Fetch.ai Ecosystem:
 
     1. **uAgent Address**: the primary agent identifier; it allows it to interact with other agents, exchange messages, and participate in decentralized network activities
 
@@ -153,7 +153,7 @@ AI Agents are identified by **two types of addresses**, serving as identifiers f
 
 #### Storage
 
-AI Agents can store information in **JSON files** that they can freely retrieve when needed. Storage plays a critical role in maintaining agent state, retaining past interactions, and facilitating informed decision-making based on historical data.
+Agents can store information in **JSON files** that they can freely retrieve when needed. Storage plays a critical role in maintaining agent state, retaining past interactions, and facilitating informed decision-making based on historical data.
 
     <Callout type="info" emoji="ℹ️">
       Discover more about agents' storage functions through our [Using agents storage function ↗️](/guides/agents/storage-function) guide or the [agents storage ↗️](/references/uagents/uagents-protocols/storage) documentation. If you are new to JSON, please see an example [here ↗️](https://www.w3schools.com/whatis/whatis_json.asp).
@@ -177,7 +177,7 @@ The **Exchange Protocol** facilitates efficient communication between agents by 
     - Expiration time.
     - Signature for authentication.
 
-The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON formatted data. These details ensure consistent and standardized communication within the Fetch.ai agents ecosystem.
+The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for message processing and expects JSON formatted data. These details ensure consistent and standardized communication within the Fetch.Agents ecosystem.
 
     <Callout type="info" emoji="ℹ️">
       For more information, see our [Exchange Protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) documentation.
@@ -189,7 +189,7 @@ The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) con
 
 Agents keep their registrations up-to-date within certain block limits to ensure the accuracy and relevance of their data. Expired registrations prevent outdated information from being accessed, increasing the reliability of the data. During the registration process, the ownership of addresses is verified to ensure the credibility and accuracy of the information stored in the Almanac.
 
-The agents registered in the Almanac provide service endpoints for remote communication, which contain weighted parameters that enable effective interaction. As a central hub, the Almanac facilitates the discovery of endpoints based on these assigned weights. This structured approach promotes efficient agent interactions and a robust environment for the development of AI agents within Fetch.ai's decentralized network.
+The agents registered in the Almanac provide service endpoints for remote communication, which contain weighted parameters that enable effective interaction. As a central hub, the Almanac facilitates the discovery of endpoints based on these assigned weights. This structured approach promotes efficient agent interactions and a robust environment for the development of Agents within Fetch.ai's decentralized network.
 
     <Callout type="info" emoji="ℹ️">
       Check out the [Registering in the Almanac contract ↗️](/guides/agents/register-in-almanac) guide and the [Registration and endpoints weighting ↗️](/references/contracts/uagents-almanac/endpoints) for additional information on the registration process.
@@ -429,7 +429,7 @@ Agent registration in the Almanac contract is a key feature which enables discov
       When using the testnet, you can use the function `fund_agent_if_low()` to fund your agent.
     </Callout>
 
-We first import modules, then initialize our agents and include a function ensuring that agents have non-zero balances in their wallets. This function will check if you have enough tokens to register in the Almanac. If not, it will add tokens to your Fetch wallet address. AI Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
+We first import modules, then initialize our agents and include a function ensuring that agents have non-zero balances in their wallets. This function will check if you have enough tokens to register in the Almanac. If not, it will add tokens to your Fetch wallet address. Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
 
     <Callout type="info" emoji="ℹ️">
       HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. These endpoints define the entry points for various operations or functions offered by a web service or application.
@@ -469,7 +469,7 @@ To run the script use the `poetry run python almanac_registration.py` command.
 
 ### Remote agent communication
 
-AI Agents can also interact **remotely**. To achieve a remote communication, we simply need an agent's address and query the rest of its information in the Almanac contract. You can create two agents operating on separate ports and terminals within the same device; this mirrors a real-world scenario in which agents communicate across different geographic locations.
+Agents can also interact **remotely**. To achieve a remote communication, we simply need an agent's address and query the rest of its information in the Almanac contract. You can create two agents operating on separate ports and terminals within the same device; this mirrors a real-world scenario in which agents communicate across different geographic locations.
 
 In this example, we provide scripts for two agents. To establish a line of remote communication, both agents need to be registered on the Almanac contract and need to have non-zero balances in their Fetch wallet addresses.
 
@@ -555,7 +555,7 @@ In different terminal windows, first run `remote_bob.py` and then `remote_alice.
         ```
 
     <Callout type="info" emoji="ℹ️">
-      Checkout our [Communicating with other agents 📱🤖↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding AI Agents communication both locally and remotely.
+      Checkout our [Communicating with other agents 📱🤖↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding Agents communication both locally and remotely.
     </Callout>
 
 ### Agents and storage
@@ -602,7 +602,7 @@ The output would be:
 
 ### Booking a table at a restaurant
 
-We now want to show how to set up the code to create a **restaurant booking service with two **AI Agents**: a `restaurant` with tables available and a `user` requesting a table availability.
+We now want to show how to set up the code to create a **restaurant booking service with two **Agents**: a `restaurant` with tables available and a `user` requesting a table availability.
 
 We can do this by defining 2 specific **protocols**: one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). We then need to define two agents, `restaurant` and `user`, which will make use of the protocols to query and book a table.
 
@@ -1079,9 +1079,9 @@ Run the `restaurant` agent and then the `user` agent from different terminals. T
 
 ## From novice to navigator: your course conclusion and beyond!
 
-We appreciate your active participation in our introductory course on AI agents! The knowledge you've acquired here forms a robust basis for your future AI Agents development endeavors.
+We appreciate your active participation in our introductory course on Agents! The knowledge you've acquired here forms a robust basis for your future Agents development endeavors.
 
-Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of AI agents by exploring our dedicated [AI Agents ↗️](/concepts/agents/agents) documentation and [GitHub ↗️](https://github.com/fetchai/uAgents) repository. Also, do not forget to checkout our full list of [AI Agents guides ↗️](/guides) diving into the development of AI Agents and concepts explained in this introductory course, but in a more detailed manner.
+Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of Agents by exploring our dedicated [Agents ↗️](/concepts/agents/agents) documentation and [GitHub ↗️](https://github.com/fetchai/uAgents) repository. Also, do not forget to checkout our full list of [Agents guides ↗️](/guides) diving into the development of Agents and concepts explained in this introductory course, but in a more detailed manner.
 
 Join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun!
 

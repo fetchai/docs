@@ -5,8 +5,8 @@ import path from "node:path";
 import matter from "gray-matter";
 import striptags from "striptags";
 
-const client = algoliasearch("J27DIPDG4S", "xxxx");
-const index = client.initIndex("first_index");
+const client = algoliasearch("J27DIPDG4S", "");
+const index = client.initIndex("14-3-24-index");
 
 const docsPath = path.join(process.cwd(), "pages");
 
@@ -107,26 +107,37 @@ const extractContent = (fileContent, maxChunkSize) => {
 const indexData = async (dir) => {
   const records = [];
 
-  const readFiles = (dir) => {
+  const readFiles = (dir, meta) => {
     const files = fs.readdirSync(dir);
-
     for (const file of files) {
       const filePath = path.join(dir, file);
+      if (!fs.statSync(filePath).isDirectory() && file === "_meta.json") {
+        meta = JSON.parse(fs.readFileSync(filePath, "utf8"));
+      }
+
       if (fs.statSync(filePath).isDirectory()) {
-        readFiles(filePath); // Recursively process subdirectories
+        readFiles(filePath, meta); // Recursively process subdirectories
       } else if (path.extname(file).toLowerCase() === ".mdx") {
         const content = fs.readFileSync(filePath, "utf8");
+
+        let name = file.slice(0, file.lastIndexOf("."));
+        if (meta && name) {
+          if (meta[name]?.hasOwnProperty("permission")) {
+            console.log(name);
+            break;
+          }
+        }
+
         const { content: fileContent } = matter(content);
 
         // Usage example with a max chunk size of 9000 bytes
         const contentSections = extractContent(fileContent, 9000);
-
         for (const section of contentSections) {
           records.push({
             objectID: `${filePath}_${section.title}`,
             title: section.title,
             path: `/docs${
-              filePath.split("docs_v2/pages")[1].split(".")[0]
+              filePath.split("docs-new/pages")[1].split(".")[0]
             }#${section.title
               .replaceAll("#", "")
               .toLowerCase()
@@ -140,7 +151,7 @@ const indexData = async (dir) => {
     }
   };
 
-  readFiles(dir);
+  readFiles(dir, null);
 
   // Push records to Algolia index
   try {

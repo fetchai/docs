@@ -26,7 +26,7 @@ const searchClient = algoliasearch(
   "J27DIPDG4S",
   "601cad4cf7041d99c1bdf42f4d4843d6",
 );
-const indexName = "first_index";
+const indexName = "14-3-24-index";
 
 // Function to convert Markdown to HTML
 const markdownToHTML = (markdownString) => {
