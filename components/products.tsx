@@ -42,6 +42,7 @@ const Item = ({
   const router = useRouter();
   return (
     <div
+      id={item.title.toLowerCase().split(" ").join("-")}
       key={index}
       className="nx-p-4 nx-flex nx-cursor-pointer"
       onClick={() => router.push(item.path)}

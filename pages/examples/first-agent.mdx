@@ -1,0 +1,26 @@
+# Create your first agent
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions. This example shows to create two different agents and make them communicate using the uAgents Python library.
+
+## Guide
+
+- [Creating your first agent 🤖🧑‍💻 ↗️](/guides/agents/create-a-uagent)
+
+## The agent
+
+```py copy filename="agent.py"
+from uagents import Agent, Context
+
+agent = Agent(name="alice")
+
+
+@agent.on_event("startup")
+async def introduce_agent(ctx: Context):
+    ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}.")
+
+
+if __name__ == "__main__":
+    agent.run()
+```
