@@ -33,7 +33,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1beta1/engine/analytics/{agent_address}/performance/"
-  description="This endpoint retrieves the current performance metrics of a specified agent, including interaction data and its overall rating. It returns a collection of time-series data points."
+  description="This endpoint retrieves the current performance metrics of a specified agent, including interaction data and its overall rating associated to the trend of the performance for the past 30 days. It returns a collection of time-series data points."
   isBearerTokenRequired={false}
   pathParameters={{
     agent_address:
@@ -91,11 +91,13 @@ import {
         },
         "total": 1494204,
         "inception_total": 17912310,
-        "rating": 2.758925860407884
+        "rating": {
+          "value": 2.758925860407884,
+          "trend": 0.084792149270140,
+        },
     }
-}
-  }
- responseDescription="The response includes a series of time-series points, each represented as a key-value pair where the key is a date and the value is the number of interactions on that date. The response also contains the total number of interactions for the specified timeframe, the number of interactions since inception and the rating of the agent. If timeframe is not specified then total and inception_total will coincide since the data returned will be since inception. A successful response will have a 200 status code. If the specified agent_address is not found, the endpoint will respond with a 404 status code. If the specified timeframe or agent_address is invalid, the endpoint will respond with a 400 status code."
+  }}
+ responseDescription="The response includes a set of time-series points, each represented as a key-value pair where the key is a date and the value is the number of interactions on that date. The response also contains the total number of interactions for the specified timeframe, the number of interactions since inception and the rating of the agent along with its trend, indicating the direction of performance change. If timeframe is not specified then total and inception_total will coincide since the data returned will be since inception. A successful response will have a 200 status code. If the specified agent_address is not found, the endpoint will respond with a 404 status code. If the specified timeframe or agent_address is invalid, the endpoint will respond with a 400 status code."
 />
 
 
@@ -105,7 +107,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1beta1/engine/analytics/{agent_address}/insights/"
-  description="Fetches insights about the specified agent, including metrics on successful conversations, relevance, and the computed rating."
+  description="Fetches insights about the specified agent, including metrics on successful conversations, relevance, and the computed rating. Each metric includes a current value and a trend value that indicates the direction and rate of change of the metric over time."
   isBearerTokenRequired={false}
   pathParameters={{
     agent_address:
@@ -127,11 +129,19 @@ import {
    responses={
       {
       "insights": {
-          "selected": 0.9747434305084236,
-          "successful_conversations": 0.8554524342516445,
-          "relevance": 0.3201168033010078
+          "selected": {
+            "value": 0.9747434305084236,
+            "trend": 0.0374973847297743,
+          },
+          "successful_conversations": {
+            "value": 0.8554524342516445,
+            "trend": 0.1246482749273913,
+          },
+          "relevance": {
+            "value": 0.3201168033010078,
+            "trend": 0.0123648293739474,
+          },
       }
-  }
-  }
-  responseDescription="Returns a JSON object containing the agent's selection rate by the AI Engine, percentage of successful conversations, and relevance score. A 200 status code is returned for a successful response. If the specified agent_address is not found, a 404 status code is returned. A 400 status code is issued for invalid inputs."
+  }}
+  responseDescription="Returns a JSON object containing the agent's insights, including the selection rate by the AI Engine, the percentage of successful conversations, and the relevance score, along with their corresponding trend values. A trend value signifies how each metric has changed over the specified timeframe. A 200 status code is returned for a successful response. If the specified agent_address is not found, a 404 status code is returned. Invalid inputs result in a 400 status code."
 />
