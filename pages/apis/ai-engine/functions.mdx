@@ -1,0 +1,421 @@
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+} from "../../../components/api-endpoint";
+
+# DeltaV Functions API
+
+<div className="nx-text-fetch-content">
+  Most of the endpoints depends on various instances and are considered parameters for the actual endpoint, but these are not meant to be passed directly by the user.
+
+Instead, these instance-dependent elements are integrated and managed directly by the backend system. We refer to them as `*name_parameter`, where the asterisk (\*) is used to denote a specific instance-dependent parameter that the route relies on.
+
+Mind that: to access these APIs, user must be **authenticated** and have the **correct permissions**.
+
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The DeltaV Functions API allows you to interact with the DeltaV backend, allowing you to interact with your agents and more.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        POST /v1beta1/functions
+
+        GET /v1beta1/functions
+
+        GET /v1beta1/functions/:function_id
+
+        PUT /v1beta1/functions
+
+        POST /v1beta1/functions/duplicate/:function_id
+
+        DELETE /v1beta1/functions/:function_id
+
+        POST /v1beta1/functions/change-status/
+        ```
+    </Col>
+
+</Row>
+
+## Create a function
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1beta1/functions"
+  description="Create a new function for a user authenticated through JWT."
+properties={[
+    {
+      name: "agent",
+      type: "string",
+      description:
+        "Address of agent.",
+    },
+    {
+      name: "name",
+      type: "string",
+      description: "Name of function.",
+    },
+    {
+      name: "description",
+      type: "string",
+      description:
+        "Description of function.",
+    },
+    {
+      name: "protocolDigest",
+      type: "string",
+      description: "Digest of protocol associated with the agent.",
+    },
+    {
+      name: "modelDigest",
+      type: "string",
+      description:
+        "Digest of model associated with the protocol.",
+    },
+    {
+      name: "modelName",
+      type: "string",
+      description: "Request model name and protocol name separated by a slash character.",
+    },
+    {
+      name: "fields",
+      type: "JSON",
+      description:
+        "Properties of all request model fields as a list. Every element contains the name of the respective field, the fact that the field is required or not (true/false), the type of the field, and the description.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "Type of the function. Can be primary or secondary.",
+    },
+  ]}
+  samplePayload={{
+    "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+    "name": "Stock price function",
+    "description": "Retrieves the stock price of a share.",
+    "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+    "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+    "modelName": "StockPrice/StocksProtocol",
+    "fields": [{"name": "symbol", "required": true, "field_type": "string", "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."}],
+    "type": "primary"
+  }}
+  responses={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price function",
+        "description": "Retrieves the stock price of a share.",
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "type": "primary",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_interactions": 0,
+        "group": "My Functions",
+        "status": "created"
+    }
+  }
+  responseDescription="Returns the newly created Function object"
+/>
+
+## Get all functions of a user
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1beta1/functions"
+  description="Retrieves all functions of a user authenticated through JWT."
+  responses={[
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price function",
+        "description": "Retrieves the stock price of a share.",
+        "type": "primary",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_interactions": 0,
+        "group": "My Functions",
+        "status": "created"
+    },
+    {
+        "uuid": "ebfa27ec-c978-4109-bb77-9d1809e3b0f6",
+        "agent": "agent1q0vmxjv06dwdlppuvspmfyff4ys2t4mdndpa09gulpsuq90n22xqy8k89l8",
+        "name": "Flights function",
+        "description": "Searches for flight offers.",
+        "type": "primary",
+        "created_at": "2023-10-22T21:08:47",
+        "updated_at": "2023-10-22T21:08:47",
+        "num_interactions": 0,
+        "group": "My Functions",
+        "status": "created"
+    },
+  ]}
+  responseDescription="Returns a list of FunctionMinimal objects associated with the user"
+/>
+
+## Fetch a function
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1beta1/functions/{function_id}"
+  description="Fetches a specific function (identified by the function_id) of a user authenticated through JWT."
+  responses={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price function",
+        "description": "Retrieves the stock price of a share.",
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "type": "primary",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_interactions": 0,
+        "group": "My Functions",
+        "status": "created"
+    }
+  }
+  pathParameters={{function_id:"your_function_id",}}
+  responseDescription="Returns a function identified by a specific function_id."
+/>
+
+## Update a function
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="PUT"
+  path="/v1beta1/functions"
+  description="Update a function of a user authenticated through JWT."
+  properties={[
+    {
+      name: "uuid",
+      type: "string",
+      description:
+        "uuid of function in UUID4 format.",
+    },
+    {
+      name: "agent",
+      type: "string",
+      description:
+        "Address of agent.",
+    },
+    {
+      name: "name",
+      type: "string",
+      description: "Name of function.",
+    },
+    {
+      name: "description",
+      type: "string",
+      description:
+        "Description of function.",
+    },
+    {
+      name: "protocolDigest",
+      type: "string",
+      description: "Digest of protocol associated with the agent.",
+    },
+    {
+      name: "modelDigest",
+      type: "string",
+      description:
+        "Digest of model associated with the protocol.",
+    },
+    {
+      name: "modelName",
+      type: "string",
+      description: "Request model name and protocol name separated by a slash character.",
+    },
+    {
+      name: "fields",
+      type: "JSON",
+      description:
+        "Properties of all request model fields as a list. Every element contains the name of the respective field, the fact that the field is required or not (true/false), the type of the field, and the description.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "Type of the function. Can be primary or secondary.",
+    }
+  ]}
+  samplePayload={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price function modified name",
+        "description": "Retrieves the stock price of a share.",
+        "category": null,
+        "location": null,
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "taskType": "task",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_conversions": 0,
+        "conversion_rate": 0.0,
+        "uptime": 0.0
+    }
+  }
+  responses={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price function modified name",
+        "description": "Retrieves the stock price of a share.",
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "type": "primary",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_interactions": 0,
+        "group": "My Functions",
+        "status": "created"
+    }
+  }
+  responseDescription="Returns the updated function object"
+/>
+
+## Duplicate a function
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1beta1/functions/duplicate/{function_id}"
+  description="Duplicate a specific function (identified by the function_id) of a user authenticated through JWT."
+  responses={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price function",
+        "description": "Retrieves the stock price of a share.",
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "type": "primary",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_interactions": 0,
+        "group": "My Functions",
+        "status": "created"
+    }
+  }
+  pathParameters={{function_id:"your_function_id",}}
+  responseDescription="Returns a function (identified by function_id) which is a duplicate of the function."
+/>
+
+## Delete a function
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="DELETE"
+  path="/v1beta1/functions/{function_id}"
+  description="Delete a specific function (identified by the function_id) of a user authenticated through JWT."
+  responses={
+    {}
+  }
+  pathParameters={{function_id:"your_function_id",}}
+  responseDescription="Returns an empty JSON object."
+/>
+
+## Change status of a function
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1beta1/functions"
+  description="Change status of a function belonging to a user authenticated through JWT."
+properties={[
+    {
+      name: "uuid",
+      type: "string",
+      description:
+        "uuid of function in UUID4 format.",
+    },
+    {
+      name: "status",
+      type: "string",
+      description:
+        "The new status. Can be 'testing' or 'in-review'",
+    }
+  ]}
+  samplePayload={{
+    "uuid": "c9a34239-84ea-48a5-a54b-ca7da6410662",
+    "status": "testing"
+  }}
+  responses={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price function",
+        "description": "Retrieves the stock price of a share.",
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "type": "primary",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_interactions": 0,
+        "group": "My Functions",
+        "status": "testing"
+    }
+  }
+  responseDescription="Returns the modified Function object"
+/>
