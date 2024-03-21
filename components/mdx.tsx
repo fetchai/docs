@@ -63,10 +63,12 @@ export function Properties({ children }: { children: ReactNode }) {
 export function Property({
   name,
   type,
+  required,
   children,
 }: {
   name: string;
   type: string;
+  required: boolean;
   children: ReactNode;
 }) {
   return (
@@ -80,6 +82,15 @@ export function Property({
         <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 nx-dark:text-zinc-500">
           {type}
         </dd>
+        {required !== undefined && (
+          <>
+            <dt className="nx-sr-only">Required</dt>
+            <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 nx-dark:text-zinc-500">
+              {required ? `required` : `optional`}
+            </dd>
+          </>
+        )}
+
         <dt className="nx-sr-only">Description</dt>
         <dd className="nx-w-full nx-flex-none [&gt;:first-child]:nx-mt-0 [&gt;:last-child]:nx-mb-0">
           {children}
@@ -154,7 +165,7 @@ export function DropDownTabs({ children }: { children: any }) {
   return (
     <div>
       <select
-        className="nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium nx-bg-white nx-border nx-border-black/10 outline-none pr-6"
+        className="pr-6 outline-none nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium nx-bg-white nx-border nx-border-black/10"
         value={selectedTab}
         onChange={handleTabChange}
       >

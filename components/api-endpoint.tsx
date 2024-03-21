@@ -18,6 +18,7 @@ interface PropertyType {
   name: string;
   type: string;
   description: string;
+  required?: boolean;
 }
 
 // Helper function to replace path parameters in the URL
@@ -158,7 +159,7 @@ const CurlCodeTab: React.FC<{
 curl \\
 -X ${method} \\
 ${
-  isBearerTokenRequired ? `-H Authorization: bearer <your token here> \\n` : ""
+  isBearerTokenRequired ? `-H Authorization: bearer <your token here> \\\n` : ""
 }${url}`;
 
   if (samplePayload) {
@@ -216,6 +217,7 @@ export const ApiResponses: React.FC<{
                   <Property
                     key={property.name}
                     name={property.name}
+                    required={property?.required}
                     type={property.type}
                   >
                     {property.description}
@@ -266,6 +268,7 @@ export const ApiRequest: React.FC<{
                   <Property
                     key={property.name}
                     name={property.name}
+                    required={property?.required}
                     type={property.type}
                   >
                     {property.description}
