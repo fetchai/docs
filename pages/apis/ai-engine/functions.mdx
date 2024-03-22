@@ -34,7 +34,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
         DELETE /v1beta1/functions/:function_id
 
-        PUT /v1beta1/functions/ask-review/:function_id
+        PUT /v1beta1/functions/submit-for-review/:function_id
 
         PUT /v1beta1/functions/unpublish/:function_id
         ```
@@ -126,7 +126,6 @@ properties={[
         "created_at": "2023-10-22T21:28:46",
         "updated_at": "2023-10-22T21:28:46",
         "num_interactions": 0,
-        "group": "My Functions",
         "status": "created"
     }
   }
@@ -150,7 +149,6 @@ properties={[
         "created_at": "2023-10-22T21:28:46",
         "updated_at": "2023-10-22T21:28:46",
         "num_interactions": 0,
-        "group": "My Functions",
         "status": "created"
     },
     {
@@ -162,7 +160,6 @@ properties={[
         "created_at": "2023-10-22T21:08:47",
         "updated_at": "2023-10-22T21:08:47",
         "num_interactions": 0,
-        "group": "My Functions",
         "status": "created"
     },
   ]}
@@ -197,7 +194,6 @@ properties={[
         "created_at": "2023-10-22T21:28:46",
         "updated_at": "2023-10-22T21:28:46",
         "num_interactions": 0,
-        "group": "My Functions",
         "status": "created"
     }
   }
@@ -283,7 +279,7 @@ properties={[
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
-        "taskType": "task",
+        "type": "task",
         "created_at": "2023-10-22T21:28:46",
         "updated_at": "2023-10-22T21:28:46",
         "num_conversions": 0,
@@ -312,7 +308,6 @@ properties={[
         "created_at": "2023-10-22T21:28:46",
         "updated_at": "2023-10-22T21:28:46",
         "num_interactions": 0,
-        "group": "My Functions",
         "status": "created"
     }
   }
@@ -347,7 +342,6 @@ properties={[
         "created_at": "2023-10-22T21:28:46",
         "updated_at": "2023-10-22T21:28:46",
         "num_interactions": 0,
-        "group": "My Functions",
         "status": "created"
     }
   }
@@ -369,13 +363,13 @@ properties={[
   responseDescription="Returns an empty JSON object."
 />
 
-## Ask for review of a function
+## Submit a function for review
 
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="PUT"
-  path="/v1beta1/functions/ask-review/{function_id}"
-  description="Ask for review of a specific function (identified by the function_id) of a user authenticated through JWT."
+  path="/v1beta1/functions/submit-for-review/{function_id}"
+  description="Submit a specific function (identified by the function_id) of a user (authenticated through JWT) for review."
   responses={
     {
         "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
@@ -397,12 +391,11 @@ properties={[
         "created_at": "2023-10-22T21:28:46",
         "updated_at": "2023-10-22T21:28:46",
         "num_interactions": 0,
-        "group": "My Functions",
         "status": "in-review"
     }
   }
   pathParameters={{function_id:"your_function_id",}}
-  responseDescription="Returns the function object (identified by function_id) that we have just submitted for review."
+  responseDescription="Returns the function object (identified by function_id) that has just been submitted for review."
 />
 
 ## Unpublish a function
@@ -433,7 +426,6 @@ properties={[
         "created_at": "2023-10-22T21:28:46",
         "updated_at": "2023-10-22T21:28:46",
         "num_interactions": 0,
-        "group": "My Functions",
         "status": "testing"
     }
   }
