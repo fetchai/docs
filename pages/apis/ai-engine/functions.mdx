@@ -34,7 +34,9 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
         DELETE /v1beta1/functions/:function_id
 
-        POST /v1beta1/functions/change-status/
+        PUT /v1beta1/functions/ask-review/:function_id
+
+        PUT /v1beta1/functions/unpublish/:function_id
         ```
     </Col>
 
@@ -408,7 +410,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="PUT"
-  path="/v1beta1/functions/ask-review/{function_id}"
+  path="/v1beta1/functions/unpublish/{function_id}"
   description="Unpublish a specific function (identified by the function_id) of a user authenticated through JWT."
   responses={
     {
