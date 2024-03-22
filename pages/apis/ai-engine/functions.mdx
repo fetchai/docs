@@ -321,7 +321,7 @@ properties={[
 
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
-  method="GET"
+  method="POST"
   path="/v1beta1/functions/duplicate/{function_id}"
   description="Duplicate a specific function (identified by the function_id) of a user authenticated through JWT."
   responses={
@@ -367,31 +367,49 @@ properties={[
   responseDescription="Returns an empty JSON object."
 />
 
-## Change status of a function
+## Ask for review of a function
 
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
-  method="POST"
-  path="/v1beta1/functions"
-  description="Change status of a function belonging to a user authenticated through JWT."
-properties={[
+  method="PUT"
+  path="/v1beta1/functions/ask-review/{function_id}"
+  description="Ask for review of a specific function (identified by the function_id) of a user authenticated through JWT."
+  responses={
     {
-      name: "uuid",
-      type: "string",
-      description:
-        "uuid of function in UUID4 format.",
-    },
-    {
-      name: "status",
-      type: "string",
-      description:
-        "The new status. Can be 'testing' or 'in-review'",
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price function",
+        "description": "Retrieves the stock price of a share.",
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "fields": [
+            {
+                "name": "symbol",
+                "required": true,
+                "field_type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "type": "primary",
+        "created_at": "2023-10-22T21:28:46",
+        "updated_at": "2023-10-22T21:28:46",
+        "num_interactions": 0,
+        "group": "My Functions",
+        "status": "in-review"
     }
-  ]}
-  samplePayload={{
-    "uuid": "c9a34239-84ea-48a5-a54b-ca7da6410662",
-    "status": "testing"
-  }}
+  }
+  pathParameters={{function_id:"your_function_id",}}
+  responseDescription="Returns the function object (identified by function_id) that we have just submitted for review."
+/>
+
+## Unpublish a function
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="PUT"
+  path="/v1beta1/functions/ask-review/{function_id}"
+  description="Unpublish a specific function (identified by the function_id) of a user authenticated through JWT."
   responses={
     {
         "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
@@ -417,5 +435,6 @@ properties={[
         "status": "testing"
     }
   }
-  responseDescription="Returns the modified Function object"
+  pathParameters={{function_id:"your_function_id",}}
+  responseDescription="Returns the function object (identified by function_id) that we have just unpublished."
 />
