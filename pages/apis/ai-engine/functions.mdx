@@ -28,7 +28,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
         GET /v1beta1/functions/:function_id
 
-        PUT /v1beta1/functions
+        PUT /v1beta1/functions/:function_id
 
         POST /v1beta1/functions/duplicate/:function_id
 
@@ -84,10 +84,10 @@ properties={[
       description: "Request model name and protocol name separated by a slash character.",
     },
     {
-      name: "fields",
+      name: "arguments",
       type: "JSON",
       description:
-        "Properties of all request model fields as a list. Every element contains the name of the respective field, the fact that the field is required or not (true/false), the type of the field, and the description.",
+        "Properties of all request model arguments as a list. Every element contains the name of the respective argument, the fact that the argument is required or not (true/false), the type of the argument, and the description.",
     },
     {
       name: "type",
@@ -102,7 +102,7 @@ properties={[
     "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
     "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
     "modelName": "StockPrice/StocksProtocol",
-    "fields": [{"name": "symbol", "required": true, "field_type": "string", "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."}],
+    "arguments": [{"name": "symbol", "required": true, "type": "string", "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."}],
     "type": "primary"
   }}
   responses={
@@ -114,11 +114,11 @@ properties={[
         "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
         "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
         "modelName": "StockPrice/StocksProtocol",
-        "fields": [
+        "arguments": [
             {
                 "name": "symbol",
                 "required": true,
-                "field_type": "string",
+                "type": "string",
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
@@ -160,7 +160,7 @@ properties={[
         "status": "created"
     },
   ]}
-  responseDescription="Returns a list of FunctionMinimal objects associated with the user"
+  responseDescription="Returns a list of function summary objects associated with the user"
 />
 
 ## Fetch a function
@@ -179,11 +179,11 @@ properties={[
         "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
         "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
         "modelName": "StockPrice/StocksProtocol",
-        "fields": [
+        "arguments": [
             {
                 "name": "symbol",
                 "required": true,
-                "field_type": "string",
+                "type": "string",
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
@@ -194,7 +194,7 @@ properties={[
     }
   }
   pathParameters={{function_id:"your_function_id",}}
-  responseDescription="Returns a function identified by a specific function_id."
+  responseDescription="Returns a function object identified by a specific function_id."
 />
 
 ## Update a function
@@ -202,76 +202,67 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="PUT"
-  path="/v1beta1/functions"
-  description="Update a function of a user authenticated through JWT."
+  path="/v1beta1/functions/{function_id}"
+  description="Update any properties of a function (identified by the function_id) of a user (authenticated through JWT)."
   properties={[
     {
-      name: "uuid",
-      type: "string",
-      description:
-        "uuid of function in UUID4 format.",
-    },
-    {
       name: "agent",
-      type: "string",
+      type: "Optional[string]",
       description:
-        "Address of agent.",
+        "Optional - Address of agent.",
     },
     {
       name: "name",
-      type: "string",
-      description: "Name of function.",
+      type: "Optional[string]",
+      description: "Optional - Name of function.",
     },
     {
       name: "description",
-      type: "string",
+      type: "Optional[string]",
       description:
-        "Description of function.",
+        "Optional - Description of function.",
     },
     {
       name: "protocolDigest",
-      type: "string",
-      description: "Digest of protocol associated with the agent.",
+      type: "Optional[string]",
+      description: "Optional - Digest of protocol associated with the agent.",
     },
     {
       name: "modelDigest",
-      type: "string",
+      type: "Optional[string]",
       description:
-        "Digest of model associated with the protocol.",
+        "Optional - Digest of model associated with the protocol.",
     },
     {
       name: "modelName",
-      type: "string",
-      description: "Request model name and protocol name separated by a slash character.",
+      type: "Optional[string]",
+      description: "Optional - Request model name and protocol name separated by a slash character.",
     },
     {
-      name: "fields",
-      type: "JSON",
+      name: "arguments",
+      type: "Optional[[]JSON]",
       description:
-        "Properties of all request model fields as a list. Every element contains the name of the respective field, the fact that the field is required or not (true/false), the type of the field, and the description.",
+        "Optional - Properties of all request model arguments as a list. Every element contains the name of the respective argument, the fact that the argument is required or not (true/false), the type of the argument, and the description.",
     },
     {
       name: "type",
-      type: "string",
-      description: "Type of the function. Can be primary or secondary.",
+      type: "Optional[string]",
+      description: "Optional - Type of the function. Can be primary or secondary.",
     }
   ]}
   samplePayload={
     {
-        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
         "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
         "name": "Stock price function modified name",
         "description": "Retrieves the stock price of a share.",
-        "category": null,
-        "location": null,
         "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
         "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
         "modelName": "StockPrice/StocksProtocol",
-        "fields": [
+        "arguments": [
             {
                 "name": "symbol",
                 "required": true,
-                "field_type": "string",
+                "type": "string",
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
@@ -287,11 +278,11 @@ properties={[
         "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
         "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
         "modelName": "StockPrice/StocksProtocol",
-        "fields": [
+        "arguments": [
             {
                 "name": "symbol",
                 "required": true,
-                "field_type": "string",
+                "type": "string",
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
@@ -301,7 +292,7 @@ properties={[
         "status": "created"
     }
   }
-  responseDescription="Returns the updated function object"
+  responseDescription="Returns the updated function object identified by a specific function_id."
 />
 
 ## Duplicate a function
@@ -320,11 +311,11 @@ properties={[
         "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
         "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
         "modelName": "StockPrice/StocksProtocol",
-        "fields": [
+        "arguments": [
             {
                 "name": "symbol",
                 "required": true,
-                "field_type": "string",
+                "type": "string",
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
@@ -368,11 +359,11 @@ properties={[
         "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
         "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
         "modelName": "StockPrice/StocksProtocol",
-        "fields": [
+        "arguments": [
             {
                 "name": "symbol",
                 "required": true,
-                "field_type": "string",
+                "type": "string",
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
@@ -402,11 +393,11 @@ properties={[
         "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
         "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
         "modelName": "StockPrice/StocksProtocol",
-        "fields": [
+        "arguments": [
             {
                 "name": "symbol",
                 "required": true,
-                "field_type": "string",
+                "type": "string",
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
