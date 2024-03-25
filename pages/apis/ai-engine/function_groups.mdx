@@ -59,11 +59,11 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
     "isPrivate": true
   }}
   responses={{
-    "id": "d65b0137-bd3a-4d36-995a-b75b2cb81ba9"
+    "uuid": "d65b0137-bd3a-4d36-995a-b75b2cb81ba9",
     "name": "Function group 1",
     "isPrivate": true
   }}
-  responseDescription="Returns the newly created FunctionGroup object"
+  responseDescription="Returns the newly created FunctionGroup object."
 />
 
 ## Get all function groups of a user
@@ -71,21 +71,21 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="GET"
-  path="/v1beta1/function-groups"
+  path="/v1beta1/function-groups/"
   description="Get all function groups of a user authenticated through JWT."
   responses={[
     {
-        "id": "13373a38-db6c-4805-ae9e-33ae5f9a08c1",
+        "uuid": "13373a38-db6c-4805-ae9e-33ae5f9a08c1",
         "name": "Test group 1",
-        "is_private": false
+        "isPrivate": false
     },
     {
-        "id": "207c7895-db9d-434e-b38e-6249ca67d63e",
+        "uuid": "207c7895-db9d-434e-b38e-6249ca67d63e",
         "name": "Test group 2",
-        "is_private": false
+        "isPrivate": false
     }
   ]}
-  responseDescription="Returns an list of FunctionGroup objects"
+  responseDescription="Returns an list of function group objects."
 />
 
 ## Get functions of a function group
@@ -93,7 +93,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="GET"
-  path="/v1beta1/function-function-group/:function_group_id/functions"
+  path="/v1beta1/function-function-group/{function_group_id}/functions/"
   description="Get functions of a function group for a user authenticated through JWT."
   responses={{
     "function_group": "d65b0137-bd3a-4d36-995a-b75b2cb81ba9",
@@ -102,8 +102,8 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
         "function 2"
     ]
   }}
-  pathParameters={{"function_group_id": "your_function_group_id"}}
-  responseDescription="Returns an JSON containing the function group and a list of function names"
+  pathParameters={{function_group_id:"your_function_group_id"}}
+  responseDescription="Returns an JSON containing the function group and a list of function names."
 />
 
 ## Get all public function groups
@@ -111,21 +111,21 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="GET"
-  path="/v1beta1/function-groups/public"
+  path="/v1beta1/function-groups/public/"
   description="Get all public function groups."
   responses={[
     {
-        "id": "13373a38-db6c-4805-ae9e-33ae5f9a08c1",
+        "uuid": "13373a38-db6c-4805-ae9e-33ae5f9a08c1",
         "name": "Test group 1",
-        "is_private": false
+        "isPrivate": false
     },
     {
-        "id": "207c7895-db9d-434e-b38e-6249ca67d63e",
+        "uuid": "207c7895-db9d-434e-b38e-6249ca67d63e",
         "name": "Test group 2",
-        "is_private": false
+        "isPrivate": false
     }
   ]}
-  responseDescription="Returns an list of FunctionGroup objects"
+  responseDescription="Returns an list of FunctionGroup objects."
 />
 
 ## Delete a function group
@@ -133,11 +133,11 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="DELETE"
-  path="/v1beta1/function-function-group/:function_group_id"
+  path="/v1beta1/function-function-group/{function_group_id}/"
   description="Delete a function group for a user authenticated through JWT."
   responses={
     {}
   }
-  pathParameters={{"function_group_id": "your_function_group_id"}}
+  pathParameters={{function_group_id:"your_function_group_id"}}
   responseDescription="Returns an empty JSON object."
 />
