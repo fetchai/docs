@@ -1,0 +1,143 @@
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+} from "../../../components/api-endpoint";
+
+# DeltaV Function Groups API
+
+<div className="nx-text-fetch-content">
+  Most of the endpoints depends on various instances and are considered parameters for the actual endpoint, but these are not meant to be passed directly by the user.
+
+Instead, these instance-dependent elements are integrated and managed directly by the backend system. We refer to them as `*name_parameter`, where the asterisk (\*) is used to denote a specific instance-dependent parameter that the route relies on.
+
+Mind that: to access these APIs, user must be **authenticated** and have the **correct permissions**.
+
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The DeltaV Function Groups API allows you to interact with the DeltaV backend, allowing you to interact with your function groups and more.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        POST /v1beta1/function-groups/
+
+        GET /v1beta1/function-groups/
+
+        GET /v1beta1/function-groups/:function_group_id/functions/
+
+        GET /v1beta1/function-groups/public/
+        
+        DELETE /v1beta1/function-groups/:function_group_id
+        ```
+    </Col>
+</Row>
+
+## Create a function group
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1beta1/function-function-group/"
+  description="Create a new function group for a user authenticated through JWT."
+properties={{
+    "properties": {
+      "name": {
+        "description": "The name of the function group.",
+        "type": "string"
+      },
+      "isPrivate": {
+        "description": "Whether the function group is private or not.",
+        "type": "boolean"
+      }
+    }
+}}
+samplePayload={{
+    "name": "Function group 1",
+    "isPrivate": true
+}}
+responses={{
+    "id": "d65b0137-bd3a-4d36-995a-b75b2cb81ba9"
+    "name": "Function group 1",
+    "isPrivate": true
+}}
+responseDescription="Returns the newly created FunctionGroup object"
+/> 
+
+## Get all function groups of a user
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1beta1/function-groups"
+  description="Get all function groups of a user authenticated through JWT."
+  responses={[
+    {
+        "id": "13373a38-db6c-4805-ae9e-33ae5f9a08c1",
+        "name": "Test group 1",
+        "is_private": false
+    },
+    {
+        "id": "207c7895-db9d-434e-b38e-6249ca67d63e",
+        "name": "Test group 2",
+        "is_private": false
+    }
+  ]}
+  responseDescription="Returns an list of FunctionGroup objects"
+/>
+
+## Get functions of a function group
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1beta1/function-function-group/:function_group_id/functions"
+  description="Get functions of a function group for a user authenticated through JWT."
+  responses={{
+    "function_group": "d65b0137-bd3a-4d36-995a-b75b2cb81ba9",
+    "functions": [
+        "function 1",
+        "function 2"
+    ]
+  }}
+  pathParameters={{"function_group_id": "your_function_group_id"}}
+  responseDescription="Returns an JSON containing the function group and a list of function names"
+/>
+
+## Get all public function groups
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1beta1/function-groups/public"
+  description="Get all public function groups."
+  responses={[
+    {
+        "id": "13373a38-db6c-4805-ae9e-33ae5f9a08c1",
+        "name": "Test group 1",
+        "is_private": false
+    },
+    {
+        "id": "207c7895-db9d-434e-b38e-6249ca67d63e",
+        "name": "Test group 2",
+        "is_private": false
+    }
+  ]}
+  responseDescription="Returns an list of FunctionGroup objects"
+/>
+
+## Delete a function group
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="DELETE"
+  path="/v1beta1/function-function-group/:function_group_id"
+  description="Delete a function group for a user authenticated through JWT."
+  responses={
+    {}
+  }
+  pathParameters={{"function_group_id": "your_function_group_id"}}
+  responseDescription="Returns an empty JSON object."
+/>
