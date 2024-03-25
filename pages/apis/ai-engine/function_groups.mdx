@@ -30,7 +30,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
         GET /v1beta1/function-groups/public/
         
-        DELETE /v1beta1/function-groups/:function_group_id
+        DELETE /v1beta1/function-groups/:function_group_id/
         ```
     </Col>
 </Row>
@@ -42,29 +42,29 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
   method="POST"
   path="/v1beta1/function-function-group/"
   description="Create a new function group for a user authenticated through JWT."
-properties={{
-    "properties": {
-      "name": {
-        "description": "The name of the function group.",
-        "type": "string"
-      },
-      "isPrivate": {
-        "description": "Whether the function group is private or not.",
-        "type": "boolean"
-      }
+  properties={[
+    {
+        name: "name",
+        type: "string",
+        description: "The name of the function group.",
+    },
+    {
+        name: "isPrivate",
+        type: "boolean",
+        description: "Whether the function group is private or not.",
     }
-}}
-samplePayload={{
+  ]}
+  samplePayload={{
     "name": "Function group 1",
     "isPrivate": true
-}}
-responses={{
+  }}
+  responses={{
     "id": "d65b0137-bd3a-4d36-995a-b75b2cb81ba9"
     "name": "Function group 1",
     "isPrivate": true
-}}
-responseDescription="Returns the newly created FunctionGroup object"
-/> 
+  }}
+  responseDescription="Returns the newly created FunctionGroup object"
+/>
 
 ## Get all function groups of a user
 
