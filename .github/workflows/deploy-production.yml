@@ -51,9 +51,7 @@ jobs:
           ./k8s/build-img.py -p production
         env:
           BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
-          FAUNA_API_URL: ${{ secrets.FAUNA_API_URL }}
-          SENDER_TOKEN: ${{ secrets.SENDER_TOKEN }}
-          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
 
       - name: Move cache
         run: |
