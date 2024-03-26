@@ -11,11 +11,11 @@ RUN pnpm install --frozen-lockfile
 
 COPY . /app
 
-RUN pnpm build
-
 ENV NODE_ENV="production"
 
-RUN echo BACKEND_URL="${BACKEND_URL}" >> .env.local && pnpm build
+RUN echo BACKEND_URL="${BACKEND_URL}" > .env.local && \
+    echo NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID="${NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}" > .env.local && \
+pnpm build
 
 ENTRYPOINT ["pnpm"]
 CMD ["start"]
