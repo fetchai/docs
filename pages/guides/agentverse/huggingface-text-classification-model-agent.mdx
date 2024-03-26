@@ -10,7 +10,7 @@ workflow, please refer to the documentation below.
 
 ## Hugging face Inference API
 
-Login to [Hugging face ↗️](https://huggingface.co/inference-endpoints/serverless) and get your API key by logging in and going to account settings. 
+Login to [Hugging face ↗️](https://huggingface.co/settings/profile) and get your API key by logging in and going to account settings. 
 
 Create news [access token ↗️](https://huggingface.co/settings/tokens) in settings for reading access type. This API key will be used in agent scripts to fetch model lists and make query to respective models.
 
@@ -77,7 +77,7 @@ This agent helps hugging face system to handle hugging face request to user and 
         async def handle_query(model_id, query):
             Model_ID = model_id
             API_URL = f'https://api-inference.huggingface.co/models/{Model_ID}' # hugging face url
-            API_TOKEN = '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' # hugging face API token
+            API_TOKEN = 'YOUR TOKEN HERE' # hugging face API token
 
             headers = {"Authorization": f"Bearer {API_TOKEN}"} 
 
@@ -173,6 +173,7 @@ This agent helps user to look for specific model with search keyword. The agent 
 ## Setting up services
 
 Go to [AgentVerse Services ↗️](https://agentverse.ai/services) and create new services for all three agents created [above ↗️](/guides/agentverse/huggingface-text-classification-model-agent#setting-up-agents).
+
 The properties of services for each agent are listed below.
 
 ### Hugging Face System
@@ -180,45 +181,43 @@ The properties of services for each agent are listed below.
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-System-1.png)
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-System-2.png)
 
-    - **Service title**: just the name of your service - in this example let's call it **Hugging Face System**
+    - **Service title**: just the name of your service - in this example let's call it **Hugging Face System**.
     - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does - in this example we can specify something like this: **This service helps user to give any query to the selected model and gets the response to their query. Always go for hugging face request subtask for this task.**
                         **Subtask chronology**
                         **Hugging face system -> Hugging face request -> Model List**
     - **Service group**: the group the to be created service belongs to - click on the **Add new Service Group** option and let's create a service group with the name **Hugging Face**.
-    - **Agent**: select your newly created **Hugging Face System agent** agent from the list
-    - **Task type**: Task
+    - **Agent**: select your newly created **Hugging Face System agent** agent from the list.
+    - **Task type**: Task.
     - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#setting-up-agents).
-    - **Field descriptions**: This field is super important to be detailed and is responsible for triggering subtask. - in this example we can specify something like
-                                 **describes the response to the user query. Always go for Hugging face request subtask to get this field. Never ask this from user**.
+    - **Field descriptions**: This field is super important to be detailed and is responsible for triggering subtask. - in this example we can specify something like: _**Describes the response to the user query. Always go for Hugging face request subtask to get this field. Never ask this from user**_.
 
 ### Hugging Face Request
 
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-Request-1.png)
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-Request-2.png)
 
-    - **Service title**: just the name of your service - in this example let's call it **Hugging Face Request**
+    - **Service title**: just the name of your service - in this example let's call it **Hugging Face Request**.
     - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does - in this example we can specify something like this: **This service handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists subtask**.
     - **Service group**: the group the to be created service belongs to - click on the **Add new Service Group** option and let's create a service group with the name **Hugging Face**.
     - **Agent**: select your newly created **Hugging Face Request agent** agent from the list.
     - **Task type**: Subtask.
-    - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#hugging-face-request-agent)
-    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering subtask. - in this example we can specify something like
-                                **_Model_id :_ Always go for model list subtask. Never ask this field to user.**
-                                **_query :_ Describes the query user wants to ask to the model Always ask this to user after model_id is given by model list subtask ** 
+    - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#hugging-face-request-agent).
+    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering subtask. In this example we can specify something like:
+        - **Model_id**: **_Always go for model list subtask. Never ask this field to user._**
+        - **query**: **_Describes the query user wants to ask to the model Always ask this to user after model_id is given by model list subtask._**
 
 ### Model List
 
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/Model-List-1.png)
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/Model-List-2.png)
 
-    - **Service title**: just the name of your service - in this example let's call it **Model List**
+    - **Service title**: just the name of your service - in this example let's call it **Model List**.
     - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does - in this example we can specify something like this: **This service helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option.**
     - **Service group**: the group the to be created service belongs to - click on the **Add new Service Group** option and let's create a service group with the name **Hugging Face**.
-    - **Agent**: select your newly created **Model List agent** agent from the list
-    - **Task type**: Subtask
+    - **Agent**: select your newly created **Model List agent** agent from the list.
+    - **Task type**: Subtask.
     - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#model-list-agent)
-    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering subtask. - in this example we can specify something like
-                                ** This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options. ** 
+    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering subtask. In this example we can specify something like: _**This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options.**_
 
 ## Let's find our service on DeltaV
 
@@ -234,7 +233,7 @@ Hugging face subtask will initiate Model List subtask and ask for **Search keywo
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-2.png)
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-3.png)
 
-In this case we will ask for sentiment analysis model. Model_list will give us options from top 5 downloaded models and we need to select one option. Hugging face request will ask us for the query and we want to ask to model and send the response to hugging face system.
+In this case we will ask for sentiment analysis model. **Model_list** will give us options from top 5 downloaded models and we need to select one option. Hugging face request will ask us for the query and we want to ask to model and send the response to hugging face system.
 
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-4.png)
 

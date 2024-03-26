@@ -18,6 +18,7 @@ interface PropertyType {
   name: string;
   type: string;
   description: string;
+  required?: boolean;
 }
 
 // Helper function to replace path parameters in the URL
@@ -152,12 +153,14 @@ const CurlCodeTab: React.FC<{
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   url: string;
   samplePayload?: unknown;
-}> = ({ method, url, samplePayload }) => {
+  isBearerTokenRequired?: boolean;
+}> = ({ method, url, samplePayload, isBearerTokenRequired }) => {
   let code = `\
 curl \\
 -X ${method} \\
--H Authorization: bearer <your token here> \\
-${url}`;
+${
+  isBearerTokenRequired ? `-H Authorization: bearer <your token here> \\\n` : ""
+}${url}`;
 
   if (samplePayload) {
     code += ` \\\n -d '${JSON.stringify(samplePayload)}'`;
@@ -214,6 +217,7 @@ export const ApiResponses: React.FC<{
                   <Property
                     key={property.name}
                     name={property.name}
+                    required={property?.required}
                     type={property.type}
                   >
                     {property.description}
@@ -243,6 +247,7 @@ export const ApiRequest: React.FC<{
   samplePayload?: unknown;
   properties?: PropertyType[];
   pathParameters?: Record<string, string>;
+  isBearerTokenRequired?: boolean;
 }> = (properties) => {
   return (
     <>
@@ -263,6 +268,7 @@ export const ApiRequest: React.FC<{
                   <Property
                     key={property.name}
                     name={property.name}
+                    required={property?.required}
                     type={property.type}
                   >
                     {property.description}
@@ -279,6 +285,7 @@ export const ApiRequest: React.FC<{
                 method={properties.method}
                 url={properties.apiUrl + properties.path}
                 samplePayload={properties.samplePayload}
+                isBearerTokenRequired={properties.isBearerTokenRequired}
               />
             </Tab>
             <Tab heading="Python">
@@ -315,13 +322,15 @@ export const ApiEndpointRequestResponse: React.FC<{
   responseDescription?: string;
   properties?: PropertyType[];
   pathParameters?: Record<string, string>;
-}> = (properties) => {
+  isBearerTokenRequired?: boolean;
+}> = ({ isBearerTokenRequired = true, ...properties }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [requestPayload, setRequestPayload] = useState(
+  const [requestPayload, setRequestPayload] = useState<string | null>(
     properties.samplePayload
       ? JSON.stringify(properties.samplePayload, null, 2)
-      : `{}`,
+      : null,
   );
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [bearerToken, setBearerToken] = useState("");
@@ -345,7 +354,7 @@ export const ApiEndpointRequestResponse: React.FC<{
       setLoading(true);
       setError("");
 
-      const requestPayloadJSON = JSON.parse(requestPayload);
+      const requestPayloadJSON = JSON.parse(requestPayload || "{}");
 
       const apiUrlWithParams =
         properties.apiUrl +
@@ -417,8 +426,7 @@ export const ApiEndpointRequestResponse: React.FC<{
               </div>
             </div>
             <div className="nx-mt-2 nx-mb-4 nx-border-t nx-border-gray-300" />
-
-            {!context?.isLoggedIn && (
+            {!context?.isLoggedIn && isBearerTokenRequired && (
               <div className="md:nx-flex nx-block nx-items-center nx-ml-4">
                 <div className="nx-flex nx-gap-2 nx-w-1/4">
                   <p className="nextra-content nx-text-sm">
@@ -467,6 +475,7 @@ export const ApiEndpointRequestResponse: React.FC<{
                     </ol>
                   </Tooltip>
                 </div>
+
                 <div className="nx-w-3/4">
                   <input
                     type="text"
@@ -578,6 +587,7 @@ export const ApiEndpointRequestResponse: React.FC<{
         samplePayload={properties.samplePayload ?? undefined}
         properties={properties.properties ?? undefined}
         pathParameters={properties.pathParameters ?? undefined}
+        isBearerTokenRequired={isBearerTokenRequired}
       />
       {properties.responses ? (
         <ApiResponses

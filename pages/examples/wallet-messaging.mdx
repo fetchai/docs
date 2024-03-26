@@ -1,0 +1,139 @@
+# Communicating with other agents wallet
+
+## Introduction
+
+Communication is an essential feature agent network. It allows agents to work together, exchange information, and forms an organic 
+marketplace. Wallet messaging is feature of agents which makes them able to communicate with other agent's wallet information. This
+can include sending and receiving payments, querying account balances, and handling other wallet-related tasks.
+
+In this example we will create two agents locally using `uagents` library and make them share wallet information with each other.
+
+#### Supporting documentation
+
+- [Creating an agent↗️](/guides/agents/create-a-uagent)
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+- [Communicating with other agents 📱🤖💻 ↗️](/guides/agents/communicating-with-other-agents)
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+#### Script Breakdown
+
+    - Importing required libraries
+
+    ```python
+    from uagents import Agent, Bureau, Context
+    from uagents.wallet_messaging import WalletMessage
+    ```
+
+    This step imports necessary libraries for creating agents and handling wallet messaging.
+
+    - Defining two agents which can communicate to each other.
+
+    ```python
+    # Defining agent's seeds
+    ALICE_SEED = "alice dorado recovery phrase"
+    BOB_SEED = "bob dorado recovery phrase"
+
+    # Defining agents
+    alice = Agent(name="alice", seed=ALICE_SEED, enable_wallet_messaging=True)
+    bob = Agent(name="bob", seed=BOB_SEED, enable_wallet_messaging=True)
+    ```
+
+    This step defines two agents, Alice and Bob, using predefined seed phrases. These agents will communicate with each other's wallets.
+
+    - Agent 1 wallet message handler
+
+    ```python
+    # Define wallet message handler for alice
+    @alice.on_wallet_message()
+    async def reply(ctx: Context, msg: WalletMessage):
+        ctx.logger.info(f"Got wallet message: {msg.text}")
+        await ctx.send_wallet_message(msg.sender, "hey, thanks for the message")
+    ```
+
+    This step defines a message handler for Alice, which responds to incoming wallet messages from Bob. Upon receiving a message, Alice sends a reply.
+
+    - Agent 2 wallet message handler and on_interval sender
+
+    ```python
+    # Sending message to Alice every 5 seconds
+    @bob.on_interval(period=5)
+    async def send_message(ctx: Context):
+        ctx.logger.info("Sending message...")
+        await ctx.send_wallet_message(alice.address, "hello")
+
+    # Define wallet message handler for bob
+    @bob.on_wallet_message()
+    async def wallet_reply(ctx: Context, msg: WalletMessage):
+        ctx.logger.info(f"Got wallet message: {msg.text}")
+    ```
+    This step defines a message handler for Bob, which logs incoming wallet messages. Additionally, it sets up an interval function for Bob to send a message to Alice every 5 seconds.
+
+    - Defining Bureau and adding agents
+
+    ```python
+    # Define bureau and adding agents
+    bureau = Bureau()
+    bureau.add(alice)
+    bureau.add(bob)
+    bureau.run()
+    ```
+
+    This step creates a Bureau, which manages the agents, and adds both Alice and Bob to it. Then, it starts the bureau to begin agent interactions.
+
+## Whole Script
+
+This section presents the entire script in one block, allowing users to easily copy and paste it for testing or deployment.
+
+    ```py filename=wallet_messaging.py
+    from uagents import Agent, Bureau, Context
+    from uagents.wallet_messaging import WalletMessage
+
+    ALICE_SEED = "alice dorado recovery phrase"
+    BOB_SEED = "bob dorado recovery phrase"
+
+    alice = Agent(name="alice", seed=ALICE_SEED, enable_wallet_messaging = True)
+    bob = Agent(name="bob", seed=BOB_SEED, enable_wallet_messaging = True)
+
+
+    @alice.on_wallet_message()
+    async def reply(ctx: Context, msg: WalletMessage):
+        ctx.logger.info(f"Got wallet message: {msg.text}")
+        await ctx.send_wallet_message(msg.sender, "hey, thanks for the message")
+
+    @bob.on_interval(period=5)
+    async def send_message(ctx: Context):
+        ctx.logger.info("Sending message...")
+        await ctx.send_wallet_message(alice.address, "hello")
+
+    @bob.on_wallet_message()
+    async def wallet_reply(ctx: Context, msg: WalletMessage):
+        ctx.logger.info(f"Got wallet message: {msg.text}")
+
+    bureau = Bureau()
+    bureau.add(alice)
+    bureau.add(bob)
+    bureau.run()
+    ```
+
+## Script Execution
+
+    - Open terminal and navigate to the folder where `wallet_messaging.py` is stored.
+    - Run `pip3 install uagents` on your terminal.
+    - Executre `wallet_messaging.py` using `python wallet_messaging.py` on terminal.
+
+## Expected Output
+
+    ```
+    $ python wallet_messaging.py 
+    INFO:     [alice]: Connecting to wallet messaging server
+    INFO:     [  bob]: Sending message...
+    INFO:     [  bob]: Connecting to wallet messaging server
+    INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [alice]: Got wallet message: hello
+    INFO:     [  bob]: Got wallet message: hey, thanks for the message
+    INFO:     [  bob]: Sending message...
+    INFO:     [alice]: Got wallet message: hello
+    INFO:     [  bob]: Got wallet message: hey, thanks for the message
+    ```
+

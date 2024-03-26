@@ -1,0 +1,80 @@
+# Locally Hosted Agent with LangChain Integration
+
+## Introduction
+
+This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over Agentverse and DeltaV using the Agentverse Mailroom. The example uses a locally hosted agent that utilizes LangChain's Etherscan integration to process requests related to Ethereum blockchain transactions.
+
+### Guide
+
+- [Running a Locally Hosted Agent with LangChain Integration ↗️](/guides/agents/locally-running-langchain-integration)
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+- [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+
+- [Agentverse Services ↗️](/concepts/agent-services/services)
+
+- [Register a Service on the Agentverse ↗️](/guides/agentverse/registering-agent-services)
+
+- [Running locally ↗️](/guides/agents/running-locally)
+
+### The agent
+
+```py copy filename = 'agent.py'
+# Import required libraries
+from langchain_community.document_loaders import EtherscanLoader
+from uagents.setup import fund_agent_if_low
+from uagents import Agent, Context, Protocol, Model
+import os
+from pydantic import Field
+from ai_engine import UAgentResponse, UAgentResponseType
+
+# Extend your protocol with Wikipedia data fetching
+class EthRequest(Model):
+    account_address: str = Field(description="Give address for which you need details")
+
+# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+
+SEED_PHRASE = "Secret seed phrase here"
+
+# Copy the address shown below
+print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+
+# Then go to https://agentverse.ai, register your agent in the Mailroom
+# and copy the agent's mailbox key
+
+AGENT_MAILBOX_KEY = "Your_Mailbox_key"
+
+# Now your agent is ready to join the agentverse!
+ethagent = Agent(
+    name="Ethereum Agent",
+    seed=SEED_PHRASE,
+    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+)
+
+eth_protocol = Protocol("Etherscan Protocol")
+
+etherscanAPIKey = ''
+os.environ["ETHERSCAN_API_KEY"] = etherscanAPIKey
+
+@eth_protocol.on_message(model=EthRequest, replies={UAgentResponse})
+async def load_eth(ctx: Context, sender: str, msg: EthRequest):
+    ctx.logger.info(msg.account_address)
+    loader = EtherscanLoader(msg.account_address, filter="erc20_transaction")
+    result = loader.load()
+    content = eval(result[0].page_content)
+    content_str = "\n".join(f"{key}: {value}" for key, value in content.items()) # Convert dictionary to string with line breaks
+    ctx.logger.info(content)
+    await ctx.send(
+        sender, UAgentResponse(message=content_str, type=UAgentResponseType.FINAL)
+    )
+ethagent.include(eth_protocol, publish_manifest=True)
+ethagent.run()
+```
+
