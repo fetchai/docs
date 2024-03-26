@@ -13,8 +13,15 @@ PROFILES = {
         'repository': 'gcr.io/fetch-ai-images/docs-website',
     },
 }
+
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+BUILD_ENV_VARS = (
+    'FAUNA_API_URL',
+    'BACKEND_URL',
+    'SENDER_TOKEN',
+    'SESSION_SECRET',
+)
 
 def _profile(text: str) -> str:
     if text not in PROFILES:
@@ -68,14 +75,25 @@ def main():
     print(f'Push........: {push}')
     print()
 
+    # Step 0. Collect up the build environment variables
+    build_args = []
+    for env_name in BUILD_ENV_VARS:
+        if env_name not in os.environ:
+            print('Missing build variable', env_name)
+            sys.exit(1)
+
+        build_args.append(f'--build-arg={env_name}={os.environ[env_name]}')
+
     # Step 1. Build the image
-    subprocess.check_call([
+    cmd = [
         'docker',
         'build',
+    ] + build_args + [
         '--platform', 'linux/amd64',
         '-t', image_url,
         PROJECT_ROOT,
-    ])
+    ]
+    subprocess.check_call(cmd)
 
     # Step 2. Push the image
     if push:
