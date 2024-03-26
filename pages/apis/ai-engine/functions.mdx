@@ -18,25 +18,29 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
 <Row>
     <Col>
-        The DeltaV Functions API allows you to interact with the DeltaV backend, allowing you to interact with your agents and more.
+        The DeltaV Functions API allows you to interact with the DeltaV backend, allowing you to interact with your functions and more.
     </Col>
     <Col>
         ```bash filename="Endpoints"
-        POST /v1beta1/functions
+        POST /v1beta1/functions/
 
-        GET /v1beta1/functions
+        GET /v1beta1/functions/
 
-        GET /v1beta1/functions/:function_id
+        GET /v1beta1/functions/:function_id/
 
-        PUT /v1beta1/functions/:function_id
+        PUT /v1beta1/functions/:function_id/
 
-        POST /v1beta1/functions/duplicate/:function_id
+        POST /v1beta1/functions/duplicate/:function_id/
 
-        DELETE /v1beta1/functions/:function_id
+        DELETE /v1beta1/functions/:function_id/
 
-        PUT /v1beta1/functions/submit-for-review/:function_id
+        PUT /v1beta1/functions/submit-for-review/:function_id/
 
-        PUT /v1beta1/functions/unpublish/:function_id
+        PUT /v1beta1/functions/unpublish/:function_id/
+
+        POST /v1beta1/functions/function-function-group/
+
+        DELETE /v1beta1/functions/function-function-group/:function_id/:function_group_id/
         ```
     </Col>
 
@@ -47,7 +51,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="POST"
-  path="/v1beta1/functions"
+  path="/v1beta1/functions/"
   description="Create a new function for a user authenticated through JWT."
 properties={[
     {
@@ -123,12 +127,12 @@ properties={[
             }
         ],
         "type": "primary",
-        "created_at": "2023-10-22T21:28:46",
-        "updated_at": "2023-10-22T21:28:46",
+        "createdAt": "2023-10-22T21:28:46",
+        "updatedAt": "2023-10-22T21:28:46",
         "status": "created"
     }
   }
-  responseDescription="Returns the newly created Function object"
+  responseDescription="Returns the newly created function object"
 />
 
 ## Get all functions of a user
@@ -136,7 +140,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="GET"
-  path="/v1beta1/functions"
+  path="/v1beta1/functions/"
   description="Retrieves all functions of a user authenticated through JWT."
   responses={[
     {
@@ -145,8 +149,8 @@ properties={[
         "name": "Stock price function",
         "description": "Retrieves the stock price of a share.",
         "type": "primary",
-        "created_at": "2023-10-22T21:28:46",
-        "updated_at": "2023-10-22T21:28:46",
+        "createdAt": "2023-10-22T21:28:46",
+        "updatedAt": "2023-10-22T21:28:46",
         "status": "created"
     },
     {
@@ -155,12 +159,12 @@ properties={[
         "name": "Flights function",
         "description": "Searches for flight offers.",
         "type": "primary",
-        "created_at": "2023-10-22T21:08:47",
-        "updated_at": "2023-10-22T21:08:47",
+        "createdAt": "2023-10-22T21:08:47",
+        "updatedAt": "2023-10-22T21:08:47",
         "status": "created"
     },
   ]}
-  responseDescription="Returns a list of function summary objects associated with the user"
+  responseDescription="Returns a list of function summary objects associated with the user."
 />
 
 ## Fetch a function
@@ -188,8 +192,8 @@ properties={[
             }
         ],
         "type": "primary",
-        "created_at": "2023-10-22T21:28:46",
-        "updated_at": "2023-10-22T21:28:46",
+        "createdAt": "2023-10-22T21:28:46",
+        "updatedAt": "2023-10-22T21:28:46",
         "status": "created"
     }
   }
@@ -202,7 +206,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="PUT"
-  path="/v1beta1/functions/{function_id}"
+  path="/v1beta1/functions/{function_id}/"
   description="Update any properties of a function (identified by the function_id) of a user (authenticated through JWT)."
   properties={[
     {
@@ -287,8 +291,8 @@ properties={[
             }
         ],
         "type": "primary",
-        "created_at": "2023-10-22T21:28:46",
-        "updated_at": "2023-10-22T21:28:46",
+        "createdAt": "2023-10-22T21:28:46",
+        "updatedAt": "2023-10-22T21:28:46",
         "status": "created"
     }
   }
@@ -300,7 +304,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="POST"
-  path="/v1beta1/functions/duplicate/{function_id}"
+  path="/v1beta1/functions/duplicate/{function_id}/"
   description="Duplicate a specific function (identified by the function_id) of a user authenticated through JWT."
   responses={
     {
@@ -320,8 +324,8 @@ properties={[
             }
         ],
         "type": "primary",
-        "created_at": "2023-10-22T21:28:46",
-        "updated_at": "2023-10-22T21:28:46",
+        "createdAt": "2023-10-22T21:28:46",
+        "updatedAt": "2023-10-22T21:28:46",
         "status": "created"
     }
   }
@@ -334,7 +338,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="DELETE"
-  path="/v1beta1/functions/{function_id}"
+  path="/v1beta1/functions/{function_id}/"
   description="Delete a specific function (identified by the function_id) of a user authenticated through JWT."
   responses={
     {}
@@ -348,7 +352,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="PUT"
-  path="/v1beta1/functions/submit-for-review/{function_id}"
+  path="/v1beta1/functions/submit-for-review/{function_id}/"
   description="Submit a specific function (identified by the function_id) of a user (authenticated through JWT) for review."
   responses={
     {
@@ -368,8 +372,8 @@ properties={[
             }
         ],
         "type": "primary",
-        "created_at": "2023-10-22T21:28:46",
-        "updated_at": "2023-10-22T21:28:46",
+        "createdAt": "2023-10-22T21:28:46",
+        "updatedAt": "2023-10-22T21:28:46",
         "status": "in-review"
     }
   }
@@ -382,7 +386,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="PUT"
-  path="/v1beta1/functions/unpublish/{function_id}"
+  path="/v1beta1/functions/unpublish/{function_id}/"
   description="Unpublish a specific function (identified by the function_id) of a user authenticated through JWT."
   responses={
     {
@@ -402,11 +406,56 @@ properties={[
             }
         ],
         "type": "primary",
-        "created_at": "2023-10-22T21:28:46",
-        "updated_at": "2023-10-22T21:28:46",
+        "createdAt": "2023-10-22T21:28:46",
+        "updatedAt": "2023-10-22T21:28:46",
         "status": "testing"
     }
   }
   pathParameters={{function_id:"your_function_id",}}
   responseDescription="Returns the function object (identified by function_id) that we have just unpublished."
+/>
+
+
+## Create a function-function group 
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="POST"
+  path="/v1beta1/function-function-group/"
+  description="Create a new function-function group connection for a user authenticated through JWT."
+properties={[
+    {
+      name: "function",
+      type: "uuid",
+      description:
+        "Id of function.",
+    },
+    {
+      name: "functionGroup",
+      type: "uuid",
+      description:
+        "Id of function group.",
+    },
+  ]}
+  samplePayload={{
+    "function": "be14fb4f-b7a5-4233-937d-cce29fb8a3ea",
+    "functionGroup": "c02ed9ce-62df-46d1-bfaa-8c8b309a4a40"
+  }}
+  responses={{
+    "function": "be14fb4f-b7a5-4233-937d-cce29fb8a3ea",
+    "functionGroup": "c02ed9ce-62df-46d1-bfaa-8c8b309a4a40"
+  }}
+  responseDescription="Returns a JSON object containing the function and function group id."
+/>
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="DELETE"
+  path="/v1beta1/function-function-group/{function_id}/{function_group_id}"
+  description="Delete a specific function-function group connection (identified by the function_id and the function_group_id) of a user authenticated through JWT."
+  responses={
+    {}
+  }
+  pathParameters={{function_id:"your_function_id", function_group_id:"your_function_group_id"}}
+  responseDescription="Returns an empty JSON object."
 />
