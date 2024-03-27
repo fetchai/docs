@@ -18,8 +18,5 @@ RUN echo BACKEND_URL="${BACKEND_URL}" >> .env.local && \
 pnpm build
 
 ENV NODE_ENV="production"
-
-RUN echo BACKEND_URL="${BACKEND_URL}" >> .env.local && pnpm build
-
 ENTRYPOINT ["pnpm"]
 CMD ["start"]
