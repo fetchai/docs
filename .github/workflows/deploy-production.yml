@@ -40,11 +40,6 @@ jobs:
           BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
           NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
 
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-website-cache
-          mv /tmp/.buildx-website-cache-new /tmp/.buildx-website-cache
-
       - name: Trigger Image Update
         run: |
           curl -H "Accept: application/vnd.github.everest-preview+json" \
