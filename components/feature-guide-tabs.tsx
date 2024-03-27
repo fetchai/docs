@@ -26,6 +26,7 @@ export const GuideBox = ({
       onMouseLeave={() => {
         setHover(false);
       }}
+      id={content.title.toLowerCase().split(" ").join("-")}
     >
       <h3 className="nx-text-black nx-font-medium nx-mb-2 nx-text-lg">
         {content.title}
@@ -41,7 +42,7 @@ export const FeatureGuideTabs = () => {
 
   const tabItems = [
     {
-      label: "AI Agents",
+      label: "Agents",
       content: [
         {
           title: "Installing the uAgents Framework 🛠️📲",

@@ -9,7 +9,8 @@ export const handleSignin = () => {
     `https://accounts.fetch.ai/login/` +
     `?redirect_uri=${encodeURIComponent(redirectUri)}` +
     `&client_id=docs` +
-    `&response_type=code`;
+    `&response_type=code` +
+    `&sso=`;
   router.push(loginUrl);
 };
 

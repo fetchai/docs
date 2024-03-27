@@ -17,10 +17,8 @@ PROFILES = {
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BUILD_ENV_VARS = (
-    'FAUNA_API_URL',
     'BACKEND_URL',
-    'SENDER_TOKEN',
-    'SESSION_SECRET',
+    'NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID',
 )
 
 def _profile(text: str) -> str:
