@@ -17,6 +17,5 @@ RUN echo BACKEND_URL="${BACKEND_URL}" > .env.local && \
     echo NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID="${NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}" >> .env.local && \
 pnpm build
 
-ENV NODE_ENV="production"
 ENTRYPOINT ["pnpm"]
 CMD ["start"]
