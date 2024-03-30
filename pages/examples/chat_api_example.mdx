@@ -2,130 +2,25 @@
 
 ## Introduction
 
-This guide offers details on utilizing the AI-engine's chat API to interact with deltaV. We will demonstrate a python script that interacts 
-with deltaV via the chat API, handling session IDs, sending messages, managing responses, and processing user requests and selections.
+This guide offers details on utilizing the AI-engine's chat API to interact with deltaV. We will demonstrate a python script that interacts with deltaV via the chat API, handling session IDs, sending messages, managing responses, and processing user requests and selections.
 
 
 ## Prerequisites
 
-- Before you begin, ensure you have the following:
+    - Before you begin, ensure you have the following:
 
-    - Python version greater than 3.9 and less than 3.11.
-    - The requests library installed. You can install it using **pip install requests**.
-    - Fauna Token script for getting fauna tokens and refresh tokens.
+        - Python version greater than 3.9 and less than 3.11.
+        - The requests library installed. You can install it using **pip install requests**.
+        - [Agentverse ↗️](https://agentverse.ai/) Credentials.
 
-    Steps to setup `faunatoken.py` script.
+## Steps to get API Tokens
 
-    1. Open terminal on your computer and use `mkdir chatAPI` to creat directory.
-    2. Create a python script file named `chatapi.py` and include below script in that file. For more information on file please visit [Fauna Token ↗️](../guides/apis/fauna_token)
-
-    ```py copy filename=faunatoken.py
-    import threading
-    import time
-    import requests
-    import urllib.parse
-    from http.server import BaseHTTPRequestHandler, HTTPServer
-
-    # Constants for the OAuth flow and API interaction.
-    FAUNA_URL = 'https://accounts.fetch.ai'
-    SCOPE = 'av'
-    CLIENT_ID = 'agentverse'
-    TOKEN_URL = f'{FAUNA_URL}/v1/tokens'
-    REDIRECT_URI = 'http://localhost:8555'
-    access_code = None
-
-    class OAuthServer(BaseHTTPRequestHandler):
-        def log_message(self, format, *args):
-            # Suppress default logging for clarity.
-            return
-
-        def do_GET(self):
-            global access_code
-            parsed = urllib.parse.urlparse(self.path)
-            params = urllib.parse.parse_qs(parsed.query)
-            if 'code' in params:
-                access_code = params['code'][0]
-                with open('access_code.txt', 'w') as f:
-                    f.write(access_code)
-                self.send_response(200)
-                self.end_headers()
-                self.wfile.write(b'Authentication successful, you may now close this tab.')
-            else:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b'Missing authorization code.')
-
-    def start_server():
-        # Starts the HTTP server to handle OAuth redirects.
-        server = HTTPServer(('127.0.0.1', 8555), OAuthServer)
-        threading.Thread(target=server.serve_forever).start()
-        return server
-
-    def get_tokens(auth_code):
-        # Exchanges authorization code for access and refresh tokens.
-        response = requests.post(
-            TOKEN_URL,
-            json={
-                'grant_type': 'authorization_code',
-                'code': auth_code,
-                'client_id': CLIENT_ID,
-                'redirect_uri': REDIRECT_URI,
-                'scope': SCOPE,
-            }
-        )
-        response.raise_for_status()
-        fauna_token = response.json()['access_token']
-        refresh_token = response.json()['refresh_token']
-        return fauna_token, refresh_token
-
-    def refresh_tokens(refresh_token):
-        # Uses the refresh token to obtain a new access token and refresh token.
-        response = requests.post(
-            TOKEN_URL,
-            json={
-                'grant_type': 'refresh_token',
-                'refresh_token': refresh_token,
-                'client_id': CLIENT_ID,
-                'scope': SCOPE,
-            }
-        )
-        response.raise_for_status()
-        fauna_token = response.json()['access_token']
-        refresh_token = response.json()['refresh_token']
-        return fauna_token, refresh_token
-
-    def get_auth_url():
-        # Generates URL for initiating OAuth authorization.
-        return f'{FAUNA_URL}/login/?{urllib.parse.urlencode({"redirect_uri": REDIRECT_URI, "client_id": CLIENT_ID, "response_type": "code", "scope": SCOPE})}'
-
-    def shutdown_server(server):
-        # Shuts down the OAuth redirect HTTP server.
-        server.shutdown()
-
-    if __name__ == '__main__':
-        server = start_server()
-        print("Please visit the following URL to authenticate:")
-        print(get_auth_url())
-        # Wait for the user to authenticate and for the server to receive the code
-        input("Press Enter after authentication...")
-        # Assuming the user has authenticated and 'access_code' has been set
-        if access_code:
-            fauna_token, refresh_token = get_tokens(access_code)
-            print(f'Fauna Tokens : {fauna_token}')
-            print(f'Refresh Tokens : {refresh_token}')
-            
-            new_fauna_token, new_refresh_token = refresh_tokens(refresh_token)
-            print(f'New Fauna Tokens : {new_fauna_token}')
-            print(f'New Refresh Tokens : {new_refresh_token}')
-
-        shutdown_server(server)
-    ```
-
-
+    - Go to Profile section in [Agentverse ↗️](https://agentverse.ai/profile/api-keys).
+    - Click on button `+ New API Key`.
+    - Give name to your API key.
+    - Click on `write` for `Access to all resources in Agentverse` and click on `Generate API Key`
+  
 ## Script Break down
-
-This script includes various functions for handling different API interactions. Below is a summary of the main functions and their 
-respective purposes.
 
     - Importing Required libraries:
 
@@ -135,12 +30,53 @@ respective purposes.
     import requests
     import time
     import json
-    from faunatoken import start_server, shutdown_server, get_auth_url, get_tokens, refresh_tokens 
     ```
 
     These libraries are used to handle user regular expressions, HTTP requests, time delays and JSON responses.
 
-    - normalize_question function:
+    - OAuth and API Connfiguration.
+
+    ```python
+    # OAuth and API Configuration
+    FAUNA_URL = 'https://accounts.fetch.ai'
+    TOKEN_URL = f'{FAUNA_URL}/v1/tokens'
+    CLIENT_ID = 'agentverse'  # Ensure this is your actual Client ID
+    SCOPE = 'av'
+
+    # Your encoded refresh token here
+    refreshed_token = "<YOUR_REFRESH_TOKEN>"
+    # Decode the refresh token
+    token = f'Bearer <YOUR_ACCESS_TOKEN>'  # Placeholder for initial token
+    ```
+
+    This script includes various functions for handling different API interactions. Below is a summary of the main functions and their respective purposes.
+
+    1. Refresh Token function
+
+    ```python
+    def refresh_tokens(refresh_token):
+        """Attempt to refresh the access and refresh tokens."""
+        response = requests.post(
+            TOKEN_URL,
+            json={
+                'grant_type': 'refresh_token',
+                'refresh_token': refresh_token,
+                'client_id': CLIENT_ID,
+                'scope': SCOPE,
+            }
+        )
+        if response.status_code == 200:
+            print('New token generated.')
+            response_data = response.json()
+            return response_data['access_token'], response_data.get('refresh_token', refresh_token)
+        else:
+            print("Error refreshing tokens:", response.text)
+            return None, None
+    ```
+
+    This function helps generate new pair of `token` and `refresh_token` if the current access_token is expired.
+
+    2. normalize_question function:
 
     ``` python
     # Define function to normalize questions asked by AI-engine
@@ -153,7 +89,7 @@ respective purposes.
     This function converts questions from a JSON response, identified by the key 'text', into lowercase and removes any punctuation. 
     It helps standardize user input for consistent processing.
 
-    - `is_uuid` function:
+    3. `is_uuid` function:
 
     ``` python
     # Define function to check if option is uuid (Subtask Key)
@@ -166,7 +102,7 @@ respective purposes.
     This function checks whether the given key is in UUID (Universal Unique Identifier) format.The function uses a regular expression pattern to match the 
     standard UUID format, which consists of 32 hexadecimal characters split into five groups separated by hyphens (8-4-4-4-12).
     
-    - `update_token` function
+    4. `update_token` function
 
     ```python
     # Function to update and refresh the access token
@@ -180,7 +116,7 @@ respective purposes.
 
     This function refreshes the `fauna token` and `refresh fauna token` in case current fauna token expires.
 
-    - `post_request` function
+    5. `post_request` function
 
     ```python 
     # Function to handle POST requests with automatic token refresh
@@ -196,7 +132,7 @@ respective purposes.
 
     This function makes post request to Agentverse.
 
-    - `get_request` function
+    6. `get_request` function
 
     ```python
     # Function to handle GET requests with automatic token refresh
@@ -211,7 +147,7 @@ respective purposes.
     ```
     This function makes get request to Agentverse.
 
-    - send_user_choice_as_uuid function:
+    7. send_user_choice_as_uuid function:
     
     ```python
     # Function to send UUID choice message to AI-Engine
@@ -232,11 +168,12 @@ respective purposes.
     This function is designed to send user's choice back to AI-engine through Chat API, specially in case of user getting options from multiple
     subtask options as UUID. The function takes three parameters:
 
-        - session_id - chat session Id on DeltaV.
-        - user_choice - the choice of subtask user wants AI-Engine to use.
-        - token - AI-Engine fauna token to connect DeltaV or AI-Engine.
+        - `session_id` - chat session Id on DeltaV.
+        - `user_choice` - the choice of subtask user wants AI-Engine to use.
+        - `token` - AI-Engine fauna token to connect DeltaV or AI-Engine.
 
-    - send_user_message function:
+
+    8. send_user_message function:
 
     ``` python
     # Function to send normal message to AI-Engine
@@ -255,22 +192,7 @@ respective purposes.
     The session_id and token parameters are same as 'Send_user_choice_as_uuid' function, 'user_message' is the message which user wants to send to 
     the ongoing chat session.
 
-    5. is_uuid function:
-
-    ``` python
-    # Define function to check if option is uuid (Subtask Key)
-    def is_uuid(key):
-        # Function to check if a string is a valid UUID
-        pattern = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", re.IGNORECASE)
-        return pattern.match(key)
-    ```
-
-    This function checks whether the given key is in UUID (Universal Unique Identifier) format.The function uses a regular expression pattern to match the 
-    standard UUID format, which consists of 32 hexadecimal characters split into five groups separated by hyphens (8-4-4-4-12).
-
-    The function takes the 'key' parameter and returns match object if key is UUID else it returns None.
-
-    6. stop_session functions:
+    9. stop_session functions:
 
     ``` python
     # Define function to stop user session
@@ -286,7 +208,8 @@ respective purposes.
 
 The main script flow includes:
 
-    1. Setting up initial tokens for authentication.
+    1. Importing required libraries.
+    2. Setting up OAuth flow and API authentication.
     2. Setting up a chat session on DeltaV using AI-Engine Chat API.
     3. Taking input from the user for service they want to assemble or objective to achieve.
     4. Handling the chat flow which includes sending messages and processing requests.
@@ -296,29 +219,6 @@ The main script flow includes:
     8. Stopping chat session with the user.
 
     Chunk-by-chunk explaination:
-
-    - Fetching initial fauna tokens using `faunatoken.py` file/library.
-
-    ```python
-    # Starting the authentication and session initiation process
-    server = start_server()
-    print("Please visit the following URL to authenticate:")
-    print(get_auth_url())
-    input("Press Enter after authentication...")
-    filename = 'access_code.txt'
-
-    with open(filename, 'r') as file:
-        access_code = file.read().strip()
-
-    if access_code:
-        tokens = get_tokens(access_code)
-        fauna_token = tokens[0]
-        refreshed_token = tokens[1]
-        token = f'Bearer {fauna_token}'
-    else:
-        print("Authentication failed. Please ensure you have entered the correct access code.")
-        exit()
-    ```
 
     - Setting up a Chat Session with AI_engine Chat API
 
@@ -336,8 +236,8 @@ The main script flow includes:
     ```
 
     The above section of code creates payload(data) for request to start a session. Please update the following details accordingly:
-        - email: Update this with your agentverse email-id. 
-        - requestedModel: This is the chat model you want to make request to
+        - `email`: Update this with your agentverse email-id. 
+        - `requestedModel`: This is the chat model you want to make request to
     
     On the basis of details provided and POST request sent to chat API. AI-engine responds with a session-Id where we can communicate further with deltaV.
     Session-id is extracted from the response which is vital for interacting with DeltaV.
@@ -567,6 +467,36 @@ The main script flow includes:
     import json
     from faunatoken import start_server, shutdown_server, get_auth_url, get_tokens, refresh_tokens 
 
+     # OAuth and API Configuration
+    FAUNA_URL = 'https://accounts.fetch.ai'
+    TOKEN_URL = f'{FAUNA_URL}/v1/tokens'
+    CLIENT_ID = 'agentverse'  # Ensure this is your actual Client ID
+    SCOPE = 'av'
+
+    # Your encoded refresh token here
+    refreshed_token = "<YOUR_REFRESH_TOKEN>"
+    # Decode the refresh token
+    token = f'Bearer <YOUR_ACCESS_TOKEN>'  # Placeholder for initial token
+
+    def refresh_tokens(refresh_token):
+    """Attempt to refresh the access and refresh tokens."""
+    response = requests.post(
+        TOKEN_URL,
+        json={
+            'grant_type': 'refresh_token',
+            'refresh_token': refresh_token,
+            'client_id': CLIENT_ID,
+            'scope': SCOPE,
+        }
+    )
+    if response.status_code == 200:
+        print('New token generated.')
+        response_data = response.json()
+        return response_data['access_token'], response_data.get('refresh_token', refresh_token)
+    else:
+        print("Error refreshing tokens:", response.text)
+        return None, None
+
     # Define function to normalize questions asked by AI-engine
     def normalize_question(question):
         question_lower = question.lower()
@@ -636,25 +566,6 @@ The main script flow includes:
         data = {"payload": {"type": "stop"}}
         response = post_request(f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit", data, {"Authorization": token})
         print("Session stopped:", response.json())
-
-    # Starting the authentication and session initiation process
-    server = start_server()
-    print("Please visit the following URL to authenticate:")
-    print(get_auth_url())
-    input("Press Enter after authentication...")
-    filename = 'access_code.txt'
-
-    with open(filename, 'r') as file:
-        access_code = file.read().strip()
-
-    if access_code:
-        tokens = get_tokens(access_code)
-        fauna_token = tokens[0]
-        refreshed_token = tokens[1]
-        token = f'Bearer {fauna_token}'
-    else:
-        print("Authentication failed. Please ensure you have entered the correct access code.")
-        exit()
 
     # User and model details
     data = {
@@ -818,18 +729,18 @@ Save this script as chatAPI.py and replace ‘email’ and ‘fauna_token’ in 
 
 Running this app on the terminal:
     1. Locate the directory where the script is located.
-    2. Run script using python `chatapi.py` and authenticate user using provided link.
-    3. Press enter after authenticating and provide the objective of the conversation to deltaV.
-    4. Select the key of the service you want to use.
+    2. Open [Agentverse ↗️](https://agentverse.ai/profile/api-keys) and [generate API keys](docs/examples/chat_api_example#steps-to-get-api-tokens).
+    3. Open script in editor and replace `access_token` and `refresh_token`.
+    4. Run script using python `agent.py` .
+    5. Provide objective to the script.
     5. Confirm/ Reject the details whenever asked.
     6. Reply back to the agent when a question is asked.
     7. When the final response is received, type OK or stop to be sent to the deltaV agent.
 
 Please refer below images for sample chat session with AI_engine Chat_API
 
-![](../../../src/images/APIs/chatAPI1.png)
+![](../../src/images/APIs/chatAPI1.png)
 
-![](../../../src/images/APIs/chatAPI2.png)
-
+![](../../src/images/APIs/chatAPI2.png)
 
 
