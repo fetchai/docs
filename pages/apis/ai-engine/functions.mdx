@@ -38,9 +38,9 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
         PUT /v1beta1/functions/unpublish/:function_id/
 
-        POST /v1beta1/functions/function-function-group/
+        PUT /v1beta1/functions/add-to-function-group/:function_id/:function_group_id/
 
-        DELETE /v1beta1/functions/function-function-group/:function_id/:function_group_id/
+        DELETE /v1beta1/functions/delete-from-function-group/:function_id/:function_group_id/
         ```
     </Col>
 
@@ -416,31 +416,14 @@ properties={[
 />
 
 
-## Create a function-function group 
+## Add function to function group
 
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
-  method="POST"
-  path="/v1beta1/function-function-group/"
-  description="Create a new function-function group connection for a user authenticated through JWT."
-properties={[
-    {
-      name: "function",
-      type: "uuid",
-      description:
-        "Id of function.",
-    },
-    {
-      name: "functionGroup",
-      type: "uuid",
-      description:
-        "Id of function group.",
-    },
-  ]}
-  samplePayload={{
-    "function": "be14fb4f-b7a5-4233-937d-cce29fb8a3ea",
-    "functionGroup": "c02ed9ce-62df-46d1-bfaa-8c8b309a4a40"
-  }}
+  method="PUT"
+  path="/v1beta1/add-to-function-group/{function_id}/{function_group_id}/"
+  description="Add a function to a function group."
+  pathParameters={{function_id:"your_function_id", function_group_id:"your_function_group_id"}}
   responses={{
     "function": "be14fb4f-b7a5-4233-937d-cce29fb8a3ea",
     "functionGroup": "c02ed9ce-62df-46d1-bfaa-8c8b309a4a40"
@@ -448,14 +431,16 @@ properties={[
   responseDescription="Returns a JSON object containing the function and function group id."
 />
 
+## Delete function from function group
+
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="DELETE"
-  path="/v1beta1/function-function-group/{function_id}/{function_group_id}"
-  description="Delete a specific function-function group connection (identified by the function_id and the function_group_id) of a user authenticated through JWT."
+  path="/v1beta1/delete-from-function-group/{function_id}/{function_group_id}/"
+  description="Delete a function of a user (authenticated through JWT) from a function group."
+  pathParameters={{function_id:"your_function_id", function_group_id:"your_function_group_id"}}
   responses={
     {}
   }
-  pathParameters={{function_id:"your_function_id", function_group_id:"your_function_group_id"}}
   responseDescription="Returns an empty JSON object."
 />
