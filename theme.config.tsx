@@ -31,7 +31,7 @@ const config: DocsThemeConfig = {
         property="og:description"
         content="Explore our documentation, guides and examples to get to know Fetch.ai tools and products."
       />
-      <meta property="og:image" content="/docs/docs-logo.svg" />
+      <meta property="og:image" content="/docs/Logo.png" />
       <meta
         name="apple-mobile-web-app-title"
         content="Fetch.ai Documentation"
