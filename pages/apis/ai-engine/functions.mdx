@@ -39,8 +39,9 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
         PUT /v1beta1/functions/unpublish/:function_id/
 
         PUT /v1beta1/functions/add-to-function-group/:function_id/:function_group_id/
+        PUT /v1beta1/functions/add-to-function-group/:function_id/:function_group_id/
 
-        DELETE /v1beta1/functions/delete-from-function-group/:function_id/:function_group_id/
+        DELETE /v1beta1/functions/remove-from-function-group/:function_id/:function_group_id/
         ```
     </Col>
 
@@ -431,13 +432,13 @@ properties={[
   responseDescription="Returns a JSON object containing the function and function group id."
 />
 
-## Delete function from function group
+## Remove function from function group
 
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="DELETE"
-  path="/v1beta1/delete-from-function-group/{function_id}/{function_group_id}/"
-  description="Delete a function of a user (authenticated through JWT) from a function group."
+  path="/v1beta1/remove-from-function-group/{function_id}/{function_group_id}/"
+  description="Remove a function from a function group."
   pathParameters={{function_id:"your_function_id", function_group_id:"your_function_group_id"}}
   responses={
     {}
