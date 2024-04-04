@@ -42,8 +42,13 @@ export const InstantAlgoliaSearch = ({
   const router = useRouter();
   const [show, setShow] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState<boolean>(false);
 
   const inputId = "search-input"; // Unique ID for the input
+
+  if (error) {
+    throw new Error("something went wrong");
+  }
 
   // Close dropdown on outside click
   const handleClickOutside = useCallback(
@@ -87,6 +92,10 @@ export const InstantAlgoliaSearch = ({
             }),
           },
         );
+
+        if (response.status === 404) {
+          setError(true);
+        }
 
         if (!response.ok) {
           console.log("---something went wrong----");
@@ -193,13 +202,13 @@ export const InstantAlgoliaSearch = ({
                         className="nx-flex nx-justify-between nx-items-center nx-leading-normal nx-py-2 nx-px-6 nx-transition-colors nx-duration-5 nx-ease-out nx-overflow-hidden nx-text-grey-900 nx-bg-transparent"
                         onClick={() => onClickSearchResult(hit.path)}
                       >
-                        <div className="nx-flex nx-flex-col nx-relative w-full">
+                        <div className="w-full nx-flex nx-flex-col nx-relative">
                           <div className="nx-text-base nx-font-semibold nx-text-fetch-main">
                             {hit.title.replaceAll("#", "")}
                           </div>
 
                           {hit.content.length > 0 && (
-                            <div className="nx-relative w-full nx-text-sm nx-leading-tight nx-mt-4 nx-xl:mt-2 nx-mb-2">
+                            <div className="w-full nx-relative nx-text-sm nx-leading-tight nx-mt-4 nx-xl:mt-2 nx-mb-2">
                               <MDXProvider
                                 components={getComponents({
                                   isRawLayout: false,
