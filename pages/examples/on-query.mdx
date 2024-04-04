@@ -1,6 +1,8 @@
-# Query communication between Agents
+import { Callout } from 'nextra/components'
 
-This documentation outlines the steps to set up and enable communication between two agents, Agent1 and Agent2, using the uAgents framework. Agent1 sends a query to Agent2, and Agent2 processes this query and responds. Both agents use a simple request-response model for communication.
+# On Query decorator example
+
+This documentation outlines the steps to set up and enable communication between Agent and flask app based webpage, using the uAgents framework. flask app sends a query to Agent, and Agent processes this query and responds. Both agent and app use a simple request-response model for communication.
 
 ## Guide
 
@@ -14,112 +16,194 @@ This documentation outlines the steps to set up and enable communication between
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
 
-## Agent Scripts
+## Agent Script
 
-### Agent1 Script
+### Agent Script
 
-This agent queries another agent. Asking the address for another agent which is stored in it's storage.
+This agent handle queries. Asking the jobs available for given job title using serpAPI.
 
-```py copy filename = agent1.py
-from uagents import Agent, Context, Model
-from uagents.query import query
-import json
-
-class Request(Model):
-    query: str
-class Response(Model):
-    response: str
-
-Agent1 = Agent(
-    name="Agent1",
-    seed="Agent1 Seed Phrase",
-    port=8001,
-    endpoint="http://localhost:8001/submit",
-)
-
-AGENT2_ADDRESS = 'Agent 2 address here where query is to be sent.'
-
-@Agent1.on_event("startup")
-async def startup(ctx: Context):
-    ctx.logger.info(f"Starting up {Agent1.name}")
-    ctx.logger.info(f"With address: {Agent1.address}")
-    ctx.logger.info(f"And wallet address: {Agent1.wallet.address()}")
-
-    # Create an instance of QueryRequest with your message
-    query_request = Request(query="Agent Address")
-    
-    # Pass the query_request instance instead of a string
-    response = await query(destination=AGENT2_ADDRESS, message=query_request, timeout=15.0)
-    print(response)
-    data = json.loads(response.decode_payload())
-    data = data['response']
-    ctx.logger.info(f'Response for query is {data}')
-
-if __name__ == "__main__":
-    Agent1.run()
-```
-
-### Agent 2 Script
-
-This script handles the query request from `Agent1` and responds the value of agent's address in its storage.
-
-```py copy filename = agent2.py
+```py copy filename = JobSearchAgent.py
+# Import Required libraries
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
+from serpapi import GoogleSearch
  
+# Define Request and Response Models
 class Request(Model):
     query: str
 class Response(Model):
     response: str
  
-Agent2 = Agent(
-    name="Agent2",
+# Define function to handle job serach queries
+async def get_job_summary(query, api_key):
+    # Parameters for the API request
+    params = {
+      "engine": "google_jobs",
+      "q": query,
+      "hl": "en",
+      "api_key": api_key
+    }
+
+    # Perform the search
+    search = GoogleSearch(params)
+    results = search.get_dict()
+    jobs_results = results.get("jobs_results", [])
+    
+    # Initialize the result string
+    res_str = ""
+    # Get summary for the first job result
+    if jobs_results:
+        job = jobs_results[0]  # Get the first job
+        res_str += (
+            "\n_______________________________________________<br>"
+            + f"\nJob Title: {job.get('title', 'N/A')}<br>"
+            + f"Company Name: {job.get('company_name', 'N/A')}<br>"
+            + f"Location: {job.get('location', 'N/A')}<br>"
+            + f"Posted: {job['detected_extensions'].get('posted_at', 'N/A')}<br>"
+            + f"Type: {job['detected_extensions'].get('schedule_type', 'N/A')}<br>"
+            + f"Description: {job.get('description', 'N/A')[:500]}<br>"
+            + "\n_______________________________________________\n"
+        )
+    else:
+        res_str = "No job results found."
+
+    return res_str
+
+
+# Define Search Agent
+SearchAgent = Agent(
+    name="SearchAgent",
     port=8000,
-    seed="Agent2 secret phrase",
+    seed="SearchAgent secret phrase",
     endpoint=["http://127.0.0.1:8000/submit"],
 )
+
+# Registering agent on Almananc and funding it.
+fund_agent_if_low(SearchAgent.wallet.address())
  
-fund_agent_if_low(Agent2.wallet.address())
- 
-@Agent2.on_event('startup')
+# On agent startup printing address
+@SearchAgent.on_event('startup')
 async def agent_details(ctx: Context):
-    ctx.logger.info(f'Agent2 Address is {Agent2.address}')
-    ctx.storage.set("Agent Address", Agent2.address)
- 
-@Agent2.on_query(model=Request, replies={Response})
+    ctx.logger.info(f'Search Agent Address is {SearchAgent.address}')
+
+# On_query handler
+@SearchAgent.on_query(model=Request, replies={Response})
 async def query_handler(ctx: Context, sender: str, msg: Request):
     ctx.logger.info("Query received")
     try:
-        response = ctx.storage.get(msg.query)
-        await ctx.send(sender, Response(response=response))
-    except Exception:
-        await ctx.send(sender, Response(response="No Response Recieved"))
- 
+        ctx.logger.info(f'Fetching job details for query: {msg.query}')
+        response = await get_job_summary(msg.query, "<YOUR_JOB_SEARCH_SERP_API_KEY>")
+        # Ensure the response is a string
+        response_str = str(response)
+        ctx.logger.info(f'Response: {response_str}')
+        await ctx.send(sender, Response(response=response_str))
+    except Exception as e:
+        error_message = f"Error fetching job details: {str(e)}"
+        ctx.logger.error(error_message)
+        # Ensure the error message is sent as a string
+        await ctx.send(sender, Response(response=str(error_message)))
+
+
 if __name__ == "__main__":
-    Agent2.run()
+    SearchAgent.run()
 ```
 
-- Run both the script `agent1.py` and `agent2.py` on your terminal.
+
+### Flask App Script
+
+Async Agent-Based Flask App for Keyword base Job Search Results Retrieval.
+
+```py copy filename = jobsearchapp.py
+# Import required libraries
+from flask import Flask, request, render_template_string
+import json
+import asyncio
+from uagents import Model
+from uagents.query import query
+
+# Initialise flask app
+app = Flask(__name__)
+
+AGENT_ADDRESS = 'Provide your job search agent address'
+
+# Definining request model
+class Request(Model):
+    query: str
+
+# Define the root route, which presents the user with a form to input their search keyword
+@app.route('/')
+def index():
+    # The form submits a POST request to /get-search-results with the user's keyword
+    return render_template_string('''
+                                  <form action="/get-search-results" method="post">
+                                      <label for="keyword">Enter keyword to search:</label>
+                                      <input type="text" id="keyword" name="keyword"><br><br>
+                                      <input type="submit" value="Get Search Results">
+                                  </form>
+                                  ''')
+
+# Define the route to handle form submissions and fetch search results
+@app.route('/get-search-results', methods=['POST'])
+def get_search_results():
+    # Extract keyword from form and perform query agent for job search
+    keyword = request.form['keyword']
+    req = Request(query=keyword)
+    
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    response = loop.run_until_complete(make_agent_call(req))
+    loop.close()
+    
+    return f'<h2>Search results for {keyword}: </br>{response}</h2>'
+
+# Define an asynchronous function to query the agent with the specified request
+async def agent_query(req):
+    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
+    data = json.loads(response.decode_payload())
+    return data["response"]
+
+# Define an asynchronous function to handle the agent call, which will be used within the synchronous Flask route
+async def make_agent_call(req: Request):
+    try:
+        response = await agent_query(req)
+        return f"{response}"
+    except Exception as e:
+        return f"unsuccessful agent call - {str(e)}"
+
+# Run the Flask application if this script is executed directly
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+## Steps to run the app
+- Update `Agent Address` in jobsearchapp.py and [`serp_api_key`](https://serpapi.com/google-jobs-api) in JobSearchAgent.py.
+- Run both the script `JobSearchAgent.py` and `jobsearchapp.py` on your terminal.
+- Run URL `http://127.0.0.1:5000` in browser and provide job search keyword on webpage.
+- Click on `Get Search Results`.
+
+![](../../src/images/examples/on_query_request.png)
 
 ## Expected Output
 
-- Agent1.py 
+- jobsearchapp.py 
 
 ```
-INFO:     [Agent1]: Almanac registration is up to date!
-INFO:     [Agent1]: Starting up Agent1
-INFO:     [Agent1]: With address: agent1qtxuw74yjqwa9mew2eru8afulhl9dj5w9avvftceudxcuzrv2tvhjh8grsp
-INFO:     [Agent1]: And wallet address: fetch1w73u6uj996nt5wela5w47hy6z69cd6rwp08js2
-version=1 sender='agent1qfa3sn39krax6pepnexfv3tuha3hqdkfxz0tnm6t6wadmc9ets3f2hj5a8z' target='' session=UUID('74de7d54-38c7-44f1-8ead-c2294a948b5e') schema_digest='model:c386105a5e52860d5885cb07aeeb6258f33fe31b9adbaae0ac4301c8a9837ba5' protocol_digest=None payload='eyJyZXNwb25zZSI6ICJhZ2VudDFxZmEzc24zOWtyYXg2cGVwbmV4ZnYzdHVoYTNocWRrZnh6MHRubTZ0NndhZG1jOWV0czNmMmhqNWE4eiJ9' expires=None nonce=None signature=None
-INFO:     [Agent1]: Response for query is agent1qfa3sn39krax6pepnexfv3tuha3hqdkfxz0tnm6t6wadmc9ets3f2hj5a8z
-INFO:     [Agent1]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+abhimanyugangani@Abhimanyus-MacBook-Pro On Query % python3 SearchAgent.py
+INFO:     [SearchAgent]: Almanac registration is up to date!
+INFO:     [SearchAgent]: Search Agent Address is agent1qdmgt4txxlvve4fmk8cw6jcp4gd2l709ctllx7jvz0kx4jzace5hu8n00hj
+INFO:     [SearchAgent]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     [SearchAgent]: Query received
+INFO:     [SearchAgent]: Fetching job details for query: developer
+INFO:     [SearchAgent]: Response: 
+_______________________________________________</br>
+Job Title: Software Developer</br>Company Name: SAIC Career Site</br>Location:   Chantilly, VA   </br>Posted: 1 day ago</br>Type: Full-time</br>Description: Description
+
+INTRODUCTION: The Sponsor supports a diverse set of corporate goals across the organization by conducting technical risk assessments and providing technical risk mitigation guidance on the use of various enabling technologies. The Sponsor requires subject matter expertise in technical risk analysis of enterprise and mission systems, IT systems and networks, mobile and wireless... networks, cloud-based computing, network management platforms, communication protocols, scripting or pro</br>
+_______________________________________________
 ```
 
-- Agent2.py 
+- Webpage
 
-```
-INFO:     [Agent2]: Almanac registration is up to date!
-INFO:     [Agent2]: Agent2 Address is agent1qfa3sn39krax6pepnexfv3tuha3hqdkfxz0tnm6t6wadmc9ets3f2hj5a8z
-INFO:     [Agent2]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     [Agent2]: Query received
-```
+![](../../src/images/examples/on_query_result.png)
+
+
