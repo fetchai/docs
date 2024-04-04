@@ -9,7 +9,7 @@ import { MDXProvider } from "nextra/mdx";
 import "./polyfill";
 import type { PageTheme } from "nextra/normalize-pages";
 import { normalizePages } from "nextra/normalize-pages";
-
+import { ErrorBoundary } from "react-error-boundary";
 import {
   Banner,
   Breadcrumb,
@@ -375,16 +375,44 @@ const InnerLayout = ({
   );
 };
 
+const Error = () => (
+  <div className="nx-flex nx-justify-center  nx-items-center nx-mt-[35vh]">
+    <div className="nx-flex nx-p-[32px] nx-gap-8 nx-flex-col gap-[32px] nx-rounded-[12px]">
+      <div className="nx-flex nx-gap-2 nx-flex-col nx-justify-start nx-items-start">
+        <span className="nx-font-normal nx-text-slate-900 nx-text-5xl">
+          Something went wrong!
+        </span>
+        <span className=" nx-font-normal nx-text-[20px] nx-tracking-[-.2px] nx-opacity-90 nx-text-[#0B1742]">
+          Sorry, we are currently experiencing some trouble.
+        </span>
+        <span className="nx-font-normal nx-leading-5 nx-text-[14px]  nx-opacity-60 nx-text-[#000D3D]">
+          Right this moment, Agents are figuring out the fix.
+        </span>
+      </div>
+      <div>
+        <button
+          onClick={() => window.location.reload()}
+          className="nx-bg-[#5F38FB] nx-rounded-md nx-text-[14px] nx-px-4 nx-py-2 nx-text-white"
+        >
+          Refresh page
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
 export default function Layout({
   children,
   ...context
 }: NextraThemeLayoutProps): ReactElement {
   return (
-    <UserInfoProvider>
-      <ConfigProvider value={context}>
-        <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
-      </ConfigProvider>
-    </UserInfoProvider>
+    <ErrorBoundary FallbackComponent={Error}>
+      <UserInfoProvider>
+        <ConfigProvider value={context}>
+          <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
+        </ConfigProvider>
+      </UserInfoProvider>
+    </ErrorBoundary>
   );
 }
 
