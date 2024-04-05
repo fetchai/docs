@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 
 const useContentVisited = (context) => {
   const [contentVisited, setContentVisited] = useState();
-  const [error, setError] = useState<boolean>(false);
-
-  if (error) {
-    throw new Error("something went wrong");
-  }
 
   const fetchContentVisited = async (context) => {
     try {
@@ -19,9 +14,6 @@ const useContentVisited = (context) => {
           },
         },
       );
-      if (response.status === 404) {
-        setError(true);
-      }
       const visitedContent = await response.json();
       setContentVisited(visitedContent);
       return visitedContent;
@@ -54,9 +46,6 @@ const useContentVisited = (context) => {
           }),
         },
       );
-      if (resp.status === 404) {
-        setError(true);
-      }
 
       const visitedContent = await fetchContentVisited(context);
       setContentVisited(visitedContent);

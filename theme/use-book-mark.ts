@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 const useBookMark = (context) => {
   const [bookMarks, setBookMarks] = useState<undefined | string[]>([]);
-  const [error, setError] = useState<boolean>(false);
 
   const fetchBookMarks = async (context, isBookMark) => {
     try {
@@ -16,9 +15,6 @@ const useBookMark = (context) => {
         },
       );
 
-      if (response.status === 404) {
-        setError(true);
-      }
       if (response.status === 200) {
         const bookmark = await response.json();
         setBookMarks(bookmark);
@@ -33,10 +29,6 @@ const useBookMark = (context) => {
       return [];
     }
   };
-
-  if (error) {
-    throw new Error("something went wrong");
-  }
 
   const pathname = typeof window !== "undefined" && window?.location?.pathname;
 
@@ -62,9 +54,6 @@ const useBookMark = (context) => {
           }),
         },
       );
-      if (resp.status === 404) {
-        setError(true);
-      }
       const bookmark = await fetchBookMarks(context, newVisibilityState);
       setBookMarks(bookmark);
     } catch (error) {
