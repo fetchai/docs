@@ -32,7 +32,7 @@ const useContentVisited = (context) => {
 
   const onClickSetContentVisited = async (contentPath: string) => {
     try {
-      const resp = await fetch(
+      await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/`,
         {
           method: "POST",

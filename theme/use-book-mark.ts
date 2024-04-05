@@ -40,7 +40,7 @@ const useBookMark = (context) => {
 
   const onClickBookMark = async (newVisibilityState: boolean) => {
     try {
-      const resp = await fetch(
+      await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookmark`,
         {
           method: "POST",
