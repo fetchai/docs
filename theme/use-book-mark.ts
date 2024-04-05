@@ -40,20 +40,17 @@ const useBookMark = (context) => {
 
   const onClickBookMark = async (newVisibilityState: boolean) => {
     try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookmark`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_email: context?.user?.email,
-            saved_path: window.location.pathname,
-            is_visible: newVisibilityState,
-          }),
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookmark`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          user_email: context?.user?.email,
+          saved_path: window.location.pathname,
+          is_visible: newVisibilityState,
+        }),
+      });
       const bookmark = await fetchBookMarks(context, newVisibilityState);
       setBookMarks(bookmark);
     } catch (error) {

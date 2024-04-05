@@ -32,20 +32,17 @@ const useContentVisited = (context) => {
 
   const onClickSetContentVisited = async (contentPath: string) => {
     try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_email: context?.user?.email,
-            saved_path: contentPath,
-            is_visible: true,
-          }),
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          user_email: context?.user?.email,
+          saved_path: contentPath,
+          is_visible: true,
+        }),
+      });
 
       const visitedContent = await fetchContentVisited(context);
       setContentVisited(visitedContent);
