@@ -22,7 +22,7 @@ This documentation outlines the steps to set up and enable communication between
 
 This agent handle queries. Asking the jobs available for given job title using serpAPI.
 
-```py copy filename = JobSearchAgent.py
+```py copy filename="JobSearchAgent.py"
 # Import Required libraries
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
@@ -55,14 +55,14 @@ async def get_job_summary(query, api_key):
     if jobs_results:
         job = jobs_results[0]  # Get the first job
         res_str += (
-            "\n_______________________________________________<br>"
-            + f"\nJob Title: {job.get('title', 'N/A')}<br>"
-            + f"Company Name: {job.get('company_name', 'N/A')}<br>"
-            + f"Location: {job.get('location', 'N/A')}<br>"
-            + f"Posted: {job['detected_extensions'].get('posted_at', 'N/A')}<br>"
-            + f"Type: {job['detected_extensions'].get('schedule_type', 'N/A')}<br>"
-            + f"Description: {job.get('description', 'N/A')[:500]}<br>"
-            + "\n_______________________________________________\n"
+            "\n_______________________________________________"
+            + f"\nJob Title: {job.get('title', 'N/A')}"
+            + f"Company Name: {job.get('company_name', 'N/A')}"
+            + f"Location: {job.get('location', 'N/A')}"
+            + f"Posted: {job['detected_extensions'].get('posted_at', 'N/A')}"
+            + f"Type: {job['detected_extensions'].get('schedule_type', 'N/A')}"
+            + f"Description: {job.get('description', 'N/A')[:500]}"
+            + "_______________________________________________"
         )
     else:
         res_str = "No job results found."
@@ -113,13 +113,13 @@ if __name__ == "__main__":
 
 Async Agent-Based Flask App for Keyword base Job Search Results Retrieval.
 
-```py copy filename = jobsearchapp.py
+```py copy filename="jobsearchapp.py"
 # Import required libraries
-from flask import Flask, request, render_template_string
+from flask import Flask, request, jsonify
+from uagents.query import query
+from uagents import Model
 import json
 import asyncio
-from uagents import Model
-from uagents.query import query
 
 # Initialise flask app
 app = Flask(__name__)
@@ -130,31 +130,26 @@ AGENT_ADDRESS = 'Provide your job search agent address'
 class Request(Model):
     query: str
 
-# Define the root route, which presents the user with a form to input their search keyword
-@app.route('/')
-def index():
-    # The form submits a POST request to /get-search-results with the user's keyword
-    return render_template_string('''
-                                  <form action="/get-search-results" method="post">
-                                      <label for="keyword">Enter keyword to search:</label>
-                                      <input type="text" id="keyword" name="keyword"><br><br>
-                                      <input type="submit" value="Get Search Results">
-                                  </form>
-                                  ''')
+# Defining endpoint to handle search requests
+@app.route('/search-jobs')
+def search_jobs():
+    keyword = request.args.get('q')  # Get the query parameter
+    if not keyword:
+        return jsonify({"error": "No query provided."}), 400
 
-# Define the route to handle form submissions and fetch search results
-@app.route('/get-search-results', methods=['POST'])
-def get_search_results():
-    # Extract keyword from form and perform query agent for job search
-    keyword = request.form['keyword']
-    req = Request(query=keyword)
+    response = synchronous_agent_query(keyword)
     
+    # Assuming 'response' is the data you want to return
+    return jsonify({"results": response})
+
+# Define an asynchronous function to query the agent with the specified request
+async def synchronous_agent_query(keyword):
+    req = Request(query=keyword)
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     response = loop.run_until_complete(make_agent_call(req))
     loop.close()
-    
-    return f'<h2>Search results for {keyword}: </br>{response}</h2>'
+    return f'Search results for {keyword}: {response}'
 
 # Define an asynchronous function to query the agent with the specified request
 async def agent_query(req):
@@ -178,32 +173,29 @@ if __name__ == "__main__":
 ## Steps to run the app
 - Update `Agent Address` in jobsearchapp.py and [`serp_api_key`](https://serpapi.com/google-jobs-api) in JobSearchAgent.py.
 - Run both the script `JobSearchAgent.py` and `jobsearchapp.py` on your terminal.
-- Run URL `http://127.0.0.1:5000` in browser and provide job search keyword on webpage.
-- Click on `Get Search Results`.
-
-![](../../src/images/examples/on_query_request.png)
+- Open new termina window and run `curl "http://127.0.0.1:5000/search-jobs?q=<your_job_serach_query>"`
+- Replace `your_job_serach_query` with your query in above command.
 
 ## Expected Output
 
 - jobsearchapp.py 
 
 ```
-abhimanyugangani@Abhimanyus-MacBook-Pro On Query % python3 SearchAgent.py
 INFO:     [SearchAgent]: Almanac registration is up to date!
 INFO:     [SearchAgent]: Search Agent Address is agent1qdmgt4txxlvve4fmk8cw6jcp4gd2l709ctllx7jvz0kx4jzace5hu8n00hj
 INFO:     [SearchAgent]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
 INFO:     [SearchAgent]: Query received
-INFO:     [SearchAgent]: Fetching job details for query: developer
-INFO:     [SearchAgent]: Response: 
-_______________________________________________</br>
-Job Title: Software Developer</br>Company Name: SAIC Career Site</br>Location:   Chantilly, VA   </br>Posted: 1 day ago</br>Type: Full-time</br>Description: Description
+INFO:     [SearchAgent]: Fetching job details for query: software developer
+INFO:     [SearchAgent]: Response: _______________________________________________
+Job Title: Software DeveloperCompany Name: SAIC Career SiteLocation:   Chantilly, VA   Posted: 1 day agoType: Full-timeDescription: Description
 
-INTRODUCTION: The Sponsor supports a diverse set of corporate goals across the organization by conducting technical risk assessments and providing technical risk mitigation guidance on the use of various enabling technologies. The Sponsor requires subject matter expertise in technical risk analysis of enterprise and mission systems, IT systems and networks, mobile and wireless... networks, cloud-based computing, network management platforms, communication protocols, scripting or pro</br>
-_______________________________________________
+INTRODUCTION: The Sponsor supports a diverse set of corporate goals across the organization by conducting technical risk assessments and providing technical risk mitigation guidance on the use of various enabling technologies. The Sponsor requires subject matter expertise in technical risk analysis of enterprise and mission systems, IT systems and networks, mobile and wireless... networks, cloud-based computing, network management platforms, communication protocols, scripting or pro_______________________________________________
 ```
 
-- Webpage
+- Curl Response
 
-![](../../src/images/examples/on_query_result.png)
-
-
+```
+{
+  "results": "Search results for software developer: _______________________________________________\nJob Title: Software DeveloperCompany Name: SAIC Career SiteLocation:   Chantilly, VA   Posted: 1 day agoType: Full-timeDescription: Description\n\nINTRODUCTION: The Sponsor supports a diverse set of corporate goals across the organization by conducting technical risk assessments and providing technical risk mitigation guidance on the use of various enabling technologies. The Sponsor requires subject matter expertise in technical risk analysis of enterprise and mission systems, IT systems and networks, mobile and wireless... networks, cloud-based computing, network management platforms, communication protocols, scripting or pro_______________________________________________"
+}
+```
