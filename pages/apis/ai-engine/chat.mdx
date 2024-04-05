@@ -29,9 +29,9 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
         POST /v1beta1/engine/chat/sessions/:session_id/submit
 
-        GET /v1beta1/engine/chat/sessions/:session_id/responses
+        GET /v1beta1/engine/chat/sessions/:session_id/responses (Deprecated)
 
-        GET /v1beta1/engine/chat/sessions/:session_id/messages
+        GET /v1beta1/engine/chat/sessions/:session_id/messages (Deprecated)
 
         GET /v1beta1/engine/chat/sessions/:session_id/messages/all
 
@@ -68,6 +68,12 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
       type: "string",
       description:
         "The request model wherein the user wants to interact.",
+    },
+    {
+      name: "function_group",
+      type: "string",
+      description:
+        "The function group that the user wants to interact with.",
     },
   ]}
     samplePayload={{
@@ -338,7 +344,7 @@ responseDescription="On a successful request, there is no response"
   }}
 />
 
-## Fetch new messages sent by agent
+## ~~Fetch new messages sent by agent~~ **Deprecated**
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -358,7 +364,7 @@ responseDescription="On a successful request, there is no response"
   responseDescription="Return an agent_response object containing the agent response in JSON format, which can be parsed to retrieve the agent message. It can be an AgentMessage or an AgentJsonMessage. They are almost similar to user_message and user_json_message, but they are sent by the agent."
 />
 
-## Fetch recent messages given a timestamp
+## ~~Fetch recent messages given a timestamp~~ **Deprecated**
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
