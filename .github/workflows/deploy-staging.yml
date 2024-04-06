@@ -33,34 +33,12 @@ jobs:
           gcloud auth configure-docker -q
           echo "VERSION: ${{ steps.lookup.outputs.version }}"
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@master
-        with:
-          install: true
-
-      - name: Cache Docker Layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-website-cache
-          key: ${{ runner.os }}-buildx-image-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-buildx-image
-
       - name: Build and Push Images
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./Dockerfile
-          builder: ${{ steps.buildx.outputs.name }}
-          push: true
-          tags: gcr.io/fetch-ai-sandbox/docs-website:${{ steps.lookup.outputs.version }}
-          cache-from: type=local,src=/tmp/.buildx-website-cache
-          cache-to: type=local,dest=/tmp/.buildx-website-cache-new
-
-      - name: Move cache
         run: |
-          rm -rf /tmp/.buildx-website-cache
-          mv /tmp/.buildx-website-cache-new /tmp/.buildx-website-cache
+          ./k8s/build-img.py -p staging
+        env:
+          NEXT_PUBLIC_BACKEND_URL: ${{ secrets.STAGING_NEXT_PUBLIC_BACKEND_URL }}
+          NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
 
   deploy:
     name: Deployment

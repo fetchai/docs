@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 
 const useContentVisited = (context) => {
   const [contentVisited, setContentVisited] = useState();
+  const [error, setError] = useState<boolean>(false);
+
+  if (error) {
+    throw new Error("something went wrong");
+  }
 
   const fetchContentVisited = async (context) => {
     try {
@@ -14,6 +19,9 @@ const useContentVisited = (context) => {
           },
         },
       );
+      if (response.status === 404) {
+        setError(true);
+      }
       const visitedContent = await response.json();
       setContentVisited(visitedContent);
       return visitedContent;
@@ -32,17 +40,23 @@ const useContentVisited = (context) => {
 
   const onClickSetContentVisited = async (contentPath: string) => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const resp = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_email: context?.user?.email,
+            saved_path: contentPath,
+            is_visible: true,
+          }),
         },
-        body: JSON.stringify({
-          user_email: context?.user?.email,
-          saved_path: contentPath,
-          is_visible: true,
-        }),
-      });
+      );
+      if (resp.status === 404) {
+        setError(true);
+      }
 
       const visitedContent = await fetchContentVisited(context);
       setContentVisited(visitedContent);

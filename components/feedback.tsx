@@ -20,6 +20,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
   const [isInputVisible, setInputVisible] = useState(false);
   const [feedbackType, setFeedbackType] = useState(""); // State to track feedback type
   const [maliciousStringDetected, setMaliciousStringDetected] = useState(false); // State to track malicious string detection
+  const [error, setError] = useState<boolean>(false);
 
   const resetState = () => {
     setFeedback("");
@@ -28,6 +29,10 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
     setFeedbackType("");
     setMaliciousStringDetected(false);
   };
+
+  if (error) {
+    throw new Error("Something went wrong..");
+  }
 
   useEffect(() => {
     // When the component mounts, reset its state
@@ -70,6 +75,10 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
           }),
         },
       );
+
+      if (response.status === 404) {
+        setError(true);
+      }
 
       if (response.ok) {
         setIsFeedbackSubmitted(true);
