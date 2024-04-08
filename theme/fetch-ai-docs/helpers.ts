@@ -30,6 +30,6 @@ export const capitalizeWords = (str: string) => {
 
 export const addUnderscoreInText = (text) => {
   const lowercasedText = text.toLowerCase();
-  const snakecasedText = lowercasedText.replace(/\s+/g, "_");
+  const snakecasedText = lowercasedText.replaceAll(/\s+/g, "_");
   return snakecasedText;
 };
