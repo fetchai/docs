@@ -27,3 +27,9 @@ export const capitalizeWords = (str: string) => {
     return char.toUpperCase().replace("-", " ");
   });
 };
+
+export const addUnderscoreInText = (text) => {
+  const lowercasedText = text.toLowerCase();
+  const snakecasedText = lowercasedText.replace(/\s+/g, "_");
+  return snakecasedText;
+};

@@ -207,6 +207,7 @@ export function Navbar({
               className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
               href={config.project.link}
               newWindow
+              id="github"
             >
               {renderComponent(config.project.icon)}
             </Anchor>
@@ -216,6 +217,7 @@ export function Navbar({
               className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
               href={config.chat.link}
               newWindow
+              id="discord"
             >
               {renderComponent(config.chat.icon)}
             </Anchor>
@@ -229,6 +231,7 @@ export function Navbar({
           ) : (
             <button
               onClick={handleSignin}
+              id="sign_in"
               className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm"
             >
               Sign In
