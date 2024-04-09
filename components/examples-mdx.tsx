@@ -34,7 +34,7 @@ const ExamplesMdx: React.FC<FilterMdxProps> = ({ content }) => {
 
   return (
     <div className="nx-flex nx-flex-col nx-w-full nx-items-end nx-justify-end">
-      <div className="nx-flex nx-gap-5">
+      <div className="md:nx-flex nx-block nx-gap-5">
         <select
           name="select"
           onChange={onSelectChange}
@@ -55,7 +55,7 @@ const ExamplesMdx: React.FC<FilterMdxProps> = ({ content }) => {
           value={inputVal}
           onChange={onInputChange}
           placeholder="Search...."
-          className="nx-font-normal nx-bg-transparent nx-rounded-full nx-border nx-border-solid nx-border-purple nx-px-6 nx-py-2"
+          className="nx-font-normal nx-mt-5 md:nx-mt-0 nx-bg-transparent nx-rounded-full nx-border nx-border-solid nx-border-purple nx-px-6 nx-py-2"
         />
       </div>
       <Grid2>
