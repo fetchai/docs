@@ -39,7 +39,6 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
         PUT /v1beta1/functions/unpublish/:function_id/
 
         PUT /v1beta1/functions/add-to-function-group/:function_id/:function_group_id/
-        PUT /v1beta1/functions/add-to-function-group/:function_id/:function_group_id/
 
         DELETE /v1beta1/functions/remove-from-function-group/:function_id/:function_group_id/
         ```
@@ -97,7 +96,7 @@ properties={[
     {
       name: "type",
       type: "string",
-      description: "Type of the function. Can be primary or secondary.",
+      description: "Type of the function. Can be PRIMARY or SECONDARY.",
     },
   ]}
   samplePayload={{
@@ -108,7 +107,7 @@ properties={[
     "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
     "modelName": "StockPrice/StocksProtocol",
     "arguments": [{"name": "symbol", "required": true, "type": "string", "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."}],
-    "type": "primary"
+    "type": "PRIMARY"
   }}
   responses={
     {
@@ -127,10 +126,10 @@ properties={[
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
-        "type": "primary",
+        "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "created"
+        "status": "CREATED"
     }
   }
   responseDescription="Returns the newly created function object"
@@ -149,20 +148,20 @@ properties={[
         "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
         "name": "Stock price function",
         "description": "Retrieves the stock price of a share.",
-        "type": "primary",
+        "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "created"
+        "status": "CREATED"
     },
     {
         "uuid": "ebfa27ec-c978-4109-bb77-9d1809e3b0f6",
         "agent": "agent1q0vmxjv06dwdlppuvspmfyff4ys2t4mdndpa09gulpsuq90n22xqy8k89l8",
         "name": "Flights function",
         "description": "Searches for flight offers.",
-        "type": "primary",
+        "type": "PRIMARY",
         "createdAt": "2023-10-22T21:08:47",
         "updatedAt": "2023-10-22T21:08:47",
-        "status": "created"
+        "status": "CREATED"
     },
   ]}
   responseDescription="Returns a list of function summary objects associated with the user."
@@ -192,10 +191,10 @@ properties={[
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
-        "type": "primary",
+        "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "created"
+        "status": "CREATED"
     }
   }
   pathParameters={{function_id:"your_function_id",}}
@@ -252,7 +251,7 @@ properties={[
     {
       name: "type",
       type: "Optional[string]",
-      description: "Optional - Type of the function. Can be primary or secondary.",
+      description: "Optional - Type of the function. Can be PRIMARY or SECONDARY.",
     }
   ]}
   samplePayload={
@@ -271,7 +270,7 @@ properties={[
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
-        "type": "primary"
+        "type": "PRIMARY"
     }
   }
   responses={
@@ -291,10 +290,10 @@ properties={[
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
-        "type": "primary",
+        "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "created"
+        "status": "CREATED"
     }
   }
   responseDescription="Returns the updated function object identified by a specific function_id."
@@ -324,10 +323,10 @@ properties={[
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
-        "type": "primary",
+        "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "created"
+        "status": "CREATED"
     }
   }
   pathParameters={{function_id:"your_function_id",}}
@@ -372,10 +371,10 @@ properties={[
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
-        "type": "primary",
+        "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "in-review"
+        "status": "IN-REVIEW"
     }
   }
   pathParameters={{function_id:"your_function_id",}}
@@ -406,10 +405,10 @@ properties={[
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
-        "type": "primary",
+        "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "testing"
+        "status": "TESTING"
     }
   }
   pathParameters={{function_id:"your_function_id",}}
