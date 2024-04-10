@@ -5,6 +5,7 @@ import styles from "./landing.module.css";
 import { Anchor } from "theme/fetch-ai-docs/components";
 import { renderComponent } from "theme/fetch-ai-docs/utils";
 import { DiscordIcon, GitHubIcon } from "nextra/icons";
+import { addUnderscoreInText } from "theme/fetch-ai-docs/helpers";
 
 const FooterLink = ({
   content,
@@ -17,6 +18,7 @@ const FooterLink = ({
   const [hover, setHover] = useState<boolean>(false);
   return (
     <section
+      id={addUnderscoreInText(content.description)}
       onClick={() => {
         window.open(content.path, "_blank", "noopener, noreferrer");
       }}

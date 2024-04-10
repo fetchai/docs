@@ -42,13 +42,8 @@ export const InstantAlgoliaSearch = ({
   const router = useRouter();
   const [show, setShow] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [error, setError] = useState<boolean>(false);
 
   const inputId = "search-input"; // Unique ID for the input
-
-  if (error) {
-    throw new Error("something went wrong");
-  }
 
   // Close dropdown on outside click
   const handleClickOutside = useCallback(
@@ -92,10 +87,6 @@ export const InstantAlgoliaSearch = ({
             }),
           },
         );
-
-        if (response.status === 404) {
-          setError(true);
-        }
 
         if (!response.ok) {
           console.log("---something went wrong----");
