@@ -42,6 +42,8 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
         PUT /v1beta1/functions/add-to-function-group/:function_id/:function_group_id/
 
         DELETE /v1beta1/functions/remove-from-function-group/:function_id/:function_group_id/
+
+        GET /v1beta1/functions/:function_id/groups/
         ```
     </Col>
 
@@ -173,7 +175,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="GET"
-  path="/v1beta1/functions/{function_id}"
+  path="/v1beta1/functions/{function_id}/"
   description="Fetches a specific function (identified by the function_id) of a user authenticated through JWT."
   responses={
     {
@@ -444,4 +446,24 @@ properties={[
     {}
   }
   responseDescription="Returns an empty JSON object."
+/>
+
+## Fetch all function groups that the function belongs to
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="GET"
+  path="/v1beta1/functions/{function_id}/groups/"
+  description="Fetches all functions groups that the function is assigned to."
+  responses={
+    [
+        {
+            "uuid": "d5a8f3a4-f219-42ec-a09d-7225fb5b790a",
+            "name": "My Functions",
+            "isPrivate": true
+        }
+    ]
+  }
+  pathParameters={{function_id:"your_function_id",}}
+  responseDescription="Returns all function groups that the function (identified by a specific function_id) belongs to."
 />
