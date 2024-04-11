@@ -1,96 +1,91 @@
 import { Callout } from 'nextra/components'
 
 <Callout type="info" emoji="ℹ️">
-This is a work in progress article and will be expanded rapidly.
+This article is a work-in-progress. It will be expanded rapidly.
 </Callout>
 
 # Agents 101 for AI Engine 🤖
 
 ## Overview
 
-Welcome to **Agents for AI 101**! This course is designed to introduce you to the overall system of Fetch.ai, and shows how to
+Welcome to **Agents 101 for AI engine**! This course is designed to introduce you to the overall system of Fetch.ai, and shows how to
 build agents to be accessible to the AI Engine and integrate with other projects. This course is a parallel track to
-[Agents 101 🤖↗️](/guides/agent-courses/introductory-course) which instead focuses on Agents creation only.
+[Agents 101 🤖↗️](/guides/agent-courses/introductory-course) which instead focuses only on Agents creation.
 
-At any stage, if you encounter uncertainties or have questions about specific terms or topics throughout the course, our support team is (almost always) available on [Discord ↗️](https://discord.gg/fetchai) to assist you.
+At any stage, if you encounter issues or have questions about specific terms or topics, our support team is available on [Discord ↗️](https://discord.gg/fetchai) to assist you.
 
 ## Quick overview of Fetch.ai
 
-Fetch.ai is developing a platform to help the development of an AI enabled decentralized digital economy. Agents are
-programs that can make choices on their own for individuals, companies, and devices. Agents are the actors, and the
+Fetch.ai is developing a platform to help build an AI-enabled decentralized digital economy. Agents are
+programs that can make choices on their own for individuals, companies, and devices. Agents are the actors and the
 heart of Fetch.ai Ecosystem.
 
-For us, our key need to know terms are: [Agents ↗️](/concepts/agents/agents), [Agentverse ↗️](/concepts/agent-services/agentverse-intro), [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), and [DeltaV ↗️](/concepts/ai-engine/deltav).
+To build your solution on Fetch.ai, you need to understand four concepts: [Agents ↗️](/concepts/agents/agents), [Agentverse ↗️](/concepts/agent-services/agentverse-intro), [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), and [DeltaV ↗️](/concepts/ai-engine/deltav).
 
-### What is an Agent, Agentverse, AI Engine and DeltaV 😱!
+### Agent, Agentverse, AI Engine and DeltaV
 
-Let's try and keep this really simple 🎉:
+Let's try and keep this simple 🎉:
 
- - **Agents**: these are programs that work as you instruct them, classically this would have been part of a multi agent system whereby agents have a task and communicate with other agents. In this context, agents are part of a multi-agent system, but their primary use is to represent a service, a function or data which can be accessed by DeltaV.
+ - **Agents**: These are programs that work as you instruct them. Classically, they are part of a multi-agent system where they have a task and communicate with other agents. But their primary use is to represent a service, a function or data that can be accessed by DeltaV.
 
- - **Agentverse**: it is a managed hosting platform and entrypoint to AI Engine for Agents. You would register your Agents on Agentverse to be a service in the network.
+ - **Agentverse**: It is a managed hosting platform, an online IDE, and an entry point to AI Engine for Agents. You would register your Agents on Agentverse to be a service in the network.
 
- - **AI Engine**: the AI Engine is a system that combines Agents with human-readable text input to create a scalable AI infrastructure that supports Large Language Models (LLMs). Really, all this means is an AI system can convert human text into actionable (computer) commands.
+ - **AI Engine**: The AI Engine is a system that combines Agents with human-readable text input to create a scalable AI infrastructure that supports Large Language Models (LLMs). It's an AI system that can convert human text into actionable (computer) commands.
 
- - **DeltaV**: it is an assistive chat interface to allow human input to interact with agents registered through the Agentverse.
+ - **DeltaV**: DeltaV is an assistive chat interface that allows human input to interact with agents registered through the Agentverse.
 
     <Callout type="warning" emoji="⚠️">
-       Agents are programs whereas services are the functions your agents offer.
+       Agents are <i>programs</i>, whereas services are the <i>functions</i> your agents offer.
     </Callout>
 
-At the core of it all, AI Engine indexes Agents, and translates human input into **tasks**. This is a bit like a search
-engine, but does more.
+In a nutshell, AI Engine indexes Agents, and translates human input into **tasks**. It may sound like a search
+engine, but it does much more.
 
 ![The AI Engine has an internal database hat creates understanding and links to existing services](../../../src/images/guides/101/ai-connects.jpg)
 
-The AI Engine allows for a term we call **chaining**. Chaining refers to the idea that if you were to ask "Tell me about the animal
-Zebra", then the AI Engine would look for an agent that could give you a summary as well as another agent that could provide the information about zebras. The AI Engine understands that the **Summary Agent** requires text to parse and summarise, so the AI Engine would contact the **Zebra Agent** and get the information from this latter one. With this information, the AI Engine would call the **Summary Agent** with the **Zebra Agent** information so that the former agent would return the summarised text.
+The AI Engine allows **chaining**. Say that you ask DeltaV "Tell me about the animal
+Zebra". The AI Engine would then look for an agent that could give you a summary, as well as another agent that could provide information about zebras. The AI Engine understands that the **Summary Agent** requires text to parse and summarise. So it would contact the **Zebra Agent** and get the information from it. The AI Engine would then call the **Summary Agent** with the **Zebra Agent** information so that the former would return the summarized text.
 
-It kinda works like this:
+It works like this:
 
 ![](../../../src/images/guides/101/chaining.jpg)
 
-What's happening here, is that when the AI Engine selects a response, the subtasks available to be called for that task
-are already known to it.
+Simply put, when the AI Engine selects a response, the subtasks available to be called for that task are already known to it.
 
-Of course this could be more complicated, what if every sensor on a car was an agent? You could ask your car for
-diagnostics on a system, and each component in that system could independently give their status. The AI Engine
-understands the schema of each Agent, so there would be little need for each component to be compatible in
-communication with each other.
+Of course, this could be more complicated. What if every sensor on a car was an agent? You could ask your car for
+diagnostics on a system, and each component in that system would independently give its status - making everything extremely complex. That's where the power of the AI Engine comes in. It understands the schema of each Agent, so there would be little need for each component to be compatible in communication with each other.
 
 ## Okay, so how does this all work?
 
-Okay, bear with me. Some new terms.
+To understand this, we need to look into a few more concepts:
 
 ![](../../../src/images/guides/system.svg)
 
-Two separate processes are happening. The first part of the sequence diagram registers two Agents:
+Here, two separate processes are happening. The first part of the sequence diagram registers two Agents:
 
  1. Firstly, agents register to a smart contract thus effectively paying to be discoverable.
- 2. Agents then register as a service on Agentverse (you'd usually do this by hand).
+ 2. Agents then register as a service on Agentverse (you'd usually do this manually).
 
-Great, Agents are registered and discoverable!
-
-The second part of the diagram introduces the flow of the AI Engine. This shows the role of a user who has entered a
+Now that the Agents are registered and discoverable - let's move on on to the second part of the diagram. The second part of the diagram introduces the flow of the AI Engine. This shows the role of a user who has entered a
 search term into DeltaV.
 
-    1. Question comes in and it is sent to the AI Engine.
+    1. A query comes in and it is sent to the AI Engine.
     2. The AI Engine has an internal loop that updates services registered and indexed.
-    3. The AI Engine has another internal loop that is creating embeddings of these services.
+    3. It also has another internal loop that creates embeddings of these services.
     4. Upon receiving text, the AI Engine understands and maps the text to Services.
-    5. The AI Engine requests addresses from [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) to message these Agents.
-    6. The AI Engine sees that Agent (A) needs some text as part of its services.
-    7. The AI Engine finds subtasks which can provide the required data.
-    8. Contacts subtask, and required data is returned.
-    9. Data is passed to Agent (A) which returns summary of the data.
-    10. The response is then returned to user on DeltaV.
+    5. It now requests addresses from [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) to message these Agents.
+    6. The AI Engine sees that Agent (A) needs some text to perform its services.
+    7. It finds subtasks that can provide the required data.
+    8. It then contacts the subtask, and the required data is returned.
+    9. Data is passed to Agent (A) which returns a summary of the data.
+    10. The response is then returned to the user on DeltaV.
 
-**tasks and subtasks are agent functions**. In the context of the AI Engine, these are (sub)tasks, but you're developing
+**Tasks and subtasks are agent functions**. In the context of the AI Engine, these are (sub)tasks, but you're developing
 Agents.
 
 ## Okay, let's build a couple of Agents!
 
-We've got a high level idea of how this works. Let's build this on Agentverse so that we can get this running on
+We've got a high-level idea of how this works. Let's build this on Agentverse so that we can get this running on
 DeltaV and see the whole stack connected.
 
 If you've never installed anything for uAgent development, checkout these guides:
@@ -255,7 +250,7 @@ We can finally run the Agent at the bottom of the script:
     summaryAgent.run()
     ```
 
-Including the protocol into the Agent effectively allows other Agents to know how this Agent expects communication.
+Including the protocol in the Agent effectively allows other Agents to know how this Agent expects communication.
 
 You can run this with `poetry run python html_summary_agent.py`.
 
@@ -349,17 +344,17 @@ The key difference in `web_download_agent.py` is that this agent calls another f
 Let's run this one too. Again, follow the steps for the previous Agent and go and register a Mailbox and update this
 agent with the new Mailbox. Each agent much have a unique Mailbox.
 
-## Let's go create some services; err, what's a service?
+## Let's go create some services!
 
-A **Service** refers to an Agent enrolled within the Agentverse (thus, on the Fetch Network), and made discoverable by other agents and users for interaction. For instance, s service could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Services are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
+A **Service** refers to an Agent enrolled within the Agentverse (thus, on the Fetch Network), and made discoverable by other agents and users for interaction. For instance, a service could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Services are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
 
-It is possible for you to create an Agent Service by first developing an Agent embodying the service you intend to offer and making sure your agent is up and runs smoothly. You will then need to upload its protocols and manifests to the Almanac contract by running the agent; this step integrates your agent into the Fetch network, enabling it to be discovered by other agents. After successful uploading, you can register your agent as a service on the Agentverse platform using the available dedicated section. During registration, you'll need to provide comprehensive information about your service, including its title, description, group, protocols, models, and field descriptions. Here you will also have to classify your service as a **task** or a **subtask**:
+You can create an Agent Service by first developing an Agent embodying the service you intend to offer - and then making sure your agent is up and running. You will then need to upload its protocols and manifests to the Almanac contract by running the agent. This step integrates your agent into the Fetch network, enabling it to be discovered by other agents. After successful uploading, you can register your agent as a service on the Agentverse platform using the available dedicated section. During registration, you'll need to provide comprehensive information about your service, including its title, description, group, protocols, models, and field descriptions. Here you will also have to classify your service as a **task** or a **subtask**:
 
     - **Tasks** define the primary goals or functionalities that users expect agents to perform. Tasks can widely vary ranging from retrieving specific information to performing actions on behalf of the user. For instance, a task could be "Retrieve News Headlines," "Book a Flight," or "Schedule a Meeting."
 
     - **Subtasks** handle specific aspects of the task and often require additional context or information to execute effectively. For instance, if the task is "Retrieve News Headlines" then the subtasks could be "Fetch Business News," "Retrieve Technology News," or "Get News from USA". Subtasks break down larger tasks into smaller, more manageable steps, allowing to efficiently execute the desired functionalities.
 
-It is at this point that you have the option to organize your services into customised **Service Groups** which act as convenient bundles, thus making it easier for the AI Engine to categorise and understand the services available within the Agentverse. To guarantee the correct functioning of the AI Engine and ensuring it will pick the correct Agents for execution, **you need to provide a detailed description for the service you are registering**. This is super important given that the AI Engine would rely on these descriptions to accurately comprehend the functionality of the services being registered. Therefore, it's crucial to provide clear and comprehensive descriptions!
+It is at this point that you have the option to organize your services into customized **Service Groups** which act as convenient bundles, thus making it easier for the AI Engine to categorize and understand the services available within the Agentverse. To guarantee the correct functioning of the AI Engine and ensuring it will pick the correct Agents for execution, **you need to provide a detailed description of the service you are registering**. This is super important given that the AI Engine would rely on these descriptions to accurately comprehend the functionality of the services being registered. Therefore, it's crucial to provide clear and comprehensive descriptions!
 
 The following is the service for the **SummaryAgent**:
 
@@ -375,10 +370,8 @@ The following is the service for the **SummaryAgent**:
 
 ![](../../../src/images/guides/101/full.png)
 
-## Conclusions
+## What's next?
 
-The **Agents for AI 101** guide serves as a comprehensive guide to understand how **Agents**, **Agentverse**, **AI Engine**, and **DeltaV** work together to enable interactions between users and agent services. The aim of this guide is to help you in creating Agent Services in a matter of few steps but also registering and making them available via DeltaV with ease!
-
-It's time to put your newfound skills to work and create your first Agent Service. We invite you to delve deeper into the world of Agents, Agentverse and AI Engine by exploring the dedicated documentation and [GitHub ↗️](https://github.com/fetchai/) repository. Join our [Discord ↗️](https://discord.com/invite/fetchai) and team up with other developers to participate in hackathons, collectively build projects, or simply have fun!
+It's time to put your newfound skills to work and create your first Agent Service. We invite you to dive deeper into the world of Agents, Agentverse and AI Engine by exploring the dedicated documentation and [GitHub ↗️](https://github.com/fetchai/) repository. Join our [Discord ↗️](https://discord.com/invite/fetchai) and team up with other developers to participate in hackathons, collectively build projects, or simply have fun!
 
 We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.
