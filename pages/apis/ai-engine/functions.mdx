@@ -34,6 +34,8 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
         DELETE /v1beta1/functions/:function_id/
 
+        PUT /v1beta1/functions/start-testing/:function_id/
+
         PUT /v1beta1/functions/submit-for-review/:function_id/
 
         PUT /v1beta1/functions/unpublish/:function_id/
@@ -348,6 +350,41 @@ properties={[
   pathParameters={{function_id:"your_function_id",}}
   responseDescription="Returns an empty JSON object."
 />
+
+## Start testing of a function
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="PUT"
+  path="/v1beta1/functions/start-testing/{function_id}/"
+  description="Start testing a specific function (identified by the function_id) of a user authenticated through JWT."
+  responses={
+    {
+        "uuid": "37da66a9-9649-4b7a-9112-f461a2bd923d",
+        "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
+        "name": "Stock price function",
+        "description": "Retrieves the stock price of a share.",
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
+        "modelName": "StockPrice/StocksProtocol",
+        "arguments": [
+            {
+                "name": "symbol",
+                "required": true,
+                "type": "string",
+                "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
+            }
+        ],
+        "type": "PRIMARY",
+        "createdAt": "2023-10-22T21:28:46",
+        "updatedAt": "2023-10-22T21:28:46",
+        "status": "TESTING"
+    }
+  }
+  pathParameters={{function_id:"your_function_id",}}
+  responseDescription="Returns the function object (identified by function_id) that we have just started to test."
+/>
+
 
 ## Submit a function for review
 
