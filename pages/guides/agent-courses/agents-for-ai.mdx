@@ -1,65 +1,62 @@
 import { Callout } from 'nextra/components'
 
 <Callout type="info" emoji="ℹ️">
-  This is a work in progress article, and will be expanded rapidly.
+This is a work in progress article and will be expanded rapidly.
 </Callout>
 
-
-# Agents 101, for AI-Engine 🤖
+# Agents 101 for AI Engine 🤖
 
 ## Overview
 
-Welcome to **Agents 101**! This course is designed to introduce you to the overall system of Fetch.ai, and show how to
-build agents to be accessible to the AI-Engine, and integrate with other projects. This course is a parallel track to
-[Agents 101](/guides/agent-courses/introductory-course).
+Welcome to **Agents for AI 101**! This course is designed to introduce you to the overall system of Fetch.ai, and shows how to
+build agents to be accessible to the AI Engine and integrate with other projects. This course is a parallel track to
+[Agents 101 🤖↗️](/guides/agent-courses/introductory-course) which instead focuses on Agents creation only.
 
 At any stage, if you encounter uncertainties or have questions about specific terms or topics throughout the course, our support team is (almost always) available on [Discord ↗️](https://discord.gg/fetchai) to assist you.
 
-
-## fetch.ai..
+## Quick overview of Fetch.ai
 
 Fetch.ai is developing a platform to help the development of an AI enabled decentralized digital economy. Agents are
 programs that can make choices on their own for individuals, companies, and devices. Agents are the actors, and the
-heart of Fetch.ai ecosystem.
+heart of Fetch.ai Ecosystem.
 
-For us, our key need to know terms are: Agents, Agentverse, AI Engine, and DeltaV.
+For us, our key need to know terms are: [Agents ↗️](/concepts/agents/agents), [Agentverse ↗️](/concepts/agent-services/agentverse-intro), [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), and [DeltaV ↗️](/concepts/ai-engine/deltav).
 
-## What is an agent, agentverse, ai-engine and deltav 😱!
+### What is an Agent, Agentverse, AI Engine and DeltaV 😱!
 
-Let's try and keep this really simple 🎉
+Let's try and keep this really simple 🎉:
 
- - agents - agents are programs that work as you instruct them, classicaly this would have been part of a multi agent system whereby agents have a task and communicate with other agents. In this vertical, agents are part of a multiagent system, but their primary use is to represent a service, function or data which can be accessed by deltaV.
+ - **Agents**: these are programs that work as you instruct them, classically this would have been part of a multi agent system whereby agents have a task and communicate with other agents. In this context, agents are part of a multi-agent system, but their primary use is to represent a service, a function or data which can be accessed by DeltaV.
 
- -  agentverse - agentverse is a managed hosting platform and entrypoint to AI-Engine for agents. You would register your agents on agentverse to be a service in the network.
+ - **Agentverse**: it is a managed hosting platform and entrypoint to AI Engine for Agents. You would register your Agents on Agentverse to be a service in the network.
 
- - AI-engine - The AI Engine is a system that combines Agents️ with human-readable text input to create a scalable AI infrastructure that supports Large Language Models (LLMs). Really, all this means is an AI system can convert human text into actionable (computer) commands.
+ - **AI Engine**: the AI Engine is a system that combines Agents with human-readable text input to create a scalable AI infrastructure that supports Large Language Models (LLMs). Really, all this means is an AI system can convert human text into actionable (computer) commands.
 
- - deltaV - deltav is an assistive chat interface to allow human input to interact with agents registered with deltaV.
+ - **DeltaV**: it is an assistive chat interface to allow human input to interact with agents registered through the Agentverse.
 
-alert! Agents are programs, services are the functions your agents offer.
+    <Callout type="warning" emoji="⚠️">
+       Agents are programs whereas services are the functions your agents offer.
+    </Callout>
 
-At the core of it all, AI-Engine indexes agents, and translates human input into tasks. This is a bit like a search
+At the core of it all, AI Engine indexes Agents, and translates human input into **tasks**. This is a bit like a search
 engine, but does more.
 
- ![AI Engine has an internal database hat creates understanding and links to existing services](../../../src/images/guides/101/ai-connects.jpg)
+![The AI Engine has an internal database hat creates understanding and links to existing services](../../../src/images/guides/101/ai-connects.jpg)
 
-AI-Engine allows for a term we call chaining, chaining is the idea that if you were to ask "Tell me about the animal
-Zebra" AI Engine would look for an agent that could give a summary, another agent could provide the information
-about a zebra. AI Engine understands that the Summary Agent requires text to parse and summarise, so AI Engine would
-contact Zebra Agent and get the information from Zebra Agent. With that information, AI Engine would call the Summary
-Agent with the Zebra Agent information so that the Summary agent will return the summarised text.
+The AI Engine allows for a term we call **chaining**. Chaining refers to the idea that if you were to ask "Tell me about the animal
+Zebra", then the AI Engine would look for an agent that could give you a summary as well as another agent that could provide the information about zebras. The AI Engine understands that the **Summary Agent** requires text to parse and summarise, so the AI Engine would contact the **Zebra Agent** and get the information from this latter one. With this information, the AI Engine would call the **Summary Agent** with the **Zebra Agent** information so that the former agent would return the summarised text.
 
 It kinda works like this:
 
 ![](../../../src/images/guides/101/chaining.jpg)
 
-What's happening here, is that when AI-Engine selects a response, the subtasks available to be called for that task
+What's happening here, is that when the AI Engine selects a response, the subtasks available to be called for that task
 are already known to it.
 
-Of course this could be more complicated, what if every sensor on a car was an agent, you could ask you car for
-diagnostics on a system, and each component in that system could independently give their status. AI Engine
+Of course this could be more complicated, what if every sensor on a car was an agent? You could ask your car for
+diagnostics on a system, and each component in that system could independently give their status. The AI Engine
 understands the schema of each Agent, so there would be little need for each component to be compatible in
-communication with eachother.
+communication with each other.
 
 ## Okay, so how does this all work?
 
@@ -67,56 +64,60 @@ Okay, bear with me. Some new terms.
 
 ![](../../../src/images/guides/system.svg)
 
-Two separate processes are happening. The first part of the sequence diagram registers two agents:
+Two separate processes are happening. The first part of the sequence diagram registers two Agents:
 
- 1. Firstly agents register to a smart contract, effectively paying to be discoverable.
- 2. Agents then regsiter as a service on Agentverse (you'd usually do this by hand)
+ 1. Firstly, agents register to a smart contract thus effectively paying to be discoverable.
+ 2. Agents then register as a service on Agentverse (you'd usually do this by hand).
 
-Great, agents are registered and discoverable.
+Great, Agents are registered and discoverable!
 
-The seoncd part of the diagram introuces the flow of AI-Engine. This shows the role of a user who has entered a
-search term into deltaV.
+The second part of the diagram introduces the flow of the AI Engine. This shows the role of a user who has entered a
+search term into DeltaV.
 
-1. Qustion comes in, and is sent to AI-Engine.
-2.  AI-Engine has an internal loop that updates services registered and indexed.
-3.  AI-Engine has another internal loop that is creating embeddings of these services.
-4. Upon receiving text,  AI-Engine understands and maps the text to Services.
-5.  AI-Engine requests addresses from Almanac to message these agnts.
-6.  AI-Engine sees that Agent (A) needs some text as part of it's servicse.
-7. AI Engine finds sub tasks which can provide the required data.
-8. Contacts sub task, and required data is returned.
-9. Data is passed to Agent (A) which returns summary of the data.
-10. repsonse returned to user on DeltaV.
+    1. Question comes in and it is sent to the AI Engine.
+    2. The AI Engine has an internal loop that updates services registered and indexed.
+    3. The AI Engine has another internal loop that is creating embeddings of these services.
+    4. Upon receiving text, the AI Engine understands and maps the text to Services.
+    5. The AI Engine requests addresses from [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) to message these Agents.
+    6. The AI Engine sees that Agent (A) needs some text as part of its services.
+    7. The AI Engine finds subtasks which can provide the required data.
+    8. Contacts subtask, and required data is returned.
+    9. Data is passed to Agent (A) which returns summary of the data.
+    10. The response is then returned to user on DeltaV.
 
-** tasks and subtasks are agent functions. In the context of Ai-Engine they're (sub)tasks, but you're developing
-agents.
+**tasks and subtasks are agent functions**. In the context of the AI Engine, these are (sub)tasks, but you're developing
+Agents.
 
+## Okay, let's build a couple of Agents!
 
-## Okay, let's build a couple of agents
+We've got a high level idea of how this works. Let's build this on Agentverse so that we can get this running on
+DeltaV and see the whole stack connected.
 
-We've got a high level idea of how this works, let's build this on agentverse so that we can get this running on
-deltaV and see the whole stack connected.
+If you've never installed anything for uAgent development, checkout these guides:
 
-If you've never installed anything for uAgent development, follow these instructions [setup the development environment](guides/agents/installing-uagent#development-tools) then this guide [to install uAgents locally](guides/agents/installing-uagent#install-with-pip)
+    - [setup the development environment](/guides/agents/installing-uagent#development-tools)
+    - [Install uAgents locally](/guides/agents/installing-uagent#install-with-pip)
 
+### Create your first agent: the HTML summariser
 
+We're going to run our agents locally, and set up a Mailbox on Agentverse.
 
-## Create your first agent, the html summariser
+    <Callout type="info" emoji="ℹ️">
+       Checkout the [Utilizing the Agentverse Mailroom service 📬 ↗️](/guides/agentverse/utilising-the-mailbox) for a better understanding of Agentverse Mailroom feature.
+    </Callout>
 
-We're going to run our agents locally, and set up a mailbox on agentverse. Our first agent takes some HTML and
-summarises the contents with Langchain and OpenAI.
+In this guide, our first agent takes some HTML and summarises the contents with **Langchain** and **OpenAI**.
 
-We need to create a Python file for this example. We can do this by running: `touch html_summary_agent.py`
+We need to create a Python file for this example.
+We can do this by running: `touch html_summary_agent.py`
 
-
-    ```py copy
+    ```py copy filename="html_summary_agent.py"
     from langchain.chains.summarize import load_summarize_chain
     from langchain_community.document_loaders import UnstructuredHTMLLoader
     from langchain_openai import ChatOpenAI
     from uagents import Agent, Context, Protocol, Model
     from ai_engine import UAgentResponse, UAgentResponseType
     import os
-
 
     class HTML(Model):
         text: str
@@ -135,7 +136,6 @@ We need to create a Python file for this example. We can do this by running: `to
 
     print(summaryAgent.address)
     print(OPENAI_API_KEY)
-
 
     @summary_protocol.on_message(model=HTML, replies={UAgentResponse})
     async def summarise(ctx: Context, sender: str, msg: HTML):
@@ -170,14 +170,13 @@ We need to create a Python file for this example. We can do this by running: `to
             UAgentResponse(message=(result["output_text"]), type=UAgentResponseType.FINAL),
         )
 
-
     summaryAgent.include(summary_protocol, publish_manifest=True)
     summaryAgent.run()
-
     ```
 
-Okay, we've got the whole code block above us. We're going to assume you know about python imports, if you don't
-[look here](). There's a lot of really cool, neat things you need to know...
+Okay, we've got the whole code block above for our first Agent. We're going to assume you know about Python imports on Agentverse; if you don't, please have a look at the [Agentverse: allowed imports ↗️](/guides/agentverse/allowed-imports) guide for clarity around the imports currently available within the Agentverse.
+
+There are a lot of really cool, neat things you need to know from code above. Let's explore it:
 
     ```py copy
     class HTML(Model):
@@ -196,23 +195,46 @@ Okay, we've got the whole code block above us. We're going to assume you know ab
         summary_protocol = Protocol("Text Summariser")
     ```
 
-The `class HTML` defines the structure of the message the agent expects to receive. In this case, each message
-should have `.text` var.
+    - The `class HTML` defines the structure of the message the agent expects to receive. In this case, each message
+    should have `text` variable
 
-`SEED_PHRASE` is our agents unique seed. `AGENT_MAILBOX_KEY` mailbox key is our id of our mailbox hosted on
-agentverse. `OPENAI_API_KEY` is our api key to open ai's api.
+    - `SEED_PHRASE` is our agents unique seed.
 
-Then we initialise the agent, and define the protocol. To read more about the Agent object please checkout [the
-reference docs](../../references/uagents/uagents-api/agent#agent-objects)
+    - `AGENT_MAILBOX_KEY` mailbox key is our ID of our mailbox hosted on Agentverse.
 
+    - `OPENAI_API_KEY` is our API key to OpenAI's APIs.
 
-Then we have our on_message handler.
+We can now initialise the Agent and define the [Protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). To read more about **Agent objects**, please checkout [the reference docs](/references/uagents/uagents-api/agent#agent-objects)
+
+Then, we have the **on_message()** handler.
+
     ```py copy
+    @summary_protocol.on_message(model=HTML, replies={UAgentResponse})
+    async def summarise(ctx: Context, sender: str, msg: HTML):
+        with open("./temp.html", "w", encoding="utf-8") as f:
+            f.write(msg.text)
 
-        @summary_protocol.on_message(model=HTML, replies={UAgentResponse})
-        async def summarise(ctx: Context, sender: str, msg: HTML):
+        # Step 1: Initialize WebBaseLoader with the given URL
+        loader = UnstructuredHTMLLoader("./temp.html")
 
-        ... langchain stuff ...
+        # Step 2: Load the document
+        docs = loader.load()
+
+        # Step 3: Load summarization chain
+        llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, temperature=0, model_name="gpt-3.5-turbo-1106")
+        chain = load_summarize_chain(llm, chain_type="stuff")
+
+        # Step 4: Run the summarization chain on the loaded document
+        summarized_content = chain.invoke(docs)
+        summarized = summarized_content["input_documents"][0].to_json()
+
+        # Step 5: Define the needed dependencies
+        dependencies = {
+            "langchain": ">=1.0.0",
+            "langchain_community": ">=1.0.0",
+            "langchain_openai": ">=1.0.0"
+        }
+
         result = chain.invoke(docs)
 
         await ctx.send(
@@ -220,69 +242,67 @@ Then we have our on_message handler.
             UAgentResponse(message=(result["output_text"]), type=UAgentResponseType.FINAL),
         )
 
-
-        summaryAgent.include(summary_protocol, publish_manifest=True)
-        summaryAgent.run()
     ```
 
- We  need a way for our agent to receive messages. We do this by creating a function for our agent to handle all
- incoming messages from other agents. We use `on_message()` decorator that activates the summarise() function once
- our agent receives a message matching the Message HTML model we previously defined.
+We  need a way for our Agent to receive messages. We do this by creating a function for our agent to handle all
+ incoming messages from other Agents. We use `on_message()` decorator which activates the `summarise()` function once
+ our Agent receives a message matching the `HTML` Message data Model we previously defined.
 
-We finally run the agent at the bottom of the script:
+We can finally run the Agent at the bottom of the script:
 
     ```py
-
-        summaryAgent.include(summary_protocol, publish_manifest=True)
-        summaryAgent.run()
+    summaryAgent.include(summary_protocol, publish_manifest=True)
+    summaryAgent.run()
     ```
 
-Including protocol into the agent effectively allows other agents to know how this agent expects communication.
+Including the protocol into the Agent effectively allows other Agents to know how this Agent expects communication.
 
 You can run this with `poetry run python html_summary_agent.py`.
 
-You'll see something like `agent1qtc5m8xudkm6gjv98k3kxl3ydzhkhzsfx6pgla0mzlgsawlqkzkvcjh5en2` in the terminal. Let's
-use this to create a mailbox.
+You'll see something like `agent1qtc5m8xudkm6gjv98k3kxl3ydzhkhzsfx6pgla0mzlgsawlqkzkvcjh5en2` in the terminal.
 
-### Creating a mailbox for summary agent...
+Let's use this address to create a **Mailbox** on the Agentverse.
 
-Let's go to [agentverse.ai](https://agentverse.ai/mailroom) and create a mailbox.
+### Creating a Mailbox for Summary Agent
 
-Add a name:
+Let's go to [agentverse.ai](https://agentverse.ai/mailroom) and create a Mailbox.
+
+Add a **name**:
 
 ![](../../../src/images/guides/101/create_mailbox.png)
 
-Let's paste in your agents address that we printed to screen:
+Let's paste in the Agent's address we printed before to screen:
 
 ![](../../../src/images/guides/101/create_mailbox_address.png)
 
-Then, let's copy our new mailbox API key.
+Then, let's copy the new **Mailbox API Key**.
 
 ![](../../../src/images/guides/101/create_mailbox_get_key.png)
 
+Update the `AGENT_MAILBOX_KEY = "AGENT_MAILBOX_KEY"` inline.
 
+Now, you can restart your agent and it will be registered to the Mailbox.
 
-Update the `AGENT_MAILBOX_KEY = "AGENT_MAILBOX_KEY"` inline. Now you can restart your agent and it will be
-registered to the mailbox. Your terminal output will looking simialr to:
+Your terminal output will looking similar to the following:
 
-```
-Poetry run python summary.py
-agent1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX4
-INFO:     [SummaryAgent]: Manifest published successfully: Text Summariser
-INFO:     [SummaryAgent]: Almanac registration is up to date!
-INFO:     [SummaryAgent]: Connecting to mailbox server at agentverse.ai
-INFO:     [SummaryAgent]: Mailbox access token acquired
-```
+    ```
+    Poetry run python html_summary_agent.py
+    agent1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX4
+    INFO:     [SummaryAgent]: Manifest published successfully: Text Summariser
+    INFO:     [SummaryAgent]: Almanac registration is up to date!
+    INFO:     [SummaryAgent]: Connecting to mailbox server at agentverse.ai
+    INFO:     [SummaryAgent]: Mailbox access token acquired
+    ```
 
 Okay, take a quick break then let's create the second agent ☕.
 
-## Create the HTML downloading agent.
+### Create the HTML downloading Agent
 
-The next agent in the chain is the HTML downloading agent. This one has the same structure as the summary agent.
+The next agent in the chain is the **HTML downloading agent**. Let's name the script `web_download_agent.py`. This Agents has the same structure as the summary agent we previously defined.
 
 Let's take a look.
 
-    ```py copy
+    ```py copy filename="web_download_agent.py"
         from uagents import Agent, Context, Protocol, Model
         from ai_engine import UAgentResponse, UAgentResponseType
         import requests
@@ -317,34 +337,37 @@ Let's take a look.
         textAgent.run()
     ```
 
-This agent is simple again, hopefully you're seeing a pattern here. These agents are part of a chain, a chain of
-two. They're agents that really are functions, each agent on message returns an explicit response. _See [Agents
-communicating]() to see how agents work without the AI-Engine._ The key difference in web_download_agent.py is that
-this agent calls another function, the logic itself is different in that the purpose is to call a webpage and return
-it's content; and of course the Model is different.
+This Agent is simple again, hopefully you're seeing a pattern here. These Agents are part of a chain, a chain of
+two. They're Agents that really are functions; each agent on message returns an explicit response.
 
-Let's run this one too, again follow the steps for the previous agent and go and register a mailbox and update this
-agent with the new mailbox. Each agent much have a unique mailbox.
+    <Callout type="info" emoji="ℹ️">
+       Checkout the [Communicating with other agents 📱🤖](/guides/agents/communicating-with-other-agents) guide to check how agents communication work without the AI Engine.
+    </Callout>
 
+The key difference in `web_download_agent.py` is that this agent calls another function, the logic itself is different in that the purpose is to call a webpage and return its content; and of course the `Model` is different.
 
+Let's run this one too. Again, follow the steps for the previous Agent and go and register a Mailbox and update this
+agent with the new Mailbox. Each agent much have a unique Mailbox.
 
 ## Let's go create some services; err, what's a service?
 
-A service is ...
+A **Service** refers to an Agent enrolled within the Agentverse (thus, on the Fetch Network), and made discoverable by other agents and users for interaction. For instance, s service could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Services are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
 
-You create one by...
+It is possible for you to create an Agent Service by first developing an Agent embodying the service you intend to offer and making sure your agent is up and runs smoothly. You will then need to upload its protocols and manifests to the Almanac contract by running the agent; this step integrates your agent into the Fetch network, enabling it to be discovered by other agents. After successful uploading, you can register your agent as a service on the Agentverse platform using the available dedicated section. During registration, you'll need to provide comprehensive information about your service, including its title, description, group, protocols, models, and field descriptions. Here you will also have to classify your service as a **task** or a **subtask**:
 
-This is the service for the SummaryAgent.
+    - **Tasks** define the primary goals or functionalities that users expect agents to perform. Tasks can widely vary ranging from retrieving specific information to performing actions on behalf of the user. For instance, a task could be "Retrieve News Headlines," "Book a Flight," or "Schedule a Meeting."
+
+    - **Subtasks** handle specific aspects of the task and often require additional context or information to execute effectively. For instance, if the task is "Retrieve News Headlines" then the subtasks could be "Fetch Business News," "Retrieve Technology News," or "Get News from USA". Subtasks break down larger tasks into smaller, more manageable steps, allowing to efficiently execute the desired functionalities.
+
+It is at this point that you have the option to organize your services into customised **Service Groups** which act as convenient bundles, thus making it easier for the AI Engine to categorise and understand the services available within the Agentverse. To guarantee the correct functioning of the AI Engine and ensuring it will pick the correct Agents for execution, **you need to provide a detailed description for the service you are registering**. This is super important given that the AI Engine would rely on these descriptions to accurately comprehend the functionality of the services being registered. Therefore, it's crucial to provide clear and comprehensive descriptions!
+
+The following is the service for the **SummaryAgent**:
 
 ![](../../../src/images/guides/101/summary_service.png)
 
-discuss importance of Field descriptions.
-
-
-
 ## Let's go to DeltaV!
 
-DeltaV is a chat interface to communicate with agents with natural language ...
+**DeltaV** serves as an AI-based chat acting as a front-end interface for users to engage with the AI Engine using natural language queries. Users' queries are interpreted by the underlying AI Engine which elaborates them and execute tasks accordingly to guarantee the best service execution to users. Developers can integrate their Agent services with Large Language Models (LLMs), Machine Learning (ML) models or APIs and make them accessible via DeltaV.
 
 ![](../../../src/images/guides/101/start.png)
 
@@ -352,9 +375,10 @@ DeltaV is a chat interface to communicate with agents with natural language ...
 
 ![](../../../src/images/guides/101/full.png)
 
+## Conclusions
 
+The **Agents for AI 101** guide serves as a comprehensive guide to understand how **Agents**, **Agentverse**, **AI Engine**, and **DeltaV** work together to enable interactions between users and agent services. The aim of this guide is to help you in creating Agent Services in a matter of few steps but also registering and making them available via DeltaV with ease!
 
-## closing comments
+It's time to put your newfound skills to work and create your first Agent Service. We invite you to delve deeper into the world of Agents, Agentverse and AI Engine by exploring the dedicated documentation and [GitHub ↗️](https://github.com/fetchai/) repository. Join our [Discord ↗️](https://discord.com/invite/fetchai) and team up with other developers to participate in hackathons, collectively build projects, or simply have fun!
 
-...
-
+We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.
