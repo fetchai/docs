@@ -47,7 +47,7 @@ const AccountMenu: FC<AccountMenuProps> = ({ email, logo, signOut }) => {
           <div>
             <div
               className="nx-px-4 nx-pt-3 nx-text-sm nx-justify-center nx-cursor-pointer nx-pb-4 nx-rounded-b-lg nx-flex"
-              id="headlessui-menu-item-:r8:"
+              id="sign_out"
               role="menuitem"
               data-headlessui-state=""
               onClick={signOut}
