@@ -15,6 +15,7 @@ import { remark } from "remark";
 import remarkHTML from "remark-html";
 import React from "react";
 import type { Item as NormalItem } from "nextra/normalize-pages";
+import { useUserContext } from "theme/fetch-ai-docs/contexts/context-provider";
 import { Input } from "./input";
 
 type MyItem = NormalItem & {
@@ -26,7 +27,6 @@ const searchClient = algoliasearch(
   "J27DIPDG4S",
   "601cad4cf7041d99c1bdf42f4d4843d6",
 );
-const indexName = "14-3-24-index";
 
 // Function to convert Markdown to HTML
 const markdownToHTML = (markdownString) => {
@@ -45,6 +45,11 @@ export const InstantAlgoliaSearch = ({
 
   const inputId = "search-input"; // Unique ID for the input
 
+  const context = useUserContext();
+
+  const indexName = context?.isLoggedIn
+    ? "full-data-11-4-24-index"
+    : "14-3-24-index";
   // Close dropdown on outside click
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
