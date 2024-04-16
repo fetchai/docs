@@ -2,56 +2,56 @@
 
 ## Introduction
 
-`on_query` decorator in uagents is used to register a function as a handler for incoming queries that match a specified model.
+`on_query` decorator in `uagents` is used to register a function as a handler for incoming queries that match a specified model.
 These decorators enable the agent to respond to queries in an event-driven manner.
 
-## Walk - through
+## Walk-through
 
-1. First of all naviage to directory where you want to make your project.
-2. Create a python script name `on_query.py` using `touch on_query.py`.
-3. We need to import `json, asyncio, uagent's model and query`. Then we would need to define the query format using the QueryRequest class as a subclass of Model:
+1. First of all navigate to directory where you want to create your project.
+2. Create a Python script name `on_query.py` by running `touch on_query.py`.
+3. We need to import `json`, `asyncio`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `QueryRequest` class as a subclass of `Model`:
 
-```python
-# import required libraries
-import json
-import asyncio
-from uagents import Model
-from uagents.query import query
+    ```python
+    # import required libraries
+    import json
+    import asyncio
+    from uagents import Model
+    from uagents.query import query
 
-# Add your agent's address
-AGENT_ADDRESS = "Agent Address"
+    # Add your agent's address
+    AGENT_ADDRESS = "Agent Address"
 
-class QueryRequest(Model):
-    query: str
-```
+    class QueryRequest(Model):
+        query: str
+    ```
 
-4. Create `agent_query` function to send query to agent and decode the response recieved.
+4. Create `agent_query` function to send query to agent and decode the response received.
 
-```python
-async def agent_query(req):
-    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
-    data = json.loads(response.decode_payload())
-    return data["text"]
-```
+    ```python
+    async def agent_query(req):
+        response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
+        data = json.loads(response.decode_payload())
+        return data["text"]
+    ```
 
 5. Create `make_agent_call` function to handle query responses by the agent.
 
-```python
-async def make_agent_call(req: QueryRequest):
-    try:
-        response = await agent_query(req)
-        return f"successful call - agent response: {response}"
-    except Exception:
-        return "unsuccessful agent call"
-```
+    ```python
+    async def make_agent_call(req: QueryRequest):
+        try:
+            response = await agent_query(req)
+            return f"successful call - agent response: {response}"
+        except Exception:
+            return "unsuccessful agent call"
+    ```
 
-6. Finally, to run the script and send a query to the agent, initialize a QueryRequest object with your query message, then call make_agent_call within an asyncio event loop. This will send the query to the specified agent address and print the response, indicating whether the call was successful or not. This completes the setup for using the on_query decorator in a uAgents project to handle incoming queries.
+6. Finally, to run the script and send a query to the agent, initialize a `QueryRequest` object with your query message, then call `make_agent_call` within an asyncio event loop. This will send the query to the specified agent address and print the response, indicating whether the call was successful or not. This completes the setup for using the `on_query` decorator in a uAgents project to handle incoming queries.
 
-```python
-if __name__ == "__main__":
-    request = QueryRequest(message="Your query here")
-    print(asyncio.run(make_agent_call(request))).
-```
+    ```python
+    if __name__ == "__main__":
+        request = QueryRequest(message="Your query here")
+        print(asyncio.run(make_agent_call(request))).
+    ```
 
 ## On_query Script
 
@@ -61,20 +61,20 @@ import json
 import asyncio
 from uagents import Model
 from uagents.query import query
- 
+
 # Define the agent's address to send queries to.
 AGENT_ADDRESS = "Agent Address"
- 
+
 # Define a model for the query request.
 class QueryRequest(Model):
-    query: str  
- 
+    query: str
+
 # Asynchronous function to send a query to the specified agent.
 async def agent_query(req):
     response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
     data = json.loads(response.decode_payload())# Decode the payload from the response and load it as JSON.
     return data["text"]
- 
+
 # Asynchronous function to make a call to an agent and handle the response.
 async def make_agent_call(req: QueryRequest):
     try:
@@ -82,7 +82,7 @@ async def make_agent_call(req: QueryRequest):
         return f"successful call - agent response: {response}"
     except Exception:
         return "unsuccessful agent call"
- 
+
 # Main block to execute the script.
 if __name__ == "__main__":
     # Create a QueryRequest instance with your query and run make_agent_call with request.
@@ -91,9 +91,9 @@ if __name__ == "__main__":
 
 ```
 
-## Agent's Script.
+## Agent's script
 
-For the agent section, the script sets up a uAgents-based agent to handle incoming queries. It defines two models: `QueryRequest` for incoming queries and `Response` for replies. Upon startup, it logs the agent's details. The core functionality lies in the `query_handler`, decorated with @QueryAgent.on_query, which processes received queries and sends back a predefined response. This demonstrates creating responsive agents within the uAgents framework, showcasing how they can interact with other agents or services in an asynchronous, event-driven architecture.
+For the agent section, the script sets up a uAgents-based agent to handle incoming queries. It defines two models: `QueryRequest` for incoming queries and `Response` for replies. Upon startup, it logs the agent's details. The core functionality lies in the `query_handler`, decorated with` @QueryAgent.on_query`, which processes received queries and sends back a predefined response. This demonstrates creating responsive agents within the `uagents` Framework, showcasing how they can interact with other agents or services in an asynchronous, event-driven architecture.
 
 ```py copy filename="agent.py"
 from uagents import Agent, Context, Model
@@ -137,15 +137,17 @@ if __name__ == "__main__":
 ## Expected Output
 
 - Agent.py
-```
-INFO:     [Query Agent]: Almanac registration is up to date!
-INFO:     [Query Agent]: Starting up Query Agent
-INFO:     [Query Agent]: With address: agent1qgfytc9e7ketwqc06xndvjmznqgr3md8w43hzxdv2hasp25ya43j2mnd32e
-INFO:     [Query Agent]: And wallet address: fetch1qlq2nnegdj3axk7ms3qgrez7l6032s2k9s7704
-INFO:     [Query Agent]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
-INFO:     [Query Agent]: Query received
-```
+
+    ```
+    INFO:     [Query Agent]: Almanac registration is up to date!
+    INFO:     [Query Agent]: Starting up Query Agent
+    INFO:     [Query Agent]: With address: agent1qgfytc9e7ketwqc06xndvjmznqgr3md8w43hzxdv2hasp25ya43j2mnd32e
+    INFO:     [Query Agent]: And wallet address: fetch1qlq2nnegdj3axk7ms3qgrez7l6032s2k9s7704
+    INFO:     [Query Agent]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [Query Agent]: Query received
+    ```
 - on_query.py
-```
-successful call - agent response: success
-```
+
+    ```
+    successful call - agent response: success
+    ```
