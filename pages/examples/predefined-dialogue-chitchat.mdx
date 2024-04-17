@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 
-# Predefined Dialogue Chit-chat
+# Predefined Dialogue Chit-Chat
 
 ## Overview
 
@@ -21,7 +21,7 @@ This example illustrates an automated dialogue scenario using a hardcoded dialog
 
 `hardcoded_chitchat.py` sets up a structured dialogue system with predefined responses. This system includes nodes representing different states of the dialogue and edges defining possible transitions between these states.
 
-    - Open terminal and create directory using `mkdir Dialogues` and run `cd Dialogues`.
+    - Open a terminal and create a directory using `mkdir Dialogues` and navigate into it with `cd Dialogues`.
     - Create a python file `hardcoded_chitchat.py` using `touch chitchat.py` in Dialogues directory.
     - Import Required libraries
 
@@ -221,9 +221,13 @@ These two agents use the hardcoded_chitchat dialogue system to automate the inte
 ```python copy filename="agent1.py"
 # Import required libraries
 import json
-from dialogues.hardcoded_chitchat import (ChitChatDialogue,ChitChatDialogueMessage,ConcludeChitChatDialogue)
+
 from uagents import Agent
 from uagents.context import Context
+
+from dialogues.hardcoded_chitchat import (ChitChatDialogue,
+                                          ChitChatDialogueMessage,
+                                          ConcludeChitChatDialogue)
 
 CHAT_AGENT_ADDRESS = "<your_agent_2_address>"
 
@@ -245,6 +249,7 @@ print("Dialogue overview:")
 print(json.dumps(chitchat_dialogue.get_overview(), indent=4))
 print("---")
 
+
 # This is the only decorator that is needed to add to your agent with the
 # hardcoded dialogue example. If you omit this decorator, the dialogue will
 # emit a warning.
@@ -262,11 +267,13 @@ async def continue_chitchat(
     except EOFError:
         await ctx.send(sender, ConcludeChitChatDialogue())
 
-agent.include(chitchat_dialogue) # Including dialogue in agent
+
+agent.include(chitchat_dialogue)  # Including dialogue in agent
 
 if __name__ == "__main__":
     print(f"Agent address: {agent.address}")
-    agent.run() # Running agent
+    agent.run()  # Running agent
+
 ```
 
     - Setting Up agent2
@@ -280,12 +287,11 @@ if __name__ == "__main__":
 
 from asyncio import sleep
 
-from dialogues.hardcoded_chitchat import (
-    ChitChatDialogue,
-    ChitChatDialogueMessage,
-    InitiateChitChatDialogue,
-)
 from uagents import Agent, Context
+
+from dialogues.hardcoded_chitchat import (ChitChatDialogue,
+                                          ChitChatDialogueMessage,
+                                          InitiateChitChatDialogue)
 
 CHIT_AGENT_ADDRESS = "<your_agent_1_address>"
 
@@ -313,11 +319,13 @@ async def continue_chitchat(
     ctx.logger.info(f"Returning: {msg.text}")
     await ctx.send(sender, ChitChatDialogueMessage(text=msg.text))
 
+
 # initiate dialogue after 5 seconds
 @agent.on_event("startup")
 async def start_cycle(ctx: Context):
     await sleep(5)
     await ctx.send(CHIT_AGENT_ADDRESS, InitiateChitChatDialogue())
+
 
 agent.include(chitchat_dialogue)
 

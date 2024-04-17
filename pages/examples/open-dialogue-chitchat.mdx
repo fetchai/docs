@@ -192,8 +192,10 @@ The contents of this script are to be shared between the agents that want to use
 ```python copy filename="agent1.py"
 # Import required libraries
 import json
-from dialogues.chitchat import ChitChatDialogue
+
 from uagents import Agent, Context, Model
+
+from dialogues.chitchat import ChitChatDialogue
 
 CHAT_AGENT_ADDRESS = "<your_agent_2_address>"
 
@@ -201,24 +203,30 @@ agent = Agent(
     name="chit_agent",
     seed="<random_string_of_choice>",
     port=8001,
-    endpoint="http://127.0.0.1:8001/submit"
+    endpoint="http://127.0.0.1:8001/submit",
 )
+
 
 # define dialogue messages; each transition needs a separate message
 class InitiateChitChatDialogue(Model):
     pass
 
+
 class AcceptChitChatDialogue(Model):
     pass
+
 
 class ChitChatDialogueMessage(Model):
     text: str
 
+
 class ConcludeChitChatDialogue(Model):
     pass
 
+
 class RejectChitChatDialogue(Model):
     pass
+
 
 # instantiate the dialogues
 chitchat_dialogue = ChitChatDialogue(
@@ -231,6 +239,7 @@ print("Dialogue overview:")
 print(json.dumps(chitchat_dialogue.get_overview(), indent=4))
 print("---")
 
+
 @chitchat_dialogue.on_initiate_session(InitiateChitChatDialogue)
 async def start_chitchat(
     ctx: Context,
@@ -240,6 +249,7 @@ async def start_chitchat(
     ctx.logger.info(f"Received init message from {sender}")
     # do something when the dialogue is initiated
     await ctx.send(sender, AcceptChitChatDialogue())
+
 
 @chitchat_dialogue.on_start_dialogue(AcceptChitChatDialogue)
 async def accept_chitchat(
@@ -253,6 +263,7 @@ async def accept_chitchat(
     # do something after the dialogue is started; e.g. send a message
     await ctx.send(sender, ChitChatDialogueMessage(text="Hello!"))
 
+
 @chitchat_dialogue.on_reject_session(RejectChitChatDialogue)
 async def reject_chitchat(
     ctx: Context,
@@ -261,6 +272,7 @@ async def reject_chitchat(
 ):
     # do something when the dialogue is rejected and nothing has been sent yet
     ctx.logger.info(f"Received reject message from: {sender}")
+
 
 @chitchat_dialogue.on_continue_dialogue(ChitChatDialogueMessage)
 async def continue_chitchat(
@@ -272,14 +284,17 @@ async def continue_chitchat(
     ctx.logger.info(f"Received message: {msg.text}")
     try:
         my_msg = input("Please enter your message:\n> ")
-        if my_msg != 'exit':
+        if my_msg != "exit":
             await ctx.send(sender, ChitChatDialogueMessage(text=my_msg))
         else:
             await ctx.send(sender, ConcludeChitChatDialogue())
-            ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
+            ctx.logger.info(
+                f"Received conclude message from: {sender}; accessing history:"
+            )
             ctx.logger.info(ctx.dialogue)
     except EOFError:
         await ctx.send(sender, ConcludeChitChatDialogue())
+
 
 @chitchat_dialogue.on_end_session(ConcludeChitChatDialogue)
 async def conclude_chitchat(
@@ -290,6 +305,7 @@ async def conclude_chitchat(
     # do something when the dialogue is concluded after messages have been exchanged
     ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
     ctx.logger.info(ctx.dialogue)
+
 
 agent.include(chitchat_dialogue)
 
@@ -305,8 +321,9 @@ if __name__ == "__main__":
 
 from asyncio import sleep
 
-from dialogues.chitchat import ChitChatDialogue
 from uagents import Agent, Context, Model
+
+from dialogues.chitchat import ChitChatDialogue
 
 CHIT_AGENT_ADDRESS = "<your_agent_1_address>"
 
@@ -314,27 +331,37 @@ agent = Agent(
     name="chat_agent",
     seed="<random_string_of_choice>",
     port=8002,
-    endpoint="http://127.0.0.1:8002/submit"
+    endpoint="http://127.0.0.1:8002/submit",
 )
 
 
 # define dialogue messages; each transition needs a separate message
 class InitiateChitChatDialogue(Model):
     pass
+
+
 class AcceptChitChatDialogue(Model):
     pass
+
+
 class ChitChatDialogueMessage(Model):
     text: str
+
+
 class ConcludeChitChatDialogue(Model):
     pass
+
+
 class RejectChitChatDialogue(Model):
     pass
+
 
 # instantiate the dialogues
 chitchat_dialogue = ChitChatDialogue(
     version="0.1",
     agent_address=agent.address,
 )
+
 
 @chitchat_dialogue.on_initiate_session(InitiateChitChatDialogue)
 async def start_chitchat(
@@ -345,6 +372,7 @@ async def start_chitchat(
     ctx.logger.info(f"Received init message from {sender}")
     # do something when the dialogue is initiated
     await ctx.send(sender, AcceptChitChatDialogue())
+
 
 @chitchat_dialogue.on_start_dialogue(AcceptChitChatDialogue)
 async def accept_chitchat(
@@ -358,6 +386,7 @@ async def accept_chitchat(
     # do something after the dialogue is started; e.g. send a message
     await ctx.send(sender, ChitChatDialogueMessage(text="Hello!"))
 
+
 @chitchat_dialogue.on_reject_session(RejectChitChatDialogue)
 async def reject_chitchat(
     ctx: Context,
@@ -366,6 +395,7 @@ async def reject_chitchat(
 ):
     # do something when the dialogue is rejected and nothing has been sent yet
     ctx.logger.info(f"Received reject message from: {sender}")
+
 
 @chitchat_dialogue.on_continue_dialogue(ChitChatDialogueMessage)
 async def continue_chitchat(
@@ -376,14 +406,17 @@ async def continue_chitchat(
     ctx.logger.info(f"Received message: {msg.text}")
     try:
         my_msg = input("Please enter your message:\n> ")
-        if my_msg != 'exit':
+        if my_msg != "exit":
             await ctx.send(sender, ChitChatDialogueMessage(text=my_msg))
         else:
             await ctx.send(sender, ConcludeChitChatDialogue())
-            ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
+            ctx.logger.info(
+                f"Received conclude message from: {sender}; accessing history:"
+            )
             ctx.logger.info(ctx.dialogue)
     except EOFError:
         await ctx.send(sender, ConcludeChitChatDialogue())
+
 
 @chitchat_dialogue.on_end_session(ConcludeChitChatDialogue)
 async def conclude_chitchat(
@@ -395,7 +428,9 @@ async def conclude_chitchat(
     ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
     ctx.logger.info(ctx.dialogue)
 
+
 agent.include(chitchat_dialogue)
+
 
 # initiate dialogue by sending message to agent1
 @agent.on_event("startup")
@@ -403,6 +438,7 @@ async def start_cycle(ctx: Context):
     await sleep(5)
     # use 'chitchat_dialogue.set_custom_session_id()' to set a custom session id (UUID4)
     await ctx.send(CHIT_AGENT_ADDRESS, InitiateChitChatDialogue())
+
 
 if __name__ == "__main__":
     print(f"Agent address: {agent.address}")
