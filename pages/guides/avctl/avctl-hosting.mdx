@@ -10,43 +10,121 @@ Before starting actions related to agents make a directory using `mkdir myagent`
 
 1. `avctl hosting init` - Initialize agent template.
 
-![](../../../src/images/guides/avctl/avctl-hosting-1.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting init
+Template agent files created successfully!
+
+Initialized empty Git repository in the current directory
+Poetry setup created successfully
+```
 
 2. `avctl hosting get agents` - Get all agents for the user.
 
-![](../../../src/images/guides/avctl/avctl-hosting-2.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting get agents
+NAME                                 ADDRESS                                                            COMPILED  DOMAIN  REVISION  RUNNING  WALLET ADDRESS
+City Finder                          agent1qwqhcu7rtd6mdlypvqxaextdmxdz3ncfxqgdxqms69dxcelyudc5xmkg9g2  true              14        true     fetch1f7awhjd74yupx4cqsvpumpd43x6n95c5kgs0mu
+URL content summariser               agent1q2na9h2vlgpyzhu9qqxh8v9dnswlqlcgx3d8vrqsknevyskcvv44xc9cxm7  true              2         true     fetch16ej3vz7jc0q078qwgy6ncquc0hpdqv2hqu9m5j
+Generate Keyword news                agent1qdmgz2pmshqp6wawkg787h0ce8sq3quvfge988hrx6etnrqu3x3dv5gpllf  true              17        true     fetch1lud6v6jvqln68c4k8tncte57ymnn0mxaqmen36
+Real estate url agent                agent1qt5xv5v3dxneawgpntktgj7tnu7wuyll36yj8rrpv34ajzjcllawy7dfgkq  true              4         true     fetch1zprev7y00gtup22f9ap36de8ueed50fansm7x0
+Rental Real Estate Request           agent1qvnwg6k5px8979zgehc3ltmrm24zep70awmapnr4hskhj4fe2dhfsgyv9ks  true              3         true     fetch1nemzs9ajruggn79ru4yc7k7xvgnxvq6ex8a6sw
+Selling Real estate agent            agent1qdja4crr40xez7fp5xjupt36h24mzjddrmz6a9cnhw6kcg3yvfe2xg3028q  true              1         true     fetch1naqy9wpj5pj7ccrrw087u9z8c3nffcjqg8gjs2
+Real Estate Agent                    agent1qvj8slpmxxku82ldqcnqjnefz7kjnlf20a7mhu30f9u3qxz4zuwz2qps5jx  true              2         true     fetch1zrdrcmwd3xlvyeuv36my39890gaqmxkyvcnyq9
+Google Tools agent                   agent1qgznw5uahvs5t3uglalkw3s57506u8ccue4x3hhwnj97e8mdqy39usczzke  true              5         true     fetch1t53g4g7dlsu0j4p37sm6e54jwj957jd9dak8cq
+Get News Agent                       agent1qfxzjm2pkh7vhg8e5tuhnp870rm9ns2j2t56zxn45njrx36tdq2p57z37tp  true              15        true     fetch128hd9n5ccxqjxr2lhszuh0369lcrjyxx4puzj6
+news agents url                      agent1qvwn27zs3jeqg2gpeffy397eavgzf9vaq8887pkw0jthxtx8grlr2x2qtte  true              10        true     fetch1mzapqhrp408dmag0ma52auxdn6d236f864wywh
+Generate Regional News               agent1qt9v2jxml6qa9pvy3pkwnvx732r0uhlvg5xnvv99sxe55c4cg6ljka79tlq  true              15        true     fetch163apwhpyq4zhcrew5q50chsnfsl9ym4wsw9zg9
+Generate Categorical News            agent1qdqskwzhwmnmq2ucvvwpes2lzeycsu9akk36e4qwkh9pthaxy4a7ch2gs4f  true              24        true     fetch1ls72lwxxg8ex96vq43u8xkuyjg3sf90vhwp97p
+News Reading System                  agent1q0fymt5r93x73q4hrlgalmc24286vtsg9dkfc5gjjhzxulcew9x0xjmdktq  true              7         true     fetch1xdv78gw6k2dlxpvn2hfztvam86pvyn28hmzyjv
+Business Details Agent               agent1q0ef6etsqysln3hklpvf30s236tfhj52anxdzpph6mwf22j0n4m2qes5wuq  true              12        true     fetch194lthr4838wj8842xun6l6jrpxn6xwmw4vrx0r
+Bussiness Finder Agent               agent1q06rm933xk6axm4ela5w49q8k7tnawx27ey9cf9pewr90ftmplhu272faut  true              20        true     fetch18gg2earcxmjnkehwzdmf8s66t9cjhu5ryeux58
+Location Coordinates Agent           agent1q0r3vu8j3yl87dstkltaepdnp679dvanmzx0kz7d079c7lrdpdt87d0u40g  true              8         true     fetch1hywj74qnzym2y35g7sw45xe20259eu534jvsqs
+Model List Agent                     agent1qdvh30v87hthrypfu0awg4asghgwe3mmqkj4lm7cwqsqjd8ctnpc7jusnjl  true              18        true     fetch1v2yfc7r5xy5gd34dr4jud93xvn8fvz6awwx2dn
+Hugging Face System                  agent1qvkcc2qz9kkj9gwcrr6uvjc8xkwa39k72sy9q6ephzev43gaacsujkal05r  true              5         true     fetch19rd9fwa9p03ffpp8d5faxm7w8csk9nxzadrxlj
+Hugging Face Request                 agent1qvqknalfj906fglqq5u5un79hqfl626tjgtjrs37684wyk3ffn9pzlmzfg0  true              11        true     fetch1rer6ajxc7u0ucu00hnzlfrha5hsapaevxf3294
+Question Answer Agent                agent1qtm875x54vel62kysn9cj0chn2hypmalk7t3txljg7p5uxjce59v5wtzj24  true              8         true     fetch1876smsl5gmx5zaggx6nm8vtqfxasquy3anqnu4
+grammar Agent                        agent1qwdsa9pp9s2xn7je5p7n62x8ywew03cze9hk8gglzt6pvayzjttwwtrrvx0  true              8         true     fetch1e4uy235hxc9dpd68alkpm2az7yz43s49rjtvah
+Stock Price Agent                    agent1qfrw2h3ejrqczhu9y7z8pw7agjwqsfg73ws2zflal0cjzewcl55ex4xv3ge  true              7         true     fetch1ca0vv9yqccyw8z52kdmrxh99mh6nf2e69dt7wg
+Currency Convertor Agent             agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u  true              4         true     fetch1cxkmrlmy2hk5ucmz3e200wdkz5w0mhkjx30j8l
+pincode finder                       agent1q035pnmc6gwywhxgwt0ja2vlfk2tp34zydgs9c37549xhq8thru9jqh6l9l  true              5         true     fetch14882qxavleu6u464qx6me98qkxfmfqtqww9ztn
+DeltaV compatible Stock Price Agent  agent1q2k852nvn78lqrld4n3pnynqz22dxr6t8f60rzld3nqruhehfp7my2wt3n5  true              4         true     fetch1345jy9ux8cctpmmqzu2ey2nc92895js7l2qkrh
+```
 
 3. `avctl hosting get agent` - Prints the selected deployed agent.
 
-![](../../../src/images/guides/avctl/avctl-hosting-3.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting get agent -a 'agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u'
+NAME                      ADDRESS                                                            COMPILED  DOMAIN  REVISION  RUNNING  WALLET ADDRESS
+Currency Convertor Agent  agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u  true              4         true     fetch1cxkmrlmy2hk5ucmz3e200wdkz5w0mhkjx30j8l
+```
 
 4. `avctl hosting pull` - Pull agent files from Agentverse.
 
-![](../../../src/images/guides/avctl/avctl-hosting-4.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting pull -a 'agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u'
+* File 'agent.py' successfully downloaded
+* File '.env' successfully downloaded
+```
 
 5. `avctl hosting run -l` - Run Agent (optional `-l` flag for logs) if `a` not provided it returns latest pulled agent.
 
-![](../../../src/images/guides/avctl/avctl-hosting-5.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting run -l                                                                   
+Agent agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u is now running!
+TIMESTAMP                   LOG ENTRY
+2024-01-23T16:08:31.468000  [INFO]: Successfully published protocol manifest: CurrencyConvertor v0.1.0
+2024-01-23T16:10:51.459000  [INFO]: Received message from agent1qflxxrd8mkl46dmqlr6aa25fzgv3d3rru9s8y780zwwezhk5cs0wgzlk53z, session: c76c6a29-eaa1-4393-9e20-efa32074741e
+2024-01-23T16:10:51.459000  [WARN]: name 'get_bbccurrency_convertor_news' is not defined
+```
 
 6. `avctl hosting stop` - Stop agent
 
-![](../../../src/images/guides/avctl/avctl-hosting-6.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting stop -a agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u
+Agent agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u has stopped!
+```
 
 7. `avctl hosting push` - Upload files to Agentverse.
 
-![](../../../src/images/guides/avctl/avctl-hosting-7.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting push -a 'agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u'
+All local dependencies are supported on agentverse.
+
+* File '.env' successfully uploaded
+* File 'agent.py' successfully uploaded
+```
 
 8. `avctl hosting sync` - Automatically synchronize your local files with those in Agentverse. This command decides whether to pull or push files based on which location has the most recent changes.
 
-![](../../../src/images/guides/avctl/avctl-hosting-8.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting sync -a agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u
+Local and remote files are in sync. Everything is up to date.
+```
 
 9. `avctl hosting logs -f` - Print agent logs (optional `-f` option to follow logs).
 
-![](../../../src/images/guides/avctl/avctl-hosting-9.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting logs -f -a agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u
+TIMESTAMP                   LOG ENTRY
+2024-01-23T16:08:31.468000  [INFO]: Successfully published protocol manifest: CurrencyConvertor v0.1.0
+2024-01-23T16:10:51.459000  [INFO]: Received message from agent1qflxxrd8mkl46dmqlr6aa25fzgv3d3rru9s8y780zwwezhk5cs0wgzlk53z, session: c76c6a29-eaa1-4393-9e20-efa32074741e
+```
 
 10. `avctl hosting deploy -n <name>` - Deploy an agent to Agentverse. This command also updates and restarts the agent if it's already deployed.
 
-![](../../../src/images/guides/avctl/avctl-hosting-10.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting deploy -n Generate Keyword news
+Agent exists on agentverse under address: 'agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u'
+Pushing latest code and starting the agent...
+All local dependencies are supported on agentverse.
+
+* File '.env' successfully uploaded
+* File 'agent.py' successfully uploaded
+Agent agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u is now running!
+TIMESTAMP                   LOG ENTRY
+2024-01-23T16:08:31.468000  [INFO]: Successfully published protocol manifest: CurrencyConvertor v0.1.0
+2024-01-23T16:10:51.459000  [INFO]: Received message from agent1qflxxrd8mkl46dmqlr6aa25fzgv3d3rru9s8y780zwwezhk5cs0wgzlk53z, session: c76c6a29-eaa1-4393-9e20-efa32074741e
+```
 
 11. `avctl hosting secrets add <secret_name>` - Add a secret
 
@@ -54,15 +132,43 @@ Before starting actions related to agents make a directory using `mkdir myagent`
 
 13. `avctl hosting secrets get` - Retrieve names of all secrets.
 
-![](../../../src/images/guides/avctl/avctl-hosting-11.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting secrets add secret
+Enter secret value for 'secret': 
+Secret 'secret' added successfully to agent agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u
+abc@xyz-MacBook-Pro myagents % avctl hosting secrets get
+Secrets for agent: agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u
+* secret
+abc@xyz-MacBook-Pro myagents % avctl hosting secrets delete secret
+Secret 'secret' deleted successfully from agent agent1q2l87nhkdlhqldc5yyrxsd5mpx9eh7xhfpn8xhatqwyrhu6x4cchj5e0f2u
+abc@xyz-MacBook-Pro myagents % 
+```
 
 14. `avctl hosting packages` - Lists all supported packages by Agentverse.
 
-![](../../../src/images/guides/avctl/avctl-hosting-12.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting packages
+Supported Packages:
+- python: >=3.11,<3.12
+- requests: ^2.28.2
+- cosmpy: ^0.9.2
+- uagents: ^0.11.0
+- uagents-ai-engine: ^0.1.3
+- pydantic: ^1.10.5
+- mysqlclient: ^2.2.0
+- pymongo: ^4.6.0
+abc@xyz-MacBook-Pro myagents % 
+```
 
 15. `avctl hosting delete` - Deletes an agent from agentverse.
 
-![](../../../src/images/guides/avctl/avctl-hosting-13.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting delete -a agent1q2k852nvn78lqrld4n3pnynqz22dxr6t8f60rzld3nqruhehfp7my2wt3n5
+NAME                                 ADDRESS                                                            COMPILED  DOMAIN  REVISION  RUNNING  WALLET ADDRESS
+DeltaV compatible Stock Price Agent  agent1q2k852nvn78lqrld4n3pnynqz22dxr6t8f60rzld3nqruhehfp7my2wt3n5  true              4         true     fetch1345jy9ux8cctpmmqzu2ey2nc92895js7l2qkrh
+
+Agent agent1q2k852nvn78lqrld4n3pnynqz22dxr6t8f60rzld3nqruhehfp7my2wt3n5 successfully deleted
+```
  
 <Callout type="info" emoji="ℹ️">
     Note: for hosting **push** and **sync** commands the agent should be always in stopped state.
