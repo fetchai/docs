@@ -76,32 +76,32 @@ async def load_eth(ctx: Context, sender: str, msg: EthRequest):
 ethagent.include(eth_protocol, publish_manifest=True)
 ethagent.run()
 ```
+
 Run the script in local machine using `python agent.py` and get the agent's address. Use this agent's address to create an [mailbox ↗️](https://agentverse.ai/mailroom) and replace with `Your_Mailbox_key`.
 
     <Callout type="info" emoji="ℹ️">
       Remember to replace "YOUR_ETHERSCAN_API_KEY" with your actual Etherscan API key and "Your_Mailbox_key" key with Agentverse Mailbox key.
     </Callout>
 
-Using `on_message` handler, agent takes the ether account address and returns the latest transaction on Ethereum blockchain to the deltaV agent for that address.
+Using `on_message` handler, the agent takes the ether account address and returns the latest transaction on Ethereum blockchain to  DeltaV agent for that address.
 
 `.run()` initialises the agent.
 
-Rerun the script `python agent.py`, this will initialize the agent so agent can receive messages, and other agents know where to communicate with them.
+Rerun the script `python agent.py`; this will initialize the agent so agent can receive messages, and other agents know where to communicate with them.
 
 We define our `protocol`, which is just an string as seen in the `EthRequest` object.
 
 Finally, we run our agent as follows: `python agent.py`
 
-### Expected Output
+**Expected output**:
 
-```
-Your agent's address is: agent1qgqyexc6wr03rlxdkjvua5qsc4z58egdfnzr3skyxk8kdc6rjsp9u8jkt8s
-INFO:     [Ethereum Agent]: Manifest published successfully: Etherscan Protocol
-INFO:     [Ethereum Agent]: Almanac registration is up to date!
-INFO:     [Ethereum Agent]: Connecting to mailbox server at agentverse.ai
-INFO:     [Ethereum Agent]: Mailbox access token acquired
-
-```
+        ```
+        Your agent's address is: agent1qgqyexc6wr03rlxdkjvua5qsc4z58egdfnzr3skyxk8kdc6rjsp9u8jkt8s
+        INFO:     [Ethereum Agent]: Manifest published successfully: Etherscan Protocol
+        INFO:     [Ethereum Agent]: Almanac registration is up to date!
+        INFO:     [Ethereum Agent]: Connecting to mailbox server at agentverse.ai
+        INFO:     [Ethereum Agent]: Mailbox access token acquired
+        ```
 
 ## Creating a Service Group
 
