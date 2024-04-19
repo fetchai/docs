@@ -6,7 +6,7 @@ const useBookMark = (context) => {
   const fetchBookMarks = async (context, isBookMark) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookmarks?user_email=${context?.user?.email}&is_visible=${isBookMark}`,
+        `/docs/api/get-bookmarks?user_email=${context?.user?.email}&is_visible=${isBookMark}`,
         {
           method: "GET",
           headers: {
@@ -40,7 +40,7 @@ const useBookMark = (context) => {
 
   const onClickBookMark = async (newVisibilityState: boolean) => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookmark`, {
+      await fetch(`/docs/api/set-bookmarks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,6 +51,7 @@ const useBookMark = (context) => {
           is_visible: newVisibilityState,
         }),
       });
+
       const bookmark = await fetchBookMarks(context, newVisibilityState);
       setBookMarks(bookmark);
     } catch (error) {
