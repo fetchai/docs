@@ -1,4 +1,7 @@
-export async function getTokenFromAuthCode(authCode: string): Promise<string> {
+export async function getTokenFromAuthCode(authCode: string): Promise<{
+  access_token: string;
+  refresh_token: string;
+}> {
   const r = await fetch(`https://accounts.fetch.ai/v1/tokens`, {
     method: "POST",
     headers: {
@@ -15,8 +18,11 @@ export async function getTokenFromAuthCode(authCode: string): Promise<string> {
     throw new Error("Failed to get token");
   }
 
-  const { access_token } = await r.json();
-  return access_token;
+  const { access_token, refresh_token } = await r.json();
+  return {
+    access_token: access_token,
+    refresh_token: refresh_token,
+  };
 }
 
 export async function getNewAccessToken(currentToken: string) {

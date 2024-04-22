@@ -6,7 +6,7 @@ const useContentVisited = (context) => {
   const fetchContentVisited = async (context) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/?user_email=${context?.user?.email}`,
+        `/docs/api/content-visited/?user_email=${context?.user?.email}`,
         {
           method: "GET",
           headers: {
@@ -14,9 +14,9 @@ const useContentVisited = (context) => {
           },
         },
       );
-      const visitedContent = await response.json();
-      setContentVisited(visitedContent);
-      return visitedContent;
+      const apiResponse = await response.json();
+      setContentVisited(apiResponse);
+      return apiResponse;
     } catch (error) {
       console.log("oops, something went wrong", error);
     }
@@ -32,7 +32,7 @@ const useContentVisited = (context) => {
 
   const onClickSetContentVisited = async (contentPath: string) => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/page-view/`, {
+      await fetch(`/docs/api/set-content-visited`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
