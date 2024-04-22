@@ -56,21 +56,17 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
 
     // Make the API call only if no malicious string is detected
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/feedback`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            feedback_type: feedbackType,
-            description: feedback,
-            page_url: pageUrl,
-          }),
+      const response = await fetch("/docs/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
-
+        body: JSON.stringify({
+          feedback_type: feedbackType,
+          description: feedback,
+          page_url: pageUrl,
+        }),
+      });
       if (response.ok) {
         setIsFeedbackSubmitted(true);
       } else {
