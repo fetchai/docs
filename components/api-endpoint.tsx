@@ -9,10 +9,10 @@ import {
   Tab,
   DropDownTabs,
 } from "./mdx";
-import axios from "axios";
 import { useUserContext } from "theme/fetch-ai-docs/contexts/context-provider";
 import Tooltip from "./tooltip";
 import Link from "next/link";
+import fetchJson from "src/lib/fetch-json";
 
 interface PropertyType {
   name: string;
@@ -353,29 +353,23 @@ export const ApiEndpointRequestResponse: React.FC<{
     try {
       setLoading(true);
       setError("");
-
       const requestPayloadJSON = JSON.parse(requestPayload || "{}");
+      const apiUrlWithParams = (properties.apiUrl +
+        replacePathParameters(properties.path, pathParameters)) as string;
 
-      const apiUrlWithParams =
-        properties.apiUrl +
-        replacePathParameters(properties.path, pathParameters);
-
-      const token = context?.isLoggedIn
-        ? context?.credentials?.apiKey
-        : bearerToken;
-
-      const response = await axios({
-        method: properties.method,
-        url: apiUrlWithParams,
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response: { data: unknown } = await fetchJson(
+        `/docs/api/api-requests?url=${apiUrlWithParams}`,
+        {
+          method: properties.method,
+          body: properties.method.includes("GET") ? null : requestPayloadJSON,
         },
-        data: requestPayloadJSON,
-      });
-
+      );
       const responseText = JSON.stringify(response.data, null, 2);
       setActualResponse(responseText);
     } catch (error) {
+      if (error.response.status === 422) {
+        context.signOut();
+      }
       setError(`Error: ${error.message}`);
     } finally {
       setLoading(false);
@@ -546,9 +540,7 @@ export const ApiEndpointRequestResponse: React.FC<{
             {loading && <div className="nx-mt-4 nx-ml-4">Loading...</div>}
 
             {error && (
-              <div className="nx-mt-4 nx-text-red-500 nx-ml-4">
-                Error: {error}
-              </div>
+              <div className="nx-mt-4 nx-text-red-500 nx-ml-4">{error}</div>
             )}
 
             {/* Display Actual Response */}

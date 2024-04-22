@@ -108,10 +108,17 @@ agent_code_data = {
     "code": code
 }
 
+<<<<<<< HEAD
 # Creating agent.py script for created agent
 respone_code_update = requests.put(f"https://agentverse.ai/v1/hosting/agents/{address}/code", json=agent_code_data, headers={
     "Authorization": token
 })
+=======
+    # Creating agent.py script for created agent
+    response_code_update = requests.put(f"https://agentverse.ai/v1/hosting/agents/{address}/code", json=agent_code_data, headers={
+        "Authorization": token
+    })
+>>>>>>> master
 
 # Starting the agent
 requests.post(f"https://agentverse.ai/v1/hosting/agents/{address}/start", headers={
@@ -197,6 +204,7 @@ print(f'Service Created with name: {name}')
 ### Whole Script
 
 ```py copy filename = 'agent_create.py'
+<<<<<<< HEAD
 # Importing libraries
 import time
 import requests
@@ -293,6 +301,95 @@ print(response_service.json())
 name = response_service.json()['name']
 print(f'Service Created with name : {name}') # Confirming serivce sucessfully created.
 
+=======
+# Importing Required libraries
+import time
+import requests
+
+# Decode the refresh token
+token = f'Bearer <Your_access_token>'
+
+# Take name of agent from user
+name = input('Please give name of your agent? ')
+# Create payload for agent creation request
+agent_creation_data = {
+    "name": name
+}
+# Post request to create an agent and store address
+response_agent = requests.post("https://agentverse.ai/v1/hosting/agents", json=agent_creation_data, headers={"Authorization": token}).json()
+
+address = response_agent['address']
+print(f'Agent Address : {address}')
+
+ # Reading code to be placed in agent
+with open('agent.py', 'r') as file:
+    code = file.read()
+agent_code_data = {
+    "code": code
+}
+
+# Creating agent.py script for created agent
+response_code_update = requests.put(f"https://agentverse.ai/v1/hosting/agents/{address}/code", json=agent_code_data, headers={"Authorization": token})
+
+# Starting the agent
+requests.post(f"https://agentverse.ai/v1/hosting/agents/{address}/start", headers={"Authorization": token})
+time.sleep(10) # waiting before getting agent's protocol
+
+# Request to get agent protocol digest
+response_protcol = requests.get(f"https://agentverse.ai/v1/almanac/agents/{address}", headers={"Authorization": token})
+protocol_digest = response_protcol.json()['protocols'][1]
+print(f'Protocol Digest : {protocol_digest}')
+time.sleep(10) # Waiting before getting model_digest
+
+# Request to get agent's model details
+response_model = requests.get(f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}", headers={"Authorization": token})
+model = response_model.json()['models']
+time.sleep(10) # Waiting before storing details to create services
+
+# Taking inputs from user for details required to create a service
+name_service = input('Please give service name')
+description = input('Please enter service description')
+field_name = input('Please enter field name')
+field_description = input('Please enter field description')
+tasktype = input('Please tell task or subtask')
+
+# Logging details provided by user
+print(f'Service name: {name_service} \nService Description: {description} \nField Name: {field_name}\nField Description: {field_description}\nTask Type: {tasktype}')
+
+# Storing model diges and name to be used for service creation
+model_digest = response_model.json()['interactions'][0]['request'].replace('model:', '')
+print(f'Model Digest : {model_digest}')
+model_name = model[0]['schema']['title']
+print(f'Model Name : {model_name}')
+
+# Creating payload for service creation
+data = {
+    "agent": address,
+    "name": name_service,
+    "description": description,
+    "protocolDigest": protocol_digest,
+    "modelDigest": model_digest,
+    "modelName": model_name,
+    "fields": [
+        {
+            "name":field_name,
+            "required": True,
+            "field_type": "string",
+            "description": field_description
+        }
+    ],
+    "taskType": tasktype
+}
+
+# Requesting AI Engine services API to create a service with created payload and storing the response.
+response_service = requests.post("https://agentverse.ai/v1beta1/services", json=data, headers={
+    "Authorization": token
+})
+
+# Storing name of serive and printing it to check if service was created successfully
+name = response_service.json()['name']
+print(f'Service Created with name: {name}')    
+>>>>>>> master
 ```
     
 ## Steps to run the script
