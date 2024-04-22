@@ -3,6 +3,7 @@ import { withIronSessionSsr } from "iron-session/next";
 import { parseJwt } from "src/core/jwt";
 import { sessionOptions } from "src/core/session";
 import { getTokenFromAuthCode } from "src/core/fauna";
+import { setCookie } from "cookies-next";
 
 export function flatten(normalized = ""): string {
   if (Array.isArray(normalized)) {
@@ -17,6 +18,7 @@ const Page: React.FC = () => {
 
 export const getServerSideProps = withIronSessionSsr(async function ({
   req,
+  res,
   query,
 }) {
   const authFailure = async () => {
@@ -37,10 +39,13 @@ export const getServerSideProps = withIronSessionSsr(async function ({
   }
 
   const token = await getTokenFromAuthCode(authCode);
+  setCookie("fauna", token.access_token, { req, res });
+  setCookie("refresh_token", token.refresh_token, { req, res });
+
   const r = await fetch(`https://accounts.fetch.ai/v1/profile`, {
     method: "GET",
     headers: {
-      Authorization: `bearer ${token}`,
+      Authorization: `bearer ${token.access_token}`,
     },
   });
   if (!r.ok) {
@@ -83,10 +88,10 @@ export const getServerSideProps = withIronSessionSsr(async function ({
     givenName,
     id,
   };
-  const metadata = parseJwt(token);
+  const metadata = parseJwt(token.access_token);
 
   req.session.credentials = {
-    apiKey: token,
+    apiKey: token.access_token,
     expiresAt: metadata.expiry,
     group: metadata.group,
     sub: metadata.sub,
