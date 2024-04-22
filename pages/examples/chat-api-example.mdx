@@ -1,0 +1,824 @@
+# AI-Engine Chat API guide 🤖
+
+## Introduction 👋
+
+This guide offers details on utilizing the AI engine's [chat API ↗️](../apis/ai-engine/chat) to interact with AI engine and create [deltaV ↗️](../guides/deltav/deltav-chat-interface) like GUI of own. We will demonstrate a python script that interacts with AI engine via the chat API, handling session IDs, sending messages, managing responses, and processing user requests and selections.
+
+
+## Prerequisites 📘
+
+    - Before you begin, ensure you have the following:
+
+        - Python version greater than 3.9 and less than 3.11.
+        - The requests library installed. You can install it using `pip install requests`.
+        - [Agentverse ↗️](https://agentverse.ai/) Credentials.
+
+## Steps to get API Tokens 
+
+    - Go to Profile section in [Agentverse ↗️](https://agentverse.ai/profile/api-keys).
+    - Click on button `+ New API Key`.
+    - Give name to your API key.
+    - Click on `write` for `Access to all resources in Agentverse` and click on `Generate API Key`
+
+![](../../src/images/APIs/APIKey.png)
+  
+## Script Break down 🧩
+
+    - Importing Required libraries:
+
+    ```python
+    # Importing Required libraries
+    import re
+    import requests
+    import time
+    import json
+    ```
+
+    These libraries are used to handle user regular expressions, HTTP requests, time delays and JSON responses.
+
+    - Setting up token.
+
+```python
+token = f'Bearer <YOUR_ACCESS_TOKEN>'  # Placeholder for API token
+```
+
+This script includes various functions for handling different API interactions. Below is a summary of the main functions and their respective purposes.
+
+1. normalize_question function:
+
+``` python
+# Define function to normalize questions asked by AI-engine
+def normalize_question(question):
+    question_lower = question.lower()
+    question_normalized = re.sub(r'[^\w\s]', '', question_lower)
+    return question_normalized
+```
+
+This function converts questions from a JSON response, identified by the key 'text', into lowercase and removes any punctuation. It helps standardize user input for consistent processing.
+
+2. `is_uuid` function:
+
+``` python
+# Define function to check if option is uuid (Subtask Key)
+def is_uuid(key):
+    # Function to check if a string is a valid UUID
+    pattern = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", re.IGNORECASE)
+    return pattern.match(key)
+```
+This function checks whether the given key is in UUID (Universal Unique Identifier) format.The function uses a regular expression pattern to match the standard UUID format, which consists of 32 hexadecimal characters split into five groups separated by hyphens (8-4-4-4-12).
+    
+3. `post_request` function
+
+```python 
+# Function to handle GET requests
+def post_request(url, json_data, headers):
+    global token
+    response = requests.post(url, json=json_data, headers=headers)
+    if response.status_code != 200:
+        print(f"Error {response.status_code}: {response.text}")
+        return None
+    return response
+```
+
+This function makes post request to Agentverse and if response is not 200 it responds with error details.
+
+4. `get_request` function
+
+```python
+# Function to handle GET requests
+def get_request(url, headers):
+    global token
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        print(f"Error {response.status_code}: {response.text}")
+        return None
+    return response
+```
+This function makes get request to Agentverse and if response is not 200 it responds with error details.
+
+5. send_user_choice_as_uuid function:
+    
+```python
+# Function to send UUID choice message to AI-Engine
+def send_user_choice_as_uuid(session_id, first_subtask , token):
+    data = {
+        "payload": {
+            "type": "user_json",
+            "user_json": {
+                "type": "options",
+                "selection": [first_subtask]
+            },
+            "session_id": session_id
+        }
+    }
+    return post_request(f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit", data, {"Authorization": token})
+```
+
+This function responds makes request to AI_engine with UUID of first subtask from given recommendations. The payload parameter are explained below:
+
+    - `session_id` - chat session Id on DeltaV.
+    - `first_subtask` - UUID for the subtask.
+    - `token` - AI-Engine fauna token to connect DeltaV or AI-Engine.
+
+
+6. send_user_message function:
+
+``` python
+# Function to send normal message to AI-Engine
+def send_user_message(session_id, user_message, token):
+    data = {
+        "payload": {
+            "type": "user_message",
+            "user_message": user_message
+        },
+        "session_id": session_id
+    }
+    return post_request(f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit", data, {"Authorization": token})
+```
+
+This function is designed to send a message from the user to the AI engine's ongoing chat session. This is used to submit user input as part of the chat flow. The `session_id` and `token` parameters are same as `Send_user_choice_as_uuid` function, `user_message` is the message which user wants to send to  the ongoing chat session.
+
+7. stop_session functions:
+
+``` python
+def stop_session(session_id, token):
+    data = {"payload": {"type": "stop"}}
+    response = post_request(
+        f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit",
+        data,
+        {"Authorization": token},
+    )
+    print("Session stopped")
+    exit()
+```
+
+    This function is designed to stop the ongoing deltaV chat session and exit from the script.
+
+## Main Script Flow
+
+The main script flow includes:
+
+    1. Importing required libraries.
+    2. Setting up a chat session on DeltaV using AI Engine Chat API.
+    3. Taking input from the user for service they want to assemble or objective to achieve.
+    4. Handling the chat flow which includes sending messages and processing requests.
+    5. Managing User selection from provided options.
+    6. Handling special requests where agents ask the same questions back to back. (The same question is asked in agent_json and agent_info response type when user input is required.)
+    7. Handling error codes provided by agent.
+    8. Stopping chat session with the user after completion of objective.
+
+### Chunk-by-chunk explaination:
+
+- Setting up a Chat Session with AI_engine Chat API
+
+``` python
+# User and model details
+data = {"email": "abhi.gangani@fetch.ai", "requestedModel": "talkative-01"}
+
+response_data = post_request(
+    "https://agentverse.ai/v1beta1/engine/chat/sessions", data, {"Authorization": token}
+).json()
+session_id = response_data.get("session_id")
+```
+
+The above section of code creates payload(data) for request to start a session. Please update the following details accordingly:
+    1. `email`: Update this with your agentverse email-id. 
+    2. `requestedModel`: This is the chat model you want to make request to.
+    
+On the basis of details provided and POST request sent to chat API. AI-engine responds with a session-Id where we can communicate further with AI engine.
+
+- Taking user input from the user for service they would like to assemble/Objective they want to accomplish.
+
+``` python
+# Taking user query as input
+objective = input("What Service would you like to assemble? ")
+
+# Defining initial payload for quering deltaV
+data2 = {
+    "payload": {
+        "type": "start",
+        "objective": objective,
+        "context": f"User full Name: Test User\nUser email: {data['email']}\nUser location: latitude=51.5072, longitude=0.1276\n",
+        "session_id": session_id,
+    }
+}
+
+response = post_request(
+    f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit",
+    data2,
+    {"Authorization": token},
+)
+
+# waiting to get next response from AI engine
+time.sleep(5)
+
+response = get_request(
+    f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/responses",
+    {"Authorization": token},
+).json()
+```
+
+This section of code is responsible for sending a start message after chat session is initialized. Below is the step-by-step explaination:
+    1. Taking user objective/query as input.
+    2. Creating a payload to make a start request to AI-engine Chat API. which includes objective, username, location and session-id.
+    3. POST start request with query to AI-Engine.
+    4. Getting latest responses from AI-Engine chat API using GET Request.
+
+- Selecting required service from options and sending response back to AI_engine
+
+``` python
+agent_response = response["agent_response"][0]
+time.sleep(5)
+agent_response_dict = json.loads(agent_response)
+# Getting Services options for user's objective
+agent_json = agent_response_dict["agent_json"]
+
+# Taking input from user for which service to use.
+for option in agent_json["options"]:
+    print(f"{option['key']}: {option['value']}")
+user_choice = input(
+    "Please select an option by entering the corresponding key: Type_here "
+)
+
+# Payload for selected service
+data3 = {
+    "payload": {
+        "type": "user_json",
+        "user_json": {"type": "task_list", "selection": [user_choice]},
+    }
+}
+
+# Submitting selected service to AI Engine
+response = post_request(
+    f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit",
+    data3,
+    {"Authorization": token},
+)
+    
+```
+
+    The above section of code gets response for available services options for the user query or objective. Below is step-by-step guide to achieve this
+        1. Getting agent response for the service options
+        2. Displaying options to the user and taking user choice input.
+        3. Creating payload for selected service.
+        4. submitting selected service to AI Engine.
+
+    - Handling the chat flow which includes sending messages and processing responses.
+
+```python
+# Initialize variables to keep track of the last question and response
+last_question = ""
+last_response = ""
+no_response_count = 0
+
+# Main interaction loop
+while True:
+    time.sleep(5)
+    response = get_request(
+        f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/responses",
+        {"Authorization": token},
+    )
+
+    if response.status_code != 200:
+        raise Exception(
+            f"Error in fetching responses: Status code {response.status_code}"
+        )
+    response = response.json()
+    # Handling unresponsive AI Engine
+    if not response["agent_response"]:
+        no_response_count += 1
+        # print('Waiting for response')
+        if no_response_count < 10:
+            continue  # Wait for a bit longer if no response yet
+        else:
+            print("No response from the agent.")
+            stop_session(session_id, token)
+            break  # Exit loop if no response after several attempts
+
+    no_response_count = 0  # Reset counter on receiving a response
+```
+
+    This section of the script implements a loop to continuously monitor responses from the AI Engine agent within a chat session:
+        1. Initialize a counter for response to track empty deltaV agent responses.
+        2. Tracing last interaction questions, and responses to avoid asking same questions to the user.
+        3. The script is in continuous infinite loop repeatedly every 5 seconds unless we get 10 empty responses.
+        4. Once we get response from AI Engine the counter resets to 0.
+    
+``` python
+# Reading agent response
+    for agent_resp in response["agent_response"]:
+        agent_resp_dict = json.loads(
+            agent_resp
+        )  # getting response dictionary from deltaV
+        current_message_text = ""  # Setting current message to empty string
+
+        if (
+            agent_resp_dict.get("type") == "agent_json"
+        ):  # handling agent_json type response
+            agent_json = agent_resp_dict["agent_json"]
+            current_message_text = normalize_question(
+                agent_json.get("text", "")
+            )  # Setting current message from deltaV
+
+            # Handle options provided in agent_json
+            if "options" in agent_json and agent_json["options"]:
+                option_keys = [
+                    str(option["key"]) for option in agent_json["options"]
+                ]  # setting options keys in list to check if its UUID
+                # Automatically select the first option if it's a UUID
+                if is_uuid(option_keys[0]):
+                    # print(f"Automatically selecting option: {option_keys[0]}") # Using first suggested subtask
+                    send_user_choice_as_uuid(session_id, option_keys[0], token)
+                    last_response = option_keys[0]  # Update last response
+                    continue  # Skip the rest of the loop to wait for the next agent response
+                else:
+                    # If the first option is not a UUID, prompt for user input
+                    print(
+                        agent_json.get("text", "")
+                    )  # printing deltaV message on terminal
+                    for option in agent_json["options"]:
+                        print(
+                            f"{option['key']}: {option['value']}"
+                        )  # Printing options on terminal
+                    user_choice = input(
+                        "Your Response: "
+                    )  # Taking user selection from options
+                    send_user_message(
+                        session_id, user_choice, token
+                    )  # Sending response to deltaV
+                    last_response = user_choice  # Update last response
+            else:
+                # No options provided
+                print(
+                    agent_json.get(
+                        "text",
+                        "Please confirm the details or provide the requested information:",
+                    )
+                )  # Printing user message
+                if (
+                    agent_json.get("context_json")
+                    and "args" in agent_json["context_json"]
+                ):  # Printing arguments to confirm if present
+                    args = agent_json["context_json"]["args"]
+                    for key, value in args.items():
+                        print(f"{key}: {value}")
+                user_confirmation = input(
+                    "Your confirmation/details: "
+                )  # Confirming arguements by user
+                send_user_message(session_id, user_confirmation, token)
+                last_response = user_confirmation  # Update last response
+
+```
+
+    This section of scripts processes responses from AI engine is response type is json
+        1. The loop continuously iterates through each response and converts json string into python dictionary.
+        2. The script initializes `current_message_text` as an empty string to prepare for new messages.
+        3. This script handles different types of responses. If the response type is `agent_json`:
+            3.1. Extracts the message and normalizes it using the normalize_question function, which converts the text to lowercase and removes punctuation.
+            3.2. Checks if there are options associated with the message, if there are:
+                3.2.1. It extracts the option keys and checks if the first option is a UUID, indicating a subtask trigger.
+                3.2.2. If it is a UUID, the script automatically selects first option without user intervention, updating last_response and skipping the remaining loop to await further responses.
+                3.2.3. If the options are not UUIDs, the script displays them to the user and prompts for a choice, which is then sent back to DeltaV using `send_user_message`.
+    
+            3.3. If the agent_json does not contain options (indicating a request for confirmation or information):
+                3.3.1. The script prints the message and, if present, details (arguments) for user confirmation.
+                3.3.2. It then collects user input and sends it back to DeltaV, updating last_response with the user's input for continuity.    
+
+``` python
+elif (
+            agent_resp_dict.get("type") == "agent_message"
+        ):  # handling agent_message type response
+            agent_message = agent_resp_dict.get("agent_message", "")
+            # If agent_message repeats the last question, reuse last response
+            if normalize_question(agent_message.split("?")[0]) == last_question:
+                # print(f"Reusing your last response: {last_response}") # In case the question asked is same, use same response.
+                send_user_message(session_id, last_response, token)
+            elif (
+                agent_message
+                == "I have completed your task! Please reset your chat session before submitting your new request."
+            ):
+                print(
+                    "I have completed your task! Please reset your chat session before submitting your new request."
+                )
+                stop_session(session_id, token)
+            else:  # if question not repeated taking input from user
+                print(agent_message)
+                user_response = input("Your answer: ")
+                send_user_message(session_id, user_response, token)
+                last_response = user_response  # Update last response
+```
+    
+    - Handling `agent_message` type response:
+        1. If the questions asked is same as the previous response in agent_json, it automatically sends previous response to deltav using `send_user_message` message.
+        2. If the resposne is task is completed the session is stopped.
+        3. Else the input or is taken from user for the given question and sent to AI Engine agent using `send_user_message` and `last_response` is stored.
+
+```python
+        # Stopping session in case of error.
+        elif agent_resp_dict.get("type") == "agent_error":
+            agent_message = agent_resp_dict.get("agent_error")
+            print(agent_message)
+            stop_session(session_id, token)
+```
+
+    - This section of script handles `error` type response and stops the session in case of error with error message.
+
+```python
+elif "agent_info" in agent_resp_dict:  # handling agent_info and stop messages
+            # Print agent_info or handle stop type
+            info_message = agent_resp_dict.get("agent_info", "")
+            # print(f'Agent Info : {info_message}') # Print agent info
+        elif agent_resp_dict.get("type") == "stop":
+            # print('Stopping Session')
+            stop_session(session_id, token)
+        else:
+            print(
+                "Received an unhandled response type:", agent_resp_dict.get("type")
+            )  # Handling any other message type
+```
+
+- Handling `agent_info`, `stop` and `unknown` Type Responses:
+        1. If the response contains 'agent_info' or the type is 'stop', the script processes these specific messages.
+        2. For 'agent_info' type messages, it extracts and prints the information content provided by the agent. This could be feedback, status updates, or other informative messages relevant to the user's query or the chat session.
+        3. If the message type is 'stop', the script prints "Session stopping." to indicate that the AI Engine session is ending.
+        4. If the response type is not known it prints unhandled resposne type.
+
+```python
+        # Update last_question with current message text up to a question mark
+        last_question = current_message_text.split('?')[0] if '?' in current_message_text else current_message_text
+```
+
+    This removes the options and punctuation mark from the question and updates the `last_question` object.
+
+## Whole Script
+
+```py copy filename="agent.py"   
+
+# Importing required libraries
+import json
+import re
+import time
+import requests
+
+# Authorization token
+token = f"Bearer <Place_your_API_token>"  # Placeholder for initial token
+
+# Define function to normalize questions asked by AI engine
+def normalize_question(question):
+    question_lower = question.lower()
+    question_normalized = re.sub(r"[^\w\s]", "", question_lower)
+    return question_normalized
+
+
+# Define function to check if a string is a valid UUID
+def is_uuid(key):
+    # Ensure the key is a string
+    key_str = str(key)
+    pattern = re.compile(
+        r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+        re.IGNORECASE,
+    )
+    return pattern.match(key_str)
+
+
+# Function to handle POST requests with automatic token refresh
+def post_request(url, json_data, headers):
+    global token
+    response = requests.post(url, json=json_data, headers=headers)
+    if response.status_code != 200:
+        print(f"Error {response.status_code}: {response.text}")
+        return None
+    return response
+
+
+# Function to handle GET requests with automatic token refresh
+def get_request(url, headers):
+    global token
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        print(f"Error {response.status_code}: {response.text}")
+        return None
+    return response
+
+
+# Functions to interact with the AI-Engine
+def send_user_choice_as_uuid(session_id, user_choice, token):
+    data = {
+        "payload": {
+            "type": "user_json",
+            "user_json": {"type": "options", "selection": [user_choice]},
+            "session_id": session_id,
+        }
+    }
+    return post_request(
+        f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit",
+        data,
+        {"Authorization": token},
+    )
+
+
+def send_user_message(session_id, user_message, token):
+    data = {
+        "payload": {"type": "user_message", "user_message": user_message},
+        "session_id": session_id,
+    }
+    return post_request(
+        f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit",
+        data,
+        {"Authorization": token},
+    )
+
+
+def stop_session(session_id, token):
+    data = {"payload": {"type": "stop"}}
+    response = post_request(
+        f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit",
+        data,
+        {"Authorization": token},
+    )
+    print("Session stopped")
+    exit()
+
+
+# User and model details
+data = {"email": "<your_agentverse_email_address>", "requestedModel": "talkative-01"}
+
+response_data = post_request(
+    "https://agentverse.ai/v1beta1/engine/chat/sessions", data, {"Authorization": token}
+).json()
+session_id = response_data.get("session_id")
+
+# Taking user query as input
+objective = input("What Service would you like to assemble? ")
+
+# Defining initial payload for quering deltaV
+data2 = {
+    "payload": {
+        "type": "start",
+        "objective": objective,
+        "context": f"User full Name: Test User\nUser email: {data['email']}\nUser location: latitude=51.5072, longitude=0.1276\n",
+        "session_id": session_id,
+    }
+}
+
+response = post_request(
+    f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit",
+    data2,
+    {"Authorization": token},
+)
+
+# waiting to get next response from AI engine
+time.sleep(5)
+
+response = get_request(
+    f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/responses",
+    {"Authorization": token},
+).json()
+agent_response = response["agent_response"][0]
+time.sleep(5)
+agent_response_dict = json.loads(agent_response)
+# Getting Services options for user's objective
+agent_json = agent_response_dict["agent_json"]
+
+# Taking input from user for which service to use.
+for option in agent_json["options"]:
+    print(f"{option['key']}: {option['value']}")
+user_choice = input(
+    "Please select an option by entering the corresponding key:  "
+)
+
+# Payload for selected service
+data3 = {
+    "payload": {
+        "type": "user_json",
+        "user_json": {"type": "task_list", "selection": [user_choice]},
+    }
+}
+
+
+# Submitting selected service to AI Engine
+response = post_request(
+    f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/submit",
+    data3,
+    {"Authorization": token},
+)
+
+# Initialize variables to keep track of the last question and response
+last_question = ""
+last_response = ""
+no_response_count = 0
+
+# Main interaction loop
+while True:
+    time.sleep(5)
+    response = get_request(
+        f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/responses",
+        {"Authorization": token},
+    )
+
+    if response.status_code != 200:
+        raise Exception(
+            f"Error in fetching responses: Status code {response.status_code}"
+        )
+    response = response.json()
+    # Handling unresponsive AI Engine
+    if not response["agent_response"]:
+        no_response_count += 1
+        if no_response_count < 10:
+            continue  # Wait for a bit longer if no response yet
+        else:
+            print("No response from the agent.")
+            stop_session(session_id, token)
+            break  # Exit loop if no response after several attempts
+
+    no_response_count = 0  # Reset counter on receiving a response
+    # Reading agent response
+    for agent_resp in response["agent_response"]:
+        agent_resp_dict = json.loads(
+            agent_resp
+        )  # getting response dictionary from AI Engine
+        current_message_text = ""  # Setting current message to empty string
+
+        if (
+            agent_resp_dict.get("type") == "agent_json"
+        ):  # handling agent_json type response
+            agent_json = agent_resp_dict["agent_json"]
+            current_message_text = normalize_question(
+                agent_json.get("text", "")
+            )  # Setting current message from AI Engine
+
+            # Handle options provided in agent_json
+            if "options" in agent_json and agent_json["options"]:
+                option_keys = [
+                    str(option["key"]) for option in agent_json["options"]
+                ]  # setting options keys in list to check if its UUID
+                # Automatically select the first option if it's a UUID
+                if is_uuid(option_keys[0]):
+                    # print(f"Automatically selecting option: {option_keys[0]}") # Using first suggested subtask
+                    send_user_choice_as_uuid(session_id, option_keys[0], token)
+                    last_response = option_keys[0]  # Update last response
+                    continue  # Skip the rest of the loop to wait for the next agent response
+                else:
+                    # If the first option is not a UUID, prompt for user input
+                    print(
+                        agent_json.get("text", "")
+                    )  # printing AI Engine message on terminal
+                    for option in agent_json["options"]:
+                        print(
+                            f"{option['key']}: {option['value']}"
+                        )  # Printing options on terminal
+                    user_choice = input(
+                        "Your Response: "
+                    )  # Taking user selection from options
+                    send_user_message(
+                        session_id, user_choice, token
+                    )  # Sending response to deltaV
+                    last_response = user_choice  # Update last response
+            else:
+                # No options provided
+                print(
+                    agent_json.get(
+                        "text",
+                        "Please confirm the details or provide the requested information:",
+                    )
+                )  # Printing user message
+                if (
+                    agent_json.get("context_json")
+                    and "args" in agent_json["context_json"]
+                ):  # Printing arguments to confirm if present
+                    args = agent_json["context_json"]["args"]
+                    for key, value in args.items():
+                        print(f"{key}: {value}")
+                user_confirmation = input(
+                    "Your confirmation/details: "
+                )  # Confirming arguements by user
+                send_user_message(session_id, user_confirmation, token)
+                last_response = user_confirmation  # Update last response
+
+        elif (
+            agent_resp_dict.get("type") == "agent_message"
+        ):  # handling agent_message type response
+            agent_message = agent_resp_dict.get("agent_message", "")
+            # If agent_message repeats the last question, reuse last response
+            if normalize_question(agent_message.split("?")[0]) == last_question:
+                # print(f"Reusing your last response: {last_response}") # In case the question asked is same, use same response.
+                send_user_message(session_id, last_response, token)
+            elif (
+                agent_message
+                == "I have completed your task! Please reset your chat session before submitting your new request."
+            ):
+                print(
+                    "I have completed your task! Please reset your chat session before submitting your new request."
+                )
+                stop_session(session_id, token)
+            else:  # if question not repeated taking input from user
+                print(agent_message)
+                user_response = input("Your answer: ")
+                send_user_message(session_id, user_response, token)
+                last_response = user_response  # Update last response
+
+        # Stopping session in case of error.
+        elif agent_resp_dict.get("type") == "agent_error":
+            agent_message = agent_resp_dict.get("agent_error")
+            print(agent_message)
+            stop_session(session_id, token)
+
+        elif "agent_info" in agent_resp_dict:  # handling agent_info and stop messages
+            # Print agent_info or handle stop type
+            info_message = agent_resp_dict.get("agent_info", "")
+            # print(f'Agent Info : {info_message}') # Print agent info
+        elif agent_resp_dict.get("type") == "stop":
+            # print('Stopping Session')
+            stop_session(session_id, token)
+        else:
+            print(
+                "Received an unhandled response type:", agent_resp_dict.get("type")
+            )  # Handling any other message type
+
+        # Update last_question with current message text up to a question mark
+        last_question = (
+            current_message_text.split("?")[0]
+            if "?" in current_message_text
+            else current_message_text
+        )
+
+```
+
+Save this script as chatAPI.py and replace ‘email’ and ‘fauna_token’ in the script.
+
+Running this app on the terminal:
+    1. Locate the directory where the script is located.
+    2. Open [Agentverse ↗️](https://agentverse.ai/profile/api-keys) and [generate API keys](chat_api_example#steps-to-get-api-tokens).
+    3. Open script in editor and replace `access_token` in script.
+    4. Run script using python `agent.py` .
+    5. Provide objective to the script.
+    6. Confirm/ Reject the details whenever asked.
+    7. Reply back to the agent when a question is asked.
+    8. Once the final response is recieved session will be ended and script will be killed.
+
+Please refer below for expected output of chat_api script.
+
+```
+abc@xyz-MacBook-Pro chatAPI % python3 chat.py 
+What Service would you like to assemble? I want to book a flight to dubai
+0: Flights
+1: TravelPlanner
+2: Hotels
+Please select an option by entering the corresponding key: Type_here 0
+Please confirm the following details
+latitude: 51.5072
+longitude: 0.1276
+Your confirmation/details: confirm
+Which airport do you want to depart from
+LCY: LCY
+LHR: LHR
+STN: STN
+LGW: LGW
+Your Response: LHR
+Please confirm the following details
+city: Dubai
+country: United Arab Emirates
+Your confirmation/details: confirm
+Which airport do you want to fly to
+DXBA: DXBA
+DXB: DXB
+DWC: DWC
+DJH: DJH
+US: US
+AE: AE
+LOND: LOND
+LHR: LHR
+Your Response: DXB
+Is this a one-way trip or a return trip
+one-way: one-way
+return: return
+Your Response: one-way
+when do you want to fly out please provide the date in the format dd.mm.yyyy?
+Your confirmation/details: 31.01.2025
+how many persons are going to fly?
+Your answer: 1
+Please confirm the following details
+from: LHR
+to: DXB
+date: 31.01.2025
+trip: one-way
+persons: 1
+Your confirmation/details: confirm
+Select from following options:
+0: Royal Brunei  for £334,  2025-01-31 16:55:00 - 2025-02-01 04:25:00, flight time 450 min
+1: British Airways for £174,  08:05:00 - 21:50:00, flight time 585 min
+2: British Airways for £468,  2025-01-31 21:35:00 - 2025-02-01 08:30:00, flight time 415 min
+3: Virgin Atlantic for £462,  2025-01-31 22:00:00 - 2025-02-01 09:10:00, flight time 430 min
+4: British Airways for £468,  2025-01-31 20:40:00 - 2025-02-01 07:45:00, flight time 425 min
+5: Emirates for £481,  2025-01-31 22:00:00 - 2025-02-01 08:45:00, flight time 405 min
+6: British Airways for £468,  12:45:00 - 23:45:00, flight time 420 min
+7: Emirates for £481,  2025-01-31 19:00:00 - 2025-02-01 05:50:00, flight time 410 min
+8: Emirates for £481,  2025-01-31 20:20:00 - 2025-02-01 07:20:00, flight time 420 min
+9: Emirates for £481,  2025-01-31 15:50:00 - 2025-02-01 02:40:00, flight time 410 min
+Your Response: 3
+I am sorry, but I could not finish: 'Flights'.
+Session stopped
+abc@xyz-MacBook-Pro chatAPI % 
+```
+
+
