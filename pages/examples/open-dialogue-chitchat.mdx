@@ -21,557 +21,535 @@ This example demonstrates how to set up and execute a simple agent-based dialogu
 
 This script sets up the `ChitChatDialogue` class, This system includes nodes representing different states of the dialogue and edges defining possible transitions between these states.
 
-    - Open a terminal and create a directory using `mkdir Dialogues` and navigate into it with cd Dialogues.
-    - Create a python file `chitchat.py` using `touch chitchat.py` in Dialogues directory.
-    - Import Required libraries
+- Open a terminal and create a directory using `mkdir Dialogues` and navigate into it with `cd Dialogues`.
+- Create a python file `chitchat.py` using `touch chitchat.py` in `Dialogues` directory.
+- Import required libraries.
 
-```python
-# Import required libraries
+    ```python
+    # Import required libraries
 
-from typing import Type
-from uagents import Model
-from uagents.experimental.dialogues import Dialogue, Edge, Node
-```
+    from typing import Type
+    from uagents import Model
+    from uagents.experimental.dialogues import Dialogue, Edge, Node
+    ```
 
-    - Define `nodes` (state) of dialogues like default, initiate, chitchat and conclude state.
+- Define `nodes` (state) of dialogues like default, initiate, chitchat and conclude state.
 
-```python
+    ```python
+    # Define node of dialogue
+    default_state = Node(
+        name="Default State",
+        description=(
+            "This is the default state of the dialogue. Every session starts in "
+            "this state and is automatically updated once the dialogue starts."
+        ),
+        initial=True,
+    )
+    init_state = Node(
+        name="Initiated",
+        description=(
+            "This is the initial state of the dialogue that is only available at "
+            "the receiving agent."
+        ),
+    )
+    chatting_state = Node(
+        name="Chit Chatting",
+        description="This is the state in which messages are exchanged.",
+    )
+    end_state = Node(
+        name="Concluded",
+        description="This is the state after the dialogue has been concluded.",
+    )
+    ```
 
-# Define node of dialogue
-default_state = Node(
-    name="Default State",
-    description=(
-        "This is the default state of the dialogue. Every session starts in "
-        "this state and is automatically updated once the dialogue starts."
-    ),
-    initial=True,
-)
-init_state = Node(
-    name="Initiated",
-    description=(
-        "This is the initial state of the dialogue that is only available at "
-        "the receiving agent."
-    ),
-)
-chatting_state = Node(
-    name="Chit Chatting",
-    description="This is the state in which messages are exchanged.",
-)
-end_state = Node(
-    name="Concluded",
-    description="This is the state after the dialogue has been concluded.",
-)
-```
-    - Define `edges` (transition) of dialogues like initiate session, reject session, start dialogue, continue dialogue and end session.
+- Define `edges` (transition) of dialogues like initiate session, reject session, start dialogue, continue dialogue and end session.
 
-```python
-# Edge definition for the dialogue transitions
-init_session = Edge(
-    name="Initiate session",
-    description="Every dialogue starts with this transition.",
-    parent=default_state,
-    child=init_state,
-)
+    ```python
+    # Edge definition for the dialogue transitions
+    init_session = Edge(
+        name="Initiate session",
+        description="Every dialogue starts with this transition.",
+        parent=default_state,
+        child=init_state,
+    )
 
-reject_session = Edge(
-    name="Reject session",
-    description=("This is the transition for when the dialogue is rejected"),
-    parent=init_state,
-    child=end_state,
-)
+    reject_session = Edge(
+        name="Reject session",
+        description=("This is the transition for when the dialogue is rejected"),
+        parent=init_state,
+        child=end_state,
+    )
 
-start_dialogue = Edge(
-    name="Start dialogue",
-    description="This is the transition from initiated to chit chatting.",
-    parent=init_state,
-    child=chatting_state,
-)
-cont_dialogue = Edge(
-    name="Continue dialogue",
-    description=(
-        "This is the transition from one dialogue message to the next, "
-        "i.e. for when the dialogue continues."
-    ),
-    parent=chatting_state,
-    child=chatting_state,
-)
+    start_dialogue = Edge(
+        name="Start dialogue",
+        description="This is the transition from initiated to chit chatting.",
+        parent=init_state,
+        child=chatting_state,
+    )
+    cont_dialogue = Edge(
+        name="Continue dialogue",
+        description=(
+            "This is the transition from one dialogue message to the next, "
+            "i.e. for when the dialogue continues."
+        ),
+        parent=chatting_state,
+        child=chatting_state,
+    )
 
-end_session = Edge(
-    name="End session",
-    description="This is the transition for when the session is ended.",
-    parent=chatting_state,
-    child=end_state,
-)
-```
+    end_session = Edge(
+        name="End session",
+        description="This is the transition for when the session is ended.",
+        parent=chatting_state,
+        child=end_state,
+    )
+    ```
 
-    - Define ChitChatDialogue class and include nodes and edges into it. These acts as rule for chit chat dialogues
+- Define `ChitChatDialogue` class and include nodes and edges into it. These acts as rule for chit chat dialogues.
 
-```python
-class ChitChatDialogue(Dialogue):
-    """
-    This is the specific definition of the rules for the chit-chat dialogue
-    The rules will be predefined and the actual messages will be passed into it
-    """
-
-    def __init__(
-        self,
-        version: str | None = None,
-        agent_address: str | None = None,
-    ) -> None:
-        super().__init__(
-            name="ChitChatDialogue",
-            version=version,
-            agent_address=agent_address,
-            nodes=[
-                default_state,
-                init_state,
-                chatting_state,
-                end_state,
-            ],
-            edges=[
-                init_session,
-                reject_session,
-                start_dialogue,
-                cont_dialogue,
-                end_session,
-            ],
-        )
-    
-    def on_initiate_session(self, model: Type[Model]):
+    ```python
+    class ChitChatDialogue(Dialogue):
         """
-        This handler is triggered when the initial message of the
-        dialogue is received. From here you can either accept or reject.
-        Logic that is needed to complete any kind of handshake or considers
-        global agent state should go here.
+        This is the specific definition of the rules for the chit-chat dialogue
+        The rules will be predefined and the actual messages will be passed into it
         """
-        return super()._on_state_transition(init_session.name, model)
 
-    def on_reject_session(self, model: Type[Model]):
-        """
-        This handler is triggered when a reject message is returned on
-        the initial message.
-        Implement this if you need to clean up session data.
-        """
-        return super()._on_state_transition(reject_session.name, model)
+        def __init__(
+            self,
+            version: str | None = None,
+            agent_address: str | None = None,
+        ) -> None:
+            super().__init__(
+                name="ChitChatDialogue",
+                version=version,
+                agent_address=agent_address,
+                nodes=[
+                    default_state,
+                    init_state,
+                    chatting_state,
+                    end_state,
+                ],
+                edges=[
+                    init_session,
+                    reject_session,
+                    start_dialogue,
+                    cont_dialogue,
+                    end_session,
+                ],
+            )
 
-    def on_start_dialogue(self, model: Type[Model]):
-        """
-        This handler is triggered when an accept message is returned on
-        the initial message.
-        Include logic to complete any handshake on the sender side and
-        prepare the actual message exchange.
-        """
-        return super()._on_state_transition(start_dialogue.name, model)
+        def on_initiate_session(self, model: Type[Model]):
+            """
+            This handler is triggered when the initial message of the
+            dialogue is received. From here you can either accept or reject.
+            Logic that is needed to complete any kind of handshake or considers
+            global agent state should go here.
+            """
+            return super()._on_state_transition(init_session.name, model)
 
-    def on_continue_dialogue(self, model: Type[Model]):
-        """
-        This handler is triggered for every incoming "chitchat" message
-        once the session has been accepted.
-        Any additional stateful information within a dialogue needs to be
-        persisted explicitly to access it at a later point in the dialogue.
-        """
-        return super()._on_state_transition(cont_dialogue.name, model)
+        def on_reject_session(self, model: Type[Model]):
+            """
+            This handler is triggered when a reject message is returned on
+            the initial message.
+            Implement this if you need to clean up session data.
+            """
+            return super()._on_state_transition(reject_session.name, model)
 
-    def on_end_session(self, model: Type[Model]):
-        """
-        This handler is triggered once the other party has ended the dialogue.
-        Any final conclusion or cleanup goes here.
-        """
-        return super()._on_state_transition(end_session.name, model)
-```
+        def on_start_dialogue(self, model: Type[Model]):
+            """
+            This handler is triggered when an accept message is returned on
+            the initial message.
+            Include logic to complete any handshake on the sender side and
+            prepare the actual message exchange.
+            """
+            return super()._on_state_transition(start_dialogue.name, model)
+
+        def on_continue_dialogue(self, model: Type[Model]):
+            """
+            This handler is triggered for every incoming "chitchat" message
+            once the session has been accepted.
+            Any additional stateful information within a dialogue needs to be
+            persisted explicitly to access it at a later point in the dialogue.
+            """
+            return super()._on_state_transition(cont_dialogue.name, model)
+
+        def on_end_session(self, model: Type[Model]):
+            """
+            This handler is triggered once the other party has ended the dialogue.
+            Any final conclusion or cleanup goes here.
+            """
+            return super()._on_state_transition(end_session.name, model)
+    ```
 
 The contents of this script are to be shared between the agents that want to use this dialogue. This defines the structure of the specific dialogue and the messages that are expected to be exchanged.
 
-## Step 2: Setting up agents
+## Step 2: Setting up Agents
 
-    - Setup `agent1` which receives initiate session from `agent2` and accepts the state.
-    - `agent2` sends continues chit chat dialogue message to agent 1 and continues the chat.
-    - if any of the agent sends `exit` message the dialogue is concluded.
-    - Run `cd ..` to go out of Dialogues directory and create pyhton script `agent1.py`, copy the below script into that.
+- Setup `agent1` which receives initiate session from `agent2` and accepts the state.
+- `agent2` sends continues chit chat dialogue message to agent 1 and continues the chat.
+- if any of the agent sends `exit` message the dialogue is concluded.
+- Run `cd ..` to go out of `Dialogues` directory and create Python script: `touch agent1.py`; copy the below script into that.
 
-```python copy filename="agent1.py"
-# Import required libraries
-import json
+    ```python copy filename="agent1.py"
+    # Import required libraries
+    import json
 
-from uagents import Agent, Context, Model
+    from uagents import Agent, Context, Model
 
-from dialogues.chitchat import ChitChatDialogue
+    from dialogues.chitchat import ChitChatDialogue
 
-CHAT_AGENT_ADDRESS = "<your_agent_2_address>"
+    CHAT_AGENT_ADDRESS = "<your_agent_2_address>"
 
-agent = Agent(
-    name="chit_agent",
-    seed="<random_string_of_choice>",
-    port=8001,
-    endpoint="http://127.0.0.1:8001/submit",
-)
-
-
-# define dialogue messages; each transition needs a separate message
-class InitiateChitChatDialogue(Model):
-    pass
-
-
-class AcceptChitChatDialogue(Model):
-    pass
-
-
-class ChitChatDialogueMessage(Model):
-    text: str
-
-
-class ConcludeChitChatDialogue(Model):
-    pass
-
-
-class RejectChitChatDialogue(Model):
-    pass
-
-
-# instantiate the dialogues
-chitchat_dialogue = ChitChatDialogue(
-    version="0.1",
-    agent_address=agent.address,
-)
-
-# get an overview of the dialogue structure
-print("Dialogue overview:")
-print(json.dumps(chitchat_dialogue.get_overview(), indent=4))
-print("---")
-
-
-@chitchat_dialogue.on_initiate_session(InitiateChitChatDialogue)
-async def start_chitchat(
-    ctx: Context,
-    sender: str,
-    _msg: InitiateChitChatDialogue,
-):
-    ctx.logger.info(f"Received init message from {sender}")
-    # do something when the dialogue is initiated
-    await ctx.send(sender, AcceptChitChatDialogue())
-
-
-@chitchat_dialogue.on_start_dialogue(AcceptChitChatDialogue)
-async def accept_chitchat(
-    ctx: Context,
-    sender: str,
-    _msg: AcceptChitChatDialogue,
-):
-    ctx.logger.info(
-        f"session with {sender} was accepted. I'll say 'Hello!' to start the ChitChat"
+    agent = Agent(
+        name="chit_agent",
+        seed="<random_string_of_choice>",
+        port=8001,
+        endpoint="http://127.0.0.1:8001/submit",
     )
-    # do something after the dialogue is started; e.g. send a message
-    await ctx.send(sender, ChitChatDialogueMessage(text="Hello!"))
 
+    # Define dialogue messages; each transition needs a separate message
+    class InitiateChitChatDialogue(Model):
+        pass
 
-@chitchat_dialogue.on_reject_session(RejectChitChatDialogue)
-async def reject_chitchat(
-    ctx: Context,
-    sender: str,
-    _msg: RejectChitChatDialogue,
-):
-    # do something when the dialogue is rejected and nothing has been sent yet
-    ctx.logger.info(f"Received reject message from: {sender}")
+    class AcceptChitChatDialogue(Model):
+        pass
 
+    class ChitChatDialogueMessage(Model):
+        text: str
 
-@chitchat_dialogue.on_continue_dialogue(ChitChatDialogueMessage)
-async def continue_chitchat(
-    ctx: Context,
-    sender: str,
-    msg: ChitChatDialogueMessage,
-):
-    # do something when the dialogue continues
-    ctx.logger.info(f"Received message: {msg.text}")
-    try:
-        my_msg = input("Please enter your message:\n> ")
-        if my_msg != "exit":
-            await ctx.send(sender, ChitChatDialogueMessage(text=my_msg))
-        else:
-            await ctx.send(sender, ConcludeChitChatDialogue())
-            ctx.logger.info(
-                f"Received conclude message from: {sender}; accessing history:"
-            )
-            ctx.logger.info(ctx.dialogue)
-    except EOFError:
-        await ctx.send(sender, ConcludeChitChatDialogue())
+    class ConcludeChitChatDialogue(Model):
+        pass
 
+    class RejectChitChatDialogue(Model):
+        pass
 
-@chitchat_dialogue.on_end_session(ConcludeChitChatDialogue)
-async def conclude_chitchat(
-    ctx: Context,
-    sender: str,
-    _msg: ConcludeChitChatDialogue,
-):
-    # do something when the dialogue is concluded after messages have been exchanged
-    ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
-    ctx.logger.info(ctx.dialogue)
-
-
-agent.include(chitchat_dialogue)
-
-if __name__ == "__main__":
-    print(f"Agent address: {agent.address}")
-    agent.run()
-```
-
-    - Create pyhton script `agent2.py`, copy the below script into that.
-
-```python copy filename="agent2.py"
-"""Chit chat dialogue example"""
-
-from asyncio import sleep
-
-from uagents import Agent, Context, Model
-
-from dialogues.chitchat import ChitChatDialogue
-
-CHIT_AGENT_ADDRESS = "<your_agent_1_address>"
-
-agent = Agent(
-    name="chat_agent",
-    seed="<random_string_of_choice>",
-    port=8002,
-    endpoint="http://127.0.0.1:8002/submit",
-)
-
-
-# define dialogue messages; each transition needs a separate message
-class InitiateChitChatDialogue(Model):
-    pass
-
-
-class AcceptChitChatDialogue(Model):
-    pass
-
-
-class ChitChatDialogueMessage(Model):
-    text: str
-
-
-class ConcludeChitChatDialogue(Model):
-    pass
-
-
-class RejectChitChatDialogue(Model):
-    pass
-
-
-# instantiate the dialogues
-chitchat_dialogue = ChitChatDialogue(
-    version="0.1",
-    agent_address=agent.address,
-)
-
-
-@chitchat_dialogue.on_initiate_session(InitiateChitChatDialogue)
-async def start_chitchat(
-    ctx: Context,
-    sender: str,
-    _msg: InitiateChitChatDialogue,
-):
-    ctx.logger.info(f"Received init message from {sender}")
-    # do something when the dialogue is initiated
-    await ctx.send(sender, AcceptChitChatDialogue())
-
-
-@chitchat_dialogue.on_start_dialogue(AcceptChitChatDialogue)
-async def accept_chitchat(
-    ctx: Context,
-    sender: str,
-    _msg: AcceptChitChatDialogue,
-):
-    ctx.logger.info(
-        f"session with {sender} was accepted. I'll say 'Hello!' to start the ChitChat"
+    # Instantiate the dialogues
+    chitchat_dialogue = ChitChatDialogue(
+        version="0.1",
+        agent_address=agent.address,
     )
-    # do something after the dialogue is started; e.g. send a message
-    await ctx.send(sender, ChitChatDialogueMessage(text="Hello!"))
 
+    # Get an overview of the dialogue structure
+    print("Dialogue overview:")
+    print(json.dumps(chitchat_dialogue.get_overview(), indent=4))
+    print("---")
 
-@chitchat_dialogue.on_reject_session(RejectChitChatDialogue)
-async def reject_chitchat(
-    ctx: Context,
-    sender: str,
-    _msg: RejectChitChatDialogue,
-):
-    # do something when the dialogue is rejected and nothing has been sent yet
-    ctx.logger.info(f"Received reject message from: {sender}")
+    @chitchat_dialogue.on_initiate_session(InitiateChitChatDialogue)
+    async def start_chitchat(
+        ctx: Context,
+        sender: str,
+        _msg: InitiateChitChatDialogue,
+    ):
+        ctx.logger.info(f"Received init message from {sender}")
+        # Do something when the dialogue is initiated
+        await ctx.send(sender, AcceptChitChatDialogue())
 
+    @chitchat_dialogue.on_start_dialogue(AcceptChitChatDialogue)
+    async def accept_chitchat(
+        ctx: Context,
+        sender: str,
+        _msg: AcceptChitChatDialogue,
+    ):
+        ctx.logger.info(
+            f"session with {sender} was accepted. I'll say 'Hello!' to start the ChitChat"
+        )
+        # Do something after the dialogue is started; e.g. send a message
+        await ctx.send(sender, ChitChatDialogueMessage(text="Hello!"))
 
-@chitchat_dialogue.on_continue_dialogue(ChitChatDialogueMessage)
-async def continue_chitchat(
-    ctx: Context,
-    sender: str,
-    msg: ChitChatDialogueMessage,
-):
-    ctx.logger.info(f"Received message: {msg.text}")
-    try:
-        my_msg = input("Please enter your message:\n> ")
-        if my_msg != "exit":
-            await ctx.send(sender, ChitChatDialogueMessage(text=my_msg))
-        else:
+    @chitchat_dialogue.on_reject_session(RejectChitChatDialogue)
+    async def reject_chitchat(
+        ctx: Context,
+        sender: str,
+        _msg: RejectChitChatDialogue,
+    ):
+        # Do something when the dialogue is rejected and nothing has been sent yet
+        ctx.logger.info(f"Received reject message from: {sender}")
+
+    @chitchat_dialogue.on_continue_dialogue(ChitChatDialogueMessage)
+    async def continue_chitchat(
+        ctx: Context,
+        sender: str,
+        msg: ChitChatDialogueMessage,
+    ):
+        # Do something when the dialogue continues
+        ctx.logger.info(f"Received message: {msg.text}")
+        try:
+            my_msg = input("Please enter your message:\n> ")
+            if my_msg != "exit":
+                await ctx.send(sender, ChitChatDialogueMessage(text=my_msg))
+            else:
+                await ctx.send(sender, ConcludeChitChatDialogue())
+                ctx.logger.info(
+                    f"Received conclude message from: {sender}; accessing history:"
+                )
+                ctx.logger.info(ctx.dialogue)
+        except EOFError:
             await ctx.send(sender, ConcludeChitChatDialogue())
-            ctx.logger.info(
-                f"Received conclude message from: {sender}; accessing history:"
-            )
-            ctx.logger.info(ctx.dialogue)
-    except EOFError:
-        await ctx.send(sender, ConcludeChitChatDialogue())
+
+    @chitchat_dialogue.on_end_session(ConcludeChitChatDialogue)
+    async def conclude_chitchat(
+        ctx: Context,
+        sender: str,
+        _msg: ConcludeChitChatDialogue,
+    ):
+        # Do something when the dialogue is concluded after messages have been exchanged
+        ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
+        ctx.logger.info(ctx.dialogue)
+
+    agent.include(chitchat_dialogue)
+
+    if __name__ == "__main__":
+        print(f"Agent address: {agent.address}")
+        agent.run()
+    ```
+
+- Create Python script: `touch agent2.py`; copy the below script into that.
+
+    ```python copy filename="agent2.py"
+    """Chit chat dialogue example"""
+
+    from asyncio import sleep
+
+    from uagents import Agent, Context, Model
+
+    from dialogues.chitchat import ChitChatDialogue
+
+    CHIT_AGENT_ADDRESS = "<your_agent_1_address>"
+
+    agent = Agent(
+        name="chat_agent",
+        seed="<random_string_of_choice>",
+        port=8002,
+        endpoint="http://127.0.0.1:8002/submit",
+    )
+
+    # Define dialogue messages; each transition needs a separate message
+    class InitiateChitChatDialogue(Model):
+        pass
+
+    class AcceptChitChatDialogue(Model):
+        pass
+
+    class ChitChatDialogueMessage(Model):
+        text: str
+
+    class ConcludeChitChatDialogue(Model):
+        pass
+
+    class RejectChitChatDialogue(Model):
+        pass
+
+    # Instantiate the dialogues
+    chitchat_dialogue = ChitChatDialogue(
+        version="0.1",
+        agent_address=agent.address,
+    )
+
+    @chitchat_dialogue.on_initiate_session(InitiateChitChatDialogue)
+    async def start_chitchat(
+        ctx: Context,
+        sender: str,
+        _msg: InitiateChitChatDialogue,
+    ):
+        ctx.logger.info(f"Received init message from {sender}")
+        # Do something when the dialogue is initiated
+        await ctx.send(sender, AcceptChitChatDialogue())
+
+    @chitchat_dialogue.on_start_dialogue(AcceptChitChatDialogue)
+    async def accept_chitchat(
+        ctx: Context,
+        sender: str,
+        _msg: AcceptChitChatDialogue,
+    ):
+        ctx.logger.info(
+            f"session with {sender} was accepted. I'll say 'Hello!' to start the ChitChat"
+        )
+        # Do something after the dialogue is started; e.g. send a message
+        await ctx.send(sender, ChitChatDialogueMessage(text="Hello!"))
+
+    @chitchat_dialogue.on_reject_session(RejectChitChatDialogue)
+    async def reject_chitchat(
+        ctx: Context,
+        sender: str,
+        _msg: RejectChitChatDialogue,
+    ):
+        # Do something when the dialogue is rejected and nothing has been sent yet
+        ctx.logger.info(f"Received reject message from: {sender}")
+
+    @chitchat_dialogue.on_continue_dialogue(ChitChatDialogueMessage)
+    async def continue_chitchat(
+        ctx: Context,
+        sender: str,
+        msg: ChitChatDialogueMessage,
+    ):
+        ctx.logger.info(f"Received message: {msg.text}")
+        try:
+            my_msg = input("Please enter your message:\n> ")
+            if my_msg != "exit":
+                await ctx.send(sender, ChitChatDialogueMessage(text=my_msg))
+            else:
+                await ctx.send(sender, ConcludeChitChatDialogue())
+                ctx.logger.info(
+                    f"Received conclude message from: {sender}; accessing history:"
+                )
+                ctx.logger.info(ctx.dialogue)
+        except EOFError:
+            await ctx.send(sender, ConcludeChitChatDialogue())
+
+    @chitchat_dialogue.on_end_session(ConcludeChitChatDialogue)
+    async def conclude_chitchat(
+        ctx: Context,
+        sender: str,
+        _msg: ConcludeChitChatDialogue,
+    ):
+        # Do something when the dialogue is concluded after messages have been exchanged
+        ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
+        ctx.logger.info(ctx.dialogue)
+
+    agent.include(chitchat_dialogue)
+
+    # Initiate dialogue by sending message to agent1
+    @agent.on_event("startup")
+    async def start_cycle(ctx: Context):
+        await sleep(5)
+        # use 'chitchat_dialogue.set_custom_session_id()' to set a custom session id (UUID4)
+        await ctx.send(CHIT_AGENT_ADDRESS, InitiateChitChatDialogue())
 
 
-@chitchat_dialogue.on_end_session(ConcludeChitChatDialogue)
-async def conclude_chitchat(
-    ctx: Context,
-    sender: str,
-    _msg: ConcludeChitChatDialogue,
-):
-    # do something when the dialogue is concluded after messages have been exchanged
-    ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
-    ctx.logger.info(ctx.dialogue)
-
-
-agent.include(chitchat_dialogue)
-
-
-# initiate dialogue by sending message to agent1
-@agent.on_event("startup")
-async def start_cycle(ctx: Context):
-    await sleep(5)
-    # use 'chitchat_dialogue.set_custom_session_id()' to set a custom session id (UUID4)
-    await ctx.send(CHIT_AGENT_ADDRESS, InitiateChitChatDialogue())
-
-
-if __name__ == "__main__":
-    print(f"Agent address: {agent.address}")
-    agent.run()
-```
+    if __name__ == "__main__":
+        print(f"Agent address: {agent.address}")
+        agent.run()
+    ```
 
     <Callout type="info" emoji="ℹ️">
       Remember to update the agent's address to communicate to each other and seed phrase of own choice. 
     </Callout>
 
-## Step 3: Run the Dialogue
+## Step 3: run the dialogue
 
-    - Start Agent 1:
-        - Run agent1 using `python agent1.py`
-        - Agent 1 is set to accept the dialogue initiation and respond with a greeting.
+- Start `agent 1`:
+
+    - Run `agent1` using `python agent1.py`
+    - Agent 1 is set to accept the dialogue initiation and respond with a greeting.
     <br></br>
-    - Start Agent 2:
-        - Run agent2.py using `python agent2.py`.
-        - This agent will automatically attempt to initiate a dialogue by sending an InitiateChitChatDialogue message to Agent 1.
+
+- Start `agent 2`:
+
+    - Run `agent2.py` using `python agent2.py`.
+    - This agent will automatically attempt to initiate a dialogue by sending an `InitiateChitChatDialogue` message to `agent1`.
 
 ## Expected output
     
-    - Agent1 logger/terminal output
-```
-abc@xyz-MacBook-Pro dialogues % python3 agent1.py 
-Dialogue overview:
-{
-    "nodes": [
-        {
-            "name": "Default State",
-            "description": "This is the default state of the dialogue. Every session starts in this state and is automatically updated once the dialogue starts.",
-            "initial": true,
-            "final": false
-        },
-        {
-            "name": "Initiated",
-            "description": "This is the initial state of the dialogue that is only available at the receiving agent.",
-            "initial": false,
-            "final": false
-        },
-        {
-            "name": "Chit Chatting",
-            "description": "This is the state in which messages are exchanged.",
-            "initial": false,
-            "final": false
-        },
-        {
-            "name": "Concluded",
-            "description": "This is the state after the dialogue has been concluded.",
-            "initial": false,
-            "final": true
-        }
-    ],
-    "edges": [
-        {
-            "name": "Initiate session",
-            "description": "Every dialogue starts with this transition.",
-            "parent": "Default State",
-            "child": "Initiated",
-            "model": null,
-            "starter": true,
-            "ender": false
-        },
-        {
-            "name": "Reject session",
-            "description": "This is the transition for when the dialogue is rejected",
-            "parent": "Initiated",
-            "child": "Concluded",
-            "model": null,
-            "starter": false,
-            "ender": true
-        },
-        {
-            "name": "Start dialogue",
-            "description": "This is the transition from initiated to chit chatting.",
-            "parent": "Initiated",
-            "child": "Chit Chatting",
-            "model": null,
-            "starter": false,
-            "ender": false
-        },
-        {
-            "name": "Continue dialogue",
-            "description": "This is the transition from one dialogue message to the next, i.e. for when the dialogue continues.",
-            "parent": "Chit Chatting",
-            "child": "Chit Chatting",
-            "model": null,
-            "starter": false,
-            "ender": false
-        },
-        {
-            "name": "End session",
-            "description": "This is the transition for when the session is ended.",
-            "parent": "Chit Chatting",
-            "child": "Concluded",
-            "model": null,
-            "starter": false,
-            "ender": true
-        }
-    ]
-}
----
-Agent address: agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j
-INFO:     [chit_agent]: Almanac registration is up to date!
-INFO:     [chit_agent]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
-INFO:     [chit_agent]: Received init message from agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu
-INFO:     [chit_agent]: Received message: Hello!
-Please enter your message:
-> Hello Chat agent, It's nice meeting you sir.
-INFO:     [chit_agent]: Received message: Do you know we are setting up example of how to use dialogues with agents.
-Please enter your message:
-> Ohh Really...!! Thats amazing.
-INFO:     [chit_agent]: Received message: We have done it, lets exit this conversation.
-Please enter your message:
-> exit
+- `agent1` logger/terminal output:
 
-```
+    ```
+    abc@xyz-MacBook-Pro dialogues % python3 agent1.py
+    Dialogue overview:
+    {
+        "nodes": [
+            {
+                "name": "Default State",
+                "description": "This is the default state of the dialogue. Every session starts in this state and is automatically updated once the dialogue starts.",
+                "initial": true,
+                "final": false
+            },
+            {
+                "name": "Initiated",
+                "description": "This is the initial state of the dialogue that is only available at the receiving agent.",
+                "initial": false,
+                "final": false
+            },
+            {
+                "name": "Chit Chatting",
+                "description": "This is the state in which messages are exchanged.",
+                "initial": false,
+                "final": false
+            },
+            {
+                "name": "Concluded",
+                "description": "This is the state after the dialogue has been concluded.",
+                "initial": false,
+                "final": true
+            }
+        ],
+        "edges": [
+            {
+                "name": "Initiate session",
+                "description": "Every dialogue starts with this transition.",
+                "parent": "Default State",
+                "child": "Initiated",
+                "model": null,
+                "starter": true,
+                "ender": false
+            },
+            {
+                "name": "Reject session",
+                "description": "This is the transition for when the dialogue is rejected",
+                "parent": "Initiated",
+                "child": "Concluded",
+                "model": null,
+                "starter": false,
+                "ender": true
+            },
+            {
+                "name": "Start dialogue",
+                "description": "This is the transition from initiated to chit chatting.",
+                "parent": "Initiated",
+                "child": "Chit Chatting",
+                "model": null,
+                "starter": false,
+                "ender": false
+            },
+            {
+                "name": "Continue dialogue",
+                "description": "This is the transition from one dialogue message to the next, i.e. for when the dialogue continues.",
+                "parent": "Chit Chatting",
+                "child": "Chit Chatting",
+                "model": null,
+                "starter": false,
+                "ender": false
+            },
+            {
+                "name": "End session",
+                "description": "This is the transition for when the session is ended.",
+                "parent": "Chit Chatting",
+                "child": "Concluded",
+                "model": null,
+                "starter": false,
+                "ender": true
+            }
+        ]
+    }
+    ---
+    Agent address: agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j
+    INFO:     [chit_agent]: Almanac registration is up to date!
+    INFO:     [chit_agent]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [chit_agent]: Received init message from agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu
+    INFO:     [chit_agent]: Received message: Hello!
+    Please enter your message:
+    > Hello Chat agent, It's nice meeting you sir.
+    INFO:     [chit_agent]: Received message: Do you know we are setting up example of how to use dialogues with agents.
+    Please enter your message:
+    > Ohh Really...!! Thats amazing.
+    INFO:     [chit_agent]: Received message: We have done it, lets exit this conversation.
+    Please enter your message:
+    > exit
 
-    - Agent2 logger/terminal output
+    ```
 
-```
-abc@xyz-MacBook-Pro dialogues % python3 agent2.py 
-Agent address: agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu
-INFO:     [chat_agent]: Almanac registration is up to date!
-INFO:     [chat_agent]: Starting server on http://0.0.0.0:8002 (Press CTRL+C to quit)
-INFO:     [chat_agent]: session with agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j was accepted. I'll say 'Hello!' to start the ChitChat
-INFO:     [chat_agent]: Received message: Hello Chat agent, It's nice meeting you sir.
-Please enter your message:
-> Do you know we are setting up example of how to use dialogues with agents.
-INFO:     [chat_agent]: Received message: Ohh Really...!! Thats amazing.
-Please enter your message:
-> We have done it, lets exit this conversation.
-INFO:     [chat_agent]: Received conclude message from: agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j; accessing history:
-INFO:     [chat_agent]: [{'message_type': 'InitiateChitChatDialogue', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{}', 'timestamp': 1713352925.25236, 'timeout': 60}, {'message_type': 'AcceptChitChatDialogue', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{}', 'timestamp': 1713352925.363479, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "Hello!"}', 'timestamp': 1713352925.364252, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{"text": "Hello Chat agent, It\'s nice meeting you sir."}', 'timestamp': 1713352940.489155, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "Do you now we are setting up example of how to use dialogues with agents."}', 'timestamp': 1713352978.223705, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{"text": "Ohh Really...!! Thats amazing."}', 'timestamp': 1713353000.452756, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "We have done it, lets exit this conversation."}', 'timestamp': 1713353026.271922, 'timeout': 60}, {'message_type': 'ConcludeChitChatDialogue', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{}', 'timestamp': 1713353031.887555, 'timeout': 60}]
-```
+- `agent2` logger/terminal output:
 
+    ```
+    abc@xyz-MacBook-Pro dialogues % python3 agent2.py
+    Agent address: agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu
+    INFO:     [chat_agent]: Almanac registration is up to date!
+    INFO:     [chat_agent]: Starting server on http://0.0.0.0:8002 (Press CTRL+C to quit)
+    INFO:     [chat_agent]: session with agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j was accepted. I'll say 'Hello!' to start the ChitChat
+    INFO:     [chat_agent]: Received message: Hello Chat agent, It's nice meeting you sir.
+    Please enter your message:
+    > Do you know we are setting up example of how to use dialogues with agents.
+    INFO:     [chat_agent]: Received message: Ohh Really...!! Thats amazing.
+    Please enter your message:
+    > We have done it, lets exit this conversation.
+    INFO:     [chat_agent]: Received conclude message from: agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j; accessing history:
+    INFO:     [chat_agent]: [{'message_type': 'InitiateChitChatDialogue', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{}', 'timestamp': 1713352925.25236, 'timeout': 60}, {'message_type': 'AcceptChitChatDialogue', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{}', 'timestamp': 1713352925.363479, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "Hello!"}', 'timestamp': 1713352925.364252, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{"text": "Hello Chat agent, It\'s nice meeting you sir."}', 'timestamp': 1713352940.489155, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "Do you now we are setting up example of how to use dialogues with agents."}', 'timestamp': 1713352978.223705, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{"text": "Ohh Really...!! Thats amazing."}', 'timestamp': 1713353000.452756, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "We have done it, lets exit this conversation."}', 'timestamp': 1713353026.271922, 'timeout': 60}, {'message_type': 'ConcludeChitChatDialogue', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{}', 'timestamp': 1713353031.887555, 'timeout': 60}]
+    ```

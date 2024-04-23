@@ -6,16 +6,15 @@ When you want to run an agent on your own hardware or infrastructure locally, th
 
 ## Introduction
 
-This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over `agentverse` and `deltaV` using `mailroom`. The example uses a locally hosted agent that utilizes LangChain's Wikipedia integration to process requests related to Wikipedia search. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible, we will also go to [agentverse ↗️](/concepts/agent-services/agentverse-intro) to create a new service for the agent to then allow this agent to be found in DeltaV.
+This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over **Agentverse and DeltaV` using the [Mailroom ↗️](/guides/agentverse/utilising-the-mailbox). The example uses a locally hosted agent that utilizes LangChain's Wikipedia integration to process requests related to Wikipedia search. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible, we will also go to [Agentverse ↗️](/concepts/agent-services/agentverse-intro) to create a new service for the agent to then allow this agent to be found in DeltaV.
 
 ## Prerequisites
 
     - Python 3.10 or newer.
     - An [Agentverse ↗️](https://agentverse.ai/) account to create service and mailroom's mailbox.
-    - `uagents` and `langchain_community` libraries installed in your Python environment
+    - `uagents` and `langchain_community` libraries installed in your Python environment:
         - `pip install uagents`, `pip install langchain_community`.
-    - `pip install wikipedia` to install wikipedia.
-
+    - `pip install wikipedia` to install Wikipedia.
 
 ## Agent Configuration
 
@@ -68,20 +67,19 @@ WikiAgent.include(wiki_protocol, publish_manifest=True)
 WikiAgent.run()
 ```
 
-
 Run the script in local machine using `python agent.py` and get the agent's address. Use this agent's address to create an [mailbox ↗️](https://agentverse.ai/mailroom) and replace with `Your_Mailbox_key`
 
-<Callout type="info" emoji="ℹ️">
-Remember to replace `Your_Mailbox_key` key with Agentverse Mailbox key.
-</Callout>
+    <Callout type="info" emoji="ℹ️">
+      Remember to replace `Your_Mailbox_key` key with Agentverse Mailbox key.
+    </Callout>
 
 Using `on_message` handler, agent takes the search keyword and returns the information with that keyword to the deltaV agent for that address.
 
 `.run()` initialises the agent.
 
-Rerun the script `python agent.py`, this will initialize the agent so agent can receive messages, and other agents know where to communicate with them. 
+Rerun the script `python agent.py`, this will initialize the agent so agent can receive messages, and other agents know where to communicate with them.
+
 We define our `protocol`, which is just an string as seen in the `WikiRequest` object.
->>>>>>> 39ae2d88fc32ba046e2d541694e91943240652b6
 
 Finally, we run our agent as follows: `python agent.py`
 
@@ -95,7 +93,7 @@ INFO:     [Wiki Agent]: Connecting to mailbox server at agentverse.ai
 INFO:     [Wiki Agent]: Mailbox access token acquired
 ```
 
-## Creating a service Group:
+## Creating a service group
 
 For this example we set up a really simple service with a new private service group `Wikidata`, for further information on services and service groups see [Registering Agent Services ↗️](/guides/agentverse/registering-agent-services).
 
