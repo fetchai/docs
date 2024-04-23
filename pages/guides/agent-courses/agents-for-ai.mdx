@@ -26,7 +26,7 @@ To build your solution on Fetch.ai, you need to understand four concepts: [Agent
 
 Let's try and keep this simple 🎉:
 
- - **Agents**: These are programs that work as you instruct them. Classically, they are part of a multi-agent system where they have a task and communicate with other agents. But their primary use is to represent a service, a function or data that can be accessed by DeltaV.
+ - **Agents**: These are programs that work as you instruct them. Classically, they are part of a multi-agent system where they have a task and communicate with other agents. But their primary use in this case is to represent a service, a function or data that can be accessed by DeltaV.
 
  - **Agentverse**: It is a managed hosting platform, an online IDE, and an entry point to AI Engine for Agents. You would register your Agents on Agentverse to be a service in the network.
 
@@ -59,7 +59,7 @@ diagnostics on a system, and each component in that system would independently g
 
 To understand this, we need to look into a few more concepts:
 
-![](../../../src/images/guides/system.svg)
+![](../../../src/images/guides/101/sequence.svg)
 
 Here, two separate processes are happening. The first part of the sequence diagram registers two Agents:
 
@@ -93,7 +93,7 @@ If you've never installed anything for uAgent development, checkout these guides
     - [setup the development environment](/guides/agents/installing-uagent#development-tools)
     - [Install uAgents locally](/guides/agents/installing-uagent#install-with-pip)
 
-### Create your first agent: the HTML summariser
+### Create your first agent: the text sentiment agent
 
 We're going to run our agents locally, and set up a Mailbox on Agentverse.
 
@@ -101,96 +101,78 @@ We're going to run our agents locally, and set up a Mailbox on Agentverse.
        Checkout the [Utilizing the Agentverse Mailroom service 📬 ↗️](/guides/agentverse/utilising-the-mailbox) for a better understanding of Agentverse Mailroom feature.
     </Callout>
 
-In this guide, our first agent takes some HTML and summarises the contents with **Langchain** and **OpenAI**.
+In this guide, our first agent takes any text and returns a sentiment of contents with **openAI**
 
 We need to create a Python file for this example.
-We can do this by running: `touch html_summary_agent.py`
+We can do this by running: `touch sentiment_agent.py`
 
-    ```py copy filename="html_summary_agent.py"
-    from langchain.chains.summarize import load_summarize_chain
-    from langchain_community.document_loaders import UnstructuredHTMLLoader
-    from langchain_openai import ChatOpenAI
+    ```py copy filename="sentiment_agent.py"
     from uagents import Agent, Context, Protocol, Model
     from ai_engine import UAgentResponse, UAgentResponseType
-    import os
+    import openai
 
-    class HTML(Model):
+    class SentimentResponse(Model):
         text: str
 
-    SEED_PHRASE = "let us summarise v2"
-    AGENT_MAILBOX_KEY = "AGENT_MAILBOX_KEY"
-    OPENAI_API_KEY = "OPENAI_API_KEY"
+    SEED_PHRASE = ""
+    AGENT_MAILBOX_KEY = ""
 
-    summaryAgent = Agent(
-        name="SummaryAgent",
+    sentimentAgent = Agent(
+        name="SentimentAgent", #or any name
         seed=SEED_PHRASE,
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
 
-    summary_protocol = Protocol("Text Summariser")
+    print(sentimentAgent.address)
 
-    print(summaryAgent.address)
-    print(OPENAI_API_KEY)
+    content_protocol = Protocol("text sentiment analysis")
 
-    @summary_protocol.on_message(model=HTML, replies={UAgentResponse})
-    async def summarise(ctx: Context, sender: str, msg: HTML):
-        with open("./temp.html", "w", encoding="utf-8") as f:
-            f.write(msg.text)
+    def get_sentiment(text):
+        response = openai.chat.completions.create(
 
-        # Step 1: Initialize WebBaseLoader with the given URL
-        loader = UnstructuredHTMLLoader("./temp.html")
+            messages=[{
+                "role": "user",
+                "content": f"Sentiment analysis of the following text:\n{text}\n",
+            }], model = ("gpt-3.5-turbo"))
 
-        # Step 2: Load the document
-        docs = loader.load()
+        return response.choices[0].message.content
 
-        # Step 3: Load summarization chain
-        llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, temperature=0, model_name="gpt-3.5-turbo-1106")
-        chain = load_summarize_chain(llm, chain_type="stuff")
+    @content_protocol.on_message(model=SentimentResponse, replies={UAgentResponse})
+    async def sentiment(ctx: Context, sender: str, msg: SentimentResponse):
 
-        # Step 4: Run the summarization chain on the loaded document
-        summarized_content = chain.invoke(docs)
-        summarized = summarized_content["input_documents"][0].to_json()
-
-        # Step 5: Define the needed dependencies
-        dependencies = {
-            "langchain": ">=1.0.0",
-            "langchain_community": ">=1.0.0",
-            "langchain_openai": ">=1.0.0"
-        }
-
-        result = chain.invoke(docs)
-
+        sentiment = get_sentiment(msg.text)
         await ctx.send(
-            sender,
-            UAgentResponse(message=(result["output_text"]), type=UAgentResponseType.FINAL),
+            sender, UAgentResponse(message=sentiment, type=UAgentResponseType.FINAL)
         )
 
-    summaryAgent.include(summary_protocol, publish_manifest=True)
-    summaryAgent.run()
+    sentimentAgent.include(content_protocol, publish_manifest=True)
+    sentimentAgent.run()
     ```
 
-Okay, we've got the whole code block above for our first Agent. We're going to assume you know about Python imports on Agentverse; if you don't, please have a look at the [Agentverse: allowed imports ↗️](/guides/agentverse/allowed-imports) guide for clarity around the imports currently available within the Agentverse.
+Okay, we've got the whole code block above for our first Agent. This agent does not run on agentverse currently, as
+openai is unsupported.
 
 There are a lot of really cool, neat things you need to know from code above. Let's explore it:
 
     ```py copy
-    class HTML(Model):
-            text: str
+    class SentimentResponse(Model):
+        text: str
 
-        SEED_PHRASE = "SEED_PHRASE"
-        AGENT_MAILBOX_KEY = "AGENT_MAILBOX_KEY"
-        OPENAI_API_KEY = "OPENAI_API_KEY"
+    SEED_PHRASE = ""
+    AGENT_MAILBOX_KEY = ""
 
-        summaryAgent = Agent(
-            name="SummaryAgent",
-            seed=SEED_PHRASE,
-            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-        )
+    sentimentAgent = Agent(
+        name="SentimentAgent", #or any name
+        seed=SEED_PHRASE,
+        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+    )
 
-        summary_protocol = Protocol("Text Summariser")
+    print(sentimentAgent.address)
+
+    content_protocol = Protocol("text sentiment analysis")
     ```
 
-    - The `class HTML` defines the structure of the message the agent expects to receive. In this case, each message
+    - The `class SentimentResponse` defines the structure of the message the agent expects to receive. In this case, each message
     should have `text` variable
 
     - `SEED_PHRASE` is our agents unique seed.
@@ -201,64 +183,44 @@ There are a lot of really cool, neat things you need to know from code above. Le
 
 We can now initialise the Agent and define the [Protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). To read more about **Agent objects**, please checkout [the reference docs](/references/uagents/uagents-api/agent#agent-objects)
 
-Then, we have the **on_message()** handler.
+Then, we have the **on_message()** handler:
 
     ```py copy
-    @summary_protocol.on_message(model=HTML, replies={UAgentResponse})
-    async def summarise(ctx: Context, sender: str, msg: HTML):
-        with open("./temp.html", "w", encoding="utf-8") as f:
-            f.write(msg.text)
+    @content_protocol.on_message(model=SentimentResponse, replies={UAgentResponse})
+    async def sentiment(ctx: Context, sender: str, msg: SentimentResponse):
 
-        # Step 1: Initialize WebBaseLoader with the given URL
-        loader = UnstructuredHTMLLoader("./temp.html")
-
-        # Step 2: Load the document
-        docs = loader.load()
-
-        # Step 3: Load summarization chain
-        llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, temperature=0, model_name="gpt-3.5-turbo-1106")
-        chain = load_summarize_chain(llm, chain_type="stuff")
-
-        # Step 4: Run the summarization chain on the loaded document
-        summarized_content = chain.invoke(docs)
-        summarized = summarized_content["input_documents"][0].to_json()
-
-        # Step 5: Define the needed dependencies
-        dependencies = {
-            "langchain": ">=1.0.0",
-            "langchain_community": ">=1.0.0",
-            "langchain_openai": ">=1.0.0"
-        }
-
-        result = chain.invoke(docs)
-
+        sentiment = get_sentiment(msg.text)
         await ctx.send(
-            sender,
-            UAgentResponse(message=(result["output_text"]), type=UAgentResponseType.FINAL),
+            sender, UAgentResponse(message=sentiment, type=UAgentResponseType.FINAL)
         )
 
     ```
 
-We  need a way for our Agent to receive messages. We do this by creating a function for our agent to handle all
- incoming messages from other Agents. We use `on_message()` decorator which activates the `summarise()` function once
- our Agent receives a message matching the `HTML` Message data Model we previously defined.
+We need a way for our Agent to receive messages. We do this by creating a function for our agent to handle all
+ incoming messages from other Agents. We use `on_message()` decorator which activates the `sentiment()` function once
+ our Agent receives a message matching the `SentimentResponse` Message data Model we previously defined. Internally
+you can see that `sentiment()` calls `get_sentiment()`, this is useful for you as a developer as this shows that
+calling another function inside a decorated function is easy to do.
 
 We can finally run the Agent at the bottom of the script:
 
     ```py
-    summaryAgent.include(summary_protocol, publish_manifest=True)
-    summaryAgent.run()
+    sentimentAgent.include(content_protocol, publish_manifest=True)
+    sentimentAgent.run()
     ```
 
 Including the protocol in the Agent effectively allows other Agents to know how this Agent expects communication.
 
-You can run this with `poetry run python html_summary_agent.py`.
+You can run this with `poetry run python sentiment_agent.py`.
 
 You'll see something like `agent1qtc5m8xudkm6gjv98k3kxl3ydzhkhzsfx6pgla0mzlgsawlqkzkvcjh5en2` in the terminal.
 
 Let's use this address to create a **Mailbox** on the Agentverse.
 
-### Creating a Mailbox for Summary Agent
+### Creating a Mailbox for Sentiment Agent
+
+A mailbox is a service provided by agentverse that allows agents to receive messages when they're not running online.
+uAgents library will poll for new messages (and old unread ones) when your agent is running. Pretty handy.
 
 Let's go to [agentverse.ai](https://agentverse.ai/mailroom) and create a Mailbox.
 
@@ -278,100 +240,200 @@ Update the `AGENT_MAILBOX_KEY = "AGENT_MAILBOX_KEY"` inline.
 
 Now, you can restart your agent and it will be registered to the Mailbox.
 
-Your terminal output will looking similar to the following:
+Your terminal output will look similar to the following:
 
     ```
     Poetry run python html_summary_agent.py
     agent1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX4
-    INFO:     [SummaryAgent]: Manifest published successfully: Text Summariser
-    INFO:     [SummaryAgent]: Almanac registration is up to date!
-    INFO:     [SummaryAgent]: Connecting to mailbox server at agentverse.ai
-    INFO:     [SummaryAgent]: Mailbox access token acquired
+    INFO:     [SentimentAgent]: Manifest published successfully: Text Sentiment
+    INFO:     [SentimentAgent]: Almanac registration is up to date!
+    INFO:     [SentimentAgent]: Connecting to mailbox server at agentverse.ai
+    INFO:     [SentimentAgent]: Mailbox access token acquired
     ```
 
-Okay, take a quick break then let's create the second agent ☕.
+#### Let's run this agent on deltaV, it'll be good to test, right?
 
-### Create the HTML downloading Agent
+We're going to need to create a service on agentverse, to get a comprehensive overview of what services are visit
+[our agent services guide️ ↗️](/guides/services/services). A **Service** refers to an Agent enrolled within the Agentverse, and made discoverable by other agents and users for interaction. For instance, a service could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Services are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
 
-The next agent in the chain is the **HTML downloading agent**. Let's name the script `web_download_agent.py`. This Agents has the same structure as the summary agent we previously defined.
+Let's go to [agentverse.ai/service](https://agentverse.ai/services) and create a service. You will probably need to
+create a service group to. A service group is just a name given to a group of services so you can link all your
+services neatly within AI Engine.
+
+
+The following is the service for the **SentimentAgent**:
+![](../../../src/images/guides/101/service_sentiment_b.png)
+
+Really simple just defining what this function does. Simplicity for single function descriptions is good.
+
+
+Let's head over to deltaV and communicate with our agent.
+
+I'm going to go ahead and ask:
+
+ > "Provide the sentiment from this text "Petrol prices across the UK have hit an average 150.1p a litre, reaching the
+ highest level since last November, according to the AA motoring group. Data also showed that average diesel prices rose to 158.3p a litre on Monday. Experts blamed a rise in oil prices because of tensions in the Middle East, as well as a weaker pound compared to the dollar. The AA predicted drivers would "re-tighten their belts on other spending". While overall inflation - which measures the pace of price rises - has eased, the cost of petrol and diesel both rose in March. "Inflation has been heading downwards at quite some speed but petrol's rebound to 150p a litre leaves a big boulder in the road," said Luke Bosdet, the AA's spokesman on pump prices. Prices are based on data collected by the Competition and Markets Authority (CMA) from nearly 3,000 forecourts and analysed by market research firm Fuel Prices Online. Data showed that 28.1% of the forecourts were charging at least 150p per litre for petrol on Monday, up from 23.8% a week earlier. But Mr Bosdet predicted that fuel prices are unlikely to be elevated for long with wholesale costs easing a little in recent days, adding that filling up "may not get much worse in the short-term". Oil prices have fallen after they spiked in the wake of Israel's retaliatory attack on Iran last week. Caroline Bain, chief commodities economist at Capital Economics, said: "Given that there will be some lag between spot crude oil prices in financial markets and prices on the forecourt, the latest rise is perhaps not so surprising." While Brent crude - a key benchmark for oil prices internationally - has receded from last week, it is still trading 13% higher at $87 per barrel compared to the start of the year."
+
+oil, is often an issue in UK news. Let's find out the sentiment.
+
+![](../../../src/images/guides/101/1_sentiment_deltav.png) Note here, the service group is the name you defined when
+you created yours.
+
+![](../../../src/images/guides/101/2_sentiment_deltav.png)
+
+DeltaV tells us AI engine has found a function for our query, and checks we want to send the information we defined.
+
+![](../../../src/images/guides/101/3_sentiment_deltav.png)
+
+Then, DeltaV get the response from our service and returns this to the user.
+
+Your agent running locally to you should have a similar output to this:
+
+```
+INFO:     [sentiment]: Manifest published successfully: text sentiment analysis
+INFO:     [sentiment]: Almanac registration is up to date!
+INFO:     [sentiment]: Connecting to mailbox server at agentverse.ai
+INFO:     [sentiment]: Mailbox access token acquired
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+```
+
+
+Okay, take a quick break then let's create the second agent; it's time to introduce multi agent workflows ☕.
+
+### Create the Webpage Summary Agent
+
+The next agent in the chain is the **Summary agent**. Let's name the script `web_summary_agent.py`. This
+Agent has the same structure as the sentiment agent we previously defined.
 
 Let's take a look.
 
     ```py copy filename="web_download_agent.py"
-        from uagents import Agent, Context, Protocol, Model
-        from ai_engine import UAgentResponse, UAgentResponseType
-        import requests
+        from langchain.chains.summarize import load_summarize_chain
+    from langchain_community.document_loaders import UnstructuredHTMLLoader
+    from langchain_openai import ChatOpenAI
+    from uagents import Agent, Context, Protocol, Model
+    from ai_engine import UAgentResponse, UAgentResponseType
+    import requests
+    import os
 
-        class Text(Model):
-            url: str
+    class SummaryRequest(Model):
+        url: str
 
-        SEED_PHRASE = "harvesting your sunshine forever okah"
-        AGENT_MAILBOX_KEY = "2006010d-24ec-4874-b83a-eb992b64946a"
-        textAgent = Agent(
-            name="aloha",
-            seed=SEED_PHRASE,
-            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-        )
 
-        content_protocol = Protocol("Web page content getter")
+    SEED_PHRASE = ""
+    AGENT_MAILBOX_KEY = ""
+    OPENAI_API_KEY = ""
 
-        print(textAgent.address)
+    summaryAgent = Agent(
+        name="SummaryAgent",
+        seed=SEED_PHRASE,
+        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+    )
 
-        def get_webpage(url):
-            r = requests.get(url)
-            return r.text
+    summary_protocol = Protocol("Text Summariser")
 
-        @content_protocol.on_message(model=Text, replies={UAgentResponse})
-        async def page_content(ctx: Context, sender: str, msg: Text):
-            message = get_webpage(msg.url)
-            await ctx.send(
-                sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
-            )
+    print(summaryAgent.address)
+    print(OPENAI_API_KEY)
 
-        textAgent.include(content_protocol, publish_manifest=True)
-        textAgent.run()
+
+    @summary_protocol.on_message(model=SummaryRequest, replies={UAgentResponse})
+    async def summarise(ctx: Context, sender: str, msg: SummaryRequest):
+
+    r = requests.get(msg.url)
+    with open("./temp.html", "w", encoding="utf-8") as f:
+        f.write(r.text)
+
+    # Step 1: Initialize WebBaseLoader with the given URL
+    loader = UnstructuredHTMLLoader("./temp.html")
+
+    # Step 2: Load the document
+    docs = loader.load()
+
+    # Step 3: Load summarization chain
+    llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, temperature=0, model_name="gpt-3.5-turbo-1106")
+    chain = load_summarize_chain(llm, chain_type="stuff")
+
+    # Step 4: Run the summarization chain on the loaded document
+    summarized_content = chain.invoke(docs)
+    summarized = summarized_content["input_documents"][0].to_json()
+
+    # Step 5: Define the needed dependencies
+    dependencies = {
+        "langchain": ">=1.0.0",
+        "langchain_community": ">=1.0.0",
+        "langchain_openai": ">=1.0.0"
+    }
+
+    result = chain.invoke(docs)
+
+    await ctx.send(
+        sender,
+        UAgentResponse(message=(result["output_text"]), type=UAgentResponseType.FINAL),
+    )
+
+
+    summaryAgent.include(summary_protocol, publish_manifest=True)
+    summaryAgent.run()
     ```
 
-This Agent is simple again, hopefully you're seeing a pattern here. These Agents are part of a chain, a chain of
-two. They're Agents that really are functions; each agent on message returns an explicit response.
+This Agent is simple again, hopefully you're seeing a pattern here. These Agents while independent of eachother can
+compliment one another. I
 
     <Callout type="info" emoji="ℹ️">
        Checkout the [Communicating with other agents 📱🤖](/guides/agents/communicating-with-other-agents) guide to check how agents communication work without the AI Engine.
     </Callout>
 
-The key difference in `web_download_agent.py` is that this agent calls another function, the logic itself is different in that the purpose is to call a webpage and return its content; and of course the `Model` is different.
+Aside from the different logic, the primary difference in `web_summary_agent.py` is that this agent does not rely on
+a separate function, and wraps the whole logic in the message handler.
 
 Let's run this one too. Again, follow the steps for the previous Agent and go and register a Mailbox and update this
 agent with the new Mailbox. Each agent much have a unique Mailbox.
 
-## Let's go create some services!
+## One more service 🎵
 
-A **Service** refers to an Agent enrolled within the Agentverse (thus, on the Fetch Network), and made discoverable by other agents and users for interaction. For instance, a service could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Services are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
+The following is the service for the **Summary_agent**:
 
-You can create an Agent Service by first developing an Agent embodying the service you intend to offer - and then making sure your agent is up and running. You will then need to upload its protocols and manifests to the Almanac contract by running the agent. This step integrates your agent into the Fetch network, enabling it to be discovered by other agents. After successful uploading, you can register your agent as a service on the Agentverse platform using the available dedicated section. During registration, you'll need to provide comprehensive information about your service, including its title, description, group, protocols, models, and field descriptions. Here you will also have to classify your service as a **task** or a **subtask**:
+![](../../../src/images/guides/101/service_url_summary.png)
 
-    - **Tasks** define the primary goals or functionalities that users expect agents to perform. Tasks can widely vary ranging from retrieving specific information to performing actions on behalf of the user. For instance, a task could be "Retrieve News Headlines," "Book a Flight," or "Schedule a Meeting."
 
-    - **Subtasks** handle specific aspects of the task and often require additional context or information to execute effectively. For instance, if the task is "Retrieve News Headlines" then the subtasks could be "Fetch Business News," "Retrieve Technology News," or "Get News from USA". Subtasks break down larger tasks into smaller, more manageable steps, allowing to efficiently execute the desired functionalities.
+This one is quite simple, but we are defining this as a subtask. A subtask tells AI engine that this function should
+only be called to support another agent, and not as a primary response. You can learn more about this in our
+[services guide ↗](guides/services/services#tasks-and-subtasks)
 
-It is at this point that you have the option to organize your services into customized **Service Groups** which act as convenient bundles, thus making it easier for the AI Engine to categorize and understand the services available within the Agentverse. To guarantee the correct functioning of the AI Engine and ensuring it will pick the correct Agents for execution, **you need to provide a detailed description of the service you are registering**. This is super important given that the AI Engine would rely on these descriptions to accurately comprehend the functionality of the services being registered. Therefore, it's crucial to provide clear and comprehensive descriptions!
+We also need to go and update the sentiment service...
 
-The following is the service for the **SummaryAgent**:
+![](../../../src/images/guides/101/service_sentiment_b.png)
 
-![](../../../src/images/guides/101/summary_service.png)
+Oh my, that is quite the field description.
+
+> "This agent will return a sentiment score from the provided text.
+This MUST NOT be a URL or something that looks like a webpage address. If one of these is provided the content of
+that must be generated from another subtask.
+Text is the content to be analysed, this must be a structured body of prose."
+
+We're talking to an LLM and the above should reinforce that. We're telling the AI Engine that this function returns
+sentiment analysis on text. However when this service is called, the user could also provide a URL. If a URL is
+provided then the AI engine must get that from somewhere else. Let's test this.
+
+
 
 ## Let's go to DeltaV!
 
-**DeltaV** serves as an AI-based chat acting as a front-end interface for users to engage with the AI Engine using natural language queries. Users' queries are interpreted by the underlying AI Engine which elaborates them and execute tasks accordingly to guarantee the best service execution to users. Developers can integrate their Agent services with Large Language Models (LLMs), Machine Learning (ML) models or APIs and make them accessible via DeltaV.
+We're hoping here that we can ask for a sentiment of a webpage. You may need to adjust your question, or update
+field descriptions for this to work perfectly, but in latest this is working for us (24/4/2024).
 
-![](../../../src/images/guides/101/start.png)
+![](../../../src/images/guides/101/1_starting_chat.png)
 
-![](../../../src/images/guides/101/deltav-check.png)
+![](../../../src/images/guides/101/2_subtask_found.png)
 
-![](../../../src/images/guides/101/full.png)
+![](../../../src/images/guides/101/3_confirm_url.png)
+
+![](../../../src/images/guides/101/4_end.png)
 
 ## What's next?
 
-It's time to put your newfound skills to work and create your first Agent Service. We invite you to dive deeper into the world of Agents, Agentverse and AI Engine by exploring the dedicated documentation and [GitHub ↗️](https://github.com/fetchai/) repository. Join our [Discord ↗️](https://discord.com/invite/fetchai) and team up with other developers to participate in hackathons, collectively build projects, or simply have fun!
+Thank you for sticking with us on this guide, this guide aims to show you the true potential of an Ai system that
+can execute code at the prompt of a user.
 
-We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.
+We invite you to dive deeper into the world of Agents, Agentverse and AI Engine by exploring the dedicated documentation and [GitHub ↗️](https://github.com/fetchai/) repository. Join our [Discord ↗️](https://discord.com/invite/fetchai) and team up with other developers to participate in hackathons, collectively build projects, or simply have fun!
+
