@@ -17,7 +17,7 @@ PROFILES = {
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BUILD_ENV_VARS = (
-    'NEXT_PUBLIC_BACKEND_URL',
+    'BACKEND_URL',
     'NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID',
 )
 
