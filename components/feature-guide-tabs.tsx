@@ -80,7 +80,7 @@ export const FeatureGuideTabs = () => {
           path: "guides/agents/cleaning-demo",
         },
         {
-          title: "Getting an agent addresses 🤖📫",
+          title: "Agent address 🤖📫",
           description: "A guide showing how to retrieve agents addresses.",
           path: "guides/agents/getting-uagent-address",
         },
