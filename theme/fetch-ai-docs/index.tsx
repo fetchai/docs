@@ -384,7 +384,7 @@ const Toast = (bookMarkSuccess: string) => (
     transition={{
       delay: 0,
       ease: "easeInOut",
-      duration:0.1
+      duration: 0.1,
     }}
     id="nx-toast-success"
     className="nx-flex nx-fixed nx-bottom-0 nx-right-0 nx-w-[270px] nx-items-center nx-p-4 nx-mb-4 nx-text-gray-500 nx-bg-white nx-rounded-lg nx-shadow"
