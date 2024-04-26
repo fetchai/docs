@@ -362,30 +362,18 @@ This package is used for generating random numbers, managing random selections, 
           client.close()
           ```
 
-
 #### _strptime
 
-`_strptime` is a function within the Python `datetime` module used for parsing strings into datetime objects. It's utilised internally by the `strptime()` method of the `datetime` class.
-
+`_strptime` is a method from the `datetime` module in Python, specifically used for parsing date and time strings into datetime objects.
         **Example**:
 
           ```py copy
           from datetime import datetime
-          import _strptime
 
-          # Example date string
           date_string = "2024-04-23"
-
-          # Format string specifying the format of the input date string
           format_string = "%Y-%m-%d"
-
-          # Call _strptime function directly to parse the date string
-          parsed_time = _strptime._strptime_time(date_string, format_string)
-
-          # Create a datetime object from the parsed time tuple
-          date_object = datetime(*parsed_time[:6])
-
-          print(date_object)  # Output: 2024-04-23 00:00:00
+          date_object = datetime.strptime(date_string, format_string)
+          print(date_object)
           ```
 
 #### hashlib
