@@ -187,17 +187,20 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
                 type: item.type,
                 route: item.route,
               })}
-              {
-                !config.sidebar.autoCollapse && <ArrowRightIcon
-                className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
-                pathClassName={cn(
-                  "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
-                  open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
-                )}
-              />
-              }
+              {!config.sidebar.autoCollapse && (
+                <ArrowRightIcon
+                  className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
+                  pathClassName={cn(
+                    "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
+                    open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
+                  )}
+                />
+              )}
             </ComponentToUse>
-            <Collapse className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1" isOpen={config.sidebar.autoCollapse || open}>
+            <Collapse
+              className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1"
+              isOpen={config.sidebar.autoCollapse || open}
+            >
               {Array.isArray(item.children) ? (
                 <Menu
                   className={cn(classes.border, "ltr:nx-ml-3 rtl:nx-mr-3")}
@@ -349,7 +352,7 @@ function Menu({
 }: MenuProps): ReactElement {
   const context = useUserContext();
   return (
-    <ul  className={cn(classes.list, className)}>
+    <ul className={cn(classes.list, className)}>
       {directories.map((item) => {
         const permissionCheck = checkPermission(item, context);
         return !onlyCurrentDocs ||
@@ -360,7 +363,8 @@ function Menu({
             ? permissionCheck && (
                 <Folder key={item.name} item={item} anchors={anchors} />
               )
-            : permissionCheck && (
+            : permissionCheck &&
+              !item?.name?.includes("integrations") && (
                 <File
                   key={item.name}
                   item={item}
