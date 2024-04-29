@@ -28,7 +28,7 @@ Let's try and keep this simple 🎉:
 
  - **Agents**: These are programs that work as you instruct them. Classically, they are part of a multi-agent system where they have a task and communicate with other agents. But their primary use in this case is to represent a service, a function or data that can be accessed by DeltaV.
 
- - **Agentverse**: It is a managed hosting platform, an online IDE, and an entry point to AI Engine for Agents. You would register your Agents on Agentverse to be a service in the network.
+ - **Agentverse**: It is a managed hosting platform, an online IDE, and an entry point to AI Engine for Agents. You would register your Agents on Agentverse to be a Function in the network.
 
  - **AI Engine**: The AI Engine is a system that combines Agents with human-readable text input to create a scalable AI infrastructure that supports Large Language Models (LLMs). It's an AI system that can convert human text into actionable (computer) commands.
 
@@ -50,7 +50,7 @@ It works like this:
 
 ![](../../../src/images/guides/101/chaining.jpg)
 
-Simply put, when the AI Engine selects a response, the subtasks available to be called for that task are already known to it.
+Simply put, when the AI Engine selects a response, the Secondary Functions available to be called for that Primary Function are already known to it.
 
 Of course, this could be more complicated. What if every sensor on a car was an agent? You could ask your car for
 diagnostics on a system, and each component in that system would independently give its status - making everything extremely complex. That's where the power of the AI Engine comes in. It understands the schema of each Agent, so there would be little need for each component to be compatible in communication with each other.
@@ -64,23 +64,22 @@ To understand this, we need to look into a few more concepts:
 Here, **two separate** processes are happening. The first part of the sequence diagram registers two agents:
 
  1. Firstly, agents register to a smart contract thus effectively paying to be discoverable.
- 2. Agents then register as a service on Agentverse (you'd usually do this manually).
+ 2. Agents then register as a Function on Agentverse (you'd usually do this manually).
 
 Now that the Agents are registered and discoverable - let's move on on to the second part of the diagram. The second part of the diagram introduces the flow of the AI Engine. This shows the role of a user who has entered a search term into DeltaV.
 
     1. A query comes in and it is sent to the AI Engine.
-    2. The AI Engine has an internal loop that updates services registered and indexed.
-    3. It also has another internal loop that creates embeddings of these services.
-    4. Upon receiving text, the AI Engine understands and maps the text to Services.
+    2. The AI Engine has an internal loop that updates Agent Functions registered and indexed.
+    3. It also has another internal loop that creates embeddings of these Functions.
+    4. Upon receiving text, the AI Engine understands and maps the text to Functions.
     5. It now requests addresses from [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) to message these Agents.
-    6. The AI Engine sees that Agent (A) needs some text to perform its services.
-    7. It finds subtasks that can provide the required data.
-    8. It then contacts the subtask, and the required data is returned.
+    6. The AI Engine sees that Agent (A) needs some text to perform its functions.
+    7. It finds Secondary Function that can provide the required data.
+    8. It then contacts the the Secondary Function, and the required data is returned.
     9. Data is passed to Agent (A) which returns a summary of the data.
     10. The response is then returned to the user on DeltaV.
 
-**Tasks and subtasks are agent functions**. In the context of the AI Engine, these are (sub)tasks, but you're developing
-Agents.
+**Primary and Secondary Functions are fundamental to accomplish users' objectives**.
 
 ## Okay, let's build a couple of Agents!
 
@@ -252,7 +251,7 @@ Your terminal output will look similar to the following:
 
 #### Let's run this agent on deltaV, it'll be good to test, right?
 
-We're going to need to create a service on agentverse, to get a comprehensive overview of what services are visit [our agent services guide ↗️](/guides/services/services). A **Service** refers to an Agent enrolled within the Agentverse, and made discoverable by other agents and users for interaction. For instance, a service could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Services are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
+We're going to need to create a Function on Agentverse, to get a comprehensive overview of what services are visit [our agent services guide ↗️](/guides/services/services). An **Agent Function** refers to an Agent enrolled within the Agentverse, and made discoverable by other agents and users for interaction. For instance, a Function could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Services are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
 
 Let's go to the [Agentverse ↗️](https://agentverse.ai/services) and create a Service. You will probably need to create a service group to. A Service Group is just a name given to a group of services so you can link all your services neatly within AI Engine.
 
@@ -389,7 +388,7 @@ The following is the service for the **Summary_agent**:
 
 ![](../../../src/images/guides/101/service_url_summary.png)
 
-This one is quite simple, but we are defining this as a subtask. A subtask tells AI engine that this function should only be called to support another agent, and not as a primary response. You can learn more about this in our [services guide ↗️](guides/services/services#tasks-and-subtasks)
+This one is quite simple, but we are defining this as a Secondary Function. A Secondary Function tells AI engine that this function should only be called to support another agent, and not as a primary response. You can learn more about this in our [services guide ↗️](guides/services/services#tasks-and-subtasks)
 
 We also need to go and update the sentiment service...
 
@@ -418,6 +417,6 @@ We're hoping here that we can ask for a sentiment of a webpage. You may need to 
 
 ## What's next?
 
-Thank you for sticking with us on this guide, this guide aims to show you the true potential of an Ai system that can execute code at the prompt of a user.
+Thank you for sticking with us on this guide, this guide aims to show you the true potential of an AI system that can execute code at the prompt of a user.
 
 We invite you to dive deeper into the world of Agents, Agentverse and AI Engine by exploring the dedicated documentation and [GitHub ↗️](https://github.com/fetchai/) repository. Join our [Discord ↗️](https://discord.com/invite/fetchai) and team up with other developers to participate in hackathons, collectively build projects, or simply have fun!
