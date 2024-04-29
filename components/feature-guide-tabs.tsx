@@ -36,7 +36,7 @@ export const GuideBox = ({
   );
 };
 
-export const FeatureGuideTabs = () => {
+export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -229,7 +229,7 @@ export const FeatureGuideTabs = () => {
             </div>
           </div>
         ) : (
-          <div className="nx-flex">
+          <div className={`nx-flex ${centerMode && "nx-justify-center"}`}>
             <div className={styles.tabsTopContainer}>
               {tabItems.map((tab, index) => (
                 <button

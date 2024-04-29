@@ -34,6 +34,7 @@ import Bookmark from "./components/bookmark";
 import useBookMark from "theme/use-book-mark";
 import { isLinkInResponse } from "./helpers";
 import useContentVisited from "theme/use-content-visited";
+import Error404 from "components/error-404";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -406,38 +407,12 @@ const Toast = (bookMarkSuccess: string) => (
   </motion.div>
 );
 
-const Error = () => (
-  <div className="nx-flex nx-justify-center  nx-items-center nx-mt-[35vh]">
-    <div className="nx-flex nx-p-[32px] nx-gap-8 nx-flex-col gap-[32px] nx-rounded-[12px]">
-      <div className="nx-flex nx-gap-2 nx-flex-col nx-justify-start nx-items-start">
-        <span className="nx-font-normal nx-text-slate-900 nx-text-5xl">
-          Something went wrong!
-        </span>
-        <span className=" nx-font-normal nx-text-[20px] nx-tracking-[-.2px] nx-opacity-90 nx-text-[#0B1742]">
-          Sorry, we are currently experiencing some trouble.
-        </span>
-        <span className="nx-font-normal nx-leading-5 nx-text-[14px]  nx-opacity-60 nx-text-[#000D3D]">
-          Right this moment, Agents are figuring out the fix.
-        </span>
-      </div>
-      <div>
-        <button
-          onClick={() => window.location.reload()}
-          className="nx-bg-[#5F38FB] nx-rounded-md nx-text-[14px] nx-px-4 nx-py-2 nx-text-white"
-        >
-          Refresh page
-        </button>
-      </div>
-    </div>
-  </div>
-);
-
 export default function Layout({
   children,
   ...context
 }: NextraThemeLayoutProps): ReactElement {
   return (
-    <ErrorBoundary FallbackComponent={Error}>
+    <ErrorBoundary FallbackComponent={Error404}>
       <UserInfoProvider>
         <ConfigProvider value={context}>
           <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
