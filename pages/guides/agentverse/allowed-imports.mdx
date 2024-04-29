@@ -30,6 +30,20 @@ In the [Agentverse ↗️](https://agentverse.ai/) code editor, you have the fre
 
     - [`random` ↗️](/guides/agentverse/allowed-imports#random).
 
+    - [`MySQLdb` ↗️](/guides/agentverse/allowed-imports#mysqldb).
+
+    - [`pymongo` ↗️](/guides/agentverse/allowed-imports#pymongo).
+
+    - [`_strptime` ↗️](/guides/agentverse/allowed-imports#_strptime).
+
+    - [`hashlib` ↗️](/guides/agentverse/allowed-imports#hashlib).
+
+    - [`hmac` ↗️](/guides/agentverse/allowed-imports#hmac).
+
+    - [`base64` ↗️](/guides/agentverse/allowed-imports#base64).
+
+    - [`re` ↗️](/guides/agentverse/allowed-imports#re).
+
 ## Allowed imports
 
 #### uagents
@@ -279,6 +293,189 @@ This package is used for generating random numbers, managing random selections, 
           # Select a random item from a list
           my_item = random.choice(my_list)
           print(my_item)  # Output: (any element from the list)
+          ```
+
+#### MySQLdb
+
+`MySQLdb` is a Python library for accessing MySQL databases. It provides a Python interface to MySQL, allowing you to interact with MySQL databases from within your Python code.
+
+    - **Full access to all functions and features**.
+
+        **Example**:
+
+          ```py copy
+          import MySQLdb
+
+          # Connect to the MySQL database
+          connection = MySQLdb.connect(host='localhost', user='username', passwd='password', db='database_name')
+
+          try:
+            # Create a cursor object to execute SQL queries
+            cursor = connection.cursor()
+
+            # Example query: Select all rows from a table
+            cursor.execute("SELECT * FROM your_table")
+
+            # Print the fetched rows
+            for row in cursor.fetchall():
+                print(row)
+
+          finally:
+            # Close the cursor and connection
+            cursor.close()
+            connection.close()
+          ```
+
+#### pymongo
+
+`pymongo` allows Python applications to interact with MongoDB databases, making it easy to perform various database operations such as inserting, updating, deleting, and querying documents.
+
+    - **Full access to all functions and features**.
+
+        **Example**:
+
+          ```py copy
+          from pymongo import MongoClient
+
+          # Connect to MongoDB server
+          client = MongoClient('mongodb://localhost:27017/')
+
+          # Access a specific database
+          db = client['my_database']
+
+          # Access a specific collection within the database
+          collection = db['my_collection']
+
+          # Insert a document into the collection
+          document = {'name': 'John', 'age': 30, 'city': 'New York'}
+          collection.insert_one(document)
+
+          # Query documents from the collection
+          query = {'city': 'New York'}
+          result = collection.find(query)
+
+          # Print the documents returned by the query
+          for doc in result:
+            print(doc)
+
+          # Close the connection to MongoDB
+          client.close()
+          ```
+
+#### _strptime
+
+`_strptime` is a method from the `datetime` module in Python, specifically used for parsing date and time strings into datetime objects.
+        **Example**:
+
+          ```py copy
+          from datetime import datetime
+
+          date_string = "2024-04-23"
+          format_string = "%Y-%m-%d"
+          date_object = datetime.strptime(date_string, format_string)
+          print(date_object)
+          ```
+
+#### hashlib
+
+`hashlib` is a Python library that provides interfaces to various secure hash and message digest algorithms. It's commonly used for generating hash values for data integrity verification, password hashing, digital signatures, and more.
+
+    - **Full access to all functions and features**.
+
+        **Example**:
+
+          ```py copy
+          import hashlib
+
+          # String to hash
+          data = "Hello, world!"
+
+          # Create a SHA-256 hash object
+          hash_object = hashlib.sha256()
+
+          # Update the hash object with the data
+          hash_object.update(data.encode())
+
+          # Get the hexadecimal digest (hash value) of the data
+          hash_value = hash_object.hexdigest()
+
+          print("SHA-256 Hash:", hash_value)
+          ```
+
+#### hmac
+
+`hmac` stands for **Hash-based Message Authentication Code**. It's a Python module that implements the HMAC algorithm as described in RFC 2104. HMAC is a cryptographic hash function that adds a shared secret key to the hashing process, providing a way to verify both the integrity and authenticity of a message.
+
+    - **Full access to all functions and features**.
+
+        **Example**:
+
+          ```py copy
+          import hmac
+          import hashlib
+
+          # Secret key (shared between sender and receiver)
+          secret_key = b'my_secret_key'
+
+          # Message to authenticate
+          message = b'Hello, world!'
+
+          # Generate HMAC using SHA-256 hash function and secret key
+          hmac_digest = hmac.new(secret_key, message, hashlib.sha256).hexdigest()
+
+          print("HMAC:", hmac_digest)
+          ```
+
+#### base64
+
+`base64` is a Python module that provides functions for encoding and decoding binary data using the Base64 encoding scheme. Base64 encoding converts binary data into a ASCII string format, which is useful for transmitting binary data over protocols that require plain text, such as email or HTTP headers.
+
+    - **Full access to all functions and features**.
+
+        **Example**:
+
+          ```py copy
+          import base64
+
+          # String to encode
+          data = "Hello, world!"
+
+          # Encode the string to Base64
+          encoded_data = base64.b64encode(data.encode())
+
+          print("Encoded:", encoded_data)
+
+          # Decode the Base64-encoded data
+          decoded_data = base64.b64decode(encoded_data).decode()
+
+          print("Decoded:", decoded_data)
+          ```
+
+#### re
+
+`re` is a Python module providing support for working with regular expressions. Regular expressions (often abbreviated as regex or regexp) are sequences of characters that define a search pattern, which is useful for finding, replacing, or manipulating strings based on specific patterns.
+
+    - **Full access to all functions and features**.
+
+        **Example**:
+
+          ```py copy
+          import re
+
+          # String containing a pattern
+          text = "The quick brown fox jumps over the lazy dog."
+
+          # Define a regular expression pattern
+          pattern = r'fox'
+
+          # Search for the pattern in the string
+          match = re.search(pattern, text)
+
+          if match:
+            print("Pattern found at index:", match.start())
+
+          else:
+            print("Pattern not found.")
           ```
 
 ## Multi-file Support
