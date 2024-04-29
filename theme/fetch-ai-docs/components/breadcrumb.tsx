@@ -16,7 +16,6 @@ export function Breadcrumb({
       {activePath.map((item, index) => {
         const isLink = !item.children || item.withIndexPage;
         const isActive = index === activePath.length - 1;
-
         return (
           <Fragment key={item.route + item.name}>
             {index > 0 && <ArrowRightIcon className="nx-w-3.5 nx-shrink-0" />}
@@ -36,7 +35,7 @@ export function Breadcrumb({
               {isLink && !isActive ? (
                 <Anchor href={item.route}>{item.title}</Anchor>
               ) : (
-                item.title
+                activePath?.length > 1 && item.title
               )}
             </div>
           </Fragment>
