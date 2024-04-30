@@ -65,6 +65,7 @@ def is_uuid(key):
     pattern = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", re.IGNORECASE)
     return pattern.match(key)
 ```
+
 This function checks whether the given key is in UUID (Universal Unique Identifier) format.The function uses a regular expression pattern to match the standard UUID format, which consists of 32 hexadecimal characters split into five groups separated by hyphens (8-4-4-4-12).
     
 3. `post_request` function
@@ -94,6 +95,7 @@ def get_request(url, headers):
         return None
     return response
 ```
+
 This function makes get request to Agentverse and if response is not 200 it responds with error details.
 
 5. send_user_choice_as_uuid function:
@@ -167,7 +169,7 @@ The main script flow includes:
     7. Handling error codes provided by agent.
     8. Stopping chat session with the user after completion of objective.
 
-### Chunk-by-chunk explaination:
+### Chunk-by-chunk explanation:
 
 - Setting up a Chat Session with AI_engine Chat API
 
@@ -193,7 +195,7 @@ On the basis of details provided and POST request sent to chat API. AI-engine re
 # Taking user query as input
 objective = input("What Service would you like to assemble? ")
 
-# Defining initial payload for quering deltaV
+# Defining initial payload for querying deltaV
 data2 = {
     "payload": {
         "type": "start",
@@ -218,7 +220,7 @@ response = get_request(
 ).json()
 ```
 
-This section of code is responsible for sending a start message after chat session is initialized. Below is the step-by-step explaination:
+This section of code is responsible for sending a start message after chat session is initialized. Below is the step-by-step explanation:
     1. Taking user objective/query as input.
     2. Creating a payload to make a start request to AI-engine Chat API. which includes objective, username, location and session-id.
     3. POST start request with query to AI-Engine.

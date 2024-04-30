@@ -376,9 +376,9 @@ This Secondary Function is triggered if the user wants to read keyword specific 
 
 Now click on the **Run** button in the upper right corner of the editor so that you have your news system agent agent up and running!
 
-## Registering Services
+## Registering Agent Functions
 
-Let's now register our Agent Functions.Checkout the dedicated [guide ↗️](/guides/services/services).
+Let's now register our Agent Functions. Checkout the dedicated [guide ↗️](/guides/services/services).
 After clicking the **+ New Service** button provide all details required - fill the form out as mentioned below for each Primary and Secondary Functions.
 
 ### News Reading URL System
@@ -433,7 +433,7 @@ Click **Save** button after filling out the form.
     - **Application**: Secondary Function.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your generate regional agent ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#generate-regional-news).
     - **Field descriptions**:
-        - _country_ - **this is provided by user in news subtype in news reading details. This is country for which user want to read news.**.
+        - _country_ - **this is provided by user in news subtype in news reading details. This is country for which user want to read news.**
 
 Click **Save** button after filling out the form.
 
@@ -444,7 +444,7 @@ Click **Save** button after filling out the form.
     - **Application**: Secondary Function.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your generate keyword agent ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#generate-keyword-news).
     - **Field descriptions**:
-        - _keyword_ - **this is provided by user in news subtype in news reading details. This is keyword for which user want to read news.**.
+        - _keyword_ - **this is provided by user in news subtype in news reading details. This is keyword for which user want to read news.**
 
 Click **Save** button after filling out the form
 
@@ -464,7 +464,7 @@ Let's select it.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/selection-of-news-reading-system-service.png)
 
-Subtask **News Reading Details Subtask** will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading Subtask**.
+Secondary function **News Reading Details secondary function** will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading secondary function**.
 
 Select the news type and subtype you want to read.
 
@@ -474,9 +474,10 @@ Select the news type and subtype you want to read.
 
 Once you select the news type respective subtask will be triggered as mentioned in [task description ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#news-reading-details-subtask) for **Generate news_type subtask**.
 
-The respective **Generate news_type subtask** will fetch _category_, _country_ or _keyword_ based on news type and subtype selected and will generate _top news_ related to news subtype provided.
+The respective **Generate news_type secondary function** will fetch _category_, _country_ or _keyword_ based on news type and subtype selected and will generate _top news_ related to news subtype provided.
 
-The news list will be passed from **Generate news_type subtask** to **News Reading Details Subtask** and user can select one title.
+The news list will be passed from **Generate news_type secondary function** to **News Reading Details secondary function** and user can select one title.
+
 Chosen news title URL will be fetched and provided to **News Reading URL system** and User will get clickable link to read news in details.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/generate-news-type-subtask-3.png)

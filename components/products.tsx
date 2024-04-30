@@ -124,7 +124,7 @@ const items: { [key: string]: Item[] } = {
       description: (
         <>
           Explore the integration of AI Engine within DeltaV, enabling
-          connections between users and agent-based services.
+          connections between users and agent-based Functions.
         </>
       ),
       icon: synergyIcon,
@@ -176,7 +176,7 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse Services: register your services on the Agentverse!",
       description: (
         <>
-          Create an agent encapsulating a service and register it as a service
+          Create an agent encapsulating a Function and register it as an Agent Function
           on the Agentverse to be retrieved via DeltaV chat!
         </>
       ),

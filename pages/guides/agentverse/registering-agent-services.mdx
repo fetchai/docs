@@ -4,9 +4,9 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-The [Agentverse: Services ↗️](/guides/services/services) feature allows you to enrol your agent in the system so as to be discovered by other agents and start interacting with them. This feature aims at connecting multiple agents offering different Services identified as Agents Functions so to enhance users journey, results and development. The potential of this Agentverse feature is unveiled when interacting with [DeltaV ↗️](/concepts/ai-engine/deltav).
+The [Agentverse: Services ↗️](/guides/services/services) feature allows you to enrol your agent in the system so as to be discovered by other agents and start interacting with them. This feature aims at connecting multiple agents offering different Services identified, as Agents Functions, so to enhance users journey, results and development. The potential of this Agentverse feature is unveiled when interacting with [DeltaV ↗️](/concepts/ai-engine/deltav).
 
-First of all, to proceed with a service registration on the [Agentverse ↗️](https://agentverse.ai), you will need to start by creating a dedicated [AI Agent ↗️](/concepts/agents/agents) wrapping up the Agent Function you wish to provide to users. You can create and code your AI Agent directly on the [Agentverse: My Agents ↗️](/concepts/agent-services/agent-hosting) tab by clicking on dedicated **+ New Agent** button.
+First of all, to proceed with a service registration on the [Agentverse ↗️](https://agentverse.ai), you will need to start by creating a dedicated [AI Agent ↗️](/concepts/agents/agents) wrapping up the Agent Function you wish to provide to users. You can create and code your Agent directly on the [Agentverse: My Agents ↗️](/concepts/agent-services/agent-hosting) tab by clicking on dedicated **+ New Agent** button.
 
 You will then need to define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). You can do this by creating a **simple_protocol.py** within the Agent Editor window:
 
@@ -27,7 +27,7 @@ You will then need to define the [protocol ↗️](/references/uagents/uagents-p
 Currently, for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` classes as this is the defined model that are reinforced.
 
     <Callout type="info" emoji="ℹ️">
-      `UAgentResponseType` is used to represent different response types of the agent. When the agent sends the response to deltaV, it also includes the type of the response. It contains the following types:
+      `UAgentResponseType` is used to represent different response types of the agent. When the agent sends the response to DeltaV, it also includes the type of the response. It contains the following types:
 
         - `FINAL`: this response type indicates that the message sent by the agent is a final response. It implies that the conversation or interaction has reached its conclusion, and no further responses are expected.
         - `ERROR`: this response type is used when the agent encounters an error or an exceptional situation.
@@ -63,9 +63,13 @@ Once you finalised the development of your agent and it is being run (assuming n
 
 ## Register your agents and their functions!
 
-On the [Agentverse ↗️](https://agentverse.ai/) within the **My Agents** tab we previously defined our agent. In here, we can now define the Agent Service we want to provide to users. In this context,**Services are developed as _Agents Functions_** directly within the Agent Editor window appearing when developing your Hosted Agents. This because agents provide specific functionalities to users depending on objective requested.
+On the [Agentverse ↗️](https://agentverse.ai/) within the **My Agents** tab we previously defined our agent. In here, we can now define the Agent Service we want to provide to users. In this context, **Services are developed as _Agents Functions_** directly within the Agent Editor window appearing when developing your Hosted Agent. This because agents provide specific functionalities to users depending on objective requested.
 
-Let's go ahead and click the **Deploy** tab. You need to make sure your agent is up and running as Functions can be registered only if your agent is running.
+Let's go ahead and click on your Agent to open the Agent Editor. Then click on the **Deploy** tab.
+
+    <Callout type="warning" emoji="⚠️">
+      You need to make sure your agent is up and running correctly as Agent Functions can be registered only if your agent is running!
+    </Callout>
 
 ![](../../../src/images/guides/services/service-guide/simple_protocol_0.png)
 
