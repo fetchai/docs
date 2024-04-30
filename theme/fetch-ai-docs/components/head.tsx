@@ -6,11 +6,13 @@ import NextHead from "next/head";
 import { useMounted } from "nextra/hooks";
 import type { ReactElement } from "react";
 import { useConfig } from "../contexts";
+import { useRouter } from "next/router";
 
 export function Head(): ReactElement {
   const config = useConfig();
   const { resolvedTheme } = useTheme();
   const mounted = useMounted();
+  const router = useRouter();
 
   // `head` can be either FC or ReactNode. We have to directly call it if it's an
   // FC because hooks like Next.js' `useRouter` aren't allowed inside NextHead.
@@ -26,7 +28,7 @@ export function Head(): ReactElement {
       <NextSeo
         title={config.title}
         description={frontMatter.description}
-        canonical={frontMatter.canonical}
+        canonical={`${router.basePath}${router.pathname}`}
         openGraph={frontMatter.openGraph}
         {...config.useNextSeoProps?.()}
       />
