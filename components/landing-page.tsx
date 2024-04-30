@@ -27,7 +27,8 @@ function LandingPage() {
       icon: BuildChatAiIcon,
     },
     {
-      label: "Agentverse Services: register  Agent Functions on the Agentverse!",
+      label:
+        "Agentverse Services: register  Agent Functions on the Agentverse!",
       path: "/guides/agentverse/registering-agent-services",
       icon: RevenueIcon,
     },

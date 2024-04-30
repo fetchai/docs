@@ -176,8 +176,8 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse Services: register your services on the Agentverse!",
       description: (
         <>
-          Create an agent encapsulating a Function and register it as an Agent Function
-          on the Agentverse to be retrieved via DeltaV chat!
+          Create an agent encapsulating a Function and register it as an Agent
+          Function on the Agentverse to be retrieved via DeltaV chat!
         </>
       ),
       icon: whisperAgentIcon,
