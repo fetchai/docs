@@ -38,10 +38,9 @@ Let's try and keep this simple 🎉:
        Agents are <i>programs</i>, whereas services are the <i>functions</i> your agents offer.
     </Callout>
 
-In a nutshell, AI Engine indexes Agents, and translates human input into **tasks**. It may sound like a search
-engine, but it does much more.
+In a nutshell, AI Engine indexes Agents, and translates human input into **tasks**. It may sound like a search engine, but it does much more.
 
-![The AI Engine has an internal database hat creates understanding and links to existing services](../../../src/images/guides/101/ai-connects.jpg)
+![The AI Engine has an internal database hat creates understanding and links to existing Agent Functions](../../../src/images/guides/101/ai-connects.jpg)
 
 The AI Engine allows **chaining**. Say that you ask DeltaV "Tell me about the animal
 Zebra". The AI Engine would then look for an agent that could give you a summary, as well as another agent that could provide information about zebras. The AI Engine understands that the **Summary Agent** requires text to parse and summarise. So it would contact the **Zebra Agent** and get the information from it. The AI Engine would then call the **Summary Agent** with the **Zebra Agent** information so that the former would return the summarized text.
@@ -86,10 +85,10 @@ Now that the Agents are registered and discoverable - let's move on on to the se
 We've got a high-level idea of how this works. Let's build this on Agentverse so that we can get this running on
 DeltaV and see the whole stack connected.
 
-If you've never installed anything for uAgent development, checkout these guides:
+If you've never installed anything for Agent development, checkout these guides:
 
     - [Setup the development environment ↗️](/guides/agents/installing-uagent#development-tools)
-    - [Install uAgents locally ↗️](/guides/agents/installing-uagent#install-with-pip)
+    - [Install Agents locally ↗️](/guides/agents/installing-uagent#install-with-pip)
 
 ### Create your first agent: the text sentiment agent
 
@@ -217,24 +216,24 @@ Let's use this address to create a **Mailbox** on the Agentverse.
 
 ### Creating a Mailbox for Sentiment Agent
 
-A mailbox is a service provided by Agentverse that allows agents to receive messages when they're not running online.
+A **mailbox** is a service provided by Agentverse that allows agents to receive messages when they're not running online.
 `uagents` library will poll for new messages (and old unread ones) when your agent is running. Pretty handy.
 
-Let's go to [Agentverse ↗️](https://agentverse.ai/mailroom) and create a Mailbox.
+Let's go to [Agentverse ↗️](https://agentverse.ai/mailroom) and create a Mailbox for this agent.
 
-Add a **name**:
+First of all, head over to the **My Agents** tab and click on the **Local Agents** tab.
 
-![](../../../src/images/guides/101/create_mailbox.png)
+Then, click on **Connect Local Agent** button and insert the **address** of the agent you want to retrieve.
 
-Let's paste in the Agent's address we printed before to screen:
+![](../../../src/images/guides/uagent/servicefordungeons_1.png)
 
-![](../../../src/images/guides/101/create_mailbox_address.png)
+Let's paste in the Agent's address we printed before to screen.
 
-Then, let's copy the new **Mailbox API Key**.
+![](../../../src/images/guides/uagent/servicefordungeons_2.png)
 
-![](../../../src/images/guides/101/create_mailbox_get_key.png)
+Once the Agent will be successfully fetched, add a **Name** to it.
 
-Update the `AGENT_MAILBOX_KEY = "AGENT_MAILBOX_KEY"` inline.
+A new **Mailbox API Key** will be provided for the local agent. Let's first copy the new Mailbox API Key and then update the `AGENT_MAILBOX_KEY = "AGENT_MAILBOX_KEY"` inline.
 
 Now, you can restart your agent and it will be registered to the Mailbox.
 
@@ -249,13 +248,17 @@ Your terminal output will look similar to the following:
     INFO:     [SentimentAgent]: Mailbox access token acquired
     ```
 
-#### Let's run this agent on deltaV, it'll be good to test, right?
+#### Let's run this agent on DeltaV, it'll be good to test, right?
 
-We're going to need to create a Function on Agentverse, to get a comprehensive overview of what services are visit [our agent services guide ↗️](/guides/services/services). An **Agent Function** refers to an Agent enrolled within the Agentverse, and made discoverable by other agents and users for interaction. For instance, a Function could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Services are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
+We're going to need to create an **Agent Function** on Agentverse; to get a comprehensive overview of what Agent Functions visit [our dedicated guide ↗️](/guides/services/services). To get the idea, an **Agent Function** refers to an Agent enrolled within the Agentverse, and made discoverable by other agents and users for interaction. For instance, a Function could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Functions are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
 
-Let's go to the [Agentverse ↗️](https://agentverse.ai/services) and create a Service. You will probably need to create a service group to. A Service Group is just a name given to a group of services so you can link all your services neatly within AI Engine.
+Let's go to the [Agentverse ↗️](https://agentverse.ai/) and head over to the **My Agents** tab and select the Agent we have fetched above through Connect Local Agent button. A page will open showing your Agent Profile details.
 
-The following is the service for the **SentimentAgent**:
+![](../../../src/images/guides/101/sentimentagent_agent_overview.png)
+
+Click on **Deploy** tab to start creating an Agent Function retrievable via DeltaV. Provide all the needed information to correctly register the Function. Remember that descriptions need to be as detailed as possible.
+
+The following is the Agent Function for the **SentimentAgent**:
 
 ![](../../../src/images/guides/101/service_sentiment_b.png)
 
@@ -303,7 +306,7 @@ This Agent has the same structure as the sentiment Agent we previously defined.
 Let's take a look.
 
     ```py copy filename="web_download_agent.py"
-        from langchain.chains.summarize import load_summarize_chain
+    from langchain.chains.summarize import load_summarize_chain
     from langchain_community.document_loaders import UnstructuredHTMLLoader
     from langchain_openai import ChatOpenAI
     from uagents import Agent, Context, Protocol, Model
@@ -375,22 +378,22 @@ This Agent is simple again, hopefully you're seeing a pattern here. These Agents
 compliment one another.
 
     <Callout type="info" emoji="ℹ️">
-       Checkout the [Communicating with other agents 📱🤖 ↗️](/guides/agents/communicating-with-other-agents) guide to check how agents communication works without the AI Engine.
+       Checkout the [Communicating with other agents 📱🤖↗️](/guides/agents/communicating-with-other-agents) guide to check how agents communication works without the AI Engine.
     </Callout>
 
 Aside from the different logic, the primary difference in `web_summary_agent.py` is that this agent does not rely on a separate function, and wraps the whole logic in the message handler.
 
 Let's run this one too. Again, follow the steps for the previous Agent and go and register a Mailbox and update this agent with the new Mailbox. Each agent must have a unique Mailbox.
 
-## One more service 🎵
+## One more Agent Function 🎵
 
-The following is the service for the **Summary_agent**:
+The following is the Function for the **Summary_agent**:
 
 ![](../../../src/images/guides/101/service_url_summary.png)
 
-This one is quite simple, but we are defining this as a Secondary Function. A Secondary Function tells AI engine that this function should only be called to support another agent, and not as a primary response. You can learn more about this in our [services guide ↗️](guides/services/services#tasks-and-subtasks)
+This one is quite simple, but we are defining this as a Secondary Function. A Secondary Function tells the AI Engine that this function should only be called to support another agent, and not as a primary response. You can learn more about this in our [services guide ↗️](guides/services/services#primary-and-secondary-functions)
 
-We also need to go and update the sentiment service...
+We also need to go and update the Sentiment Agent Function...
 
 ![](../../../src/images/guides/101/service_sentiment_b.png)
 
@@ -398,14 +401,14 @@ Oh my, that is quite the field description.
 
 > "This agent will return a sentiment score from the provided text.
 This MUST NOT be a URL or something that looks like a webpage address. If one of these is provided the content of
-that must be generated from another subtask.
+that must be generated from another secondary fucntion.
 Text is the content to be analysed, this must be a structured body of prose."
 
-We're talking to an LLM and the above should reinforce that. We're telling the AI Engine that this function returns sentiment analysis on text. However when this service is called, the user could also provide a URL. If a URL is provided then the AI engine must get that from somewhere else. Let's test this.
+We're talking to an LLM and the above should reinforce that. We're telling the AI Engine that this function returns sentiment analysis on text. However when this service is called, the user could also provide a URL. If a URL is provided then the AI Engine must get that from somewhere else. Let's test this.
 
 ## Let's go to DeltaV!
 
-We're hoping here that we can ask for a sentiment of a webpage. You may need to adjust your question, or update field descriptions for this to work perfectly, but in latest this is working for us (24/4/2024).
+We're hoping here that we can ask for a sentiment of a webpage. You may need to adjust your question, or update field descriptions for this to work perfectly, but in latest this is working for us.
 
 ![](../../../src/images/guides/101/1_starting_chat.png)
 
