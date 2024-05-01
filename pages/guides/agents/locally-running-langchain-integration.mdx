@@ -6,7 +6,7 @@ When you want to run an agent on your own hardware or infrastructure locally, th
 
 ## Introduction
 
-This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over **Agentverse** and **DeltaV** using the [Mailroom ↗️](/guides/agentverse/utilising-the-mailbox). The example uses a locally hosted agent that utilizes LangChain's Wikipedia integration to process requests related to Wikipedia search. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible, we will also go to [Agentverse ↗️](/guides/services/services) to create a new Agent Function for the agent to then allow this agent to be found in DeltaV.
+This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over **Agentverse** and **DeltaV** using the [Mailroom ↗️](/guides/agentverse/utilising-the-mailbox). The example uses a locally hosted agent that utilizes LangChain's Wikipedia integration to process requests related to Wikipedia search. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible, we need to create a new [Agent Function ↗️](/guides/services/services) on the Agentverse for the agent to then allow it to be found in DeltaV.
 
 ## Prerequisites
 
@@ -67,13 +67,13 @@ WikiAgent.include(wiki_protocol, publish_manifest=True)
 WikiAgent.run()
 ```
 
-Run the script in local machine using `python agent.py` and get the agent's address. Use this agent's address to create an [mailbox ↗️](https://agentverse.ai/mailroom) and replace with `Your_Mailbox_key`
+Run the script in local machine using `python agent.py` and get the agent's address. Use this agent's address to create a [mailbox ↗️](/guides/agentverse/utilising-the-mailbox) by heading over to the [**Agentverse: My Agents** ↗️](/guides/agentverse/creating-a-hosted-agent) and click on **Local Agents** tab. By clicking the **Connect Local Agent** button and providing the address of the agent we defined above and then the name, you will then be provided with a **Mailbox API Key** to be replaced replace within the `Your_Mailbox_key` field.
 
     <Callout type="info" emoji="ℹ️">
-      Remember to replace `Your_Mailbox_key` key with Agentverse Mailbox key.
+      Remember to replace `Your_Mailbox_key` key with Agentverse Mailbox API Key.
     </Callout>
 
-Using `on_message` handler, agent takes the search keyword and returns the information with that keyword to the deltaV agent for that address.
+Using `on_message` handler, agent takes the search keyword and returns the information with that keyword to the DeltaV agent for that address.
 
 `.run()` initialises the agent.
 
