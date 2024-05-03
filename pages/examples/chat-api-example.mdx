@@ -387,7 +387,7 @@ while True:
                 3.3.2. It then collects user input and sends it back to DeltaV, updating last_response with the user's input for continuity.    
 
 ``` python
-elif (
+        elif (
             agent_resp_dict.get("type") == "agent_message"
         ):  # handling agent_message type response
             agent_message = agent_resp_dict.get("agent_message", "")
@@ -426,7 +426,7 @@ elif (
     - This section of script handles `error` type response and stops the session in case of error with error message.
 
 ```python
-elif "agent_info" in agent_resp_dict:  # handling agent_info and stop messages
+        elif "agent_info" in agent_resp_dict:  # handling agent_info and stop messages
             # Print agent_info or handle stop type
             info_message = agent_resp_dict.get("agent_info", "")
             # print(f'Agent Info : {info_message}') # Print agent info

@@ -219,7 +219,7 @@ The main script flow includes:
     7. Handling error codes provided by agent.
     8. Stopping chat session with the user.
 
-### Chunk-by-chunk explaination:
+### Chunk-by-chunk explanation:
 
     - Setting up a Chat Session with AI_engine Chat API
 
@@ -240,7 +240,7 @@ The main script flow includes:
         `email`: Update this with your agentverse email-id. 
         `requestedModel`: This is the chat model you want to make request to
     
-    On the basis of details provided and POST request sent to chat API. AI-engine responds with a session-Id where we can communicate further with deltaV.
+    On the basis of details provided and POST request sent to chat API. AI Engine responds with a session-Id where we can communicate further with deltaV.
     Session-id is extracted from the response which is vital for interacting with DeltaV.
 
     - Taking user input from the user for service they would like to assemble/Objective they want to accomplish.
@@ -249,7 +249,7 @@ The main script flow includes:
     # Taking user query as input
     objective = input('What Service would you like to assemble?\n')
 
-    # Defining initial payload for quering deltaV
+    # Defining initial payload for querying DeltaV
     data_query = {
         "payload": {
             "type": "start",
@@ -268,11 +268,11 @@ The main script flow includes:
 
     This section of code is responsible for sending a start message after chat session is initialized. Below is the step-by-step explaination:
         1. Taking user objective/query as input.
-        2. Creating a payload to make a start request to AI-engine Chat API. which includes objective, username, location and session-id.
-        3. POST start request with query to AI-Engine.
-        4. Getting latest responses from AI-Engine chat API using GET Request.
+        2. Creating a payload to make a start request to AI Engine Chat API. which includes objective, username, location and session-id.
+        3. POST start request with query to AI Engine.
+        4. Getting latest responses from AI Engine chat API using GET Request.
 
-    - Selecting required service from options and sending response back to AI_engine
+    - Selecting required service from options and sending response back to AI Engine
 
     ``` python
     # Getting agent response for the services options
@@ -304,13 +304,13 @@ The main script flow includes:
     The above section of code gets response for available services options for the user query or objective. Below is step-by-step guide to achieve this
         1. Getting agent response for the service options
         2. Displaying options to the user and taking user choice input.
-        3. Creating payload for selected service.
-        4. submitting selected service to deltaV.
+        3. Creating payload for selected Agent Function.
+        4. submitting selected service to DeltaV.
 
     - Handling the chat flow which includes sending messages and processing responses.
 
     ```python
-    # Setting response count to track irresponsive agent.
+    # Setting response count to track not responsive agent.
     no_response_count = 0
     ## Variables to track the last question and response
     last_question = ""
@@ -731,9 +731,9 @@ Running this app on the terminal:
     5. Provide objective to the script.
     5. Confirm/ Reject the details whenever asked.
     6. Reply back to the agent when a question is asked.
-    7. When the final response is received, type OK or stop to be sent to the deltaV agent.
+    7. When the final response is received, type OK or stop to be sent to the DeltaV agent.
 
-Please refer below images for sample chat session with AI_engine Chat_API
+Please refer below images for sample chat session with AI Engine ChatcAPI
 
 ![](../../src/images/APIs/chatAPI1.png)
 
