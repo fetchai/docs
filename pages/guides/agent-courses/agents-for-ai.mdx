@@ -35,7 +35,7 @@ Let's try and keep this simple 🎉:
  - **DeltaV**: DeltaV is an assistive chat interface that allows human input to interact with agents registered through the Agentverse.
 
     <Callout type="warning" emoji="⚠️">
-       Agents are <i>programs</i>, whereas services are the <i>functions</i> your agents offer.
+       Agents are <i>programs</i>, whereas <i>functions</i> are specific Agent Functions your agents offer.
     </Callout>
 
 In a nutshell, AI Engine indexes Agents, and translates human input into **objectives**. It may sound like a search engine, but it does much more.
@@ -147,7 +147,7 @@ We can do this by running: `touch sentiment_agent.py`
     ```
 
 Okay, we've got the whole code block above for our first agent. This agent does not run on Agentverse currently, as
-`openai` is unsupported.
+`openai` is not supported. Have a look at list of available packages on the Agentverse [here ↗️](/guides/agentverse/allowed-imports).
 
 There are a lot of really cool, neat things you need to know from code above. Let's explore it:
 
@@ -250,9 +250,9 @@ Your terminal output will look similar to the following:
 
 #### Let's run this agent on DeltaV, it'll be good to test, right?
 
-We're going to need to create an **Agent Function** on Agentverse; to get a comprehensive overview of what Agent Functions visit [our dedicated guide ↗️](/guides/services/services). To get the idea, an **Agent Function** refers to an Agent enrolled within the Agentverse, and made discoverable by other agents and users for interaction. For instance, a Function could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Functions are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
+We're going to need to create an **Agent Function** on Agentverse; to get a comprehensive overview of what Agent Functions visit [our dedicated guide ↗️](/guides/services/services). To get the idea, an **Agent Function** refers to an Agent enrolled within the Agentverse, and made discoverable by other agents and users for interaction, which is retrievable through natural language queries. For instance, a Function could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Functions are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
 
-Let's go to the [Agentverse ↗️](https://agentverse.ai/) and head over to the **My Agents** tab and select the Agent we have fetched above through Connect Local Agent button. A page will open showing your Agent Profile details.
+Let's go to the [Agentverse ↗️](https://agentverse.ai/) and head over to the **My Agents** tab and select the Agent we have fetched above through **Connect Local Agent** button. A page will open showing your Agent Profile details.
 
 ![](../../../src/images/guides/101/sentimentagent_agent_overview.png)
 
@@ -275,15 +275,14 @@ Oil is often an issue in UK news. Let's find out the sentiment.
 
 ![](../../../src/images/guides/101/1_sentiment_deltav.png)
 
-Note here, the service group is the name you defined when you created yours.
 
 ![](../../../src/images/guides/101/2_sentiment_deltav.png)
 
-DeltaV tells us AI Engine has found a function for our query, and checks we want to send the information we defined.
+DeltaV tells us AI Engine has found an Agent Function for our query, and checks we want to send the information we defined.
 
 ![](../../../src/images/guides/101/3_sentiment_deltav.png)
 
-Then, DeltaV get the response from our service and returns this to the user.
+Then, DeltaV get the response from the Agent Function and returns this to the user.
 
 Your Agent running locally to you should have a similar output to this:
 
@@ -404,7 +403,7 @@ This MUST NOT be a URL or something that looks like a webpage address. If one of
 that must be generated from another secondary function.
 Text is the content to be analysed, this must be a structured body of prose."
 
-We're talking to an LLM and the above should reinforce that. We're telling the AI Engine that this function returns sentiment analysis on text. However when this service is called, the user could also provide a URL. If a URL is provided then the AI Engine must get that from somewhere else. Let's test this.
+We're talking to an LLM and the above should reinforce that. We're telling the AI Engine that this function returns sentiment analysis on text. However when this function is called, the user could also provide a URL. If a URL is provided then the AI Engine must get that from somewhere else. Let's test this.
 
 ## Let's go to DeltaV!
 

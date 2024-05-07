@@ -4,9 +4,9 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-You can enrol your [Agent Function ↗️](/guides/services/services) on the Agentverse to be discovered by other agents and start interacting with them. This feature aims at connecting multiple agents offering different Functions to enhance users journey, results and development. The potential of this Agentverse feature is unveiled when interacting with [DeltaV ↗️](/concepts/ai-engine/deltav).
+You can enrol your [Agent Functions ↗️](/guides/services/services) on the Agentverse to be discovered by other agents and start interacting with them. This feature aims at connecting multiple agents offering different Functions to enhance users journey, results and development. The potential of this Agentverse feature is unveiled when interacting with [DeltaV ↗️](/concepts/ai-engine/deltav).
 
-First of all, to proceed with a service registration on the [Agentverse ↗️](https://agentverse.ai), you will need to start by creating a dedicated [Agent ↗️](/concepts/agents/agents) wrapping up the Agent Function you wish to provide to users. You can create and code your Agent directly on the [Agentverse: My Agents ↗️](/concepts/agent-services/agent-hosting) tab by clicking on dedicated **+ New Agent** button.
+First of all, to proceed with an Agent Function registration on the [Agentverse ↗️](https://agentverse.ai), you will need to start by creating a dedicated [Agent ↗️](/concepts/agents/agents) wrapping up the Agent Function you wish to provide to users. You can create and code your Agent directly on the [Agentverse: My Agents ↗️](/concepts/agent-services/agent-hosting) tab by clicking on dedicated **+ New Agent** button.
 
 You will then need to define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). You can do this by creating a **simple_protocol.py** within the Agent Editor window:
 
@@ -49,7 +49,7 @@ The message you pack into this `UAgentResponse(message="0")` can be any string. 
 
 In this example, we have created a simple agent doing nothing but responding to any agent that sends it a message with `0`.
 
-The Agentverse Service functionality shows its potential when operating on the [DeltaV ↗️](/concepts/ai-engine/deltav) platform. This because Agents registered within the Agentverse, are those retrieved by the AI Engine when users interact with DeltaV chat interface to require a specific objective execution.
+The Agentverse Functions functionality shows its potential when operating on the [DeltaV ↗️](/concepts/ai-engine/deltav) platform. This because Agents registered within the Agentverse, are those retrieved by the AI Engine when users interact with DeltaV chat interface to require a specific objective execution.
 
     <Callout type="info" emoji="ℹ️">
       This way the integration between the Agentverse Services functionality and DeltaV spreads adoption of Agent Functions to a greater plethora of users. Checkout the [Assemble any Function with DeltaV ↗️](/guides/deltav/deltav-chat-interface) guide for additional information on possible queries available via DeltaV.
@@ -63,7 +63,7 @@ Once you finalised the development of your agent and it is being run (assuming n
 
 ## Register your agents and their functions!
 
-On the [Agentverse ↗️](https://agentverse.ai/) within the **My Agents** tab we previously defined our agent. In here, we can now define the Agent Service we want to provide to users. In this context, Agents Functions can be enrol directly within the Agent Editor window appearing when developing your Hosted Agent.
+On the [Agentverse ↗️](https://agentverse.ai/) within the **My Agents** tab we previously defined our agent. In here, we can now define the Agent Function we want to provide to users. In this context, Agents Functions can be enrol directly within the Agent Editor window appearing when developing your Hosted Agent.
 
 Let's go ahead and click on your Agent to open the Agent Editor. Then click on the **Deploy** tab.
 
@@ -96,17 +96,17 @@ An example for an agent that returns zero:
 
 #### A **bad** example for an agent that sells analytical data on .csv file you send to it:
 
-`"This Agent Function gives inferences on the data file you upload."`
+    `"This Agent Function gives inferences on the data file you upload."`
 
 #### A **good** example for an agent that sells analytical data on .csv file you send to it:
 
-`"This Agent Function gives insight and inferences into the CSV file you upload. The function can give you insight into your CSV data. Upload a CSV file to learn more about the data."`
+    `"This Agent Function gives insight and inferences into the CSV file you upload. The function can give you insight into your CSV data. Upload a CSV file to learn more about the data."`
 
 You may need to test your description, if you're ever having trouble let us know over on our [Discord ↗️](https://discord.gg/fetchai).
 
 ## Just in case, to test!
 
-If you want an agent to periodically send a message to your service, you can use the following code example:
+If you want an agent to periodically send a message to your Agent Function, you can use the following code example:
 
     ```python copy filename="simple_interval.py"
     from ai_engine import UAgentResponse, UAgentResponseType
@@ -142,7 +142,7 @@ Then, this is the full output:
 
 ![](../../../src/images/guides/agentverse/deltav_full_zero.png)
 
-With that, **you have got a service which can be discovered and contacted with DeltaV! Awesome!**
+With that, **you have got an Agent Function which can be discovered and contacted with DeltaV! Awesome!**
 
     <Callout type="info" emoji="ℹ️">
       For additional examples on how to register an Agent Function on the Agentverse and subsequently DeltaV, have a look at the other guides we have prepared for you: [register a coin toss agent as a Function 🪙 ↗️](/guides/agentverse/registering-agent-dice-roll) and [register a dice roll agent as a Function 🎲 ↗️](/guides/agentverse/registering-agent-dice-roll).
