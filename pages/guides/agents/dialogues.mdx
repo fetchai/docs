@@ -1,168 +1,119 @@
+import { Callout } from 'nextra/components'
+
 # Dialogues 💬
 
-## Introduction 📙
+## Overview 📙
 
-### Concept of Agent-based Dialogues 🤖
+Dialogues are structured and optimized way for agents to communicate. It provides an approach for agents to communicate with each other with consistent message pattern, allowing for multi-message sessions, state tracking, and parallel conversations. 
 
-Agent-based dialogues facilitate structured interaction between `agents` in distributed system. These dialogues helps agents communicate, exchange information, and maintain context, making them essential for UI such as [DeltaV ↗️](https://deltav.agentverse.ai/) for chit-chat conversation and also other chatbots or virtual assistants.
+## Understanding Dialogues
 
-### Purpose of chit-chat dialogue system
+Dialogues can be taken as super-powered Protocols, It provides more robust structure for communication between agents. Protocol define interaction patterns but lack state enforcement, leaving developers to manage all possible messaging cases. Dialogues address this by offering predefined patterns and clear state management.
 
-The `ChitChat Dialogue` system illustrates a practical application of agent-based dialogues focused on simulating casual, chit-chat conversations. It serves as a tutorial for developers interested in implementing adaptable dialogue systems.
+## Difference between Dialogues and Protocols
 
-### Overview of Guide's content 
+    - **Protocols :** Protocols provide full flexibility to interactions between agents. Developers are responsible for ensuring communication is working correctly by defining right data models and message handlers. 
 
-    - [**System Architecture:**](/guides/dialogues/dialogues#system-architecture-) Overview of the system components and their interactions.
-    - [**Dialogue Components:**](/guides/dialogues/dialogues#dialogue-components) Details on dialogue states, transitions, and message models.
-    - [**Setup and Configuration:**](/guides/dialogues/dialogues#setup-and-configuration) Instructions for setting up and running the agents.
-    - [**Implementation and Customization:**](/guides/dialogues/dialogues#implementation-and-customization) How to implement and customize dialogue flows.
-    - [**Examples:**](/guides/dialogues/dialogues#examples) Demonstrating practical implementation of dialogues.
+    - **Dialogues :** Dialogues add a more rigid structure to communication with enforced state transitions, multi-session state tracking and reusable complex communication patterns. Technically speaking, Dialogues are represented by a directed graph where nodes are the states and edges the messages (message handlers) of a well-defined communication flow.
 
-## System Architecture 📐
+## Communication Patterns:
 
-The `ChitChatDialogue` is structured around network of agents that communicate through structured dialogues, Below is overview of architecture :
+Communication patterns in dialogues define a general graph-based structure for interactions. They describe every possible flow and branch in the communication process, providing a clear entry, transition and exit point. Patterns are message-agnostic and can be instantiated with various message models as specific Dialogues, adapting to different use cases while maintaining consistent principles.
 
-### Components:
-
-    - **Agents:**  Independent entities [uagents ↗️](/guides/agents/create-a-uagent) that communicate by sending and receiving structured messages.
-    - **Dialogue Manager:** Orchestrates the state transitions and manages the flow of dialogues according to predefined rules.(ChitChatDialogue class)
-    - **Message Models:** Define the format of messages to ensure consistency across the system.
-    - **Node:** Manages the states of each dialogue (e.g., initiated, chatting, concluded) and handles transitions based on message exchanges.
-
-### Interactions:
-
-    - **Message exchange:** Agents exchange message with each other, leading to change in state (Node) of dialogue forward.
-    - **State management:** The dialogue manager updates the dialogue state (Node) based on received messages and current state.
-
-
-## Dialogue Components:
-
-The `ChitChatDialogue` system is defined through a series of dialogue components that dictate how agents interact. Here are the key components:
-
-### Node (Dialogue State): 
-    
-    - **Default state:** This is the default state of the dialogue. Every session starts in this state and is automatically updated once the dialogue starts.
-    - **Initiated State:** This represents beginning of a dialogue when an initiation message is received.
-    - **Chit-Chat state:** This is the state in which messages are exchanged.
-    - **End State:** This is the state after the dialogue has been concluded. 
-
-### Edges (Transitions):
-
-    - **Initiate Session:** Transitions from the default state to the initiated state upon receiving an initiation message.
-    - **Reject Session:** This is the transition for when the dialogue is rejected
-    - **Start Dialogue:** Moves the dialogue from initiated to chit chatting upon acceptance of the session.
-    - **Continue Dialogue:** Maintains the dialogue in the chit chatting state, allowing for ongoing message exchange.
-    - **End Session:** Transitions from chit chatting to be concluded, effectively ending the session.
-
-### Message Models:
-
-Message models define the structure of messages exchanged during the dialogue:
-
-    - **InitiateChitChatDialogue:** Initiates the dialogue.
-    - **AcceptChitChatDialogue:** Signals acceptance of the dialogue initiation.
-    - **ChitChatDialogueMessage:** Carries the actual dialogue content.
-    - **ConcludeChitChatDialogue:** Ends the dialogue.
-    - **RejectChitChatDialogue:** Rejects the dialogue initiation.
-
-<br></br>
 ![](../../../src/images/guides/dialogues/dialogues.png)
-<br></br>
 
-## Setup and Configuration
+## Application and Core Developers
 
-### System Requirements
+The distinction between communication patterns and Dialogues supports two typical development scenarios with uagents:
 
-    - **Python** : Python version > 3.8 with `pip` installed as well.
-    - **uagents** : Fetch.ai's uagent python library.
-    - **Network Configuration:** Open ports on machine where agents are going to run.
+    - **Application Developers:**  Have clear business requirements and are looking to implement concrete use cases with agents as quickly and as easily as possible. They don't want to waste time for creating the necessary building blocks or defining fundamental yet complex processes. Patterns help streamline their workflow, taking the burden of designing communication structures off them.
 
-## Implementation and Customization
+    - **Core Developers:** Improve the infrastructure for agent ecosystems by carefully defining and hardening relevant building blocks, needing full flexibility and power to lay the groundwork for application developers such as defining sound and complete communication patterns that can be reused for various use cases following the same principle.
 
-This section outlines how to implement the core functionalities of the Dialogue system and how to adapt or extend the dialogue flows to meet specific requirements. It covers the implementation details using the provided classes and how to customize the dialogue to handle different scenarios or add new functionalities.
+## How to use dialogues:
 
-### Implementing the ChitChatDialogue
+As explained above dialogues can be used by developers with different requirements. There are different ways in which dialogues can be used but before checking that lets understand what does `stateful communication` means in agent communication ecosystem.
 
-1. Defining Dialogue Nodes and Edges:
-    - **Nodes:** The dialogue begins in a default state and transitions through initiated, chatting, and concluded states based on the flow of messages.
-    - **Edges:** Each edge is represented as an transition between nodes, triggered by specific message types.
-    <br></br>
+### Stateful Communication :
 
-2. Setting Up Dialogue Class:
+Dialogues support stateful communication which allows agents to access past messages and state status, perform parallel conversations/sessions and also it enforces the sequence of message exchanges. This overall structure and feature of dialogue helps maintain context, improves irrefutability and allows agents to resume conversation from any point of time.
 
-    - Use the ChitChatDialogue class as the basis for the dialogue system. This class should include:
-        - **Initialization:** Set up the dialogue with initial nodes and edges.
-        - **State Handlers:** Implement methods to handle transitions between states as triggered by incoming messages.
+There are different ways in which dialgoues can be used as listed below:
 
+### API for Dialogues
+
+Some of the Key APIs exposed to application developers in dialogues include:
+
+    - **start_dialogue:** Initiates a dialogue, offering a more explicit way to start communication compared to protocols. Refer [defining dialogue structure](../../examples/open-dialogue-chitchat#step-1-define-the-dialogue-structure) to have better understanding of how to define dialogue nodes and [create a handler for event](../..//examples/open-dialogue-chitchat#step-1-define-the-dialogue-structure).
+
+    - **get_conversation:** Provides access to past messages, useful for handling complex scenarios and multiple parallel dialogues. Refer (agents on_continue_dialogue handler)[../..examples/open-dialogue-chitchat#step-2-setting-up-agents] on how to access history using context's dialogue function.
+
+    - **reject_session:** This is the transition for when the dialogue is rejected.
+
+Similarly you can refer more functions and handler in examples [Open Dialogues](../../examples/open-dialogue-chitchat) and [Predefined Dialogues](../../examples/predefined-dialogue-chitchat)
+
+### Customization and Predefined Behaviors
+
+Dialogues allow for customization by adding or overwriting message handlers. Predefined behaviors make it easier for application developers to work with dialogues, handling standard interactions while enabling specific customization for unique use-cases.
+
+#### Sample for creating message handler :
+
+##### Defining dialogue class
 ```python
+from uagents.experimental.dialogues import Dialogue, Edge, Node
+
+class ChitChatDialogueMessage(Model):
+    text: str
+
+# Defining dialogues class
 class ChitChatDialogue(Dialogue):
-    def __init__(self, version: str | None = None, agent_address: str | None = None):
+    def __init__(self, version: str | None = None, agent_address: str | None = None) -> None:
         super().__init__(
             name="ChitChatDialogue",
             version=version,
             agent_address=agent_address,
-            nodes=[default_state, init_state, chatting_state, end_state],
-            edges=[init_session, reject_session, start_dialogue, cont_dialogue, end_session],
+            nodes=[ node1, node2, node3],
+            edges=[ init_session, start_dialogue, cont_dialogue, end_session],
         )
-
-def on_initiate_session(self, model: Type[Model]):
-    """
-    This handler is triggered when the initial message of the
-    dialogue is received. From here you can either accept or reject.
-    Logic that is needed to complete any kind of handshake or considers
-    global agent state should go here.
-    """
-    return super()._on_state_transition(init_session.name, model)
+ 
+    def on_continue_dialogue(self):
+        return super()._on_state_transition(
+            cont_dialogue.name,
+            ChitChatDialogueMessage,
+        )
 ```
-<br></br>
-3. Message Handlers:
 
-    - Implement functions to handle the reception of each message type in agents, corresponding to the dialogue transitions.
-    - Decorate these functions with handlers that link them to specific transitions in the dialogue.
+##### Instantiate dialogues and defining continue dialogue handler/
 
 ```python
-@chitchat_dialogue.on_initiate_session(InitiateChitChatDialogue)
-async def start_chitchat(ctx: Context, sender: str, _msg: InitiateChitChatDialogue):
-    # logic to accept the dialogue and transition to the next state
-    await ctx.send(sender, AcceptChitChatDialogue())
+from dialogues.hardcoded_chitchat import (ChitChatDialogue,ChitChatDialogueMessage)
+
+# Instantiate the dialogues
+chitchat_dialogue = ChitChatDialogue(
+    version="0.1",
+    agent_address=<agent's address>,
+)
+
+@chitchat_dialogue.on_continue_dialogue()
+async def continue_chitchat(
+    ctx: Context,
+    sender: str,
+    msg: ChitChatDialogueMessage,
+):
+    ctx.logger.info(f"Returning: {msg.text}")
+    await ctx.send(sender, ChitChatDialogueMessage(text=msg.text))
 ```
-<br></br>
-### Customizing Dialogue Flows
 
-1. Adding New Nodes and Edges:
+## Example to use dialogues
 
-    - To introduce new scenarios or handle additional types of interactions, define new nodes and edges.
-    - For instance, adding a "paused" node for dialogues that need to temporarily halt.
-<br></br>
-2. Modifying Message Models:
+The following examples demonstrate how dialogues can be used in practical scenarios:
 
-    - Adapt or extend existing message models to include new data fields or types, supporting richer interactions.
-    - Example for a new message type that includes additional context:
+    - **[Open Dialogue Chit-Chat:](../../examples/open-dialogue-chitchat)** This example shows an interactive communication setup between agents, where each step and state transition is visible. It is ideal for understanding the flow of messages and state transitions in real-time.
 
-```python
-class ExtendedChitChatDialogueMessage(Model):
-    text: str
-    context_info: dict
-```
-<br></br>
-3. Implementing Complex Business Logic:
+    - **[Predefined Dialogue Chit-Chat:](../../examples/predefined-dialogue-chitchat)** This example illustrates an automated dialogue scenario with hardcoded dialogue management between two agents. It minimizes manual intervention, focusing on predefined responses and interactions.
 
-    - Enhance handlers to include more sophisticated logic based on the application’s needs, such as integrating with external APIs or processing complex datasets.
+ßThis guide explains the purpose and key aspects of dialogues, drawing on developer comments and feedback. It discusses communication patterns, stateful communication, API highlights, and customization to guide both application and core developers.
 
-```python
-@chitchat_dialogue.on_continue_dialogue(ChitChatDialogueMessage)
-async def continue_chitchat(ctx: Context, sender: str, msg: ChitChatDialogueMessage):
-    response = process_input(msg.text)  # Your custom processing logic
-    await ctx.send(sender, ChitChatDialogueMessage(text=response))
-```
-<br></br>
-## Examples
-
-To demonstrate practical application and provide a clear pathway for your own implementations, the following examples detail how the ChitCha Dialogue system can be configured and run using agents. Each example showcases different aspects of dialogue management:
-
-    - [**Open Dialogue:**](/examples/open-dialogue-chitchat.mdx) Agents engage in an open dialogue where each step and state transition within the ChitChatDialogue is visible and interactive. This setup is ideal for understanding the flow of messages and the impact of state changes in real-time.
-    - [**Predefined Dialogue:**](/examples/predefined-dialogue-chitchat.mdx)   In this configuration, Agents operate within a more streamlined and automated version of the ChitChatDialogue. Most interactions, except for the initiation and periodic chit-chat messages, are automated and hidden from the user. This scenario is suited for environments where minimal user interaction is desirable or necessary.
-
-
-The `ChitChat Dialogue` system serves as a robust framework for developing and implementing agent-based dialogues. By exploring the provided examples and engaging with the dialogue system firsthand, developers can gain a deep understanding of the nuances of state management, message handling, and dialogue transitions in a distributed agent environment.
-
-
+<Callout type="info" emoji="ℹ️">
+    This guide is part of an experimental feature under heavy development. Backward compatibility is not guaranteed, and updates may cause breaking changes. Each update might introduce significant changes in behavior or functionality. 
+</Callout>
