@@ -9,8 +9,7 @@ export default async function handler(
   const accessToken = await getAccessToken(req, res);
 
   const myHeaders = new Headers();
-
-  myHeaders.append("Authorization", `"Bearer ${accessToken}"`);
+  myHeaders.append("Authorization", `Bearer ${accessToken}`);
   try {
     const response = await fetch(
       `${process.env.BACKEND_URL}/api/bookmarks?user_email=${user_email}&is_visible=${is_visible}`,

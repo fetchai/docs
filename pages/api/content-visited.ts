@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const myHeaders = new Headers();
 
-    myHeaders.append("Authorization", `"Bearer ${accessToken}"`);
+    myHeaders.append("Authorization", `Bearer ${accessToken}`);
 
     const response = await fetch(
       `${process.env.BACKEND_URL}/api/page-view/?user_email=${user_email}`,
