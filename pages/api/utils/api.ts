@@ -1,4 +1,6 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { setCookie, getCookie } from "cookies-next";
+import jwt from "jsonwebtoken";
+
 
 class CustomError extends Error {
   status: number;
@@ -9,56 +11,7 @@ class CustomError extends Error {
   }
 }
 
-const API_BASE_URL = process.env.BACKEND_URL;
-
-let accessToken: string | null = null;
-
-export const setAccessToken = (token: string) => {
-  accessToken = token;
-};
-
-const createAxiosInstance = (refreshToken: string) => {
-  const instance = axios.create({
-    baseURL: API_BASE_URL,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  // Add a request interceptor to include the access token in the request headers
-  instance.interceptors.request.use(
-    (config) => {
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-      return config;
-    },
-    (error) => {
-      throw error(error);
-    },
-  );
-
-  // Add a response interceptor to refresh the access token if it's expired
-  instance.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config;
-      if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-        // Call your refresh token API to get a new access token
-        const newAccessToken = await fetchNewAccessToken(refreshToken);
-        setAccessToken(newAccessToken);
-        // Retry the original request with the new access token
-        return axios(originalRequest);
-      }
-     throw error(error);
-    },
-  );
-
-  return instance;
-};
-
-const fetchNewAccessToken = async (refreshToken: string) => {
+export const getNewAccessToken = async (refreshToken: string) => {
   try {
     const response = await fetch(`https://accounts.fetch.ai/v1/tokens`, {
       method: "POST",
@@ -80,25 +33,32 @@ const fetchNewAccessToken = async (refreshToken: string) => {
   } catch (refreshError) {
     throw new CustomError(refreshError.message, 422);
   }
-};
+}
 
-export const apiCall = async <T>(
-  method: string,
-  path: string,
-  refreshToken: string,
-  {
-    params,
-    data,
-    ...config
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }: AxiosRequestConfig & { params?: any; data?: any },
-): Promise<AxiosResponse<T>> => {
-  const axiosInstance = createAxiosInstance(refreshToken);
-  return axiosInstance.request<T>({
-    method,
-    url: path,
-    params,
-    data,
-    ...config,
-  });
-};
+export const getAccessToken = async (req, res)=> {
+	try {
+    let accessToken = getCookie("fauna", { req, res });
+    const refreshToken = getCookie("refresh_token", { req, res });
+
+    if (!accessToken || !refreshToken) {
+      throw { message: "Access token or refresh token is missing" };
+    }
+
+    // Decode and verify access token
+    const decodedToken: any = jwt.decode(accessToken);
+    if (!decodedToken) {
+      throw { message: "Invalid access token" };
+    }
+
+    if (decodedToken.exp * 1000 < (Date.now() - 5000)) {
+      // Access token expired, refresh it
+      const newAcessToken = await getNewAccessToken(refreshToken);
+			accessToken = newAcessToken
+      setCookie("fauna", newAcessToken, { req, res });
+    }
+
+		return accessToken
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+}
