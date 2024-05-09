@@ -282,7 +282,7 @@ function File({
         }}
       >
         {renderComponent(config.sidebar.titleComponent, {
-          title: filesVisited?.some((file) => file == item.title)
+          title: filesVisited?.length > 0 && filesVisited?.some((file) => file == item.title)
             ? `${item.title} ✅`
             : item.title,
           type: item.type,
