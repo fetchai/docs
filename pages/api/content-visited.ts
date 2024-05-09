@@ -1,24 +1,28 @@
+/* eslint-disable no-useless-catch */
+import { getCookie } from "cookies-next";
 import { NextApiRequest, NextApiResponse } from "next";
+import { apiCall, setAccessToken } from "./utils/api";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  const { user_email } = req.query;
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const response = await fetch(
-      `${process.env.BACKEND_URL}/api/page-view/?user_email=${user_email}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
+    const { user_email } = req.query;
+
+    // Get the access token from wherever you have stored it
+    const accessToken = getCookie("fauna", { req, res });
+
+    // Set the access token
+    setAccessToken(accessToken);
+
+    const refreshToken = getCookie("refresh_token", { req, res });
+
+    const response = await apiCall(
+      "GET",
+      `/api/page-view/?user_email=${user_email}`,
+      refreshToken,
+      {},
     );
-    const apiResponse = await response.json();
-    return res.status(response.status).json(apiResponse);
+    res.status(response.status).json(response.data);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json([]);
+    res.status(error.response.status || 500).json({ error: error.message });
   }
-}
+};
