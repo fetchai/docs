@@ -6,9 +6,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { user_email } = req.query;
 
-    const accessToken = await getAccessToken( req, res );
+    const accessToken = await getAccessToken(req, res);
 
-    let myHeaders = new Headers()
+    const myHeaders = new Headers();
 
     myHeaders.append("Authorization", `"Bearer ${accessToken}"`);
 
@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         method: "GET",
         headers: myHeaders,
         redirect: "follow",
-        mode: "cors"
+        mode: "cors",
       },
     );
     const data = await response.json();

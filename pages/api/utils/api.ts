@@ -1,7 +1,6 @@
 import { setCookie, getCookie } from "cookies-next";
 import jwt from "jsonwebtoken";
 
-
 class CustomError extends Error {
   status: number;
 
@@ -33,10 +32,10 @@ export const getNewAccessToken = async (refreshToken: string) => {
   } catch (refreshError) {
     throw new CustomError(refreshError.message, 422);
   }
-}
+};
 
-export const getAccessToken = async (req, res)=> {
-	try {
+export const getAccessToken = async (req, res) => {
+  try {
     let accessToken = getCookie("fauna", { req, res });
     const refreshToken = getCookie("refresh_token", { req, res });
 
@@ -44,21 +43,21 @@ export const getAccessToken = async (req, res)=> {
       throw { message: "Access token or refresh token is missing" };
     }
 
-    // Decode and verify access token
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const decodedToken: any = jwt.decode(accessToken);
     if (!decodedToken) {
       throw { message: "Invalid access token" };
     }
 
-    if (decodedToken.exp * 1000 < (Date.now() - 5000)) {
+    if (decodedToken.exp * 1000 < Date.now() - 5000) {
       // Access token expired, refresh it
       const newAcessToken = await getNewAccessToken(refreshToken);
-			accessToken = newAcessToken
+      accessToken = newAcessToken;
       setCookie("fauna", newAcessToken, { req, res });
     }
 
-		return accessToken
+    return accessToken;
   } catch (error) {
     res.status(401).json({ error: error.message });
   }
-}
+};
