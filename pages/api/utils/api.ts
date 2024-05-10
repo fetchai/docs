@@ -1,4 +1,4 @@
-import { setCookie, getCookie } from "cookies-next";
+import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import { getNewAccessToken } from "src/core/fauna";
 import { parseJwt } from "src/core/jwt";
 
@@ -20,8 +20,13 @@ export const getAccessToken = async (req, res) => {
     if (decodedToken.expiry < Date.now() - 5000) {
       // Access token expired, refresh it
       const newAcessToken = await getNewAccessToken(refreshToken);
-      accessToken = newAcessToken.accessToken;
-      setCookie("fauna", newAcessToken, { req, res });
+      if(newAcessToken.accessToken) {
+        accessToken = newAcessToken.accessToken;
+        setCookie("fauna", newAcessToken, { req, res });
+      } else {
+        deleteCookie("fauna");
+      }
+      
     }
 
     return accessToken;
