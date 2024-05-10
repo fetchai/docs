@@ -22,7 +22,7 @@ export const getAccessToken = async (req, res) => {
       const newAcessToken = await getNewAccessToken(refreshToken);
       if (newAcessToken.accessToken) {
         accessToken = newAcessToken.accessToken;
-        setCookie("fauna", newAcessToken, { req, res });
+        setCookie("fauna", accessToken, { req, res });
       } else {
         deleteCookie("fauna");
       }
