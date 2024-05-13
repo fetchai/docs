@@ -2,11 +2,7 @@
 
 ## Introduction
 
-The Hugging Face Inference API allows access to thousands of models for specific tasks. In this tutorial, we will integrate the 
-Hugging Face API with the Agentverse Agent, enabling users to select their preferred **text-classification** model. Users can choose 
-from the top downloaded models and make queries to them. This system consists of multiple layers of tasks and subtasks, with the 
-Hugging Face system as the main task and Hugging Face request and model list as subtasks. For a better understanding of the 
-workflow, please refer to the documentation below.
+The Hugging Face Inference API allows access to thousands of models for specific objective execution. In this tutorial, we will integrate the Hugging Face API with the Agentverse Agent, enabling users to select their preferred **text-classification** model. Users can choose from the top downloaded models and make queries to them. This system consists of multiple layers of Primary and Secondary functions, with the Hugging Face system as the Primary Function and Hugging Face request and model list as Secondary Functions. For a better understanding of the workflow, please refer to the documentation below.
 
 ## Hugging face Inference API
 
@@ -20,12 +16,12 @@ For setting up Hugging face service we need to create different agents as listed
 
 ### Hugging Face System Agent
 
-This Agent helps users with their queries for a text-classification model of their choosing. The agent always prioritizes Hugging Face request subtasks. Below is the script for creating our agent on [Agentverse ↗️](https://agentverse.ai/agents) using the New Agent button.
+This Agent helps users with their queries for a text-classification model of their choosing. The agent always prioritizes Hugging Face request secondary function. Below is the script for creating our agent on [Agentverse ↗️](https://agentverse.ai/agents) using the **+ New Agent** button.
 
         ```python copy filename="agent.py"
         # Here we demonstrate how we can create a hugging face system agent that is compatible with DeltaV.
 
-        # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
+        # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
         # Importing required libraries.
         import requests
@@ -33,7 +29,7 @@ This Agent helps users with their queries for a text-classification model of the
 
         # Define a model class for the Hugging Face agent's expected message format.
         class HF(Model):
-            response : str # This class has a single attribute 'response' that holds the string response from the subtask.
+            response : str # This class has a single attribute 'response' that holds the string response from the secondary subtask.
 
         # Create a protocol for the Hugging Face (HF) agent, specifying its communication protocol.
         hf_protocol = Protocol("Hugging Face")
@@ -56,12 +52,12 @@ This Agent helps users with their queries for a text-classification model of the
 
 ### Hugging Face Request Agent
 
-This agent helps hugging face system to handle hugging face request to user and calculates the response. The agent has two fields i.e. `model_id` (to which query has to be made) and `query` (Question needed to be asked to the model). For `model_id` this task always prioritizes `Model List` subtask to get list of available model of a specific type.
+This agent helps hugging face system to handle hugging face request to user and calculates the response. The agent has two fields i.e. `model_id` (to which query has to be made) and `query` (Question needed to be asked to the model). For `model_id`, this always prioritizes `Model List` secondary function to get list of available model of a specific type.
 
         ```python copy filename="agent.py"
         # Here we demonstrate how we can create a hugging face request agent that is compatible with DeltaV.
 
-        # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
+        # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
         # Importing required libraries.
         import requests
@@ -112,7 +108,7 @@ This agent helps user to look for specific model with search keyword. The agent 
         ```python copy filename="agent.py"
         # Here we demonstrate how we can create a model list agent that is compatible with DeltaV.
 
-        # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
+        # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
         # Importing required libraries.
         import requests
@@ -170,65 +166,57 @@ This agent helps user to look for specific model with search keyword. The agent 
         agent.include(model_list_protocol, publish_manifest = True)
         ```
 
-## Setting up services
+## Setting up Agent Functions
 
-Go to [AgentVerse Services ↗️](https://agentverse.ai/services) and create new services for all three agents created [above ↗️](/guides/agentverse/huggingface-text-classification-model-agent#setting-up-agents).
+Go to the [Agentverse ↗️](https://agentverse.ai/) and create new Agent Functions for all three agents created [above ↗️](/guides/agentverse/huggingface-text-classification-model-agent#setting-up-agents). You can do so within the **My Agents** tab, by clicking on desired agent and accessing its information. There, you will need to click on the **Deploy** tab and provide all needed details required for successful Agent Function registration. For additional information on Agent Functions check the following resources: [Agentverse Functions ↗️](/guides/services/services) and [Register an Agent Function on the Agentverse ↗️](/guides/agentverse/registering-agent-services)
 
-The properties of services for each agent are listed below.
+The properties of Functions for each agent are listed below.
 
 ### Hugging Face System
 
-![](../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-System-1.png)
-![](../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-System-2.png)
+![](../../../src/images/guides/services/service-guide/hugging_face_1.png)
 
-    - **Service title**: just the name of your service - in this example let's call it **Hugging Face System**.
-    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your service does - in this example we can specify something like this: **This service helps user to give any query to the selected model and gets the response to their query. Always go for hugging face request subtask for this task.**
-                        **Subtask chronology**
+    - **Function title**: just the name of your Agent Function - in this example let's call it **Hugging Face System**.
+    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your Agent Function does - in this example we can specify something like this: **This Function helps user to give any query to the selected model and gets the response to their query. Always go for hugging face request secondary function for this primary function.**
+                        **Secondary functions chronology**
                         **Hugging face system -> Hugging face request -> Model List**
-    - **Service group**: the group the to be created service belongs to - click on the **Add new Service Group** option and let's create a service group with the name **Hugging Face**.
-    - **Agent**: select your newly created **Hugging Face System agent** agent from the list.
-    - **Task type**: task.
+
+    - **Application**: Primary Function.
     - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#setting-up-agents).
-    - **Field descriptions**: This field is super important to be detailed and is responsible for triggering subtask. - in this example we can specify something like: _**Describes the response to the user query. Always go for Hugging face request subtask to get this field. Never ask this from user**_.
+    - **Field descriptions**: This field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like: _**Describes the response to the user query. Always go for Hugging face request secondary task to get this field. Never ask this from user**_.
 
 ### Hugging Face Request
 
-![](../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-Request-1.png)
-![](../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-Request-2.png)
+![](../../../src/images/guides/services/service-guide/hugging_face_2.png)
 
-    - **Service title**: just the name of your service - in this example let's call it **Hugging Face Request**.
-    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your service does - in this example we can specify something like this: **This service handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists subtask**.
-    - **Service group**: the group the to be created service belongs to - click on the **Add new Service Group** option and let's create a service group with the name **Hugging Face**.
-    - **Agent**: select your newly created **Hugging Face Request agent** agent from the list.
-    - **Task type**: subtask.
+    - **Function title**: just the name of your Agent Function - in this example let's call it **Hugging Face Request**.
+    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your Agent Function does - in this example we can specify something like this: **This service handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists secondary function**.
+    - **Application**: Secondary Function.
     - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#hugging-face-request-agent).
-    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering subtask. In this example we can specify something like:
-        - **Model_id**: **_Always go for model list subtask. Never ask this field to user._**
-        - **query**: **_Describes the query user wants to ask to the model Always ask this to user after model_id is given by model list subtask._**
+    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary function. In this example we can specify something like:
+        - **Model_id**: **_Always go for model list secondary function. Never ask this field to user._**
+        - **query**: **_Describes the query user wants to ask to the model. Always ask this to user after model_id is given by model list secondary function._**
 
 ### Model List
 
-![](../../../src/images/guides/agentverse/Hugging-Face-System/Model-List-1.png)
-![](../../../src/images/guides/agentverse/Hugging-Face-System/Model-List-2.png)
+![](../../../src/images/guides/services/service-guide/hugging_face_3.png)
 
-    - **Service title**: just the name of your service - in this example let's call it **Model List**.
-    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your service does - in this example we can specify something like this: **This service helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option.**
-    - **Service group**: the group the to be created service belongs to - click on the **Add new Service Group** option and let's create a service group with the name **Hugging Face**.
-    - **Agent**: select your newly created **Model List agent** agent from the list.
-    - **Task type**: subtask.
+    - **Function title**: just the name of your Agent Function - in this example let's call it **Model List**.
+    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your Agent Function does - in this example we can specify something like this: **This service helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option.**
+    - **Application**: Secondary Function.
     - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#model-list-agent)
-    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering subtask. In this example we can specify something like: _**This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options.**_
+    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like: _**This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options.**_
 
 ## Let's find our service on DeltaV
 
 Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
-Type in **Hugging Face System** and click on `Advanced options`. Select `All Service Groups` and click on `Start` button.
+Type in **Hugging Face System** and click on `Start` button.
 
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-1.png)
 
-Select **Hugging Face System** from options provided by DeltaV and it will initiate Hugging Face Request subtask.
-Hugging Face subtask will initiate Model Lists subtask and ask for **Search keyword** for which you want to search the models for.
+Select **Hugging Face System** from options provided by DeltaV and it will initiate Hugging Face Request secondary function.
+Hugging Face secondary function will initiate Model Lists secondary function and ask for **Search keyword** for which you want to search the models for.
 
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-2.png)
 
@@ -242,4 +230,4 @@ After your service has been executed you can see the `Agent Response` message.
 
 ![](../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-5.png)
 
-With that, **you have got a hugging face service which can be discovered and contacted with DeltaV. Awesome!**
+With that, **you have got a hugging face function which can be discovered and contacted with DeltaV. Awesome!**
