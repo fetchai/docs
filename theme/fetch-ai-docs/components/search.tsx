@@ -86,16 +86,20 @@ export function Search({
 
       if (input.current.value !== "") {
         try {
-          const response = await fetch(`/docs/api/search`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                search_term: input.current.value,
+                selected_path: url,
+              }),
             },
-            body: JSON.stringify({
-              search_term: input.current.value,
-              selected_path: url,
-            }),
-          });
+          );
+
           if (!response.ok) {
             console.log("---something went wrong----");
           }
