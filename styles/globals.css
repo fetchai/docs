@@ -464,14 +464,15 @@ video {
 }
 
 .ais-Hits-item {
-  position: absolute;
-  right: 220px;
-  width: 600px;
+  width: 30rem;
   color: rgba(31, 41, 55, 1);
   border-radius: 0.375rem;
   overflow-wrap: break-word;
-  margin-left: 0.625rem;
-  margin-right: 0.625rem;
+}
+
+.ais-Hits-list {
+  max-height: min(calc(100vh - 5rem - env(safe-area-inset-bottom)), 400px);
+  overflow: auto;
 }
 
 .nx-font-monaco {
@@ -541,6 +542,9 @@ video {
 
 .nx-bottom-0 {
   bottom: 0;
+}
+.nx-left-0 {
+  left: 0;
 }
 
 .nx-right-0 {
@@ -873,9 +877,14 @@ video {
   width: 1.25rem;
 }
 
+.nx-w-input {
+  width: 30rem;
+}
+
 .nx-w-64 {
   width: 16rem;
 }
+
 .nx-w-8 {
   width: 2rem;
 }
@@ -4430,19 +4439,67 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
   cursor: pointer;
 }
 
-
-
-@layer{
- .phaseOne  {
-background: rgb(213,255,243);
-background: linear-gradient(243deg, rgba(213,255,243,1) 0%, rgba(133,255,220,1) 100%);
+@layer {
+  .phaseOne {
+    background: rgb(213, 255, 243);
+    background: linear-gradient(
+      243deg,
+      rgba(213, 255, 243, 1) 0%,
+      rgba(133, 255, 220, 1) 100%
+    );
   }
-   .phaseTwo  {
-background: rgb(255,203,172);
-background: linear-gradient(197deg, rgba(255,203,172,1) 0%, rgba(247,146,86,1) 100%);
+  .phaseTwo {
+    background: rgb(255, 203, 172);
+    background: linear-gradient(
+      197deg,
+      rgba(255, 203, 172, 1) 0%,
+      rgba(247, 146, 86, 1) 100%
+    );
   }
- .phaseThree {
-   background: rgb(255, 179, 186);
-   background: linear-gradient(143deg, rgba(255, 179, 186, 1) 0%, rgba(244, 91, 105, 1) 100%);
- }
- }
+  .phaseThree {
+    background: rgb(255, 179, 186);
+    background: linear-gradient(
+      143deg,
+      rgba(255, 179, 186, 1) 0%,
+      rgba(244, 91, 105, 1) 100%
+    );
+  }
+}
+
+.searchLarge {
+  display: block;
+}
+
+@media (max-width: 1280px) {
+  .searchLarge {
+    display: none;
+  }
+}
+
+.responsive-text {
+  font-size: 16px;
+}
+
+@media (max-width: 805px) {
+  .responsive-text {
+    font-size: 12px;
+  }
+}
+
+.searchMobile {
+  display: none;
+}
+
+@media (max-width: 1280px) {
+  .searchMobile {
+    display: flex;
+  }
+}
+
+.ais-SearchBox-form {
+  width: 100%;
+}
+
+.ais-SearchBox-form {
+  width: 100%;
+}

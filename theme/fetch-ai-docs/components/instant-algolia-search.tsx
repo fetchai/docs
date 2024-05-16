@@ -3,16 +3,13 @@ import { InstantSearch, Configure, SearchBox, Hits } from "react-instantsearch";
 import algoliasearch from "algoliasearch/lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useConfig } from "../contexts";
-import { remark } from "remark";
-import remarkHTML from "remark-html";
 import React from "react";
-import type { Item as NormalItem } from "nextra/normalize-pages";
+// import type { Item as NormalItem } from "nextra/normalize-pages";
 
-type MyItem = NormalItem & {
-  // Add or modify properties as needed
-  tags?: string[];
-};
+// type MyItem = NormalItem & {
+//   // Add or modify properties as needed
+//   tags?: string[];
+// };
 // Search API key and application ID below
 const searchClient = algoliasearch(
   "J27DIPDG4S",
@@ -20,37 +17,40 @@ const searchClient = algoliasearch(
 );
 const indexName = "14-3-24-index";
 
-// Function to convert Markdown to HTML
-const markdownToHTML = (markdownString) => {
-  return remark().use(remarkHTML).processSync(markdownString).toString();
-};
-
-export const InstantAlgoliaSearch = ({
-  directories,
-}: {
-  directories: MyItem[];
-}) => {
+export const InstantAlgoliaSearch = () => {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  function Hit({ hit }) {
+  function Hit({
+    hit,
+  }: {
+    hit: { path: string; title: string; content: string };
+  }) {
     if (show) {
       const x = (
-        <div
-          className="nx-w-64 nx-h-32 nx-absolute nx-bg-gray-100 nx-border-b-2 nx-rounded nx-right-0"
-          onClick={() => {
-            router.push(hit.path);
-          }}
-        >
-          <div className="nx-text-lg nx-p-2">{hit.title.replaceAll("#", "")}</div>
-          <div className="nx-text-sm nx-p-2 nx-text-gray-700">{hit.content.substring(0, 160)}</div>
-          <div className="nx-text-lg nx-p-2">{hit.path.replaceAll("/", ">").replace(">docs>", "")}</div>
+        <div className="nx-flex nx-flex-col">
+          <div
+            className="nx-w-ful nx-cursor-pointer nx-h-64 nx-py-4 nx-px-2 nx-bg-gray-100 nx-border-b-2 nx-rounded"
+            onClick={() => {
+              router.push(hit.path.split("/docs")[1]);
+            }}
+          >
+            <div className="nx-text-lg nx-p-2">
+              {hit.title.replaceAll("#", "")}
+            </div>
+            <div className="nx-text-sm nx-p-2 nx-text-gray-700">
+              {hit.content.slice(0, 160)}
+            </div>
+            <div className="nx-text-lg nx-p-2">
+              {hit.path.replaceAll("/", ">").replace(">docs>", "")}
+            </div>
+          </div>
         </div>
       );
       return x;
     } else {
-      return null
+      return null;
     }
   }
 
@@ -83,26 +83,31 @@ export const InstantAlgoliaSearch = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, [handleClickOutside]);
-
   return (
-      <div style={{width : "100%"}}>
-    <InstantSearch searchClient={searchClient} indexName={indexName} >
-      <div
-        className=""
-        style={{ right: "120px" }}
-        ref={dropdownRef}
-      >
-        <Configure hitsPerPage={4} />
-        <SearchBox queryHook={queryHook}
-                   placeholder="Search..."
-         classNames={{
-            input: 'nx-w-full nx-bg-gray-50 nx-border nx-border-gray-300 nx-text-gray-900 nx-text-lg nx-p-2 nx-rounded-lg nx-focus:ring-blue-500 nx-focus:border-blue-500 nx-block  nx-p-2.5 nx-dark:bg-gray-700 nx-dark:border-gray-600 nx-dark:placeholder-gray-400 nx-dark:text-white nx-dark:focus:ring-blue-500 nx-dark:focus:border-blue-500',
-           submit: 'nx-hidden',
-           reset : 'nx-hidden'
-        }}/>
-        <Hits hitComponent={Hit} />
-      </div>
-    </InstantSearch>
-      </div>
+    <div className="nx-w-full">
+      <InstantSearch searchClient={searchClient} indexName={indexName}>
+        <div ref={dropdownRef}>
+          <Configure hitsPerPage={4} />
+          <SearchBox
+            className="nx-justify-center nx-w-full nx-flex"
+            queryHook={queryHook}
+            placeholder="Search..."
+            classNames={{
+              input:
+                "nx-bg-gray-50 nx-border nx-w-full nx-border-gray-300 nx-text-gray-900 nx-text-lg nx-p-2 nx-rounded-lg nx-focus:ring-blue-500 nx-focus:border-blue-500 nx-block  nx-p-2.5 nx-dark:bg-gray-700 nx-dark:border-gray-600 nx-dark:placeholder-gray-400 nx-dark:text-white nx-dark:focus:ring-blue-500 nx-dark:focus:border-blue-500",
+              submit: "nx-hidden",
+              reset: "nx-hidden",
+            }}
+          />
+          <Hits
+            classNames={{
+              list: "nx-absolute nx-mt-2",
+              item: "",
+            }}
+            hitComponent={Hit}
+          />
+        </div>
+      </InstantSearch>
+    </div>
   );
 };
