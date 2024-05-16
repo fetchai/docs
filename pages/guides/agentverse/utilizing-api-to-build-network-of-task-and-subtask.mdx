@@ -389,7 +389,7 @@ After clicking the **+ New Function** button provide all details required - fill
     - **Protocol** and **Model** will be automatically populated based on the source code of [your news reading system agent ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#news-reading-agent).
     - **Field descriptions**:
 
-        _news_: Go for secondary function with id "news reading details". Never ask this to user. This describes news which user wants to read.
+        _news_: **Go for subtask with id "news reading details". Never ask this to user. This describes news which user wants to read.**
 
 Click **Save** button after filling out the form.
 
@@ -406,10 +406,10 @@ Click **Save** button after filling out the form.
             **'keyword' : What is the keyword you want to read news for?**
             
         - news_type - **This is type of news user wants to read from options from Categorical, Regional or Keyword. After this ask user for field news_subtype.**
-        - news_url_content - **Trigger corresponding secondary function according to 'news_type' given by user to get this field:**
-        **Categorical : Generate Categorical news secondary function,**
-        **Regional :  Generate Regional News secondary function,**
-        **Keyword : Generate Keyword News secondary function**
+        - news_url_content - **Trigger corresponding subtask according to 'news_type' given by user to get this field:**
+        **Categorical : Generate Categorical news subtask,**
+        **Regional :  Generate Regional News subtask,**
+        **Keyword : Generate Keyword News subtask**
         ** This provides list of relevant news options, ask user which news they want to read.**
         ** User category, keyword and country as provided by user in field 'news_subtype'.**
 
@@ -429,7 +429,7 @@ Click **Save** button after filling out the form.
 ### Generate Regional News Secondary Function
 
     - **Function title**: just the name of your Agent Function; in this example let's call it **Generate Regional news**.
-    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does - in this example we can specify something like "**This service helps generate list of options for regional news for the user. Give these options to user and ask let them select the option they want to choose.**".
+    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does - in this example we can specify something like "**This function helps generate list of options for regional news for the user. Give these options to user and ask let them select the option they want to choose.**".
     - **Application**: Secondary Function.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your generate regional agent ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#generate-regional-news).
     - **Field descriptions**:
@@ -452,19 +452,19 @@ Click **Save** button after filling out the form
 
 Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
-Firstly, type in something like **I want to read news of my choice** into what service you would like to assemble and switch on **Advanced Options**. In advanced options select the **Function group** and click on **Start** button.
+Firstly, type in something like **I want to read news of my choice** into what function you would like to assemble and switch on **Advanced Options**. In advanced options select the **Function group** and click on **Start** button.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/querying-deltaV-for-reading-news.png)
 
-After being navigated to the chat screen, you will be asked to select a primary function.
+After being navigated to the chat screen, you will be asked to select an option.
 
-As your objective (`I want to read news of my choice`) specified on the previous screen contained words related to the description of your news reading system agent, your News Reading URL System function is listed as an option.
+As your objective task (`I want to read news of my choice`) specified on the previous screen contained words related to the description of your news reading system agent, your News Reading URL System function is listed as an option.
 
 Let's select it.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/selection-of-news-reading-system-service.png)
 
-Secondary function **News Reading Details secondary function** will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading secondary function**.
+**News Reading Details** secondary function will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading URL System**.
 
 Select the news type and subtype you want to read.
 
@@ -472,13 +472,13 @@ Select the news type and subtype you want to read.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/news-reading-details-subtask-2.png)
 
-Once you select the news type respective subtask will be triggered as mentioned in [primary function description ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#news-reading-details-subtask) for **Generate news_type secondary function**.
+Once you select the news type respective secondary function will be triggered as mentioned in [News Reading URL System description ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#news-reading-details-subtask) for **Generate news_type secondary function**.
 
 The respective **Generate news_type secondary function** will fetch _category_, _country_ or _keyword_ based on news type and subtype selected and will generate _top news_ related to news subtype provided.
 
 The news list will be passed from **Generate news_type secondary function** to **News Reading Details secondary function** and user can select one title.
 
-Chosen news title URL will be fetched and provided to **News Reading URL system** and User will get clickable link to read news in details.
+Chosen news title URL will be fetched and provided to **News Reading URL system** and user will get clickable link to read news in details.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/generate-news-type-subtask-3.png)
 
@@ -488,8 +488,8 @@ Chosen news title URL will be fetched and provided to **News Reading URL system*
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/generate-news-type-subtask-6.png)
 
-With that, **you have gotten a news reading url service which can be discovered and contacted with DeltaV. Awesome!**
+With that, **you have gotten a News Reading URL function which can be discovered and contacted with DeltaV. Awesome!**
 
     <Callout type="info" emoji="ℹ️">
-        If one of multiple secondary function is to be triggered, it should be mentioned in dictionary rather than writing a description of each as it confuses the DeltaV LLM model. If we mention **"Trigger generate categorical secondary function for user selecting categorical news and trigger generate regional for user selecting regional news and so on...."**, will lead to either non-traceability or wrong selection of secondary functions.
+        If one of multiple secondary functions is to be triggered, it should be mentioned in dictionary rather than writing a description of each as it confuses the DeltaV LLM model. If we mention **"Trigger generate categorical secondary function for user selecting categorical news and trigger generate regional for user selecting regional news and so on...."**, will lead to either non-traceability or wrong selection of secondary functions.
     </Callout>
