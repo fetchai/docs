@@ -93,9 +93,9 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className={styles.page}>
+    <footer>
       <div className={styles.footerPage}>
-        <div className="nx-container nx-mx-auto">
+        <div className="nx-container">
           <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-1 md:nx-grid-cols-4 lg:nx-grid-cols-4 nx-gap-4">
             <div className="md:nx-col-span-2 nx-mb-8 md:nx-mb-0">
               <Image src={logo} alt="Logo" />

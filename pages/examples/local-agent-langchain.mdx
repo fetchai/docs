@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over Agentverse and DeltaV using the Agentverse Mailroom. The example uses a locally hosted agent that utilizes LangChain's Etherscan integration to process requests related to Ethereum blockchain transactions.
+This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over Agentverse and DeltaV using the Agentverse Mailroom. The example uses a locally hosted agent that utilizes LangChain's Wikipedia integration to process requests related to Wikipedia search.
 
 ### Guide
 
@@ -18,62 +18,59 @@ This guide demonstrates how to run an agent on your own hardware or infrastructu
 
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
 
-- [Agentverse Services ↗️](/concepts/agent-services/services)
+- [Agentverse Services ↗️](/guides/services/services)
 
-- [Register a Service on the Agentverse ↗️](/guides/agentverse/registering-agent-services)
+- [Register an Agent Function on the Agentverse ↗️](/guides/agentverse/registering-agent-services)
 
 - [Running locally ↗️](/guides/agents/running-locally)
 
 ### The agent
 
 ```py copy filename = 'agent.py'
-# Import required libraries
-from langchain_community.document_loaders import EtherscanLoader
+from langchain_community.tools import WikipediaQueryRun
+from langchain_community.utilities import WikipediaAPIWrapper
 from uagents.setup import fund_agent_if_low
 from uagents import Agent, Context, Protocol, Model
-import os
 from pydantic import Field
 from ai_engine import UAgentResponse, UAgentResponseType
 
 # Extend your protocol with Wikipedia data fetching
-class EthRequest(Model):
-    account_address: str = Field(description="Give address for which you need details")
+class WikiReq(Model):
+    search_keyword: str = Field(description="This describes the keyword you want to search on wiki")
 
-# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
-
-SEED_PHRASE = "Secret seed phrase here"
+SEED_PHRASE = "<Secret Phrase for your agent>"
 
 # Copy the address shown below
 print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
 
-# Then go to https://agentverse.ai, register your agent in the Mailroom
-# and copy the agent's mailbox key
-
-AGENT_MAILBOX_KEY = "Your_Mailbox_key"
+AGENT_MAILBOX_KEY = "Your_mailbox_address"
 
 # Now your agent is ready to join the agentverse!
-ethagent = Agent(
-    name="Ethereum Agent",
+WikiAgent = Agent(
+    name="Wiki Agent",
     seed=SEED_PHRASE,
     mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
 )
+fund_agent_if_low(WikiAgent.wallet.address()) #funding agent.
+wiki_protocol = Protocol("Wiki Protocol")
 
-eth_protocol = Protocol("Etherscan Protocol")
-
-etherscanAPIKey = ''
-os.environ["ETHERSCAN_API_KEY"] = etherscanAPIKey
-
-@eth_protocol.on_message(model=EthRequest, replies={UAgentResponse})
-async def load_eth(ctx: Context, sender: str, msg: EthRequest):
-    ctx.logger.info(msg.account_address)
-    loader = EtherscanLoader(msg.account_address, filter="erc20_transaction")
-    result = loader.load()
-    content = eval(result[0].page_content)
-    content_str = "\n".join(f"{key}: {value}" for key, value in content.items()) # Convert dictionary to string with line breaks
-    ctx.logger.info(content)
+@wiki_protocol.on_message(model=WikiReq, replies={UAgentResponse})
+async def load_dalle(ctx: Context, sender: str, msg: WikiReq):
+    wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+    ctx.logger.info(msg.search_keyword)
+    try:
+        result = wikipedia.run(msg.search_keyword)
+    except Exception as e:
+        ctx.logger.info(f"Error generating response: {e}")
+    # Send an error response back to the user
     await ctx.send(
-        sender, UAgentResponse(message=content_str, type=UAgentResponseType.FINAL)
+        sender, UAgentResponse(message=str(result), type=UAgentResponseType.FINAL)
     )
-ethagent.include(eth_protocol, publish_manifest=True)
-ethagent.run()
+
+WikiAgent.include(wiki_protocol, publish_manifest=True)
+WikiAgent.run()
 ```
+
+### Register Agent Function
+
+For this step, head to this [guide ↗️](/guides/agents/locally-running-langchain-integration#register-your-agent-function-on-the-agentverse) for a detailed overview of the registration process.

@@ -124,7 +124,7 @@ const items: { [key: string]: Item[] } = {
       description: (
         <>
           Explore the integration of AI Engine within DeltaV, enabling
-          connections between users and agent-based services.
+          connections between users and agent-based Functions.
         </>
       ),
       icon: synergyIcon,
@@ -135,7 +135,7 @@ const items: { [key: string]: Item[] } = {
       description: (
         <>
           DeltaV operates as a search-based AI chat interface, employing natural
-          language conversations to manage tasks for users.
+          language conversations to assist users in objective execution.
         </>
       ),
       icon: whisperAgentIcon,
@@ -173,11 +173,11 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-mail",
     },
     {
-      title: "Agentverse Services: register your services on the Agentverse!",
+      title: "Agentverse Functions: register your Functions on the Agentverse!",
       description: (
         <>
-          Create an agent encapsulating a service and register it as a service
-          on the Agentverse to be retrieved via DeltaV chat!
+          Create an agent encapsulating a Function and register it as an Agent
+          Function on the Agentverse to be retrieved via DeltaV chat!
         </>
       ),
       icon: whisperAgentIcon,
