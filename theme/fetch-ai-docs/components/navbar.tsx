@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import cn from "clsx";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useFSRoute } from "nextra/hooks";
 import { ArrowRightIcon, MenuIcon } from "nextra/icons";
 import type { Item, MenuItem, PageItem } from "nextra/normalize-pages";
@@ -30,12 +30,6 @@ const classes = {
   ),
 };
 
-const getLastPart = (str) => str.match(/[^/]+$/)?.[0] || "";
-const compareLastParts = (a, b) => {
-  const lastPartA = getLastPart(a);
-  const lastPartB = getLastPart(b);
-  return lastPartA.localeCompare(lastPartB);
-};
 
 function NavbarMenu({
   className,
@@ -53,6 +47,7 @@ function NavbarMenu({
 
   return (
     <div className="nx-relative nx-inline-block">
+
       <Menu>
         <Menu.Button
           className={cn(
@@ -93,29 +88,19 @@ function NavbarMenu({
 export function Navbar({
   flatDirectories,
   items,
-  bookMark,
-  fetchBookMarks,
 }: NavBarProps): ReactElement {
   const config = useConfig();
   const activeRoute = useFSRoute();
   const { menu, setMenu } = useMenu();
   const context = useUserContext();
   const router = useRouter();
-  const [selectedItem, setSelectedItem] = useState("Bookmarks");
-  const [bookMarksList, setbookMarksLists] = useState<string[]>([]);
+
   const handleSignOut = () => {
     context.signOut();
     router.push("/");
   };
-  const fetchBookMarksData = async (contextvalues) => {
-    const response = await fetchBookMarks(contextvalues, true);
-    setbookMarksLists(response);
-  };
-  useEffect(() => {
-    if (context?.user?.email) {
-      fetchBookMarksData(context?.user?.email);
-    }
-  }, [bookMark, context?.user?.email]);
+
+
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -126,47 +111,48 @@ export function Navbar({
           "contrast-more:nx-shadow-[0_0_0_1px_#000] contrast-more:dark:nx-shadow-[0_0_0_1px_#fff]",
         )}
       />
-      <nav className="nx-mx-auto nx-py-4 nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)] nx-mr-2">
+      <nav
+          className="nx-mx-auto nx-py-4 nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)] nx-mr-2">
         <div className="nx-flex nx-items-center">
           <div className="nx-mr-4">
             {config.logoLink ? (
-              <Anchor
-                href={
-                  typeof config.logoLink === "string" ? config.logoLink : "/"
-                }
-                className="nx-flex nx-items-center hover:nx-opacity-75  "
-              >
-                {renderComponent(config.logo)}
-              </Anchor>
+                <Anchor
+                    href={
+                      typeof config.logoLink === "string" ? config.logoLink : "/"
+                    }
+                    className="nx-flex nx-items-center hover:nx-opacity-75  "
+                >
+                  {renderComponent(config.logo)}
+                </Anchor>
             ) : (
-              <div className="nx-flex nx-items-center ">
-                {renderComponent(config.logo)}
-              </div>
+                <div className="nx-flex nx-items-center">
+                  {renderComponent(config.logo)}
+                </div>
             )}
           </div>
 
-          <div className="ltr:nx-mr-auto rtl:nx-ml-auto">
+          <div className="ltr:nx-mr-auto rtl:nx-ml-auto lg:nx-hidden">
             {items.map((pageOrMenu, index) => {
-              if (pageOrMenu.display === "hidden") return null;
+              // if (pageOrMenu.display === "hidden") return null;
 
               if (pageOrMenu.type === "menu") {
                 const menu = pageOrMenu as MenuItem;
                 return (
-                  <NavbarMenu
-                    key={menu.title}
-                    className={cn(
-                      classes.link,
-                      "nx-flex nx-gap-1",
-                      classes.inactive,
-                    )}
-                    menu={menu}
-                  >
-                    {menu.title}
-                    <ArrowRightIcon
-                      className="nx-h-[18px] nx-min-w-[18px] nx-p-0.5"
-                      pathClassName="nx-origin-center nx-transition-transform nx-rotate-90"
-                    />
-                  </NavbarMenu>
+                    <NavbarMenu
+                        key={menu.title}
+                        className={cn(
+                            classes.link,
+                            "nx-flex nx-gap-1",
+                            classes.inactive,
+                        )}
+                        menu={menu}
+                    >
+                      {menu.title}
+                      <ArrowRightIcon
+                          className="nx-h-[18px] nx-min-w-[18px] nx-p-0.5"
+                          pathClassName="nx-origin-center nx-transition-transform nx-rotate-90"
+                      />
+                    </NavbarMenu>
                 );
               }
               const page = pageOrMenu as PageItem;
@@ -175,87 +161,89 @@ export function Navbar({
               // If it's a directory
               if (page.children) {
                 href =
-                  (page.withIndexPage ? page.route : page.firstChildRoute) ||
-                  href;
+                    (page.withIndexPage ? page.route : page.firstChildRoute) ||
+                    href;
               }
 
               const isActive =
-                page.route === activeRoute ||
-                activeRoute.startsWith(page.route + "/");
+                  page.route === activeRoute ||
+                  activeRoute.startsWith(page.route + "/");
               return (
-                <Anchor
-                  href={href}
-                  key={href}
-                  className={cn(
-                    classes.link,
-                    "nx-relative nx-mr-1 nx-hidden nx-whitespace-nowrap md:nx-inline-block nx-mb-2",
-                    !isActive || page.newWindow
-                      ? classes.inactive
-                      : classes.active,
-                    index === 0 && !isActive, // Align the first item to the left
-                  )}
-                  newWindow={page.newWindow}
-                  aria-current={!page.newWindow && isActive}
-                >
+                  <Anchor
+                      href={href}
+                      key={href}
+                      className={cn(
+                          classes.link,
+                          "nx-relative nx-mr-1 nx-hidden nx-whitespace-nowrap md:nx-inline-block nx-mb-2",
+                          !isActive || page.newWindow
+                              ? classes.inactive
+                              : classes.active,
+                          index === 0 && !isActive, // Align the first item to the left
+                      )}
+                      newWindow={page.newWindow}
+                      aria-current={!page.newWindow && isActive}
+                  >
                   <span className="nx-absolute nx-inset-x-0 nx-text-base nx-text-center">
                     {page.title}
                   </span>
-                  <span className="nx-invisible nx-text-base">
+                    <span className="nx-invisible nx-text-base">
                     {page.title}
                   </span>
-                </Anchor>
+                  </Anchor>
               );
             })}
           </div>
 
-          <div className="nx-hidden md:nx-inline-block nx-w-1/5">
+          <div className="nx-hidden nx-w-1/3 md:nx-inline-block sm:nx-w-1/5">
             {renderComponent(config.search.component, {
               directories: flatDirectories,
             })}
           </div>
 
           {config.project.link ? (
-            <Anchor
-              className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
-              href={config.project.link}
-              newWindow
-              id="github"
-            >
-              {renderComponent(config.project.icon)}
-            </Anchor>
+              <Anchor
+                  className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
+                  href={config.project.link}
+                  newWindow
+                  id="github"
+              >
+                {renderComponent(config.project.icon)}
+              </Anchor>
           ) : null}
           {context.isLoggedIn ? (
-            <AccountMenu
-              email={context?.user?.email}
-              logo={context?.user?.avatarHref}
-              signOut={handleSignOut}
-            />
+              <AccountMenu
+                  email={context?.user?.email}
+                  logo={context?.user?.avatarHref}
+                  signOut={handleSignOut}
+              />
           ) : (
-            <button
-              onClick={handleSignin}
-              id="sign_in"
-              className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm"
-            >
-              Sign In
-            </button>
+              <button
+                  onClick={handleSignin}
+                  id="sign_in"
+                  className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm"
+              >
+                Sign In
+              </button>
           )}
           {renderComponent(config.navbar.extraContent)}
           <button
-            type="button"
-            aria-label="Menu"
-            className="nextra-hamburger -nx-mr-2 nx-rounded nx-p-2 active:nx-bg-gray-400/20 md:nx-hidden"
-            onClick={() => setMenu(!menu)}
+              type="button"
+              aria-label="Menu"
+              className="nextra-hamburger -nx-mr-2 nx-rounded nx-p-2 active:nx-bg-gray-400/20 md:nx-hidden"
+              onClick={() => setMenu(!menu)}
           >
-            <MenuIcon className={cn({ open: menu })} />
+            <MenuIcon className={cn({open: menu})}/>
           </button>
         </div>
 
-        <div className="md:nx-hidden nx-mt-6 nx-mb-2">
+
+        <div className="nx-w-1/2 md:nx-hidden">
           {renderComponent(config.search.component, {
             directories: flatDirectories,
-            // className: "md:nx-hidden nx-mt-6 nx-mb-2",
           })}
         </div>
+
+
       </nav>
     </div>
   );

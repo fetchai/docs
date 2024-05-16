@@ -35,23 +35,22 @@ export const InstantAlgoliaSearch = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   function Hit({ hit }) {
-    const r = JSON.stringify(hit);
     if (show) {
       const x = (
         <div
-          className="nx-w-64 nx-h-32 overflow-y-auto"
+          className="nx-w-64 nx-h-32 nx-absolute nx-bg-gray-100 nx-border-b-2 nx-rounded nx-right-0"
           onClick={() => {
             router.push(hit.path);
           }}
         >
-          <div>{hit.title}</div>
-          <div>{hit.content}</div>
-          <div>{hit.path}</div>
+          <div className="nx-text-lg nx-p-2">{hit.title.replaceAll("#", "")}</div>
+          <div className="nx-text-sm nx-p-2 nx-text-gray-700">{hit.content.substring(0, 160)}</div>
+          <div className="nx-text-lg nx-p-2">{hit.path.replaceAll("/", ">").replace(">docs>", "")}</div>
         </div>
       );
       return x;
     } else {
-      return <div></div>;
+      return null
     }
   }
 
@@ -86,16 +85,24 @@ export const InstantAlgoliaSearch = ({
   }, [handleClickOutside]);
 
   return (
-    <InstantSearch searchClient={searchClient} indexName={indexName}>
+      <div style={{width : "100%"}}>
+    <InstantSearch searchClient={searchClient} indexName={indexName} >
       <div
-        className="nx-absolute nx-right-32"
+        className=""
         style={{ right: "120px" }}
         ref={dropdownRef}
       >
-        <Configure hitsPerPage={1} />
-        <SearchBox queryHook={queryHook} placeholder="Search..." />
+        <Configure hitsPerPage={4} />
+        <SearchBox queryHook={queryHook}
+                   placeholder="Search..."
+         classNames={{
+            input: 'nx-w-full nx-bg-gray-50 nx-border nx-border-gray-300 nx-text-gray-900 nx-text-lg nx-p-2 nx-rounded-lg nx-focus:ring-blue-500 nx-focus:border-blue-500 nx-block  nx-p-2.5 nx-dark:bg-gray-700 nx-dark:border-gray-600 nx-dark:placeholder-gray-400 nx-dark:text-white nx-dark:focus:ring-blue-500 nx-dark:focus:border-blue-500',
+           submit: 'nx-hidden',
+           reset : 'nx-hidden'
+        }}/>
         <Hits hitComponent={Hit} />
       </div>
     </InstantSearch>
+      </div>
   );
 };
