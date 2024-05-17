@@ -3,7 +3,6 @@ import styles from "./landing.module.css";
 import Image from "next/image";
 import AgentverseGettingStartedIcon from "../src/svgs/agentverse-getstarted.svg";
 import SystemDiagram from "../src/images/index/simple-system.png";
-import { FeatureGuideTabs } from "./feature-guide-tabs";
 import Products from "./products";
 import { useRouter } from "next/navigation";
 
@@ -61,9 +60,12 @@ function LandingPage() {
       " " +
       height;
 
+    const hoverGuideBox =
+      "nx-relative nx-p-8 nx-rounded nx-bg-blue-200 " + height;
+
     return (
       <div
-        className={hover ? styles.hoverGuideBox : guideBox}
+        className={hover ? hoverGuideBox : guideBox}
         onClick={() => {
           router.push(guide.path);
         }}
@@ -96,7 +98,7 @@ function LandingPage() {
         <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 nx-gap-4">
           {startingGuides.map((guide, index) => {
             return (
-              <GuideBox key={index} guide={guide} v={index} height="nx-h-96" />
+              <GuideBox key={index} guide={guide} v={index} height="nx-h-72" />
             );
           })}
         </div>
@@ -116,20 +118,20 @@ function LandingPage() {
         />
       </section>
 
-      <section>
+      <section className="">
         <p className={styles.subTitle}>Courses</p>
         <p className={styles.description}>
           Comprehensive guides for people new to programming and Fetch.ai.
         </p>
         <div className={styles.startGuides}>
-          <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 nx-gap-4">
+          <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-2 nx-gap-4">
             {beginnerGuides.map((guide, index) => {
               return (
                 <GuideBox
                   key={index}
                   guide={guide}
                   v={index}
-                  height="nx-h-96"
+                  height="nx-h-40"
                 />
               );
             })}
@@ -137,15 +139,6 @@ function LandingPage() {
         </div>
       </section>
 
-      <section className="nx-mt-landing-page-sections">
-        <div className="nx-flex nx-justify-between">
-          <p className={styles.subTitle}>Featured Guides</p>
-        </div>
-        <p className={styles.description}>
-          Guides are technically focused explanations of use-cases and concepts.
-        </p>
-        <FeatureGuideTabs />
-      </section>
       <section className="nx-mt-landing-page-sections">
         <p className={styles.subTitle}>Browse by product</p>
         <p className={styles.description}>

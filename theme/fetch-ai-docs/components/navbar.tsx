@@ -228,7 +228,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           </button>
         </div>
 
-        <div className="searchMobile nx-w-full nx-justify-center nx-mx-4 nx-my-4">
+        <div className="searchMobile nx-w-full nx-justify-center nx-mx-4 nx-my-4 nx-pr-2">
           {renderComponent(config.search.component, {
             directories: flatDirectories,
           })}
