@@ -4,24 +4,27 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-This example shows how to build a react application integrated with a flask backend, using various agents to perform tasks such as fetching news, scrapping webpage data and also getting the sentiment of news using hugging face finbert model of [HF infrence API](https://huggingface.co/docs/api-inference/en/index).
+This example shows how to build a react application integrated with a flask backend, using various agents to perform tasks such as fetching news, scrapping webpage data and also getting the sentiment of news using hugging face finbert model of [HF infrence API ↗️](https://huggingface.co/docs/api-inference/en/index).
 
 ### Supporting Documents
 
-    - [How to use on_query decorator](../guides/agents/on-query)
-    - [How to create an agent](../guides/agents/create-a-uagent)
-    - [Registering in the Almanac Contract](../guides/agents/register-in-almanac)
-    - [Almanac contract overview](/references/contracts/uagents-almanac/almanac-overview)
+    - [How to use on_query decorator ↗️](../guides/agents/on-query).
+    - [How to create an agent ↗️](../guides/agents/create-a-uagent).
+    - [Registering in the Almanac Contract ↗️](../guides/agents/register-in-almanac).
+    - [Almanac contract overview ↗️](/references/contracts/uagents-almanac/almanac-overview).
 
 ## Pre-requisites
 
-    - **Node.js :** Download and install from [Node.js official website](https://nodejs.org/en).
-    - **Python :** Download and install from [Python official website](https://www.python.org/downloads/).
+    - **Node.js :** Download and install from [Node.js official website ↗️](https://nodejs.org/en).
+    - **Python :** Download and install from [Python official website ↗️](https://www.python.org/downloads/).
     - **Flask :** Install via pip
+
     ```
     pip install Flask flask-cors
     ```
+
     - **React :** Setup a news project
+
     ```
     npx create-react-app FinBERT-News-Sentiment-Analysis
     cd FinBERT-News-Sentiment-Analysis
@@ -30,7 +33,7 @@ This example shows how to build a react application integrated with a flask back
 
 ## Project Structure
 
-    Outline of basic Structure of the project:
+Outline of basic structure of the project:
 
 ```
 FinBERT-News-Sentiment-Analysis/
@@ -65,8 +68,8 @@ In this section we will setup agents and as well as flask app which will respond
 
 1. Flask Application ('app.py'):
 
-- Define routes for fetching news_urls, scrapping news content and get finber sentiments.
-- Utilize agents to handle specific tasks.
+- Define routes for fetching news_urls, scrapping news content and get finbert sentiments.
+- Utilise agents to handle specific tasks.
 
 ```python copy filename="app.py"
 from flask import Flask
@@ -111,7 +114,7 @@ async def get_news(company_name):
     return data["news_list"]
 
 
-# Define an asynchronous endpoint to analyze sentiment for a given company
+# Define an asynchronous endpoint to analyse sentiment for a given company
 @app.route('/api/sentiment/<string:company_name>', methods=['GET'])
 async def get_sentiment(company_name):
     urls = await query(destination=news_agent_address, message=UrlRequest(company_name=company_name), timeout=15.0)
@@ -156,9 +159,9 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 
-2. Agents
+2. Agents:
 
-    - **News and URL agent:** Fetchs news articles titles and url for them as well.
+    - **News and URL agent:** Fetches news articles titles and url for them as well.
 
     
 ```python copy filename="news_agent.py"
@@ -236,7 +239,7 @@ NewsAgent = Agent(
     endpoint=["http://127.0.0.1:8000/submit"],
 )
  
-# Registering agent on Almananc and funding it.
+# Registering agent on Almanac and funding it.
 fund_agent_if_low(NewsAgent.wallet.address())
  
 # On agent startup printing address
@@ -251,7 +254,7 @@ async def query_handler(ctx: Context, sender: str, msg: NewsRequest):
         ctx.logger.info(f'Fetching news details for company_name: {msg.company_name}')
         symbol = await fetch_symbol(msg.company_name)
         ctx.logger.info(f' Symbol for company provided is {symbol}')
-        if symbol  != None: #if comapny symbol fetch successfully getting news using ticker symbol else using the company name itself.
+        if symbol  != None: #if company symbol fetch successfully getting news using ticker symbol else using the company name itself.
             news_list = await fetch_news(symbol)
         else:
             news_list = await fetch_news(msg.company_name)
@@ -289,7 +292,7 @@ if __name__ == "__main__":
 ```
 
 <Callout type="info" emoji="ℹ️">
-    Get your [Alphavantage](https://www.alphavantage.co/) and [Gnews](https://gnews.io/) API keys and update it in the virtual environment.
+    Get your [Alphavantage ↗️](https://www.alphavantage.co/) and [Gnews ↗️](https://gnews.io/) API keys and update it in the virtual environment.
 </Callout>
 
     - **WebScraper agent:** Scraps the webpage content for the given url.
@@ -404,7 +407,7 @@ SentimentAgent = Agent(
     endpoint=["http://127.0.0.1:8002/submit"],
 )
 
-# Registering agent on Almananc and funding it.
+# Registering agent on Almanac and funding it.
 fund_agent_if_low(SentimentAgent.wallet.address())
  
 # Define function to provide sentiment for given content
@@ -433,7 +436,7 @@ async def sentiment_analysis(news):
 async def agent_details(ctx: Context):
     ctx.logger.info(f'Search Agent Address is {SentimentAgent.address}')
 
-# On_query handler for processinf sentiment request
+# On_query handler for processing sentiment request
 @SentimentAgent.on_query(model=SentimentRequest, replies={SentimentResponse})
 async def query_handler(ctx: Context, sender: str, msg: SentimentRequest):
     try:
@@ -453,11 +456,11 @@ if __name__ == "__main__":
     SentimentAgent.run()
 ```
 
-<Callout type="info" emoji="ℹ️">
-    Get your [Hugging Face Inference API](https://huggingface.co/docs/api-inference/en/index).
-</Callout>
+    <Callout type="info" emoji="ℹ️">
+        Get your [Hugging Face Inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
+    </Callout>
 
-3. Requirement.txt
+3. Requirement.txt:
 
 ```
 aiohttp==3.9.5
@@ -478,15 +481,14 @@ websockets==10.4
 yarl==1.9.4
 ```
 
-    - Activate virutal environment using `source venv/bin/activate`.
+    - Activate virtual environment using `source venv/bin/activate`.
     - Install libraries using `pip install -r requirements.txt` in your terminal.
 
 ## Frontend Setup
 
+1. Components:
 
-1. Components
-
-    - `NewsFeed.jsx`
+    - `NewsFeed.jsx`:
 
 ```
 import React from 'react';
@@ -512,7 +514,7 @@ function NewsFeed({ news }) {
 export default NewsFeed;
 ```
 
-    - `SearchComponent.jsx`
+    - `SearchComponent.jsx`:
 
 ```
 import React, { useState } from 'react';
@@ -543,7 +545,7 @@ export default SearchComponent;
 
 ```
 
-    - `SearchComponent.css`
+    - `SearchComponent.css`:
 
 ```
 .search-area {
@@ -579,7 +581,7 @@ export default SearchComponent;
     }
 ```
 
-2. App.css
+2. App.css:
 
 ```
 .App {
@@ -668,7 +670,7 @@ button:hover {
     }
 ```
 
-3. App.js
+3. App.js:
 
 ```
 // Import necessary React libraries and components
@@ -727,18 +729,23 @@ function App() {
 export default App;  // Export the App component for use in other parts of the application
 ```
 
-## Setup and Running the applicatio
+## Setup and Running the application
 ### Backend Setup (Flask and Agents)
-1 Setup virtual environment:
+
+1. Setup virtual environment:
+
     - Navigate to your project's backend directory:
+
     ```
     cd path/to/your/backend
     ```
     - Create a virtual environment:
+
     ```
     python -m venv venv
     ```
     - Activate the virtual environment:
+
     ```
     # For Windows
     venv\Scripts\activate
@@ -747,22 +754,27 @@ export default App;  // Export the App component for use in other parts of the a
     ```
 
 2. Install Dependencies:
+
         - Ensure requirements.txt is in the backend directory and contains all the necessary packages.
         - Install the required packages:
+
     ```
     pip install -r requirements.txt
     ```
 
 3. Start the Flask Application:
+
     - Make sure the Flask app (app.py) is configured correctly with routes and agent interactions.
-    - Run the Flask app
+    - Run the Flask app:
+
     ```
     python app.py
     ```
 
 4. Run the Agents:
-    - Ensure each agent script (e.g., news_agent.py, scraper_agent.py, sentiment_agent.py) is ready and configured.
+    - Ensure each agent script (e.g., `news_agent.py`, `scraper_agent.py`, `sentiment_agent.py`) is ready and configured.
     - Start each agent in a separate terminal or command prompt to handle specific tasks:
+
     ```
     python news_agent.py
     python scraper_agent.py
@@ -771,26 +783,36 @@ export default App;  // Export the App component for use in other parts of the a
 
 ### Frontend Setup (React)
 
-    1.  Navigate to the Frontend Directory:
+    1. Navigate to the Frontend Directory:
+
         - Change into your project's frontend directory where the React app is located.
+
     ```
     cd path/to/your/Frontend
     ```
-    2.Install Dependencies:
-        - Install the required node modules specified in package.json:
+
+    2. Install Dependencies:
+
+        - Install the required node modules specified in `package.json`:
+
     ```
     npm install
     ```
-    3.Start the React Development Server:
+
+    3. Start the React Development Server:
+
         - Run the following command to start the React development server:
+
     ```
     npm start
     ```
-        - This typically starts the React application on http://localhost:3000.
+
+        - This typically starts the React application on `http://localhost:3000`.
 
 
 ### Accessing the Application
-    - Open your web browser and go to http://localhost:3000. You should see your React application's interface.
+
+    - Open your web browser and go to `http://localhost:3000`. You should see your React application's interface.
     - Use the search component to input a company name and fetch news and sentiment data, which will be displayed accordingly.
 
 ## Expected Output
