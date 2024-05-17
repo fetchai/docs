@@ -55,7 +55,7 @@ function LandingPage() {
     ];
 
     const guideBox =
-      "nx-relative nx-p-8 nx-rounded " +
+      "nx-relative nx-p-8 nx-rounded-lg " +
       backgroundTransitions[v] +
       " " +
       height;
@@ -107,7 +107,11 @@ function LandingPage() {
       <section className="nx-mt-60">
         <p className={styles.subTitle}>Our technology loop</p>
         <p className={styles.description}>
-          Comprehensive guides for people new to programming and Fetch.ai.
+            <p>Fetch.ai is developing a platform to help the development of an AI enabled decentralized digital economy. Agents are programs that can make choices on their own for individuals, companies, and devices. Agents are the actors, and the heart of Fetch.ai ecosystem. </p>
+
+              <p>Agents are flexible problem solvers, capable of not just completing tasks but also tackling difficult issues across several domains. Agents have the adaptability to handle different activities inside the decentralized economy, whether it's improving supply chain logistics, maintaining solid record-keeping systems, executing computational tasks, or enabling buying and selling interactions.</p>
+
+    <p>Fetch.ai places a high priority on accessibility. Agent technology is designed to be inclusive, allowing anybody to create an AI Agent. Agents are made possible with the Fetch.ai platform.</p>
         </p>
 
         <Image
