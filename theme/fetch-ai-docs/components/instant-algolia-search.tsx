@@ -1,4 +1,4 @@
-// components/Search.js
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   InstantSearch,
   useInstantSearch,
@@ -10,12 +10,7 @@ import algoliasearch from "algoliasearch/lite";
 import { useRouter } from "next/router";
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
-// import type { Item as NormalItem } from "nextra/normalize-pages";
 
-// type MyItem = NormalItem & {
-//   // Add or modify properties as needed
-//   tags?: string[];
-// };
 // Search API key and application ID below
 const searchClient = algoliasearch(
   "J27DIPDG4S",
@@ -56,8 +51,6 @@ export const InstantAlgoliaSearch = () => {
     );
     return x;
   }
-
-  // Close dropdown on outside click
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if (
@@ -79,12 +72,6 @@ export const InstantAlgoliaSearch = () => {
     }
   };
 
-  const fallBack = (
-    <div className="nx-flex nx-p-4 nx-justify-center">
-      No more results found..
-    </div>
-  );
-
   const NoResultsBoundary = ({
     children,
     fallback,
@@ -96,15 +83,14 @@ export const InstantAlgoliaSearch = () => {
     if (!results.__isArtificial && results.nbHits === 0) {
       return (
         <div className="nx-mt-2 nx-absolute nx-w-full nx-border nx-border-gray-200 nx-h-64 dark:nx-border-neutral-800 nx-z-20 dark:nx-bg-neutral-900 nx-rounded-xl nx-py-2.5 nx-shadow-xl nx-bg-white nx-border-b-2">
-          {fallback}
+          <div className="nx-flex nx-p-4 nx-justify-center">{`${fallback}`}</div>
           <div hidden>{children}</div>
         </div>
       );
     }
-    return children;
+    return children as any;
   };
 
-  // Add click event listener when the component mounts
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
@@ -117,7 +103,7 @@ export const InstantAlgoliaSearch = () => {
         <div className=" nx-relative" ref={dropdownRef}>
           <Configure hitsPerPage={4} />
           <SearchBox
-            loadingIconComponent={() => ""}
+            loadingIconComponent={() => <></>}
             className="cursor-pointer nx-justify-center nx-w-full nx-flex"
             queryHook={queryHook}
             placeholder="Search..."
@@ -128,7 +114,7 @@ export const InstantAlgoliaSearch = () => {
               reset: "nx-hidden",
             }}
           />
-          <NoResultsBoundary fallback={fallBack}>
+          <NoResultsBoundary fallback={"No more results found.."}>
             {show && (
               <Hits
                 classNames={{
