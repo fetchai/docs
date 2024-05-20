@@ -39,7 +39,7 @@ export const InstantAlgoliaSearch = () => {
           <div className="nx-py-2 nx-cursor-pointer nx-bg-grey-200 nx-text-sm nx-text-grey-600 nx-font-semibold nx-tracking-loose nx-uppercase">
             <div className="nx-ml-4">{hit.title.replaceAll("#", "")}</div>
           </div>
-          <div className="nx-flex-grow-1 nx-ml-4 nx-mt-5 nx-mb-5 nx-font-normal nx-text-sm">
+          <div className="nx-flex-grow-1 nx-cursor-pointer nx-ml-4 nx-mt-5 nx-mb-5 nx-font-normal nx-text-sm">
             {hit.content.slice(0, 160)}
           </div>
           <div className="nx-text-sm nx-ml-4 nx-text-grey-600 nx-mb-2 nx-mt-2">

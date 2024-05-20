@@ -61,11 +61,11 @@ function LandingPage() {
       height;
 
     const hoverGuideBox =
-      "nx-relative nx-p-8 nx-rounded nx-bg-blue-200 " + height;
+      "nx-relative nx-p-8  nx-rounded nx-bg-blue-200 " + height;
 
     return (
       <div
-        className={hover ? hoverGuideBox : guideBox}
+        className={`${hover ? hoverGuideBox : guideBox} nx-cursor-pointer`}
         onClick={() => {
           router.push(guide.path);
         }}
