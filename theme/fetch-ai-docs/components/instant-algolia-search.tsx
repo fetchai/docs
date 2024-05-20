@@ -1,8 +1,14 @@
 // components/Search.js
-import { InstantSearch, Configure, SearchBox, Hits } from "react-instantsearch";
+import {
+  InstantSearch,
+  useInstantSearch,
+  Configure,
+  SearchBox,
+  Hits,
+} from "react-instantsearch";
 import algoliasearch from "algoliasearch/lite";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
 // import type { Item as NormalItem } from "nextra/normalize-pages";
 
@@ -73,6 +79,31 @@ export const InstantAlgoliaSearch = () => {
     }
   };
 
+  const fallBack = (
+    <div className="nx-flex nx-p-4 nx-justify-center">
+      No more results found..
+    </div>
+  );
+
+  const NoResultsBoundary = ({
+    children,
+    fallback,
+  }: {
+    children: ReactNode;
+    fallback: ReactNode;
+  }) => {
+    const { results } = useInstantSearch();
+    if (!results.__isArtificial && results.nbHits === 0) {
+      return (
+        <div className="nx-mt-2 nx-absolute nx-w-full nx-border nx-border-gray-200 nx-h-64 dark:nx-border-neutral-800 nx-z-20 dark:nx-bg-neutral-900 nx-rounded-xl nx-py-2.5 nx-shadow-xl nx-bg-white nx-border-b-2">
+          {fallback}
+          <div hidden>{children}</div>
+        </div>
+      );
+    }
+    return children;
+  };
+
   // Add click event listener when the component mounts
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -83,29 +114,32 @@ export const InstantAlgoliaSearch = () => {
   return (
     <div className="nx-w-full">
       <InstantSearch searchClient={searchClient} indexName={indexName}>
-        <div ref={dropdownRef}>
+        <div className=" nx-relative" ref={dropdownRef}>
           <Configure hitsPerPage={4} />
           <SearchBox
-            className="nx-justify-center nx-w-full nx-flex"
+            loadingIconComponent={() => ""}
+            className="cursor-pointer nx-justify-center nx-w-full nx-flex"
             queryHook={queryHook}
             placeholder="Search..."
             classNames={{
               input:
-                "nx-bg-gray-50 nx-border nx-w-full nx-border-gray-300 nx-text-gray-900 nx-text-lg nx-p-2 nx-rounded-lg nx-focus:ring-blue-500 nx-focus:border-blue-500 nx-block  nx-p-2.5 nx-dark:bg-gray-700 nx-dark:border-gray-600 nx-dark:placeholder-gray-400 nx-dark:text-white nx-dark:focus:ring-blue-500 nx-dark:focus:border-blue-500",
+                "nx-bg-gray-50 nx-cursor-pointer nx-border nx-w-full nx-border-gray-300 nx-text-gray-900 nx-text-lg nx-p-2 nx-rounded-lg nx-focus:ring-blue-500 nx-focus:border-blue-500 nx-block  nx-p-2.5 nx-dark:bg-gray-700 nx-dark:border-gray-600 nx-dark:placeholder-gray-400 nx-dark:text-white nx-dark:focus:ring-blue-500 nx-dark:focus:border-blue-500",
               submit: "nx-hidden",
               reset: "nx-hidden",
             }}
           />
-          {show && (
-            <Hits
-              classNames={{
-                list: "nx-absolute nx-mt-2 nextra-scrollbar nx-w-ful  nx-border nx-border-gray-200 nx-h-64 dark:nx-border-neutral-800 nx-z-20 nx-mt-2 dark:nx-bg-neutral-900 nx-rounded-xl nx-py-2.5 nx-shadow-xl nx-bg-white nx-border-b-2",
-                item: "nx-bg-search-result",
-                emptyRoot: "nx-px-2",
-              }}
-              hitComponent={Hit}
-            />
-          )}
+          <NoResultsBoundary fallback={fallBack}>
+            {show && (
+              <Hits
+                classNames={{
+                  list: "nx-absolute nx-mt-2 nextra-scrollbar nx-border nx-border-gray-200 nx-h-64 dark:nx-border-neutral-800 nx-z-20 nx-mt-2 dark:nx-bg-neutral-900 nx-rounded-xl nx-py-2.5 nx-shadow-xl nx-bg-white nx-border-b-2",
+                  item: "nx-bg-search-result",
+                  emptyRoot: "nx-px-2",
+                }}
+                hitComponent={Hit}
+              />
+            )}
+          </NoResultsBoundary>
         </div>
       </InstantSearch>
     </div>
