@@ -27,30 +27,28 @@ export const InstantAlgoliaSearch = () => {
   }: {
     hit: { path: string; title: string; content: string };
   }) {
-      const x = (
-        <div className="nx-flex nx-flex-col">
-          <div
-            className="nx-w-full"
-            onClick={() => {
-              router.push(hit.path.split("/docs")[1]);
-            }}
-          >
-            <div className="nx-py-2 nx-cursor-pointer nx-bg-grey-200 nx-text-sm nx-text-grey-600 nx-font-semibold nx-tracking-loose nx-uppercase">
-              <div className="nx-ml-4">
-              {hit.title.replaceAll("#", "")}
-              </div>
-            </div>
-            <div className="nx-flex-grow-1 nx-ml-4 nx-mt-5 nx-mb-5 nx-font-normal nx-text-sm">
-              {hit.content.slice(0, 160)}
-            </div>
-            <div className="nx-text-sm nx-ml-4 nx-text-grey-600 nx-mb-2 nx-mt-2">
-              {hit.path.replaceAll("/", ">").replace(">docs>", "")}
-            </div>
+    const x = (
+      <div className="nx-flex nx-flex-col">
+        <div
+          className="nx-w-full"
+          onClick={() => {
+            router.push(hit.path.split("/docs")[1]);
+          }}
+        >
+          <div className="nx-py-2 nx-cursor-pointer nx-bg-grey-200 nx-text-sm nx-text-grey-600 nx-font-semibold nx-tracking-loose nx-uppercase">
+            <div className="nx-ml-4">{hit.title.replaceAll("#", "")}</div>
           </div>
-          <div className="nx-border-b" />
+          <div className="nx-flex-grow-1 nx-ml-4 nx-mt-5 nx-mb-5 nx-font-normal nx-text-sm">
+            {hit.content.slice(0, 160)}
+          </div>
+          <div className="nx-text-sm nx-ml-4 nx-text-grey-600 nx-mb-2 nx-mt-2">
+            {hit.path.replaceAll("/", ">").replace(">docs>", "")}
+          </div>
         </div>
-      );
-      return x;
+        <div className="nx-border-b" />
+      </div>
+    );
+    return x;
   }
 
   // Close dropdown on outside click
@@ -98,17 +96,16 @@ export const InstantAlgoliaSearch = () => {
               reset: "nx-hidden",
             }}
           />
-            {
-              show &&
-                <Hits
-                classNames={{
-                  list: "nx-absolute nx-mt-2 nextra-scrollbar nx-w-ful  nx-border nx-border-gray-200 nx-h-64 dark:nx-border-neutral-800 nx-z-20 nx-mt-2 dark:nx-bg-neutral-900 nx-rounded-xl nx-py-2.5 nx-shadow-xl nx-bg-white nx-border-b-2",
-                  item: "nx-bg-search-result",
-                  emptyRoot:"nx-px-2"
-                }}
-                hitComponent={Hit}
-              />
-            } 
+          {show && (
+            <Hits
+              classNames={{
+                list: "nx-absolute nx-mt-2 nextra-scrollbar nx-w-ful  nx-border nx-border-gray-200 nx-h-64 dark:nx-border-neutral-800 nx-z-20 nx-mt-2 dark:nx-bg-neutral-900 nx-rounded-xl nx-py-2.5 nx-shadow-xl nx-bg-white nx-border-b-2",
+                item: "nx-bg-search-result",
+                emptyRoot: "nx-px-2",
+              }}
+              hitComponent={Hit}
+            />
+          )}
         </div>
       </InstantSearch>
     </div>
