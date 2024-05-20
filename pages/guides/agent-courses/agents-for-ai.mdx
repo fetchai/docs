@@ -8,7 +8,7 @@ This article is a work-in-progress. It will be expanded rapidly.
 
 ## Overview
 
-Welcome to **Agents 101 for AI engine**! This course is designed to introduce you to the overall system of Fetch.ai, and shows how to
+Welcome to **Agents 101 for AI Engine**! This course is designed to introduce you to the overall system of Fetch.ai, and shows how to
 build agents to be accessible to the AI Engine and integrate with other projects. This course is a parallel track to
 [Agents 101 🤖↗️](/guides/agent-courses/introductory-course) which instead focuses only on Agents creation.
 
@@ -26,7 +26,7 @@ To build your solution on Fetch.ai, you need to understand four concepts: [Agent
 
 Let's try and keep this simple 🎉:
 
- - **Agents**: These are programs that work as you instruct them. Classically, they are part of a multi-agent system where they have a task and communicate with other agents. But their primary use in this case is to represent a service, a function or data that can be accessed by DeltaV.
+ - **Agents**: These are programs that work as you instruct them. Classically, they are part of a multi-agent system where they have a task and communicate with other agents. But their primary use in this case is to offer a functionality that can be accessed by DeltaV.
 
  - **Agentverse**: It is a managed hosting platform, an online IDE, and an entry point to AI Engine for Agents. You would register your Agents on Agentverse to be a Function in the network.
 
@@ -394,13 +394,13 @@ This one is quite simple, but we are defining this as a Secondary Function. A Se
 
 We also need to go and update the Sentiment Agent Function.
 
-![](../../../src/images/guides/101/service_sentiment_b.png)
+![](../../../src/images/guides/101/service_sentiment_a.png)
 
 Oh my, that is quite the field description.
 
 > "This agent will return a sentiment score from the provided text.
 This MUST NOT be a URL or something that looks like a webpage address. If one of these is provided the content of
-that must be generated from another secondary function.
+that must be generated from another subtask.
 Text is the content to be analysed, this must be a structured body of prose."
 
 We're talking to an LLM and the above should reinforce that. We're telling the AI Engine that this function returns sentiment analysis on text. However when this function is called, the user could also provide a URL. If a URL is provided then the AI Engine must get that from somewhere else. Let's test this.

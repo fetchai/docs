@@ -177,35 +177,35 @@ The properties of Functions for each agent are listed below.
 ![](../../../src/images/guides/services/service-guide/hugging_face_1.png)
 
     - **Function title**: just the name of your Agent Function - in this example let's call it **Hugging Face System**.
-    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your Agent Function does - in this example we can specify something like this: **This Function helps user to give any query to the selected model and gets the response to their query. Always go for hugging face request secondary function for this primary function.**
-                        **Secondary functions chronology**
+    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your Agent Function does - in this example we can specify something like this: **This function helps user to give any query to the selected model and gets the response to their query. Always go for hugging face request subtask for this task.**
+                        **Subtask chronology**
                         **Hugging face system -> Hugging face request -> Model List**
 
     - **Application**: Primary Function.
     - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#setting-up-agents).
-    - **Field descriptions**: This field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like: _**Describes the response to the user query. Always go for Hugging face request secondary task to get this field. Never ask this from user**_.
+    - **Field descriptions**: This field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like: _**Describes the response to the user query. Always go for Hugging face request subtask to get this field. Never ask this from user**_.
 
 ### Hugging Face Request
 
 ![](../../../src/images/guides/services/service-guide/hugging_face_2.png)
 
     - **Function title**: just the name of your Agent Function - in this example let's call it **Hugging Face Request**.
-    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your Agent Function does - in this example we can specify something like this: **This service handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists secondary function**.
+    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your Agent Function does - in this example we can specify something like this: **This function handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists subtask**.
     - **Application**: Secondary Function.
     - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#hugging-face-request-agent).
     - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary function. In this example we can specify something like:
-        - **Model_id**: **_Always go for model list secondary function. Never ask this field to user._**
-        - **query**: **_Describes the query user wants to ask to the model. Always ask this to user after model_id is given by model list secondary function._**
+        - **Model_id**: **_Always go for model list subtask. Never ask this field to user._**
+        - **query**: **_Describes the query user wants to ask to the model. Always ask this to user after model_id is given by model list subtask._**
 
 ### Model List
 
 ![](../../../src/images/guides/services/service-guide/hugging_face_3.png)
 
     - **Function title**: just the name of your Agent Function - in this example let's call it **Model List**.
-    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your Agent Function does - in this example we can specify something like this: **This service helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option.**
+    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your Agent Function does - in this example we can specify something like this: **This function helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option.**
     - **Application**: Secondary Function.
     - **Protocol**, **Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agentverse/huggingface-text-classification-model-agent#model-list-agent)
-    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like: _**This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options.**_
+    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like: _**This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. Make user select one from these options.**_
 
 ## Let's find our service on DeltaV
 
