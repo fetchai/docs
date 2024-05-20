@@ -16,7 +16,7 @@ Dialogues can be taken as super-powered Protocols, It provides more robust struc
 
     - **Dialogues :** Dialogues add a more rigid structure to communication with enforced state transitions, multi-session state tracking and reusable complex communication patterns. Technically speaking, Dialogues are represented by a directed graph where nodes are the states and edges the messages (message handlers) of a well-defined communication flow.
 
-## Communication Patterns:
+## Communication Patterns
 
 Communication patterns in dialogues define a general graph-based structure for interactions. They describe every possible flow and branch in the communication process, providing a clear entry, transition and exit point. Patterns are message-agnostic and can be instantiated with various message models as specific Dialogues, adapting to different use cases while maintaining consistent principles.
 
@@ -30,35 +30,36 @@ The distinction between communication patterns and Dialogues supports two typica
 
     - **Core Developers:** Improve the infrastructure for agent ecosystems by carefully defining and hardening relevant building blocks, needing full flexibility and power to lay the groundwork for application developers such as defining sound and complete communication patterns that can be reused for various use cases following the same principle.
 
-## How to use dialogues:
+## How to use dialogues
 
 As explained above dialogues can be used by developers with different requirements. There are different ways in which dialogues can be used but before checking that lets understand what does `stateful communication` means in agent communication ecosystem.
 
-### Stateful Communication :
+### Stateful Communication
 
 Dialogues support stateful communication which allows agents to access past messages and state status, perform parallel conversations/sessions and also it enforces the sequence of message exchanges. This overall structure and feature of dialogue helps maintain context, improves irrefutability and allows agents to resume conversation from any point of time.
 
-There are different ways in which dialgoues can be used as listed below:
+There are different ways in which dialogues can be used as listed below:
 
 ### API for Dialogues
 
 Some of the Key APIs exposed to application developers in dialogues include:
 
-    - **start_dialogue:** Initiates a dialogue, offering a more explicit way to start communication compared to protocols. Refer [defining dialogue structure](../../examples/open-dialogue-chitchat#step-1-define-the-dialogue-structure) to have better understanding of how to define dialogue nodes and [create a handler for event](../..//examples/open-dialogue-chitchat#step-1-define-the-dialogue-structure).
+    - **start_dialogue:** Initiates a dialogue, offering a more explicit way to start communication compared to protocols. Refer [defining dialogue structure](../../examples/open-dialogue-chitchat#step-1-define-the-dialogue-structure) to have better understanding of how to define dialogue nodes and [create a handler for event ↗️](/examples/open-dialogue-chitchat#step-1-define-the-dialogue-structure).
 
-    - **get_conversation:** Provides access to past messages, useful for handling complex scenarios and multiple parallel dialogues. Refer (agents on_continue_dialogue handler)[../..examples/open-dialogue-chitchat#step-2-setting-up-agents] on how to access history using context's dialogue function.
+    - **get_conversation:** Provides access to past messages, useful for handling complex scenarios and multiple parallel dialogues. Refer [agents on_continue_dialogue handler↗️](/examples/open-dialogue-chitchat#step-2-setting-up-agents) on how to access history using context's dialogue function.
 
     - **reject_session:** This is the transition for when the dialogue is rejected.
 
-Similarly you can refer more functions and handler in examples [Open Dialogues](../../examples/open-dialogue-chitchat) and [Predefined Dialogues](../../examples/predefined-dialogue-chitchat)
+Similarly you can refer more functions and handler in examples [Open Dialogues ↗️](/examples/open-dialogue-chitchat) and [Predefined Dialogues ↗️](/examples/predefined-dialogue-chitchat).
 
 ### Customization and Predefined Behaviors
 
 Dialogues allow for customization by adding or overwriting message handlers. Predefined behaviors make it easier for application developers to work with dialogues, handling standard interactions while enabling specific customization for unique use-cases.
 
-#### Sample for creating message handler :
+#### Sample for creating message handler
 
 ##### Defining dialogue class
+
 ```python
 from uagents.experimental.dialogues import Dialogue, Edge, Node
 
@@ -108,12 +109,12 @@ async def continue_chitchat(
 
 The following examples demonstrate how dialogues can be used in practical scenarios:
 
-    - **[Open Dialogue Chit-Chat:](../../examples/open-dialogue-chitchat)** This example shows an interactive communication setup between agents, where each step and state transition is visible. It is ideal for understanding the flow of messages and state transitions in real-time.
+    - **[Open Dialogue Chit-Chat ↗️](../../examples/open-dialogue-chitchat)**: This example shows an interactive communication setup between agents, where each step and state transition is visible. It is ideal for understanding the flow of messages and state transitions in real-time.
 
-    - **[Predefined Dialogue Chit-Chat:](../../examples/predefined-dialogue-chitchat)** This example illustrates an automated dialogue scenario with hardcoded dialogue management between two agents. It minimizes manual intervention, focusing on predefined responses and interactions.
+    - **[Predefined Dialogue Chit-Chat ↗️](../../examples/predefined-dialogue-chitchat)**: This example illustrates an automated dialogue scenario with hardcoded dialogue management between two agents. It minimizes manual intervention, focusing on predefined responses and interactions.
 
-ßThis guide explains the purpose and key aspects of dialogues, drawing on developer comments and feedback. It discusses communication patterns, stateful communication, API highlights, and customization to guide both application and core developers.
+This guide explains the purpose and key aspects of dialogues, drawing on developer comments and feedback. It discusses communication patterns, stateful communication, API highlights, and customization to guide both application and core developers.
 
-<Callout type="info" emoji="ℹ️">
-    This guide is part of an experimental feature under heavy development. Backward compatibility is not guaranteed, and updates may cause breaking changes. Each update might introduce significant changes in behavior or functionality. 
-</Callout>
+    <Callout type="info" emoji="ℹ️">
+      This guide is part of an experimental feature under heavy development. Backward compatibility is not guaranteed, and updates may cause breaking changes. Each update might introduce significant changes in behavior or functionality.
+    </Callout>
