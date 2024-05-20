@@ -162,27 +162,31 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                 page.route === activeRoute ||
                 activeRoute.startsWith(page.route + "/");
               return (
-                <Anchor
-                  href={href}
-                  key={href}
-                  className={cn(
-                    classes.link,
-                    "nx-relative nx-mr-1 nx-hidden nx-whitespace-nowrap md:nx-inline-block nx-mb-2",
-                    !isActive || page.newWindow
-                      ? classes.inactive
-                      : classes.active,
-                    index === 0 && !isActive, // Align the first item to the left
+                <>
+                  {page.title !== "Home" && (
+                    <Anchor
+                      href={href}
+                      key={href}
+                      className={cn(
+                        classes.link,
+                        "nx-relative nx-mr-1 nx-hidden nx-whitespace-nowrap md:nx-inline-block nx-mb-2",
+                        !isActive || page.newWindow
+                          ? classes.inactive
+                          : classes.active,
+                        index === 0 && !isActive, // Align the first item to the left
+                      )}
+                      newWindow={page.newWindow}
+                      aria-current={!page.newWindow && isActive}
+                    >
+                      <span className="nx-absolute nx-inset-x-0 responsive-text nx-text-center">
+                        {page.title}
+                      </span>
+                      <span className="nx-invisible responsive-text">
+                        {page.title}
+                      </span>
+                    </Anchor>
                   )}
-                  newWindow={page.newWindow}
-                  aria-current={!page.newWindow && isActive}
-                >
-                  <span className="nx-absolute nx-inset-x-0 responsive-text nx-text-center">
-                    {page.title}
-                  </span>
-                  <span className="nx-invisible responsive-text">
-                    {page.title}
-                  </span>
-                </Anchor>
+                </>
               );
             })}
           </div>
