@@ -34,6 +34,7 @@ export const InstantAlgoliaSearch = () => {
           className="nx-w-full"
           onClick={() => {
             router.push(hit.path.split("/docs")[1]);
+            setShow(false);
           }}
         >
           <div className="nx-py-2 nx-cursor-pointer nx-bg-grey-200 nx-text-sm nx-text-grey-600 nx-font-semibold nx-tracking-loose nx-uppercase">
