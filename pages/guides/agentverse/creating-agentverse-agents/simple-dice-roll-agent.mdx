@@ -1,0 +1,65 @@
+# Creating a simple dice roll agent on agentverse
+
+## Introduction
+
+The Agentverse provides multiple base templates you can use to start developing agents in a matter of seconds! You can do so by heading to the **My Agents** tab and click on **+ New Agent**. Here you can choose between a **Blank** agent and a **Skeleton** agent, which incorporates some predefined template you can use as a base point for code creation.
+
+In this example we are going to try out the **dice roll agent** use case.
+
+## Create your dice roll agent!
+
+For this navigate to the [Agentverse: My Agents ↗️](https://agentverse.ai/agents) tab and click on the **Use case** button:
+
+![](/src/images/guides/agentverse/registering-agent-coin-toss/hosted-agent-use-case-button.png)
+
+When the dialog is open, select the **DeltaV compatible Dice Roll Agent** use case:
+
+![](src/images/guides/agentverse/registering-agent-dice-roll/use-case-dialog.png)
+
+Now, a new agent has been created for you:
+
+![](src/images/guides/agentverse/registering-agent-dice-roll/hosted-agent-in-list.png)
+
+## Run your dice roll agent!
+
+After clicking on the row of your newly created agent, you should be able to see the source code of your dice roll agent in the editor view:
+
+    ```python copy filename="agent.py"
+    # Here we demonstrate how we can create a simple dice roll agent that is compatible with DeltaV.
+
+    # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
+
+    import random
+    # third party modules used in this example
+    from pydantic import Field
+    from ai_engine import UAgentResponse, UAgentResponseType
+
+
+    class DiceRoll(Model):
+        num_rolls: int = Field(description="Number of rolls.")
+
+    dice_roll_protocol = Protocol("DiceRoll")
+
+
+    @dice_roll_protocol.on_message(model=DiceRoll, replies={UAgentResponse})
+    async def roll_dice(ctx: Context, sender: str, msg: DiceRoll):
+        result = ", ".join([str(random.randint(1, 6)) for _ in range(msg.num_rolls)])
+        message = f"Dice roll results: {result}"
+        await ctx.send(
+            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+    )
+
+    agent.include(dice_roll_protocol, publish_manifest=True)
+    ````
+
+Now click on the **Run** button in the upper right corner of the editor so that you have your dice roll agent up and running!
+
+![](src/images/guides/agentverse/registering-agent-dice-roll/run-hosted-agent.png)
+
+**Great! You have just created your agent starting from a predefined template in Agentverse!** You are now ready to understand how to enroll your agent on the Agentverse and make it retrievable by the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) and subsequently [DeltaV↗️](/concepts/ai-engine/deltav).
+
+Checkout the following resources to better grasps all of these concepts:
+
+    - [Agentverse Functions ↗️](/guides/agentverse/agentverse-functions/services).
+    - [Agentverse Functions: register your Agents Functions on the Agentverse! ↗️](/guides/agentverse/agentverse-functions/registering-agent-services).
+    - [Agentverse Functions: register a coin toss agent as a Function 🪙 ↗️](/guides/agentverse/agentverse-functions/registering-agent-coin-toss).

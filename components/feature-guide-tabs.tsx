@@ -102,12 +102,6 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           path: "/guides/agentverse/creating-a-hosted-agent",
         },
         {
-          title: "Discovering agents on the Agentverse Explorer 🔎",
-          description:
-            "Learn to use the Agentverse: Explorer tab to start an interaction with other registered agents.",
-          path: "/guides/agentverse/discovering-agents",
-        },
-        {
           title: "Utilizing the Agentverse Mailroom service 📬",
           description:
             "Set up Agentverse mailboxes for your locally-run agents and to run them independently of your constant presence to run the server.",
@@ -126,13 +120,6 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           description:
             "Create and make an coin toss Function discoverable on the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-coin-toss",
-        },
-        {
-          title:
-            "Agentverse Functions: register a dice roll agent as a Function 🎲",
-          description:
-            "Create and make an dice roll Function discoverable on the Agentverse and DeltaV!",
-          path: "/guides/agentverse/registering-agent-dice-roll",
         },
         {
           title: "Agentverse allowed imports",

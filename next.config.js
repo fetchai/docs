@@ -43,6 +43,47 @@ module.exports = withNextra({
         destination: "/apis/ai-engine/chat",
         permanent: true,
       },
+      {
+        source: "/guides/services/services",
+        destination: "/guides/agentverse/agentverse-functions/services",
+        permanent: true,
+      },
+      {
+        source: "/guides/services/field-descriptions-for-deltav",
+        destination: "/guides/agentverse/agentverse-functions/field-descriptions-for-deltav",
+        permanent: true,
+      },
+      {
+        source: "/guides/agentverse/registering-agent-services",
+        destination: "/guides/agentverse/agentverse-functions/registering-agent-services",
+        permanent: true,
+      },
+
+      {
+        source: "/guides/agentverse/registering-agent-coin-toss",
+        destination: "/guides/agentverse/agentverse-functions/registering-agent-coin-toss",
+        permanent: true,
+      },
+      {
+        source: "/guides/agentverse/creating-a-hosted-agent",
+        destination: "/guides/agentverse/creating-agentverse-agents/creating-a-hosted-agent",
+        permanent: true,
+      },
+      {
+        source: "/guides/agentverse/utilising-the-mailbox",
+        destination: "/guides/agentverse/agentverse-mailbox/utilising-the-mailbox",
+        permanent: true,
+      },
+      {
+        source: "/guides/avctl/avctl",
+        destination: "/guides/agentverse/avctl/avctl",
+        permanent: true,
+      },
+      {
+        source: "/guides/avctl/avctl-hosting",
+        destination: "/guides/agentverse/avctl/avctl-hosting",
+        permanent: true,
+      },
     ];
   },
 });
