@@ -45,7 +45,7 @@ module.exports = withNextra({
       },
       {
         source: "/guides/services/services",
-        destination: "/guides/agentverse/agentverse-functions/services",
+        destination: "/guides/agents/intermediate/agent-functions",
         permanent: true,
       },
       {
@@ -56,6 +56,11 @@ module.exports = withNextra({
       {
         source: "/guides/agentverse/registering-agent-services",
         destination: "/guides/agentverse/agentverse-functions/registering-agent-services",
+        permanent: true,
+      },
+      {
+        source: "/guides/agentverse/allowed-imports",
+        destination: "/guides/agentverse/creating-agentverse-agents/allowed-imports",
         permanent: true,
       },
 
@@ -82,6 +87,86 @@ module.exports = withNextra({
       {
         source: "/guides/avctl/avctl-hosting",
         destination: "/guides/agentverse/avctl/avctl-hosting",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/installing-uagent",
+        destination: "/guides/agents/getting-started/installing-uagent",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/create-a-uagent",
+        destination: "/guides/agents/getting-started/create-a-uagent",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/communicating-with-other-agents",
+        destination: "/guides/agents/intermediate/communicating-with-other-agents",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/storage-function",
+        destination: "/guides/agents/intermediate/storage-function",
+        permanent: true,
+      },
+      {
+        source: "/concepts/agents/public-private-agents",
+        destination: "/guides/agents/intermediate/public-private-agents",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/send-tokens",
+        destination: "/guides/agents/intermediate/send-tokens",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/dialogues",
+        destination: "/guides/agents/advanced/dialogues",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/register-in-almanac",
+        destination: "/guides/agents/advanced/register-in-almanac",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/interval-task",
+        destination: "pages/guides/agents/intermediate/handlers#creating-an-interval-task-with-on_interval-handler",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/on-query",
+        destination: "/guides/agents/intermediate/handlers#answer-queries-with-on_query-handler",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/broadcast",
+        destination: "/guides/agents/intermediate/handlers#handle-messages-using-the-on_message-handler",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/getting-uagent-address",
+        destination: "/guides/agents/getting-started/getting-uagent-address",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/running-locally",
+        destination: "/guides/agents/intermediate/agent-functions#local-agent-function-registration",
+        permanent: true,
+      },
+      {
+        source: "/concepts/agents/agents",
+        destination: "/guides/agents/getting-started/whats-an-agent",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/locally-running-langchain-integration",
+        destination: "/guides/agents/intermediate/ai-engine-compatible-agent",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/message-verification",
+        destination: "/guides/agents/advanced/message-verification",
         permanent: true,
       },
     ];

@@ -1,14 +1,83 @@
 import { Callout } from 'nextra/components'
 
-# Agents: broadcast 📡
+# Agent Handlers
 
 ## Introduction
 
-**Protocols** cover a very important role within the uAgents Framework. [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) define the standards through which agents communication takes place. In this example, we will be showcasing a scenario where three agents, named `alice`, `bob`, and `charles`, use a custom protocol to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all agents using the protocol.
+Within the uAgents Framework, you can allow agents to perform specific actions at the moment some sort of condition has been satisfied. You can do so, you will need to use a specific handler. These are like decorators and are identified by the following code syntax: `.on_...`.
+
+Below, we show how to use the following different event handlers:
+
+    1. **Interval tasks**: `.on_interval()`
+    2. **Handle messages**: `.on_message()`
+    3. **Answer queries**: `.on_query()`
+
+## Creating an interval task with on_interval() handler
+
+Sometimes an agent will need to perform a task periodically. To do this we can use the `on_interval()` decorator which periodically repeats a given function for the agent. For instance, an agent could send a message every 2 seconds to another agent.
+
+**Let's get started and create our first interval task!**
+
+### Walk-through
+
+1. Let's create a Python script for this task, and name it by running: `touch interval-task.py`
+2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
+
+   ```py copy
+   from uagents import Agent, Context
+
+   alice = Agent(name="alice", seed="alice recovery phrase")
+   ```
+
+3. We can now define our agent's behavior:
+
+   ```py copy
+   @alice.on_interval(period=2.0)
+   async def say_hello(ctx: Context):
+       ctx.logger.info(f'hello, my name is {ctx.name}')
+
+   if __name__ == "__main__":
+       alice.run()
+   ```
+
+   The output will be printed out using the `ctx.logger.info()` method.
+
+4. Save the script.
+
+The overall script should look as follows:
+
+```py copy filename="interval-task.py"
+from uagents import Agent, Context
+
+alice = Agent(name="alice", seed="alice recovery phrase")
+
+@alice.on_interval(period=2.0)
+async def say_hello(ctx: Context):
+    ctx.logger.info(f'hello, my name is {ctx.name}')
+
+if __name__ == "__main__":
+    alice.run()
+```
+
+### Run the script
+
+Run the script: `python interval-task.py`
+
+The output should be as follows:
+
+    ```
+    hello, my name is alice
+    hello, my name is alice
+    hello, my name is alice
+    ```
+
+## Handle messages using the on_message() handler
+
+We now showcase a scenario where three agents, named `alice`, `bob`, and `charles`, use a custom [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all agents using the protocol. Agents use the `on_message()` handler which allows them to handle messages matching specific data Models.
 
 **Let's get started!**
 
-## Walk-through
+### Walk-through
 
 1. First of all, let's create a Python script for this task, and name it: `touch broadcast.py`
 
@@ -40,6 +109,7 @@ import { Callout } from 'nextra/components'
 
     proto = Protocol(name="proto", version="1.0")
     ```
+
 4. Let's now define a message handler function for incoming messages of type `BroadcastExampleRequest` in the protocol:
 
     ```py copy
@@ -146,7 +216,7 @@ if __name__ == "__main__":
     bureau.run()
 ```
 
-## Run the script
+### Run the script
 
 Make sure to have activated your virtual environment correctly.
 
@@ -172,3 +242,155 @@ The output would be:
     [charles]: Received response from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: Hello from alice
     ```
 
+## Answer queries with on_query() handler
+
+The `on_query` handler is used to register a function as a handler for incoming queries that match a specified model.
+These decorators enable the agent to respond to queries in an event-driven manner.
+
+### Walk-through
+
+1. First of all navigate to directory where you want to create your project.
+2. Create a Python script name `on_query.py` by running `touch on_query.py`.
+3. We need to import `json`, `asyncio`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `QueryRequest` class as a subclass of `Model`.
+
+    ```python
+    # import required libraries
+    import json
+    import asyncio
+    from uagents import Model
+    from uagents.query import query
+
+    # Add your agent's address
+    AGENT_ADDRESS = "Agent Address"
+
+    class QueryRequest(Model):
+        query: str
+    ```
+
+4. Create `agent_query` function to send query to agent and decode the response received.
+
+    ```python
+    async def agent_query(req):
+        response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
+        data = json.loads(response.decode_payload())
+        return data["text"]
+    ```
+
+5. Create `make_agent_call` function to handle query responses by the agent.
+
+    ```python
+    async def make_agent_call(req: QueryRequest):
+        try:
+            response = await agent_query(req)
+            return f"successful call - agent response: {response}"
+        except Exception:
+            return "unsuccessful agent call"
+    ```
+
+6. Finally, to run the script and send a query to the agent, initialize a `QueryRequest` object with your query message, then call `make_agent_call` within an asyncio event loop. This will send the query to the specified agent address and print the response, indicating whether the call was successful or not. This completes the setup for using the `on_query` decorator in a uAgents project to handle incoming queries.
+
+    ```python
+    if __name__ == "__main__":
+        request = QueryRequest(message="Your query here")
+        print(asyncio.run(make_agent_call(request))).
+    ```
+7. Save the script.
+
+The overall script should look as follows:
+
+```py copy filename="on_query.py"
+# Importing required libraries
+import json
+import asyncio
+from uagents import Model
+from uagents.query import query
+
+# Define the agent's address to send queries to.
+AGENT_ADDRESS = "Agent Address"
+
+# Define a model for the query request.
+class QueryRequest(Model):
+    query: str
+
+# Asynchronous function to send a query to the specified agent.
+async def agent_query(req):
+    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
+    data = json.loads(response.decode_payload())# Decode the payload from the response and load it as JSON.
+    return data["text"]
+
+# Asynchronous function to make a call to an agent and handle the response.
+async def make_agent_call(req: QueryRequest):
+    try:
+        response = await agent_query(req)
+        return f"successful call - agent response: {response}"
+    except Exception:
+        return "unsuccessful agent call"
+
+# Main block to execute the script.
+if __name__ == "__main__":
+    # Create a QueryRequest instance with your query and run make_agent_call with request.
+    request = QueryRequest(message="Your query here")
+    print(asyncio.run(make_agent_call(request)))
+
+```
+
+### Agent's script
+
+For the agent section, the script sets up a agent to handle incoming queries. It defines two models: `QueryRequest` for incoming queries and `Response` for replies. Upon startup, it logs the agent's details. The core functionality lies in the `query_handler`, decorated with` @QueryAgent.on_query`, which processes received queries and sends back a predefined response. This demonstrates creating responsive agents within the `uagents` Framework, showcasing how they can interact with other agents or services in an asynchronous, event-driven architecture.
+
+```py copy filename="agent.py"
+from uagents import Agent, Context, Model
+
+# Define the request and response model.
+class QueryRequest(Model):
+    message: str  # The query message.
+
+class Response(Model):
+    text: str  # The response text.
+
+# Initialize the agent with its configuration.
+QueryAgent = Agent(
+    name="Query Agent",
+    seed="Query Agent Seed Phrase",
+    port=8001,
+    endpoint="http://localhost:8001/submit",
+)
+
+# Getting agent details on startup
+@QueryAgent.on_event("startup")
+async def startup(ctx: Context):
+    ctx.logger.info(f"Starting up {QueryAgent.name}")
+    ctx.logger.info(f"With address: {QueryAgent.address}")
+    ctx.logger.info(f"And wallet address: {QueryAgent.wallet.address()}")
+
+# Decorator to handle incoming queries.
+@QueryAgent.on_query(model=QueryRequest, replies={Response})
+async def query_handler(ctx: Context, sender: str, _query: QueryRequest):
+    ctx.logger.info("Query received")  # Log receipt of query.
+    try:
+        await ctx.send(sender, Response(text="success"))
+    except Exception:
+        await ctx.send(sender, Response(text="fail"))
+
+# Main execution block to run the agent.
+if __name__ == "__main__":
+    QueryAgent.run()
+```
+
+### Expected Output
+
+- `Agent.py`:
+
+    ```
+    INFO:     [Query Agent]: Almanac registration is up to date!
+    INFO:     [Query Agent]: Starting up Query Agent
+    INFO:     [Query Agent]: With address: agent1qgfytc9e7ketwqc06xndvjmznqgr3md8w43hzxdv2hasp25ya43j2mnd32e
+    INFO:     [Query Agent]: And wallet address: fetch1qlq2nnegdj3axk7ms3qgrez7l6032s2k9s7704
+    INFO:     [Query Agent]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [Query Agent]: Query received
+    ```
+- `on_query.py`:
+
+    ```
+    successful call - agent response: success
+    ```

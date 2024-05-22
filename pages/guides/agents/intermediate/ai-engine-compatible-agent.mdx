@@ -1,17 +1,17 @@
 import { Callout } from 'nextra/components'
 
-# Running a Locally Hosted Agent with LangChain Integration
+# Make your agents AI Engine compatible
 
-When you want to run an agent on your own hardware or infrastructure locally, this is easy to do on any system that support Python > 3.10
+When you want to run an agent on your own hardware or infrastructure locally, this is easy to do on any system that support Python > 3.10.
 
 ## Introduction
 
-This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over **Agentverse** and **DeltaV** using the [Mailroom ↗️](/guides/agentverse/utilising-the-mailbox). The example uses a locally hosted agent that utilizes LangChain's Wikipedia integration to process requests related to Wikipedia search. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible, we need to create a new [Agent Function ↗️](/guides/services/services) on the Agentverse for the agent to then allow it to be found in DeltaV.
+This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over **Agentverse** and **DeltaV** using the [Mailroom ↗️](/guides/agentverse/utilising-the-mailbox). The example uses a locally hosted agent that utilizes LangChain's Wikipedia integration to process requests related to Wikipedia search. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible, we need to create a new [Agent Function ↗️](/guides/agents/intermediate/agent-functions) on the Agentverse for the agent to then allow it to be found in DeltaV.
 
 ## Prerequisites
 
     - Python 3.10 or newer.
-    - An [Agentverse ↗️](https://agentverse.ai/) account to create service and Mailroom's mailbox.
+    - An [Agentverse ↗️](https://agentverse.ai/) account to create the agent Functions and Mailroom's mailbox.
     - `uagents` and `langchain_community` libraries installed in your Python environment:
         - `pip install uagents`, `pip install langchain_community`.
     - `pip install wikipedia` to install Wikipedia.
@@ -99,21 +99,21 @@ For this example we set up a really simple **Agent Function**. For further infor
 
 To register **Local Agents and Functions** on the Agentverse, you will first need to log in the [Agentverse ↗️](https://agentverse.ai/) and head over to the **My Agents** tab. Then, click on **Local Agents** tab and click one of the **Connect Local Agent** buttons.
 
-![](../../../src/images/guides/uagent/servicefordungeons_1.png)
+![](src/images/guides/uagent/servicefordungeons_1.png)
 
 You will need to provide the **local agent address** and make sure it is running on your terminal as only running agents can enroll Agent Functions on the Agentverse!
 
-![](../../../src/images/guides/uagent/servicefordungeons_2.png)
+![](src/images/guides/uagent/servicefordungeons_2.png)
 
 You can now provide the needed details for your Agent Function in the dedicated fields. Remember to provide detailed descriptions for what your **Agent Function** does and the **Fields** for data Models expected.
 
-![](../../../src/images/guides/uagent/langchain_function.png)
+![](src/images/guides/uagent/langchain_function.png)
 
 ## Interacting on DeltaV
 
 Then we head over to [DeltaV ↗️](https://deltav.agentverse.ai/) and get the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) to interact with our agent on our behalf.
 
-![](../../../src/images/guides/uagent/wikideltav1.png)
-![](../../../src/images/guides/uagent/wikideltav2.png)
+![](src/images/guides/uagent/wikideltav1.png)
+![](src/images/guides/uagent/wikideltav2.png)
 
 Follow the above steps so that you can run an agent, create a function for the agent and then have that agent accessible by DeltaV.

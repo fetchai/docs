@@ -74,21 +74,9 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           path: "guides/agents/communicating-with-other-agents",
         },
         {
-          title: "How to use the agents to simulate a cleaning scenario ✨",
-          description:
-            "A guide teaching how agents can be used to set up a cleaning scenario.",
-          path: "guides/agents/cleaning-demo",
-        },
-        {
           title: "Agent address 🤖📫",
           description: "A guide showing how to retrieve agents addresses.",
           path: "guides/agents/getting-uagent-address",
-        },
-        {
-          title: "How to book a table at a restaurant using agents",
-          description:
-            "A guide showcasing a table booking process using agents.",
-          path: "guides/agents/booking-demo",
         },
       ],
     },
