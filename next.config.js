@@ -50,33 +50,39 @@ module.exports = withNextra({
       },
       {
         source: "/guides/services/field-descriptions-for-deltav",
-        destination: "/guides/agentverse/agentverse-functions/field-descriptions-for-deltav",
+        destination:
+          "/guides/agentverse/agentverse-functions/field-descriptions-for-deltav",
         permanent: true,
       },
       {
         source: "/guides/agentverse/registering-agent-services",
-        destination: "/guides/agentverse/agentverse-functions/registering-agent-services",
+        destination:
+          "/guides/agentverse/agentverse-functions/registering-agent-services",
         permanent: true,
       },
       {
         source: "/guides/agentverse/allowed-imports",
-        destination: "/guides/agentverse/creating-agentverse-agents/allowed-imports",
+        destination:
+          "/guides/agentverse/creating-agentverse-agents/allowed-imports",
         permanent: true,
       },
 
       {
         source: "/guides/agentverse/registering-agent-coin-toss",
-        destination: "/guides/agentverse/agentverse-functions/registering-agent-coin-toss",
+        destination:
+          "/guides/agentverse/agentverse-functions/registering-agent-coin-toss",
         permanent: true,
       },
       {
         source: "/guides/agentverse/creating-a-hosted-agent",
-        destination: "/guides/agentverse/creating-agentverse-agents/creating-a-hosted-agent",
+        destination:
+          "/guides/agentverse/creating-agentverse-agents/creating-a-hosted-agent",
         permanent: true,
       },
       {
         source: "/guides/agentverse/utilising-the-mailbox",
-        destination: "/guides/agentverse/agentverse-mailbox/utilising-the-mailbox",
+        destination:
+          "/guides/agentverse/agentverse-mailbox/utilising-the-mailbox",
         permanent: true,
       },
       {
@@ -101,7 +107,8 @@ module.exports = withNextra({
       },
       {
         source: "/guides/agents/communicating-with-other-agents",
-        destination: "/guides/agents/intermediate/communicating-with-other-agents",
+        destination:
+          "/guides/agents/intermediate/communicating-with-other-agents",
         permanent: true,
       },
       {
@@ -131,17 +138,20 @@ module.exports = withNextra({
       },
       {
         source: "/guides/agents/interval-task",
-        destination: "pages/guides/agents/intermediate/handlers#creating-an-interval-task-with-on_interval-handler",
+        destination:
+          "pages/guides/agents/intermediate/handlers#creating-an-interval-task-with-on_interval-handler",
         permanent: true,
       },
       {
         source: "/guides/agents/on-query",
-        destination: "/guides/agents/intermediate/handlers#answer-queries-with-on_query-handler",
+        destination:
+          "/guides/agents/intermediate/handlers#answer-queries-with-on_query-handler",
         permanent: true,
       },
       {
         source: "/guides/agents/broadcast",
-        destination: "/guides/agents/intermediate/handlers#handle-messages-using-the-on_message-handler",
+        destination:
+          "/guides/agents/intermediate/handlers#handle-messages-using-the-on_message-handler",
         permanent: true,
       },
       {
@@ -151,7 +161,8 @@ module.exports = withNextra({
       },
       {
         source: "/guides/agents/running-locally",
-        destination: "/guides/agents/intermediate/agent-functions#local-agent-function-registration",
+        destination:
+          "/guides/agents/intermediate/agent-functions#local-agent-function-registration",
         permanent: true,
       },
       {
