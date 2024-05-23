@@ -1,16 +1,15 @@
 import { Callout } from 'nextra/components'
 
-# Agentverse Services: register a dice roll agent as a service 🎲
+# Agentverse Functions: register a dice roll agent as a Function 🎲
 
 ## Introduction
 
-In the [previous section ↗️](/guides/agentverse/registering-agent-coin-toss) you have got familiar with the creation of a coin toss agent that can be registered as a service and then can be used in [DeltaV ↗️](/concepts/ai-engine/deltav).
-
+In the [previous section ↗️](/guides/agentverse/registering-agent-coin-toss) you have got familiar with the creation of a coin toss agent function that can be registered as a Function and then used via [DeltaV ↗️](/concepts/ai-engine/deltav).
 
 In this example we are going to try out another use case: a **dice roll agent**.
 
     <Callout type="info" emoji="ℹ️">
-      Checkout the [Agentverse: Services ↗️](/concepts/agent-services/services) page for additional information needed for service registration on the Fetch network.
+      Checkout the [Agentverse Functions ↗️](/guides/services/services) guide for additional information needed for Agents Functions registration on the Agentverse and Fetch network.
     </Callout>
 
 ## Create your dice roll agent!
@@ -34,7 +33,7 @@ After clicking on the row of your newly created agent, you should be able to see
     ```python copy filename="agent.py"
     # Here we demonstrate how we can create a simple dice roll agent that is compatible with DeltaV.
 
-    # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
+    # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
     import random
     # third party modules used in this example
@@ -63,42 +62,38 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 ![](../../../src/images/guides/agentverse/registering-agent-dice-roll/run-hosted-agent.png)
 
-## Register your dice roll agent!
+## Register your dice roll agent Function!
 
-Similar to the [Agentverse Services: register a coin toss agent as a service 🪙 ↗️](/guides/agentverse/registering-agent-coin-toss#register-your-coin-toss-agent), let's navigate to the [Agentverse: Services ↗️](https://agentverse.ai/services) tab to start registering your agent as a service.
-
-After clicking the **+ New Service** button provide all details required, fill the form out as follows:
+Similar to the [Agentverse Functions: register a coin toss agent as a Function 🪙 ↗️](/guides/agentverse/registering-agent-coin-toss#register-your-coin-toss-agent), let's navigate to the [Agentverse: My Agents ↗️](https://agentverse.ai/) tab. Here, click on your agent to show the Agent Editor and then click on the **Deploy** tab to start registering your agent function. Fill the form out as follows:
 
 ![](../../../src/images/guides/agentverse/registering-agent-dice-roll/new-service-dialog.png)
 
-    - **Service title**: just the name of your service. In this example let's call it _Dice roll service_.
-    - **Description**: Super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does. In this example we can specify something like this: _Dice roll service that rolls a dice. The number of rolls is specified by the user._
-    - **Service group**: the group the service belongs to. If you already have the **Use case** service group created in the [previous coin toss example ↗️](/guides/agentverse/registering-agent-coin-toss#register-your-coin-toss-agent) select that. If you haven't created a service group click on the **Add new Service Group** option and let's create a service group with the name **Use case**.
-    - **Agent**: select your newly created **DeltaV compatible dice roll agent** agent from the list
-    - **Task type**, **Protocol**, **Model** and **Field descriptions** will be automatically populated based on the source code of [your dice roll agent ↗️](/guides/agentverse/registering-agent-dice-roll#run-your-dice-roll-agent)
+    - **Function title**: just the name of your Agent Function. In this example let's call it _Dice roll function_.
+    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your function does. In this example we can specify something like this: _Dice roll Function that rolls a dice. The number of rolls is specified by the user._
+    - **Application**, **Protocol**, **Model** and **Field descriptions** will be automatically populated based on the source code of [your dice roll agent ↗️](/guides/agentverse/registering-agent-dice-roll#run-your-dice-roll-agent)
 
-## Let's find our service on DeltaV
+## Let's find our Function on DeltaV
 
 Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
-First, you will be asked to **Select a Service group**. Let's select the `Use case` service group in the dropdown positioned on the upper right part of the screen as that's the one we created for this guide. After that in the **Select an objective** section you can use a predefined objective, but let's click on the **Something else** option and type `Dice a roll`.
+First, in the **What function would you like to assemble** bar you can provide a predefined objective; let's type `Roll a dice`.
 
 ![](../../../src/images/guides/agentverse/registering-agent-dice-roll/select-service-group.png)
 
-After navigating to the chat interface, you will be asked to select a task (service). As your objective (`Roll a dice`) specified on the previous screen contained words related to the [description of your dice roll agent ↗️](/guides/agentverse/registering-agent-dice-roll#register-your-dice-roll-agent), your **DiceRoll** service is listed as an option. Let's select it.
+After navigating to the chat interface, you will be asked to select an option. As your objective task (`Roll a dice`) specified on the previous screen contained words related to the [description of your dice roll agent ↗️](/guides/agentverse/registering-agent-dice-roll#register-your-dice-roll-agent), your **DiceRoll** Function is listed as an option. Let's select it.
 
 ![](../../../src/images/guides/agentverse/registering-agent-dice-roll/select-task.png)
 
-After selecting the task, you will be asked about the number of rolls you want to do. The AI engine behind DeltaV asks this question based on the description `Number of rolls.` that was specified in the [predefined use case before ↗️](/guides/agentverse/registering-agent-dice-roll#run-your-dice-roll-agent). Send the number of rolls in the input field at the bottom of the screen - in this case let's stick with `10`.
+After selecting the task, you will be asked about the number of rolls you want to do. The AI Engine behind DeltaV asks this question based on the description `Number of rolls.` that was specified in the [predefined use case before ↗️](/guides/agentverse/registering-agent-dice-roll#run-your-dice-roll-agent). Send the number of rolls in the input field at the bottom of the screen - in this case let's stick with `10`.
 
 ![](../../../src/images/guides/agentverse/registering-agent-dice-roll/select-option.png)
 
-Then, you can confirm or reject the context that the AI engine is planning to execute. Let's confirm it!
+Then, you can confirm or reject the context that the AI Engine is planning to execute. Let's confirm it!
 
 ![](../../../src/images/guides/agentverse/registering-agent-dice-roll/confirm-context.png)
 
-After your service has been executed you can see your dice roll results.
+After your function has been executed you can see your dice roll results.
 
 ![](../../../src/images/guides/agentverse/registering-agent-dice-roll/task-completed.png)
 
-With that, **you have gotten a dice roll service which can be discovered and contacted with DeltaV. Awesome!**
+With that, **you have gotten a dice roll function which can be discovered and contacted with DeltaV. Awesome!**

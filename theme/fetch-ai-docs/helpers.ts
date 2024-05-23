@@ -9,7 +9,8 @@ export const handleSignin = () => {
     `https://accounts.fetch.ai/login/` +
     `?redirect_uri=${encodeURIComponent(redirectUri)}` +
     `&client_id=docs` +
-    `&response_type=code`;
+    `&response_type=code` +
+    `&sso=`;
   router.push(loginUrl);
 };
 
@@ -25,4 +26,10 @@ export const capitalizeWords = (str: string) => {
   return str.replaceAll(/(?:^|-)([a-z])/g, function (char) {
     return char.toUpperCase().replace("-", " ");
   });
+};
+
+export const addUnderscoreInText = (text) => {
+  const lowercasedText = text.toLowerCase();
+  const snakecasedText = lowercasedText.replaceAll(/\s+/g, "_");
+  return snakecasedText;
 };

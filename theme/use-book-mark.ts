@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 
 const useBookMark = (context) => {
   const [bookMarks, setBookMarks] = useState<undefined | string[]>([]);
-  const fetchBookMarks = async (context, isBookMark) => {
+  const [bookMarkSuccess, setBookMarkSuccess] = useState<string>("");
+  const fetchBookMarks = async (email, isBookMark) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookmarks?user_email=${context?.user?.email}&is_visible=${isBookMark}`,
+        `/docs/api/get-bookmarks?user_email=${email}&is_visible=${isBookMark}`,
         {
           method: "GET",
           headers: {
@@ -13,6 +14,7 @@ const useBookMark = (context) => {
           },
         },
       );
+
       if (response.status === 200) {
         const bookmark = await response.json();
         setBookMarks(bookmark);
@@ -32,13 +34,13 @@ const useBookMark = (context) => {
 
   useEffect(() => {
     if (context?.user?.email) {
-      fetchBookMarks(context, true);
+      fetchBookMarks(context?.user?.email, true);
     }
   }, [context?.user?.email, pathname]);
 
   const onClickBookMark = async (newVisibilityState: boolean) => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookmark`, {
+      const resp = await fetch(`/docs/api/set-bookmarks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,14 +52,27 @@ const useBookMark = (context) => {
         }),
       });
 
-      const bookmark = await fetchBookMarks(context, newVisibilityState);
+      if (resp.status === 200) {
+        if (newVisibilityState) {
+          setBookMarkSuccess("Bookmark updated successfully");
+        } else {
+          setBookMarkSuccess("Bookmark removed successfully");
+        }
+      }
+      const bookmark = await fetchBookMarks(
+        context?.user?.email,
+        newVisibilityState,
+      );
       setBookMarks(bookmark);
+      setTimeout(() => {
+        setBookMarkSuccess("");
+      }, 2000);
     } catch (error) {
       console.log("something went wrong", error);
     }
   };
   return {
-    state: { bookMarks },
+    state: { bookMarks, bookMarkSuccess, setBookMarkSuccess },
     action: { onClickBookMark, fetchBookMarks },
   };
 };
