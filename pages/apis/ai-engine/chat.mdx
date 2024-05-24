@@ -81,7 +81,6 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
       num_messages: 0,
       last_message_timestamp: null,
       messages: [],
-      bucket_id: null,
       model: "talkative-01",
       remaining_tokens: 10000000,
     },
@@ -103,7 +102,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
       num_messages: 0,
       last_message_timestamp: null,
       messages: [],
-      bucket_id: null,
+      function_group: "ef6937d9-c086-4785-8bb1-748680821714",
       model: "talkative-01",
       remaining_tokens: 9999099,
     },
@@ -113,7 +112,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
       num_messages: 0,
       last_message_timestamp: null,
       messages: [],
-      bucket_id: "ef6937d9-c086-4785-8bb1-748680821714",
+      function_group: "ef6937d9-c086-4785-8bb1-748680821714",
       model: "talkative-01",
       remaining_tokens: 9999099,
     },
@@ -125,11 +124,14 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
 There are 4 types of messages that can be sent to the backend:
 
-- `start`: This is the first message that should be sent to the backend. It contains the objective and context of the conversation. The objective and context are used to determine which agent to use for the conversation.
+- `start`: This is the first message that should be sent to the AI Engine for full session (search + execution). It contains the objective and context of the conversation. The objective and context are used to determine which agent to use for the conversation.
+- `execute_functions`: This is the first message that should be sent to the AI Engine for execution only (no search). It contains the list of function-ids you want to execute and a function group (for secondary function picks).
 - `user_message`: This is a message sent by the user.
 - `user_json`: This is a JSON message sent by the user.
 - `stop`: This is the last message that should be sent to the backend. It indicates that the conversation has ended.
 
+
+IMPORTANT: you need to either send `start` or `execute_functions`. These two can't be combined.
 ### Sending start message
 
 <ApiEndpointRequestResponse
@@ -146,13 +148,77 @@ There are 4 types of messages that can be sent to the backend:
     {
       name: "type",
       type: "string",
-      description: "The type of message being sent.",
+      description: "The type of message being sent. For starting the session set it to 'start'.",
     },
     {
       name: "objective",
       type: "string",
       description:
         "The objective of the conversation. This is used to determine which agent to use for the conversation.",
+    },
+    {
+      name: "context",
+      type: "string",
+      description:
+        "The context of the conversation. This is used to give information about the user to the agent.",
+    },
+    {
+      name: "recommend_only",
+      type: "boolean",
+      description: 
+        "Optional flag, if is set to true, AI Engine will only do search, it will match your objective to functions/agents and then stops. False by default. Only supported by Next Generation personality."
+    },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
+  ]}
+  samplePayload={{
+    payload: {
+      type: "start",
+      objective: "I'd like to go to London",
+      context:
+        "User full Name: Test User\nUser email: user@user.com\nUser location: latitude=51.5072, longitude=0.1276\n",
+    },
+  }}
+    pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+  responseDescription="On a successful request, there is no response"
+/>
+
+### Sending execute functions message
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
+  description="Sending execute functions message. Currently only supported by Next Generation personality. Don't use this if you already sent 'start' message."
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description: "Contains the data for the type of message being sent.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent. Set it to 'execute_functions'.",
+    },
+    {
+      name: "functions",
+      type: "string[]",
+      description:
+        "List of function ids you want the system to execute.",
+    },
+    {
+      name: "objective",
+      type: "string",
+      description:
+        "The objective of the conversation. This will guide context building.",
     },
     {
       name: "context",
@@ -169,10 +235,10 @@ There are 4 types of messages that can be sent to the backend:
   ]}
   samplePayload={{
     payload: {
-      type: "start",
-      objective: "I'd like to go to London",
-      context:
-        "User full Name: Test User\nUser email: user@user.com\nUser location: latitude=51.5072, longitude=0.1276\n",
+      type: "execute_functions",
+      functions: ["b320b5c4-518c-428b-889d-3cb8403901c0"],
+      objective: "",
+      context: ""
     },
   }}
     pathParameters={{
