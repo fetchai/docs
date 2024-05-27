@@ -40,7 +40,7 @@ const Bookmark = ({
     <div
       onClick={handleClick}
       style={{ borderRadius: "10px", maxWidth: "120px" }}
-      className={`${classes} nx-mt-4 nx-mr-4 nx-cursor-pointer nx-gap-1 nx-flex-row nx-items-center nx-p-2 nx-gap-y-6 grey-background`}
+      className={`${classes} nx-mt-4  nx-ml-4 nx-mr-4 nx-cursor-pointer nx-gap-1 nx-flex-row nx-items-center nx-p-2 nx-gap-y-6 grey-background`}
     >
       {bookmarkIcon}
       <span className="text-sm font-normal leading-7">Bookmark</span>

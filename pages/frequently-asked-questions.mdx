@@ -1,0 +1,67 @@
+import FrequentlyAskedQuestions from "../components/frequently-asked-questions.tsx";
+
+<FrequentlyAskedQuestions faqs={[
+    {
+        "question": "What is an Agent? Why do I need one?",
+        "answer": `An agent is piece of code that can automate all kinds of tasks, and communicate and transact with users or other agents. You can find more details and ideas about agents at [https://fetch.ai/agents](https://fetch.ai/agents).`
+    },
+    {
+        "question": "What’s the advantage of using Agentverse?",
+        "answer": `
+Agentverse greatly simplifies the process of developing and running agents.
+
+- Empowers users to efficiently manage, develop, and explore agents.
+- Choose from a wide variety of use case templates to get started quickly.
+- Once you click “Run”, your agent will keep running until you click “Stop”. No need to keep your browser open or your device running.
+- See how your agent is performing with Agentverse’s analytics and monitoring features. You can use the immediate feedback to tweak the code or function descriptions to fix or improve your agent’s performance.`
+    },
+    {
+        "question": "What programming languages are supported?",
+        "answer": `Initially only Python is supported, but you can expect support for other languages to follow soon.`
+    },
+    {
+        "question": "How do I communicate with my agent?",
+        "answer": `
+There are several ways to communicate with your agents:
+
+- **From another agent**: Agents can easily [communicate ↗️](/docs/guides/agents/communicating-with-other-agents) with each other as long as the receiving agent has a handler for the message type sent by the sending agent.
+- **REST API**: Your agent can also be requested via typical HTTP requests. It only needs to implement the \`on_query\` decorator as described in this [example ↗️](/docs/examples/on-query).
+- **From DeltaV**: If you add a DeltaV-compatible Protocol to your agent and then publish a [Function ↗️](/docs/guides/services/services) for it, your agent will be reachable by natural language via DeltaV or the AI-Engine API.
+- **Using a query** (synchronous message): You can send any of the messages supported by your agent in synchronous mode and your agent will respond via the HTTP response as in this [example ↗️](https://github.com/fetchai/uAgents/blob/main/python/examples/08-local-network-interaction/sync_sender.py) .`
+    },
+    {
+        "question": "What are the different agent types?",
+        "answer": `
+- **Hosted**: an agent that runs on Agentverse
+- **Local**: an agent that you run on your local system or deploy to some other cloud hosting service
+- **Mailbox**: a local agent that you connect to Agentverse’s [mailbox service ↗️](/docs/guides/agentverse/utilising-the-mailbox)`
+    },
+    {
+        "question": "What is the relation between uAgent, Agentverse, AI Engine and DeltaV?",
+        "answer": `
+- **uAgent**: is an open-source Python library that acts as the primary building block to code the [Fetch.ai  ↗️](http://Fetch.ai) agents.
+- **Agentverse**: is an online agent dashboard and hosting service. Agentverse allows you to run your agents in the cloud, and manage agents running both on agentverse and elsewhere.
+- **AI-Engine**: is an AI system that leverages LLMs to convert human text to actionable functions. What this means, is that unlike current LLMs AI-Engine is able to connect you with a function that can book you a hotel, understand a PDF etc.
+- **DeltaV**: is a developer tool to test human input against functions that are registered to the system.`
+    },
+    {
+        "question": "Can I use DeltaV without using Agentverse?",
+        "answer": `Yes you can, there are two ways to do this. You can run your agent with the mailbox, meaning your agent can utilise a hosted mailbox to store messages - read more about this [here ↗️](/docs/guides/agentverse/utilising-the-mailbox#local-agent-setup). Alternatively, you can run your agent locally whilst exposing a port and endpoint, you can read more about locally running agents [here ↗️](/docs/guides/agents/running-locally).`
+    },
+    {
+        "question": "What does it mean to publish an agent function inside Agentverse?",
+        "answer": `When you register an agent function, you’re defining the abilities of your agents to AI-Engine. For AI Engine to understand what your function does, you’ll use prompt engineering to describe your function and it’s variables.`
+    },
+    {
+        "question": "How easy is it to start using Agentverse if I have locally developed uAgents?",
+        "answer": `This is a simple as copy and pasting code, however for now we are only supporting the Python standard library and these [other libraries ↗️](/docs/guides/agentverse/allowed-imports#allowed-imports).`
+    },
+    {
+        "question": "Can I import any external library inside my Agentverse managed agents?",
+        "answer": `Currently it is only possibly to import our [supported libraries ↗️](/docs/guides/agentverse/allowed-imports#allowed-imports), but this will be updated to all libraries soon.`
+    },
+    {
+        "question": "How can I register local agents with AI Engine using Agentverse?",
+        "answer": `This is really easy to do, in fact we have a [guide for this ↗️](/docs/guides/agents/running-locally).`
+    }
+]} />
