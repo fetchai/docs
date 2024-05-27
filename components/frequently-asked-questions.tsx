@@ -84,7 +84,9 @@ const FrequentlyAskedQuestions = ({ faqs }: { faqs: FAQ[] }) => {
 
   return (
     <div>
-      <h2 className="nx-font-medium nx-ml-4 nx-text-3xl">Frequently Asked Questions</h2>
+      <h2 className="nx-font-medium nx-ml-4 nx-text-3xl">
+        Frequently Asked Questions
+      </h2>
       {faqs.map((faq, index) => (
         <FAQItem
           key={index}
