@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components'
 
 ## Overview
 
-The [Agentverse ↗️](https://agentverse.ai/services) allows you to enrol your agents and their Functions within the Fetch network and make them discoverable by other agents and users to start interacting with them. **Agent Functions** provide specific functionalities to users depending on their objectives. The Agentverse and the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) aim at connecting multiple agents offering different Functions on the Fetch network. Agents are registered on the Agentverse and whenever a user makes a query on [DeltaV ↗️](/concepts/ai-engine/deltav) for a specific function execution, the AI Engine will retrieve all registered agents (and their functions) on the Fetch network providing functions helpful to fulfill the objective provided by users.
+The [Agentverse ↗️](https://agentverse.ai/services) allows to enrol your agents and their Functions within the Fetch network and make them discoverable by other agents and users to start interacting with them. **Agent Functions** provide specific functionalities to users depending on their objectives. The Agentverse and the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) aim at connecting multiple agents offering different Functions on the Fetch network. Agents are registered on the Agentverse and whenever a user makes a query on [DeltaV ↗️](/concepts/ai-engine/deltav) for a specific function execution, the AI Engine will retrieve all registered agents (and their functions) on the Fetch network providing functions helpful to fulfill the objective provided by users.
 
 ## Enrol your Agents Functions on the Agentverse!
 
@@ -92,45 +92,45 @@ This system is pretty simple, as to get you started as quickly as possible. We'r
 
 ### The agent
 
-```py copy filename="agent.py"
-from uagents.setup import fund_agent_if_low
-from uagents import Agent, Context, Protocol, Model
-import random
-from pydantic import Field
-from ai_engine import UAgentResponse, UAgentResponseType
-import sys
+    ```py copy filename="agent.py"
+    from uagents.setup import fund_agent_if_low
+    from uagents import Agent, Context, Protocol, Model
+    import random
+    from pydantic import Field
+    from ai_engine import UAgentResponse, UAgentResponseType
+    import sys
 
-dungeons = Agent(
-    name="dungeonsanddragonsdiceroll",
-    port=6145,
-    seed="RANDOM STRINGS",
-    endpoint=["http://YOUR_IP:6145/submit"],
-)
-
-fund_agent_if_low(dungeons.wallet.address())
-
-@dungeons.on_event("startup")
-async def hi(ctx: Context):
-    ctx.logger.info(dungeons.address)
-
-class Request(Model):
-    dice_sides: int = Field(description="How many sides does your dice need?")
-
-dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
-
-@dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
-async def roll_dice(ctx: Context, sender: str, msg: Request):
-    result = str(random.randint(1, msg.dice_sides))
-    message = f"Dice roll result: {result}"
-    await ctx.send(
-        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+    dungeons = Agent(
+        name="dungeonsanddragonsdiceroll",
+        port=6145,
+        seed="RANDOM STRINGS",
+        endpoint=["http://YOUR_IP:6145/submit"],
     )
 
+    fund_agent_if_low(dungeons.wallet.address())
 
-dungeons.include(dice_roll_protocol, publish_manifest=True)
+    @dungeons.on_event("startup")
+    async def hi(ctx: Context):
+        ctx.logger.info(dungeons.address)
 
-dungeons.run()
- ```
+    class Request(Model):
+        dice_sides: int = Field(description="How many sides does your dice need?")
+
+    dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
+
+    @dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
+    async def roll_dice(ctx: Context, sender: str, msg: Request):
+        result = str(random.randint(1, msg.dice_sides))
+        message = f"Dice roll result: {result}"
+        await ctx.send(
+            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+        )
+
+
+    dungeons.include(dice_roll_protocol, publish_manifest=True)
+
+    dungeons.run()
+     ```
 
 A few things to note; you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`.
 
@@ -144,13 +144,13 @@ Finally, we  run our agent as follows: `python agent.py`
 
 **Expected output**:
 
-```
-INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
-INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
-INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
-INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
-INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
-```
+    ```
+    INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
+    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
+    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
+    INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
+    INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
+    ```
 
 ### Register a local Agent Function on the Agentverse
 

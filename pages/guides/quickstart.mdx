@@ -1,0 +1,177 @@
+# Quick Start Guide for uAgents Framework
+
+This **quickstart guide** quickly let you install the uAgents Framework and get started in few steps!
+
+## Installation
+
+### System requirements
+
+    - **Python 3.8+**: A popular programming language.
+    - **PIP**: Python package manager for installing libraries.
+    - **Poetry (optional)**: For managing virtual environments and dependencies.
+
+### Installation steps
+
+1. Create a **Project Directory**. Open your terminal and create a new directory for your project:
+
+    ```py
+    mkdir directory_name
+    cd directory_name
+    ```
+
+2. Initialize and activate virtual environment. Use **Poetry** to initialize and activate a virtual environment (optional but recommended):
+
+    ```py
+    poetry init -n && poetry shell
+    ```
+
+3. Install **uAgents Framework**. Use **PIP** to install the uAgents Framework package.
+
+    ```py
+    pip install uagents
+    ```
+
+4. Verify installation. Check if the installation was successful.
+
+    ```py
+    pip show uagents
+    ```
+
+### Troubleshooting
+
+**Problem on MacOS/Python 3.11**: Installing coincurve (17.0.0) fails.
+
+#### Solution
+
+Install the necessary tools.
+
+    ```py
+    brew install automake autoconf libtool
+    ```
+
+## Using `on_message` and `on_interval` even handlers
+
+### Interval Task Example
+
+This example shows how to make an agent perform a task periodically.
+
+#### Create Script
+
+Create a new Python script:
+
+    ```py
+    touch interval-task.py
+    ```
+
+#### Edit Script
+
+Open `interval-task.py` in your text editor and add the following code:
+
+    ```py
+    from uagents import Agent, Context
+
+    # Create an agent named Alice
+    alice = Agent(name="alice", seed="alice recovery phrase")
+
+    # Define a periodic task for Alice
+    @alice.on_interval(period=2.0)
+    async def say_hello(ctx: Context):
+        ctx.logger.info(f'hello, my name is {ctx.name}')
+
+    # Run the agent
+    if __name__ == "__main__":
+        alice.run()
+    ```
+
+#### Run Script
+
+Run the script to see the output:
+
+    ```py
+    python interval-task.py
+    ```
+
+**Expected Output**: `hello, my name is alice every 2 seconds`.
+
+### Message Handling Example
+
+This example demonstrates how three agents (Alice, Bob, and Charles) communicate using custom messages.
+
+#### Create Script
+
+Create a new Python script:
+
+    ```py
+    touch broadcast.py
+    ```
+
+#### Edit Script
+
+Open `broadcast.py` in your text editor and add the following code:
+
+    ```py
+    from uagents import Agent, Bureau, Context, Model, Protocol
+    from uagents.setup import fund_agent_if_low
+
+    # Create agents with recovery phrases
+    alice = Agent(name="alice", seed="alice recovery phrase")
+    bob = Agent(name="bob", seed="bob recovery phrase")
+    charles = Agent(name="charles", seed="charles recovery phrase")
+
+    # Ensure agents have funds
+    fund_agent_if_low(alice.wallet.address())
+    fund_agent_if_low(bob.wallet.address())
+    fund_agent_if_low(charles.wallet.address())
+
+    # Define message models
+    class BroadcastExampleRequest(Model):
+        pass
+
+    class BroadcastExampleResponse(Model):
+        text: str
+
+    # Define protocol
+    proto = Protocol(name="proto", version="1.0")
+
+    @proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
+    async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
+        await ctx.send(sender, BroadcastExampleResponse(text=f"Hello from {ctx.name}"))
+
+    # Include protocol in Alice and Bob
+    alice.include(proto)
+    bob.include(proto)
+
+    # Charles sends broadcast messages every 5 seconds
+    @charles.on_interval(period=5.0)
+    async def say_hello(ctx: Context):
+        await ctx.experimental_broadcast(proto.digest, message=BroadcastExampleRequest())
+
+    # Charles handles responses
+    @charles.on_message(model=BroadcastExampleResponse)
+    async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
+        ctx.logger.info(f"Received response from {sender}: {msg.text}")
+
+    # Create a bureau to manage agents
+    bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
+    bureau.add(alice)
+    bureau.add(bob)
+    bureau.add(charles)
+
+    if __name__ == "__main__":
+        bureau.run()
+    ```
+
+#### Run Script
+
+Run the script to see the agents communicate:
+
+    ```py
+    python broadcast.py
+    ```
+
+**Expected Output**: `Received response from alice: Hello from alice`.
+
+## Reach out to the Team!
+
+Cool! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network!
+Remember that our Team is available on [Telegram ↗️](https://t.me/fetch_ai) and [Discord ↗️](https://discord.gg/fetchai) channels for any additional inquiry.
