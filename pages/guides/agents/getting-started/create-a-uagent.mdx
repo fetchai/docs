@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Once you've [installed ↗️](/guides/agents/installing-uagent) the uAgents library, it's quite simple to get a minimal use case running. Let our first agent be a simple inialisation and printing out the agent's name.
+Once you've [installed ↗️](/guides/agents/installing-uagent) the uAgents library, it's quite simple to get a minimal use case running. Let our first agent be a simple initialisation and printing out the agent's name.
 
 ### The agent
 
@@ -13,20 +13,20 @@ Once you've [installed ↗️](/guides/agents/installing-uagent) the uAgents lib
 
    ```py copy
    from uagents import Agent, Context
-   alice = Agent(name="alice", seed="alice recovery phrase")
+   agent = Agent(name="alice", seed="secret_seed_phrase")
    ```
 
-   It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address)️. Otherwise, random addresses will be generated every time you run the agent. Your address is kind of important, as this is how other agents will identify you.
+   It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the agent. Your address is kind of important, as this is how other agents will identify you.
 
 3. Let's define a `say_hello()` function for our agent to print a message periodically saying `hello, my name is ...`:
 
    ```py copy
-   @alice.on_event("startup")
-   async def say_hello(ctx: Context):
-       ctx.logger.info(f'hello, my name is {ctx.name}')
+   @agent.on_event("startup")
+   async def introduce_agent(ctx: Context):
+       ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
 
    if __name__ == "__main__":
-       alice.run()
+       agent.run()
    ```
 
    The `.on_event("startup")` decorator defines a behavior for this agent when it is run. In this case, the agent will execute the `say_hello()` function when the agent starts. The `Context` object is a collection of data and functions related to the agent. In this case, we just use the agent's `name`, `alice`. The agent executes the function and uses the `ctx.logger.info()` method to print the message.
@@ -38,14 +38,14 @@ The overall script should look as follows:
 ```py copy filename="agent.py"
 from uagents import Agent, Context
 
-alice = Agent(name="alice", seed="alice recovery phrase")
+agent = Agent(name="alice", seed="secret_seed_phrase")
 
-@alice.on_event("startup")
-async def say_hello(ctx: Context):
-    ctx.logger.info(f'hello, my name is {ctx.name}')
+@agent.on_event("startup")
+async def introduce_agent(ctx: Context):
+    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
 
 if __name__ == "__main__":
-    alice.run()
+    agent.run()
 ```
 
 ### Run your agent
@@ -57,7 +57,7 @@ Run the script: `python agent.py`
 The output would be:
 
     ```
-    [alice]: hello, my name is alice
+    [alice]: Hello, I'm agent alice and my address is <agent_address>
     ```
 
 **Congratulations, you have just created your first Agent!**

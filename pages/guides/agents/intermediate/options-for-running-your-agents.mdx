@@ -18,18 +18,18 @@ from pydantic import Field
 from ai_engine import UAgentResponse, UAgentResponseType
 import sys
 
-dungeons = Agent(
+agent = Agent(
     name="dungeonsanddragonsdiceroll",
     port=6145,
     seed="RANDOM STRINGS",
     endpoint=["http://YOUR_IP:6145/submit"],
 )
 
-fund_agent_if_low(dungeons.wallet.address())
+fund_agent_if_low(agent.wallet.address())
 
-@dungeons.on_event("startup")
+@agent.on_event("startup")
 async def hi(ctx: Context):
-    ctx.logger.info(dungeons.address)
+    ctx.logger.info(agent.address)
 
 class Request(Model):
     dice_sides: int = Field(description="How many sides does your dice need?")
@@ -44,16 +44,16 @@ async def roll_dice(ctx: Context, sender: str, msg: Request):
         sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
     )
 
-dungeons.include(dice_roll_protocol, publish_manifest=True)
+agent.include(dice_roll_protocol, publish_manifest=True)
 
-dungeons.run()
+agent.run()
  ```
 
 A few things to note; you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`.
 
 The agent is initialised with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an int as seen in the `Request` object.
 
-Our `on_message` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of  `UAgentResponse` which is essential to communicate with DeltaV.
+Our `on_message()` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of  `UAgentResponse` which is essential to communicate with DeltaV.
 
 `.run()` initialises the agent.
 

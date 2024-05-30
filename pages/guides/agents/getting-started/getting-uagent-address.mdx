@@ -25,9 +25,12 @@ You can print the `uAgent address` related to your agent in the following way:
    ```py copy filename="uagent-address.py"
    from uagents import Agent
 
-   alice = Agent(name="alice", seed="alice recovery phrase")
+   agent = Agent(name="alice", seed="alice recovery phrase")
 
-   print("uAgent address: ", alice.address)
+   print("uAgent address: ", agent.address)
+
+   if __name__ == "__main__":
+       agent.run()
    ```
 
 3. Save the script.
@@ -49,9 +52,12 @@ You can print the `Fetch network address` related to your agent in the following
    ```py copy filename="fetch-address.py"
    from uagents import Agent
 
-   alice = Agent(name="alice", seed="alice recovery phrase")
+   agent = Agent(name="alice", seed="alice recovery phrase")
 
-   print("Fetch network address: ", alice.wallet.address())
+   print("Fetch network address: ", agent.wallet.address())
+
+    if __name__ == "__main__":
+        agent.run()
    ```
 
 3. Save the script.
@@ -83,21 +89,21 @@ The `Context` class is a crucial component which represents the execution contex
    ```py copy
    from uagents import Agent, Context
 
-   alice = Agent(name="alice", seed="alice recovery phrase")
+   agent = Agent(name="alice", seed="alice recovery phrase")
    ```
 
 3. We would then need to assign the agent the behavior to be executed. In this case, `alice` could send a message when it is being run saying hello and printing its `name` and `address`:
 
    ```py copy
-   @alice.on_event("startup")
+   @agent.on_event("startup")
    async def introduce_agent(ctx: Context):
-       ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}.")
+       ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
 
     if __name__ == "__main__":
-        alice.run()
+        agent.run()
    ```
 
-   This `introduce_agent()` function takes a single argument `ctx` of type `Context`. The message is printed out using the `ctx.logger.info()` method, and includes the agent's name obtained from attribute `name` of the `Context` class and retrieved using `ctx.name()` method. The same for the agent's address, which is obtained from attribute `address` of the `Context` class and retrieved using `ctx.address()` method.
+   This `introduce_agent()` function takes a single argument `ctx` of type `Context`. The message is printed out using the `ctx.logger.info()` method, and includes the agent's name obtained from attribute `name` of the `Context` class and retrieved using `agent.name()` method. The same for the agent's address, which is obtained from attribute `address` of the `Context` class and retrieved using `agent.address()` method.
 
 4. Save the script.
 
@@ -106,14 +112,14 @@ The overall script should look as follows:
 ```py copy filename="my_agent.py"
 from uagents import Agent, Context
 
-alice = Agent(name="alice", seed="alice recovery phrase")
+agent = Agent(name="alice", seed="alice recovery phrase")
 
-@alice.on_event("startup")
+@agent.on_event("startup")
 async def introduce_agent(ctx: Context):
-    ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}.")
+    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
 
 if __name__ == "__main__":
-    alice.run()
+    agent.run()
 ```
 
 ### Run the script
