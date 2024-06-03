@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "./contexts/context-provider";
 
@@ -8,7 +8,7 @@ export default function isAuth(Component) {
     const { isLoggedIn } = useUserContext();
     const router = useRouter();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       if (isLoggedIn === false) {
         router.push("/");
       }
