@@ -5,6 +5,15 @@ const withNextra = require("nextra")({
 
 module.exports = withNextra({
   basePath: "/docs",
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+      },
+    ],
+  },
 
   async redirects() {
     return [

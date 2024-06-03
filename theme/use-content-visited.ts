@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useContentVisited = (context) => {
-  const [contentVisited, setContentVisited] = useState();
+  const [contentVisited, setContentVisited] = useState([]);
 
   const fetchContentVisited = async (context) => {
     try {

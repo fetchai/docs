@@ -131,6 +131,7 @@ export const UserInfoProvider: React.FC<{
       apiKey: context?.credentials?.apiKey,
       expiresAt: context?.credentials?.expiresAt,
       sub: context?.credentials?.sub,
+      group: context?.credentials?.group,
     });
     setIsLoggedIn(context?.isLoggedIn);
   }, [

@@ -5,13 +5,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { user_email, is_visible } = req.query;
+  const { user_email } = req.query;
   const accessToken = await getAccessToken(req, res);
   try {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${accessToken}`);
     const response = await fetch(
-      `${process.env.BACKEND_URL}/api/bookmarks?user_email=${user_email}&is_visible=${is_visible}`,
+      `${process.env.BACKEND_URL}/api/profile?user_email=${user_email}`,
       {
         method: "GET",
         headers: myHeaders,

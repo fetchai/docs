@@ -30,6 +30,7 @@ export const getAccessToken = async (req, res) => {
 
     return accessToken;
   } catch (error) {
-    res.status(401).json({ error: error.message });
+    console.log(error);
+    // res?.status(401).json({ error: error.message });
   }
 };

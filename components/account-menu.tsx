@@ -1,6 +1,7 @@
 import React, { useState, FC } from "react";
 import ProfileIcon from "../src/svgs/profile.svg";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface AccountMenuProps {
   email: string;
@@ -10,6 +11,7 @@ interface AccountMenuProps {
 
 const AccountMenu: FC<AccountMenuProps> = ({ email, logo, signOut }) => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const handleClick = () => {
     setOpen(!open);
@@ -45,6 +47,20 @@ const AccountMenu: FC<AccountMenuProps> = ({ email, logo, signOut }) => {
             </p>
           </div>
           <div>
+            <div
+              onClick={() => router.push("/profile")}
+              className="nx-px-4 nx-pt-3 nx-text-sm  nx-cursor-pointer nx-justify-center nx-rounded-b-lg nx-flex"
+            >
+              <Image
+                alt=""
+                loading="lazy"
+                width={15}
+                height={15}
+                className="nx-self-center nx-svg-inline--fa nx-fa-power-off nx-text-gray-300 nx-me-3 nx-mb-[14px]"
+                src={ProfileIcon}
+              />
+              Profile
+            </div>
             <div
               className="nx-px-4 nx-pt-3 nx-text-sm nx-justify-center nx-cursor-pointer nx-pb-4 nx-rounded-b-lg nx-flex"
               id="sign_out"
