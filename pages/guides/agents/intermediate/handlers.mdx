@@ -85,7 +85,7 @@ The output should be as follows:
 
 ## Handle messages using the on_message() handler
 
-We now showcase a scenario where three agents, named `alice`, `bob`, and `charles`, use a custom [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all agents using the protocol. Agents use the `on_message()` handler which allows them to handle messages matching specific data Models.
+We now showcase a scenario where three agents, named `alice`, `bob`, and `charles`, use a custom [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all agents using the protocol. Agents use the `on_message()` handler which allows them to handle messages matching specific data models.
 
 **Let's get started!**
 
@@ -145,7 +145,7 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
       After the first registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) smart contract, it will take about 5 minutes before the agents can be found through the protocol.
     </Callout>
 
-6. It is now time to define the behavior and function of `charles` agent.
+6. It is now time to define the behavior and function of `charles` agent:
 
     ```py copy
     @charles.on_interval(period=5)
@@ -169,7 +169,7 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
     bureau.add(alice)
     bureau.add(bob)
     bureau.add(charles)
-    
+
     if __name__ == "__main__":
         bureau.run()
     ```
@@ -246,53 +246,52 @@ The output would be:
 
 ## Answer queries with on_query() handler
 
-The `on_query()` handler is used to register a function as a handler for incoming queries that match a specified model.
-These decorators enable the agent to respond to queries in an event-driven manner.
+The `on_query()` handler is used to register a [Function ↗️](/guides/agents/intermediate/agent-functions) as a handler for incoming queries that match a specified `Model`. This decorator enables the agent to respond to queries in an event-driven manner.
 
 ### Walk-through
 
 #### Agent's script
 
-For the agent section, the script sets up a agent to handle incoming queries. It defines two models: `TestRequest` and `Response`. Upon startup, it logs the agent's details. The core functionality lies in the `query_handler`, decorated with` @agent.on_query`, which processes received queries and sends back a predefined response. This demonstrates creating responsive agents within the `uagents` Framework, showcasing how they can interact with other agents or services in an asynchronous, event-driven architecture.
+For the agent, the script sets up an agent to handle incoming queries. It defines two models: `TestRequest` and `Response`. Upon startup, it logs the agent's details. The core functionality lies in the `query_handler`, decorated with `@agent.on_query()`, which processes received queries and sends back a predefined response. This demonstrates creating responsive agents within the `uagents` Framework, showcasing how they can interact with other agents or functions in an asynchronous, event-driven architecture.
 
-```py copy filename="agent.py"
-from uagents import Agent, Context, Model
+    ```py copy filename="agent.py"
+    from uagents import Agent, Context, Model
 
-class TestRequest(Model):
-    message: str
+    class TestRequest(Model):
+        message: str
 
-class Response(Model):
-    text: str
+    class Response(Model):
+        text: str
 
-# Initialize the agent with its configuration.
-agent = Agent(
-    name="your_agent_name_here",
-    seed="your_agent_seed_here",
-    port=8001,
-    endpoint="http://localhost:8001/submit",
-)
+    # Initialize the agent with its configuration.
+    agent = Agent(
+        name="your_agent_name_here",
+        seed="your_agent_seed_here",
+        port=8001,
+        endpoint="http://localhost:8001/submit",
+    )
 
-@agent.on_event("startup")
-async def startup(ctx: Context):
-    ctx.logger.info(f"Starting up {agent.name}")
-    ctx.logger.info(f"With address: {agent.address}")
-    ctx.logger.info(f"And wallet address: {agent.wallet.address()}")
+    @agent.on_event("startup")
+    async def startup(ctx: Context):
+        ctx.logger.info(f"Starting up {agent.name}")
+        ctx.logger.info(f"With address: {agent.address}")
+        ctx.logger.info(f"And wallet address: {agent.wallet.address()}")
 
-# Decorator to handle incoming queries.
-@agent.on_query(model=TestRequest, replies={Response})
-async def query_handler(ctx: Context, sender: str, _query: TestRequest):
-    ctx.logger.info("Query received")
-    try:
-        # do something here
-        await ctx.send(sender, Response(text="success"))
-    except Exception:
-        await ctx.send(sender, Response(text="fail"))
+    # Decorator to handle incoming queries.
+    @agent.on_query(model=TestRequest, replies={Response})
+    async def query_handler(ctx: Context, sender: str, _query: TestRequest):
+        ctx.logger.info("Query received")
+        try:
+            # do something here
+            await ctx.send(sender, Response(text="success"))
+        except Exception:
+            await ctx.send(sender, Response(text="fail"))
 
 
-# Main execution block to run the agent.
-if __name__ == "__main__":
-    agent.run()
-```
+    # Main execution block to run the agent.
+    if __name__ == "__main__":
+        agent.run()
+    ```
 
 The agent is created using the `Agent` class from `uagents` library. It is initialised with a `name`, `seed`, `port`, and `endpoint`. It defines an `on_event()` handler for the `startup` event, where it logs information about the agent's initialisation. It defines an `on_query()` handler for handling queries of type `TestRequest`. Upon receiving a query, it processes it and sends back a `Response`. The agent is then set to run.
 
@@ -304,7 +303,7 @@ Let's explore the Proxy code script step-by-step:
 
 1. First of all navigate to directory where you want to create your project.
 2. Create a Python script name `on_query.py` by running `touch on_query.py`.
-3. We need to import `json`, `asyncio`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `QueryRequest` class as a subclass of `Model`.
+3. We need to import `json`, `asyncio`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `QueryRequest` class as a subclass of `Model`:
 
     ```py copy
     import json

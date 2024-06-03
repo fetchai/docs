@@ -68,7 +68,7 @@ The output would be as follows:
     Fetch network address: fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
     ```
 
-## Print agent name and address using `Context` class
+## Print agent name and address using `name` and `address` methods
 
 In this guide, we aim at showing how to create an agent being able to say hello and printing its `name` and `address` retrieving such information from the `Context` class imported from the `uagents` library.
 
@@ -92,7 +92,7 @@ The `Context` class is a crucial component which represents the execution contex
    agent = Agent(name="alice", seed="alice recovery phrase")
    ```
 
-3. We would then need to assign the agent the behavior to be executed. In this case, `alice` could send a message when it is being run saying hello and printing its `name` and `address`:
+3. We would then need to assign the agent the behavior to be executed. In this case, `agent` could send a message when it is being run saying hello and printing its `name` and `address`:
 
    ```py copy
    @agent.on_event("startup")
@@ -103,7 +103,7 @@ The `Context` class is a crucial component which represents the execution contex
         agent.run()
    ```
 
-   This `introduce_agent()` function takes a single argument `ctx` of type `Context`. The message is printed out using the `ctx.logger.info()` method, and includes the agent's name obtained from attribute `name` of the `Context` class and retrieved using `agent.name()` method. The same for the agent's address, which is obtained from attribute `address` of the `Context` class and retrieved using `agent.address()` method.
+   This `introduce_agent()` function takes a single argument `ctx` of type `Context`. The message is printed out using the `ctx.logger.info()` method, and includes the agent's name obtained from attribute `name` and retrieved using `agent.name()` method. The same for the agent's address, which is obtained from attribute `address` and retrieved using `agent.address()` method.
 
 4. Save the script.
 

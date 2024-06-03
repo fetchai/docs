@@ -60,14 +60,14 @@ This example shows how to make an agent perform a task periodically.
 Create a new Python script:
 
     ```py
-    touch interval-task.py
+    touch interval_task.py
     ```
 
 #### Edit Script
 
-Open `interval-task.py` in your text editor and add the following code:
+Open `interval_task.py` in your text editor and add the following code:
 
-    ```py
+    ```py copy filename="interval_task.py"
     from uagents import Agent, Context
 
     # Create an agent named Alice
@@ -95,68 +95,50 @@ Run the script to see the output:
 
 ### Message Handling Example
 
-This example demonstrates how three agents (Alice, Bob, and Charles) communicate using custom messages.
+This guide will walk you through creating a simple interaction between two agents, Emma and Liam. Emma will send a message to Liam at regular intervals, and Liam will handle and log the received messages.
 
 #### Create Script
 
 Create a new Python script:
 
     ```py
-    touch broadcast.py
+    touch simple_example.py
     ```
 
 #### Edit Script
 
-Open `broadcast.py` in your text editor and add the following code:
+Open `simple_example.py` in your text editor and add the following code:
 
-    ```py
-    from uagents import Agent, Bureau, Context, Model, Protocol
-    from uagents.setup import fund_agent_if_low
+    ```py copy filename="simple_example.py"
+    from uagents import Agent, Bureau, Context, Model
 
-    # Create agents with recovery phrases
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    bob = Agent(name="bob", seed="bob recovery phrase")
-    charles = Agent(name="charles", seed="charles recovery phrase")
+    # Define the message structure
+    class Message(Model):
+        message: str
 
-    # Ensure agents have funds
-    fund_agent_if_low(alice.wallet.address())
-    fund_agent_if_low(bob.wallet.address())
-    fund_agent_if_low(charles.wallet.address())
+    # Create agents
+    emma = Agent(name="Emma", seed="emma_seed")
+    liam = Agent(name="Liam", seed="liam_seed")
 
-    # Define message models
-    class BroadcastExampleRequest(Model):
-        pass
+    # Define behavior for Emma
+    @emma.on_interval(period=3.0)
+    async def send_message(ctx: Context):
+        # Create an instance of the Message class with the desired content
+        message_to_liam = Message(message="Hey Liam, how's it going?")
+        # Send the message to Liam
+        await ctx.send(liam.address, message_to_liam)
 
-    class BroadcastExampleResponse(Model):
-        text: str
+    # Define behavior for handling messages received by Liam
+    @liam.on_message(model=Message)
+    async def liam_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-    # Define protocol
-    proto = Protocol(name="proto", version="1.0")
+    # Create a bureau and add agents
+    bureau = Bureau()
+    bureau.add(emma)
+    bureau.add(liam)
 
-    @proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
-    async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
-        await ctx.send(sender, BroadcastExampleResponse(text=f"Hello from {ctx.name}"))
-
-    # Include protocol in Alice and Bob
-    alice.include(proto)
-    bob.include(proto)
-
-    # Charles sends broadcast messages every 5 seconds
-    @charles.on_interval(period=5.0)
-    async def say_hello(ctx: Context):
-        await ctx.experimental_broadcast(proto.digest, message=BroadcastExampleRequest())
-
-    # Charles handles responses
-    @charles.on_message(model=BroadcastExampleResponse)
-    async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
-        ctx.logger.info(f"Received response from {sender}: {msg.text}")
-
-    # Create a bureau to manage agents
-    bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
-    bureau.add(alice)
-    bureau.add(bob)
-    bureau.add(charles)
-
+    # Run the bureau
     if __name__ == "__main__":
         bureau.run()
     ```
@@ -166,10 +148,14 @@ Open `broadcast.py` in your text editor and add the following code:
 Run the script to see the agents communicate:
 
     ```py
-    python broadcast.py
+    python simple_example.py
     ```
 
-**Expected Output**: `Received response from alice: Hello from alice`.
+**Expected Output**:
+
+    ```
+    [ Liam]: Received message from agent1q2aexr7d0e0x6z5r8zs972jyd8uq9429tc2qfgpax96x6ppyjs25keexnuk: Hey Liam, how's it going?
+    ```
 
 ## Reach out to the Team!
 

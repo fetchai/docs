@@ -139,7 +139,7 @@ module.exports = withNextra({
       {
         source: "/guides/agents/interval-task",
         destination:
-          "pages/guides/agents/intermediate/handlers#creating-an-interval-task-with-on_interval-handler",
+          "/guides/agents/intermediate/handlers#creating-an-interval-task-with-on_interval-handler",
         permanent: true,
       },
       {
@@ -178,6 +178,11 @@ module.exports = withNextra({
       {
         source: "/guides/agents/message-verification",
         destination: "/guides/agents/advanced/message-verification",
+        permanent: true,
+      },
+      {
+        source: "/guides/agentverse/agentverse-functions/services",
+        destination: "/guides/agents/intermediate/agent-functions",
         permanent: true,
       },
     ];
