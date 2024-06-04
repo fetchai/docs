@@ -8,27 +8,45 @@ import { Callout } from 'nextra/components'
 
 ## Installation
 
-**Pre-requisites**: Ensure that you have Go installed on your system.
+**Pre-requisites**: Ensure that you have `Go` installed on your system.
 
     - **For Mac/Linux users**
-    
-    1. Visit [avctl releases](https://github.com/fetchai/avctl/releases/tag/v0.1.1) and download the version relevant for your machine.
-    2. Extract the tar file `tar -xzvf avctl_Darwin_arm64.tar.gz`.
-    3. Move the file to local bin `sudo mv avctl /usr/local/bin/`.
-    4. Make the extracted file executable `sudo chmod +x /usr/local/bin/avctl`.
-    5. Verify the installation by using `avctl auth login`.
+
+    ```
+    brew tap fetchai/avctl
+    brew install avctl
+    ```
 
     - **For windows user**
 
-    1. Download relevant file for windows from [avctl releases](https://github.com/fetchai/avctl/releases/tag/v0.1.1) .
-    2. Extract the tar file `tar -xzvf avctl_Darwin_arm64.tar.gz`.
-    3. move to system path using `move avctl-canary-windows-latest C:\Windows\system32\avctl.exe` .
-    4. Verify the installation by using `avctl auth login`.
+    **Using Chocolatey**
+    ```
+    choco install avctl
+    ```
 
 ## Usage
 
 There are two types of avctl commands named **auth** and **hosting**. `avctl auth` is used for authorisation and `avctl hosting` is used to perform all other actions.
 
-- [Avctl auth commands ↗️](/guides/avctl/avctl-auth)
+- [Avctl auth commands ↗️](/guides/avctl/avctl#avctl-auth-commands)
 - [Avctl hosting commands ↗️](/guides/avctl/avctl-hosting)
+
+## AVCTL auth commands
+
+AVCTL `auth` commands are used for authorisation and logging in and logging off of user.
+
+### Authentication commands
+
+- `avctl auth login` - Log in to the CLI.
+- `avctl auth logout` - Log the current user out from the CLI.
+- `avctl auth status` - Print out the current status of the authorization.
+
+```
+abc@zyx-Pro myagent % avctl auth login
+abc@xyz-Pro myagent % avctl auth status
+Status: logged-in
+abc@xyz-Pro myagent % avctl auth logout
+abc@xyz-Pro myagent % avctl auth status
+Status: logged-out
+```
 

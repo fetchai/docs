@@ -25,10 +25,24 @@ export class FetchError extends Error {
   }
 }
 
-export default async function fetchJson<JSON = unknown>(
+export default async function fetchJson<Response>(
   input: RequestInfo,
   init?: RequestInit,
-): Promise<JSON> {
+): Promise<Response> {
+  if (
+    init &&
+    init.method &&
+    !init.method.includes("GET") &&
+    init.body &&
+    init.body
+  ) {
+    init.body = JSON.stringify(init.body);
+    if (!init.headers) {
+      init.headers = {};
+    }
+    init.headers["Content-Type"] = "application/json";
+  }
+
   const response = await fetch(input, init);
   const data = await response.json();
   if (response.ok) {

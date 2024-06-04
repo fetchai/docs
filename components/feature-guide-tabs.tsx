@@ -36,7 +36,7 @@ export const GuideBox = ({
   );
 };
 
-export const FeatureGuideTabs = () => {
+export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -80,7 +80,7 @@ export const FeatureGuideTabs = () => {
           path: "guides/agents/cleaning-demo",
         },
         {
-          title: "Getting an agent addresses 🤖📫",
+          title: "Agent address 🤖📫",
           description: "A guide showing how to retrieve agents addresses.",
           path: "guides/agents/getting-uagent-address",
         },
@@ -115,23 +115,23 @@ export const FeatureGuideTabs = () => {
         },
         {
           title:
-            "Agentverse Services: register your services on the Agentverse!",
+            "Agentverse Functions: register your Agent Functions on the Agentverse!",
           description:
-            "Discover how to register and make discoverable your agents' services within the Agentverse and DeltaV!",
+            "Discover how to register and make discoverable Agents' Functions within the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-services",
         },
         {
           title:
-            "Agentverse Services: register a coin toss agent as a service 🪙",
+            "Agentverse Functions: register a coin toss agent as a Function 🪙",
           description:
-            "Create and make an coin toss service discoverable on the Agentverse and DeltaV!",
+            "Create and make an coin toss Function discoverable on the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-coin-toss",
         },
         {
           title:
-            "Agentverse Services: register a dice roll agent as a service 🎲",
+            "Agentverse Functions: register a dice roll agent as a Function 🎲",
           description:
-            "Create and make an dice roll service discoverable on the Agentverse and DeltaV!",
+            "Create and make an dice roll Function discoverable on the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-dice-roll",
         },
         {
@@ -229,7 +229,7 @@ export const FeatureGuideTabs = () => {
             </div>
           </div>
         ) : (
-          <div className="nx-flex">
+          <div className={`nx-flex ${centerMode && "nx-justify-center"}`}>
             <div className={styles.tabsTopContainer}>
               {tabItems.map((tab, index) => (
                 <button

@@ -1,30 +1,30 @@
 import { Callout } from 'nextra/components'
 
-# Using News API to build network of tasks and subtasks in Agentverse
+# Using News API to build network of Primary and Secondary Function in Agentverse
 
 ### This is a guide for advanced usage of Agents for DeltaV.
 
 ## Introduction
 
-This agents network helps users to read news of different types including **Categorical**, **Country** based or **Keyword** related news. The system operates based on a multiple layers structure of tasks and subtasks, each one of them playing a vital role in delivering personalized news content to users.
+This agents network helps users to read news of different types including **Categorical**, **Country** based or **Keyword** related news. The system operates based on a multiple layers structure of Primary and Secondary Functions, each one of them playing a vital role in delivering personalized news content to users.
 
-There are three layers of services to let users read news and which altogether return news matching the specific type and subtype based on the user's preferences. For an overall workflow of the user's requests, please refer below flow chart.
+There are three layers of Agent Functions to let users read news and which altogether return news matching the specific type and subtype based on the user's preferences. For an overall workflow of the user's requests, please refer below flow chart.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/News_Reading_System_Workflow.drawio.png)
 
-First of all, we have the **News Reading URL System**; this one acts as the gateway to news headlines. This layer enables the  connection between users and the latest news headlines. When the user expresses interest in reading the news, the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) drives the News Reading System and initiates the process of fetching news articles for the user. Once the system understands your intent is to read news headlines, it will call upon the **News Reading Details Subtask**. At this point, users will be required to provide the news type and subtype they want to read via [DeltaV ↗️](/concepts/ai-engine/deltav).
+First of all, we have the **News Reading URL System**; this one acts as the gateway to news headlines. This layer enables the  connection between users and the latest news headlines. When the user expresses interest in reading the news, the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) drives the News Reading System and initiates the process of fetching news articles for the user. Once the system understands your intent is to read news headlines, it will call upon the **News Reading Details Secondary Function**. At this point, users will be required to provide the news type and subtype they want to read via [DeltaV ↗️](/concepts/ai-engine/deltav).
 
 Once users provides the input for the type and subtype of news they want to read, the system will take in the user's preferences and decide which specific type of news the user is interested in, whether it it categorical (e.g., business or sports), regional news from a specific country, or news related to a particular keyword.
 
-With the user's news preference in hand, the system redirects request to one of the specialized subtasks: the **Generate news_type Subtasks**. These subtasks are like expert news gatherers, each dedicated to a specific type of news based on the user's preference provided.
+With the user's news preference in hand, the system redirects request to one of the specialized subtasks: the **Generate news_type Secondary Function**. These secondary functions are like expert news gatherers, each dedicated to a specific type of news based on the user's preference provided.
 
-All **tasks** and **subtasks** redirections are handled by **AI Engine**. It processes user preferences and triggers the appropriate subtask to fulfil the user's request. By providing clear and concise field descriptions for each task and subtask, the AI Engine will ensure straightforward navigation through the News Reading System and operations, making it easy for users to stay informed on the topics that matter the most to them.
+All **primary** and **secondary** functions redirections are handled by the **AI Engine**. It processes user preferences and triggers the appropriate secondary functions to fulfil the user's objective. By providing clear and concise field descriptions for each primary and secondary functions, the AI Engine will ensure straightforward navigation through the News Reading System and operations, making it easy for users to stay informed on the topics that matter the most to them.
 
-## Task and Subtask
+## Primary and Secondary Functions
 
-The **task** and **subtask** descriptions and names should be relevant to make it easy for the LLM to identify the type of subtask to trigger and when. Descriptions of tasks and subtasks should always indicate when specific subtasks should be triggered. In this case one of multiple subtasks is to be triggered, it should be provided in the dictionary to enhance the LLM's understanding. For instance, you can refer to the example below where the **News Reading Details Subtasks** triggers one of the **Generate news_type subtasks** based on the user's requirement.
+The **primary** and **secondary** functions descriptions and names should be relevant to make it easy for the LLM to identify the type of function to trigger and when. Descriptions of both functions should always indicate when specific secondary functions should be triggered. In this case, one of multiple secondary functions is to be triggered, it should be provided in the dictionary to enhance the LLM's understanding. For instance, you can refer to the example below where the **News Reading Details Secondary Function** triggers one of the **Generate news_type secondary function** based on the user's requirement.
 
-**Field description** is another feature of services which should mention use of subtasks in a clear and concise way. Refer to the [Agentverse Services ↗️](/guides/services/services) resource for more details on tasks and subtasks.
+**Field description** is another feature of functions which should mention use of secondary functions in a clear and concise way. Refer to the [Agentverse Functions ↗️](/guides/services/services) resource for more details on both primary and secondary functions.
 
 ## News API
 
@@ -32,13 +32,13 @@ Login to [News API ↗️](https://newsapi.org/docs/endpoints/top-headlines) and
 
 ### News Reading URL System Agent
 
-This agent helps users to read news according to their willingness. This agent triggers the news details gathering subtask and asks the user for the news type and subtype they want to read today. This agent responds to the final result to the [DeltaV ↗️](/concepts/ai-engine/deltav) GUI as well.
+This agent helps users to read news according to their willingness. This agent triggers the news details gathering secondary function and asks the user for the news type and subtype they want to read today. This agent responds to the final result to the [DeltaV ↗️](/concepts/ai-engine/deltav) GUI as well.
 
     ```python copy filename="agent.py"
 
     # Here we demonstrate how we can create a news reading system agent that is compatible with DeltaV
         
-    # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address
+    # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address
 
     # Import required libraries
     import requests
@@ -73,7 +73,7 @@ This agent asks users for the type and subtype of news they want to read today f
 
     ```python copy filename="agent.py"
     # Here we demonstrate how we can create a news details agent that is compatible with DeltaV.
-    # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
+    # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
     # Import required libraries
     import requests
@@ -177,11 +177,11 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 ### Generate Categorical News
 
-This subtask is triggered if the user wants to read categorical news and it provides the the category of news which is subtype in news reading details from options business, entertainment, general, health, science, sports, technology and return specific news titles options as list to **News Reading Details subtask**.
+This Secondary Function is triggered if the user wants to read categorical news and it provides the the category of news which is subtype in news reading details from options business, entertainment, general, health, science, sports, technology and return specific news titles options as list to **News Reading Details Secondary Function**.
 
     ```python copy filename="agent.py"
     # Here we demonstrate how we can create a categorical news generating agent that is compatible with DeltaV.
-    # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
+    # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
     # Importing libraries
     import requests
@@ -239,7 +239,7 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 ### Generate Regional News
 
-This subtask is triggered if the user wants to read regional or country specific news, it gets country as news subtype **News Reading details subtask** and get list of news titles.
+This Secondary function is triggered if the user wants to read regional or country specific news, it gets country as news subtype **News Reading details Secondary Function** and get list of news titles.
 
     ```python copy filename="agent.py"
     # Import libraries
@@ -315,7 +315,7 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 ### Generate Keyword News
 
-This subtask is triggered if the user wants to read keyword specific news, it gets keyword as news subtype **News reading details subtask** and get list of news titles.
+This Secondary Function is triggered if the user wants to read keyword specific news, it gets keyword as news subtype **News reading details Secondary Function** and get list of news titles.
 
     ```python copy filename="agent.py"
     # Import libraries
@@ -376,32 +376,28 @@ This subtask is triggered if the user wants to read keyword specific news, it ge
 
 Now click on the **Run** button in the upper right corner of the editor so that you have your news system agent agent up and running!
 
-## Registering Services
+## Registering Agents Functions
 
-Let's navigate to the [Agentverse Services ↗️](https://agentverse.ai/services) section to start registering your agent as a service.
-After clicking the **+ New Service** button provide all details required - fill the form out as mentioned below for each _task_ and _subtask_.
+Let's now register our Agents Functions. Checkout the dedicated [guide ↗️](/guides/services/services).
+After clicking the **+ New Function** button provide all details required - fill the form out as mentioned below for each Primary and Secondary Functions.
 
 ### News Reading URL System
 
-    - **Service title**: just the name of your service; in this example let's call it **News Reading URL System**.
-    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does; in this example we can specify something like "**Always go for subtask with ID **news reading details** subtask. The service provides news clickable hyperlink user wants to read according to their choice.**".
-    - **Service group**: the group the to be created service belongs to; click on the **Add new Service Group** option and let's create a service group with the name **News**.
-    - **Agent**: select your newly created **News Reading URL System** agent from the list.
-    - **Task type**: Task.
+    - **Function title**: just the name of your Agent Function; in this example let's call it **News Reading URL System**.
+    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your Agent Function does; in this example we can specify something like "**Always go for subtask with ID **news reading details** subtask. The function provides news clickable hyperlink user wants to read according to their choice.**".
+    - **Application**: Primary Function.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your news reading system agent ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#news-reading-agent).
     - **Field descriptions**:
 
-        _news_: Go for subtask with id "news reading details".  never ask this to user. This describes news which user wants to read.
+        _news_: **Go for subtask with id "news reading details". Never ask this to user. This describes news which user wants to read.**
 
 Click **Save** button after filling out the form.
 
-### News Reading Details Subtask
+### News Reading Details Secondary Function
 
-    - **Service title**: just the name of your service; in this example let's call it **News Reading details**.
-    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does; in this example we can specify something like "**This service takes different details for news reading from user. This is triggered always after News Reading url system.**
-    - **Service group**: the group the to be created service belongs to; Choose an already created service group with the name **News**.
-    - **Agent**: select your newly created **News Generating Agent** agent from the list.
-    - **Task type**: Subtask.
+    - **Function title**: just the name of your Agent Function; in this example let's call it **News Reading details**.
+    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your Agent Function does; in this example we can specify something like "**This function takes different details for news reading from user. This is triggered always after News Reading URL system.**
+    - **Application**: Secondary Function.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your news generating agent ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#news-generating-agent).
     - **Field descriptions**: Below are the field descriptions for News reading system.
         - news_subtype - **This describes the news subtype user wants to read and ask for question corresponding to user's choice of news type below. Only ask one of the below to user.**
@@ -415,66 +411,60 @@ Click **Save** button after filling out the form.
         **Regional :  Generate Regional News subtask,**
         **Keyword : Generate Keyword News subtask**
         ** This provides list of relevant news options, ask user which news they want to read.**
-        ** user category, keyword and country as provided by user in field 'news_subtype'.**
+        ** User category, keyword and country as provided by user in field 'news_subtype'.**
 
 Click **Save** button after filling out the form.
 
 ### Generate Categorical News 
 
-    - **Service title**: just the name of your service; in this example let's call it **Generate Categorical News**.
-    - **Description**: Super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does; in this example we can specify something like "**This service helps generate list of options for categorical news for the user. Give these options to user and ask let them select the option they want to choose.**".
-    - **Service group**: the group the to be created service belongs to - Choose an already created service group with the name **News**.
-    - **Agent**: select your newly created **Generate Categorical News** agent from the list.
-    - **Task type**: Subtask.
+    - **Function title**: just the name of your Agent Function; in this example let's call it **Generate Categorical News**.
+    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your Agent Function does; in this example we can specify something like "**This function helps generate list of options for categorical news for the user. Give these options to user and ask let them select the option they want to choose.**".
+    - **Application**: Secondary Function.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your generate categorical agent ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#generate-categorical-news).
     - **Field descriptions**:
-        - _category_ - **this is provided by user in news subtype in news reading details. This is category for which user want to read news.**.
+        - _category_ - **this is provided by user in news subtype in news reading details. This is category for which user want to read news.**
 
 Click **Save** button after filling out the form.
 
-### Generate Regional News Subtask
+### Generate Regional News Secondary Function
 
-    - **Service title**: just the name of your service; in this example let's call it **Generate Regional news**.
-    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does - in this example we can specify something like "**This service helps generate list of options for regional news for the user. Give these options to user and ask let them select the option they want to choose.**".
-    - **Service group**: the group the to be created service belongs to - Choose an already created service group with the name **News**.
-    - **Agent**: select your newly created **Generate Regional News** agent from the list.
-    - **Task type**: Subtask.
+    - **Function title**: just the name of your Agent Function; in this example let's call it **Generate Regional news**.
+    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does - in this example we can specify something like "**This function helps generate list of options for regional news for the user. Give these options to user and ask let them select the option they want to choose.**".
+    - **Application**: Secondary Function.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your generate regional agent ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#generate-regional-news).
     - **Field descriptions**:
-        - _country_ - **this is provided by user in news subtype in news reading details. This is country for which user want to read news.**.
+        - _country_ - **this is provided by user in news subtype in news reading details. This is country for which user want to read news.**
 
 Click **Save** button after filling out the form.
 
-### Generate Keyword News Subtask
+### Generate Keyword News Secondary Function
 
-    - **Service title**: just the name of your service; in this example let's call it **Generate Keyword**.
-    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your service does; in this example we can specify something like "**This service helps generate list of options for keyword news for the user. Give these options to user and ask let them select the option they want to choose.**".
-    - **Service group**: the group the to be created service belongs to - Choose an already created service group with the name **News**.
-    - **Agent**: select your newly created **Generate Keyword News** agent from the list.
-    - **Task type**: Subtask.
+    - **Function title**: just the name of your Agent Function; in this example let's call it **Generate Keyword**.
+    - **Description**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your Agent Function does; in this example we can specify something like "**This function helps generate list of options for keyword news for the user. Give these options to user and ask let them select the option they want to choose.**".
+    - **Application**: Secondary Function.
     - **Protocol** and **Model** will be automatically populated based on the source code of [your generate keyword agent ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#generate-keyword-news).
     - **Field descriptions**:
-        - _keyword_ - **this is provided by user in news subtype in news reading details. This is keyword for which user want to read news.**.
+        - _keyword_ - **this is provided by user in news subtype in news reading details. This is keyword for which user want to read news.**
 
 Click **Save** button after filling out the form
 
-## Let's Find our service on deltaV
+## Let's find our function on DeltaV
 
 Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
-Firstly, type in something like **I want to read news of my choice** into what service you would like to assemble and switch on **Advanced Options**. In advanced options select **All service groups** and click on **submit** button.
+Firstly, type in something like **I want to read news of my choice** into what function you would like to assemble and switch on **Advanced Options**. In advanced options select the **Function group** and click on **Start** button.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/querying-deltaV-for-reading-news.png)
 
-After being navigated to the chat screen, you will be asked to select a task (service).
+After being navigated to the chat screen, you will be asked to select an option.
 
-As your objective (`I want to read news of my choice`) specified on the previous screen contained words related to the description of your news reading system agent, your News Reading URL System service is listed as an option.
+As your objective task (`I want to read news of my choice`) specified on the previous screen contained words related to the description of your news reading system agent, your News Reading URL System function is listed as an option.
 
 Let's select it.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/selection-of-news-reading-system-service.png)
 
-Subtask **News Reading Details Subtask** will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading Subtask**.
+**News Reading Details** secondary function will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading URL System**.
 
 Select the news type and subtype you want to read.
 
@@ -482,12 +472,13 @@ Select the news type and subtype you want to read.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/news-reading-details-subtask-2.png)
 
-Once you select the news type respective subtask will be triggered as mentioned in [task description ↗️](/guides/services/utilizing-api-to-build-network-of-task-and-subtask#generate-news-subtask) for **Generate news_type subtask**.
+Once you select the news type respective secondary function will be triggered as mentioned in [News Reading URL System description ↗️](/guides/agentverse/utilizing-api-to-build-network-of-task-and-subtask#news-reading-details-subtask) for **Generate news_type secondary function**.
 
-The respective **Generate news_type subtask** will fetch _category_, _country_ or _keyword_ based on news type and subtype selected and will generate _top news_ related to news subtype provided.
+The respective **Generate news_type secondary function** will fetch _category_, _country_ or _keyword_ based on news type and subtype selected and will generate _top news_ related to news subtype provided.
 
-The news list will be passed from **Generate news_type subtask** to **News Reading Details Subtask** and user can select one title.
-Chosen news title URL will be fetched and provided to **News Reading URL system** and User will get clickable link to read news in details.
+The news list will be passed from **Generate news_type secondary function** to **News Reading Details secondary function** and user can select one title.
+
+Chosen news title URL will be fetched and provided to **News Reading URL system** and user will get clickable link to read news in details.
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/generate-news-type-subtask-3.png)
 
@@ -497,8 +488,8 @@ Chosen news title URL will be fetched and provided to **News Reading URL system*
 
 ![](../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/generate-news-type-subtask-6.png)
 
-With that, **you have gotten a news reading url service which can be discovered and contacted with DeltaV. Awesome!**
+With that, **you have gotten a News Reading URL function which can be discovered and contacted with DeltaV. Awesome!**
 
     <Callout type="info" emoji="ℹ️">
-      if one of multiple subtask is to be triggered, it should be mentioned in dictionary rather than writing a description of each as it confuses the DeltaV LLM model. If we mention **"Trigger generate categorical subtask for user selecting categorical news and trigger generate regional for user selecting regional news and so on...."**, will lead to either non-traceability of subtask or wrong selection of subtasks.
+        If one of multiple secondary functions is to be triggered, it should be mentioned in dictionary rather than writing a description of each as it confuses the DeltaV LLM model. If we mention **"Trigger generate categorical secondary function for user selecting categorical news and trigger generate regional for user selecting regional news and so on...."**, will lead to either non-traceability or wrong selection of secondary functions.
     </Callout>

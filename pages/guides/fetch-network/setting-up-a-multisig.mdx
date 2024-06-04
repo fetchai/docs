@@ -2,7 +2,6 @@
 
 ## What is a Multisig account?
 
-
 A multisig account, within the Fetch Network, possesses a unique key that necessitates multiple signatures for transaction authorization. This feature serves to enhance account security and mandates the agreement of multiple parties for transaction execution. Multisig accounts are established by defining:
 
 * The threshold number of signatures necessary.
@@ -20,7 +19,6 @@ fetchd keys add --multisig=name1,name2,name3[...] --multisig-threshold=N new_key
 `N` is the minimum number of private keys that must have signed a transaction for it to be valid.
 
 The `--multisig` flag must contain **ALL** the names of the public keys that will make up the multisig account. In addition, all these names must have already been added to the local database
-
 
 By default all the public keys that are provided are sorted to generate a consistent address. This would mean that the following commands would produce the same account.
 
@@ -41,7 +39,7 @@ fetchd keys add msig-p2 --pubkey='{"@type":"/cosmos.crypto.secp256k1.PubKey","ke
 
 ## Signing a transaction
 
-### Step 1. Generating the transaction
+### Step 1: Generating the transaction
 
 Since you will need multiple accounts to sign the transaction that you want to send from a multisig account, you first need to generate the transaction that you plan on send.
 
@@ -93,7 +91,7 @@ The output file `unsigned-tx.json` contains the unsigned transaction payload as 
 
 ```
 
-## Step 2. Indivual Signing
+## Step 2: Indivual Signing
 
 Now that we have generated the transaction that we want to send, each account needs to sign the transaction individually.
 
@@ -119,7 +117,7 @@ fetchd tx sign \
     --chain-id=fetchhub-4
 ```
 
-# Step 3. Combining the Signatures together
+# Step 3: Combining the Signatures together
 
 We now have both the unsigned transaction and two signature for the transaction. The final step is to combine all the signatures together and to generate a full transaction that can be broadcast to the network.
 
@@ -134,7 +132,7 @@ fetchd tx multisign \
 
 The final transaction is now generated in `signed-tx.json`.
 
-# Step 4. Broadcasting the transaction
+# Step 4: Broadcasting the transaction
 
 The final step, now that we have the full transaction is to be broadcast it to the network. This can be done with the following command:
 

@@ -45,6 +45,8 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
         DELETE /v1beta1/functions/remove-from-function-group/:function_id/:function_group_id/
 
         GET /v1beta1/functions/:function_id/groups/
+
+        DELETE /v1beta1/functions/delete-functions-of-agent/:agent_address/
         ```
     </Col>
 
@@ -152,20 +154,24 @@ properties={[
         "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
         "name": "Stock price function",
         "description": "Retrieves the stock price of a share.",
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
         "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "CREATED"
+        "status": "CREATED",
+        "numInteractions": 100
     },
     {
         "uuid": "ebfa27ec-c978-4109-bb77-9d1809e3b0f6",
         "agent": "agent1q0vmxjv06dwdlppuvspmfyff4ys2t4mdndpa09gulpsuq90n22xqy8k89l8",
         "name": "Flights function",
         "description": "Searches for flight offers.",
+        "protocolDigest": "proto:266661f975b0857631cc31b40f60c263aeabb0c7156ed6b2b940a23bfc6560a0",
         "type": "PRIMARY",
         "createdAt": "2023-10-22T21:08:47",
         "updatedAt": "2023-10-22T21:08:47",
-        "status": "CREATED"
+        "status": "CREATED",
+        "numInteractions": 150
     },
   ]}
   responseDescription="Returns a list of function summary objects associated with the user."
@@ -460,7 +466,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="PUT"
-  path="/v1beta1/add-to-function-group/{function_id}/{function_group_id}/"
+  path="/v1beta1/functions/add-to-function-group/{function_id}/{function_group_id}/"
   description="Add a function to a function group."
   pathParameters={{function_id:"your_function_id", function_group_id:"your_function_group_id"}}
   responses={{
@@ -475,7 +481,7 @@ properties={[
 <ApiEndpointRequestResponse
   apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
   method="DELETE"
-  path="/v1beta1/remove-from-function-group/{function_id}/{function_group_id}/"
+  path="/v1beta1/functions/remove-from-function-group/{function_id}/{function_group_id}/"
   description="Remove a function from a function group."
   pathParameters={{function_id:"your_function_id", function_group_id:"your_function_group_id"}}
   responses={
@@ -502,4 +508,16 @@ properties={[
   }
   pathParameters={{function_id:"your_function_id",}}
   responseDescription="Returns all function groups that the function (identified by a specific function_id) belongs to."
+/>
+
+<ApiEndpointRequestResponse
+  apiUrl="https://engine-staging.sandbox-london-b.fetch-ai.com"
+  method="DELETE"
+  path="/v1beta1/functions/delete-functions-of-agent/{agent_address}/"
+  description="Delete all functions of an agent."
+  pathParameters={{agent_address:"your_agent_address"}}
+  responses={
+    {}
+  }
+  responseDescription="Returns an empty JSON object."
 />

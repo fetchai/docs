@@ -2,67 +2,146 @@ import { Callout } from 'nextra/components'
 
 # Avctl Hosting
 
-AVCTL hosting command are used for perform agent related actions using command line interface.
+AVCTL `hosting` commands are used for perform agent related actions using Command Line Interface.
 
 ## Hosting commands
 
 Before starting actions related to agents make a directory using `mkdir myagent`.
 
-1. `avctl hosting init` - Initialize agent template.
+    - `avctl hosting init` - Initialize agent template.
 
-![](../../../src/images/guides/avctl/avctl-hosting-1.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting init
+Template agent files created successfully!
 
-2. `avctl hosting get agents` - Get all agents for the user.
+Initialized empty Git repository in the current directory
+Poetry setup created successfully
+```
 
-![](../../../src/images/guides/avctl/avctl-hosting-2.png)
+    - `avctl hosting get agents` - Get all agents for the user.
 
-3. `avctl hosting get agent` - Prints the selected deployed agent.
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting get agents
+NAME                                 ADDRESS                                                            COMPILED  DOMAIN  REVISION  RUNNING      WALLET ADDRESS
+name                                 <agent_address>                                                      true/false        5         true/false   <wallet_address>
+```
 
-![](../../../src/images/guides/avctl/avctl-hosting-3.png)
+    - `avctl hosting get agent` - Prints the selected deployed agent.
 
-4. `avctl hosting pull` - Pull agent files from Agentverse.
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting get agent -a '<agent_address>'
+```
 
-![](../../../src/images/guides/avctl/avctl-hosting-4.png)
+    - `avctl hosting pull` - Pull agent files from Agentverse.
 
-5. `avctl hosting run -l` - Run Agent (optional `-l` flag for logs) if `a` not provided it returns latest pulled agent.
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting pull -a '<agent_address>'
+* File 'agent.py' successfully downloaded
+* File '.env' successfully downloaded
+```
 
-![](../../../src/images/guides/avctl/avctl-hosting-5.png)
+    - `avctl hosting run -l` - Run Agent (optional `-l` flag for logs) if `a` not provided it returns latest pulled agent.
 
-6. `avctl hosting stop` - Stop agent
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting run -l                                                                   
+Agent <agent_address> is now running!
+TIMESTAMP                   LOG ENTRY
+2024-01-23T16:08:31.468000  [INFO]: Successfully published protocol manifest: CurrencyConvertor v0.1.0
+2024-01-23T16:10:51.459000  [INFO]: Received message from <agent_address>, session: <session_id>
+```
 
-![](../../../src/images/guides/avctl/avctl-hosting-6.png)
+    - `avctl hosting stop` - Stop agent
 
-7. `avctl hosting push` - Upload files to Agentverse.
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting stop -a <agent_address>
+Agent <agent_address> has stopped!
+```
 
-![](../../../src/images/guides/avctl/avctl-hosting-7.png)
+    - `avctl hosting push` - Upload files to Agentverse.
 
-8. `avctl hosting sync` - Automatically synchronize your local files with those in Agentverse. This command decides whether to pull or push files based on which location has the most recent changes.
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting push -a '<agent_address>'
+All local dependencies are supported on agentverse.
 
-![](../../../src/images/guides/avctl/avctl-hosting-8.png)
+* File '.env' successfully uploaded
+* File 'agent.py' successfully uploaded
+```
 
-9. `avctl hosting logs -f` - Print agent logs (optional `-f` option to follow logs).
+    - `avctl hosting sync` - Automatically synchronize your local files with those in Agentverse. This command decides whether to pull or push files based on which location has the most recent changes.
 
-![](../../../src/images/guides/avctl/avctl-hosting-9.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting sync -a <agent_address>
+Local and remote files are in sync. Everything is up to date.
+```
 
-10. `avctl hosting deploy -n <name>` - Deploy an agent to Agentverse. This command also updates and restarts the agent if it's already deployed.
+    - `avctl hosting logs -f` - Print agent logs (optional `-f` option to follow logs).
 
-![](../../../src/images/guides/avctl/avctl-hosting-10.png)
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting logs -f -a <agent_address>
+TIMESTAMP                   LOG ENTRY
+2024-01-23T16:08:31.468000  [INFO]: Successfully published protocol manifest: CurrencyConvertor v0.1.0
+2024-01-23T16:10:51.459000  [INFO]: Received message from <agent_address>, session: <session_id>
+```
 
-11. `avctl hosting secrets add <secret_name>` - Add a secret
+    - `avctl hosting deploy -n <name>` - Deploy an agent to Agentverse. This command also updates and restarts the agent if it's already deployed.
 
-12. `avctl hosting secrets delete <secret_name>` - Delete a secret
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting deploy -n Generate Keyword news
+Agent exists on agentverse under address: '<agent_address>'
+Pushing latest code and starting the agent...
+All local dependencies are supported on agentverse.
 
-13. `avctl hosting secrets get` - Retrieve names of all secrets.
+* File '.env' successfully uploaded
+* File 'agent.py' successfully uploaded
+Agent <agent_address> is now running!
+TIMESTAMP                   LOG ENTRY
+2024-01-23T16:08:31.468000  [INFO]: Successfully published protocol manifest: CurrencyConvertor v0.1.0
+2024-01-23T16:10:51.459000  [INFO]: Received message from <agent_address>, session: <session_id>
+```
 
-![](../../../src/images/guides/avctl/avctl-hosting-11.png)
+    - `avctl hosting secrets add <secret_name>` - Add a secret
 
-14. `avctl hosting packages` - Lists all supported packages by Agentverse.
+    - `avctl hosting secrets delete <secret_name>` - Delete a secret
 
-![](../../../src/images/guides/avctl/avctl-hosting-12.png)
+    - `avctl hosting secrets get` - Retrieve names of all secrets.
 
-15. `avctl hosting delete` - Deletes an agent from agentverse.
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting secrets add secret
+Enter secret value for 'secret': 
+Secret 'secret' added successfully to agent <agent_address>
+abc@xyz-MacBook-Pro myagents % avctl hosting secrets get
+Secrets for agent: <agent_address>
+* secret
+abc@xyz-MacBook-Pro myagents % avctl hosting secrets delete secret
+Secret 'secret' deleted successfully from agent <agent_address>
+abc@xyz-MacBook-Pro myagents % 
+```
 
-![](../../../src/images/guides/avctl/avctl-hosting-13.png)
+    - `avctl hosting packages` - Lists all supported packages by Agentverse.
+
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting packages
+Supported Packages:
+- python: >=3.11,<3.12
+- requests: ^2.28.2
+- cosmpy: ^0.9.2
+- uagents: ^0.11.0
+- uagents-ai-engine: ^0.1.3
+- pydantic: ^1.10.5
+- mysqlclient: ^2.2.0
+- pymongo: ^4.6.0
+abc@xyz-MacBook-Pro myagents % 
+```
+
+    - `avctl hosting delete` - Deletes an agent from agentverse.
+
+```
+abc@xyz-MacBook-Pro myagents % avctl hosting delete -a <agent_address>
+NAME                                 ADDRESS                                                            COMPILED  DOMAIN  REVISION  RUNNING  WALLET ADDRESS
+name                                 <agent_address>                                                    true              4         true     <fetch_wallet_address>
+
+Agent <agent_address> successfully deleted
+```
  
 <Callout type="info" emoji="ℹ️">
     Note: for hosting **push** and **sync** commands the agent should be always in stopped state.

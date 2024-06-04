@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { refreshAccessToken } from "./refresh-token";
 import fetchJson from "src/lib/fetch-json";
 import useSWR, { mutate } from "swr";
-
+import { deleteCookie } from "cookies-next";
 export interface User {
   email: string;
   id?: string;
@@ -79,6 +78,8 @@ export const UserInfoProvider: React.FC<{
   const router = useRouter();
 
   const signOut = async () => {
+    deleteCookie("fauna");
+    deleteCookie("refresh_token");
     setUser(DEFAULT_USER);
     setCredentials(DEFAULT_CREDENTIALS);
     mutate(await fetchJson("/docs/api/signout", { method: "POST" }), {
@@ -116,21 +117,6 @@ export const UserInfoProvider: React.FC<{
     } else {
       setIsFetchAccount(false);
     }
-    const monitor = setInterval(async () => {
-      if (credentials?.expiresAt > 0 && credentials?.expiresAt <= Date.now()) {
-        resetUserName();
-      } else {
-        const newToken = await refreshAccessToken(credentials);
-        if (newToken) {
-          setCredentials({
-            apiKey: newToken?.accessToken,
-            expiresAt: newToken?.expiresIn,
-            group: newToken?.group,
-          });
-        }
-      }
-    }, 5000);
-    return () => clearInterval(monitor);
   }, [context, router]);
 
   useEffect(() => {

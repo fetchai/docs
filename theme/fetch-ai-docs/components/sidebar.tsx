@@ -55,7 +55,7 @@ const classes = {
     "nx-bg-white nx-font-semibold  dark:nx-bg-primary-400/10 dark:nx-text-primary-600",
     "contrast-more:nx-border-primary-500 contrast-more:dark:nx-border-primary-500",
   ),
-  list: cn("nx-flex nx-flex-col nx-gap-4"),
+  list: cn("nx-flex nx-flex-col nx-gap-2"),
   border: cn(
     "nx-relative before:nx-absolute before:nx-inset-y-1",
     'before:nx-w-px  before:nx-content-[""] dark:before:nx-bg-neutral-800',
@@ -187,15 +187,20 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
                 type: item.type,
                 route: item.route,
               })}
-              <ArrowRightIcon
-                className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
-                pathClassName={cn(
-                  "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
-                  open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
-                )}
-              />
+              {!config.sidebar.autoCollapse && (
+                <ArrowRightIcon
+                  className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
+                  pathClassName={cn(
+                    "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
+                    open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
+                  )}
+                />
+              )}
             </ComponentToUse>
-            <Collapse className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1" isOpen={open}>
+            <Collapse
+              className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1"
+              isOpen={config.sidebar.autoCollapse || open}
+            >
               {Array.isArray(item.children) ? (
                 <Menu
                   className={cn(classes.border, "ltr:nx-ml-3 rtl:nx-mr-3")}
@@ -277,9 +282,11 @@ function File({
         }}
       >
         {renderComponent(config.sidebar.titleComponent, {
-          title: filesVisited?.some((file) => file == item.title)
-            ? `${item.title} ✅`
-            : item.title,
+          title:
+            filesVisited?.length > 0 &&
+            filesVisited?.some((file) => file == item.title)
+              ? `${item.title} ✅`
+              : item.title,
           type: item.type,
           route: item.route,
         })}
@@ -358,7 +365,8 @@ function Menu({
             ? permissionCheck && (
                 <Folder key={item.name} item={item} anchors={anchors} />
               )
-            : permissionCheck && (
+            : permissionCheck &&
+              !item?.name?.includes("integrations") && (
                 <File
                   key={item.name}
                   item={item}
@@ -455,10 +463,10 @@ export function Sidebar({
       />
       <aside
         className={cn(
-          "nextra-sidebar-container nx-sidebar-scrollable nx-flex nx-flex-col nx-bg-gray-100 nx-p-3",
+          "nextra-sidebar-container nx-sidebar-scrollable  nx-border-r  nx-flex nx-flex-col nx-p-3",
           "md:nx-top-16 md:nx-shrink-0 motion-reduce:nx-transform-none",
           "nx-transform-gpu nx-transition-all nx-ease-in-out",
-          "print:nx-hidden md:nx-w-64",
+          "print:nx-hidden md:nx-w-72",
           asPopover ? "md:nx-hidden" : "md:nx-sticky md:nx-self-start",
           menu
             ? "max-md:[transform:translate3d(0,0,0)]"

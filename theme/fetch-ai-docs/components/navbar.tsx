@@ -33,6 +33,13 @@ const classes = {
   ),
 };
 
+const getLastPart = (str) => str.match(/[^/]+$/)?.[0] || "";
+const compareLastParts = (a, b) => {
+  const lastPartA = getLastPart(a);
+  const lastPartB = getLastPart(b);
+  return lastPartA.localeCompare(lastPartB);
+};
+
 function NavbarMenu({
   className,
   menu,
@@ -103,14 +110,15 @@ export function Navbar({
     context.signOut();
     router.push("/");
   };
-  const fetchBookMarksData = async () => {
-    const response = await fetchBookMarks(context, true);
-    const bookmark = await response;
-    setbookMarksLists(bookmark);
+  const fetchBookMarksData = async (contextvalues) => {
+    const response = await fetchBookMarks(contextvalues, true);
+    setbookMarksLists(response);
   };
   useEffect(() => {
-    fetchBookMarksData();
-  }, [bookMark]);
+    if (context?.user?.email) {
+      fetchBookMarksData(context?.user?.email);
+    }
+  }, [bookMark, context?.user?.email]);
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -169,34 +177,36 @@ export function Navbar({
                       </>
                     </Listbox.Option>
                   )}
-                  {bookMarksList?.map((item: string, index: number) => (
-                    <Listbox.Option
-                      key={index}
-                      value="Bookmarks"
-                      className={({ active }) =>
-                        `nx-text-sm nx-text-gray-500  nx-w-full nx-select-none nx-py-2  ${
-                          active
-                            ? " nx-bg-slate-900 nx-text-slate-900"
-                            : "nx-text-gray-900"
-                        }`
-                      }
-                    >
-                      {({ selected }) => (
-                        <>
-                          <span
-                            onClick={() =>
-                              router.push(item.replace("/docs", ""))
-                            }
-                            className={` hoverSpan nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate ${
-                              selected ? "nx-font-medium" : "nx-font-normal"
-                            }`}
-                          >
-                            {capitalizeWords(item.match(/[^/]+$/)[0])}
-                          </span>
-                        </>
-                      )}
-                    </Listbox.Option>
-                  ))}
+                  {bookMarksList
+                    ?.sort((a, b) => compareLastParts(a, b))
+                    .map((item: string, index: number) => (
+                      <Listbox.Option
+                        key={index}
+                        value="Bookmarks"
+                        className={({ active }) =>
+                          `nx-text-sm nx-text-gray-500 nx-w-full nx-select-none nx-py-2  ${
+                            active
+                              ? " nx-bg-slate-900 nx-text-slate-900"
+                              : "nx-text-gray-900"
+                          }`
+                        }
+                      >
+                        {({ selected }) => (
+                          <>
+                            <span
+                              onClick={() =>
+                                router.push(item.replace("/docs", ""))
+                              }
+                              className={` hoverSpan nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate ${
+                                selected ? "nx-font-medium" : "nx-font-normal"
+                              }`}
+                            >
+                              {capitalizeWords(item.match(/[^/]+$/)[0])}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    ))}
                 </Listbox.Options>
               </Listbox>
             </span>

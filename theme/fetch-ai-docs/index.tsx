@@ -10,6 +10,7 @@ import "./polyfill";
 import type { PageTheme } from "nextra/normalize-pages";
 import { normalizePages } from "nextra/normalize-pages";
 import { ErrorBoundary } from "react-error-boundary";
+import { motion } from "framer-motion";
 import {
   Banner,
   Breadcrumb,
@@ -33,6 +34,7 @@ import Bookmark from "./components/bookmark";
 import useBookMark from "theme/use-book-mark";
 import { isLinkInResponse } from "./helpers";
 import useContentVisited from "theme/use-content-visited";
+import Error404 from "components/error-404";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -212,7 +214,7 @@ const InnerLayout = ({
 }: PageOpts & { children: ReactNode }): ReactElement => {
   const context = useUserContext();
   const {
-    state: { bookMarks },
+    state: { bookMarks, bookMarkSuccess },
     action: { onClickBookMark, fetchBookMarks },
   } = useBookMark(context);
   const {
@@ -333,6 +335,7 @@ const InnerLayout = ({
             fetchContentVisited={fetchContentVisited}
           />
           <SkipNavContent />
+          {bookMarkSuccess && Toast(bookMarkSuccess)}
           {check && (
             <Body
               themeContext={themeContext}
@@ -375,30 +378,33 @@ const InnerLayout = ({
   );
 };
 
-const Error = () => (
-  <div className="nx-flex nx-justify-center  nx-items-center nx-mt-[35vh]">
-    <div className="nx-flex nx-p-[32px] nx-gap-8 nx-flex-col gap-[32px] nx-rounded-[12px]">
-      <div className="nx-flex nx-gap-2 nx-flex-col nx-justify-start nx-items-start">
-        <span className="nx-font-normal nx-text-slate-900 nx-text-5xl">
-          Something went wrong!
-        </span>
-        <span className=" nx-font-normal nx-text-[20px] nx-tracking-[-.2px] nx-opacity-90 nx-text-[#0B1742]">
-          Sorry, we are currently experiencing some trouble.
-        </span>
-        <span className="nx-font-normal nx-leading-5 nx-text-[14px]  nx-opacity-60 nx-text-[#000D3D]">
-          Right this moment, Agents are figuring out the fix.
-        </span>
-      </div>
-      <div>
-        <button
-          onClick={() => window.location.reload()}
-          className="nx-bg-[#5F38FB] nx-rounded-md nx-text-[14px] nx-px-4 nx-py-2 nx-text-white"
-        >
-          Refresh page
-        </button>
-      </div>
+const Toast = (bookMarkSuccess: string) => (
+  <motion.div
+    initial={{ x: 200 }}
+    animate={{ x: 0 }}
+    transition={{
+      delay: 0,
+      ease: "easeInOut",
+      duration: 0.1,
+    }}
+    id="nx-toast-success"
+    className="nx-flex nx-fixed nx-bottom-0 nx-right-0 nx-w-[270px] nx-items-center nx-p-4 nx-mb-4 nx-text-gray-500 nx-bg-white nx-rounded-lg nx-shadow"
+    role="alert"
+  >
+    <div className="nx-inline-flex nx-items-center nx-justify-center nx-flex-shrink-0 nx-w-8 nx-h-8 nx-text-gray-500 nx-bg-white nx-rounded-lg">
+      <svg
+        className="nx-w-5 nx-h-5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+      </svg>
+      <span className="nx-sr-only">Check icon</span>
     </div>
-  </div>
+    <div className="nx-ms-3 nx-text-sm nx-font-normal">{bookMarkSuccess}</div>
+  </motion.div>
 );
 
 export default function Layout({
@@ -406,7 +412,7 @@ export default function Layout({
   ...context
 }: NextraThemeLayoutProps): ReactElement {
   return (
-    <ErrorBoundary FallbackComponent={Error}>
+    <ErrorBoundary FallbackComponent={Error404}>
       <UserInfoProvider>
         <ConfigProvider value={context}>
           <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
