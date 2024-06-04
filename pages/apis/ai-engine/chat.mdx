@@ -69,10 +69,17 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
       description:
         "The request model wherein the user wants to interact.",
     },
+    {
+      name: "function_group",
+      type: "string",
+      description:
+        "The function group id which needs to be used trough the session. Defaults to the Public group!",
+    }
   ]}
     samplePayload={{
     email: "your_email_address",
-    requestedModel: "talkative-01"
+    requestedModel: "talkative-01",
+    function_group: "ef6937d9-c086-4785-8bb1-748680821714"
   }}
   responses={[
     {
@@ -83,6 +90,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
       messages: [],
       model: "talkative-01",
       remaining_tokens: 10000000,
+      function_group: "ef6937d9-c086-4785-8bb1-748680821714"
     },
   ]}
   responseDescription="Returns the newly created Session object"
