@@ -280,7 +280,7 @@ The output of the above would look similar to:
 
 ### Agents and interval tasks
 
-Interval tasks are tasks or set of instructions executed at predefined time intervals. These are useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more.
+**Interval tasks** are tasks or set of instructions executed at predefined time intervals. These are useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more.
 
 If you want to create an interval task, you need to use an `on_interval()` decorator to set up an interval with a timer that triggers the task repetition. As an introductory example, we can consider an agent periodically printing hello and its name on the console. In this case, we apply the decorator to a `say_hello()` function which will be repeated at the specified time interval:
 
@@ -327,11 +327,11 @@ The script will look as follows:
 
     @alice.on_interval(period=2.0)
     async def say_hello(ctx: Context):
-        ctx.logger.info(f'Hello, my name is {agent.name}')
+        ctx.logger.info(f'Hello, my name is {alice.name}')
 
     @bob.on_interval(period=2.0)
     async def say_hello(ctx: Context):
-        ctx.logger.info(f'Hello, my name is {agent.name}')
+        ctx.logger.info(f'Hello, my name is {bob.name}')
 
     bureau = Bureau()
     bureau.add(alice)
