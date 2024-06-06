@@ -42,8 +42,7 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
         description=(
             "This is the default state of the dialogue. Every session starts in "
             "this state and is automatically updated once the dialogue starts."
-        ),
-        initial=True,
+        )
     )
     init_state = Node(
         name="Initiated",
@@ -67,27 +66,25 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
     ```python
     # Edge definition for the dialogue transitions
     init_session = Edge(
-        name="Initiate session",
+        name="initiate_session",
         description="Every dialogue starts with this transition.",
-        parent=default_state,
+        parent=None,
         child=init_state,
     )
-
     reject_session = Edge(
-        name="Reject session",
+        name="reject_session",
         description=("This is the transition for when the dialogue is rejected"),
         parent=init_state,
         child=end_state,
     )
-
     start_dialogue = Edge(
-        name="Start dialogue",
+        name="start_dialogue",
         description="This is the transition from initiated to chit chatting.",
         parent=init_state,
         child=chatting_state,
     )
     cont_dialogue = Edge(
-        name="Continue dialogue",
+        name="continue_dialogue",
         description=(
             "This is the transition from one dialogue message to the next, "
             "i.e. for when the dialogue continues."
@@ -95,9 +92,8 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
         parent=chatting_state,
         child=chatting_state,
     )
-
     end_session = Edge(
-        name="End session",
+        name="end_session",
         description="This is the transition for when the session is ended.",
         parent=chatting_state,
         child=end_state,
@@ -194,7 +190,7 @@ The contents of this script are to be shared between the agents that want to use
     import json
 
     from uagents import Agent, Context, Model
-
+    from uagents.setup import fund_agent_if_low
     from dialogues.chitchat import ChitChatDialogue
 
     CHAT_AGENT_ADDRESS = "<your_agent_2_address>"
@@ -205,6 +201,8 @@ The contents of this script are to be shared between the agents that want to use
         port=8001,
         endpoint="http://127.0.0.1:8001/submit",
     )
+
+    fund_agent_if_low(agent.wallet.address())
 
     # Define dialogue messages; each transition needs a separate message
     class InitiateChitChatDialogue(Model):
@@ -310,7 +308,7 @@ The contents of this script are to be shared between the agents that want to use
     from asyncio import sleep
 
     from uagents import Agent, Context, Model
-
+    from uagents.setup import fund_agent_if_low
     from dialogues.chitchat import ChitChatDialogue
 
     CHIT_AGENT_ADDRESS = "<your_agent_1_address>"
@@ -321,6 +319,8 @@ The contents of this script are to be shared between the agents that want to use
         port=8002,
         endpoint="http://127.0.0.1:8002/submit",
     )
+
+    fund_agent_if_low(agent.wallet.address())
 
     # Define dialogue messages; each transition needs a separate message
     class InitiateChitChatDialogue(Model):
