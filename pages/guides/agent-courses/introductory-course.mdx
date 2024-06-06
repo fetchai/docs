@@ -207,7 +207,7 @@ We can now code our agent. Let's start by importing the required modules. In our
     from uagents import Agent
 
     # Initialize your first Agent and give it a name
-    alice = Agent(name="alice", seed="alice recovery phrase")
+    agent = Agent(name="alice", seed="alice recovery phrase")
     ```
 
 You can run this with `poetry run python alice_agent.py` but it won't do much, yet!
@@ -226,12 +226,12 @@ Let's update `alice_agent.py` with the code snippet below:
     # Import the required classes
     from uagents import Agent, Context
 
-    agent = Agent(name="alice")
+    agent = Agent(name="alice", seed="alice recovery phrase")
 
     # Provide your Agent with a job
     @agent.on_event("startup")
     async def introduce_agent(ctx: Context):
-        ctx.logger.info(f"Hello, I'm agent {ctx.name} and my address is {ctx.address}.")
+        ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
 
     # This constructor simply ensure that only this script is running
     if __name__ == "__main__":
@@ -244,7 +244,7 @@ Decorators are moderately advanced in Python, but in this guide all you need to 
       To find out more about decorators, take a look at [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/).
     </Callout>
 
-In our example above, the `on_event()` decorator specifies that the agent should run an `introduce_agent()` function when the agent starts up. This function will then return a message presenting the agent with its name and address by using the `Context` class, which is used to retrieve the agent's related name and address using the `ctx.name` and `ctx.address` methods.
+In our example above, the `on_event()` decorator specifies that the agent should run an `introduce_agent()` function when the agent starts up. This function will then return a message presenting the agent with its name and address by using the `Context` class, which is used to retrieve the agent's related name and address using the `agent.name` and `agent.address` methods.
 
 Let's run the `alice_agent.py` script again. Run: `poetry run python alice_agent.py`
 
@@ -261,10 +261,10 @@ Sometimes, we just need to see what a value looks like. We can quickly do so in 
     ```py copy
     from uagents import Agent
 
-    alice = Agent(name="alice")
+    agent = Agent(name="alice")
 
-    print("uAgent address: ", alice.address)
-    print("Fetch network address: ", alice.wallet.address())
+    print("uAgent address: ", agent.address)
+    print("Fetch network address: ", agent.wallet.address())
     ```
 
 The output of the above would look similar to:
@@ -280,7 +280,7 @@ The output of the above would look similar to:
 
 ### Agents and interval tasks
 
-Interval tasks are tasks or set of instructions executed at predefined time intervals. These are useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more.
+**Interval tasks** are tasks or set of instructions executed at predefined time intervals. These are useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more.
 
 If you want to create an interval task, you need to use an `on_interval()` decorator to set up an interval with a timer that triggers the task repetition. As an introductory example, we can consider an agent periodically printing hello and its name on the console. In this case, we apply the decorator to a `say_hello()` function which will be repeated at the specified time interval:
 
@@ -291,7 +291,7 @@ If you want to create an interval task, you need to use an `on_interval()` decor
 
     @agent.on_interval(period=2.0)
     async def say_hello(ctx: Context):
-        ctx.logger.info(f'hello, my name is {ctx.name}')
+        ctx.logger.info(f'hello, my name is {agent.name}')
 
     if __name__ == "__main__":
         agent.run()
@@ -327,11 +327,11 @@ The script will look as follows:
 
     @alice.on_interval(period=2.0)
     async def say_hello(ctx: Context):
-        ctx.logger.info(f'Hello, my name is {ctx.name}')
+        ctx.logger.info(f'Hello, my name is {alice.name}')
 
     @bob.on_interval(period=2.0)
     async def say_hello(ctx: Context):
-        ctx.logger.info(f'Hello, my name is {ctx.name}')
+        ctx.logger.info(f'Hello, my name is {bob.name}')
 
     bureau = Bureau()
     bureau.add(alice)
@@ -443,20 +443,20 @@ We will have what follows:
     from uagents.setup import fund_agent_if_low
     from uagents import Agent, Context, Protocol
 
-    alice = Agent(
+    agent = Agent(
         name="alice",
         port=8000,
         seed="alice secret phrase",
         endpoint=["http://127.0.0.1:8000/submit"],
     )
 
-    fund_agent_if_low(alice.wallet.address())
+    fund_agent_if_low(agent.wallet.address())
 
-    @alice.on_interval(period=3)
+    @agent.on_interval(period=3)
     async def hi(ctx: Context):
         ctx.logger.info(f"Hello")
 
-    alice.run()
+    agent.run()
     ```
 
 Here, we defined a local http address but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your agent so you don't have to fund different addresses each time you run your agent.
@@ -487,25 +487,25 @@ We first import the required modules. We then use the `Model` class to define a 
 
     RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
 
-    alice = Agent(
+    agent = Agent(
         name="alice",
         port=8000,
         seed="alice secret phrase",
         endpoint=["http://127.0.0.1:8000/submit"],
     )
 
-    fund_agent_if_low(alice.wallet.address())
+    fund_agent_if_low(agent.wallet.address())
 
-    @alice.on_interval(period=2.0)
+    @agent.on_interval(period=2.0)
     async def send_message(ctx: Context):
         await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))
 
-    @alice.on_message(model=Message)
+    @agent.on_message(model=Message)
     async def message_handler(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
     if __name__ == "__main__":
-        alice.run()
+        agent.run()
     ```
 
 Similarly, we need to define a script for `bob` so to create a remote communication with `alice` agent. Let's create a Python script for it: `touch remote_bob.py`. Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
@@ -517,23 +517,23 @@ Similarly, we need to define a script for `bob` so to create a remote communicat
     class Message(Model):
         message: str
 
-    bob = Agent(
+    agent = Agent(
         name="bob",
         port=8001,
         seed="bob secret phrase",
         endpoint=["http://127.0.0.1:8001/submit"],
     )
 
-    fund_agent_if_low(bob.wallet.address())
+    fund_agent_if_low(agent.wallet.address())
 
-    @bob.on_message(model=Message)
+    @agent.on_message(model=Message)
     async def message_handler(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
         await ctx.send(sender, Message(message="hello there alice"))
 
     if __name__ == "__main__":
-        bob.run()
+        agent.run()
     ```
 
 In different terminal windows, first run `remote_bob.py` and then `remote_alice.py`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two agents in parallel terminals use the `poetry run python remote_alice.py` and `poetry run python remote_bob.py`. The expected output would be:
@@ -576,9 +576,9 @@ We first create the Python file containing the script. Run: `touch storage.py` i
     ```py copy filename="storage.py"
     from uagents import Agent, Context
 
-    alice = Agent(name="alice", seed="alice recovery phrase")
+    agent = Agent(name="alice", seed="alice recovery phrase")
 
-    @alice.on_interval(period=1.0)
+    @agent.on_interval(period=1.0)
     async def on_interval(ctx: Context):
         current_count = ctx.storage.get("count") or 0
 
@@ -587,7 +587,7 @@ We first create the Python file containing the script. Run: `touch storage.py` i
         ctx.storage.set("count", current_count + 1)
 
     if __name__ == "__main__":
-        alice.run()
+        agent.run()
     ```
 
 We can then run the script: `poetry run python storage.py`
@@ -636,7 +636,6 @@ Let's start by defining the protocol for querying availability of tables at the 
     class TotalQueries(Model):
         total_queries: int
 
-    query_proto = Protocol()
     ```
 
 Here, we defined different messages data models:
@@ -650,6 +649,8 @@ Here, we defined different messages data models:
 Let's then define the message handlers for the `query_proto` protocol:
 
     ```py copy
+    query_proto = Protocol(name="RestaurantQueryProtocolExample", version="0.1.0")
+
     @query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
     async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
         tables = {
@@ -683,7 +684,9 @@ Let's then define the message handlers for the `query_proto` protocol:
         await ctx.send(sender, TotalQueries(total_queries=total_queries))
     ```
 
-    Here, the `handle_query_request()` function is the message handler function defined using the `on_message()` decorator. It handles the `QueryTableRequest` messages and replies with a `QueryTableResponse` message. The handler processes the table availability query based on the provided parameters, checks the table status stored in the agent's storage, and sends the available table numbers as a response to the querying agent.
+    We define a protocol `query_proto` using the `Protocol` class of `uagents`. It is defined with a `name` and a `version`.
+
+    The `handle_query_request()` function is the message handler function defined using the `on_message()` decorator. It handles the `QueryTableRequest` messages and replies with a `QueryTableResponse` message. The handler processes the table availability query based on the provided parameters, checks the table status stored in the agent's storage, and sends the available table numbers as a response to the querying agent.
     
     Additionally, the handler tracks the total number of queries made and increments the count in storage. On the other hand, `handle_get_total_queries()` is the message handler function defined using the `on_query()` decorator. It handles the `GetTotalQueries` query and replies with a `TotalQueries` message containing the total number of queries made to the system. The handler retrieves the total query count from the agent's storage and responds with the count.
 
@@ -712,7 +715,8 @@ The overall script should look as follows:
 
     class TotalQueries(Model):
         total_queries: int
-    query_proto = Protocol()
+
+    query_proto = Protocol(name="RestaurantQueryProtocolExample", version="0.1.0")
 
     @query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
     async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
@@ -724,6 +728,7 @@ The overall script should look as follows:
             ) in ctx.storage._data.items()  # pylint: disable=protected-access
             if isinstance(num, int)
         }
+
         available_tables = []
         for number, status in tables.items():
             if (
@@ -732,8 +737,11 @@ The overall script should look as follows:
                 and status.time_end >= msg.time_start + msg.duration
             ):
                 available_tables.append(int(number))
+
         ctx.logger.info(f"Query: {msg}. Available tables: {available_tables}.")
+
         await ctx.send(sender, QueryTableResponse(tables=available_tables))
+
         total_queries = int(ctx.storage.get("total_queries") or 0)
         ctx.storage.set("total_queries", total_queries + 1)
 
@@ -745,11 +753,10 @@ The overall script should look as follows:
 
 #### Table booking protocol
 
-We can now proceed by writing the booking protocol script for booking the table at the restaurant. We first need to import the necessary classes and define the message data models. In this case, the booking protocol consists of two message models: `BookTableRequest` and `BookTableResponse`. Then, create an instance of the `Protocol` class and name it `book_proto`:
+We can now proceed by writing the booking protocol script for booking the table at the restaurant. We first need to import the necessary classes and define the message data models. In this case, the booking protocol consists of two message models: `BookTableRequest` and `BookTableResponse`. Then, we create an instance of the `Protocol` class and name it `book_proto` and give it a version:
 
     ```py copy
     from uagents import Context, Model, Protocol
-
     from .query import TableStatus
 
     class BookTableRequest(Model):
@@ -760,7 +767,8 @@ We can now proceed by writing the booking protocol script for booking the table 
     class BookTableResponse(Model):
         success: bool
 
-    book_proto = Protocol()
+    book_proto = Protocol(name="RestaurantBookingProtocolExample", version="0.1.0")
+
     ```
 
     - `BookTableRequest` represents the request to book a table. It includes attributes: `table_number` to be booked, `time_start`of the booking, and the duration of the booking.
@@ -811,7 +819,8 @@ The overall script should be:
     class BookTableResponse(Model):
         success: bool
 
-    book_proto = Protocol()
+    book_proto = Protocol(name="RestaurantBookingProtocolExample", version="0.1.0")
+
     @book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
     async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
         tables = {
@@ -819,10 +828,11 @@ The overall script should be:
             for (
                 num,
                 status,
-            ) in ctx.storage._data.items()
+            ) in ctx.storage._data.items()  # pylint: disable=protected-access
             if isinstance(num, int)
         }
         table = tables[msg.table_number]
+
         if (
             table.time_start <= msg.time_start
             and table.time_end >= msg.time_start + msg.duration
@@ -832,43 +842,45 @@ The overall script should be:
             ctx.storage.set(msg.table_number, table.dict())
         else:
             success = False
+
         # send the response
         await ctx.send(sender, BookTableResponse(success=success))
     ```
 
 #### Restaurant agent
 
-Let's now move forward and create our restaurant agent in a separate file. In this step, we'll import the essential classes from the `uagents` library and reintegrate the two protocols we've previously coded. As we define our `restaurant` agent, it's vital to ensure it possesses sufficient funds in its wallet for the registration process. Remember to use the `fund_agent_if_low` method for this.
+Let's now move forward and create our restaurant agent in a separate file. In this step, we'll import the essential classes from the `uagents` library and reintegrate the two protocols (`book_proto` and `query_proto`) we've previously coded:
 
     ```py copy
-    rom uagents import Agent
-    from uagents.setup import fund_agent_if_low
+    from protocols.book import book_proto
+    from protocols.query import TableStatus, query_proto
+    from uagents import Agent
 
     restaurant = Agent(
         name="restaurant",
         port=8001,
-        seed="restaurant secret phrase",
-        endpoint=["http://127.0.0.1:8001/submit"],
+        seed="restaurant recovery phrase",
+        endpoint={
+            "http://127.0.0.1:8001/submit": {},
+        },
     )
-
-    fund_agent_if_low(restaurant.wallet.address())
     ```
 
 Let's build the `restaurant` agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the `restaurant` agent storage:
 
    ```py copy
-    # build the restaurant agent from stock protocols
-    restaurant.include(query_proto)
-    restaurant.include(book_proto)
+    # build the restaurant agent from stock protocols and publish their details
+    restaurant.include(query_proto, publish_manifest=True)
+    restaurant.include(book_proto, publish_manifest=True)
+
     TABLES = {
         1: TableStatus(seats=2, time_start=16, time_end=22),
         2: TableStatus(seats=4, time_start=19, time_end=21),
         3: TableStatus(seats=4, time_start=17, time_end=19),
     }
 
-    # set the table availability information in the restaurant protocols
-    for (number, status) in TABLES.items():
-        restaurant._storage.set(number, status.dict())
+    for number, status in TABLES.items():
+        restaurant.storage.set(number, status.dict())
 
     if __name__ == "__main__":
         restaurant.run()
@@ -879,32 +891,31 @@ The `restaurant` agent is now online and ready to receive messages.
 The overall script would be as follow:
 
     ```py copy filename="restaurant_agent.py"
-    from uagents import Agent, Context
-    from uagents.setup import fund_agent_if_low
     from protocols.book import book_proto
-    from protocols.query import query_proto, TableStatus
+    from protocols.query import TableStatus, query_proto
+    from uagents import Agent
 
     restaurant = Agent(
         name="restaurant",
         port=8001,
-        seed="restaurant secret phrase",
-        endpoint=["http://127.0.0.1:8001/submit"],
+        seed="restaurant recovery phrase",
+        endpoint={
+            "http://127.0.0.1:8001/submit": {},
+        },
     )
 
-    fund_agent_if_low(restaurant.wallet.address())
+    # build the restaurant agent from stock protocols and publish their details
+    restaurant.include(query_proto, publish_manifest=True)
+    restaurant.include(book_proto, publish_manifest=True)
 
-    # build the restaurant agent from stock protocols
-    restaurant.include(query_proto)
-    restaurant.include(book_proto)
     TABLES = {
         1: TableStatus(seats=2, time_start=16, time_end=22),
         2: TableStatus(seats=4, time_start=19, time_end=21),
         3: TableStatus(seats=4, time_start=17, time_end=19),
     }
 
-    # set the table availability information in the restaurant protocols
-    for (number, status) in TABLES.items():
-        restaurant._storage.set(number, status.dict())
+    for number, status in TABLES.items():
+        restaurant.storage.set(number, status.dict())
 
     if __name__ == "__main__":
         restaurant.run()
@@ -917,24 +928,25 @@ We can now define the script for our `user` agent querying and booking a table a
 Once we've imported the necessary classes from the `uagents` library and the two protocols we previously defined, we also need the `restaurant` agent's address so for the `user` agent to be able to communicate with it:
 
     ```py copy
-    from uagents import Agent, Context
-    from uagents.setup import fund_agent_if_low
     from protocols.book import BookTableRequest, BookTableResponse
     from protocols.query import (
         QueryTableRequest,
         QueryTableResponse,
     )
+    from uagents import Agent, Context
 
-    RESTAURANT_ADDRESS = "agent1qw50wcs4nd723ya9j8mwxglnhs2kzzhh0et0yl34vr75hualsyqvqdzl990"
+    RESTAURANT_ADDRESS = (
+        "test-agent://agent1qfpqn9jhvp9cg33f27q6jvmuv52dgyg9rfuu37rmxrletlqe7lewwjed5gy"
+    )
 
     user = Agent(
         name="user",
         port=8000,
-        seed="user secret phrase",
-        endpoint=["http://127.0.0.1:8000/submit"],
+        seed="user recovery phrase",
+        endpoint={
+            "http://127.0.0.1:8000/submit": {},
+        },
     )
-
-    fund_agent_if_low(user.wallet.address())
     ```
 
 Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. Then, we need to create an `on_interval()` function which periodically queries the `restaurant`, asking for the availability of a table given the `table_query` parameters:
@@ -980,7 +992,6 @@ Let's then define a function which will handle messages from the `restaurant` ag
     async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
         if msg.success:
             ctx.logger.info("Table reservation was successful")
-
         else:
             ctx.logger.info("Table reservation was UNSUCCESSFUL")
 
@@ -999,18 +1010,19 @@ The overall script would be:
         QueryTableResponse,
     )
     from uagents import Agent, Context
-    from uagents.setup import fund_agent_if_low
 
-    RESTAURANT_ADDRESS = "agent1qw50wcs4nd723ya9j8mwxglnhs2kzzhh0et0yl34vr75hualsyqvqdzl990"
+    RESTAURANT_ADDRESS = (
+        "test-agent://agent1qfpqn9jhvp9cg33f27q6jvmuv52dgyg9rfuu37rmxrletlqe7lewwjed5gy"
+    )
 
     user = Agent(
         name="user",
         port=8000,
-        seed="user secret phrase",
-        endpoint=["http://127.0.0.1:8000/submit"],
+        seed="user recovery phrase",
+        endpoint={
+            "http://127.0.0.1:8000/submit": {},
+        },
     )
-
-    fund_agent_if_low(user.wallet.address())
 
     table_query = QueryTableRequest(
         guests=3,
@@ -1018,7 +1030,6 @@ The overall script would be:
         duration=2,
     )
 
-    # This on_interval agent function performs a request on a defined period
     @user.on_interval(period=3.0, messages=QueryTableRequest)
     async def interval(ctx: Context):
         completed = ctx.storage.get("completed")
@@ -1026,35 +1037,32 @@ The overall script would be:
         if not completed:
             await ctx.send(RESTAURANT_ADDRESS, table_query)
 
+
     @user.on_message(QueryTableResponse, replies={BookTableRequest})
     async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
         if len(msg.tables) > 0:
             ctx.logger.info("There is a free table, attempting to book one now")
-
             table_number = msg.tables[0]
-
             request = BookTableRequest(
                 table_number=table_number,
                 time_start=table_query.time_start,
                 duration=table_query.duration,
             )
-
             await ctx.send(sender, request)
-
         else:
-
             ctx.logger.info("No free tables - nothing more to do")
             ctx.storage.set("completed", True)
+
 
     @user.on_message(BookTableResponse, replies=set())
     async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
         if msg.success:
             ctx.logger.info("Table reservation was successful")
-
         else:
             ctx.logger.info("Table reservation was UNSUCCESSFUL")
 
         ctx.storage.set("completed", True)
+
 
     if __name__ == "__main__":
         user.run()

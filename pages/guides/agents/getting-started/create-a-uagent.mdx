@@ -1,0 +1,63 @@
+# Creating your first agent 🤖🧑‍💻
+
+
+## Introduction
+
+Once you've [installed ↗️](/guides/agents/installing-uagent) the uAgents library, it's quite simple to get a minimal use case running. Let our first agent be a simple initialisation and printing out the agent's name.
+
+### The agent
+
+1. Let's create a Python script for this task, and name it by running: `touch agent.py`
+
+2. We then need to import the `Agent` and `Context` classes from the `uagents` library, and then create an agent using the class `Agent`:
+
+   ```py copy
+   from uagents import Agent, Context
+   agent = Agent(name="alice", seed="secret_seed_phrase")
+   ```
+
+   It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the agent. Your address is kind of important, as this is how other agents will identify you.
+
+3. Let's define a `say_hello()` function for our agent to print a message periodically saying `hello, my name is ...`:
+
+   ```py copy
+   @agent.on_event("startup")
+   async def introduce_agent(ctx: Context):
+       ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+
+   if __name__ == "__main__":
+       agent.run()
+   ```
+
+   The `.on_event("startup")` decorator defines a behavior for this agent when it is run. In this case, the agent will execute the `say_hello()` function when the agent starts. The `Context` object is a collection of data and functions related to the agent. In this case, we just use the agent's `name`, `alice`. The agent executes the function and uses the `ctx.logger.info()` method to print the message.
+
+4. Save the script.
+
+The overall script should look as follows:
+
+```py copy filename="agent.py"
+from uagents import Agent, Context
+
+agent = Agent(name="alice", seed="secret_seed_phrase")
+
+@agent.on_event("startup")
+async def introduce_agent(ctx: Context):
+    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+
+if __name__ == "__main__":
+    agent.run()
+```
+
+### Run your agent
+
+Make sure to have activated your virtual environment correctly.
+
+Run the script: `python agent.py`
+
+The output would be:
+
+    ```
+    [alice]: Hello, I'm agent alice and my address is <agent_address>
+    ```
+
+**Congratulations, you have just created your first Agent!**
