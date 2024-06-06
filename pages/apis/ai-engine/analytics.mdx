@@ -8,43 +8,43 @@ import {
 
 
 <div className="nx-text-fetch-content">
-  This API provides access to analytics of agents and their interactions.
+  This API provides access to analytics of functions and their interactions.
 </div>
 
 ## Overview
 
 <Row>
     <Col>
-        The Analytics API allows to access the data that can be used to analyze the performance of the agent and the user interactions. The API provides access to the following data:
+        The Analytics API allows to access the data that can be used to analyze the performance of a function and the user interactions.
     </Col>
     <Col>
         ```bash filename="Endpoints"
-        GET /v1beta1/engine/analytics/:agent_address/performance/
+        GET /v1beta1/engine/analytics/:function_id/performance/
 
-        GET /v1beta1/engine/analytics/:agent_address/insights/
+        GET /v1beta1/engine/analytics/:function_id/insights/
         ```
     </Col>
 
 </Row>
 
-### Get agent's rating
+### Get function's rating
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
-  path="/v1beta1/engine/analytics/{agent_address}/performance/"
-  description="This endpoint retrieves the current performance metrics of a specified agent, including interaction data and its overall rating associated to the trend of the performance for the past 30 days. It returns a collection of time-series data points."
+  path="/v1beta1/engine/analytics/{function_id}/performance/"
+  description="This endpoint retrieves the current performance metrics of a specified function, including interaction data and its overall rating associated to the trend of the performance for the past 30 days. It returns a collection of time-series data points."
   isBearerTokenRequired={false}
   pathParameters={{
-    agent_address:
-        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+    function_id:
+        "9836e2e0-736f-4b32-b23c-bab3fc6d2770",
     timeframe: "",
   }}
   properties={[
     {
-      name: "agent_address",
+      name: "function_id",
       type: "string",
-      description: "The agent address to get the rating for.",
+      description: "The function id to get the rating for.",
     },
     {
       name: "timeframe",
@@ -55,39 +55,38 @@ import {
   ]}
    responses={
     {
-    "metrics": {
-        "data": {
-            "19-02-2024 00:00": 30992,
-            "20-02-2024 00:00": 41034,
-            "21-02-2024 00:00": 28065,
-            "22-02-2024 00:00": 74803,
-            "23-02-2024 00:00": 34922,
-            "24-02-2024 00:00": 98795,
-            "25-02-2024 00:00": 28592,
-            "26-02-2024 00:00": 59198,
-            "27-02-2024 00:00": 84935,
-            "28-02-2024 00:00": 82362,
-            "29-02-2024 00:00": 50754,
-            "01-03-2024 00:00": 45772,
-            "02-03-2024 00:00": 25755,
-            "03-03-2024 00:00": 2890,
-            "04-03-2024 00:00": 16521,
-            "05-03-2024 00:00": 38718,
-            "06-03-2024 00:00": 5666,
-            "07-03-2024 00:00": 97739,
-            "08-03-2024 00:00": 30606,
-            "09-03-2024 00:00": 28721,
-            "10-03-2024 00:00": 34747,
-            "11-03-2024 00:00": 90515,
-            "12-03-2024 00:00": 73887,
-            "13-03-2024 00:00": 82696,
-            "14-03-2024 00:00": 11798,
-            "15-03-2024 00:00": 63816,
-            "16-03-2024 00:00": 56128,
-            "17-03-2024 00:00": 74380,
-            "18-03-2024 00:00": 11127,
+        "time_series": {
+            "20-03-2024 00:00": 39870,
             "19-03-2024 00:00": 48400,
-            "20-03-2024 00:00": 39870
+            "18-03-2024 00:00": 11127,
+            "17-03-2024 00:00": 74380,
+            "16-03-2024 00:00": 56128,
+            "15-03-2024 00:00": 63816,
+            "14-03-2024 00:00": 11798,
+            "13-03-2024 00:00": 82696,
+            "12-03-2024 00:00": 73887,
+            "11-03-2024 00:00": 90515,
+            "10-03-2024 00:00": 34747,
+            "09-03-2024 00:00": 28721,
+            "08-03-2024 00:00": 30606,
+            "07-03-2024 00:00": 97739,
+            "06-03-2024 00:00": 5666,
+            "05-03-2024 00:00": 38718,
+            "04-03-2024 00:00": 16521,
+            "03-03-2024 00:00": 2890,
+            "02-03-2024 00:00": 25755,
+            "01-03-2024 00:00": 45772,
+            "29-02-2024 00:00": 50754,
+            "28-02-2024 00:00": 82362,
+            "27-02-2024 00:00": 84935,
+            "26-02-2024 00:00": 59198,
+            "25-02-2024 00:00": 28592,
+            "24-02-2024 00:00": 98795,
+            "23-02-2024 00:00": 34922,
+            "22-02-2024 00:00": 74803,
+            "21-02-2024 00:00": 28065,
+            "20-02-2024 00:00": 41034,
+            "19-02-2024 00:00": 30992
         },
         "total": 1494204,
         "inception_total": 17912310,
@@ -95,53 +94,54 @@ import {
           "value": 2.758925860407884,
           "trend": 0.084792149270140,
         },
-    }
+        "success_rate": {
+          "value": 0.4936708860759494,
+          "trend": 0.023749,
+        },
   }}
- responseDescription="The response includes a set of time-series points, each represented as a key-value pair where the key is a date and the value is the number of interactions on that date. The response also contains the total number of interactions for the specified timeframe, the number of interactions since inception and the rating of the agent along with its trend, indicating the direction of performance change. If timeframe is not specified then total and inception_total will coincide since the data returned will be since inception. A successful response will have a 200 status code. If the specified agent_address is not found, the endpoint will respond with a 404 status code. If the specified timeframe or agent_address is invalid, the endpoint will respond with a 400 status code."
+ responseDescription="The response includes a set of time-series points in descending order, each represented as a key-value pair where the key is a date and the value is the number of interactions on that date. The response also contains the total number of interactions for the specified timeframe, the number of interactions since inception, the rating of the function along with its trend and its success rate with its trend, indicating the direction of performance change. If timeframe is not specified then total and inception_total will coincide since the data returned will be since inception. If the timeframe parameter is set to 1, the response will display data for the most recent 24-hour period, breaking down the number of interactions hour by hour. A successful response will have a 200 status code. If the specified function_id is not found, the endpoint will respond with a 404 status code. If the specified timeframe or function_id is invalid, the endpoint will respond with a 400 status code."
 />
 
 
-### Get agent's interactions
+### Get function's interactions
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
-  path="/v1beta1/engine/analytics/{agent_address}/insights/"
-  description="Fetches insights about the specified agent, including metrics on successful conversations, relevance, and the computed rating. Each metric includes a current value and a trend value that indicates the direction and rate of change of the metric over time."
+  path="/v1beta1/engine/analytics/{function_id}/insights/"
+  description="Fetches insights about the specified function, including metrics on successful conversations, relevance, and the computed rating. Each metric includes a current value and a trend value that indicates the direction and rate of change of the metric over time."
   isBearerTokenRequired={false}
   pathParameters={{
-    agent_address:
-        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+    function_id:
+        "9836e2e0-736f-4b32-b23c-bab3fc6d2770",
   }}
   properties={[
     {
-      name: "agent_address",
+      name: "function_id",
       type: "string",
-      description: "The agent address to get the rating for.",
+      description: "The function id to get the rating for.",
     },
-    {
+    {/* {
       name: "timeframe",
       type: "integer",
       required: false,
       description: "Specifies the time frame in days for which performance data is requested. Available options: 1, 7, 30, 90, or None for data since inception.",
-    },
+    }, */}
   ]}
    responses={
       {
-      "insights": {
-          "selected": {
-            "value": 0.9747434305084236,
-            "trend": 0.0374973847297743,
-          },
-          "successful_conversations": {
-            "value": 0.8554524342516445,
-            "trend": 0.1246482749273913,
-          },
-          "relevance": {
-            "value": 0.3201168033010078,
-            "trend": 0.0123648293739474,
-          },
-      }
+        "selected": {
+          "value": 0.5483870967741935,
+          "trend": -0.04946236559139784
+        },
+        "successful_conversations": {
+          "value": 0.4370860927152318,
+          "trend": 0.03311258278145699
+        },
+        "relevance": {
+          "value": 0.7389009824231695,
+          "trend": 0.008535935258218223
+        }
   }}
-  responseDescription="Returns a JSON object containing the agent's insights, including the selection rate by the AI Engine, the percentage of successful conversations, and the relevance score, along with their corresponding trend values. A trend value signifies how each metric has changed over the specified timeframe. A 200 status code is returned for a successful response. If the specified agent_address is not found, a 404 status code is returned. Invalid inputs result in a 400 status code."
+  responseDescription="Returns a JSON object containing the function's insights, including the selection rate by the AI Engine, the percentage of successful conversations, and the relevance score, along with their corresponding trend values. A trend value signifies how each metric has changed over the past 30 days. A 200 status code is returned for a successful response. If the specified function_id is not found, a 404 status code is returned. Invalid inputs result in a 400 status code."
 />
