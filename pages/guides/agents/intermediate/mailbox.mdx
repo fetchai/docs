@@ -1,0 +1,55 @@
+import { Callout } from 'nextra/components'
+
+# Agent Mailboxes
+
+Agents can communicate with other agents registered on the Fetch Network without the need to be constantly online and without requiring your constant presence to operate. This is achieved thanks to the **Agentverse Mailbox** functionality.
+
+    <Callout type="info" emoji="ℹ️">
+      You can find additional information on the Agentverse Mailbox feature [here ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox). This resource shows both the local and Agentverse agents setups to allow for a two-way communication line between these two agents.
+    </Callout>
+
+### Local agent setup
+
+Let's start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
+
+    ```py copy
+    from uagents import Agent, Context, Model
+
+    class Message(Model):
+        message: str
+
+    # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+    SEED_PHRASE = "put_your_seed_phrase_here"
+
+    # Copy the address shown below
+    print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+
+    # Then go to https://agentverse.ai, register your agent in the Mailroom
+    # and copy the agent's mailbox key
+    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+
+    # Now your agent is ready to join the agentverse!
+    agent = Agent(
+        name="alice",
+        seed=SEED_PHRASE,
+        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+    )
+
+    @agent.on_message(model=Message, replies={Message})
+    async def handle_message(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+        # send the response
+        ctx.logger.info("Sending message to bob")
+        await ctx.send(sender, Message(message="hello there bob"))
+
+    if __name__ == "__main__":
+        agent.run()
+   ```
+
+You can easily create a Mailbox by first retrieving your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**. You will need to provide the address of the local agent you wish to retrieve and wait for confirmation.
+
+You will then need to provide a **name** for the agent. Once you do so and confirm, you will see a **Mailbox API Key** showing up. Copy and paste it within your local agent code above by filling up the `AGENT_MAILBOX_KEY` field inline.
+
+You can then restart your agent.
+
