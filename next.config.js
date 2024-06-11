@@ -186,7 +186,8 @@ module.exports = withNextra({
         permanent: true,
       },
       {
-        source: "/guides/agentverse/huggingface-text-classification-model-agent",
+        source:
+          "/guides/agentverse/huggingface-text-classification-model-agent",
         destination: "/examples/hugging-face-agent",
         permanent: true,
       },
