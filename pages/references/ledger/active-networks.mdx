@@ -1,4 +1,5 @@
 # Active networks
+
 ## Main network
 
 The chain identifier for our production network is **fetchhub-4**.
@@ -25,10 +26,37 @@ Below you can find all of needed specifications for the **Fetch Main Network (Ma
 
 ## Test networks
 
+### Eridanus Testnet
+
+The Eridanus testnet was forked from the dorado testnet at block XXX. It is expected to be useful for developers and users
+to understand and test the upcoming migration of the Fetch network to the ASI network. It is expected to be stable for
+deploying smart contracts and testing.
+
+Below you can find all specifications needed for the **Fetch Eridanus Test network (Testnet)**:
+
+    | Parameter       | Value  |
+    | :-------------- | ------: |
+    | Chain ID        | eridanus-1 |
+    | Denomination    | atestasi |
+    | Decimals        | 18 (1testasi = 1000000000000000000atestasi) |
+    | Min Gas Prices  | 1000000000atestasi |
+    | Version         | [v0.10.3 ↗️](https://github.com/fetchai/fetchd/releases/tag/v0.10.3) up to block 947800 |
+    | RPC Endpoint    | [https://rpc-eridanus-1.fetch.ai:443 ↗️](https://rpc-eridanus-1.fetch.ai:443) |
+    | GRPC Endpoint   | [https://grpc-eridanus-1.fetch.ai:443 ↗️](https://grpc-eridanus-1.fetch.ai:443) |
+    | REST Endpoint   | [https://rest-eridanus-1.fetch.ai:443 ↗️](https://rest-eridanus-1.fetch.ai:443) |
+    | Block Explorer  | [https://explore-eridanus-1.fetch.ai/ ↗️](https://explore-eridanus-1.fetch.ai/) |
+    | Token Faucet    | Use block explorer |
+    | Genesis         | `curl https://storage.googleapis.com/fetch-ai-testnet-genesis/genesis-dorado-827201.json --output ~/.fetchd/config/genesis.json` |
+    | Seed Node(s)    | eb9b9717975b49a57e62ea93aa4480e091ae0660@connect-dorado.fetch.ai:36556,46d2f86a255ece3daf244e2ca11d5be0f16cb633@connect-dorado.fetch.ai:36557,066fc564979b1f3173615f101b62448ac7e00eb1@connect-dorado.fetch.ai:36558  |
+
+
 ### Dorado Testnet
 
-This network is running the same major version of `fetchd` as our mainnet (`fetchhub-4`), possibly at a more recent minor version.
-It is stable for deploying smart contracts and testing IBC.
+This network is running the same major version of `fetchd` as our mainnet (`fetchhub-4`), possibly at a more recent minor
+version.
+
+In the short term, we will continue to provide support for this testnet. However, after the ASI migration it is expected
+that we will depreciate this network in favor of the Eridanus testnet.
 
 Below you can find all specifications needed for the **Fetch Dorado Test network (Testnet)**:
 
