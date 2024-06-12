@@ -160,7 +160,7 @@ const Body = ({
         <article
           className={cn(
             classes.main,
-            "nextra-content nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]",
+            "nextra-content nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-pl-[max(env(safe-area-inset-left),7rem)] nx-pr-[max(env(safe-area-inset-right),7rem)]",
           )}
         >
           {body}
