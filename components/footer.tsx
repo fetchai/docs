@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import logo from "src/svgs/logo.svg";
-import styles from "./landing.module.css";
+import styles from "./footer.module.css";
 import { Anchor } from "theme/fetch-ai-docs/components";
 import { renderComponent } from "theme/fetch-ai-docs/utils";
 import { DiscordIcon, GitHubIcon } from "nextra/icons";
 import { addUnderscoreInText } from "theme/fetch-ai-docs/helpers";
+import {
+  Discord,
+  Github,
+  LinkedIn,
+  Reddit,
+  Telegram,
+  Twitter,
+  Youtube,
+} from "src/icons/footer-icons";
 
 const FooterLink = ({
   content,
@@ -30,11 +39,7 @@ const FooterLink = ({
       }}
     >
       <p
-        className={
-          hover
-            ? "nx-text-purple nx-cursor-pointer nx-text-sm"
-            : "nx-text-gray-600 nx-text-sm"
-        }
+        className={hover ? `${styles.footerTextHover}` : `${styles.footerText}`}
       >
         {content.description}
       </p>
@@ -93,86 +98,153 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer>
-      <div className={styles.footerPage}>
-        <div className="nx-container">
-          <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-1 md:nx-grid-cols-4 lg:nx-grid-cols-4 nx-gap-4">
-            <div className="md:nx-col-span-2 nx-mb-8 md:nx-mb-0">
-              <Image src={logo} alt="Logo" />
-              <p className="nx-text-gray-600 nx-text-sm nx-mt-8 nx-footer-width-50">
-                {" "}
-                Creating AI platforms and services that let anyone build and
-                deploy AI services at scale, anytime and anywhere.
+    <footer className="nx-flex nx-flex-col nx-py-16 nx-pl-[max(env(safe-area-inset-left),7rem)] nx-pr-[max(env(safe-area-inset-right),7rem)]">
+      <div className={styles.footerInner}>
+        <div className={styles.footerLeft}>
+          <div className="nx-flex nx-flex-col nx-items-start nx-gap-6">
+            <Image src={logo} alt="Logo" />
+            <p className={styles.footerText}>
+              Creating AI platforms and services that let anyone build and
+              deploy AI services at scale, anytime and anywhere.
+            </p>
+            <div>
+              <p className="nx-text-gray-600 nx-text-sm">
+                © 2024 Fetch.ai. All rights reserved.
               </p>
-              <div className="nx-mt-8">
-                <p className="nx-text-gray-600 nx-text-sm">
-                  © 2024 Fetch.ai. All rights reserved.
-                </p>
-              </div>
-
-              <div className="nx-flex">
-                <Anchor
-                  className="nx-p-2 nx-text-current"
-                  href="https://discord.gg/fetchai"
-                  newWindow
-                >
-                  {renderComponent(
-                    <>
-                      <DiscordIcon />
-                      <span className="nx-sr-only">Discord</span>
-                    </>,
-                  )}
-                </Anchor>
-
-                <Anchor
-                  className="nx-p-2 nx-text-current"
-                  href="https://github.com/fetchai"
-                  newWindow
-                >
-                  {renderComponent(
-                    <>
-                      <GitHubIcon />
-                      <span className="nx-sr-only">GitHub</span>
-                    </>,
-                  )}
-                </Anchor>
-              </div>
             </div>
+          </div>
+          <div className="nx-flex nx-gap-6 nx-items-center">
+            <Anchor
+              className="nx-text-current"
+              href="https://discord.gg/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Twitter />
+                  <span className="nx-sr-only">Twitter</span>
+                </>,
+              )}
+            </Anchor>
+            <Anchor
+              className="nx-text-current"
+              href="https://discord.gg/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Telegram />
+                  <span className="nx-sr-only">Telegram</span>
+                </>,
+              )}
+            </Anchor>
 
-            <div className="md:nx-col-span-2 nx-mb-8 md:nx-mb-0">
-              <div className="nx-grid nx-grid-cols-2 sm:nx-grid-cols-2 md:nx-grid-cols-4 lg:nx-grid-cols-4 nx-gap-4">
-                <div className="md:nx-col-span-1 md:nx-mb-4">
-                  <h4 className="nx-text-black nx-font-semibold nx-mb-2">
-                    Developers
-                  </h4>
+            <Anchor
+              className="nx-text-current"
+              href="https://discord.gg/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Discord />
+                  <span className="nx-sr-only">Discord</span>
+                </>,
+              )}
+            </Anchor>
 
-                  {developers.map((content, index) => {
-                    return <FooterLink key={index} content={content} />;
-                  })}
-                </div>
+            <Anchor
+              className="nx-text-current"
+              href="https://github.com/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Github />
+                  <span className="nx-sr-only">GitHub</span>
+                </>,
+              )}
+            </Anchor>
+            <Anchor
+              className="nx-text-current"
+              href="https://github.com/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Youtube />
+                  <span className="nx-sr-only">Youtube</span>
+                </>,
+              )}
+            </Anchor>
+            <Anchor
+              className="nx-text-current"
+              href="https://github.com/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <LinkedIn />
+                  <span className="nx-sr-only">LinkedIn</span>
+                </>,
+              )}
+            </Anchor>
+            <Anchor
+              className="nx-text-current"
+              href="https://github.com/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Reddit />
+                  <span className="nx-sr-only">Reddit</span>
+                </>,
+              )}
+            </Anchor>
+          </div>
+        </div>
 
-                <div className="md:nx-col-span-1 md:nx-mb-4">
-                  <h4 className="nx-text-black nx-font-semibold nx-mb-2">
-                    Company
-                  </h4>
-                  {company.map((content, index) => {
-                    return <FooterLink key={index} content={content} />;
-                  })}
-                </div>
+        <div className="nx-grid nx-grid-cols-2 sm:nx-grid-cols-2 lg:nx-grid-cols-3 nx-justify-between nx-w-[592px] ">
+          <div className="nx-flex nx-flex-col nx-gap-6">
+            <h4 className={styles.footerHeading}>Developers</h4>
+            <div className="nx-flex nx-flex-col nx-gap-3">
+              {developers.map((content, index) => {
+                return <FooterLink key={index} content={content} />;
+              })}
+            </div>
+          </div>
 
-                <div className="md:nx-col-span-1 md:nx-mb-4">
-                  <h4 className="nx-text-black nx-font-semibold nx-mb-2">
-                    Legal
-                  </h4>
-                  {legal.map((content, index) => {
-                    return <FooterLink key={index} content={content} />;
-                  })}
-                </div>
-              </div>
+          <div className="nx-flex nx-flex-col nx-gap-6">
+            <h4 className={styles.footerHeading}>Company</h4>
+            <div className="nx-flex nx-flex-col nx-gap-3">
+              {company.map((content, index) => {
+                return <FooterLink key={index} content={content} />;
+              })}
+            </div>
+          </div>
+
+          <div className="nx-flex nx-flex-col nx-gap-6">
+            <h4 className={styles.footerHeading}>Legal</h4>
+            <div className="nx-flex nx-flex-col nx-gap-3">
+              {legal.map((content, index) => {
+                return <FooterLink key={index} content={content} />;
+              })}
             </div>
           </div>
         </div>
       </div>
+      <hr className="nx-my-16" />
+      <section className="nx-flex nx-items-center nx-justify-between">
+        <div className={styles.joinNewsLetter}>Join our newsletter</div>
+        <div className={styles.inputBox}>
+          <input
+            className="nx-outline-none nx-border-none nx-bg-transparent"
+            placeholder="Enter your email"
+          />
+          <button className="nx-bg-purple hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm">
+            Subscribe
+          </button>
+        </div>
+      </section>
     </footer>
   );
 };

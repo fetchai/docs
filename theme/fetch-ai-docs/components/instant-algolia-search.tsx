@@ -110,8 +110,8 @@ export const InstantAlgoliaSearch = ({
       onFocus={() => {
         setShow(true);
       }}
-      placeholder="Search..."
-      className="nx-rounded-xxl nx-border-purple nx-border nx-w-full nx-h-full nx-px-4 nx-py-2"
+      placeholder="Search in documentation"
+      className="search-bar nx-h-11 icon-rtl nx-bg-white"
     />
   ));
 
@@ -149,7 +149,7 @@ export const InstantAlgoliaSearch = ({
           {Object.entries(groupedHits).map(([route, hitsForRoute]) => (
             <div key={route} onClick={() => setShow(false)}>
               <div className="nx-py-2 nx-bg-grey-200 nx-text-sm nx-text-grey-600 nx-font-semibold nx-tracking-loose nx-uppercase">
-                <span className="nx-block nx-px-4 nx-text-sm nx-flex nx-gap-4">
+                <span className="nx-px-4 nx-text-sm nx-flex nx-gap-4">
                   <div className="nx-my-1">{route.split("/").pop()}</div>
                   {directoriesWithTags.map((directory) => {
                     if (route.includes(directory.route)) {
