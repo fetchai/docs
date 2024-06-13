@@ -31,19 +31,22 @@ function LandingPage() {
       title: "Agents 101",
       description:
         "Learn how to do lorem ipsum dolor sit amed Another dolor sit amed consectatur Become a master of agents",
+      path: "/guides/agent-courses/introductory-course",
     },
     {
-      title: "Agents 101",
+      title: "Agents 101 for AI Engine",
       description:
         "Learn how to do lorem ipsum dolor sit amed Another dolor sit amed consectatur Become a master of agents",
+      path: "/guides/agent-courses/agents-for-ai",
     },
   ];
 
   const CourseStack = ({
     course,
   }: {
-    course: { title: string; description: string };
+    course: { title: string; description: string; path: string };
   }) => {
+    const router = useRouter();
     return (
       <div
         className={styles.cardStack}
@@ -53,7 +56,12 @@ function LandingPage() {
           <span className={styles.stackHeading}>{course.title}</span>
           <span className={styles.stackSubHeading}>{course.description}</span>
         </div>
-        <button className="nx-bg-purple  nx-flex nx-gap-2 nx-justify-between nx-items-center hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm">
+        <button
+          onClick={() => {
+            router.push(course.path);
+          }}
+          className="nx-bg-purple nx-flex nx-gap-2 nx-justify-between nx-items-center hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm"
+        >
           <Play />
           <span>Start the course</span>
         </button>
