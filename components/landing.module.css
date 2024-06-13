@@ -3,13 +3,6 @@
   margin: 24px auto;
 }
 
-.footerPage {
-  background-image: url("../src/svgs/mobile/footer_left_bottom.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding: 24px;
-}
-
 .mainTitle {
   color: #000d3d;
   font-size: 56px;
@@ -126,7 +119,7 @@
 
 .horizontalLine {
   background: var(--Grey-Grey-200, #dce2ea);
-  width: 1216px;
+  max-width: 1216px;
   height: 1px;
   margin-top: 80px;
   margin-bottom: 80px;
@@ -153,16 +146,28 @@
 }
 
 .cardStack {
-  z-index: 60;
   position: relative;
+  background-position: center;
   max-width: 544px;
-  width: 544px;
+  max-width: 544px;
   height: 323px;
   display: inline-flex;
   padding: 78px 62px;
   flex-direction: column;
   align-items: center;
   gap: var(--24, 24px);
+}
+
+@media (max-width: 938px) {
+  .cardStack {
+    padding-bottom: 10px;
+  }
+}
+@media (max-width: 457px) {
+  .cardStack {
+    padding-top: 65px;
+    padding-inline: 30px;
+  }
 }
 
 .stackHeading {

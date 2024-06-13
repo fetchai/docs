@@ -55,15 +55,11 @@ const Item = ({
     >
       <div className="nx-flex nx-gap-6">
         <div>
-          <div className={styles.productOuterBox}>
-            <Image
-              src={item.icon}
-              alt={`Icon for ${item.title}`}
-              height={32}
-              width={32}
-              // className={styles.productIcon}
-            />
-          </div>
+          <Image
+            src={item.icon}
+            alt={`Icon for ${item.title}`}
+            className={styles.productIcon}
+          />
         </div>
 
         <div>
@@ -106,9 +102,7 @@ const Section: React.FC<SectionProperties> = ({ heading, items }) => {
   const sectionId = heading.replaceAll(" ", "").toLowerCase();
   return (
     <div id={sectionId} className="nx-my-8">
-      <h2 className={"nx-text-lg nx-font-medium nx-text-fetch-light-grey"}>
-        {heading}
-      </h2>
+      <h2 className={styles.productsHeading}>{heading}</h2>
       <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-2 nx-gap-4 nx-mt-4">
         {items.map((item, index) => (
           <Item key={index} item={item} index={index} />

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./landing.module.css";
 import cardImage from "../src/svgs/card-images.svg";
-import { FeatureGuideTabs } from "./feature-guide-tabs";
 import Products from "./products";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import systemDiagram from "../src/svgs/system-diagram.svg";
 import cardStack from "../src/svgs/stack.svg";
+import { Play } from "src/icons/shared-icons";
 
 function LandingPage() {
   const startingGuides = [
@@ -50,12 +50,13 @@ function LandingPage() {
         style={{ backgroundImage: `url(${cardStack?.src})` }}
       >
         <div className="nx-flex nx-flex-col nx-items-center nx-gap-3">
-          <span className={styles.stackHeading}>Agents 101</span>
-          <span className={styles.stackSubHeading}>
-            Learn how to do lorem ipsum dolor sit amed Another dolor sit amed
-            consectatur Become a master of agents
-          </span>
+          <span className={styles.stackHeading}>{course.title}</span>
+          <span className={styles.stackSubHeading}>{course.description}</span>
         </div>
+        <button className="nx-bg-purple  nx-flex nx-gap-2 nx-justify-between nx-items-center hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm">
+          <Play />
+          <span>Start the course</span>
+        </button>
       </div>
     );
   };
@@ -67,18 +68,11 @@ function LandingPage() {
     guide: { label: string; path: string; image: any };
   }) => {
     const router = useRouter();
-    const [hover, setHover] = useState<boolean>(false);
     return (
       <div
         className={styles.guideBox}
         onClick={() => {
           router.push(guide.path);
-        }}
-        onMouseOver={() => {
-          setHover(true);
-        }}
-        onMouseLeave={() => {
-          setHover(false);
         }}
         id={guide.label.toLowerCase().split(" ").join("-")}
         style={{ backgroundImage: `url(${guide?.image?.src})` }}
@@ -98,7 +92,7 @@ function LandingPage() {
           in competitions.
         </p>
       </div>
-      <section className="nx-mt-60 landing-page-left-image">
+      <section className="nx-mt-60">
         <p className={styles.subTitle}>Getting Started</p>
         <p className={styles.description}>Explore our guides and examples.</p>
         <div className={styles.startGuides}>
@@ -141,7 +135,7 @@ function LandingPage() {
             Comprehensive guides for people new to programming and Fetch.ai.
           </p>
         </div>
-        <div className=" nx-flex nx-items-center nx-gap-8">
+        <div className="nx-flex nx-items-center md:nx-flex-row nx-flex-col nx-gap-8">
           {courses.map((course, index) => (
             <CourseStack key={index} course={course} />
           ))}
