@@ -4,9 +4,8 @@ import { Callout } from 'nextra/components'
 
 Agents can act as executable functions for the AI Engine. We can enable this by utilising Agentverse and registering
 our agent's function to the platform. AI Engine then indexes registered function and can then can communicate with
-your agent. Checkout [Ai Engine 101](/guides/agent-courses/agents-for-ai#agent-agentverse-ai-engine-and-deltav) for
+your agent. Checkout the [Agents 101 for AI Engine 🤖 ↗️](/guides/agent-courses/agents-for-ai#agent-agentverse-ai-engine-and-deltav) for
 a wider explanation of how this works.
-
 
 ## Local Agent Function registration
 
@@ -14,7 +13,7 @@ Sometimes you'll want to run an agent on your own hardware or infrastructure; lu
 
 ### Overview
 
-This system is pretty simple, as to get you started as quickly as possible. We're going to run this agent on any device you'd like, in this scenario we're running on a VM but you could run this on your laptop, raspberry pi or tweak for Agentverse. On startup our script will register our agent to the Almanac, and then our agent will be available to communicate with other agents. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible,  we will also go to Agentverse to create a new Function for the agent, to then allow this agent to be found in DeltaV.
+This system is pretty simple, as to get you started as quickly as possible. We're going to run this agent on any device you'd like, in this scenario we're running on a VM but you could run this on your laptop, raspberry pi or tweak for Agentverse. On startup our script will register our agent to the [Almanac ↗️](/concepts/fetch-network/almanac), and then our agent will be available to communicate with other agents. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible,  we will also go to Agentverse to create a new Function for the agent, to then allow this agent to be found in DeltaV.
 
 ### The agent
 
@@ -90,17 +89,15 @@ You will need to provide the **local agent address** and make sure it is running
 
 ![](src/images/guides/uagent/servicefordungeons_2.png)
 
-You can now provide the needed details for your Agent Function in the dedicated fields. Remember to provide detailed descriptions for what your **Agent Function** does and the **Fields** for data Models expected.
+   <Callout type="warning" emoji="⚠️">
+     If you see a message saying "We couldn't find this agent address on Fetch Network" you will need to wait for some time (around 5 minutes) until the protocols are uploaded successfully on the Fetch Network and your agent is retrievable.
+   </Callout>
+
+Once your agent is retrieved correctly, you will see a box depicting it within the **My Agents** tab. Click on it and head over to the **Deploy** tab and click on **+ New Function**. Here, you can now provide the needed details for your Agent Function in the dedicated fields. Remember to provide detailed descriptions for what your **Agent Function** does and the **Fields** for data Models expected. understanding of Functions fields descriptions.
 
 ![](src/images/guides/uagent/servicefordungeons_3.png)
 
-
-
-
-
 It's recommended you alter the contract slightly, and follow the above steps so that you can run an agent, create a function for the agent and then have that agent accessible by DeltaV.
-
-
 
 ## Description of your Agent Function
 
@@ -115,7 +112,6 @@ Read more and see examples on how to properly set field descriptions by heading 
 A **Primary Function** is the primary Agent Function and for instance, it could be an agent that would respond to a user or be accessible via DeltaV. _Primary Functions are expected to fully or partially fulfill an objective provided by users_.
 
 Similarly, a **Secondary Function** is an Agent Sub-function providing secondary services that likely need additional context or information to carry out the Primary Function. _Secondary Functions are executed in combination with the Objective task_. If that's the case, DeltaV would see that the Agent Primary Function can be fulfilled by executing a Secondary Function, thus, it will contact this latter one which may or may not require gaining context directly from the user.
-
 
 ## Functions registration resources
 
