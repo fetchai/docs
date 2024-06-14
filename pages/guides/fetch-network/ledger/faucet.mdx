@@ -19,10 +19,30 @@ Overall, you can obtain test tokens for your account in the following way:
       The tokens provided by a faucet do not have any real-world market value. These tokens are specifically created for testing and development purposes within the blockchain's ecosystem. They are not intended for trading on cryptocurrency exchanges or for any commercial transactions. Therefore, while they have utility within the test network, they do not hold any value on the broader cryptocurrency market.
     </Callout>
 
-## How to add funds to your wallet using faucet APIs
+# How to add funds to your wallet using faucet APIs
 
 You can also request and get testnet tokens in your wallet using the APIs, by running the following commands:
 
+## For **Eridanus** testnet:
+### Get `atestasi` tokens
+
+    ```bash
+    curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-eridanus-1.fetch.ai/api/v3/claims
+    ```
+
+### Get nanomobx tokens
+
+    ```bash
+    curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-mobx-eridanus-1.fetch.ai/api/v3/claims
+    ```
+
+### Get ulrn tokens
+
+    ```bash
+    curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-lrn-eridanus-1.fetch.ai/api/v3/claims
+    ```
+
+## For **Dorado** testnet:
 ### Get atestfet tokens
 
     ```bash
@@ -41,13 +61,13 @@ You can also request and get testnet tokens in your wallet using the APIs, by ru
     curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-lrn-dorado.fetch.ai/api/v3/claims
     ```
 
-### Sample response for fund request to faucet
+## Sample response for fund request to faucet API
 
     ```text
     {"status":"ok","uuid":"<uuid>","target":"<address>"}
     ```
 
-### Check the wallet balance
+## Check the wallet balance
 
 If you want to check your wallet balance, you need to run the following command:
 
