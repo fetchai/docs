@@ -255,7 +255,7 @@ export const InstantAlgoliaSearch = ({
             ref={inputRef}
           />
           <div className="nx-p-1">
-          <Shortcut/>
+            <Shortcut />
           </div>
         </div>
       </div>
