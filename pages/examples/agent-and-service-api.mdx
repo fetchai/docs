@@ -1,4 +1,4 @@
-# Agent and Service Creation using APIs
+# Agents and Functions Creation using APIs
 
 ## Introduction
 
@@ -21,7 +21,7 @@ This example gives details on how to create Agents and respective Agent Function
 
 ![](../../src/images/APIs/APIKey.png)
 
-## Steps to create agent and respective service
+## Steps to create agent and respective function
 
     - Open terminal and create a directory `agents` using `mkdir agents`.
     - Create a python file `agent.py` in this directory and include the following sample script in the Python file.
@@ -143,21 +143,21 @@ response_model = requests.get(f"https://agentverse.ai/v1/almanac/manifests/proto
 })
 model = response_model.json()['models']
 
-time.sleep(10) # Waiting before storing details to create services
+time.sleep(10) # Waiting before storing details to create function
 ```
     
-- Saving all the details required for creating service and creating service on basis of details received
+- Saving all the details required for creating function and creating function on basis of details received
 
 ```python
-# Taking inputs from user for details required to create a service
-name_service = input('Please give service name')
-description = input('Please enter service description')
+# Taking inputs from user for details required to create a function
+name_service = input('Please give function name')
+description = input('Please enter function description')
 field_name = input('Please enter field name')
 field_description = input('Please enter field description')
-tasktype = input('Please tell task or subtask')
+tasktype = input('Please tell primary or secondary function')
 
 # Logging details provided by user
-print(f'Service name: {name_service} \nService Description: {description} \nField Name: {field_name}\nField Description: {field_description}\nTask Type: {tasktype}')
+print(f'Service name: {name_service} \nFunction Description: {description} \nField Name: {field_name}\nField Description: {field_description}\nTask Type: {tasktype}')
 
 # Storing model digest and name to be used for service creation
 model_digest = response_model.json()['interactions'][0]['request'].replace('model:', '')
@@ -165,7 +165,7 @@ print(f'Model Digest : {model_digest}')
 model_name = model[0]['schema']['title']
 print(f'Model Name : {model_name}')
 
-# Creating payload for service creation
+# Creating payload for function creation
 data = {
     "agent": address,
     "name": name_service,
@@ -184,12 +184,12 @@ data = {
     "taskType": tasktype
 }
 
-# Requesting AI Engine services API to create a service with created payload and storing the response.
+# Requesting AI Engine functions API to create a function with created payload and storing the response.
 response_service = requests.post("https://agentverse.ai/v1beta1/services", json=data, headers={
     "Authorization": token
 })
 
-# Storing name of serive and printing it to check if service was created successfully
+# Storing name of function and printing it to check if function was created successfully
 name = response_service.json()['name']
 print(f'Service Created with name: {name}')
 ```
@@ -239,25 +239,25 @@ time.sleep(10) # Waiting before getting model_digest
 # Request to get agent's model details
 response_model = requests.get(f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}", headers={"Authorization": token})
 model = response_model.json()['models']
-time.sleep(10) # Waiting before storing details to create services
+time.sleep(10) # Waiting before storing details to create functions
 
-# Taking inputs from user for details required to create a service
-name_service = input('Please give service name')
-description = input('Please enter service description')
+# Taking inputs from user for details required to create a function
+name_service = input('Please give function name')
+description = input('Please enter function description')
 field_name = input('Please enter field name')
 field_description = input('Please enter field description')
-tasktype = input('Please tell task or subtask')
+tasktype = input('Please tell primary or secondary function')
 
 # Logging details provided by user
-print(f'Service name: {name_service} \nService Description: {description} \nField Name: {field_name}\nField Description: {field_description}\nTask Type: {tasktype}')
+print(f'Service name: {name_service} \Function Description: {description} \nField Name: {field_name}\nField Description: {field_description}\nTask Type: {tasktype}')
 
-# Storing model digest and name to be used for service creation
+# Storing model digest and name to be used for function creation
 model_digest = response_model.json()['interactions'][0]['request'].replace('model:', '')
 print(f'Model Digest : {model_digest}')
 model_name = model[0]['schema']['title']
 print(f'Model Name : {model_name}')
 
-# Creating payload for service creation
+# Creating payload for function creation
 data = {
     "agent": address,
     "name": name_service,
@@ -276,12 +276,12 @@ data = {
     "taskType": tasktype
 }
 
-# Requesting AI Engine services API to create a service with created payload and storing the response.
+# Requesting AI Engine function API to create a function with created payload and storing the response.
 response_service = requests.post("https://agentverse.ai/v1beta1/services", json=data, headers={
     "Authorization": token
 })
 
-# Storing name of serive and printing it to check if service was created successfully
+# Storing name of function and printing it to check if function was created successfully
 name = response_service.json()['name']
 print(f'Service Created with name: {name}')    
 ```
@@ -289,11 +289,11 @@ print(f'Service Created with name: {name}')
 ## Steps to run the script
 
 1. Open terminal and go to directory `agents` created above.
-2. Make sure agent.py and agent_create.py are in this directory.
-3. Open [Agentverse ↗️](https://agentverse.ai/profile/api-keys) and [generate API keys](chat_api_example#steps-to-get-api-tokens).
+2. Make sure `agent.py` and `agent_create.py` are in this directory.
+3. Open [Agentverse ↗️](https://agentverse.ai/profile/api-keys) and [generate API keys ↗️](chat_api_example#steps-to-get-api-tokens).
 4. Open script in editor and replace `token`.
 5. Run command `python agent_create.py` and enter the required details.
-6. Provide Agent and Service Details as asked and check agent and service on Agentverse.
+6. Provide Agent and Fucntion Details as asked and check agent and function on Agentverse.
 
 ## Expected Output
 
@@ -305,6 +305,6 @@ print(f'Service Created with name: {name}')
 
 ![](../../src/images/APIs/API_agent2.png)
 
-- Service created on Agentverse
+- Fucntion created on Agentverse
 
 ![](../../src/images/APIs/API_Service.png)

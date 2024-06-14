@@ -185,6 +185,17 @@ module.exports = withNextra({
         destination: "/guides/agents/intermediate/agent-functions",
         permanent: true,
       },
+      {
+        source:
+          "/guides/agentverse/huggingface-text-classification-model-agent",
+        destination: "/examples/hugging-face-agent",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/booking-demo",
+        destination: "/examples/table-booking-demo",
+        permanent: true,
+      },
     ];
   },
 });
