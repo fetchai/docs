@@ -25,11 +25,12 @@ Then, you will have to give a **name** for the agent. Once you do so and confirm
       Remember, each agent needs a different dedicated mailbox!
     </Callout>
 
-Let's now checkout an example for a **local agent code** setup.
+Let's now checkout an example for a **local agent** setup.
 
 ### Local agent setup
 
-Let's start by creating a local agent named `alice`, alice does absolutely nothing except regsitering.
+Let's start by creating a local agent named `alice`, alice responds hello to any agent that sends a message to her,
+providing the message has a type of `Message`
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -53,6 +54,14 @@ Let's start by creating a local agent named `alice`, alice does absolutely nothi
         seed=SEED_PHRASE,
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
+
+    @agent.on_message(model=Message, replies={Message})
+    async def handle_message(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+        # send the response
+        ctx.logger.info("Sending response to sender")
+        await ctx.send(sender, Message(message="hello"))
 
     if __name__ == "__main__":
         agent.run()
