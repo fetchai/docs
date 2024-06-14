@@ -27,7 +27,7 @@ const classes = {
   link: cn(
     "nx-text-sm contrast-more:nx-text-gray-700 contrast-more:dark:nx-text-gray-100 nx-mt-4 nx-px-4",
   ),
-  active: cn("nx-font-medium nx-subpixel-antialiased grey-background"),
+  active: cn("nx-font-medium nx-subpixel-antialiased"),
   inactive: cn(
     "nx-text-gray-600 hover:nx-text-gray-800 dark:nx-text-gray-400 dark:hover:nx-text-gray-200",
   ),

@@ -219,8 +219,9 @@ export const InstantAlgoliaSearch = ({
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.ctrlKey && event.key === "k") {
+      if (event.ctrlKey || event.metaKey && event.key === "k") {
         event.preventDefault();
+        event.stopImmediatePropagation();
         setModalIsOpen(true);
       }
     };
@@ -244,12 +245,12 @@ export const InstantAlgoliaSearch = ({
     <InstantSearch searchClient={searchClient} indexName={indexName}>
       <div className="nextra-search nx-relative nx-mr-4">
         <Configure hitsPerPage={10} />
-        <div className="nx-flex nx-gap-3 nx-items-center search-bar nx-h-11 nx-bg-white nx-justify-between">
+        <div className="nx-flex nx-gap-3 input-inner-nav nx-items-center search-bar nx-h-11 nx-bg-white">
           <Input
             id={inputId}
             type="search"
             placeholder="Search in documentation"
-            className="nx-bg-white input-inner-nav"
+            className="nx-bg-white nx-w-full input-inner-nav"
             onClick={handleInputClick}
             autoComplete="off"
             ref={inputRef}
