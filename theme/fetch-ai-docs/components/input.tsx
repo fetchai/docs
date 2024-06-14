@@ -7,7 +7,7 @@ type InputProps = ComponentProps<"input"> & { suffix?: ReactNode };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, suffix, ...props }, forwardedRef) => (
-    <div className="nx-relative nx-flex nx-items-center nx-text-gray-900 contrast-more:nx-text-gray-800 dark:nx-text-gray-300 contrast-more:dark:nx-text-gray-300">
+    <div className="nx-relative nx-flex nx-items-center nx-text-gray-900 contrast-more:nx-text-gray-800 nx-w-full dark:nx-text-gray-300 contrast-more:dark:nx-text-gray-300">
       <input
         ref={forwardedRef}
         spellCheck={false}
