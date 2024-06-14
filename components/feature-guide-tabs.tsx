@@ -74,21 +74,9 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           path: "guides/agents/communicating-with-other-agents",
         },
         {
-          title: "How to use the agents to simulate a cleaning scenario ✨",
-          description:
-            "A guide teaching how agents can be used to set up a cleaning scenario.",
-          path: "guides/agents/cleaning-demo",
-        },
-        {
           title: "Agent address 🤖📫",
           description: "A guide showing how to retrieve agents addresses.",
           path: "guides/agents/getting-uagent-address",
-        },
-        {
-          title: "How to book a table at a restaurant using agents",
-          description:
-            "A guide showcasing a table booking process using agents.",
-          path: "guides/agents/booking-demo",
         },
       ],
     },
@@ -100,12 +88,6 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           description:
             "Use the Agentverse: My Agents tab to develop agents directly on the Agentverse platform.",
           path: "/guides/agentverse/creating-a-hosted-agent",
-        },
-        {
-          title: "Discovering agents on the Agentverse Explorer 🔎",
-          description:
-            "Learn to use the Agentverse: Explorer tab to start an interaction with other registered agents.",
-          path: "/guides/agentverse/discovering-agents",
         },
         {
           title: "Utilizing the Agentverse Mailroom service 📬",
@@ -126,13 +108,6 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           description:
             "Create and make an coin toss Function discoverable on the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-coin-toss",
-        },
-        {
-          title:
-            "Agentverse Functions: register a dice roll agent as a Function 🎲",
-          description:
-            "Create and make an dice roll Function discoverable on the Agentverse and DeltaV!",
-          path: "/guides/agentverse/registering-agent-dice-roll",
         },
         {
           title: "Agentverse allowed imports",
@@ -177,11 +152,6 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           title: "Jenesis",
           description: "A guide helping you to get started with Jenesis tools.",
           path: "/guides/fetch-network/jenesis/getting-started",
-        },
-        {
-          title: "DeltaV chat interface",
-          description: "Get started with DeltaV and its functionalities.",
-          path: "/guides/deltav/deltav-chat-interface",
         },
       ],
     },

@@ -64,7 +64,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
         body: JSON.stringify({
           feedback_type: feedbackType,
           description: feedback,
-          page_url: pageUrl,
+          page_url: `/docs${pageUrl}`,
         }),
       });
       if (response.ok) {

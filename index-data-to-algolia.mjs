@@ -6,7 +6,7 @@ import matter from "gray-matter";
 import striptags from "striptags";
 
 const client = algoliasearch("J27DIPDG4S", "");
-const index = client.initIndex("14-3-24-index");
+const index = client.initIndex("12-6-24-index");
 
 const docsPath = path.join(process.cwd(), "pages");
 
@@ -137,7 +137,7 @@ const indexData = async (dir) => {
             objectID: `${filePath}_${section.title}`,
             title: section.title,
             path: `/docs${
-              filePath.split("docs-new/pages")[1].split(".")[0]
+              filePath.split("docs-v2/pages")[1].split(".")[0]
             }#${section.title
               .replaceAll("#", "")
               .toLowerCase()
