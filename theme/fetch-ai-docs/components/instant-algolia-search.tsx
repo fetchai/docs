@@ -219,7 +219,7 @@ export const InstantAlgoliaSearch = ({
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.ctrlKey || event.metaKey && event.key === "k") {
+      if (event.ctrlKey || (event.metaKey && event.key === "k")) {
         event.preventDefault();
         event.stopImmediatePropagation();
         setModalIsOpen(true);
