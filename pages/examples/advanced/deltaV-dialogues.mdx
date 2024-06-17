@@ -16,8 +16,8 @@ In this example we will create an agent on Agentverse which can handle multiple 
 
 ## Step 1: Create agent and Import Required libraries
 
-Open [Agentverse ↗️](https://agentverse.ai/), create news agent and include the  below script.
-We need to import predefined AI engine dialogue and Dialogue Messages
+Open [Agentverse ↗️](https://agentverse.ai/), create a new agent and include the below script.
+We need to import predefined AI engine dialogue and Dialogue Messages:
 
     ```python
     # Import required libraries
@@ -28,9 +28,9 @@ We need to import predefined AI engine dialogue and Dialogue Messages
     ```
 
 
-## Step 2 : Define dialogues message
+## Step 2: Define dialogues message
 
-Each dialogue transition needs a seperate message
+Each dialogue transition needs a separate message:
 
     ```python
     class InitiateChitChatDialogue(Model):
@@ -60,7 +60,7 @@ Each dialogue transition needs a seperate message
 
 ## Step 3: Define functions to get symbol and stock price
 
-setup functions making API calls to get ticker symbol and stock price
+Setup the functions making API calls to get ticker symbol and stock price:
 
     ```python
         async def get_symbol(company_name):
@@ -92,7 +92,7 @@ setup functions making API calls to get ticker symbol and stock price
             return "Error: Unable to fetch stock price."
     ```
 
-## Step 4: # instantiate the dialogues
+## Step 4: instantiate the dialogues
 
     ```python
     chitchat_dialogue = ChitChatDialogue(
@@ -176,20 +176,23 @@ setup functions making API calls to get ticker symbol and stock price
 
 ## Step 6: Save the API key and Run the script in agentverse
 
-To get the API key visit [Alphavantage](https://www.alphavantage.co/) get the free API key and save new secret as API_KEY.
+To get the API key visit [Alphavantage ↗️](https://www.alphavantage.co/) get the free API key and save new secret as `API_KEY`.
 
 ## Step 7: Create an deltaV function and fill in the required details
 
 The function details are as below:
 
-    - Name : Stocks Price Dialogue
-    - AI description : This service helps user to check stocks or share price for more than one company
+    - **Name**: Stocks Price Dialogue.
+    - **AI description**: This service helps user to check stocks or share price for more than one company.
 
 Rest all details will be auto populated. Use deltaV to perform Agentverse Agent chit chat.
 
-## Expected output:
+## Expected output
 
-![](../../src/images/examples/dialogue1.png)
-![](../../src/images/examples/dialogue2.png)
-![](../../src/images/examples/dialogue3.png)
-![](../../src/images/examples/dialogue4.png)
+![](src/images/examples/dialogue1.png)
+
+![](src/images/examples/dialogue2.png)
+
+![](src/images/examples/dialogue3.png)
+
+![](src/images/examples/dialogue4.png)
