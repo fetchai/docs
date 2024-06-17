@@ -103,7 +103,7 @@ const Section: React.FC<SectionProperties> = ({ heading, items }) => {
   return (
     <div id={sectionId} className="nx-my-8">
       <h2 className={styles.productsHeading}>{heading}</h2>
-      <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-2 nx-gap-4 nx-mt-4">
+      <div className="nx-grid nx-grid-cols-1 max-width-section md:nx-grid-cols-2 nx-gap-4 nx-mt-4">
         {items.map((item, index) => (
           <Item key={index} item={item} index={index} />
         ))}
