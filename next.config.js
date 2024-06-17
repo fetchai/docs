@@ -341,6 +341,11 @@ module.exports = withNextra({
         destination: "/examples/advanced/chat_api_example",
         permanent: true,
       },
+      {
+        source: "/guides/deltav/deltav-chat-interface",
+        destination: "/concepts/ai-engine/deltav",
+        permanent: true,
+      },
     ];
   },
 });
