@@ -196,6 +196,11 @@ module.exports = withNextra({
         destination: "/examples/table-booking-demo",
         permanent: true,
       },
+      {
+        source: "/guides/agents/intermediate/options-for-running-your-agents",
+        destination: "/guides/agents/intermediate/options-for-running-local-agents",
+        permanent: true,
+      }
     ];
   },
 });
