@@ -72,7 +72,7 @@ const Item = ({
           >
             {item.title}
           </h3>
-          <p className="nx-text-gray-500 nx-text-base nx-font-light">
+          <p className="nx-text-gray-500 nx-max-w-[480px] nx-text-base nx-font-light">
             <>{item.description}</>
           </p>
         </div>

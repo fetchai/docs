@@ -143,7 +143,7 @@ function LandingPage() {
             Comprehensive guides for people new to programming and Fetch.ai.
           </p>
         </div>
-        <div className="nx-flex nx-items-center md:nx-flex-row nx-flex-col nx-gap-8">
+        <div className="nx-flex nx-items-center  nx-w-full md:nx-flex-row nx-flex-col nx-gap-8">
           {courses.map((course, index) => (
             <CourseStack key={index} course={course} />
           ))}
