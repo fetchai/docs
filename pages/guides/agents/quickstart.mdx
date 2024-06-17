@@ -49,13 +49,9 @@ Install the necessary tools.
     brew install automake autoconf libtool
     ```
 
-## Using `on_message` and `on_interval` even handlers
-
-### Interval Task Example
+## Creating a simple agent
 
 This example shows how to make an agent perform a task periodically.
-
-#### Create Script
 
 Create a new Python script:
 
@@ -63,15 +59,13 @@ Create a new Python script:
     touch interval_task.py
     ```
 
-#### Edit Script
-
 Open `interval_task.py` in your text editor and add the following code:
 
     ```py copy filename="interval_task.py"
     from uagents import Agent, Context
 
     # Create an agent named Alice
-    alice = Agent(name="alice", seed="alice recovery phrase")
+    alice = Agent(name="alice", seed="YOUR NEW PHRASE")
 
     # Define a periodic task for Alice
     @alice.on_interval(period=2.0)
@@ -83,6 +77,8 @@ Open `interval_task.py` in your text editor and add the following code:
         alice.run()
     ```
 
+Be sure to update `seed` with a unique phrase.
+
 #### Run Script
 
 Run the script to see the output:
@@ -93,11 +89,9 @@ Run the script to see the output:
 
 **Expected Output**: `hello, my name is alice every 2 seconds`.
 
-### Message Handling Example
+## Message Handling Example
 
 This guide will walk you through creating a simple interaction between two agents, Emma and Liam. Emma will send a message to Liam at regular intervals, and Liam will handle and log the received messages.
-
-#### Create Script
 
 Create a new Python script:
 
@@ -105,7 +99,6 @@ Create a new Python script:
     touch simple_example.py
     ```
 
-#### Edit Script
 
 Open `simple_example.py` in your text editor and add the following code:
 
@@ -142,6 +135,10 @@ Open `simple_example.py` in your text editor and add the following code:
     if __name__ == "__main__":
         bureau.run()
     ```
+
+
+Again, be sure to update `seed` with a unique phrase.
+
 
 #### Run Script
 
