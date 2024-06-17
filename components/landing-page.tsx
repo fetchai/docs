@@ -104,7 +104,7 @@ function LandingPage() {
         <p className={styles.subTitle}>Getting Started</p>
         <p className={styles.description}>Explore our guides and examples.</p>
         <div className={styles.startGuides}>
-          <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-8">
+          <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-3 nx-gap-8">
             {startingGuides.map((guide, index) => {
               return <GuideBox key={index} guide={guide} />;
             })}
@@ -114,7 +114,7 @@ function LandingPage() {
       <hr className={styles.horizontalLine} />
       <section>
         <p className={styles.subTitle}>Our technology loop</p>
-        <p className={`${styles.description}  nx-max-w-[900px]`}>
+        <p className={`${styles.description}`}>
           Fetch.ai is developing a platform to help the development of an AI
           enabled decentralized digital economy. Agents are programs that can
           make choices on their own for individuals, companies, and devices.
