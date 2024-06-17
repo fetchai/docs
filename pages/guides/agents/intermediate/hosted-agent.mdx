@@ -1,0 +1,14 @@
+import { Callout } from 'nextra/components'
+
+<Callout type="info" emoji="ℹ️">
+This article is a work-in-progress. It will be expanded rapidly.
+</Callout>
+
+
+# Agents running on agentverse
+
+Agents running on agentverse act as functions as a service, they do this by having an orchestrator in the background that calls functions on the agennt when a routine should execute, or a message is called. This helps us keep hosted agents costs down which are passed on to the user.
+
+However, you should be aware of how state works in a hosted agent. A global variables in agentverse will always have the value of the initalised value you set. Updating this value from a function will not work outside the scope of that function call, as the variable is set when the agent is loaded into the Orchestrator which does not load up the entire agent for each call, a global variable will always have the initial set value. To have values persist you must store this values in storage.
+
+To learn more about storage in agentverse, take a look at [Storage Functions](/guides/agents/intermediate/storage-function)
