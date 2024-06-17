@@ -11,4 +11,24 @@ Agents running on agentverse act as functions as a service, they do this by havi
 
 However, you should be aware of how state works in a hosted agent. A global variables in agentverse will always have the value of the initalised value you set. Updating this value from a function will not work outside the scope of that function call, as the variable is set when the agent is loaded into the Orchestrator which does not load up the entire agent for each call, a global variable will always have the initial set value. To have values persist you must store this values in storage.
 
+Let's show this with an example:
+
+```python
+
+```
+
+Output in agentverse is:
+
+```
+16:46:19	Info	Agent	[INFO]: My global is: 1
+16:46:21	Info	Agent	[INFO]: My count is: 452
+16:46:21	Info	Agent	[INFO]: My global is: 1
+16:46:23	Info	Agent	[INFO]: My count is: 453
+16:46:23	Info	Agent	[INFO]: My global is: 1
+```
+
+You can see from this output, global is never updated.
+
 To learn more about storage in agentverse, take a look at [Storage Functions](/guides/agents/intermediate/storage-function)
+
+
