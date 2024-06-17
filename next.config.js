@@ -342,8 +342,8 @@ module.exports = withNextra({
         permanent: true,
       },
       {
-        source: "/guides/deltav/deltav-chat-interface",
-        destination: "/concepts/ai-engine/deltav",
+        source: "/examples/deltaV-dialogues",
+        destination: "/examples/advanced/deltaV-dialogues",
         permanent: true,
       },
     ];
