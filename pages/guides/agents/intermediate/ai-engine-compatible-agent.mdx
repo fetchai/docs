@@ -4,16 +4,14 @@ import { Callout } from 'nextra/components'
 This article is a work-in-progress. It will be expanded rapidly.
 </Callout>
 
-
 # Make your agents AI Engine compatible
 
- In the previous example ([Agent functions](/guides/agents/intermediate/agent-functions)) we created a simple agent that
- returned a dice roll, however this agent was already ready to be callable by AI Engine. Let's get into how.
+ In the previous resource, ([Agent functions ↗️](/guides/agents/intermediate/agent-functions)) we created a simple agent that
+ returned a dice roll, however this agent was already ready to be callable by [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro). Let's get into how.
 
 ## from ai_engine
 
-To enable communication from agent to AI-Engine we import 3 objects that define the allowed responses.
-
+To enable communication from agents to the AI Engine, we import 3 objects that define the allowed responses.
 
 ```python
 class UAgentResponseType(Enum):
@@ -24,7 +22,7 @@ class UAgentResponseType(Enum):
     FINAL_OPTIONS = "final_options"
 ```
 
-We used `FINAL` in our diceroll example:
+We used `FINAL` in our [diceroll ↗️](/examples/dice-roll) example:
 
 ```python
     await ctx.send(
@@ -32,17 +30,17 @@ We used `FINAL` in our diceroll example:
     )
 ```
 
-UAgentResponseType.FINAL tells us that the message has no other responses.
+`UAgentResponseType.FINAL` tells us that the message has no other responses.
 
 
-We can use ERROR to signify the agent has errored:
+We can use `ERROR` to signify the agent has errored:
 
 ```python
     await ctx.send(sender, UAgentResponse(message="Unexpected Error", type=UAgentResponseType.ERROR))
 
 ```
 
-UAgentResponseType.SELECT_FROM_OPTIONS gives the user who is interacting with AI Engine options to select from, you
+`UAgentResponseType.SELECT_FROM_OPTIONS` gives the user who is interacting with AI Engine options to select from, you
 could build this like so:
 
 ```python
@@ -61,7 +59,7 @@ could build this like so:
             )
 ```
 
-UAgentResponseType.FINAL_OPTIONS signals the end of the options to AI Engine:
+`UAgentResponseType.FINAL_OPTIONS` signals the end of the options to AI Engine:
 
 ```python
         options = [KeyValue(key=x, value=x) for x in result if len(x) > 1]
@@ -71,9 +69,7 @@ UAgentResponseType.FINAL_OPTIONS signals the end of the options to AI Engine:
         )
 ```
 
-
-
-The AI-Engine also enforces key, value be strings.
+The AI Engine also enforces `key` and `value` to be strings:
 
 ```python
 class KeyValue(Model):
@@ -81,7 +77,7 @@ class KeyValue(Model):
     value: str
 ```
 
-UAgentResponse it an extension of the UAgents response type
+`UAgentResponse` it an extension of the UAgents response type:
 
 ```python
 class UAgentResponse(Model):
@@ -95,6 +91,5 @@ class UAgentResponse(Model):
     verbose_options: Optional[List[KeyValue]]
 ```
 
-We don't need to alter UAgentResponse, using as `UAgentResponse(message=message, type=UAgentResponseType.*)` will
+We don't need to alter `UAgentResponse`, using as `UAgentResponse(message=message, type=UAgentResponseType.*)` will
 satisfy current requirements.
-

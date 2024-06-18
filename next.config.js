@@ -346,6 +346,12 @@ module.exports = withNextra({
         destination: "/examples/advanced/deltaV-dialogues",
         permanent: true,
       },
+      {
+        source: "/guides/agents/intermediate/options-for-running-your-agents",
+        destination:
+          "/guides/agents/intermediate/options-for-running-local-agents",
+        permanent: true,
+      },
     ];
   },
 });
