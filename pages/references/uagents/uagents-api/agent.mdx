@@ -1,26 +1,26 @@
 import {
-  Note,
-  Properties,
-  Property,
-  Warn,
-  Section,
-  ApiIntro,
-  Tag,
-  CodeHeading,
+    Note,
+    Properties,
+    Property,
+    Warn,
+    Section,
+    ApiIntro,
+    Tag,
+    CodeHeading,
 } from "../../../../components/mdx";
-import { DropDownTabs, Tab } from "../../../../components/mdx";
-import { Row, Col } from "../../../../components/mdx";
+import {DropDownTabs, Tab} from "../../../../components/mdx";
+import {Row, Col} from "../../../../components/mdx";
 import {
-  ApiEndpointRequestResponse,
-  ApiRequest,
-  ApiResponses,
+    ApiEndpointRequestResponse,
+    ApiRequest,
+    ApiResponses,
 } from "../../../../components/api-endpoint";
 
-<a id="src.uagents.agent"></a>
+
 
 # Agent
 
-<a id="src.uagents.agent.Agent"></a>
+
 
 ## Agent Objects
 
@@ -34,90 +34,90 @@ import {
 
 <Row>
     <Properties>
-      <Property name="_name" type="string">
-                The name of the agent.
-      </Property>
-      <Property name="_port" type="_int_">
-                The port on which the agent's server runs.
-      </Property>
-      <Property name="_background_tasks" type="_Set[asyncio.Task]_">
-                Set of background tasks associated with the agent.
-      </Property>
-      <Property name="_resolver" type="_Resolver_">
-                The resolver for agent communication.
-      </Property>
-      <Property name="_loop" type="_asyncio.AbstractEventLoop_">
-                The asyncio event loop used by the agent.
-      </Property>
-      <Property name="_logger">
-                The logger instance for logging agent activities
-      </Property>
-      <Property name="_endpoints" type="_List[dict]_">
-                List of endpoints at which the agent is reachable.
-      </Property>
-      <Property name="_use_mailbox" type="_bool_">
-                Indicates if the agent uses a mailbox for communication.
-      </Property>
-      <Property name="_agentverse" type="_dict_">
-                Agentverse configuration settings.
-      </Property>
-      <Property name="_mailbox_client" type="_MailboxClient_">
-                The client for interacting with the agentverse mailbox.
-      </Property>
-      <Property name="_ledger">
-                The client for interacting with the blockchain ledger.
-      </Property>
-      <Property name="_almanac_contract">
-                The almanac contract for registering agent addresses to endpoints.
-      </Property>
-      <Property name="_storage">
-                Key-value store for agent data storage.
-      </Property>
-      <Property name="_interval_handlers" type="_List[Tuple[IntervalCallback, float]]_">
-                List of interval handlers and their periods.
-      </Property>
-      <Property name="_interval_messages" type="_Set[str]_">
-                Set of message digests that may be sent by interval tasks.
-      </Property>
-      <Property name="_signed_message_handlers" type="_Dict[str, MessageCallback]_">
-                Handlers for signed messages.
-      </Property>
-      <Property name="_unsigned_message_handlers" type="_Dict[str, MessageCallback]_">
-                Handlers for unsigned messages.
-      </Property>
-      <Property name="_models" type="_Dict[str, Type[Model]]_">
-                Dictionary mapping supported message digests to messages.
-      </Property>
-      <Property name="_replies" type="_Dict[str, Set[Type[Model]]]_">
-                Dictionary of allowed reply digests for each type of incoming message.
-      </Property>
-      <Property name="_queries" type="_Dict[str, asyncio.Future]_">
-                Dictionary mapping query senders to their response Futures.
-      </Property>
-      <Property name="_dispatcher">
-                The dispatcher for message handling.
-      </Property>
-      <Property name="_message_queue">
-                Asynchronous queue for incoming messages.
-      </Property>
-      <Property name="_on_startup" type="_List[Callable]_">
-                List of functions to run on agent startup.
-      </Property>
-      <Property name="_on_shutdown" type="_List[Callable]_">
-                List of functions to run on agent shutdown.
-      </Property>
-      <Property name="_version" type="_str_">
-                The version of the agent.
-      </Property>
-      <Property name="_protocol" type="_Protocol_">
-                The internal agent protocol consisting of all interval and message handlers assigned with agent decorators.
-      </Property>
-      <Property name="protocols" type="_Dict[str, Protocol]_">
-                Dictionary mapping all supported protocol digests to their corresponding protocols.
-      </Property>
-      <Property name="_ctx" type="_Context_">
-                The context for agent interactions.
-      </Property>
+        <Property name="_name" type="string">
+            The name of the agent.
+        </Property>
+        <Property name="_port" type="_int_">
+            The port on which the agent's server runs.
+        </Property>
+        <Property name="_background_tasks" type="_Set[asyncio.Task]_">
+            Set of background tasks associated with the agent.
+        </Property>
+        <Property name="_resolver" type="_Resolver_">
+            The resolver for agent communication.
+        </Property>
+        <Property name="_loop" type="_asyncio.AbstractEventLoop_">
+            The asyncio event loop used by the agent.
+        </Property>
+        <Property name="_logger">
+            The logger instance for logging agent activities
+        </Property>
+        <Property name="_endpoints" type="_List[dict]_">
+            List of endpoints at which the agent is reachable.
+        </Property>
+        <Property name="_use_mailbox" type="_bool_">
+            Indicates if the agent uses a mailbox for communication.
+        </Property>
+        <Property name="_agentverse" type="_dict_">
+            Agentverse configuration settings.
+        </Property>
+        <Property name="_mailbox_client" type="_MailboxClient_">
+            The client for interacting with the agentverse mailbox.
+        </Property>
+        <Property name="_ledger">
+            The client for interacting with the blockchain ledger.
+        </Property>
+        <Property name="_almanac_contract">
+            The almanac contract for registering agent addresses to endpoints.
+        </Property>
+        <Property name="_storage">
+            Key-value store for agent data storage.
+        </Property>
+        <Property name="_interval_handlers" type="_List[Tuple[IntervalCallback, float]]_">
+            List of interval handlers and their periods.
+        </Property>
+        <Property name="_interval_messages" type="_Set[str]_">
+            Set of message digests that may be sent by interval tasks.
+        </Property>
+        <Property name="_signed_message_handlers" type="_Dict[str, MessageCallback]_">
+            Handlers for signed messages.
+        </Property>
+        <Property name="_unsigned_message_handlers" type="_Dict[str, MessageCallback]_">
+            Handlers for unsigned messages.
+        </Property>
+        <Property name="_models" type="_Dict[str, Type[Model]]_">
+            Dictionary mapping supported message digests to messages.
+        </Property>
+        <Property name="_replies" type="_Dict[str, Set[Type[Model]]]_">
+            Dictionary of allowed reply digests for each type of incoming message.
+        </Property>
+        <Property name="_queries" type="_Dict[str, asyncio.Future]_">
+            Dictionary mapping query senders to their response Futures.
+        </Property>
+        <Property name="_dispatcher">
+            The dispatcher for message handling.
+        </Property>
+        <Property name="_message_queue">
+            Asynchronous queue for incoming messages.
+        </Property>
+        <Property name="_on_startup" type="_List[Callable]_">
+            List of functions to run on agent startup.
+        </Property>
+        <Property name="_on_shutdown" type="_List[Callable]_">
+            List of functions to run on agent shutdown.
+        </Property>
+        <Property name="_version" type="_str_">
+            The version of the agent.
+        </Property>
+        <Property name="_protocol" type="_Protocol_">
+            The internal agent protocol consisting of all interval and message handlers assigned with agent decorators.
+        </Property>
+        <Property name="protocols" type="_Dict[str, Protocol]_">
+            Dictionary mapping all supported protocol digests to their corresponding protocols.
+        </Property>
+        <Property name="_ctx" type="_Context_">
+            The context for agent interactions.
+        </Property>
     </Properties>
 </Row>
 
@@ -125,34 +125,34 @@ import {
 
 <Row>
     <Properties>
-      <Property name="name" type="string">
-                The name of the agent.
-      </Property>
-      <Property name="address" type="string">
-                The address of the agent used for communication.
-      </Property>
-      <Property name="wallet" type="_LocalWallet_">
-                The agent's wallet for transacting on the ledger.
-      </Property>
-      <Property name="storage" type="_KeyValueStore_">
-                The key-value store for storage operations.
-      </Property>
-      <Property name="mailbox" type="_Dict[str, str]_">
-                The mailbox configuration for the agent (deprecated and replaced by agentverse).
-      </Property>
-      <Property name="agentverse" type="_Dict[str, str]_">
-                The agentverse configuration for the agent.
-      </Property>
-      <Property name="mailbox_client" type="_MailboxClient_">
-               The client for interacting with the agentverse mailbox.
-      </Property>
-      <Property name="protocols" type="_Dict[str, Protocol]_">
-               Dictionary mapping all supported protocol digests to their corresponding protocols.
-      </Property>
+        <Property name="name" type="string">
+            The name of the agent.
+        </Property>
+        <Property name="address" type="string">
+            The address of the agent used for communication.
+        </Property>
+        <Property name="wallet" type="_LocalWallet_">
+            The agent's wallet for transacting on the ledger.
+        </Property>
+        <Property name="storage" type="_KeyValueStore_">
+            The key-value store for storage operations.
+        </Property>
+        <Property name="mailbox" type="_Dict[str, str]_">
+            The mailbox configuration for the agent (deprecated and replaced by agentverse).
+        </Property>
+        <Property name="agentverse" type="_Dict[str, str]_">
+            The agentverse configuration for the agent.
+        </Property>
+        <Property name="mailbox_client" type="_MailboxClient_">
+            The client for interacting with the agentverse mailbox.
+        </Property>
+        <Property name="protocols" type="_Dict[str, Protocol]_">
+            Dictionary mapping all supported protocol digests to their corresponding protocols.
+        </Property>
     </Properties>
 </Row>
 
-<a id="src.uagents.agent.Agent.__init__"></a>
+
 
 #### `__`init`__`
 
@@ -180,7 +180,7 @@ Initialize an Agent instance.
     - `resolve` _Optional[Resolver]_ - The resolver to use for agent communication.
     - `version` _Optional[str]_ - The version of the agent.
 
-<a id="src.uagents.agent.Agent.name"></a>
+
 
 #### name
 
@@ -195,7 +195,7 @@ Get the name of the agent.
 
     - `str` - The name of the agent.
 
-<a id="src.uagents.agent.Agent.address"></a>
+
 
 #### address
 
@@ -210,7 +210,7 @@ Get the address of the agent used for communication.
 
     - `str` - The agent's address.
 
-<a id="src.uagents.agent.Agent.wallet"></a>
+
 
 #### wallet
 
@@ -225,7 +225,7 @@ Get the wallet of the agent.
 
     - `LocalWallet` - The agent's wallet.
 
-<a id="src.uagents.agent.Agent.storage"></a>
+
 
 #### storage
 
@@ -240,7 +240,7 @@ Get the key-value store used by the agent for data storage.
 
     - `KeyValueStore` - The key-value store instance.
 
-<a id="src.uagents.agent.Agent.mailbox"></a>
+
 
 #### mailbox
 
@@ -255,7 +255,7 @@ Get the mailbox configuration of the agent (deprecated and replaced by agentvers
 
     Dict[str, str]: The mailbox configuration.
 
-<a id="src.uagents.agent.Agent.agentverse"></a>
+
 
 #### agentverse
 
@@ -270,7 +270,7 @@ Get the agentverse configuration of the agent.
 
     Dict[str, str]: The agentverse configuration.
 
-<a id="src.uagents.agent.Agent.mailbox_client"></a>
+
 
 #### mailbox`_`client
 
@@ -285,7 +285,7 @@ Get the mailbox client used by the agent for mailbox communication.
 
     - `MailboxClient` - The mailbox client instance.
 
-<a id="src.uagents.agent.Agent.mailbox"></a>
+
 
 #### mailbox
 
@@ -300,7 +300,7 @@ Set the mailbox configuration for the agent (deprecated and replaced by agentver
 
     - `config` _Union[str, Dict[str, str]]_ - The new mailbox configuration.
 
-<a id="src.uagents.agent.Agent.agentverse"></a>
+
 
 #### agentverse
 
@@ -315,7 +315,7 @@ Set the agentverse configuration for the agent.
 
     - `config` _Union[str, Dict[str, str]]_ - The new agentverse configuration.
 
-<a id="src.uagents.agent.Agent.sign"></a>
+
 
 #### sign
 
@@ -333,7 +333,7 @@ Sign the provided data.
 
     - `str` - The signature of the data.
 
-<a id="src.uagents.agent.Agent.sign_digest"></a>
+
 
 #### sign`_`digest
 
@@ -351,7 +351,7 @@ Sign the provided digest.
 
     - `str` - The signature of the digest.
 
-<a id="src.uagents.agent.Agent.sign_registration"></a>
+
 
 #### sign`_`registration
 
@@ -370,7 +370,7 @@ Sign the registration data for Almanac contract.
 
     - `AssertionError` - If the Almanac contract address is None.
 
-<a id="src.uagents.agent.Agent.update_endpoints"></a>
+
 
 #### update`_`endpoints
 
@@ -384,7 +384,7 @@ Update the list of endpoints.
 
     - `endpoints` _List[Dict[str, Any]]_ - List of endpoint dictionaries.
 
-<a id="src.uagents.agent.Agent.update_loop"></a>
+
 
 #### update`_`loop
 
@@ -398,7 +398,7 @@ Update the event loop.
 
     - `loop` - The event loop.
 
-<a id="src.uagents.agent.Agent.update_queries"></a>
+
 
 #### update`_`queries
 
@@ -412,7 +412,7 @@ Update the queries attribute.
 
     - `queries` - The queries attribute.
 
-<a id="src.uagents.agent.Agent.register"></a>
+
 
 #### register
 
@@ -425,7 +425,7 @@ Register with the Almanac contract.
 This method checks for registration conditions and performs registration
 if necessary.
 
-<a id="src.uagents.agent.Agent.on_interval"></a>
+
 
 #### on`_`interval
 
@@ -446,7 +446,7 @@ Decorator to register an interval handler for the provided period.
 
     - `Callable` - The decorator function for registering interval handlers.
 
-<a id="src.uagents.agent.Agent.on_query"></a>
+
 
 #### on`_`query
 
@@ -466,7 +466,7 @@ Set up a query event with a callback.
 
     - `Callable` - The decorator function for registering query handlers.
 
-<a id="src.uagents.agent.Agent.on_message"></a>
+
 
 #### on`_`message
 
@@ -488,7 +488,7 @@ Decorator to register an message handler for the provided message model.
 
     - `Callable` - The decorator function for registering message handlers.
 
-<a id="src.uagents.agent.Agent.on_event"></a>
+
 
 #### on`_`event
 
@@ -506,7 +506,7 @@ Decorator to register an event handler for a specific event type.
 
     - `Callable` - The decorator function for registering event handlers.
 
-<a id="src.uagents.agent.Agent.include"></a>
+
 
 #### include
 
@@ -525,7 +525,7 @@ Include a protocol into the agent's capabilities.
 
     - `RuntimeError` - If a duplicate model, signed message handler, or message handler is encountered.
 
-<a id="src.uagents.agent.Agent.publish_manifest"></a>
+
 
 #### publish`_`manifest
 
@@ -539,7 +539,7 @@ Publish a protocol manifest to the Almanac service.
 
     - `manifest` _Dict[str, Any]_ - The protocol manifest.
 
-<a id="src.uagents.agent.Agent.handle_message"></a>
+
 
 #### handle`_`message
 
@@ -557,7 +557,7 @@ Handle an incoming message.
     - `message` _JsonStr_ - The message content in JSON format.
     - `session` _uuid.UUID_ - The session UUID.
 
-<a id="src.uagents.agent.Agent.setup"></a>
+
 
 #### setup
 
@@ -567,7 +567,7 @@ Handle an incoming message.
 
 Include the internal agent protocol, run startup tasks, and start background tasks.
 
-<a id="src.uagents.agent.Agent.start_background_tasks"></a>
+
 
 #### start`_`background`_`tasks
 
@@ -577,7 +577,7 @@ Include the internal agent protocol, run startup tasks, and start background tas
 
 Start background tasks for the agent.
 
-<a id="src.uagents.agent.Agent.run"></a>
+
 
 #### run
 
@@ -587,7 +587,7 @@ Start background tasks for the agent.
 
 Run the agent.
 
-<a id="src.uagents.agent.Bureau"></a>
+
 
 ## Bureau Objects
 
@@ -618,7 +618,7 @@ This class manages a collection of agents and orchestrates their execution.
     - `_use_mailbox` _bool_ - A flag indicating whether mailbox functionality is enabled for any
       of the agents.
 
-<a id="src.uagents.agent.Bureau.__init__"></a>
+
 
 #### `__`init`__`
 
@@ -634,9 +634,9 @@ Initialize a Bureau instance.
 
     - `port` _Optional[int]_ - The port on which the bureau's server will run.
     - `endpoint` _Optional[Union[str, List[str], Dict[str, dict]]]_ - The endpoint configuration
-  for the bureau.
+for the bureau.
 
-<a id="src.uagents.agent.Bureau.add"></a>
+
 
 #### add
 
@@ -650,7 +650,7 @@ Add an agent to the bureau.
 
     - `agent` _Agent_ - The agent to be added.
 
-<a id="src.uagents.agent.Bureau.run"></a>
+
 
 #### run
 
