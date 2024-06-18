@@ -97,11 +97,23 @@ export const InstantAlgoliaSearch = ({
     </div>
   ));
 
+  const NoResultsBoundary = ({ fallback }: { fallback: string }) => {
+    return (
+      <div className="nx-mt-2 nx-absolute nx-w-full nx-h-full">
+        <div className="nx-flex nx-p-4 nx-font-normal nx-text-fetch-main nx-justify-center">{`${fallback}`}</div>
+      </div>
+    );
+  };
+
   const directoriesWithTags = directories
     .filter((directory) => !!("tags" in directory))
     .map(({ route, tags }) => ({ route, tags }));
 
   const CustomHits = connectHits(({ hits }) => {
+    if (hits.length <= 0) {
+      return <NoResultsBoundary fallback={"No more information available !"} />;
+    }
+
     const groupedHits = {};
 
     for (const hit of hits) {
