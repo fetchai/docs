@@ -19,7 +19,7 @@ This guide offers details on utilizing the AI engine's [chat API ↗️](../apis
     - Give name to your API key.
     - Click on `write` for `Access to all resources in Agentverse` and click on `Generate API Key`
 
-![](../../src/images/APIs/APIKey.png)
+![](src/images/APIs/APIKey.png)
   
 ## Script Break down 🧩
 
@@ -412,6 +412,7 @@ The main script flow includes:
     ```
     
     - Handling `agent_message` type response:
+
         1. if the questions asked is same as the previous response in agent_json, it automatically sends previous response to deltav using `send_user_message` message.
         2. else the input or is taken from user for the given question and sent to deltaV agent using `send_user_message` and `last_response` is stored.
 
@@ -457,7 +458,7 @@ The main script flow includes:
         last_question = current_message_text.split('?')[0] if '?' in current_message_text else current_message_text
     ```
 
-    This section of script handles any other agent response and also updates the last question.It removes the options and punctuation mark from the question to check it with the current question in agent_json.
+    This section of script handles any other agent response and also updates the last question. It removes the options and punctuation mark from the question to check it with the current question in agent_json.
 
 ## Whole Script
 
@@ -735,8 +736,6 @@ Running this app on the terminal:
 
 Please refer below images for sample chat session with AI Engine AI Engine Chat API
 
-![](../../src/images/APIs/chatAPI1.png)
+![](src/images/APIs/chatAPI1.png)
 
-![](../../src/images/APIs/chatAPI2.png)
-
-
+![](src/images/APIs/chatAPI2.png)
