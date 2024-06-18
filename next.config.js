@@ -348,7 +348,8 @@ module.exports = withNextra({
       },
       {
         source: "/guides/agents/intermediate/options-for-running-your-agents",
-        destination: "/guides/agents/intermediate/options-for-running-local-agents",
+        destination:
+          "/guides/agents/intermediate/options-for-running-local-agents",
         permanent: true,
       },
     ];
