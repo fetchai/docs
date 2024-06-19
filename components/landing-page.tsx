@@ -16,7 +16,7 @@ function LandingPage() {
       image: cardImage,
     },
     {
-      label: "Creating an executale function for AI",
+      label: "Creating an executable function for AI",
       path: "guides/agents/communicating-with-other-agents",
       image: cardImage,
     },
@@ -30,13 +30,13 @@ function LandingPage() {
     {
       title: "Agents 101",
       description:
-        "Learn how to do lorem ipsum dolor sit amed Another dolor sit amed consectatur Become a master of agents",
+        "This course is designed to introduce you to the development of Agents,providing a comprehensive guide",
       path: "/guides/agent-courses/introductory-course",
     },
     {
       title: "Agents 101 for AI Engine",
       description:
-        "Learn how to do lorem ipsum dolor sit amed Another dolor sit amed consectatur Become a master of agents",
+        "This course is designed to introduce you to building agents that are accessible to the AI Engine.",
       path: "/guides/agent-courses/agents-for-ai",
     },
   ];
