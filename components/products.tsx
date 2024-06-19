@@ -53,24 +53,29 @@ const Item = ({
         setHover(false);
       }}
     >
-      <Image
-        src={item.icon}
-        alt={`Icon for ${item.title}`}
-        className={styles.productIcon}
-      />
-      <div>
-        <h3
-          className={
-            hover
-              ? "nx-text-purple nx-text-lg nx-font-medium nx-mb-2"
-              : "nx-text-black nx-text-lg nx-font-medium nx-mb-2"
-          }
-        >
-          {item.title}
-        </h3>
-        <p className="nx-text-gray-500 nx-text-base nx-font-light">
-          <>{item.description}</>
-        </p>
+      <div className="nx-flex nx-gap-6">
+        <div>
+          <Image
+            src={item.icon}
+            alt={`Icon for ${item.title}`}
+            className={styles.productIcon}
+          />
+        </div>
+
+        <div>
+          <h3
+            className={
+              hover
+                ? "nx-text-purple nx-text-lg nx-font-medium nx-mb-2"
+                : "nx-text-black nx-text-lg nx-font-medium nx-mb-2"
+            }
+          >
+            {item.title}
+          </h3>
+          <p className="nx-text-gray-500 nx-max-w-[480px] nx-text-base nx-font-light">
+            <>{item.description}</>
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -97,10 +102,8 @@ const Section: React.FC<SectionProperties> = ({ heading, items }) => {
   const sectionId = heading.replaceAll(" ", "").toLowerCase();
   return (
     <div id={sectionId} className="nx-my-8">
-      <h2 className={"nx-text-lg nx-font-medium nx-text-fetch-light-grey"}>
-        {heading}
-      </h2>
-      <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-3 nx-gap-4 nx-mt-4">
+      <h2 className={styles.productsHeading}>{heading}</h2>
+      <div className="nx-grid nx-grid-cols-1 max-width-section md:nx-grid-cols-2 nx-gap-4 nx-mt-4">
         {items.map((item, index) => (
           <Item key={index} item={item} index={index} />
         ))}
@@ -236,7 +239,7 @@ const items: { [key: string]: Item[] } = {
 
 const IndexPage: React.FC = () => {
   return (
-    <div className="nx-container nx-mx-auto nx-py-8">
+    <div>
       {Object.entries(items).map(([heading, itemList], index) => (
         <div key={heading}>
           {index !== 0 && (
