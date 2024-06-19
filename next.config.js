@@ -196,6 +196,162 @@ module.exports = withNextra({
         destination: "/examples/table-booking-demo",
         permanent: true,
       },
+      {
+        source: "/examples/first-agent",
+        destination: "/examples/getting-started/first-agent",
+        permanent: true,
+      },
+      {
+        source: "/examples/agents-interval-task",
+        destination: "/examples/intermediate/agents-interval-task",
+        permanent: true,
+      },
+      {
+        source: "/examples/simple-agent-communication",
+        destination: "/examples/intermediate/simple-agent-communication",
+        permanent: true,
+      },
+      {
+        source: "/examples/local-communication",
+        destination: "/examples/intermediate/local-communication",
+        permanent: true,
+      },
+      {
+        source: "/examples/multiple-agents",
+        destination: "/examples/intermediate/multiple-agents",
+        permanent: true,
+      },
+      {
+        source: "/examples/storage",
+        destination: "/examples/intermediate/storage",
+        permanent: true,
+      },
+      {
+        source: "/examples/send-tokens-agents",
+        destination: "/examples/intermediate/send-tokens-agents",
+        permanent: true,
+      },
+      {
+        source: "/examples/verify-messages",
+        destination: "/examples/intermediate/verify-messages",
+        permanent: true,
+      },
+      {
+        source: "/examples/agents-cleaning-demo",
+        destination: "/examples/intermediate/agents-cleaning-demo",
+        permanent: true,
+      },
+      {
+        source: "/examples/table-booking-demo",
+        destination: "/examples/intermediate/table-booking-demo",
+        permanent: true,
+      },
+      {
+        source: "/examples/wallet-messaging",
+        destination: "/examples/intermediate/wallet-messaging",
+        permanent: true,
+      },
+      {
+        source: "/examples/mailbox-agents",
+        destination: "/examples/intermediate/mailbox-agents",
+        permanent: true,
+      },
+      {
+        source: "/examples/broadcast",
+        destination: "/examples/intermediate/broadcast",
+        permanent: true,
+      },
+      {
+        source: "/examples/name-service",
+        destination: "/examples/intermediate/name-service",
+        permanent: true,
+      },
+      {
+        source: "/examples/on-query-proxy",
+        destination: "/examples/intermediate/on-query-proxy",
+        permanent: true,
+      },
+      {
+        source: "/examples/dice-roll",
+        destination: "/examples/intermediate/dice-roll",
+        permanent: true,
+      },
+      {
+        source: "/examples/coin-toss",
+        destination: "/examples/intermediate/coin-toss",
+        permanent: true,
+      },
+      {
+        source: "/examples/local-agent-registration",
+        destination: "/examples/intermediate/local-agent-registration",
+        permanent: true,
+      },
+      {
+        source: "/examples/news-reading-system",
+        destination: "/examples/intermediate/news-reading-system",
+        permanent: true,
+      },
+      {
+        source: "/examples/local-agent-langchain",
+        destination: "/examples/intermediate/local-agent-langchain",
+        permanent: true,
+      },
+      {
+        source: "/examples/hugging-face-agent",
+        destination: "/examples/intermediate/hugging-face-agent",
+        permanent: true,
+      },
+      {
+        source: "/examples/on-query",
+        destination: "/examples/intermediate/on-query",
+        permanent: true,
+      },
+      {
+        source: "/examples/agent-and-service-api",
+        destination: "/examples/intermediate/agent-and-service-api",
+        permanent: true,
+      },
+      {
+        source: "/examples/agent-secret-api",
+        destination: "/examples/intermediate/agent-secret-api",
+        permanent: true,
+      },
+      {
+        source: "/examples/react_example",
+        destination: "/examples/intermediate/react_example",
+        permanent: true,
+      },
+      {
+        source: "/examples/open-dialogue-chitchat",
+        destination: "/examples/advanced/open-dialogue-chitchat",
+        permanent: true,
+      },
+      {
+        source: "/examples/predefined-dialogue-chitchat",
+        destination: "/examples/advanced/predefined-dialogue-chitchat",
+        permanent: true,
+      },
+      {
+        source: "/examples/chat-api-example",
+        destination: "/examples/advanced/chat-api-example",
+        permanent: true,
+      },
+      {
+        source: "/examples/chat_api_example",
+        destination: "/examples/advanced/chat_api_example",
+        permanent: true,
+      },
+      {
+        source: "/examples/deltaV-dialogues",
+        destination: "/examples/advanced/deltaV-dialogues",
+        permanent: true,
+      },
+      {
+        source: "/guides/agents/intermediate/options-for-running-your-agents",
+        destination:
+          "/guides/agents/intermediate/options-for-running-local-agents",
+        permanent: true,
+      },
     ];
   },
 });

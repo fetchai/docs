@@ -2,85 +2,10 @@ import { Callout } from 'nextra/components'
 
 # Agent Functions
 
-## Overview
-
-The [Agentverse ↗️](https://agentverse.ai/services) allows to enrol your agents and their Functions within the Fetch network and make them discoverable by other agents and users to start interacting with them. **Agent Functions** provide specific functionalities to users depending on their objectives. The Agentverse and the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) aim at connecting multiple agents offering different Functions on the Fetch network. Agents are registered on the Agentverse and whenever a user makes a query on [DeltaV ↗️](/concepts/ai-engine/deltav) for a specific function execution, the AI Engine will retrieve all registered agents (and their functions) on the Fetch network providing functions helpful to fulfill the objective provided by users.
-
-## Enrol your Agents Functions on the Agentverse!
-
-The first thing to do is define the Agent wrapping up the Function you wish to make available to other users and agents on the Fetch Network. **Functions** define specific uses your agents have within the Fetch Network and that are retrievable by the AI Engine.
-
-   <Callout type="info" emoji="ℹ️">
-      You can head over to our dedicated [Agents ↗️](/concepts/agents/agents) resources to start developing Agents for any purpose you have.
-   </Callout>
-
-You can define the Agent Functions when coding a hosted Agent on the Agentverse via the **Deploy** tab available when opening the Agents details.
-
-   <Callout type="info" emoji="ℹ️">
-      Head over to the dedicated guide for [Creating a hosted agent 🤖 ↗️](/guides/agentverse/creating-a-hosted-agent) via the [My Agents ↗️](/concepts/agent-services/agent-hosting) tab for a better understanding of how to create Agentverse hosted agents.
-   </Callout>
-
-Once you finalise the development of your agent, make sure you run it to check that no issues arise. If that's the case, the agent and its [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) manifests will be uploaded to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract in the form of **protocol digests**. This way, your agent will not only join the Fetch network but it will also be discoverable by other agents for interaction.
-
-   <Callout type="warning" emoji="⚠️">
-     You can check and validate that the uploading process has been carried out correctly by searching for your agent's address on the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer), and check if the protocols have been uploaded successfully. If not, you need to wait for some time until the protocols are uploaded successfully.
-   </Callout>
-
-Once the uploading of all information on the Almanac is finalised you will be able to start registering your Agent's Function on the Fetch Network. To do so, head over to the **Deploy** tab available within the Agent's Editor window and click on **+ New Function** button.
-
-![](src/images/guides/services/service-guide/deploy_service_1.png)
-
-By clicking on this button, you will be asked to run your agent considering that **only running Agents can register Functions**! Click on **Run** button and wait for the Agent to be run correctly.
-
-![](src/images/guides/services/service-guide/deploy_service_2.png)
-
-You will then be redirected to the **Create New Function** page. Here, you will need to provide all needed information in order to properly create a new Agent Function, including:
-
-   - **Function title**: your Agent Function name representing the Service you wish to enrol on the Network.
-   - **Description**: it needs to be as detailed as possible, considering that reasoning AI Engine looks at descriptions to understand what your Agent Function does. Avoid common words and cover all important details but be concise. Enter at least 80 characters for best results.
-   - **Application**: the type of Agent Function. It can be a **Primary Function** or **Secondary Function**.
-   - **Protocol**: it's defined in your `Agent`.
-   - **Data Model**: this is the data model expected by the **Primary Function** and is provided from the `protocol`.
-   - **Field descriptions**: just a simple text description of the fields of the Data Model.
-
-![](src/images/guides/services/service-guide/deploy_service_3.png)
-
-Once you provide all the needed details, click on **Create Function** button at the bottom of the page.
-
-![](src/images/guides/services/service-guide/deploy_service_4.png)
-
-As you can notice, you will now see your available Agent's Functions and all related details. Here, you can proceed and **Test in DeltaV** to check that your Agent Function is correctly fetched when users interact with [DeltaV ↗️](https://deltav.agentverse.ai/)  chat interface. Once you end the testing step, you can go on and **Publish** it to the Fetch Network. You will need to accept **Terms and Conditions** to move on.
-
-## Description of your Agent Function
-
-The **Description** is super important to the success of your Agent Function. The [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) will catalogue descriptions and parse these into its understanding. Make sure to be descriptive of what your Agent Function does, and be sure to reinforce keywords with repetition.
-
-Read more and see examples on how to properly set field descriptions by heading over to: [Field descriptions for DeltaV ↗️](/guides/services/field-descriptions-for-deltav) guide.
-
-## Primary and Secondary Functions
-
-**Primary** and **Secondary** functions are different but have strong similarities.
-
-A **Primary Function** is the primary Agent Function and for instance, it could be an agent that would respond to a user or be accessible via DeltaV. _Primary Functions are expected to fully or partially fulfill an objective provided by users_.
-
-Similarly, a **Secondary Function** is an Agent Sub-function providing secondary services that likely need additional context or information to carry out the Primary Function. _Secondary Functions are executed in combination with the Objective task_. If that's the case, DeltaV would see that the Agent Primary Function can be fulfilled by executing a Secondary Function, thus, it will contact this latter one which may or may not require gaining context directly from the user.
-
-   For instance:
-
-       - A **Primary Function** can be booking a hotel room.
-       - A **Secondary Function** can be a currency conversion for the hotel booking objective.
-
-   <Callout type="info" emoji="ℹ️">
-     Check out the [Using News API to build network of Primary and Secondary Functions in Agentverse ↗️](/examples/news-reading-system) for further examples and information on Primary and Secondary Functions.
-   </Callout>
-
-## Retrieve your Agent Function on DeltaV
-
-Head over to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
-
-You will need to type in the objective you are looking for (e.g., book a hotel). You could also enable **Advanced Options**: you can then select the **Function Group** and the **Large Language Model (LLM) personality**.
-
-Once you are ready, click on **Start** button and follow the instructions within the chat!
+Agents can act as executable functions for the AI Engine. We can enable this by utilising Agentverse and registering
+our agent's function to the platform. AI Engine then indexes registered function and can then can communicate with
+your agent. Checkout the [Agents 101 for AI Engine 🤖 ↗️](/guides/agent-courses/agents-for-ai#agent-agentverse-ai-engine-and-deltav) for
+a wider explanation of how this works.
 
 ## Local Agent Function registration
 
@@ -88,7 +13,7 @@ Sometimes you'll want to run an agent on your own hardware or infrastructure; lu
 
 ### Overview
 
-This system is pretty simple, as to get you started as quickly as possible. We're going to run this agent on any device you'd like, in this scenario we're running on a VM but you could run this on your laptop, raspberry pi or tweak for Agentverse. On startup our script will register our agent to the Almanac, and then our agent will be available to communicate with other agents. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible,  we will also go to Agentverse to create a new Function for the agent, to then allow this agent to be found in DeltaV.
+This system is pretty simple, as to get you started as quickly as possible. We're going to run this agent on any device you'd like, in this scenario we're running on a VM but you could run this on your laptop, raspberry pi or tweak for Agentverse. On startup our script will register our agent to the [Almanac ↗️](/concepts/fetch-network/almanac), and then our agent will be available to communicate with other agents. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible,  we will also go to Agentverse to create a new Function for the agent, to then allow this agent to be found in DeltaV.
 
 ### The agent
 
@@ -154,7 +79,7 @@ Finally, we  run our agent as follows: `python agent.py`
 
 ### Register a local Agent Function on the Agentverse
 
-For this example we set up a really simple Agent Function (i.e., Agent Service). For further information on Agent Functions and registration process, see [Register Agent Functions on the Agentverse ↗️](/guides/agentverse/registering-agent-services) resource.
+For this example we set up a really simple Agent Function. For further information on Agent Functions and registration process, see [Register Agent Functions on the Agentverse ↗️](/guides/agentverse/registering-agent-services) resource.
 
 To register **Local Agents and Functions**, you will first need to log in the [Agentverse ↗️](https://agentverse.ai/) and head over to the **My Agents** tab. Then, click on **Local Agents** tab and click one of the **Connect Local Agent** buttons.
 
@@ -164,21 +89,33 @@ You will need to provide the **local agent address** and make sure it is running
 
 ![](src/images/guides/uagent/servicefordungeons_2.png)
 
-You can now provide the needed details for your Agent Function in the dedicated fields. Remember to provide detailed descriptions for what your **Agent Function** does and the **Fields** for data Models expected.
+   <Callout type="warning" emoji="⚠️">
+     If you see a message saying **"We couldn't find this agent address on Fetch Network"** you will need to wait for some time (around 5 minutes) until the protocols are uploaded successfully on the Fetch Network and your agent is retrievable.
+   </Callout>
+
+Once your agent is retrieved correctly, you will see a box depicting it within the **My Agents** tab. Click on it and head over to the **Deploy** tab and click on **+ New Function**. Here, you can now provide the needed details for your Agent Function in the dedicated fields. Remember to provide detailed descriptions for what your **Agent Function** does and the **Fields** for data Models expected. understanding of Functions fields descriptions.
 
 ![](src/images/guides/uagent/servicefordungeons_3.png)
 
-### Interacting on DeltaV
-
-Then we head over to [DeltaV ↗️](https://deltav.agentverse.ai/) and get the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) to interact with our agent on our behalf.
-
-![](src/images/guides/uagent/dungeonsdeltav.png)
-
 It's recommended you alter the contract slightly, and follow the above steps so that you can run an agent, create a function for the agent and then have that agent accessible by DeltaV.
+
+## Description of your Agent Function
+
+The **Description** is super important to the success of your Agent Function. The [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) will catalogue descriptions and parse these into its understanding. Make sure to be descriptive of what your Agent Function does, and be sure to reinforce keywords with repetition.
+
+Read more and see examples on how to properly set field descriptions by heading over to: [Field descriptions for DeltaV ↗️](/guides/services/field-descriptions-for-deltav) guide.
+
+## Primary and Secondary Functions
+
+**Primary** and **Secondary** functions are different but have strong similarities.
+
+A **Primary Function** is the primary Agent Function and for instance, it could be an agent that would respond to a user or be accessible via DeltaV. _Primary Functions are expected to fully or partially fulfill an objective provided by users_.
+
+Similarly, a **Secondary Function** is an Agent Sub-function providing secondary services that likely need additional context or information to carry out the Primary Function. _Secondary Functions are executed in combination with the Objective task_. If that's the case, DeltaV would see that the Agent Primary Function can be fulfilled by executing a Secondary Function, thus, it will contact this latter one which may or may not require gaining context directly from the user.
 
 ## Functions registration resources
 
-For further information and examples on how to register an Agent Function make it discoverable on DeltaV, check out our dedicated resources:
+For further information and examples on how to register an Agent Function make it discoverable on DeltaV, checkout our dedicated resources:
 
    - [Register Agentverse Functions ↗️](/guides/agentverse/agentverse-functions/registering-agent-services).
    - [Register a coin toss agent as a Function ↗️](/guides/agentverse/agentverse-functions/registering-agent-coin-toss).

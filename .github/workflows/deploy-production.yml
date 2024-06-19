@@ -45,11 +45,12 @@ jobs:
           curl -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Authorization: token ${{ secrets.ORG_DISPATCH_RENDER_TOKEN }}" \
           --request POST \
-          --data '{"event_type": "docs-build", "client_payload": {"image": "${{ env.IMAGE }}", "key_path": "${{ env.KEY_PATH }}", "tag": "${{ env.TAG }}", "commit_message_service": "${{ env.SERVICE_NAME }}"}}' \
+          --data '{"event_type": "docs-build", "client_payload": {"image": "${{ env.IMAGE }}", "image_path": "${{ env.IMAGE_PATH }}", "key_path": "${{ env.KEY_PATH }}", "tag": "${{ env.TAG }}", "commit_message_service": "${{ env.SERVICE_NAME }}"}}' \
           ${{ env.TARGET_REPO }}
         env:
           IMAGE: gcr.io/fetch-ai-images/docs-website
           KEY_PATH: ".website.image.tag"
           TAG: ${{ steps.lookup.outputs.version }}
+          IMAGE_PATH: values
           SERVICE_NAME: Documentation
           TARGET_REPO: https://api.github.com/repos/fetchai/infra-production-deployment/dispatches
