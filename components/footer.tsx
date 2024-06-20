@@ -14,7 +14,6 @@ import {
   Twitter,
   Youtube,
 } from "src/icons/footer-icons";
-import { Message } from "src/icons/shared-icons";
 
 const FooterLink = ({
   content,
@@ -50,56 +49,25 @@ const FooterLink = ({
 const Footer: React.FC = () => {
   const developers = [
     {
-      description: "Docs",
-      path: "https://fetch.ai/docs",
+      description: "Main website",
+      path: "https://fetch.ai/",
     },
     {
-      description: "AI Agents",
-      path: "https://fetch.ai/docs/guides/agents/installing-uagent",
+      description: "Integrations",
+      path: "https://fetch.ai/integrations",
     },
     {
-      description: "Agentverse.ai",
-      path: "https://agentverse.ai/",
-    },
-  ];
-
-  const company = [
-    {
-      description: "Blog",
-      path: "https://fetch.ai/blog",
+      description: "Events",
+      path: "https://fetch.ai/events",
     },
     {
-      description: "Fetch.ai Foundation",
-      path: "https://fetchai.foundation/",
-    },
-    {
-      description: "Careers",
+      description: "We’re hiring!",
       path: "https://fetch.ai/careers",
-    },
-    {
-      description: "Website",
-      path: "https://fetch.ai",
-    },
-  ];
-
-  const legal = [
-    {
-      description: "Press and Media",
-      path: "https://fetch.ai/press-media",
-    },
-    {
-      description: "Privacy Policy",
-      path: "https://fetch.ai/privacy-policy",
-    },
-    {
-      description: "Terms of Service",
-      path: "https://fetch.ai/terms-of-condition",
     },
   ];
 
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const date = new Date();
   const onClick = async () => {
     const option = {
       method: "POST",
@@ -122,165 +90,131 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="nx-pl-[max(env(safe-area-inset-left),1.5rem)] md:nx-mt-[192px] nx-mt-10 nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
+    <footer
+      className={`nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)] ${styles.footer}`}
+    >
       <section className={styles.page}>
-        <div className={`${styles.footerInner} md:nx-flex-row nx-flex-col`}>
-          <div className={styles.footerLeft}>
-            <div className="nx-flex nx-flex-col nx-items-start nx-gap-6">
-              <Image src={logo} alt="Logo" />
-              <p className={styles.footerText}>
-                Creating AI platforms and services that let anyone build and
-                deploy AI services at scale, anytime and anywhere.
-              </p>
-              <div>
-                <p className="nx-text-gray-600 nx-text-sm">
-                  © {date.getFullYear()} Fetch.ai. All rights reserved.
-                </p>
-              </div>
-            </div>
-            <div className="nx-flex nx-gap-6 nx-items-center">
-              <Anchor
-                className="nx-text-current"
-                href="https://x.com/Fetch_ai"
-                newWindow
-              >
-                {renderComponent(
-                  <>
-                    <Twitter />
-                    <span className="nx-sr-only">Twitter</span>
-                  </>,
-                )}
-              </Anchor>
-              <Anchor
-                className="nx-text-current"
-                href="https://t.me/fetch_ai"
-                newWindow
-              >
-                {renderComponent(
-                  <>
-                    <Telegram />
-                    <span className="nx-sr-only">Telegram</span>
-                  </>,
-                )}
-              </Anchor>
-
-              <Anchor
-                className="nx-text-current"
-                href="https://discord.gg/fetchai"
-                newWindow
-              >
-                {renderComponent(
-                  <>
-                    <Discord />
-                    <span className="nx-sr-only">Discord</span>
-                  </>,
-                )}
-              </Anchor>
-
-              <Anchor
-                className="nx-text-current"
-                href="https://github.com/fetchai"
-                newWindow
-              >
-                {renderComponent(
-                  <>
-                    <Github />
-                    <span className="nx-sr-only">GitHub</span>
-                  </>,
-                )}
-              </Anchor>
-              <Anchor
-                className="nx-text-current"
-                href="https://www.youtube.com/fetchai"
-                newWindow
-              >
-                {renderComponent(
-                  <>
-                    <Youtube />
-                    <span className="nx-sr-only">Youtube</span>
-                  </>,
-                )}
-              </Anchor>
-              <Anchor
-                className="nx-text-current"
-                href="https://www.linkedin.com/company/fetch-ai/"
-                newWindow
-              >
-                {renderComponent(
-                  <>
-                    <LinkedIn />
-                    <span className="nx-sr-only">LinkedIn</span>
-                  </>,
-                )}
-              </Anchor>
-              <Anchor
-                className="nx-text-current"
-                href="https://www.linkedin.com/company/fetch-ai/"
-                newWindow
-              >
-                {renderComponent(
-                  <>
-                    <Reddit />
-                    <span className="nx-sr-only">Reddit</span>
-                  </>,
-                )}
-              </Anchor>
-            </div>
-          </div>
-
-          <div className="nx-grid nx-grid-cols-2 sm:nx-grid-cols-2 lg:nx-grid-cols-3 nx-justify-between md:nx-w-[592px]">
-            <div className="nx-flex nx-flex-col nx-gap-6">
-              <h4 className={styles.footerHeading}>Developers</h4>
-              <div className="nx-flex nx-flex-col nx-gap-3">
-                {developers.map((content, index) => {
-                  return <FooterLink key={index} content={content} />;
-                })}
-              </div>
-            </div>
-
-            <div className="nx-flex nx-flex-col nx-gap-6">
-              <h4 className={styles.footerHeading}>Company</h4>
-              <div className="nx-flex nx-flex-col nx-gap-3">
-                {company.map((content, index) => {
-                  return <FooterLink key={index} content={content} />;
-                })}
-              </div>
-            </div>
-
-            <div className="nx-flex nx-flex-col nx-gap-6">
-              <h4 className={styles.footerHeading}>Legal</h4>
-              <div className="nx-flex nx-flex-col nx-gap-3">
-                {legal.map((content, index) => {
-                  return <FooterLink key={index} content={content} />;
-                })}
-              </div>
-            </div>
+        <div className={styles.footerUpper}>
+          <Image src={logo} alt="footer-logo" />
+          <div className={styles.footerLinkSection}>
+            {developers.map((content, index) => {
+              return <FooterLink key={index} content={content} />;
+            })}
           </div>
         </div>
-        <hr className="nx-my-16" />
-        <section className="nx-flex nx-flex-col nx-gap-6 md:nx-flex-row md:nx-items-center nx-items-baseline nx-justify-between">
-          <div className={styles.joinNewsLetter}>Join our newsletter</div>
-          <div>
-            <div className={styles.inputBox}>
-              <input
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  setEmail(event.target.value)
-                }
-                onBlur={handleBlur}
-                className={styles.inputInner}
-                placeholder="Enter your email"
-              />
-              <button
-                onClick={onClick}
-                className="nx-bg-purple  nx-flex nx-gap-2 nx-justify-between nx-items-center hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm"
-              >
-                <Message />
-                <span> Subscribe</span>
+        <div className={styles.footerLower}>
+          <div className={styles.footerMenu}>
+            <Anchor
+              className="nx-text-current"
+              href="https://x.com/Fetch_ai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Twitter />
+                  <span className="nx-sr-only">Twitter</span>
+                </>,
+              )}
+            </Anchor>
+            <Anchor
+              className="nx-text-current"
+              href="https://t.me/fetch_ai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Telegram />
+                  <span className="nx-sr-only">Telegram</span>
+                </>,
+              )}
+            </Anchor>
+
+            <Anchor
+              className="nx-text-current"
+              href="https://discord.gg/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Discord />
+                  <span className="nx-sr-only">Discord</span>
+                </>,
+              )}
+            </Anchor>
+
+            <Anchor
+              className="nx-text-current"
+              href="https://github.com/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Github />
+                  <span className="nx-sr-only">GitHub</span>
+                </>,
+              )}
+            </Anchor>
+            <Anchor
+              className="nx-text-current"
+              href="https://www.youtube.com/fetchai"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Youtube />
+                  <span className="nx-sr-only">Youtube</span>
+                </>,
+              )}
+            </Anchor>
+            <Anchor
+              className="nx-text-current"
+              href="https://www.linkedin.com/company/fetch-ai/"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <LinkedIn />
+                  <span className="nx-sr-only">LinkedIn</span>
+                </>,
+              )}
+            </Anchor>
+            <Anchor
+              className="nx-text-current"
+              href="https://www.linkedin.com/company/fetch-ai/"
+              newWindow
+            >
+              {renderComponent(
+                <>
+                  <Reddit />
+                  <span className="nx-sr-only">Reddit</span>
+                </>,
+              )}
+            </Anchor>
+          </div>
+          <div className={styles.footerInputSection}>
+            <div className={styles.footerInputWrapper}>
+              <div className={styles.footerInput}>
+                <span className={styles.footerText}>
+                  Sign up to for developer updates
+                </span>
+                <div className={styles.inputBox}>
+                  <input
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                      setEmail(event.target.value)
+                    }
+                    onBlur={handleBlur}
+                    className={styles.inputInner}
+                    placeholder="Enter your email"
+                  />
+                </div>
+              </div>
+              <button onClick={onClick} className={styles.signBtn}>
+                <span>Sign up</span>
               </button>
             </div>
-            <p className=" nx-text-red-600 nx-mt-2 nx-ml-2">{message}</p>
+            <span className="nx-h-2 nx-ml-1  nx-text-red-400">{message}</span>
           </div>
-        </section>
+        </div>
       </section>
     </footer>
   );
