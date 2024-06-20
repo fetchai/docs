@@ -2,21 +2,47 @@
 
 ## Introduction
 
-This file can be run on any platform supporting Python, with the necessary install permissions.
-This example shows how to use Agents to create a table booking service at a restaurant.
+This example shows how to use the `uagents` library to set up a table booking scenario where a customer tries to book a table at a restaurant with the following booking specifications:
 
-### Supporting documentation
+- **Number of people**: 3 guests
+- **Starting hour**: 7 pm
+- **Duration**: 2 hours
 
-- [Creating an agent ↗️](/guides/agents/create-a-uagent)
-- [Creating an interval task ↗️](/guides/agents/interval-task)
-- [Communicating with other agents 📱🤖💻 ↗️](/guides/agents/communicating-with-other-agents)
-- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+The example showcases the use of agent protocols to facilitate communication and interaction between the two agents involved in this operation. In few words, a `protocol` is built similarly to any agent, but it has no identity and cannot be run on its own. Protocols only contains the message types and handlers that define some components of an agent's functionality. For this example, we need two protocols:
+
+    - **Querying protocol**: it defines the functionalities for querying table availability in the restaurant booking system.
+    - **Booking protocol**: it defines functionalities for booking a table at the restaurant.
+
+Both protocols are then included within the agents' code. These protocols' scripts work together to allow customers to query the restaurant about available tables and attempt to book a table based on their needs. The `query.py` script helps find suitable tables, while `book.py` handles the actual reservation process.
+
+## Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/getting-started/create-a-uagent)
+- [Creating an interval task ↗️](/guides/agents/intermediate/handlers#creating-an-interval-task-with-on_interval-handler)
+- [Communicating with other agents 📱🤖💻 ↗️](/guides/agents/intermediate/communicating-with-other-agents)
+- [Agent Storage ↗️](/guides/agents/intermediate/storage-function)
+- [Agents address 🤖📫 ↗️](/guides/agents/getting-started/getting-uagent-address)
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+- [Register in Almanac ↗️](/guides/agents/advanced/register-in-almanac)
 
-### The protocols
+## The protocols
 
-#### Query table
+### Query table
+
+The below script defines the `query_proto` protocol, a key component in this restaurant booking system. This protocol allows customers to inquire about tables that meet their needs. It defines the following **Data Models**:
+
+    - `TableStatus`: Defines the details of a table, including its seating capacity, available start time, and end time.
+    - `QueryTableRequest`: Represents the information sent by a customer, specifying the number of guests, desired start time, and reservation duration.
+    - `QueryTableResponse`: Represents the response sent by the restaurant, containing a list of table numbers that match the customer's request.
+    - `GetTotalQueries` and `TotalQueries`: These models are used for an optional feature that tracks the total number of booking inquiries received by the restaurant.
+
+The messages flow is set as follows:
+
+    1. **User to Restaurant**: The customer sends a `QueryTableRequest` message specifying their requirements.
+    2. **Restaurant to User**: The restaurant processes the request and sends a `QueryTableResponse` message containing available table numbers (or an empty list if no tables match).
+
+Here is the full script:
 
     ```py copy filename="query.py"
     from typing import List
@@ -41,6 +67,7 @@ This example shows how to use Agents to create a table booking service at a rest
 
     class TotalQueries(Model):
         total_queries: int
+
     query_proto = Protocol()
 
     @query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
@@ -72,7 +99,19 @@ This example shows how to use Agents to create a table booking service at a rest
         await ctx.send(sender, TotalQueries(total_queries=total_queries))
     ```
 
-#### Book table
+### Book table
+
+This below script delves into the `book_proto` table protocol, which is another critical component in this restaurant booking system. The `book` protocol empowers customers to attempt booking a specific table based on availability. It defines the following **Data Models**:
+
+    - `BookTableRequest`: Carries information sent by the customer, including the desired table number, preferred start time, and reservation duration.
+    - `BookTableResponse`: Represents the restaurant's response, indicating whether the booking was successful (table secured) or unsuccessful (table unavailable).
+
+The messages flow is set as follows:
+
+    1. **User to Restaurant**: The customer sends a `BookTableRequest` message specifying their chosen table and reservation details.
+    2. **Restaurant to User**: The restaurant checks table availability and sends a `BookTableResponse` message confirming the booking (if successful) or informing the customer about unavailability.
+
+Here is the full script:
 
     ```py copy filename="book.py"
     from uagents import Context, Model, Protocol
@@ -87,6 +126,7 @@ This example shows how to use Agents to create a table booking service at a rest
         success: bool
 
     book_proto = Protocol()
+
     @book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
     async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
         tables = {
@@ -111,9 +151,24 @@ This example shows how to use Agents to create a table booking service at a rest
         await ctx.send(sender, BookTableResponse(success=success))
     ```
 
-### The agents
+## The agents
 
-#### Restaurant
+Let's now define the agents involved in this table booking process. This example relies on two agents to manage the restaurant booking process: the `restaurant` agent and the `user` agent. Both agents work collaboratively to ensure a seamless experience for both diners and the restaurant staff. Indeed, the example flow is as below:
+
+    1. The `user` agent sends a query to the `restaurant` agent at regular intervals, requesting available tables.
+    2. The `restaurant` agent checks its stored table information and responds with a list of suitable tables based on the `user` request.
+    3. If available tables exist, the `user` agent attempts to book a table by sending a booking request with the chosen table number and desired time slot.
+    4. The `restaurant` agent verifies table availability for the requested time and duration.
+        a. If successful, the booking is confirmed, and the table is marked as unavailable for that time slot.
+        b. If unsuccessful, the customer is informed about the unavailability.
+
+    5. The `user` agent receives the booking confirmation or rejection message and logs the outcome.
+
+### Restaurant
+
+The `restaurant` agent manages table availability through the previously defined set of protocols (`query_proto` and `book_proto`). The agent stores information about each table, including its seating capacity and available time slots. The agent is able to respond to customer inquiries about available tables based on their desired criteria and processes booking requests and updates table availability accordingly.
+
+Here is the full script:
 
     ```py copy filename="restaurant.py"
     from uagents import Agent, Context
@@ -147,7 +202,11 @@ This example shows how to use Agents to create a table booking service at a rest
         restaurant.run()
     ```
 
-#### Customer/user
+### User
+
+The `user` agent queries the restaurant for available tables that match the customer's needs based on multiple parameters including number of guests, preferred time, duration. The agent attempts to book a table if available tables are found by the `restaurant` and receives confirmation or rejection from the `restaurant` agent based on table availability.
+
+Here is the full script:
 
     ```py copy filename="user.py"
     from protocols.book import BookTableRequest, BookTableResponse
@@ -215,4 +274,26 @@ This example shows how to use Agents to create a table booking service at a rest
 
     if __name__ == "__main__":
         user.run()
+    ```
+
+## Expected outcome
+
+Outputs are showed in different terminals depending on the agent.
+
+a. `restaurant` agent output:
+
+    ```
+    INFO:     [restaurant]: Almanac registration is up to date!
+    INFO:     [restaurant]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [restaurant]: Query: guests=3 time_start=19 duration=2. Available tables: [2].
+    ```
+
+b. `user` agent output:
+
+    ```
+    INFO:     [ user]: Registering on almanac contract...
+    INFO:     [ user]: Registering on almanac contract...complete
+    INFO:     [ user]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [ user]: There is a free table, attempting to book one now
+    INFO:     [ user]: Table reservation was successful
     ```
