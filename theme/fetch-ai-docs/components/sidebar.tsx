@@ -424,7 +424,7 @@ export function Sidebar({
   useEffect(() => {
     const activeElement = sidebarRef.current?.querySelector("li.active");
 
-    if (activeElement && (window.innerWidth > 767 || menu)) {
+    if (activeElement && (window.innerWidth > 1024 || menu)) {
       const scroll = () => {
         scrollIntoView(activeElement, {
           block: "center",
@@ -446,6 +446,8 @@ export function Sidebar({
   useEffect(() => {
     setMenu(false);
   }, [router.asPath, setMenu]);
+
+  console.log(menu);
 
   return (
     <>

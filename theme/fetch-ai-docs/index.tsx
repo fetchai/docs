@@ -290,7 +290,7 @@ const InnerLayout = ({
     // This makes sure that selectors like `[dir=ltr] .nextra-container` work
     // before hydration as Tailwind expects the `dir` attribute to exist on the
     // `html` element.
-    <div dir={direction}>
+    <div id="modal-root" dir={direction}>
       <script
         dangerouslySetInnerHTML={{
           __html: `document.documentElement.setAttribute('dir','${direction}')`,
