@@ -1,11 +1,13 @@
 import React from "react";
 import styles from "./landing.module.css";
-import cardImage from "../src/svgs/card-images.svg";
+import buildYourAgent from "../src/svgs/build-your-agent.svg";
+import executable from "../src/svgs/executable.svg";
+import techStack from "../src/svgs/tech-stack.svg";
 import Products from "./products";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import systemDiagram from "../src/svgs/system-diagram.svg";
-import cardStack from "../src/svgs/stack.svg";
+import dummyImage from "../src/svgs/dummy-image.svg";
 import { Play } from "src/icons/shared-icons";
 
 function LandingPage() {
@@ -13,17 +15,17 @@ function LandingPage() {
     {
       label: "Building your first agent",
       path: "/guides/agents/installing-uagent",
-      image: cardImage,
+      image: buildYourAgent,
     },
     {
       label: "Creating an executable function for AI",
       path: "guides/agents/communicating-with-other-agents",
-      image: cardImage,
+      image: executable,
     },
     {
       label: "The Fetch.ai technology stack",
       path: "/guides/agentverse/creating-a-hosted-agent",
-      image: cardImage,
+      image: techStack,
     },
   ];
   const courses = [
@@ -48,23 +50,27 @@ function LandingPage() {
   }) => {
     const router = useRouter();
     return (
-      <div
-        className={styles.cardStack}
-        style={{ backgroundImage: `url(${cardStack?.src})` }}
-      >
-        <div className="nx-flex nx-flex-col nx-items-center nx-gap-3">
-          <span className={styles.stackHeading}>{course.title}</span>
-          <span className={styles.stackSubHeading}>{course.description}</span>
+      <div className={styles.cardStack}>
+        <Image
+          className=" nx-h-full nx-w-full"
+          src={dummyImage}
+          alt="courses-image"
+        />
+        <div className="nx-flex nx-gap-6 md:nx-items-end nx-items-start course-mobile">
+          <div className="nx-flex nx-flex-col nx-items-baseline nx-gap-3">
+            <span className={styles.stackHeading}>{course.title}</span>
+            <span className={styles.stackSubHeading}>{course.description}</span>
+          </div>
+          <button
+            onClick={() => {
+              router.push(course.path);
+            }}
+            className="nx-bg-purple nx-flex nx-gap-2 nx-justify-between nx-items-center hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm"
+          >
+            <Play />
+            <span className=" nx-text-nowrap">Start the course</span>
+          </button>
         </div>
-        <button
-          onClick={() => {
-            router.push(course.path);
-          }}
-          className="nx-bg-purple nx-flex nx-gap-2 nx-justify-between nx-items-center hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm"
-        >
-          <Play />
-          <span>Start the course</span>
-        </button>
       </div>
     );
   };
@@ -138,8 +144,8 @@ function LandingPage() {
       <hr className={styles.horizontalLine} />
       <section className={styles.courseSection}>
         <div>
-          <p className={styles.subTitle}>Courses</p>
-          <p className={styles.description}>
+          <p className={styles.coursesHeading}>Courses</p>
+          <p className={styles.coursesSubtitle}>
             Comprehensive guides for people new to programming and Fetch.ai.
           </p>
         </div>
