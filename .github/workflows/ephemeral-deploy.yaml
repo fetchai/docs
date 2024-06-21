@@ -2,8 +2,10 @@ name: Deploy Staging
 
 on:
   pull_request:
-    branches:
-      - feat/ephemeral-deployment
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 jobs:
   build:
