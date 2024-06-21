@@ -2,9 +2,9 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: docs
+  name: {{ include "docsServiceName" . }}
   labels:
-    app: docs
+    app: {{ include "docsServiceName" . }}
 
 spec:
   endpoints:
