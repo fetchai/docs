@@ -92,7 +92,7 @@ jobs:
             --project $GKE_PROJECT
           helm upgrade --install --wait --timeout 300s $HELM_NAME \
             ./k8s/docs/ \
-            --set-string docs.image.tag=$IMAGE_TAG \
+            --set-string website.image.tag=$IMAGE_TAG \
             --set-string prVersion=$PR_NUMBER \
             -n $NAMESPACE
           helm upgrade --install --wait --timeout 300s $HELM_NAME_INGRESS \
@@ -133,4 +133,3 @@ jobs:
             echo "Response: $RESPONSE"
             exit 1
           fi
-          
