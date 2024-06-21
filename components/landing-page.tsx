@@ -7,8 +7,7 @@ import Products from "./products";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import systemDiagram from "../src/svgs/system-diagram.svg";
-import dummyImage from "../src/svgs/dummy-image.svg";
-import { Play } from "src/icons/shared-icons";
+import { Arrow } from "src/icons/shared-icons";
 
 function LandingPage() {
   const startingGuides = [
@@ -51,13 +50,8 @@ function LandingPage() {
     const router = useRouter();
     return (
       <div className={styles.cardStack}>
-        <Image
-          className=" nx-h-full nx-w-full"
-          src={dummyImage}
-          alt="courses-image"
-        />
-        <div className="nx-flex nx-gap-6 md:nx-items-end nx-items-start course-mobile">
-          <div className="nx-flex nx-flex-col nx-items-baseline nx-gap-3">
+        <div className=" nx-flex nx-flex-col sm:nx-gap-[100px] nx-gap-6">
+          <div className=" nx-flex nx-justify-center nx-items-center nx-flex-col">
             <span className={styles.stackHeading}>{course.title}</span>
             <span className={styles.stackSubHeading}>{course.description}</span>
           </div>
@@ -65,10 +59,9 @@ function LandingPage() {
             onClick={() => {
               router.push(course.path);
             }}
-            className="nx-bg-purple nx-flex nx-gap-2 nx-justify-between nx-items-center hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm"
+            className="nx-bg-purple nx-flex nx-gap-2 nx-w-full nx-justify-between nx-items-center hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm"
           >
-            <Play />
-            <span className=" nx-text-nowrap">Start the course</span>
+            <span className="nx-w-full nx-text-nowrap">Start the course</span>
           </button>
         </div>
       </div>
@@ -85,13 +78,20 @@ function LandingPage() {
     return (
       <div
         className={styles.guideBox}
-        onClick={() => {
-          router.push(guide.path);
-        }}
         id={guide.label.toLowerCase().split(" ").join("-")}
         style={{ backgroundImage: `url(${guide?.image?.src})` }}
       >
-        <p className={styles.startGuideText}>{guide.label}</p>
+        <div className=" nx-flex  nx-flex-col nx-h-full nx-justify-between">
+          <p className={styles.startGuideText}>{guide.label}</p>
+          <span
+            onClick={() => {
+              router.push(guide.path);
+            }}
+            className={styles.next}
+          >
+            <Arrow />
+          </span>
+        </div>
       </div>
     );
   };
@@ -149,7 +149,7 @@ function LandingPage() {
             Comprehensive guides for people new to programming and Fetch.ai.
           </p>
         </div>
-        <div className="nx-flex nx-items-center  nx-w-full md:nx-flex-row nx-flex-col nx-gap-8">
+        <div className="nx-flex nx-items-center nx-justify-center nx-w-full md:nx-flex-row nx-flex-col nx-gap-8">
           {courses.map((course, index) => (
             <CourseStack key={index} course={course} />
           ))}
