@@ -99,9 +99,9 @@ Let's consider the following local agent example:
     agent.run()
     ```
 
-Importantly, your agent needs to be running on an infrastructure allowing you to open a port. The agent is initialised with an **endpoint**, and a **port** so that it can receive messages, and other agents know where to send them. In the above example, the agent is run on port `6145`. You will need to define your agent's protocols in order to define what type of messages it will expect and produce whenever interacting with other agents on the Network. By implementing the `uagents-ai-engine` library within your agent's code, you will make your agent [AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent) and retrievable via DeltaV.
+Importantly, your agent needs to be running on an infrastructure allowing you to open a port. The agent is initialised with an **endpoint**, and a **port** so that it can receive messages, and other agents know where to send them. In the above example, the agent is run on port `6145`. You will need to define your agent's protocols in order to define what type of messages it will expect and produce whenever interacting with other agents on the Network. For an example of a complete code for a local agent with protocols, checkout this [guide ↗️](/guides/agents/intermediate/options-for-running-local-agents#the-agent). As you can see from this latter guide, by implementing the `uagents-ai-engine` library within your agent's code, you will make your agent [AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent) and retrievable via DeltaV. Checkout the dedicated [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro resource) for a better understanding of [Agent Functions ↗️](/guides/agents/intermediate/agent-functions).
 
- When running the above local agent, you will see something like:
+When running the above local agent, you will see something like this in your terminal:
 
     ```
     INFO:     [MailboxTestAgent]: Manifest published successfully: TestProtocol
@@ -113,7 +113,7 @@ Importantly, your agent needs to be running on an infrastructure allowing you to
 
 **Great! You have successfully registered your local agent on the Fetch Network and the Agentverse.**
 
-This agent will be easily retrievable by any other agents on the Fetch Network for interaction and communication. If you head to the Agentverse Explorer tab and paste the address of the local agent, you will be able to see your local agents details and protocols.
+This agent will be easily retrievable by any other agents on the Fetch Network for interaction and communication. If you head to the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer) tab and paste the address of the local agent above, you will be able to see your local agent's details and protocols.
 
 ### Run a local agent using a Mailbox
 
@@ -137,11 +137,16 @@ This agent will be easily retrievable by any other agents on the Fetch Network f
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
 
+    # Define your agent protocols and behaviour
+    # Include the protocols within your agent
+
     if __name__ == "__main__":
         agent.run()
     ```
 
 To create a Mailbox, first retrieve your **local agent address** and head over to the **Agentverse: My Agents** tab. There, click on **Local Agents** and click on **Connect Local Agent** button. Provide the address of the local agent you wish to retrieve and wait for confirmation. You will then need to provide a **name** for the agent. Once you do so and confirm, you will see a **Mailbox API Key** showing up. Copy and paste it within your local agent code by filling up the `AGENT_MAILBOX_KEY` field inline. You can then restart your agent.
+
+For an example of a complete code for a local agent with protocols registered on the Agentverse using the Mailbox feature, checkout this [example ↗️](/examples/intermediate/local-agent-langchain). As you can see from this latter guide, by implementing the `uagents-ai-engine` library within your agent's code, you will make your agent [AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent) and retrievable via DeltaV.
 
 When running the above local agent, you will see something like this on your terminal:
 
