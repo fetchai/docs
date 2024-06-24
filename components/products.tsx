@@ -54,25 +54,21 @@ const Item = ({
       }}
     >
       <div className="nx-flex nx-gap-6">
-        <div>
-          <Image
-            src={item.icon}
-            alt={`Icon for ${item.title}`}
-            className={styles.productIcon}
-          />
-        </div>
+        <span>
+          <div className={styles.productWrap}>
+            <Image
+              src={item.icon}
+              alt={`Icon for ${item.title}`}
+              className={styles.productIcon}
+            />
+          </div>
+        </span>
 
         <div>
-          <h3
-            className={
-              hover
-                ? "nx-text-purple nx-text-lg nx-font-medium nx-mb-2"
-                : "nx-text-black nx-text-lg nx-font-medium nx-mb-2"
-            }
-          >
+          <h3 className={"nx-text-black nx-text-lg nx-font-medium nx-mb-2"}>
             {item.title}
           </h3>
-          <p className="nx-text-gray-500 nx-max-w-[480px] nx-text-base nx-font-light">
+          <p className={styles.productDescripton}>
             <>{item.description}</>
           </p>
         </div>

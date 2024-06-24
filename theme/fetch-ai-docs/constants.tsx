@@ -13,6 +13,7 @@ import { themeOptionsSchema, ThemeSwitch } from "./components/theme-switch";
 import type { TOCProps } from "./components/toc";
 import { getGitIssueUrl, useGitEditUrl } from "./utils";
 import React from "react";
+import { GitHubMenu } from "src/icons/shared-icons";
 
 export const DEFAULT_LOCALE = "en-US";
 
@@ -267,7 +268,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
   project: {
     icon: (
       <>
-        <GitHubIcon />
+        <GitHubMenu />
         <span className="nx-sr-only">GitHub</span>
       </>
     ),

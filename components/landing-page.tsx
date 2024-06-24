@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./landing.module.css";
 import buildYourAgent from "../src/svgs/build-your-agent.svg";
 import executable from "../src/svgs/executable.svg";
@@ -59,7 +59,7 @@ function LandingPage() {
             onClick={() => {
               router.push(course.path);
             }}
-            className="nx-bg-purple nx-flex nx-gap-2 nx-w-full nx-justify-between nx-items-center hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm"
+            className="button-primary  nx-text-white"
           >
             <span className="nx-w-full nx-text-nowrap">Start the course</span>
           </button>
@@ -75,11 +75,18 @@ function LandingPage() {
     guide: { label: string; path: string; image: any };
   }) => {
     const router = useRouter();
+    const [hover, setHover] = useState<boolean>(false);
     return (
       <div
-        className={styles.guideBox}
+        className={hover ? styles.hoverGuideBox : styles.guideBox}
         id={guide.label.toLowerCase().split(" ").join("-")}
         style={{ backgroundImage: `url(${guide?.image?.src})` }}
+        onMouseOver={() => {
+          setHover(true);
+        }}
+        onMouseLeave={() => {
+          setHover(false);
+        }}
       >
         <div className=" nx-flex  nx-flex-col nx-h-full nx-justify-between">
           <p className={styles.startGuideText}>{guide.label}</p>
@@ -108,7 +115,9 @@ function LandingPage() {
       </div>
       <section className="nx-mt-60">
         <p className={styles.subTitle}>Getting Started</p>
-        <p className={styles.description}>Explore our guides and examples.</p>
+        <p className={styles.subDescription}>
+          Explore our guides and examples.
+        </p>
         <div className={styles.startGuides}>
           <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-3 nx-gap-8">
             {startingGuides.map((guide, index) => {
@@ -120,7 +129,7 @@ function LandingPage() {
       <hr className={styles.horizontalLine} />
       <section>
         <p className={styles.subTitle}>Our technology loop</p>
-        <p className={`${styles.description}`}>
+        <p className={`${styles.systemDescripton}`}>
           Fetch.ai is developing a platform to help the development of an AI
           enabled decentralized digital economy. Agents are programs that can
           make choices on their own for individuals, companies, and devices.
@@ -157,7 +166,7 @@ function LandingPage() {
       </section>
       <section className="nx-mt-landing-page-sections">
         <p className={styles.subTitle}>Browse by product</p>
-        <p className={styles.description}>
+        <p className={styles.subDescription}>
           Click on each product for additional details.
         </p>
         <Products />
