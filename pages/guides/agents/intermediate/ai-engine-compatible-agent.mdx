@@ -11,7 +11,7 @@ This article is a work-in-progress. It will be expanded rapidly.
 
 ## from ai_engine
 
-To enable communication from agents to the AI Engine, we import 3 objects that define the allowed responses.
+To enable communication from agents to the AI Engine, we import 3 objects that define the allowed responses:
 
 ```python
 class UAgentResponseType(Enum):
@@ -22,7 +22,7 @@ class UAgentResponseType(Enum):
     FINAL_OPTIONS = "final_options"
 ```
 
-We used `FINAL` in our [diceroll ↗️](/examples/dice-roll) example:
+We used `FINAL` in our [dice roll ↗️](/examples/intermediate/dice-roll) example:
 
 ```python
     await ctx.send(
@@ -33,7 +33,7 @@ We used `FINAL` in our [diceroll ↗️](/examples/dice-roll) example:
 `UAgentResponseType.FINAL` tells us that the message has no other responses.
 
 
-We can use `ERROR` to signify the agent has errored:
+We can use `ERROR` to signify the agent has encountered an error:
 
 ```python
     await ctx.send(sender, UAgentResponse(message="Unexpected Error", type=UAgentResponseType.ERROR))
