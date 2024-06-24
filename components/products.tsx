@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect } from "react";
 import Image from "next/image";
 import apiAgentIcon from "../src/svgs/api-agents.svg";
 import whisperAgentIcon from "../src/svgs/delta-v.svg";
@@ -38,7 +38,6 @@ const Item = ({
   };
   index: number;
 }) => {
-  const [hover, setHover] = useState<boolean>(false);
   const router = useRouter();
   return (
     <div
@@ -46,12 +45,6 @@ const Item = ({
       key={index}
       className="nx-p-4 nx-flex nx-cursor-pointer"
       onClick={() => router.push(item.path)}
-      onMouseOver={() => {
-        setHover(true);
-      }}
-      onMouseLeave={() => {
-        setHover(false);
-      }}
     >
       <div className="nx-flex nx-gap-6">
         <span>
