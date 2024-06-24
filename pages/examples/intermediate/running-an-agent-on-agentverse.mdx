@@ -1,0 +1,178 @@
+# Run Agents on Agentverse
+
+## Introduction
+
+You can create, host and run any type of agent you want to create within the [Agentverse ↗️](/concepts/agent-services/agentverse-intro). There are multiple ways you can do so. You can decide to either **create your agent directly on the Agentverse** platform using its functionalities and allowed imports, or you can **create your agents locally** and then enrol them within the Agentverse either using an **endpoint** or the **Mailbox** feature to make them retrievable by any other agent or user registered on the Fetch Network.
+
+Let's get started!
+
+## Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+- [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+
+- [Creating an Agentverse hosted agent 🤖 ↗️](/guides/agentverse/creating-agentverse-agents/creating-a-hosted-agent)
+
+- [Agentverse: allowed imports ↗️](/guides/agentverse/creating-agentverse-agents/allowed-imports)
+
+- [Utilising the Agentverse Mailroom feature 📬↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox)
+
+- [Options for running your Agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
+
+## Create Agents hosted on the Agentverse
+
+It is possible for you to create and host any type of agent you want using the [My Agents ↗️](/concepts/agent-services/agent-hosting) tab. Managed agents are currently a beta feature and therefore do not fully support the entire [uagents ↗️](/concepts/agents/agents) library toolset for development. Check out the [Agentverse: allowed imports ↗️](/guides/agentverse/allowed-imports) guide for a better understanding of the packages available for development of Agents on the Agentverse.
+
+You can choose between creating agents from a **Blank Agent** script or using **Skeleton Agent** code as an initial template.
+
+### Create and run an agent on Agentverse
+
+First of all, navigate towards the [Agentverse ↗️](https://agentverse.ai/), sign in and choose the **My Agents** tab. Here, click on the **+ New Agent** button and choose **Blank Agent**. Provide the needed details including the agent's name.
+
+Once confirmed, you will see a box for your agents within the My Agents tab. By clicking on it, the **Agent Editor** will show up. Here you can code your agent and its protocols and you will also be able to run it and see if it behaves as you intend by looking at output result within the **Agents Logs** (which is an in-built terminal window) located at the bottom of the Agent Editor window.
+
+As an initial example, let's create a simple agent introducing itself and printing its `address` in the Agent Logs on an interval of 3 seconds by using the `.on_interval()` decorator:
+
+    ```py copy filename="simple_agent.py"
+    from uagents import Agent, Context
+
+    agent = Agent(name="Simple")
+
+    @agent.on_interval(period=3.0)
+    async def say_hello(ctx: Context):
+        ctx.logger.info(f"Hello, I'm an agent and my address is {agent.address}.")
+
+    if __name__ == "__main__":
+        agent.run()
+    ```
+
+Once you are happy with the code, click on **Start** button to start your agent and see the output within the AGent Logs. In our case, we will see something like:
+
+    ```
+    INFO:     [Simple]: Hello, I'm an agent and my address is agent1qwf7xx0402yndf4xvqscewmn86jrq5yqj7zz8yt5nac3qjut4jtcsh0fa6a.
+    INFO:     [Simple]: Hello, I'm an agent and my address is agent1qwf7xx0402yndf4xvqscewmn86jrq5yqj7zz8yt5nac3qjut4jtcsh0fa6a.
+    INFO:     [Simple]: Hello, I'm an agent and my address is agent1qwf7xx0402yndf4xvqscewmn86jrq5yqj7zz8yt5nac3qjut4jtcsh0fa6a.
+    ```
+
+Checkout this [guide ↗️](/guides/agentverse/creating-agentverse-agents/simple-dice-roll-agent) for an additional use case for a simple agent being created and run on the Agentverse.
+
+## Create agents locally
+
+We now cover the process of enrolling local agents on the Agentverse. This may be the case where you want to run an agent on your own hardware or infrastructure (e.g., VM, your laptop, Raspberry pi or tweak for Agentverse). This is pretty simple on any system that support Python 3.10.
+
+At startup, the script will register the agent to the [Almanac ↗️](/concepts/fetch-network/almanac), and then the agent will be available to communicate with other agents registered on the Fetch Network.
+
+You can either run a local agent using **an endpoint** or **a Mailbox**.
+
+### Run a local agent using an endpoint
+
+Let's consider the following local agent example:
+
+    ```py copy filename="agent.py"
+    from uagents.setup import fund_agent_if_low
+    from uagents import Agent, Context, Protocol, Model
+    import random
+    from pydantic import Field
+    from ai_engine import UAgentResponse, UAgentResponseType
+    import sys
+
+    agent = Agent(
+        name="dungeonsanddragonsdiceroll",
+        port=6145,
+        seed="RANDOM STRINGS",
+        endpoint=["http://YOUR_IP:6145/submit"],
+    )
+
+    fund_agent_if_low(agent.wallet.address())
+
+    @agent.on_event("startup")
+    async def hi(ctx: Context):
+        ctx.logger.info(agent.address)
+
+    class Request(Model):
+        dice_sides: int = Field(description="How many sides does your dice need?")
+
+    dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
+
+    @dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
+    async def roll_dice(ctx: Context, sender: str, msg: Request):
+        result = str(random.randint(1, msg.dice_sides))
+        message = f"Dice roll result: {result}"
+        await ctx.send(
+            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+        )
+
+    agent.include(dice_roll_protocol, publish_manifest=True)
+
+    agent.run()
+    ```
+
+Importantly, your agent needs to be running on an infrastructure allowing you to open a port. The agent is initialised with an **endpoint**, and a **port** so that it can receive messages, and other agents know where to send them. In the above example, the agent is run on port `6145`.
+
+When running the above local agent, you will see something like:
+
+    ```
+    INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
+    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
+    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
+    INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
+    INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
+    ```
+
+**Great! You have successfully registered your local agent on the Agentverse and Fetch Network.**
+
+### Run a local agent using a Mailbox
+
+Mailboxes are a great feature within the Agentverse. A mailbox allows for communication between your local agents and any other agents registered within the Fetch Network without the need for you to be constantly present to operate them. Let's consider the following local agent example:
+
+    ```py copy filename="agent.py"
+    from uagents import Agent, Context, Model
+
+    class Message(Model):
+        message: str
+
+    SEED_PHRASE = "put_your_seed_phrase_here"
+
+    print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+
+    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+
+    agent = Agent(
+        name="alice",
+        seed=SEED_PHRASE,
+        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+    )
+
+    @agent.on_message(model=Message, replies={Message})
+    async def handle_message(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+        ctx.logger.info("Sending message to bob")
+        await ctx.send(sender, Message(message="hello there bob"))
+
+    if __name__ == "__main__":
+        agent.run()
+    ```
+
+To create a Mailbox, first retrieve your **local agent address** and head over to the **Agentverse: My Agents** tab. There, click on **Local Agents** and click on **Connect Local Agent** button. Provide the address of the local agent you wish to retrieve and wait for confirmation. You will then need to provide a **name** for the agent. Once you do so and confirm, you will see a **Mailbox API Key** showing up. Copy and paste it within your local agent code by filling up the `AGENT_MAILBOX_KEY` field inline. You can then restart your agent.
+
+When running the above local agent, you will see something like this on your terminal:
+
+    ```
+    Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+    INFO:     [alice]: Registering on almanac contract...
+    INFO:     [alice]: Registering on almanac contract...complete
+    INFO:     [alice]: Connecting to mailbox server at agentverse.ai
+    INFO:     [alice]: Mailbox access token acquired
+    ```
+
+**Great! You have successfully registered your local agent on the Agentverse and Fetch Network using a Mailbox**
+
+## Next steps
+
+Now that you have a complete understanding on how to run agents on the Agentverse platform, you are ready to create your first [Agent Function ↗️](/guides/agents/intermediate/agent-functions), [Register it on the Agentverse ↗️](/guides/agentverse/agentverse-functions/registering-agent-services) and make it retrievable via [DeltaV ↗️](/concepts/ai-engine/deltav).
