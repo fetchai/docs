@@ -18,8 +18,6 @@ Let's get started!
 
 - [Creating an Agentverse hosted agent 🤖 ↗️](/guides/agentverse/creating-agentverse-agents/creating-a-hosted-agent)
 
-- [Agentverse: allowed imports ↗️](/guides/agentverse/creating-agentverse-agents/allowed-imports)
-
 - [Utilising the Agentverse Mailroom feature 📬↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox)
 
 - [Options for running your Agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
@@ -75,7 +73,10 @@ Let's consider the following local agent example:
 
     ```py copy filename="agent.py"
     from uagents.setup import fund_agent_if_low
-    from uagents import Agent, Context, Protocol
+    from uagents import Agent, Context, Protocol, Model
+
+    class Message(Model):
+        message: str
 
     agent = Agent(
         name="MailboxTestAgent",
@@ -120,7 +121,7 @@ This agent will be easily retrievable by any other agents on the Fetch Network f
 **Mailboxes** are a great feature within the Agentverse. A Mailbox allows for communication between your local agents and any other agents registered within the Fetch Network without the need for you to be constantly present to operate them. Let's consider the following local agent example:
 
     ```py copy filename="agent.py"
-    from uagents import Agent, Context, Model
+    from uagents import Agent, Context, Model, Protocol
 
     class Message(Model):
         message: str
@@ -136,6 +137,8 @@ This agent will be easily retrievable by any other agents on the Fetch Network f
         seed=SEED_PHRASE,
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
+
+    test_protocol = Protocol("TestProtocol")
 
     # Define your agent protocols and behaviour
     # Include the protocols within your agent
