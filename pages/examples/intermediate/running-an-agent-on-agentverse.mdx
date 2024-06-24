@@ -75,14 +75,10 @@ Let's consider the following local agent example:
 
     ```py copy filename="agent.py"
     from uagents.setup import fund_agent_if_low
-    from uagents import Agent, Context, Protocol, Model
-    import random
-    from pydantic import Field
-    from ai_engine import UAgentResponse, UAgentResponseType
-    import sys
+    from uagents import Agent, Context, Protocol
 
     agent = Agent(
-        name="dungeonsanddragonsdiceroll",
+        name="MailboxTestAgent",
         port=6145,
         seed="RANDOM STRINGS",
         endpoint=["http://YOUR_IP:6145/submit"],
@@ -94,41 +90,34 @@ Let's consider the following local agent example:
     async def hi(ctx: Context):
         ctx.logger.info(agent.address)
 
-    class Request(Model):
-        dice_sides: int = Field(description="How many sides does your dice need?")
+    test_protocol = Protocol("TestProtocol")
 
-    dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
-
-    @dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
-    async def roll_dice(ctx: Context, sender: str, msg: Request):
-        result = str(random.randint(1, msg.dice_sides))
-        message = f"Dice roll result: {result}"
-        await ctx.send(
-            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
-        )
-
-    agent.include(dice_roll_protocol, publish_manifest=True)
+    # Define your agent protocols
+    # Include the protocols within your agent
+    agent.include(test_protocol, publish_manifest=True)
 
     agent.run()
     ```
 
-Importantly, your agent needs to be running on an infrastructure allowing you to open a port. The agent is initialised with an **endpoint**, and a **port** so that it can receive messages, and other agents know where to send them. In the above example, the agent is run on port `6145`.
+Importantly, your agent needs to be running on an infrastructure allowing you to open a port. The agent is initialised with an **endpoint**, and a **port** so that it can receive messages, and other agents know where to send them. In the above example, the agent is run on port `6145`. You will need to define your agent's protocols in order to define what type of messages it will expect and produce whenever interacting with other agents on the Network. By implementing the `uagents-ai-engine` library within your agent's code, you will make your agent [AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent) and retrievable via DeltaV.
 
-When running the above local agent, you will see something like:
+ When running the above local agent, you will see something like:
 
     ```
-    INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
-    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
-    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
-    INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
-    INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
+    INFO:     [MailboxTestAgent]: Manifest published successfully: TestProtocol
+    INFO:     [MailboxTestAgent]: Registering on almanac contract...
+    INFO:     [MailboxTestAgent]: Registering on almanac contract...complete
+    INFO:     [MailboxTestAgent]: agent1qvwk0ntr38yyghccrg530hnnm88r5uske4hdcalsa7gqp7sjgx42k4mp62r
+    INFO:     [MailboxTestAgent]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
     ```
 
-**Great! You have successfully registered your local agent on the Agentverse and Fetch Network.**
+**Great! You have successfully registered your local agent on the Fetch Network and the Agentverse.**
+
+This agent will be easily retrievable by any other agents on the Fetch Network for interaction and communication. If you head to the Agentverse Explorer tab and paste the address of the local agent, you will be able to see your local agents details and protocols.
 
 ### Run a local agent using a Mailbox
 
-Mailboxes are a great feature within the Agentverse. A mailbox allows for communication between your local agents and any other agents registered within the Fetch Network without the need for you to be constantly present to operate them. Let's consider the following local agent example:
+**Mailboxes** are a great feature within the Agentverse. A Mailbox allows for communication between your local agents and any other agents registered within the Fetch Network without the need for you to be constantly present to operate them. Let's consider the following local agent example:
 
     ```py copy filename="agent.py"
     from uagents import Agent, Context, Model
@@ -147,13 +136,6 @@ Mailboxes are a great feature within the Agentverse. A mailbox allows for commun
         seed=SEED_PHRASE,
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
-
-    @agent.on_message(model=Message, replies={Message})
-    async def handle_message(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-        ctx.logger.info("Sending message to bob")
-        await ctx.send(sender, Message(message="hello there bob"))
 
     if __name__ == "__main__":
         agent.run()
