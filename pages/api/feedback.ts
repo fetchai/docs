@@ -5,6 +5,8 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
+
+    console.log("url = " + `${process.env.NEXT_PUBLIC_BACKEND_URL}`)
     const { feedback_type, description, page_url } = req.body;
     const response = await fetch(`${process.env.BACKEND_URL}/api/feedback`, {
       method: "POST",
