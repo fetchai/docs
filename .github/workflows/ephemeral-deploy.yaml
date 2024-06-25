@@ -1,11 +1,9 @@
 name: Deploy Staging
 
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
+  push:
+    branches:
+    - feat/ephemeral-deployment
 
 jobs:
   build:
@@ -13,33 +11,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
-      - name: Setup Gcloud Auth
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
+    - name: Setup Gcloud Auth
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
 
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+    - name: Setup Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
 
-      - name: Set Image Tag
-        id: lookup
-        run: echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+    - name: Set Image Tag
+      id: lookup
+      run: echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-      - run: |
-          gcloud auth list
-          gcloud auth configure-docker -q
-          echo "VERSION: ${{ steps.lookup.outputs.version }}"
+    - run: |
+        gcloud auth list
+        gcloud auth configure-docker -q
+        echo "VERSION: ${{ steps.lookup.outputs.version }}"
 
-      - name: Build and Push Images
-        run: ./k8s/build-img.py -p staging
-        env:
-          BACKEND_URL: ${{ secrets.STAGING_NEXT_PUBLIC_BACKEND_URL }}
-          NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
+    - name: Build and Push Images
+      run: ./k8s/build-img.py -p staging
+      env:
+        BACKEND_URL: ${{ secrets.STAGING_NEXT_PUBLIC_BACKEND_URL }}
+        NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
 
   deploy:
     name: Ephermeral Deployment
@@ -47,83 +45,55 @@ jobs:
     needs: build
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
-      - name: Setup Gcloud Auth
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
+    - name: Setup Gcloud Auth
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
 
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+    - name: Setup Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
 
-      - name: Set Image Tag
-        id: lookup
-        run: echo "version=$(git describe --always --dirty=-wip)" >> $GITHUB_OUTPUT
+    - name: Set Image Tag
+      id: lookup
+      run: echo "version=$(git describe --always --dirty=-wip)" >> $GITHUB_OUTPUT
 
-      - name: Turnstyle
-        uses: softprops/turnstyle@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Turnstyle
+      uses: softprops/turnstyle@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Deploy to Staging
-        env:
-          IMAGE_TAG: ${{ steps.lookup.outputs.version }}
-          HELM_NAME: ephemeral-${{ github.event.pull_request.number }}
-          NAMESPACE: docs-staging
-          GKE_PROJECT: fetch-ai-sandbox
-          GKE_CLUSTER: london-b
-          GKE_ZONE: europe-west2-b
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          DNS: docs-ephemeral-${{ github.event.pull_request.number }}.sandbox-london-b.fetch-ai.com
-          CERT: docs-ephemeral-${{ github.event.pull_request.number }}
-          CERT_NAME: docs-ephemeral-cert-${{ github.event.pull_request.number }}
-          HELM_NAME_INGRESS: ephemeral-ingress-${{ github.event.pull_request.number }}
-          EPHEMERAL: true
-        run: |
-          gcloud components install gke-gcloud-auth-plugin
-          gcloud container clusters get-credentials $GKE_CLUSTER \
-            --zone $GKE_ZONE \
-            --project $GKE_PROJECT
-          helm upgrade --install --wait --timeout 300s $HELM_NAME \
-            ./k8s/docs/ \
-            --set-string website.image.tag=$IMAGE_TAG \
-            --set-string prVersion=$PR_NUMBER \
-            -n $NAMESPACE
-          helm upgrade --install --wait --timeout 300s $HELM_NAME_INGRESS \
-            ./k8s/docs/templates/ingress/ \
-            --set-string prVersion=$PR_NUMBER \
-            --set-string dns.name=$DNS \
-            --set-string tls.cert=$CERT \
-            --set-string tls.certName=$CERT_NAME \
-            --set dns.additionalHosts=null \
-            -n $NAMESPACE
-
-  comment:
-    runs-on: ubuntu-latest
-    needs: deploy
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Comment on PR
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DNS: docs-ephemeral-${{ github.event.pull_request.number }}.sandbox-london-b.fetch-ai.com
-          NAMESPACE: docs-staging
-        run: |
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          COMMENT="Here, your application is deployed in $NAMESPACE namespace and is acessible at URL: https://$DNS"
-          API_URL="https://api.github.com/repos/${{ github.repository }}/issues/${PR_NUMBER}/comments"
-          RESPONSE=$(curl -X POST -s -H "Authorization: token $GITHUB_TOKEN" -d "{\"body\":\"$COMMENT\"}" $API_URL)
-          if [ $(echo "$RESPONSE" | jq -r .id) != null ]; then
-            echo "Comment added successfully"
-          else
-            echo "Failed to add comment"
-            echo "Response: $RESPONSE"
-            exit 1
-          fi
+    - name: Deploy to Staging
+      env:
+        IMAGE_TAG: ${{ steps.lookup.outputs.version }}
+        HELM_NAME: ephemeral-123
+        NAMESPACE: docs-staging
+        GKE_PROJECT: fetch-ai-sandbox
+        GKE_CLUSTER: london-b
+        GKE_ZONE: europe-west2-b
+        PR_NUMBER: 123
+        DNS: docs-ephemeral-123.sandbox-london-b.fetch-ai.com
+        CERT: docs-ephemeral-123
+        CERT_NAME: docs-ephemeral-cert-123
+        HELM_NAME_INGRESS: ephemeral-ingress-123
+        EPHEMERAL: true
+      run: |
+        gcloud components install gke-gcloud-auth-plugin
+        gcloud container clusters get-credentials $GKE_CLUSTER \
+          --zone $GKE_ZONE \
+          --project $GKE_PROJECT
+        helm upgrade --install --wait --timeout 300s $HELM_NAME \
+          ./k8s/docs/ \
+          --set-string website.image.tag=$IMAGE_TAG \
+          --set-string prVersion=123 \
+          -n $NAMESPACE \
+          --set-string prVersion=123 \
+          --set-string dns.name=$DNS \
+          --set-string tls.cert=$CERT \
+          --set-string tls.certName=$CERT_NAME \
+          --set dns.additionalHosts=null \
+          -n $NAMESPACE
