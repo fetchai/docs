@@ -3,49 +3,48 @@ name: Clean Ephemeral Deployment
 on:
   pull_request:
     types:
-      - closed
+    - closed
 
 jobs:
   clean-deployment:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
-      - name: Setup Gcloud Auth
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
+    - name: Setup Gcloud Auth
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
 
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+    - name: Setup Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
 
-      - name: Set Image Tag
-        id: lookup
-        run: echo "version=$(git describe --always --dirty=-wip)" >> $GITHUB_OUTPUT
+    - name: Set Image Tag
+      id: lookup
+      run: echo "version=$(git describe --always --dirty=-wip)" >> $GITHUB_OUTPUT
 
-      - name: Turnstyle
-        uses: softprops/turnstyle@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Turnstyle
+      uses: softprops/turnstyle@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Uninstall Deployment 
-        env:
-          HELM_NAME: ephemeral-${{ github.event.pull_request.number }}
-          NAMESPACE: docs-staging
-          GKE_PROJECT: fetch-ai-sandbox
-          GKE_CLUSTER: london-b
-          GKE_ZONE: europe-west2-b
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          HELM_NAME_INGRESS: ephemeral-ingress-${{ github.event.pull_request.number }}
+    - name: Uninstall Deployment
+      env:
+        HELM_NAME: ephemeral-${{ github.event.pull_request.number }}
+        NAMESPACE: docs-staging
+        GKE_PROJECT: fetch-ai-sandbox
+        GKE_CLUSTER: london-b
+        GKE_ZONE: europe-west2-b
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        HELM_NAME_INGRESS: ephemeral-ingress-${{ github.event.pull_request.number }}
 
-        run: |
-          gcloud components install gke-gcloud-auth-plugin
-          gcloud container clusters get-credentials $GKE_CLUSTER \
-            --zone $GKE_ZONE \
-            --project $GKE_PROJECT
-          helm uninstall $HELM_NAME -n $NAMESPACE
-          helm uninstall $HELM_NAME_INGRESS -n $NAMESPACE
+      run: |
+        gcloud components install gke-gcloud-auth-plugin
+        gcloud container clusters get-credentials $GKE_CLUSTER \
+          --zone $GKE_ZONE \
+          --project $GKE_PROJECT
+        helm uninstall $HELM_NAME -n $NAMESPACE
