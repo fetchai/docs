@@ -70,16 +70,16 @@ jobs:
     - name: Deploy to Staging
       env:
         IMAGE_TAG: ${{ steps.lookup.outputs.version }}
-        HELM_NAME: ephemeral-123
+        HELM_NAME: ephemeral-${{ github.event.pull_request.number }}
         NAMESPACE: docs-staging
         GKE_PROJECT: fetch-ai-sandbox
         GKE_CLUSTER: london-b
         GKE_ZONE: europe-west2-b
-        PR_NUMBER: 123
-        DNS: docs-ephemeral-123.sandbox-london-b.fetch-ai.com
-        CERT: docs-ephemeral-123
-        CERT_NAME: docs-ephemeral-cert-123
-        HELM_NAME_INGRESS: ephemeral-ingress-123
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        DNS: docs-ephemeral-${{ github.event.pull_request.number }}.sandbox-london-b.fetch-ai.com
+        CERT: docs-ephemeral-${{ github.event.pull_request.number }}
+        CERT_NAME: docs-ephemeral-cert-${{ github.event.pull_request.number }}
+        HELM_NAME_INGRESS: ephemeral-ingress-${{ github.event.pull_request.number }}
         EPHEMERAL: true
       run: |
         gcloud components install gke-gcloud-auth-plugin
@@ -89,9 +89,9 @@ jobs:
         helm upgrade --install --wait --timeout 300s $HELM_NAME \
           ./k8s/docs/ \
           --set-string website.image.tag=$IMAGE_TAG \
-          --set-string prVersion=123 \
+          --set-string prVersion=${{ github.event.pull_request.number }} \
           -n $NAMESPACE \
-          --set-string prVersion=123 \
+          --set-string prVersion=${{ github.event.pull_request.number }} \
           --set-string dns.name=$DNS \
           --set-string tls.cert=$CERT \
           --set-string tls.certName=$CERT_NAME \
