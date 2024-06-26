@@ -1,4 +1,4 @@
-name: Deploy Staging
+name: Ephemeral (Testing) Deployment
 
 on:
   pull_request:
@@ -81,7 +81,6 @@ jobs:
         DNS: docs-ephemeral-${{ github.event.pull_request.number }}.sandbox-london-b.fetch-ai.com
         CERT: docs-ephemeral-${{ github.event.pull_request.number }}
         CERT_NAME: docs-ephemeral-cert-${{ github.event.pull_request.number }}
-        HELM_NAME_INGRESS: ephemeral-ingress-${{ github.event.pull_request.number }}
         EPHEMERAL: true
       run: |
         gcloud components install gke-gcloud-auth-plugin
@@ -93,7 +92,6 @@ jobs:
           --set-string website.image.tag=$IMAGE_TAG \
           --set-string prVersion=${{ github.event.pull_request.number }} \
           -n $NAMESPACE \
-          --set-string prVersion=${{ github.event.pull_request.number }} \
           --set-string dns.name=$DNS \
           --set-string tls.cert=$CERT \
           --set-string tls.certName=$CERT_NAME \
