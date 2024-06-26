@@ -7,7 +7,9 @@ import Products from "./products";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import systemDiagram from "../src/svgs/system-diagram.svg";
-import { Arrow } from "src/icons/shared-icons";
+import coursesStack from "../src/svgs/courses-stack.svg";
+import coursesStackSecond from "../src/svgs/courses-stack-second.svg";
+import { Arrow, vectorPointer, vectorSquare } from "src/icons/shared-icons";
 
 function LandingPage() {
   const startingGuides = [
@@ -27,42 +29,77 @@ function LandingPage() {
       image: techStack,
     },
   ];
+
   const courses = [
     {
       title: "Agents 101",
       description:
-        "This course is designed to introduce you to the development of Agents,providing a comprehensive guide",
+        "This course is designed to introduce you to the development of Agents, providing a comprehensive guide",
       path: "/guides/agent-courses/introductory-course",
+      image: coursesStack,
+      vectors: vectorSquare,
     },
     {
       title: "Agents 101 for AI Engine",
       description:
         "This course is designed to introduce you to building agents that are accessible to the AI Engine.",
       path: "/guides/agent-courses/agents-for-ai",
+      image: coursesStackSecond,
+      vectors: vectorPointer,
     },
   ];
 
+  const keywords = ["keyword 01", "keyword 02", "keyword 03"];
+
+  const Keywords = ({ keyword }: { keyword: string }) => (
+    <div className={styles.keywordbg}>
+      <span className={styles.keywordtext}>{keyword}</span>
+    </div>
+  );
+
   const CourseStack = ({
     course,
+    index,
   }: {
-    course: { title: string; description: string; path: string };
+    index: number;
+    course: {
+      title: string;
+      description: string;
+      path: string;
+      image: { src: string };
+      vectors: () => React.JSX.Element;
+    };
   }) => {
     const router = useRouter();
+    const vectorClassName = index === 1 ? styles.vectorCustom : styles.vector;
     return (
-      <div className={styles.cardStack}>
-        <div className=" nx-flex nx-flex-col sm:nx-gap-[100px] nx-gap-6">
-          <div className=" nx-flex nx-justify-center nx-items-center nx-flex-col">
+      <div
+        style={{ backgroundImage: `url(${course.image.src})` }}
+        className={styles.cardStack}
+      >
+        <div className="nx-flex nx-flex-col nx-items-center nx-justify-center sm:nx-gap-[100px] nx-gap-6">
+          <span className={styles.introduction}>
+            fetch.ai introduction series
+          </span>
+          <div className="nx-flex nx-gap-10 nx-items-center nx-flex-col nx-justify-center">
             <span className={styles.stackHeading}>{course.title}</span>
-            <span className={styles.stackSubHeading}>{course.description}</span>
+            <div className="nx-flex nx-gap-2 nx-flex-wrap nx-justify-center">
+              {keywords.map((keyword, index) => (
+                <Keywords key={index} keyword={keyword} />
+              ))}
+            </div>
           </div>
+        </div>
+        <div className="nx-relative nx-flex nx-w-full">
           <button
             onClick={() => {
               router.push(course.path);
             }}
-            className="button-primary  nx-text-white"
+            className="button-primary nx-w-full nx-text-white"
           >
             <span className="nx-w-full nx-text-nowrap">Start the course</span>
           </button>
+          <span className={vectorClassName}>{course.vectors()}</span>
         </div>
       </div>
     );
@@ -71,8 +108,7 @@ function LandingPage() {
   const GuideBox = ({
     guide,
   }: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    guide: { label: string; path: string; image: any };
+    guide: { label: string; path: string; image: { src: string } };
   }) => {
     const router = useRouter();
     const [hover, setHover] = useState<boolean>(false);
@@ -80,7 +116,7 @@ function LandingPage() {
       <div
         className={hover ? styles.hoverGuideBox : styles.guideBox}
         id={guide.label.toLowerCase().split(" ").join("-")}
-        style={{ backgroundImage: `url(${guide?.image?.src})` }}
+        style={{ backgroundImage: `url(${guide.image.src})` }}
         onMouseOver={() => {
           setHover(true);
         }}
@@ -88,7 +124,7 @@ function LandingPage() {
           setHover(false);
         }}
       >
-        <div className=" nx-flex  nx-flex-col nx-h-full nx-justify-between">
+        <div className="nx-flex nx-flex-col nx-h-full nx-justify-between">
           <p className={styles.startGuideText}>{guide.label}</p>
           <span
             onClick={() => {
@@ -102,6 +138,7 @@ function LandingPage() {
       </div>
     );
   };
+
   return (
     <section className={styles.page}>
       <div className={styles.headingSection}>
@@ -120,23 +157,23 @@ function LandingPage() {
         </p>
         <div className={styles.startGuides}>
           <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-3 nx-gap-8">
-            {startingGuides.map((guide, index) => {
-              return <GuideBox key={index} guide={guide} />;
-            })}
+            {startingGuides.map((guide, index) => (
+              <GuideBox key={index} guide={guide} />
+            ))}
           </div>
         </div>
       </section>
       <hr className={styles.horizontalLine} />
       <section>
         <p className={styles.subTitle}>Our technology loop</p>
-        <p className={`${styles.systemDescripton}`}>
+        <p className={styles.systemDescripton}>
           Fetch.ai is developing a platform to help the development of an AI
           enabled decentralized digital economy. Agents are programs that can
           make choices on their own for individuals, companies, and devices.
           Agents are the actors, and the heart of Fetch.ai ecosystem.
         </p>
         <Image className="nx-py-6" src={systemDiagram} alt="system-diagram" />
-        <p className={`${styles.systemDescripton}`}>
+        <p className={styles.systemDescripton}>
           Agents are flexible problem solvers, capable of not just completing
           tasks but also tackling difficult issues across several domains.
           Agents have the adaptability to handle different activities inside the
@@ -160,7 +197,7 @@ function LandingPage() {
         </div>
         <div className="nx-flex nx-items-center nx-justify-center nx-w-full md:nx-flex-row nx-flex-col nx-gap-8">
           {courses.map((course, index) => (
-            <CourseStack key={index} course={course} />
+            <CourseStack key={index} index={index} course={course} />
           ))}
         </div>
       </section>
