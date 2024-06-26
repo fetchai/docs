@@ -2,6 +2,8 @@ import React, { ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
 import apiAgentIcon from "../src/svgs/api-agents.svg";
 import whisperAgentIcon from "../src/svgs/delta-v.svg";
+import agentFunction from "../src/svgs/agent-functions.svg";
+import aiEngine from "../src/svgs/ai-engine.svg";
 import walletIcon from "../src/svgs/wallet.svg";
 import cosmpyIcon from "../src/svgs/cosmpy.svg";
 import analyticsIcon from "../src/svgs/analytics.svg";
@@ -38,8 +40,8 @@ const Item = ({
   };
   index: number;
 }) => {
-  const [hover, setHover] = useState<boolean>(false);
   const router = useRouter();
+  const [hover, setHover] = useState<boolean>(false);
   return (
     <div
       id={item.title.toLowerCase().split(" ").join("-")}
@@ -54,13 +56,15 @@ const Item = ({
       }}
     >
       <div className="nx-flex nx-gap-6">
-        <div>
-          <Image
-            src={item.icon}
-            alt={`Icon for ${item.title}`}
-            className={styles.productIcon}
-          />
-        </div>
+        <span>
+          <div className={hover ? styles.productHover : styles.productWrap}>
+            <Image
+              src={item.icon}
+              alt={`Icon for ${item.title}`}
+              className={styles.productIcon}
+            />
+          </div>
+        </span>
 
         <div>
           <h3
@@ -72,7 +76,7 @@ const Item = ({
           >
             {item.title}
           </h3>
-          <p className="nx-text-gray-500 nx-max-w-[480px] nx-text-base nx-font-light">
+          <p className={styles.productDescripton}>
             <>{item.description}</>
           </p>
         </div>
@@ -119,7 +123,7 @@ const items: { [key: string]: Item[] } = {
       description: (
         <>Introducing the AI Engine and its role in DeltaV functionalities.</>
       ),
-      icon: whisperAgentIcon,
+      icon: aiEngine,
       path: "/concepts/ai-engine/ai-engine-intro",
     },
     {
@@ -183,7 +187,7 @@ const items: { [key: string]: Item[] } = {
           Function on the Agentverse to be retrieved via DeltaV chat!
         </>
       ),
-      icon: whisperAgentIcon,
+      icon: agentFunction,
       path: "/guides/agentverse/registering-agent-services",
     },
     {

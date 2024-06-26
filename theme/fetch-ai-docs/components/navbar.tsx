@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import cn from "clsx";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFSRoute } from "nextra/hooks";
 import { ArrowRightIcon, MenuIcon } from "nextra/icons";
 import type { Item, MenuItem, PageItem } from "nextra/normalize-pages";
@@ -10,11 +10,8 @@ import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { useUserContext } from "../contexts/context-provider";
 import AccountMenu from "components/account-menu";
-// import { Listbox } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { handleSignin } from "../helpers";
-// import { capitalizeWords } from "../helpers";
-// import { IoBookmarks } from "react-icons/io5";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -27,18 +24,11 @@ const classes = {
   link: cn(
     "nx-text-sm contrast-more:nx-text-gray-700 contrast-more:dark:nx-text-gray-100 nx-mt-4 nx-px-4",
   ),
-  active: cn("nx-font-medium nx-subpixel-antialiased"),
+  active: cn("link-active nx-subpixel-antialiased"),
   inactive: cn(
     "nx-text-gray-600 hover:nx-text-gray-800 dark:nx-text-gray-400 dark:hover:nx-text-gray-200",
   ),
 };
-
-// const getLastPart = (str) => str.match(/[^/]+$/)?.[0] || "";
-// const compareLastParts = (a, b) => {
-//   const lastPartA = getLastPart(a);
-//   const lastPartB = getLastPart(b);
-//   return lastPartA.localeCompare(lastPartB);
-// };
 
 function NavbarMenu({
   className,
@@ -110,21 +100,23 @@ export function Navbar({
   const { menu, setMenu } = useMenu();
   const context = useUserContext();
   const router = useRouter();
-  // const [selectedItem, setSelectedItem] = useState("Bookmarks");
-  // const [bookMarksList, setbookMarksLists] = useState<string[]>([]);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+
   const handleSignOut = () => {
     context.signOut();
     router.push("/");
   };
+
   const fetchBookMarksData = async (contextvalues) => {
     await fetchBookMarks(contextvalues, true);
-    // setbookMarksLists(response);
   };
+
   useEffect(() => {
     if (context?.user?.email) {
       fetchBookMarksData(context?.user?.email);
     }
   }, [bookMark, context?.user?.email]);
+
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -152,7 +144,7 @@ export function Navbar({
                 {renderComponent(config.logo)}
               </div>
             )}
-            <div className="nx-flex nx-justify-center menu-hide nx-mb-2 nx-items-center">
+            <div className="nx-flex nx-justify-center menu-hide nx-mb-2 nx-menu-height nx-items-center">
               {items.map((pageOrMenu, index) => {
                 if (pageOrMenu.display === "hidden") return null;
 
@@ -191,21 +183,27 @@ export function Navbar({
                   activeRoute.startsWith(page.route + "/");
                 return (
                   <Anchor
+                    onMouseOver={() => setHoveredLink(href)}
+                    onMouseLeave={() => setHoveredLink(null)}
                     href={href}
                     key={href}
-                    style={{ borderRadius: "12px" }}
                     className={cn(
                       classes.link,
-                      "nx-relative nx-mr-2 nx-hidden nx-whitespace-nowrap nx-p-2 md:nx-inline-block",
+                      "nx-relative  nx-hidden nx-whitespace-nowrap menu-container  md:nx-inline-block",
                       !isActive || page.newWindow
                         ? classes.inactive
                         : classes.active,
-                      index === 0 && !isActive && "-nx-ml-4", // Align the first item to the left
+                      hoveredLink === href && !isActive ? "link-hover" : "",
+                      index === 0 && !isActive && "-nx-ml-6",
                     )}
                     newWindow={page.newWindow}
                     aria-current={!page.newWindow && isActive}
                   >
-                    <span className="nx-absolute nx-inset-x-0 nx-text-base nx-text-center">
+                    <span
+                      className={`${
+                        hoveredLink === href && !isActive ? "link-text " : ""
+                      } nx-absolute nx-inset-x-0 nx-text-base nx-text-center`}
+                    >
                       {page.title}
                     </span>
                     <span className="nx-invisible nx-text-base">
@@ -222,69 +220,6 @@ export function Navbar({
                 directories: flatDirectories,
               })}
             </div>
-
-            {/* {context.isLoggedIn && (
-            <span className="nx-relative">
-              <Listbox value={selectedItem} onChange={setSelectedItem}>
-                <Listbox.Button className="">
-                  <IoBookmarks
-                    style={{
-                      fontSize: "21px",
-                      marginTop: "5px",
-                      marginRight: "5px",
-                    }}
-                  />
-                </Listbox.Button>
-                <Listbox.Options
-                  style={{ left: "-4rem", top: "40px" }}
-                  className="pr-6 outline-none nx-left-[-1rem] nx-z-10 nx-top-3 nx-absolute nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium  nx-bg-white nx-border "
-                >
-                  {bookMarksList.length === 0 && (
-                    <Listbox.Option
-                      value="Bookmarks"
-                      className=" nx-text-sm nx-text-gray-500 nx-w-full nx-select-none nx-py-2"
-                    >
-                      <>
-                        <span className="nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate">
-                          No Bookmarks Yet
-                        </span>
-                      </>
-                    </Listbox.Option>
-                  )}
-                  {bookMarksList
-                    ?.sort((a, b) => compareLastParts(a, b))
-                    .map((item: string, index: number) => (
-                      <Listbox.Option
-                        key={index}
-                        value="Bookmarks"
-                        className={({ active }) =>
-                          `nx-text-sm nx-text-gray-500 nx-w-full nx-select-none nx-py-2  ${
-                            active
-                              ? " nx-bg-slate-900 nx-text-slate-900"
-                              : "nx-text-gray-900"
-                          }`
-                        }
-                      >
-                        {({ selected }) => (
-                          <>
-                            <span
-                              onClick={() =>
-                                router.push(item.replace("/docs", ""))
-                              }
-                              className={` hoverSpan nx-cursor-pointer hover:nx-bg-gray-400 nx-truncate ${
-                                selected ? "nx-font-medium" : "nx-font-normal"
-                              }`}
-                            >
-                              {capitalizeWords(item.match(/[^/]+$/)[0])}
-                            </span>
-                          </>
-                        )}
-                      </Listbox.Option>
-                    ))}
-                </Listbox.Options>
-              </Listbox>
-            </span>
-          )} */}
 
             {config.project.link ? (
               <Anchor
@@ -306,7 +241,7 @@ export function Navbar({
               <button
                 onClick={handleSignin}
                 id="sign_in"
-                className="nx-bg-purple hover:nx-bg-purple-500 nx-h-11 nx-font-medium nx-text-white nx-px-4 nx-rounded-lg nx-text-sm"
+                className="button-primary  nx-text-white"
               >
                 Sign In
               </button>
