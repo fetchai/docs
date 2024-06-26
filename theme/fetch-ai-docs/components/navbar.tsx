@@ -83,12 +83,6 @@ function NavbarMenu({
   );
 }
 
-const Outline = ({ children }: { children: ReactNode }) => (
-  <div className="nx-flex nx-h-11 nx-px-4 nx-border-gray-200 nx-rounded-lg nx-items-center nx-outline-menu nx-justify-center">
-    {children}
-  </div>
-);
-
 export function Navbar({
   flatDirectories,
   items,
@@ -228,7 +222,7 @@ export function Navbar({
                 newWindow
                 id="github"
               >
-                <Outline>{renderComponent(config.project.icon)}</Outline>
+                {renderComponent(config.project.icon)}
               </Anchor>
             ) : null}
             {context.isLoggedIn ? (
