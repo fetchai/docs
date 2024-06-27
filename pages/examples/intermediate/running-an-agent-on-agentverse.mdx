@@ -83,7 +83,7 @@ Let's consider the following local agent example:
         message: str
 
     agent = Agent(
-        name="MailboxTestAgent",
+        name="TestAgent",
         port=6145,
         seed="RANDOM STRINGS",
         endpoint=["http://YOUR_IP:6145/submit"],
@@ -111,11 +111,11 @@ As it is possible to see from this latter guide, by implementing the `uagents-ai
 When running the above local agent, you will see something like this in your terminal:
 
     ```
-    INFO:     [MailboxTestAgent]: Manifest published successfully: TestProtocol
-    INFO:     [MailboxTestAgent]: Registering on almanac contract...
-    INFO:     [MailboxTestAgent]: Registering on almanac contract...complete
-    INFO:     [MailboxTestAgent]: agent1qvwk0ntr38yyghccrg530hnnm88r5uske4hdcalsa7gqp7sjgx42k4mp62r
-    INFO:     [MailboxTestAgent]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
+    INFO:     [TestAgent]: Manifest published successfully: TestProtocol
+    INFO:     [TestAgent]: Registering on almanac contract...
+    INFO:     [TestAgent]: Registering on almanac contract...complete
+    INFO:     [TestAgent]: agent1qvwk0ntr38yyghccrg530hnnm88r5uske4hdcalsa7gqp7sjgx42k4mp62r
+    INFO:     [TestAgent]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
     ```
 
 **Great! You have successfully registered your local agent on the Fetch Network and the Agentverse.**
@@ -139,7 +139,7 @@ This agent will be easily retrievable by any other agents on the Fetch Network f
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 
     agent = Agent(
-        name="alice",
+        name="MailboxTestAgent",
         seed=SEED_PHRASE,
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
@@ -161,10 +161,10 @@ When running the above local agent, you will see something like this on your ter
 
     ```
     Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
-    INFO:     [alice]: Registering on almanac contract...
-    INFO:     [alice]: Registering on almanac contract...complete
-    INFO:     [alice]: Connecting to mailbox server at agentverse.ai
-    INFO:     [alice]: Mailbox access token acquired
+    INFO:     [MailboxTestAgent]: Registering on almanac contract...
+    INFO:     [MailboxTestAgent]: Registering on almanac contract...complete
+    INFO:     [MailboxTestAgent]: Connecting to mailbox server at agentverse.ai
+    INFO:     [MailboxTestAgent]: Mailbox access token acquired
     ```
 
 **Great! You have successfully registered your local agent on the Agentverse and Fetch Network using a Mailbox.**
