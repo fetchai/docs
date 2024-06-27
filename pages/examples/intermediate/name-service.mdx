@@ -42,7 +42,7 @@ for wallet in [my_wallet, bob.wallet]:
 @bob.on_event("startup")
 async def register_agent_name(ctx: Context):
     await name_service_contract.register(
-        bob.ledger, my_wallet, ctx.address, ctx.name, DOMAIN
+        bob.ledger, my_wallet, bob.address, bob.name, DOMAIN
     )
 
 @bob.on_message(model=Message)
