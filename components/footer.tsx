@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleBlur = () => {
     if (email === "") {
-      setMessage("Please enter your email address !");
+      setMessage("Please enter your email address.");
     } else if (regex.test(email)) {
       setMessage("");
     } else {
@@ -212,7 +212,7 @@ const Footer: React.FC = () => {
                 <span>Sign up</span>
               </button>
             </div>
-            <span className="nx-h-2 nx-ml-1  nx-text-red-400">{message}</span>
+            <span className="nx-h-5 nx-ml-1 error-text">{message}</span>
           </div>
         </div>
       </section>
