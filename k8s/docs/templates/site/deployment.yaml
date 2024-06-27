@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: docs
+  name: {{ include "docsServiceName" . }}
   labels:
-    app: docs
+    app: {{ include "docsServiceName" . }}
 
 spec:
   {{- if .Values.website.hpa.enabled }}
@@ -12,12 +12,12 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      app: docs
+      app: {{ include "docsServiceName" . }}
 
   template:
     metadata:
       labels:
-        app: docs
+        app: {{ include "docsServiceName" . }}
 
     spec:
       containers:

@@ -2,6 +2,8 @@ import React, { ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
 import apiAgentIcon from "../src/svgs/api-agents.svg";
 import whisperAgentIcon from "../src/svgs/delta-v.svg";
+import agentFunction from "../src/svgs/agent-functions.svg";
+import aiEngine from "../src/svgs/ai-engine.svg";
 import walletIcon from "../src/svgs/wallet.svg";
 import cosmpyIcon from "../src/svgs/cosmpy.svg";
 import analyticsIcon from "../src/svgs/analytics.svg";
@@ -38,8 +40,8 @@ const Item = ({
   };
   index: number;
 }) => {
-  const [hover, setHover] = useState<boolean>(false);
   const router = useRouter();
+  const [hover, setHover] = useState<boolean>(false);
   return (
     <div
       id={item.title.toLowerCase().split(" ").join("-")}
@@ -53,24 +55,31 @@ const Item = ({
         setHover(false);
       }}
     >
-      <Image
-        src={item.icon}
-        alt={`Icon for ${item.title}`}
-        className={styles.productIcon}
-      />
-      <div>
-        <h3
-          className={
-            hover
-              ? "nx-text-purple nx-text-lg nx-font-medium nx-mb-2"
-              : "nx-text-black nx-text-lg nx-font-medium nx-mb-2"
-          }
-        >
-          {item.title}
-        </h3>
-        <p className="nx-text-gray-500 nx-text-base nx-font-light">
-          <>{item.description}</>
-        </p>
+      <div className="nx-flex nx-gap-6">
+        <span>
+          <div className={hover ? styles.productHover : styles.productWrap}>
+            <Image
+              src={item.icon}
+              alt={`Icon for ${item.title}`}
+              className={styles.productIcon}
+            />
+          </div>
+        </span>
+
+        <div>
+          <h3
+            className={
+              hover
+                ? "nx-text-purple nx-text-lg nx-font-medium nx-mb-2"
+                : "nx-text-black nx-text-lg nx-font-medium nx-mb-2"
+            }
+          >
+            {item.title}
+          </h3>
+          <p className={styles.productDescripton}>
+            <>{item.description}</>
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -97,10 +106,8 @@ const Section: React.FC<SectionProperties> = ({ heading, items }) => {
   const sectionId = heading.replaceAll(" ", "").toLowerCase();
   return (
     <div id={sectionId} className="nx-my-8">
-      <h2 className={"nx-text-lg nx-font-medium nx-text-fetch-light-grey"}>
-        {heading}
-      </h2>
-      <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-3 nx-gap-4 nx-mt-4">
+      <h2 className={styles.productsHeading}>{heading}</h2>
+      <div className="nx-grid nx-grid-cols-1 max-width-section md:nx-grid-cols-2 nx-gap-4 nx-mt-4">
         {items.map((item, index) => (
           <Item key={index} item={item} index={index} />
         ))}
@@ -116,7 +123,7 @@ const items: { [key: string]: Item[] } = {
       description: (
         <>Introducing the AI Engine and its role in DeltaV functionalities.</>
       ),
-      icon: whisperAgentIcon,
+      icon: aiEngine,
       path: "/concepts/ai-engine/ai-engine-intro",
     },
     {
@@ -180,7 +187,7 @@ const items: { [key: string]: Item[] } = {
           Function on the Agentverse to be retrieved via DeltaV chat!
         </>
       ),
-      icon: whisperAgentIcon,
+      icon: agentFunction,
       path: "/guides/agentverse/registering-agent-services",
     },
     {
@@ -236,7 +243,7 @@ const items: { [key: string]: Item[] } = {
 
 const IndexPage: React.FC = () => {
   return (
-    <div className="nx-container nx-mx-auto nx-py-8">
+    <div>
       {Object.entries(items).map(([heading, itemList], index) => (
         <div key={heading}>
           {index !== 0 && (

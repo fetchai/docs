@@ -1,7 +1,7 @@
 /* eslint sort-keys: error */
 import type { NextSeoProps } from "next-seo";
 import { useRouter } from "next/router";
-import { DiscordIcon, GitHubIcon } from "nextra/icons";
+import { DiscordIcon } from "nextra/icons";
 import type { Item } from "nextra/normalize-pages";
 import type { FC, ReactNode } from "react";
 import { isValidElement } from "react";
@@ -13,6 +13,7 @@ import { themeOptionsSchema, ThemeSwitch } from "./components/theme-switch";
 import type { TOCProps } from "./components/toc";
 import { getGitIssueUrl, useGitEditUrl } from "./utils";
 import React from "react";
+import { GitHubMenu } from "src/icons/shared-icons";
 
 export const DEFAULT_LOCALE = "en-US";
 
@@ -267,7 +268,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
   project: {
     icon: (
       <>
-        <GitHubIcon />
+        <GitHubMenu />
         <span className="nx-sr-only">GitHub</span>
       </>
     ),
