@@ -37,6 +37,7 @@ function LandingPage() {
         "This course is designed to introduce you to the development of Agents, providing a comprehensive guide",
       path: "/guides/agent-courses/introductory-course",
       image: coursesStack,
+      keywords: ["beginner", "python"],
       vectors: vectorSquare,
     },
     {
@@ -45,11 +46,10 @@ function LandingPage() {
         "This course is designed to introduce you to building agents that are accessible to the AI Engine.",
       path: "/guides/agent-courses/agents-for-ai",
       image: coursesStackSecond,
+      keywords: ["novice", "python", "ai-engine", "gpt-3.5"],
       vectors: vectorPointer,
     },
   ];
-
-  const keywords = ["keyword 01", "keyword 02", "keyword 03"];
 
   const Keywords = ({ keyword }: { keyword: string }) => (
     <div className={styles.keywordbg}>
@@ -67,6 +67,7 @@ function LandingPage() {
       description: string;
       path: string;
       image: { src: string };
+      keywords: string[];
       vectors: () => React.JSX.Element;
     };
   }) => {
@@ -84,7 +85,7 @@ function LandingPage() {
           <div className="nx-flex nx-gap-10 nx-items-center nx-flex-col nx-justify-center">
             <span className={styles.stackHeading}>{course.title}</span>
             <div className="nx-flex nx-gap-2 nx-flex-wrap nx-justify-center">
-              {keywords.map((keyword, index) => (
+              {course?.keywords?.map((keyword, index) => (
                 <Keywords key={index} keyword={keyword} />
               ))}
             </div>
@@ -117,6 +118,9 @@ function LandingPage() {
         className={hover ? styles.hoverGuideBox : styles.guideBox}
         id={guide.label.toLowerCase().split(" ").join("-")}
         style={{ backgroundImage: `url(${guide.image.src})` }}
+        onClick={() => {
+          router.push(guide.path);
+        }}
         onMouseOver={() => {
           setHover(true);
         }}
@@ -127,9 +131,6 @@ function LandingPage() {
         <div className="nx-flex nx-flex-col nx-h-full nx-justify-between">
           <p className={styles.startGuideText}>{guide.label}</p>
           <span
-            onClick={() => {
-              router.push(guide.path);
-            }}
             className={styles.next}
           >
             <Arrow />
