@@ -130,9 +130,7 @@ function LandingPage() {
       >
         <div className="nx-flex nx-flex-col nx-h-full nx-justify-between">
           <p className={styles.startGuideText}>{guide.label}</p>
-          <span
-            className={styles.next}
-          >
+          <span className={styles.next}>
             <Arrow />
           </span>
         </div>
