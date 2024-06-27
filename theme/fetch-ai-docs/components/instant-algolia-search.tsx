@@ -260,7 +260,7 @@ export const InstantAlgoliaSearch = ({
     <InstantSearch searchClient={searchClient} indexName={indexName}>
       <div className="nextra-search nx-relative nx-mr-4">
         <Configure hitsPerPage={10} />
-        <div className="nx-flex nx-gap-3 input-inner-nav nx-items-center search-bar nx-h-11 nx-bg-white">
+        <div className="nx-flex nx-gap-3 input-inner-nav input-hover nx-items-center search-bar nx-h-11 nx-bg-white">
           <Input
             id={inputId}
             type="search"

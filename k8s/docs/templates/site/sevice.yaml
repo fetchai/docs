@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: docs
+  name: {{ include "docsServiceName" . }}
 
 spec:
   selector:
-    app: docs
+    app: {{ include "docsServiceName" . }}
 
   ports:
     - protocol: TCP
