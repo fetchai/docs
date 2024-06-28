@@ -1,34 +1,34 @@
 import cn from "clsx";
-import type { Heading } from "nextra";
 import type { ReactElement } from "react";
 import { useEffect, useMemo, useRef } from "react";
 import scrollIntoView from "scroll-into-view-if-needed";
 import { useActiveAnchor, useConfig } from "../contexts";
 import { renderComponent } from "../utils";
-import { Anchor } from "./anchor";
 import React from "react";
 
+interface HeadingProps {
+  depth: number;
+  value: string;
+  id: string;
+  isActive: boolean;
+}
+
 export type TOCProps = {
-  headings: Heading[];
+  headings: HeadingProps[];
   filePath: string;
 };
 
-const linkClassName = cn(
-  "nx-text-xs nx-font-medium nx-text-gray-500 hover:nx-text-gray-900 dark:nx-text-gray-400 dark:hover:nx-text-gray-100",
-  "contrast-more:nx-text-gray-800 contrast-more:dark:nx-text-gray-50",
-);
-
-export function TOC({ headings, filePath }: TOCProps): ReactElement {
+export function TOC({ headings }: TOCProps): ReactElement {
   const activeAnchor = useActiveAnchor();
   const config = useConfig();
   const tocRef = useRef<HTMLDivElement>(null);
 
   const items = useMemo(
-    () => headings.filter((heading) => heading.depth > 1),
+    () => headings?.filter((heading) => heading?.depth > 1),
     [headings],
   );
 
-  const hasHeadings = items.length > 0;
+  const hasHeadings = items?.length > 0;
   const hasMetaInfo = Boolean(
     config.feedback.content ||
       config.editLink.component ||
@@ -60,15 +60,13 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
     <div
       ref={tocRef}
       className={cn(
-        "nextra-scrollbar nx-sticky nx-top-16 nx-overflow-y-auto nx-pr-4 nx-pt-6 nx-text-sm [hyphens:auto]",
+        "nextra-scrollbar hide-toc  nx-top-16 nx-w-full nextra-toc-container nx-sticky nx-overflow-y-auto nx-text-sm [hyphens:auto]",
         "nx-max-h-[calc(100vh-var(--nextra-navbar-height)-env(safe-area-inset-bottom))] ltr:-nx-mr-4 rtl:-nx-ml-4",
       )}
     >
       {hasHeadings && (
         <>
-          <p className="nx-mb-4 nx-font-semibold nx-tracking-tight">
-            {renderComponent(config.toc.title)}
-          </p>
+          <p className="first-title">{renderComponent(config.toc.title)}</p>
           <ul>
             {items.map(({ id, value, depth }) => (
               <li className="nx-my-2 nx-scroll-my-6 nx-scroll-py-6" key={id}>
@@ -76,7 +74,7 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
                   href={`#${id}`}
                   className={cn(
                     {
-                      2: "nx-font-semibold",
+                      2: "nextra-toc-title",
                       3: "ltr:nx-pl-4 rtl:nx-pr-4",
                       4: "ltr:nx-pl-8 rtl:nx-pr-8",
                       5: "ltr:nx-pl-12 rtl:nx-pr-12",
@@ -84,8 +82,8 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
                     }[depth as Exclude<typeof depth, 1>],
                     "nx-inline-block",
                     activeAnchor[id]?.isActive
-                      ? "nx-text-primary-600 nx-subpixel-antialiased contrast-more:!nx-text-primary-600"
-                      : "nx-text-gray-500 hover:nx-text-gray-900 dark:nx-text-gray-400 dark:hover:nx-text-gray-300",
+                      ? "active-toc nx-subpixel-antialiased contrast-more:!nx-text-primary-600"
+                      : "fetch-navy-toc hover:nx-text-primary-600 dark:nx-text-gray-400 dark:hover:nx-text-gray-300",
                     "contrast-more:nx-text-gray-900 contrast-more:nx-underline contrast-more:dark:nx-text-gray-50 nx-w-full nx-break-words",
                   )}
                 >
@@ -109,22 +107,6 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
             "contrast-more:nx-border-t contrast-more:nx-border-neutral-400 contrast-more:nx-shadow-none contrast-more:dark:nx-border-neutral-400",
           )}
         >
-          {config.feedback.content ? (
-            <Anchor
-              className={linkClassName}
-              href={config.feedback.useLink()}
-              newWindow
-            >
-              {renderComponent(config.feedback.content)}
-            </Anchor>
-          ) : null}
-
-          {renderComponent(config.editLink.component, {
-            filePath,
-            className: linkClassName,
-            children: renderComponent(config.editLink.text),
-          })}
-
           {renderComponent(config.toc.extraContent)}
         </div>
       )}
