@@ -298,7 +298,7 @@ const InnerLayout = ({
       />
       <noscript>
         <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-MVT793SR"
+          src="https://www.googletagmanager.com/ns.html?id=GTM-5QDSR3CT"
           height="0"
           width="0"
           className="nextra-iframe-google-tag"
