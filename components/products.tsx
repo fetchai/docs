@@ -222,7 +222,7 @@ const items: { [key: string]: Item[] } = {
     },
     {
       title: "CosmPy",
-      description: <>Get stated with CosmPy.</>,
+      description: <>Get started with CosmPy.</>,
       icon: cosmpyIcon,
       path: "/guides/fetch-network/cosmpy/install",
     },
