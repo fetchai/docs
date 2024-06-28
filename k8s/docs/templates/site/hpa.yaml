@@ -2,12 +2,12 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: docs-hpa
+  name: {{ include "docsServiceName" . }}-hpa
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: docs
+    name: {{ include "docsServiceName" . }}
   minReplicas: {{ .Values.website.hpa.minReplicas }}
   maxReplicas: {{ .Values.website.hpa.maxReplicas }}
   metrics:

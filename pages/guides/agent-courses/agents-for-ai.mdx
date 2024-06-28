@@ -20,7 +20,7 @@ Fetch.ai is developing a platform to help build an AI-enabled decentralized digi
 programs that can make choices on their own for individuals, companies, and devices. Agents are the actors and the
 heart of Fetch.ai Ecosystem.
 
-To build your solution on Fetch.ai, you need to understand four concepts: [Agents ↗️](/concepts/agents/agents), [Agentverse ↗️](/concepts/agent-services/agentverse-intro), [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), and [DeltaV ↗️](/concepts/ai-engine/deltav).
+To build your solution on Fetch.ai you need to understand four concepts: [Agents ↗️](/concepts/agents/agents), [Agentverse ↗️](/concepts/agent-services/agentverse-intro), [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) and [DeltaV ↗️](/concepts/ai-engine/deltav).
 
 ### Agent, Agentverse, AI Engine and DeltaV
 
@@ -32,7 +32,7 @@ Let's try and keep this simple 🎉:
 
  - **AI Engine**: The AI Engine is a system that combines Agents with human-readable text input to create a scalable AI infrastructure that supports Large Language Models (LLMs). It's an AI system that can convert human text into actionable (computer) commands.
 
- - **DeltaV**: DeltaV is an assistive chat interface that allows human input to interact with agents registered through the Agentverse.
+ - **DeltaV**: It is an assistive chat interface that allows human input to interact with agents registered through the Agentverse.
 
     <Callout type="warning" emoji="⚠️">
        Agents are <i>programs</i>, whereas <i>functions</i> are specific Agent Functions your agents offer.
@@ -284,15 +284,15 @@ DeltaV tells us AI Engine has found an Agent Function for our query, and checks 
 
 Then, DeltaV get the response from the Agent Function and returns this to the user.
 
-Your Agent running locally to you should have a similar output to this:
+Your Agent running locally should provide a similar output to this one below:
 
-```
-INFO:     [sentiment]: Manifest published successfully: text sentiment analysis
-INFO:     [sentiment]: Almanac registration is up to date!
-INFO:     [sentiment]: Connecting to mailbox server at agentverse.ai
-INFO:     [sentiment]: Mailbox access token acquired
-INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
-```
+    ```
+    INFO:     [sentiment]: Manifest published successfully: text sentiment analysis
+    INFO:     [sentiment]: Almanac registration is up to date!
+    INFO:     [sentiment]: Connecting to mailbox server at agentverse.ai
+    INFO:     [sentiment]: Mailbox access token acquired
+    INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+    ```
 
 Okay, take a quick break then let's create the second Agent; it's time to introduce multi-agent workflows ☕.
 
@@ -382,7 +382,7 @@ compliment one another.
 
 Aside from the different logic, the primary difference in `web_summary_agent.py` is that this agent does not rely on a separate function, and wraps the whole logic in the message handler.
 
-Let's run this one too. Again, follow the steps for the previous Agent and go and register a Mailbox and update this agent with the new Mailbox. Each agent must have a unique Mailbox.
+Let's run this one too. Again, follow the steps for the previous Agent and go and register a Mailbox and update this agent with the new Mailbox. Each agent must have a unique [Mailbox ↗️](/guides/agents/intermediate/mailbox).
 
 ## One more Agent Function 🎵
 
