@@ -4,7 +4,7 @@ import {Callout} from 'nextra/components'
 
 ## Introduction
 
-Communication is an essential feature agent network. It allows agents to work together, exchange information, and forms an organic marketplace.
+Communication is an essential feature within any agents network. Communication allows agents to work together, exchange information, and forms an organic marketplace.
 
 In this guide, we will explore two methods of communication between agents:
 
@@ -38,7 +38,7 @@ The first step to better understand how agents communicate is to introduce how 2
 
 3. Now we create two agent instances, `sigmar` and `slaanesh`, with `name` and `seed` parameters:
 
-    ```py
+    ```py copy
     sigmar = Agent(name="sigmar", seed="sigmar recovery phrase")
     slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase")
     ```
@@ -78,7 +78,7 @@ The first step to better understand how agents communicate is to introduce how 2
 
     It would also be valid to respond to the sender:
 
-     ```py
+     ```py copy
      await ctx.send(sender.address, Message(message="hello there sigmar"))
      ```
 
@@ -132,10 +132,11 @@ We are now ready to run the script: `python agents_communication.py`
 The output would be:
 
     ```
+    [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
-    [  slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
+    [slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
-    [  slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
+    [slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
     ```
 
@@ -329,7 +330,7 @@ The output will depend on the terminal:
     [sigmar]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there sigmar
     [sigmar]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there sigmar
     [sigmar]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there sigmar
-  ```
+    ```
 
 - **Slaanesh**:
 
@@ -337,7 +338,7 @@ The output will depend on the terminal:
     [  slaanesh]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there slaanesh
     [  slaanesh]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there slaanesh
     [  slaanesh]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there slaanesh
-  ```
+    ```
 
 ### Before we go on...
 
