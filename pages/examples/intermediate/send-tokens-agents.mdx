@@ -5,7 +5,7 @@
 This file can be run on any platform supporting Python, with the necessary install permissions.
 This example shows how to use Agents to make them send tokens with one another.
 
-#### Supporting documentation
+### Supporting documentation
 
 - [Creating an agent ↗️](/guides/agents/create-a-uagent)
 - [Creating an interval task ↗️](/guides/agents/interval-task)
@@ -13,9 +13,9 @@ This example shows how to use Agents to make them send tokens with one another.
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
-- [How to use agents to send tokens 📊💸 ↗️](/guides/agents/send-tokens)
+- [How to use agents to send tokens 📊💸 ↗️](/guides/agents/intermediate/send-tokens)
 
-#### The agent
+### The agent
 
     ```py copy filename="sending_tokens.py"
     from uagents import Agent, Bureau, Context, Model
@@ -76,4 +76,12 @@ This example shows how to use Agents to make them send tokens with one another.
 
     if __name__ == "__main__":
         bureau.run()
+    ```
+
+### Expected output
+
+    ```
+    [  bob]: Received payment request from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: wallet_address='fetch1967p3vkp0yngdfturv4ypq2p4g760ml705wcxy' amount=100 denom='atestfet'
+    [alice]: Received transaction info from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: tx_hash='DB662CCF415C7B0C9A02928967BE1817506D02A041AA05CA48DCE5CF87D5A638'
+    [alice]: Transaction was successful: {'receiver': 'fetch1967p3vkp0yngdfturv4ypq2p4g760ml705wcxy', 'amount': '100atestfet'}
     ```
