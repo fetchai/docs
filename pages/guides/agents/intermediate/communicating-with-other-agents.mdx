@@ -169,7 +169,7 @@ Let's start by defining the script for **sigmar**.
     class Message(Model):
         message: str
 
-    RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+    RECIPIENT_ADDRESS="agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum"
    ```
 
 2. Let's now create our agent, `sigmar`, by providing `name`, `seed`, `port`, and `endpoint`. Also, make sure it has enough funds to register in the Almanac contract:
@@ -223,7 +223,7 @@ from uagents.setup import fund_agent_if_low
 class Message(Model):
     message: str
 
-RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+RECIPIENT_ADDRESS="agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum"
 
 sigmar = Agent(
     name="sigmar",
@@ -327,17 +327,22 @@ The output will depend on the terminal:
 - **Sigmar**:
 
     ```
-    [sigmar]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there sigmar
-    [sigmar]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there sigmar
-    [sigmar]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there sigmar
+    INFO:     [sigmar]: Registering on almanac contract...
+    INFO:     [sigmar]: Registering on almanac contract...complete
+    INFO:     [sigmar]: Received message from agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum: hello there sigmar
+    INFO:     [sigmar]: Received message from agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum: hello there sigmar
+    INFO:     [sigmar]: Received message from agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum: hello there sigmar
     ```
 
 - **Slaanesh**:
 
     ```
-    [  slaanesh]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there slaanesh
-    [  slaanesh]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there slaanesh
-    [  slaanesh]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there slaanesh
+    INFO:     [slaanesh]: Registering on almanac contract...
+    INFO:     [slaanesh]: Registering on almanac contract...complete
+    INFO:     [slaanesh]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [slaanesh]: Received message from agent1qvwqu6a0km09mq4f6j6kmke9smswmgcergmml9a54av9449rqtmmxy4qwe6: hello there slaanesh
+    INFO:     [slaanesh]: Received message from agent1qvwqu6a0km09mq4f6j6kmke9smswmgcergmml9a54av9449rqtmmxy4qwe6: hello there slaanesh
+    INFO:     [slaanesh]: Received message from agent1qvwqu6a0km09mq4f6j6kmke9smswmgcergmml9a54av9449rqtmmxy4qwe6: hello there slaanesh
     ```
 
 ### Before we go on...
