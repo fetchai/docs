@@ -2,9 +2,11 @@
 
 ## Introduction
 
-This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to set up a communication between two agents using the uAgents Python library and the Agentverse Mailbox service.
+This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to set up a communication between two agents using the uAgents Python library and the **Agentverse Mailbox service**.
 
-#### Supporting documentation
+A **Mailbox** allows your agent to receive messages sent to its address even when this agent is offline. The Mailbox will automatically retrieve and handle stored messages once it comes online back again.
+
+### Supporting documentation
 
 - [Creating an agent↗️](/guides/agents/create-a-uagent)
 - [Creating an interval task ↗️](/guides/agents/interval-task)
@@ -13,80 +15,86 @@ This file can be run on any platform supporting Python, with the necessary insta
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Utilising the Agentverse Mailroom service 📬 ↗️](/guides/agentverse/utilising-the-mailbox)
 
-#### Agent 1
+### Agent 1: Local Agent
 
-```py copy filename="agent_1.py"
-from uagents import Agent, Context, Model
+    ```py copy filename="agent_1.py"
+    from uagents import Agent, Context, Model
 
-class Message(Model):
-    message: str
+    class Message(Model):
+        message: str
 
-# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
-SEED_PHRASE = "put_your_seed_phrase_here"
+    # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+    SEED_PHRASE = "put_your_seed_phrase_here"
 
-# Copy the address shown below
-print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+    # Copy the address shown below
+    print(f"Your agent's address is: {agent.address}")
 
-# Then go to https://agentverse.ai, register your agent in the Mailroom
-# and copy the agent's mailbox key
-AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+    # Then, copy the agent's mailbox key and insert it here below inline
+    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 
-# Now your agent is ready to join the agentverse!
-agent = Agent(
-    name="alice",
-    seed=SEED_PHRASE,
-    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-)
+    # Now your agent is ready to join the agentverse!
+    agent = Agent(
+        name="alice",
+        seed=SEED_PHRASE,
+        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+    )
 
-@agent.on_message(model=Message, replies={Message})
-async def handle_message(ctx: Context, sender: str, msg: Message):
-    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    @agent.on_message(model=Message, replies={Message})
+    async def handle_message(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-    # send the response
-    ctx.logger.info("Sending message to bob")
-    await ctx.send(sender, Message(message="hello there bob"))
+    if __name__ == "__main__":
+        agent.run()
+   ```
 
-if __name__ == "__main__":
-    agent.run()
-```
 
-#### Agent 2
+### Agent 2: Agentverse Agent
 
-```py copy filename="agent_2.py"
-from uagents import Agent, Context, Model
+    ```py copy filename="agent_2.py"
+    from uagents import Agent, Context, Model
 
-class Message(Model):
-    message: str
+    class Message(Model):
+        message: str
 
-# Copy ALICE_ADDRESS generated in alice.py
-ALICE_ADDRESS = "paste_alice_address_here"
+    # Copy ALICE_ADDRESS generated in agent_1.py
+    ALICE_ADDRESS = "agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf"
 
-# Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
-SEED_PHRASE = "put_your_seed_phrase_here"
+    # Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
+    SEED_PHRASE = "put_your_seed_phrase_here"
 
-# Copy the address shown below
-print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+    # Now let's create the Agentverse agent
+    agent = Agent(
+        name="bob",
+        seed=SEED_PHRASE,
+        endpoint="http://127.0.0.1:8001/submit",
+    )
 
-# Then go to https://agentverse.ai, register your agent in the Mailroom
-# and copy the agent's mailbox key
-AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+    @agent.on_interval(period=2.0)
+    async def send_message(ctx: Context):
+        ctx.logger.info("Sending message to alice")
+        await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
 
-# Now your agent is ready to join the agentverse!
-agent = Agent(
-    name="bob",
-    seed=SEED_PHRASE,
-    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-)
+    @agent.on_message(model=Message, replies=set())
+    async def on_message(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-@agent.on_interval(period=2.0)
-async def send_message(ctx: Context):
-    ctx.logger.info("Sending message to alice")
-    await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
+    if __name__ == "__main__":
+        agent.run()
+   ```
 
-@agent.on_message(model=Message, replies=set())
-async def on_message(ctx: Context, sender: str, msg: Message):
-    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+### Output
 
-if __name__ == "__main__":
-    agent.run()
-```
+1. Agentverse Agent output:
+
+    ```
+    2024-06-27 11:20:19	Info	Agent	[INFO]: Sending message to alice
+    2024-06-27 11:20:19	Info	Agent	[INFO]: Received message from agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf: hello there bob
+    ```
+
+2. Local Agent output:
+
+    ```
+    INFO:     [ALICE]: Received message from agent1qd3hd6peaejavk3uredlxz05e8tcx6purl5gpuamk22xduj7e37k2sqetaa: hello there alice
+    INFO:     [ALICE]: Sending message to bob
+    ```

@@ -138,7 +138,7 @@ export function Navbar({
                 {renderComponent(config.logo)}
               </div>
             )}
-            <div className="nx-flex nx-justify-center menu-hide nx-mb-2 nx-menu-height nx-items-center">
+            <div className="nx-flex nx-justify-center menu-hide nx-gap-2 nx-mb-2 nx-menu-height nx-items-center">
               {items.map((pageOrMenu, index) => {
                 if (pageOrMenu.display === "hidden") return null;
 
