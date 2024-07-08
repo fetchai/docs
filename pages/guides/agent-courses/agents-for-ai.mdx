@@ -1,9 +1,5 @@
 import { Callout } from 'nextra/components'
 
-<Callout type="info" emoji="ℹ️">
-This article is a work-in-progress. It will be expanded rapidly.
-</Callout>
-
 # Agents 101 for AI Engine 🤖
 
 ## Overview
@@ -40,7 +36,7 @@ Let's try and keep this simple 🎉:
 
 In a nutshell, AI Engine indexes Agents, and translates human input into **objectives**. It may sound like a search engine, but it does much more.
 
-![The AI Engine has an internal database hat creates understanding and links to existing Agent Functions](../../../src/images/guides/101/ai-connects.jpg)
+![The AI Engine has an internal database that creates understanding and links to existing Agent Functions](../../../src/images/guides/101/ai-connects.jpg)
 
 The AI Engine allows **chaining**. Say that you ask DeltaV "Tell me about the animal
 Zebra". The AI Engine would then look for an agent that could give you a summary, as well as another agent that could provide information about zebras. The AI Engine understands that the **Summary Agent** requires text to parse and summarise. So it would contact the **Zebra Agent** and get the information from it. The AI Engine would then call the **Summary Agent** with the **Zebra Agent** information so that the former would return the summarized text.
@@ -195,7 +191,7 @@ Then, we have the **on_message()** handler:
 
 We need a way for our Agent to receive messages. We do this by creating a function for our agent to handle all
  incoming messages from other Agents. We use `on_message()` decorator which activates the `sentiment()` function once
- our Agent receives a message matching the `SentimentResponse` Message data `Model` we previously defined. Internally
+ our Agent receives a message matching the `SentimentResponse` message data `Model` we previously defined. Internally
 you can see that `sentiment()` calls `get_sentiment()`, this is useful for you as a developer as this shows that
 calling another function inside a decorated function is easy to do.
 
@@ -274,7 +270,6 @@ I'm going to go ahead and ask:
 Oil is often an issue in UK news. Let's find out the sentiment.
 
 ![](../../../src/images/guides/101/1_sentiment_deltav.png)
-
 
 ![](../../../src/images/guides/101/2_sentiment_deltav.png)
 

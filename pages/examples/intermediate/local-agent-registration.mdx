@@ -4,11 +4,7 @@
 
 This file can be run on any platform supporting Python, with the necessary install permissions. This example shows one local agent registered as an Agent Function on the Agentverse and which can be queried on [DeltaV ↗️](/concepts/ai-engine/deltav).
 
-#### Guide
-
-- [Running locally ↗️](/guides/agents/running-locally)
-
-#### Supporting documentation
+### Supporting documentation
 
 - [Creating an agent↗️](/guides/agents/create-a-uagent)
 
@@ -20,9 +16,13 @@ This file can be run on any platform supporting Python, with the necessary insta
 
 - [Agentverse Functions ↗️](/guides/services/services)
 
+- [Running locally ↗️](/guides/agents/running-locally)
+
 - [Register an Agent Function on the Agentverse ↗️](/guides/agentverse/registering-agent-services)
 
-### The agent
+- [Register a local Agent Function on the Agentverse ↗️](/guides/agents/running-locally#register-your-agent-function-on-the-agentverse)
+
+### The script
 
 ```py copy filename="agent.py"
 from uagents.setup import fund_agent_if_low
@@ -57,7 +57,6 @@ async def roll_dice(ctx: Context, sender: str, msg: Request):
     await ctx.send(
         sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
     )
-
 
 dungeons.include(dice_roll_protocol, publish_manifest=True)
 
