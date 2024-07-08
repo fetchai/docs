@@ -61,7 +61,7 @@ export function TOC({ headings }: TOCProps): ReactElement {
       ref={tocRef}
       className={cn(
         "nextra-scrollbar hide-toc  nx-top-16 nx-w-full nextra-toc-container nx-sticky nx-overflow-y-auto nx-text-sm [hyphens:auto]",
-        "nx-max-h-[calc(100vh-var(--nextra-navbar-height)-env(safe-area-inset-bottom))] ltr:-nx-mr-4 rtl:-nx-ml-4",
+        "nx-max-h-[calc(100vh-var(--nextra-navbar-height)-env(safe-area-inset-bottom))] rtl:-nx-ml-4",
       )}
     >
       {hasHeadings && (
