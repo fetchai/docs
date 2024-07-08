@@ -358,6 +358,11 @@ module.exports = withNextra({
           "/concepts/ai-engine/powering-connections-and-smart-operations-in-deltav",
         permanent: true,
       },
+      {
+        source: "/examples/advanced/chat-api-example",
+        destination: "/examples/advanced/chat_api_example",
+        permanent: true,
+      },
     ];
   },
 });
