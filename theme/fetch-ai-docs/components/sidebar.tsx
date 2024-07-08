@@ -42,17 +42,17 @@ const Folder = memo(function FolderInner(props: FolderProps) {
 
 const classes = {
   link: cn(
-    "nx-flex nx-rounded nx-px-2 nx-py-1.5 nx-text-sm nx-transition-colors [word-break:break-word]",
+    "nx-flex nx-rounded nx-px-3 nx-py-2 nx-text-sm nx-transition-colors [word-break:break-word]",
     "nx-cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] contrast-more:nx-border",
   ),
   inactive: cn(
-    "hover:nx-bg-gray-100 hover:nx-text-gray-900",
+    "nextra-hover",
     "dark:nx-text-neutral-400 dark:hover:nx-bg-primary-100/5 dark:hover:nx-text-gray-50",
     "contrast-more:nx-text-gray-900 contrast-more:dark:nx-text-gray-50",
     "contrast-more:nx-border-transparent contrast-more:hover:nx-border-gray-900 contrast-more:dark:hover:nx-border-gray-50",
   ),
   active: cn(
-    "nx-bg-white nx-font-semibold  dark:nx-bg-primary-400/10 dark:nx-text-primary-600",
+    "nx-font-normal nextra-active-link dark:nx-bg-primary-400/10 dark:nx-text-primary-600",
     "contrast-more:nx-border-primary-500 contrast-more:dark:nx-border-primary-500",
   ),
   list: cn("nx-flex nx-flex-col nx-gap-2"),
@@ -74,8 +74,6 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
   const [route] = routeOriginal.split("#");
   const active = [route, route + "/"].includes(item.route + "/");
   const activeRouteInside = active || route.startsWith(item.route + "/");
-
-  //to check whether route fall under current main directory or not
 
   const parentLevelRoute = route.split("/");
   const currentItemParentRoute = item.route.split("/");
@@ -137,82 +135,75 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
       };
     });
   }
-
   const isLink = "withIndexPage" in item && item.withIndexPage;
-  // use button when link don't have href because it impacts on SEO
   const ComponentToUse = isLink ? Anchor : "button";
-
   if (
     currentItemParentRoute[1] == parentLevelRoute[1] ||
     (parentLevelRoute[1] == "" && level == 1)
   ) {
     return (
       <>
-        {
-          <li className={cn({ open, active })}>
-            <ComponentToUse
-              href={isLink ? item.route : undefined}
-              className={cn(
-                "nx-items-center nx-justify-between nx-gap-2",
-                !isLink && "nx-text-left nx-w-full",
-                classes.link,
-                active ? classes.active : classes.inactive,
-                activeRouteInside ? "nx-text-purple" : "",
-              )}
-              onClick={(e) => {
-                const clickedToggleIcon = ["svg", "path"].includes(
-                  (e.target as HTMLElement).tagName.toLowerCase(),
-                );
-                if (clickedToggleIcon) {
-                  e.preventDefault();
+        <li className={cn({ open, active }, "nx-w-full")}>
+          <ComponentToUse
+            href={isLink ? item.route : undefined}
+            className={cn(
+              "nx-items-center  nx-w-full nx-justify-between nx-gap-2",
+              isLink ? "first-title" : "nx-text-left nx-w-full",
+              classes.link,
+              active ? classes.active : classes.inactive,
+              activeRouteInside ? "nextra-active-route" : "",
+            )}
+            onClick={(e) => {
+              const clickedToggleIcon = ["svg", "path"].includes(
+                (e.target as HTMLElement).tagName.toLowerCase(),
+              );
+              if (clickedToggleIcon) {
+                e.preventDefault();
+              }
+              if (isLink) {
+                if (active || clickedToggleIcon) {
+                  TreeState[item.route] = !open;
+                } else {
+                  TreeState[item.route] = true;
+                  setMenu(false);
                 }
-                if (isLink) {
-                  // If it's focused, we toggle it. Otherwise, always open it.
-                  if (active || clickedToggleIcon) {
-                    TreeState[item.route] = !open;
-                  } else {
-                    TreeState[item.route] = true;
-                    setMenu(false);
-                  }
-                  rerender({});
-                  return;
-                }
-                if (active) return;
-                TreeState[item.route] = !open;
                 rerender({});
-              }}
-            >
-              {renderComponent(config.sidebar.titleComponent, {
-                title: item.title,
-                type: item.type,
-                route: item.route,
-              })}
-              {!config.sidebar.autoCollapse && (
-                <ArrowRightIcon
-                  className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
-                  pathClassName={cn(
-                    "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
-                    open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
-                  )}
-                />
-              )}
-            </ComponentToUse>
-            <Collapse
-              className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1"
-              isOpen={config.sidebar.autoCollapse || open}
-            >
-              {Array.isArray(item.children) ? (
-                <Menu
-                  className={cn(classes.border, "ltr:nx-ml-3 rtl:nx-mr-3")}
-                  directories={item.children}
-                  base={item.route}
-                  anchors={anchors}
-                  // filesVisited={contentVisited}
-                />
-              ) : null}
-            </Collapse>
-          </li>
-        }
+                return;
+              }
+              if (active) return;
+              TreeState[item.route] = !open;
+              rerender({});
+            }}
+          >
+            {renderComponent(config.sidebar.titleComponent, {
+              title: item.title,
+              type: item.type,
+              route: item.route,
+            })}
+            {!config.sidebar.autoCollapse && !isLink && (
+              <ArrowRightIcon
+                className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
+                pathClassName={cn(
+                  "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
+                  open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
+                )}
+              />
+            )}
+          </ComponentToUse>
+          <Collapse
+            className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1"
+            isOpen={config.sidebar.autoCollapse || open}
+          >
+            {Array.isArray(item.children) ? (
+              <Menu
+                className={cn(classes.border, "nextra-sidebar-ul")}
+                directories={item.children}
+                base={item.route}
+                anchors={anchors}
+              />
+            ) : null}
+          </Collapse>
+        </li>
       </>
     );
   }
@@ -266,7 +257,7 @@ function File({
   }
 
   return (
-    <li className={cn(classes.list, { active })}>
+    <li className={cn(classes.list, { active }, "nx-w-full")}>
       <Anchor
         href={(item as PageItem).href || item.route}
         newWindow={(item as PageItem).newWindow}
@@ -292,13 +283,7 @@ function File({
         })}
       </Anchor>
       {active && anchors.length > 0 && (
-        <ul
-          className={cn(
-            classes.list,
-            classes.border,
-            "ltr:nx-ml-3 rtl:nx-mr-3",
-          )}
-        >
+        <ul className={cn(classes.list, classes.border, "nextra-sidebar-ul")}>
           {anchors.map(({ id, value }) => (
             <li key={id}>
               <a
@@ -447,8 +432,6 @@ export function Sidebar({
     setMenu(false);
   }, [router.asPath, setMenu]);
 
-  console.log(menu);
-
   return (
     <>
       {includePlaceholder && asPopover ? (
@@ -463,53 +446,55 @@ export function Sidebar({
         )}
         onClick={() => setMenu(false)}
       />
-      <aside
-        className={cn(
-          "nextra-sidebar-container nx-sidebar-scrollable  nx-border-r  nx-flex nx-flex-col nx-p-3",
-          "md:nx-top-16 md:nx-shrink-0 motion-reduce:nx-transform-none",
-          "nx-transform-gpu nx-transition-all nx-ease-in-out",
-          "print:nx-hidden md:nx-w-72",
-          asPopover ? "md:nx-hidden" : "md:nx-sticky md:nx-self-start",
-          menu
-            ? "max-md:[transform:translate3d(0,0,0)]"
-            : "max-md:[transform:translate3d(0,-100%,0)]",
-        )}
-        ref={containerRef}
-      >
-        <FocusedItemContext.Provider value={focused}>
-          <OnFocusItemContext.Provider
-            value={(item) => {
-              setFocused(item);
-            }}
-          >
-            <div className={cn("nx-sidebar-scrollable")} ref={sidebarRef}>
-              {/* without asPopover check <Collapse />'s inner.clientWidth on `layout: "raw"` will be 0 and element will not have width on initial loading */}
-              {!asPopover && (
-                <Collapse isOpen horizontal>
-                  <Menu
-                    className="max-md:nx-hidden"
-                    // The sidebar menu, shows only the docs directories.
-                    directories={docsDirectories}
-                    // When the viewport size is larger than `md`, hide the anchors in
-                    // the sidebar when `floatTOC` is enabled.
-                    filesVisited={contentVisited}
-                    anchors={config.toc.float ? [] : anchors}
-                    onlyCurrentDocs
-                  />
-                </Collapse>
-              )}
-              <Menu
-                className="md:nx-hidden"
-                // The mobile dropdown menu, shows all the directories.
-                directories={docsDirectories}
-                // Always show the anchor links on mobile (`md`).
-                filesVisited={contentVisited}
-                anchors={anchors}
-              />
-            </div>
-          </OnFocusItemContext.Provider>
-        </FocusedItemContext.Provider>
-      </aside>
+      <div className="nx-border-r nextra-scrollbar-bg">
+        <aside
+          className={cn(
+            "nextra-sidebar-container nx-sidebar-scrollable    nx-flex nx-flex-col nx-p-3",
+            "md:nx-top-16 md:nx-shrink-0 motion-reduce:nx-transform-none",
+            "nx-transform-gpu nx-transition-all nx-ease-in-out",
+            "print:nx-hidden md:nx-w-72",
+            asPopover ? "md:nx-hidden" : "md:nx-sticky md:nx-self-start",
+            menu
+              ? "max-md:[transform:translate3d(0,0,0)]"
+              : "max-md:[transform:translate3d(0,-100%,0)]",
+          )}
+          ref={containerRef}
+        >
+          <FocusedItemContext.Provider value={focused}>
+            <OnFocusItemContext.Provider
+              value={(item) => {
+                setFocused(item);
+              }}
+            >
+              <div className={cn("nx-sidebar-scrollable")} ref={sidebarRef}>
+                {/* without asPopover check <Collapse />'s inner.clientWidth on `layout: "raw"` will be 0 and element will not have width on initial loading */}
+                {!asPopover && (
+                  <Collapse isOpen horizontal>
+                    <Menu
+                      className="max-md:nx-hidden"
+                      // The sidebar menu, shows only the docs directories.
+                      directories={docsDirectories}
+                      // When the viewport size is larger than `md`, hide the anchors in
+                      // the sidebar when `floatTOC` is enabled.
+                      filesVisited={contentVisited}
+                      anchors={config.toc.float ? [] : anchors}
+                      onlyCurrentDocs
+                    />
+                  </Collapse>
+                )}
+                <Menu
+                  className="md:nx-hidden"
+                  // The mobile dropdown menu, shows all the directories.
+                  directories={docsDirectories}
+                  // Always show the anchor links on mobile (`md`).
+                  filesVisited={contentVisited}
+                  anchors={anchors}
+                />
+              </div>
+            </OnFocusItemContext.Provider>
+          </FocusedItemContext.Provider>
+        </aside>
+      </div>
     </>
   );
 }
