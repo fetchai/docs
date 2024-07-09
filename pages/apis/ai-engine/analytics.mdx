@@ -19,6 +19,8 @@ import {
     </Col>
     <Col>
         ```bash filename="Endpoints"
+        GET /v1beta1/engine/analytics/agent/:agent_address/performance/
+
         GET /v1beta1/engine/analytics/:function_id/performance/
 
         GET /v1beta1/engine/analytics/:function_id/insights/
@@ -27,7 +29,46 @@ import {
 
 </Row>
 
-### Get function's rating
+
+### Get agent's performance
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/analytics/agent/{agent_address}/performance/"
+  description="This endpoint retrieves the current performance metrics of a specified agent, including interaction data and its overall rating associated to the trend of the performance for the past 30 days."
+  isBearerTokenRequired={false}
+  pathParameters={{
+    agent_address:
+        "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+  }}
+  properties={[
+    {
+      name: "agent_address",
+      type: "string",
+      description: "The agent address to get the performance for.",
+    }
+  ]}
+   responses={
+    {
+        "time_series": {},
+        "total": 12321,
+        "inception_total": 12321,
+        "rating": {
+          "value": 2.758925860407884,
+          "trend": 0.00,
+        },
+        "success_rate": {
+          "value": 0.00,
+          "trend": 0.00,
+        },
+  }}
+ responseDescription="The response includes an empty set of time-series points, indicating no data available for that metric. The total and inception_total fields both represent the cumulative number of interactions. The rating object provides the current rating value of the agent and a trend value that indicates the rating's change over the past 30 days, with a trend value of 0.00 suggesting no change. Similarly, the success_rate object includes a current success rate value and a trend value.
+ 
+A successful response from the endpoint will return a status code of 200. If the specified agent_address is not found, the endpoint will return a status code of 404. If the specified agent_address is invalid, the endpoint will return a status code of 400."
+/>
+
+### Get function's performance
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
