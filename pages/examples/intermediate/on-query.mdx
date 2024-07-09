@@ -23,84 +23,98 @@ This documentation outlines the steps to set up and enable communication between
 This agent handle queries. Asking the jobs available for given job title using serpAPI.
 
 ```py copy filename="JobSearchAgent.py"
-# Import Required libraries
+# import required libraries
+import json
+
+import aiohttp
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
-from serpapi import GoogleSearch
- 
-# Define Request and Response Models
+
+
+# Define Request and Response Data Models
 class Request(Model):
     query: str
+
+
 class Response(Model):
     response: str
- 
-# Define function to handle job serach queries
-async def get_job_summary(query, api_key):
-    # Parameters for the API request
+
+
+# Define asynchronous function to handle job search queries using a serpapi url
+async def get_job_summary(query: str, location: str, api_key: str):
+
+    url = "https://serpapi.com/search.json"
     params = {
-      "engine": "google_jobs",
-      "q": query,
-      "hl": "en",
-      "api_key": api_key
+        "q": query + " careers",
+        "location": location,
+        "engine": "google_jobs",
+        "api_key": api_key,
     }
 
-    # Perform the search
-    search = GoogleSearch(params)
-    results = search.get_dict()
-    jobs_results = results.get("jobs_results", [])
-    
-    # Initialize the result string
-    res_str = ""
-    # Get summary for the first job result
-    if jobs_results:
-        job = jobs_results[0]  # Get the first job
-        res_str += (
-            "\n_______________________________________________"
-            + f"\nJob Title: {job.get('title', 'N/A')}"
-            + f"Company Name: {job.get('company_name', 'N/A')}"
-            + f"Location: {job.get('location', 'N/A')}"
-            + f"Posted: {job['detected_extensions'].get('posted_at', 'N/A')}"
-            + f"Type: {job['detected_extensions'].get('schedule_type', 'N/A')}"
-            + f"Description: {job.get('description', 'N/A')[:500]}"
-            + "_______________________________________________"
-        )
-    else:
-        res_str = "No job results found."
-
-    return res_str
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, params=params) as response:
+            if response.status == 200:
+                data = await response.json()
+                jobs = data.get("jobs_results", [])
+                if jobs:
+                    job = jobs[0] if jobs else None  # Ensuring there is a job to report
+                    if not job:
+                        return "No job details available."
+                    res_str = json.dumps(
+                        {
+                            "Title": job.get("title", "N/A"),
+                            "Company": job.get("company_name", "N/A"),
+                            "Location": job.get("location", "N/A"),
+                            "Link": job.get("link", "N/A"),
+                            "Posted": job.get("detected_extensions", {}).get(
+                                "posted_at", "N/A"
+                            ),
+                            "Type": job.get("detected_extensions", {}).get(
+                                "schedule_type", "N/A"
+                            ),
+                            "Description": job.get("description", "N/A"),
+                        },
+                        indent=2,
+                    )
+                    return res_str
+                else:
+                    return "No job results found."
+            else:
+                return f"Failed to fetch data: {response.status}"
 
 
 # Define Search Agent
 SearchAgent = Agent(
     name="SearchAgent",
     port=8000,
-    seed="SearchAgent secret phrase",
+    seed="<YOUR_AGENT_SECRET_PHRASE>",
     endpoint=["http://127.0.0.1:8000/submit"],
-)
+)  # Update your agent's secret phrase
 
-# Registering agent on Almananc and funding it.
+# Registering agent on Almanac and funding it
 fund_agent_if_low(SearchAgent.wallet.address())
- 
-# On agent startup printing address
-@SearchAgent.on_event('startup')
-async def agent_details(ctx: Context):
-    ctx.logger.info(f'Search Agent Address is {SearchAgent.address}')
 
-# On_query handler
+
+# On agent startup printing address
+@SearchAgent.on_event("startup")
+async def agent_details(ctx: Context):
+    ctx.logger.info(f"Search Agent Address is {SearchAgent.address}")
+
+
+# On_query decorator to handle jobs request
 @SearchAgent.on_query(model=Request, replies={Response})
 async def query_handler(ctx: Context, sender: str, msg: Request):
     ctx.logger.info("Query received")
     try:
-        ctx.logger.info(f'Fetching job details for query: {msg.query}')
-        response = await get_job_summary(msg.query, "<YOUR_JOB_SEARCH_SERP_API_KEY>")
-        # Ensure the response is a string
-        response_str = str(response)
-        ctx.logger.info(f'Response: {response_str}')
-        await ctx.send(sender, Response(response=response_str))
+        ctx.logger.info(f"Fetching job details for query: {msg.query}")
+        response = await get_job_summary(
+            msg.query, "United Kingdom", "<YOUR_SERPAPI_API_KEY_HERE>" # Update your serpapi API key
+        )  # Replace your serpAPI key.
+        ctx.logger.info(f"Response: {response}")
+        await ctx.send(sender, Response(response=response))
     except Exception as e:
         error_message = f"Error fetching job details: {str(e)}"
         ctx.logger.error(error_message)
-        # Ensure the error message is sent as a string
         await ctx.send(sender, Response(response=str(error_message)))
 
 
@@ -108,94 +122,118 @@ if __name__ == "__main__":
     SearchAgent.run()
 ```
 
+Please update agent's secret phrase and serpapi API key. You can find serpapi API key on [SerpAPI API key ↗️](https://serpapi.com/)
 
 ### Flask App Script
 
 Async Agent-Based Flask App for Keyword base Job Search Results Retrieval.
 
 ```py copy filename="jobsearchapp.py"
-# Import required libraries
-from flask import Flask, request, jsonify
-from uagents.query import query
-from uagents import Model
 import json
-import asyncio
 
-# Initialise flask app
+from flask import Flask, jsonify, request
+from uagents import Model
+from uagents.query import query
+
 app = Flask(__name__)
 
-AGENT_ADDRESS = 'Provide your job search agent address'
+# Define the address of your agent to send requests to
+AGENT_ADDRESS = "<YOUR_AGENT_ADDRESS_HERE>"  # Update your agent address here
 
-# Definining request model
+
+# Define a data model for incoming requests
 class Request(Model):
     query: str
 
-# Defining endpoint to handle search requests
-@app.route('/search-jobs')
-def search_jobs():
-    keyword = request.args.get('q')  # Get the query parameter
+
+# Define a route to handle job search queries
+@app.route("/search-jobs")
+async def search_jobs():
+    keyword = request.args.get("q")
     if not keyword:
-        return jsonify({"error": "No query provided."}), 400
+        return jsonify({"error": "No query provided.", "status": "error"}), 400
+    # Make a call to the agent with the request and handle the response
+    response = await make_agent_call(Request(query=keyword))
+    # Check if the response indicates an unsuccessful agent call
+    if isinstance(response, str) and response.startswith("Unsuccessful"):
+        return jsonify({"error": response, "status": "failed"}), 500
 
-    response = synchronous_agent_query(keyword)
-    
-    # Assuming 'response' is the data you want to return
-    return jsonify({"results": response})
-
-# Define an asynchronous function to query the agent with the specified request
-async def synchronous_agent_query(keyword):
-    req = Request(query=keyword)
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    response = loop.run_until_complete(make_agent_call(req))
-    loop.close()
-    return f'Search results for {keyword}: {response}'
-
-# Define an asynchronous function to query the agent with the specified request
-async def agent_query(req):
-    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
-    data = json.loads(response.decode_payload())
-    return data["response"]
-
-# Define an asynchronous function to handle the agent call, which will be used within the synchronous Flask route
-async def make_agent_call(req: Request):
     try:
-        response = await agent_query(req)
-        return f"{response}"
-    except Exception as e:
-        return f"unsuccessful agent call - {str(e)}"
+        # Parse the response to a Python dictionary
+        job_data = json.loads(response)
+        # Return the job data in a structured format
+        return jsonify({"results": job_data, "status": "success"})
+    except json.JSONDecodeError:
+        # Handle JSON decoding error
+        return jsonify({"error": "Invalid response format", "status": "error"}), 500
 
-# Run the Flask application if this script is executed directly
+
+# Function to send a query to the agent
+async def agent_query(req):
+    try:
+        response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
+        # Decode the response and extract data
+        data = json.loads(response.decode_payload())
+        return data.get("response", "No data found")
+    except Exception as e:
+        # Return a formatted error message if the agent call fails
+        return f"Unsuccessful agent call - {str(e)}"
+
+
+# Function to initiate an agent call
+async def make_agent_call(req: Request):
+    response = await agent_query(req)
+    return response
+
+
+# Main function to run the Flask application
 if __name__ == "__main__":
     app.run(debug=True)
 ```
 
 ## Steps to run the app
-- Update `Agent Address` in jobsearchapp.py and [`serp_api_key`](https://serpapi.com/google-jobs-api) in JobSearchAgent.py.
-- Run both the script `JobSearchAgent.py` and `jobsearchapp.py` on your terminal.
+- Update `Agent Address` in jobsearchapp.py and [`serpapi_api_key`](https://serpapi.com/google-jobs-api) in JobSearchAgent.py.
+- Run both the script `JobSearchAgent.py` and update the agents address in `jobsearchapp.py`.
+- Rerun `JobSearchAgent.py` and `jobsearchapp.py` together
 - Open new termina window and run `curl "http://127.0.0.1:5000/search-jobs?q=<your_job_serach_query>"`
 - Replace `your_job_serach_query` with your query in above command.
 
 ## Expected Output
 
-- jobsearchapp.py 
+- JobSearchAgent.py 
 
 ```
 INFO:     [SearchAgent]: Almanac registration is up to date!
 INFO:     [SearchAgent]: Search Agent Address is agent1qdmgt4txxlvve4fmk8cw6jcp4gd2l709ctllx7jvz0kx4jzace5hu8n00hj
 INFO:     [SearchAgent]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
 INFO:     [SearchAgent]: Query received
-INFO:     [SearchAgent]: Fetching job details for query: software developer
-INFO:     [SearchAgent]: Response: _______________________________________________
-Job Title: Software DeveloperCompany Name: SAIC Career SiteLocation:   Chantilly, VA   Posted: 1 day agoType: Full-timeDescription: Description
+INFO:     [SearchAgent]: Fetching job details for query: data analyst
+INFO:     [SearchAgent]: Fetching job details for query: data analyst
+INFO:     [SearchAgent]: Response: {
+  "Title": "Data Analyst - eCommerce",
+  "Company": "Next Plc",
+  "Location": "  Leicester, United Kingdom   ",
+  "Link": "N/A",
+  "Posted": "3 days ago",
+  "Type": "Full-time",
+  "Description": "Let\u2019s talk numbers. When it comes to UK retail, it\u2019s hard to find a bigger name. We sell thousands of items an hour and are expanding our e-commerce business by the second. For anyone in Data, this is the place to learn. To grow. And to thrive.\n\nOur International eCommerce Third parties team help to connect NEXT with other large selling platforms such as Zalando and La Redoute to sell thousands of products. These platforms deliver strong growth for NEXT and to continue to support this growth we need ever improving data points and manipulation.\n\nThe role\nAre you an expert in interpreting data? Here, you\u2019ll be at the forefront of understanding and interpreting customer data to drive strategic decisions and enhance online customer experiences. So what does this mean day-to-day for you as a Data Analyst at NEXT, specifically?\n\u2022 Presenting complex analytical findings into clear, concise reports and communicating your analysis to the wider team.\n\u2022 Building reports and visualisations for the... wider team and business.\n\u2022 Exploring the latest technologies and selecting the right tools for the job.\n\u2022 Interrogating large volumes of data from a range of sources, including transactional and online.\n\u2022 Supporting the creation of partner dashboards converting key partner information.\n\u2022 Proactively identifying opportunities to support improvements to the customer experience.\n\u2022 Manage and own new partner data requirements.\n\u2022 Communicating and collaborating with cross functional teams within eCommerce and the wider business.\n\nYou\u2019ll be doing all this from our Leicestershire Head Office. Our offices are inspiring, yes. But we understand that life happens. So, we\u2019re big on making sure your work, works for you which is why we offer flexible working. Bring your energy. Play to your strengths. Make things bigger and better than before. Let\u2019s Take It On.\n\nSo if you\u2019re an expert in this field, have strong SQL/Azure/Databricks skills and considerable data analysis knowledge, have a commercial understanding and background, work with initiative and can build great working relationships within the business, this is the place for you \u2013 and your career.\n\nThe benefits\n\nWe\u2019ll discuss more of what you\u2019ll get when you work for NEXT at interview, but here\u2019s an overview of what you can expect:\n\u2022 Profit\u2013related bonus\n\u2022 Contributions into a pension scheme\n\u2022 Life assurance\n\u2022 Sharesave scheme, which allows you to invest in NEXT and claim your share of our success\n\u2022 A newly refurbished subsidised restaurant and bar\n\u2022 On-site nursery (salary sacrifice scheme) in Leicester\n\u2022 Staff shop\n\u2022 Juice bar and coffee shop\n\u2022 Free parking on-site, including car sharing\n\u2022 Free company bus service to and from Leicester city centre and other areas\n\u2022 25% staff discount on most NEXT products \u2013 either in our stores or delivered directly to your desk\n\u2022 National and local discounts on goods and services\n\u2022 A digital GP healthcare service"
+}
 
-INTRODUCTION: The Sponsor supports a diverse set of corporate goals across the organization by conducting technical risk assessments and providing technical risk mitigation guidance on the use of various enabling technologies. The Sponsor requires subject matter expertise in technical risk analysis of enterprise and mission systems, IT systems and networks, mobile and wireless... networks, cloud-based computing, network management platforms, communication protocols, scripting or pro_______________________________________________
 ```
 
 - Curl Response
 
 ```
 {
-  "results": "Search results for software developer: _______________________________________________\nJob Title: Software DeveloperCompany Name: SAIC Career SiteLocation:   Chantilly, VA   Posted: 1 day agoType: Full-timeDescription: Description\n\nINTRODUCTION: The Sponsor supports a diverse set of corporate goals across the organization by conducting technical risk assessments and providing technical risk mitigation guidance on the use of various enabling technologies. The Sponsor requires subject matter expertise in technical risk analysis of enterprise and mission systems, IT systems and networks, mobile and wireless... networks, cloud-based computing, network management platforms, communication protocols, scripting or pro_______________________________________________"
+  "results": {
+    "Company": "Next Plc",
+    "Description": "Let\u2019s talk numbers. When it comes to UK retail, it\u2019s hard to find a bigger name. We sell thousands of items an hour and are expanding our e-commerce business by the second. For anyone in Data, this is the place to learn. To grow. And to thrive.\n\nOur International eCommerce Third parties team help to connect NEXT with other large selling platforms such as Zalando and La Redoute to sell thousands of products. These platforms deliver strong growth for NEXT and to continue to support this growth we need ever improving data points and manipulation.\n\nThe role\nAre you an expert in interpreting data? Here, you\u2019ll be at the forefront of understanding and interpreting customer data to drive strategic decisions and enhance online customer experiences. So what does this mean day-to-day for you as a Data Analyst at NEXT, specifically?\n\u2022 Presenting complex analytical findings into clear, concise reports and communicating your analysis to the wider team.\n\u2022 Building reports and visualisations for the... wider team and business.\n\u2022 Exploring the latest technologies and selecting the right tools for the job.\n\u2022 Interrogating large volumes of data from a range of sources, including transactional and online.\n\u2022 Supporting the creation of partner dashboards converting key partner information.\n\u2022 Proactively identifying opportunities to support improvements to the customer experience.\n\u2022 Manage and own new partner data requirements.\n\u2022 Communicating and collaborating with cross functional teams within eCommerce and the wider business.\n\nYou\u2019ll be doing all this from our Leicestershire Head Office. Our offices are inspiring, yes. But we understand that life happens. So, we\u2019re big on making sure your work, works for you which is why we offer flexible working. Bring your energy. Play to your strengths. Make things bigger and better than before. Let\u2019s Take It On.\n\nSo if you\u2019re an expert in this field, have strong SQL/Azure/Databricks skills and considerable data analysis knowledge, have a commercial understanding and background, work with initiative and can build great working relationships within the business, this is the place for you \u2013 and your career.\n\nThe benefits\n\nWe\u2019ll discuss more of what you\u2019ll get when you work for NEXT at interview, but here\u2019s an overview of what you can expect:\n\u2022 Profit\u2013related bonus\n\u2022 Contributions into a pension scheme\n\u2022 Life assurance\n\u2022 Sharesave scheme, which allows you to invest in NEXT and claim your share of our success\n\u2022 A newly refurbished subsidised restaurant and bar\n\u2022 On-site nursery (salary sacrifice scheme) in Leicester\n\u2022 Staff shop\n\u2022 Juice bar and coffee shop\n\u2022 Free parking on-site, including car sharing\n\u2022 Free company bus service to and from Leicester city centre and other areas\n\u2022 25% staff discount on most NEXT products \u2013 either in our stores or delivered directly to your desk\n\u2022 National and local discounts on goods and services\n\u2022 A digital GP healthcare service",
+    "Link": "N/A",
+    "Location": "  Leicester, United Kingdom   ",
+    "Posted": "3 days ago",
+    "Title": "Data Analyst - eCommerce",
+    "Type": "Full-time"
+  },
+  "status": "success"
 }
 ```

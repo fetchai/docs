@@ -192,13 +192,13 @@ const Body = ({
           {breadcrumb}
           {body}
         </main>
-      </article>
 
-      {themeContext.toc &&
-        renderComponent(config.toc.component, {
-          filePath: routeOriginal,
-          headings: structuredHeadings,
-        })}
+        {themeContext.toc &&
+          renderComponent(config.toc.component, {
+            filePath: routeOriginal,
+            headings: structuredHeadings,
+          })}
+      </article>
     </>
   );
 };
