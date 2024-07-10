@@ -11,6 +11,7 @@ import type { PageTheme } from "nextra/normalize-pages";
 import { normalizePages } from "nextra/normalize-pages";
 import { ErrorBoundary } from "react-error-boundary";
 import { motion } from "framer-motion";
+import { useActiveAnchor } from "./contexts";
 import {
   Banner,
   Breadcrumb,
@@ -30,7 +31,6 @@ import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
 import { UserInfoProvider, useUserContext } from "./contexts/context-provider";
-import Bookmark from "./components/bookmark";
 import useBookMark from "theme/use-book-mark";
 import { isLinkInResponse } from "./helpers";
 import useContentVisited from "theme/use-content-visited";
@@ -71,8 +71,8 @@ const Body = ({
   navigation,
   tags,
   children,
-  bookMark,
-  onClickBookMark,
+  // bookMark,
+  // onClickBookMark,
   directoriesWithTags,
 }: BodyProps): ReactElement => {
   const config = useConfig();
@@ -132,6 +132,15 @@ const Body = ({
     </div>
   );
 
+  const tocData = useActiveAnchor();
+  const structuredHeadings = Object.entries(tocData).map(([key, value]) => ({
+    // eslint-disable-next-line unicorn/prefer-string-replace-all
+    value: key.replace(/-/g, " "),
+    id: key,
+    depth: 2,
+    isActive: value.isActive,
+  }));
+
   const routeOriginal = useFSRoute();
   const [route] = routeOriginal.split("#");
   const content = (
@@ -179,23 +188,17 @@ const Body = ({
             "nextra-body-typesetting-article",
         )}
       >
-        <main className="nx-w-full nx-min-w-0 nx-max-w-6xl nx-px-6 nx-pt-4 md:nx-px-12">
+        <main className="nextra-body-full-container nx-flex-col">
           {breadcrumb}
-          <Bookmark
-            classes="bookMarkMobile"
-            bookMark={bookMark}
-            onClickBookMark={onClickBookMark}
-          />
           {body}
         </main>
+
+        {themeContext.toc &&
+          renderComponent(config.toc.component, {
+            filePath: routeOriginal,
+            headings: structuredHeadings,
+          })}
       </article>
-      <div>
-        <Bookmark
-          classes="bookMarkDesktop"
-          bookMark={bookMark}
-          onClickBookMark={onClickBookMark}
-        />
-      </div>
     </>
   );
 };
@@ -298,7 +301,7 @@ const InnerLayout = ({
       />
       <noscript>
         <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-MVT793SR"
+          src="https://www.googletagmanager.com/ns.html?id=GTM-5QDSR3CT"
           height="0"
           width="0"
           className="nextra-iframe-google-tag"

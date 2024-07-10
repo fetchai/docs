@@ -9,10 +9,11 @@ This example shows how to use Agents to create a table booking service at a rest
 
 - [Creating an agent ↗️](/guides/agents/create-a-uagent)
 - [Creating an interval task ↗️](/guides/agents/interval-task)
-- [Communicating with other agents 📱🤖💻 ↗️](/guides/agents/communicating-with-other-agents)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+- [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
 
 ### The protocols
 
@@ -215,4 +216,25 @@ This example shows how to use Agents to create a table booking service at a rest
 
     if __name__ == "__main__":
         user.run()
+    ```
+
+### Expected output
+
+- Restaurant:
+
+    ```
+    INFO:     [restaurant]: Registering on almanac contract...
+    INFO:     [restaurant]: Registering on almanac contract...complete
+    INFO:     [restaurant]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [restaurant]: Query: guests=3 time_start=19 duration=2. Available tables: [2].
+    ```
+
+- User:
+
+    ```
+    INFO:     [ user]: Registering on almanac contract...
+    INFO:     [ user]: Registering on almanac contract...complete
+    INFO:     [ user]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [ user]: There is a free table, attempting to book one now
+    INFO:     [ user]: Table reservation was successful
     ```

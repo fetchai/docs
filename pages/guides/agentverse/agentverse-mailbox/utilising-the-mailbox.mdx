@@ -1,20 +1,30 @@
-# Utilising the Agentverse Mailroom feature 📬
+# Utilising the Agentverse Mailroom feature
 
 ## Introduction
 
 The **Agentverse** assists you in setting up mailboxes for local and Agentverse agents, allowing them to have a two-way communication with each other without the need to be constantly online and without requiring your constant presence to operate.
 
-To create a Mailbox, retrieve your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**. You will need to provide the address of the local agent you wish to retrieve and wait for confirmation.
+To create a Mailbox, retrieve your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**.
 
-You will then need to provide a **name** for the agent. Once you do so and confirm, you will see a **Mailbox API Key** showing up. Copy and paste it within your local agent code by filling up the `AGENT_MAILBOX_KEY` field inline. Remember, each agent needs a dedicated separate mailbox.
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1.png)
 
-You can then restart your agent.
+You will need to provide the address of the local agent you wish to retrieve and wait for confirmation. You will then need to provide a **name** for the agent.
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2.png)
+
+Once you do so and confirm, you will see a **Mailbox API Key** showing up.
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3.png)
+
+Copy and paste it within your local agent code by filling up the `AGENT_MAILBOX_KEY` field inline. Remember, each agent needs a dedicated separate mailbox.
+
+You can then restart your local agent.
 
 ### Local agent setup
 
 Let's now start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
 
-    ```py copy
+    ```py copy filename="agent_1.py"
     from uagents import Agent, Context, Model
 
     class Message(Model):
@@ -24,10 +34,10 @@ Let's now start by creating a local agent named `alice` with a `handle_message()
     SEED_PHRASE = "put_your_seed_phrase_here"
 
     # Copy the address shown below
-    print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+    print(f"Your agent's address is: {agent.address}")
 
-    # Then go to https://agentverse.ai, register your agent in the Mailroom
-    # and copy the agent's mailbox key
+    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+    # Then, copy the agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 
     # Now your agent is ready to join the agentverse!
@@ -41,42 +51,33 @@ Let's now start by creating a local agent named `alice` with a `handle_message()
     async def handle_message(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-        # send the response
-        ctx.logger.info("Sending message to bob")
-        await ctx.send(sender, Message(message="hello there bob"))
-
     if __name__ == "__main__":
         agent.run()
    ```
 
+You can then restart your agent; now your agent doesn't need to run all the time as their messages will be waiting for them for when they come back online.
+
 ### Agentverse agent setup
 
-Now create an Agentverse agent `bob` by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, add the following code to it:
+Now create an Agentverse agent `bob` by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, select a blank script and add the following code into it:
 
-    ```py copy
+    ```py copy filename="agent_2.py"
     from uagents import Agent, Context, Model
 
     class Message(Model):
         message: str
 
-    # Copy ALICE_ADDRESS generated in alice.py
-    ALICE_ADDRESS = "paste_alice_address_here"
+    # Copy ALICE_ADDRESS generated in agent_1.py
+    ALICE_ADDRESS = "agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf"
 
     # Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
 
-    # Copy the address shown below
-    print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
-
-    # Then go to https://agentverse.ai, register your agent in the Mailroom
-    # and copy the agent's mailbox key
-    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-
-    # Now your agent is ready to join the agentverse!
+    # Now let's create the Agentverse agent
     agent = Agent(
         name="bob",
         seed=SEED_PHRASE,
-        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+        endpoint="http://127.0.0.1:8001/submit",
     )
 
     @agent.on_interval(period=2.0)
@@ -92,6 +93,22 @@ Now create an Agentverse agent `bob` by selecting **+ New Agent** in the **My Ag
         agent.run()
    ```
 
-Next, run **bob** on the Agentverse. Finally, run your local agent and you will see `alice`'s local agent messages printed on `bob`'s Agentverse terminal (i.e. the **Agents Logs**).
+Next, run **bob** on the Agentverse.
 
-You can also checkout the following [guide ↗️](/guides/agents/intermediate/ai-engine-compatible-agent) for an additional representation of how to set up a mailbox for an agent using the Agentverse within your Agent's code.
+### Expected output
+
+You will see something like the following depending on the agent considered:
+
+1. Agentverse Agent output:
+
+    ```
+    2024-06-27 11:20:19	Info	Agent	[INFO]: Sending message to alice
+    2024-06-27 11:20:19	Info	Agent	[INFO]: Received message from agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf: hello there bob
+    ```
+
+2. Local Agent output:
+
+    ```
+    INFO:     [ALICE]: Received message from agent1qd3hd6peaejavk3uredlxz05e8tcx6purl5gpuamk22xduj7e37k2sqetaa: hello there alice
+    INFO:     [ALICE]: Sending message to bob
+    ```

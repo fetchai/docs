@@ -5,17 +5,17 @@
 This file can be run on any platform supporting Python, with the necessary install permissions.
 This example shows how to use Agents to make them send tokens with one another.
 
-#### Supporting documentation
+### Supporting documentation
 
 - [Creating an agent ↗️](/guides/agents/create-a-uagent)
 - [Creating an interval task ↗️](/guides/agents/interval-task)
-- [Communicating with other agents 📱🤖💻 ↗️](/guides/agents/communicating-with-other-agents)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
-- [How to use agents to send tokens 📊💸 ↗️](/guides/agents/send-tokens)
+- [How to use agents to send tokens ↗️](/guides/agents/intermediate/send-tokens)
 
-#### The agent
+### The agent
 
     ```py copy filename="sending_tokens.py"
     from uagents import Agent, Bureau, Context, Model
@@ -37,14 +37,14 @@ This example shows how to use Agents to make them send tokens with one another.
     bob = Agent(name="bob", seed="bob secret phrase")
 
     fund_agent_if_low(alice.wallet.address())
-    fund_agent_if_low(bob.wallet.address())
+    fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
 
     @alice.on_interval(period=10.0)
     async def request_funds(ctx: Context):
         await ctx.send(
             bob.address,
             PaymentRequest(
-                wallet_address=str(ctx.wallet.address()), amount=AMOUNT, denom=DENOM
+                wallet_address=str(alice.wallet.address()), amount=AMOUNT, denom=DENOM
             ),
         )
 
@@ -52,11 +52,11 @@ This example shows how to use Agents to make them send tokens with one another.
     async def confirm_transaction(ctx: Context, sender: str, msg: TransactionInfo):
         ctx.logger.info(f"Received transaction info from {sender}: {msg}")
 
-        tx_resp = await wait_for_tx_to_complete(msg.tx_hash)
+        tx_resp = await wait_for_tx_to_complete(msg.tx_hash, ctx.ledger)
         coin_received = tx_resp.events["coin_received"]
 
         if (
-            coin_received["receiver"] == str(ctx.wallet.address())
+            coin_received["receiver"] == str(alice.wallet.address())
             and coin_received["amount"] == f"{AMOUNT}{DENOM}"
         ):
             ctx.logger.info(f"Transaction was successful: {coin_received}")
@@ -65,7 +65,7 @@ This example shows how to use Agents to make them send tokens with one another.
     async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
         ctx.logger.info(f"Received payment request from {sender}: {msg}")
         transaction = ctx.ledger.send_tokens(
-            msg.wallet_address, msg.amount, msg.denom, ctx.wallet
+            msg.wallet_address, msg.amount, msg.denom, bob.wallet
         )
 
         await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
@@ -76,4 +76,12 @@ This example shows how to use Agents to make them send tokens with one another.
 
     if __name__ == "__main__":
         bureau.run()
+    ```
+
+### Expected output
+
+    ```
+    [  bob]: Received payment request from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: wallet_address='fetch1967p3vkp0yngdfturv4ypq2p4g760ml705wcxy' amount=100 denom='atestfet'
+    [alice]: Received transaction info from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: tx_hash='DB662CCF415C7B0C9A02928967BE1817506D02A041AA05CA48DCE5CF87D5A638'
+    [alice]: Transaction was successful: {'receiver': 'fetch1967p3vkp0yngdfturv4ypq2p4g760ml705wcxy', 'amount': '100atestfet'}
     ```

@@ -4,74 +4,76 @@ import { Callout } from 'nextra/components'
 
 ## Run a local agent with an endpoint
 
-Sometimes you'll want to run an agent on your own hardware or infrastructure; luckily this is very easy to do on any system that support Python 3.10.
+In some scenarios, you may want to run an agent on your own hardware or infrastructure; luckily this is very easy to do on any system that support **Python 3.10**.
 
 This system is pretty simple, as to get you started as quickly as possible. We're going to run this agent on any device you'd like, in this scenario we're running on a VM but you could run this on your laptop, raspberry pi or tweak for Agentverse. On startup our script will register our agent to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), and then our agent will be available to communicate with other agents.
 
 ### The agent
 
-```py copy filename="agent.py"
-from uagents.setup import fund_agent_if_low
-from uagents import Agent, Context, Protocol, Model
-import random
-from pydantic import Field
-from ai_engine import UAgentResponse, UAgentResponseType
-import sys
+Consider the following Agent:
 
-agent = Agent(
-    name="dungeonsanddragonsdiceroll",
-    port=6145,
-    seed="RANDOM STRINGS",
-    endpoint=["http://YOUR_IP:6145/submit"],
-)
+    ```py copy filename="agent.py"
+    from uagents.setup import fund_agent_if_low
+    from uagents import Agent, Context, Protocol, Model
+    import random
+    from pydantic import Field
+    from ai_engine import UAgentResponse, UAgentResponseType
+    import sys
 
-fund_agent_if_low(agent.wallet.address())
-
-@agent.on_event("startup")
-async def hi(ctx: Context):
-    ctx.logger.info(agent.address)
-
-class Request(Model):
-    dice_sides: int = Field(description="How many sides does your dice need?")
-
-dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
-
-@dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
-async def roll_dice(ctx: Context, sender: str, msg: Request):
-    result = str(random.randint(1, msg.dice_sides))
-    message = f"Dice roll result: {result}"
-    await ctx.send(
-        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+    agent = Agent(
+        name="dungeonsanddragonsdiceroll",
+        port=6145,
+        seed="RANDOM STRINGS",
+        endpoint=["http://YOUR_IP:6145/submit"],
     )
 
-agent.include(dice_roll_protocol, publish_manifest=True)
+    fund_agent_if_low(agent.wallet.address())
 
-agent.run()
- ```
+    @agent.on_event("startup")
+    async def hi(ctx: Context):
+        ctx.logger.info(agent.address)
 
-A few things to note; you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`.
+    class Request(Model):
+        dice_sides: int = Field(description="How many sides does your dice need?")
 
-The agent is initialised with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an int as seen in the `Request` object.
+    dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
 
-Our `on_message()` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of  `UAgentResponse` which is essential to communicate with DeltaV.
+    @dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
+    async def roll_dice(ctx: Context, sender: str, msg: Request):
+        result = str(random.randint(1, msg.dice_sides))
+        message = f"Dice roll result: {result}"
+        await ctx.send(
+            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+        )
 
-`.run()` initialises the agent.
+    agent.include(dice_roll_protocol, publish_manifest=True)
+
+    agent.run()
+    ```
+
+You'll need to be running this agent on infrastructure that allows you to **open a port**; in our example, we run on port `6145`.
+
+The agent is initialized with an endpoint, and a port; this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an `int` as seen in the `Request` object.
+
+Our `on_message()` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of `UAgentResponse` which is essential to communicate with [DeltaV ↗️](/concepts/ai-engine/deltav).
+
+`.run()` initializes the agent.
 
 Finally, we  run our agent as follows: `python agent.py`
 
 **Expected output**:
 
-```
-INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
-INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
-INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
-INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
-INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
-```
+    ```
+    INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
+    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
+    INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
+    INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
+    INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
+    ```
 
 ## Run a local agent using a Mailbox
 
-Through the **Agentverse** you can set up mailboxes for your local agents, allowing them to communicate with other agents registered on the Fetch Network without the need to be constantly online and without requiring your constant presence to operate.
+Through the **Agentverse** you can set up [Mailboxes ↗️](/guides/agents/intermediate/mailbox) for your local Agents, allowing them to communicate with other agents registered on the Fetch Network without the need to be constantly online and without requiring your constant presence to operate.
 
 ### Local agent setup
 
@@ -87,10 +89,10 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
     SEED_PHRASE = "put_your_seed_phrase_here"
 
     # Copy the address shown below
-    print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+    print(f"Your agent's address is: {agent.address}")
 
-    # Then go to https://agentverse.ai, register your agent in the Mailroom
-    # and copy the agent's mailbox key
+    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+    # Then, copy the agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 
     # Now your agent is ready to join the agentverse!
@@ -104,20 +106,24 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
     async def handle_message(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-        # send the response
-        ctx.logger.info("Sending message to bob")
-        await ctx.send(sender, Message(message="hello there bob"))
-
     if __name__ == "__main__":
         agent.run()
    ```
 
-You can easily create a Mailbox by first retrieving your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**. You will need to provide the address of the local agent you wish to retrieve and wait for confirmation.
+You can easily create a Mailbox by first retrieving your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**.
 
-You will then need to provide a **name** for the agent. Once you do so and confirm, you will see a **Mailbox API Key** showing up. Copy and paste it within your local agent code above by filling up the `AGENT_MAILBOX_KEY` field inline.
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1.png)
 
-You can then restart your agent.
+You will need to provide the address of the local agent you wish to retrieve and wait for confirmation. You will then need to provide a **name** for the agent.
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2.png)
+
+Once you do so and confirm, you will see a **Mailbox API Key** showing up. Paste it within your local agent code above by filling up the `AGENT_MAILBOX_KEY` field inline.
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3.png)
+
+You can then restart your agent, now your agent doesn't need to run all the time as their messages will be waiting for them for when they come back online!
 
     <Callout type="info" emoji="ℹ️">
-      You can find additional information on the Agentverse Mailbox feature [here ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox). This resource shows both the local and Agentverse agents setups to allow for a two-way communication line between these two agents.
+      You can find additional information on the Agentverse Mailbox feature [here ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox). This resource shows how to setup two agents: one locally and one on the Agentverse and create a two-way communication line between these two agents with both agents sending a message to one another on an interval.
     </Callout>

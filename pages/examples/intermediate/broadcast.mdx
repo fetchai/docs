@@ -4,16 +4,17 @@
 
 This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to use a custom protocol to enable multiple agents communication.
 
-#### Supporting documentation
+### Supporting documentation
 
 - [Creating an agent↗️](/guides/agents/create-a-uagent)
 - [Creating an interval task ↗️](/guides/agents/interval-task)
-- [Communicating with other agents 📱🤖💻 ↗️](/guides/agents/communicating-with-other-agents)
+- [Communicating with other agents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
-- [Agents: broadcast 📡 ↗️](/guides/agents/broadcast)
+- [Agents: broadcast ↗️](/guides/agents/broadcast)
+- [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
 
-#### Agent
+### The script
 
 ```python copy filename="broadcast.py"
 from uagents import Agent, Bureau, Context, Model, Protocol
@@ -36,7 +37,9 @@ proto = Protocol(name="proto", version="1.0")
 
 @proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
 async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
-    await ctx.send(sender, BroadcastExampleResponse(text=f"Hello from {ctx.name}"))
+    await ctx.send(
+        sender, BroadcastExampleResponse(text=f"Hello from {ctx.agent.name}")
+    )
 
 # include protocol
 # Note: after the first registration on the almanac smart contract, it will
@@ -47,7 +50,8 @@ bob.include(proto)
 # let charles send the message to all agents supporting the protocol
 @charles.on_interval(period=5)
 async def say_hello(ctx: Context):
-    await ctx.broadcast(proto.digest, message=BroadcastExampleRequest())
+    status_list = await ctx.broadcast(proto.digest, message=BroadcastExampleRequest())
+    ctx.logger.info(f"Trying to contact {len(status_list)} agents.")
 
 @charles.on_message(model=BroadcastExampleResponse)
 async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
@@ -61,3 +65,21 @@ bureau.add(charles)
 if __name__ == "__main__":
     bureau.run()
 ```
+
+### Expected output
+
+    ```
+    INFO:     [alice]: Registering on almanac contract...
+    INFO:     [alice]: Registering on almanac contract...complete
+    INFO:     [  bob]: Registering on almanac contract...
+    INFO:     [  bob]: Registering on almanac contract...complete
+    INFO:     [charles]: Registering on almanac contract...
+    INFO:     [charles]: Registering on almanac contract...complete
+    INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [charles]: Received response from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: Hello from alice
+    INFO:     [charles]: Received response from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: Hello from bob
+    INFO:     [charles]: Trying to contact 2 agents.
+    INFO:     [charles]: Received response from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: Hello from alice
+    INFO:     [charles]: Received response from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: Hello from bob
+    INFO:     [charles]: Trying to contact 2 agents.
+    ```

@@ -157,7 +157,7 @@ const items: { [key: string]: Item[] } = {
   ],
   "Agentverse components": [
     {
-      title: "Agentverse: My Agents 🚢",
+      title: "Agentverse: My Agents",
       description: (
         <>
           The Agentverse My Agents section enables all users to get started
@@ -169,7 +169,7 @@ const items: { [key: string]: Item[] } = {
       path: "/concepts/agent-services/agent-hosting",
     },
     {
-      title: "Agentverse: Mailroom / IoT Gateway 📫",
+      title: "Agentverse: Mailroom / IoT Gateway",
       description: (
         <>
           Set up mailboxes for your local agents so that your agent doesn&apos;t
@@ -197,7 +197,7 @@ const items: { [key: string]: Item[] } = {
       path: "/apis#agentverse-apis",
     },
     {
-      title: "Agentverse: Explorer 🤖🌐",
+      title: "Agentverse: Explorer",
       description: (
         <>
           Learn to use the Agentverse Explorer to start an interaction with

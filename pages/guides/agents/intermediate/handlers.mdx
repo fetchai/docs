@@ -12,7 +12,7 @@ Below, we show how to use the following different event handlers:
     2. **Handle messages**: `.on_message()`
     3. **Answer queries**: `.on_query()`
 
-## Creating an interval task with on_interval() handler
+## Creating an interval task with `on_interval()` handler
 
 Sometimes an agent will need to perform a task periodically. To do this we can use the `on_interval()` decorator which periodically repeats a given function for the agent. For instance, an agent could send a message every 2 seconds to another agent.
 
@@ -20,7 +20,7 @@ Sometimes an agent will need to perform a task periodically. To do this we can u
 
 ### Walk-through
 
-1. Let's create a Python script for this task, and name it by running: `touch interval-task.py`
+1. Let's create a Python script for this task, and name it: `touch interval-task.py`
 2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
 
    ```py copy
@@ -83,7 +83,7 @@ The output should be as follows:
     hello, my name is alice
     ```
 
-## Handle messages using the on_message() handler
+## Handle messages using the `on_message()` handler
 
 We now showcase a scenario where three agents, named `alice`, `bob`, and `charles`, use a custom [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all agents using the protocol. Agents use the `on_message()` handler which allows them to handle messages matching specific data models.
 
@@ -244,7 +244,7 @@ The output would be:
     Received response from bob: Hello from bob
     ```
 
-## Answer queries with on_query() handler
+## Answer queries with `on_query()` handler
 
 The `on_query()` handler is used to register a [Function ↗️](/guides/agents/intermediate/agent-functions) as a handler for incoming queries that match a specified `Model`. This decorator enables the agent to respond to queries in an event-driven manner.
 
@@ -303,7 +303,7 @@ Let's explore the Proxy code script step-by-step:
 
 1. First of all navigate to directory where you want to create your project.
 2. Create a Python script name `on_query.py` by running `touch on_query.py`.
-3. We need to import `json`, `asyncio`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `QueryRequest` class as a subclass of `Model`:
+3. We need to import `json`, `fastapi`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `TestRequest` class as a subclass of `Model`:
 
     ```py copy
     import json
@@ -327,7 +327,7 @@ Let's explore the Proxy code script step-by-step:
         return data["text"]
     ```
 
-5. Initialize a FastAPI app:
+5. Initialize a `FastAPI` app:
 
     ```py copy
     app = FastAPI()

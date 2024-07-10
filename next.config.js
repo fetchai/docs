@@ -352,6 +352,17 @@ module.exports = withNextra({
           "/guides/agents/intermediate/options-for-running-local-agents",
         permanent: true,
       },
+      {
+        source: "/guides/deltav/deltav-chat-interface",
+        destination:
+          "/concepts/ai-engine/powering-connections-and-smart-operations-in-deltav",
+        permanent: true,
+      },
+      {
+        source: "/examples/advanced/chat-api-example",
+        destination: "/examples/advanced/chat_api_example",
+        permanent: true,
+      },
     ];
   },
 });

@@ -4,16 +4,18 @@
 
 This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to set up Agents Name Services using the uAgents and CosmPy Python libraries.
 
-#### Supporting documentation
+### Supporting documentation
 
-- [Creating an agent↗️](/guides/agents/create-a-uagent)
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
 - [Creating an interval task ↗️](/guides/agents/interval-task)
-- [Communicating with other agents 📱🤖💻 ↗️](/guides/agents/communicating-with-other-agents)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
-- [Wallets and private keys 💸🔐↗️](/guides/fetch-network/cosmpy/creating-wallet)
+- [Wallets and private keys ↗️](/guides/fetch-network/cosmpy/creating-wallet)
 
-#### Agent 1
+## The Agents
+
+### Agent 1
 
 ```py copy filename="agent_1.py"
 from cosmpy.aerial.wallet import LocalWallet
@@ -42,7 +44,7 @@ for wallet in [my_wallet, bob.wallet]:
 @bob.on_event("startup")
 async def register_agent_name(ctx: Context):
     await name_service_contract.register(
-        bob.ledger, my_wallet, ctx.address, ctx.name, DOMAIN
+        bob.ledger, my_wallet, bob.address, bob.name, DOMAIN
     )
 
 @bob.on_message(model=Message)
@@ -53,7 +55,7 @@ if __name__ == "__main__":
     bob.run()
 ```
 
-#### Agent 2
+### Agent 2
 
 ```py copy filename="agent_2.py"
 from uagents.setup import fund_agent_if_low
@@ -81,3 +83,29 @@ if __name__ == "__main__":
     alice.run()
 ```
 
+## Expected output
+
+- Bob:
+
+    ```
+    INFO:     [bob-0]: Registering on almanac contract...
+    INFO:     [bob-0]: Registering on almanac contract...complete
+    INFO:     [network]: Registering name...
+    INFO:     [network]: Registering name...complete
+    INFO:     [bob-0]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    ```
+- Alice:
+
+    ```
+    INFO:     [alice-0]: Registering on almanac contract...
+    INFO:     [alice-0]: Registering on almanac contract...complete
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    INFO:     [alice-0]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    ```

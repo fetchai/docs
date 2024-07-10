@@ -1,10 +1,10 @@
 import {Callout} from 'nextra/components'
 
-# Communicating with other agents 📱🤖
+# Communicating with other agents
 
 ## Introduction
 
-Communication is an essential feature agent network. It allows agents to work together, exchange information, and forms an organic marketplace.
+Communication is an essential feature within any agents network. Communication allows agents to work together, exchange information, and forms an organic marketplace.
 
 In this guide, we will explore two methods of communication between agents:
 
@@ -38,7 +38,7 @@ The first step to better understand how agents communicate is to introduce how 2
 
 3. Now we create two agent instances, `sigmar` and `slaanesh`, with `name` and `seed` parameters:
 
-    ```py
+    ```py copy
     sigmar = Agent(name="sigmar", seed="sigmar recovery phrase")
     slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase")
     ```
@@ -78,7 +78,7 @@ The first step to better understand how agents communicate is to introduce how 2
 
     It would also be valid to respond to the sender:
 
-     ```py
+     ```py copy
      await ctx.send(sender.address, Message(message="hello there sigmar"))
      ```
 
@@ -132,10 +132,11 @@ We are now ready to run the script: `python agents_communication.py`
 The output would be:
 
     ```
+    [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
-    [  slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
+    [slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
-    [  slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
+    [slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
     ```
 
@@ -168,7 +169,7 @@ Let's start by defining the script for **sigmar**.
     class Message(Model):
         message: str
 
-    RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+    RECIPIENT_ADDRESS="agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum"
    ```
 
 2. Let's now create our agent, `sigmar`, by providing `name`, `seed`, `port`, and `endpoint`. Also, make sure it has enough funds to register in the Almanac contract:
@@ -222,7 +223,7 @@ from uagents.setup import fund_agent_if_low
 class Message(Model):
     message: str
 
-RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+RECIPIENT_ADDRESS="agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum"
 
 sigmar = Agent(
     name="sigmar",
@@ -326,18 +327,23 @@ The output will depend on the terminal:
 - **Sigmar**:
 
     ```
-    [sigmar]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there sigmar
-    [sigmar]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there sigmar
-    [sigmar]: Received message from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: hello there sigmar
-  ```
+    INFO:     [sigmar]: Registering on almanac contract...
+    INFO:     [sigmar]: Registering on almanac contract...complete
+    INFO:     [sigmar]: Received message from agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum: hello there sigmar
+    INFO:     [sigmar]: Received message from agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum: hello there sigmar
+    INFO:     [sigmar]: Received message from agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum: hello there sigmar
+    ```
 
 - **Slaanesh**:
 
     ```
-    [  slaanesh]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there slaanesh
-    [  slaanesh]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there slaanesh
-    [  slaanesh]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: hello there slaanesh
-  ```
+    INFO:     [slaanesh]: Registering on almanac contract...
+    INFO:     [slaanesh]: Registering on almanac contract...complete
+    INFO:     [slaanesh]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [slaanesh]: Received message from agent1qvwqu6a0km09mq4f6j6kmke9smswmgcergmml9a54av9449rqtmmxy4qwe6: hello there slaanesh
+    INFO:     [slaanesh]: Received message from agent1qvwqu6a0km09mq4f6j6kmke9smswmgcergmml9a54av9449rqtmmxy4qwe6: hello there slaanesh
+    INFO:     [slaanesh]: Received message from agent1qvwqu6a0km09mq4f6j6kmke9smswmgcergmml9a54av9449rqtmmxy4qwe6: hello there slaanesh
+    ```
 
 ### Before we go on...
 
@@ -354,4 +360,4 @@ For _local communication_, we learned how to use the `uagents` library to create
 
 Next, we delved into _remote communication_, which facilitates interaction between agents through the Almanac Contract. This method requires registering the agents in the Almanac Contract and querying for **HTTP endpoints** for communication. By running the scripts separately, we could observe the real-time messages exchange, fostering a decentralized network of interacting agents.
 
-With this, we suspect you're ready to start building agents, as part of multi agent system the Almanac allows; awesome. If you want to go further though, take a look at the [message verification↗️](/guides/agents/message-verification) and [sending tokens ↗️](/guides/agents/send-tokens), after-all you do want to be sure you are speaking to who you think you are, and agents getting paid is awesome.
+With this, we suspect you're ready to start building agents, as part of multi agent system the Almanac allows; awesome. If you want to go further though, take a look at the [message verification ↗️](/guides/agents/message-verification) and [sending tokens ↗️](/guides/agents/send-tokens), after-all you do want to be sure you are speaking to who you think you are, and agents getting paid is awesome.
