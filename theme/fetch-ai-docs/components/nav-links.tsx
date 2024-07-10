@@ -21,7 +21,7 @@ const classes = {
 
 export const NavLinks = ({
   flatDirectories,
-  currentIndex
+  currentIndex,
 }: NavLinkProps): ReactElement | null => {
   const config = useConfig();
   const nav = config.navigation;
@@ -32,7 +32,6 @@ export const NavLinks = ({
   let prev: any = navigation.prev && flatDirectories[currentIndex - 1];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let next: any = navigation.next && flatDirectories[currentIndex + 1];
-
 
   if (prev && !prev.isUnderCurrentDocsTree) prev = false;
   if (next && !next.isUnderCurrentDocsTree) next = false;

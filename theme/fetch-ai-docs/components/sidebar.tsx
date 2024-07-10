@@ -327,10 +327,12 @@ function Menu({
   return (
     <ul className={cn(classes.list, className)}>
       {directories.map((item) => {
-        return !onlyCurrentDocs || !item.theme || (item.theme && item.theme.isUnderCurrentDocsTree)  ? item.type === "menu" || (item.children && (item.children.length > 0 || !item.withIndexPage))
-            ? true && (
-                <Folder key={item.name} item={item} anchors={anchors} />
-              )
+        return !onlyCurrentDocs ||
+          !item.theme ||
+          (item.theme && item.theme.isUnderCurrentDocsTree)
+          ? item.type === "menu" ||
+            (item.children && (item.children.length > 0 || !item.withIndexPage))
+            ? true && <Folder key={item.name} item={item} anchors={anchors} />
             : true &&
               !item?.name?.includes("integrations") && (
                 <File
@@ -424,53 +426,53 @@ export function Sidebar({
         )}
         onClick={() => setMenu(false)}
       />
-       <div className="nx-border-r nextra-scrollbar-bg">
-       <aside
-        className={cn(
-          "nextra-sidebar-container nx-sidebar-scrollable    nx-flex nx-flex-col nx-p-3",
-          "md:nx-top-16 md:nx-shrink-0 motion-reduce:nx-transform-none",
-          "nx-transform-gpu nx-transition-all nx-ease-in-out",
-          "print:nx-hidden md:nx-w-72",
-          asPopover ? "md:nx-hidden" : "md:nx-sticky md:nx-self-start",
-          menu
-            ? "max-md:[transform:translate3d(0,0,0)]"
-            : "max-md:[transform:translate3d(0,-100%,0)]",
-        )}
-        ref={containerRef}
-      >
-        <FocusedItemContext.Provider value={focused}>
-          <OnFocusItemContext.Provider
-            value={(item) => {
-              setFocused(item);
-            }}
-          >
-            <div className={cn("nx-sidebar-scrollable")} ref={sidebarRef}>
-              {/* without asPopover check <Collapse />'s inner.clientWidth on `layout: "raw"` will be 0 and element will not have width on initial loading */}
-              {!asPopover && (
-                <Collapse isOpen horizontal>
-                  <Menu
-                    className="max-md:nx-hidden"
-                    // The sidebar menu, shows only the docs directories.
-                    directories={docsDirectories}
-                    // When the viewport size is larger than `md`, hide the anchors in
-                    // the sidebar when `floatTOC` is enabled.
-                    anchors={config.toc.float ? [] : anchors}
-                    onlyCurrentDocs
-                  />
-                </Collapse>
-              )}
-              <Menu
-                className="md:nx-hidden"
-                // The mobile dropdown menu, shows all the directories.
-                directories={docsDirectories}
-                // Always show the anchor links on mobile (`md`).
-                anchors={anchors}
-              />
-            </div>
-          </OnFocusItemContext.Provider>
-        </FocusedItemContext.Provider>
-      </aside>
-       </div>
+      <div className="nx-border-r nextra-scrollbar-bg">
+        <aside
+          className={cn(
+            "nextra-sidebar-container nx-sidebar-scrollable    nx-flex nx-flex-col nx-p-3",
+            "md:nx-top-16 md:nx-shrink-0 motion-reduce:nx-transform-none",
+            "nx-transform-gpu nx-transition-all nx-ease-in-out",
+            "print:nx-hidden md:nx-w-72",
+            asPopover ? "md:nx-hidden" : "md:nx-sticky md:nx-self-start",
+            menu
+              ? "max-md:[transform:translate3d(0,0,0)]"
+              : "max-md:[transform:translate3d(0,-100%,0)]",
+          )}
+          ref={containerRef}
+        >
+          <FocusedItemContext.Provider value={focused}>
+            <OnFocusItemContext.Provider
+              value={(item) => {
+                setFocused(item);
+              }}
+            >
+              <div className={cn("nx-sidebar-scrollable")} ref={sidebarRef}>
+                {/* without asPopover check <Collapse />'s inner.clientWidth on `layout: "raw"` will be 0 and element will not have width on initial loading */}
+                {!asPopover && (
+                  <Collapse isOpen horizontal>
+                    <Menu
+                      className="max-md:nx-hidden"
+                      // The sidebar menu, shows only the docs directories.
+                      directories={docsDirectories}
+                      // When the viewport size is larger than `md`, hide the anchors in
+                      // the sidebar when `floatTOC` is enabled.
+                      anchors={config.toc.float ? [] : anchors}
+                      onlyCurrentDocs
+                    />
+                  </Collapse>
+                )}
+                <Menu
+                  className="md:nx-hidden"
+                  // The mobile dropdown menu, shows all the directories.
+                  directories={docsDirectories}
+                  // Always show the anchor links on mobile (`md`).
+                  anchors={anchors}
+                />
+              </div>
+            </OnFocusItemContext.Provider>
+          </FocusedItemContext.Provider>
+        </aside>
+      </div>
     </>
   );
 }

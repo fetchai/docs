@@ -6,7 +6,7 @@ export default async function handler(
 ) {
   const { email } = req.body;
   try {
-    const url = new URL("https://api.sender.net/v2/subscribers");
+    const url = new URL(`${process.env.NEWSLETTER_BASE_URL}/v2/subscribers`);
     const headers = {
       Authorization: `Bearer ${process.env.SENDER_TOKEN}`,
       "Content-Type": "application/json",
