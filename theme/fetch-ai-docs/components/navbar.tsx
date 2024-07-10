@@ -8,6 +8,7 @@ import { useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { useState } from "react";
+import React from "react";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -77,10 +78,7 @@ function NavbarMenu({
   );
 }
 
-export function Navbar({
-  flatDirectories,
-  items,
-}: NavBarProps): ReactElement {
+export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const config = useConfig();
   const activeRoute = useFSRoute();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
@@ -210,7 +208,6 @@ export function Navbar({
             </button>
           </div>
         </div>
-
         <div className="search-bar-mobile nx-mt-6 nx-mb-2">
           {renderComponent(config.search.component, {
             directories: flatDirectories,

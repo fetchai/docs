@@ -316,7 +316,6 @@ const InnerLayout = ({
             headings={headings}
             asPopover={hideSidebar}
             includePlaceholder={themeContext.layout === "default"}
-
           />
           <SkipNavContent />
           {check && (
@@ -357,7 +356,6 @@ const InnerLayout = ({
   );
 };
 
-
 export default function Layout({
   children,
   ...context
@@ -389,7 +387,6 @@ export {
   Collapse,
   NotFoundPage,
   ServerSideErrorPage,
-
   SkipNavContent,
   SkipNavLink,
   ThemeSwitch,

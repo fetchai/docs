@@ -1,9 +1,9 @@
 import React from "react";
 import { withIronSessionSsr } from "iron-session/next";
 import { parseJwt } from "src/core/jwt";
-import { sessionOptions } from "src/core/session";
 import { getTokenFromAuthCode } from "src/core/fauna";
 import { setCookie } from "cookies-next";
+import { sessionOptions } from "src/core/session";
 
 export function flatten(normalized = ""): string {
   if (Array.isArray(normalized)) {
@@ -42,12 +42,15 @@ export const getServerSideProps = withIronSessionSsr(async function ({
   setCookie("fauna", token.access_token, { req, res });
   setCookie("refresh_token", token.refresh_token, { req, res });
 
-  const r = await fetch(`https://accounts.fetch.ai/v1/profile`, {
-    method: "GET",
-    headers: {
-      Authorization: `bearer ${token.access_token}`,
+  const r = await fetch(
+    `${process.env.NEXT_PUBLIC_FETCH_ACCOUNTS_URL}/v1/profile`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `bearer ${token.access_token}`,
+      },
     },
-  });
+  );
   if (!r.ok) {
     await authFailure();
     return {
