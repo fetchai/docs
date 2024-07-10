@@ -45,19 +45,19 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
       label: "Agents",
       content: [
         {
-          title: "Installing the uAgents Framework 🛠️📲",
+          title: "Installing the uAgents Framework",
           description:
             "A guide for installing the uAgents Framework correctly.",
           path: "guides/agents/installing-uagent",
         },
         {
-          title: "Creating your first agent 🤖🧑‍💻",
+          title: "Creating your first agent",
           description:
             "A guide showing how to create your first agent in few minutes.",
           path: "guides/agents/create-a-uagent",
         },
         {
-          title: "How to use agents to verify messages 📬🔐",
+          title: "How to use agents to verify messages",
           description: "A guide showing how to use agents to verify messages.",
           path: "guides/agents/message-verification",
         },
@@ -68,13 +68,13 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           path: "guides/agents/register-in-almanac",
         },
         {
-          title: "Communicating with other agents 📱🤖",
+          title: "Communicating with other agents",
           description:
             "A guide showing different communication methods between agents.",
           path: "guides/agents/communicating-with-other-agents",
         },
         {
-          title: "Agent address 🤖📫",
+          title: "Agent address",
           description: "A guide showing how to retrieve agents addresses.",
           path: "guides/agents/getting-uagent-address",
         },
@@ -84,13 +84,13 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
       label: "Agentverse",
       content: [
         {
-          title: "Creating an Agentverse hosted agent 🤖",
+          title: "Creating an Agentverse hosted agent",
           description:
             "Use the Agentverse: My Agents tab to develop agents directly on the Agentverse platform.",
           path: "/guides/agentverse/creating-a-hosted-agent",
         },
         {
-          title: "Utilizing the Agentverse Mailroom service 📬",
+          title: "Utilizing the Agentverse Mailroom service",
           description:
             "Set up Agentverse mailboxes for your locally-run agents and to run them independently of your constant presence to run the server.",
           path: "/guides/agentverse/utilising-the-mailbox",
@@ -104,7 +104,7 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
         },
         {
           title:
-            "Agentverse Functions: register a coin toss agent as a Function 🪙",
+            "Agentverse Functions: register a coin toss agent as a Function",
           description:
             "Create and make an coin toss Function discoverable on the Agentverse and DeltaV!",
           path: "/guides/agentverse/registering-agent-coin-toss",
@@ -121,19 +121,19 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
       label: "Other",
       content: [
         {
-          title: "Fetch Wallet 💵",
+          title: "Fetch Wallet",
           description:
             "A guide helping you to get started with the Fetch wallet.",
           path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
         },
         {
-          title: "How to convert FET to and from ERC20 🔄",
+          title: "How to convert FET to and from ERC20",
           description:
             "A guide for converting Native FET to and from ERC-20 FET.",
           path: "/guides/fetch-network/how-to-convert-fet-to-and-from-erc20",
         },
         {
-          title: "How to get testnet tokens via the Token Faucet 💰",
+          title: "How to get testnet tokens via the Token Faucet",
           description:
             "Learn how to get testnet tokens using the Faucet service.",
           path: "/guides/fetch-network/ledger/faucet",
