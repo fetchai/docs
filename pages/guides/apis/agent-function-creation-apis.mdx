@@ -82,73 +82,68 @@ This script interacts with the Agentverse API to achieve the Agent and Function 
 2. Take the agent name from user and store the agent's address:
 
     ```python
-  # Take name of agent from user
-name = input("Please give name of your agent? ")
-# Create payload for agent creation request
-agent_creation_data = {"name": name}
-# Post request to create an agent and store address
-response_agent = requests.post(
-    "https://agentverse.ai/v1/hosting/agents",
-    json=agent_creation_data,
-    headers={"Authorization": token},
-).json()
+    # Take name of agent from user
+    name = input('Please give name of your agent? ')
 
-address = response_agent["address"]
-print(f"Agent Address : {address}")
+    # Create payload for agent creation request
+    agent_creation_data = {
+        "name": name
+    }
+
+    # Post request to create an agent and store address
+    response_agent = requests.post("https://agentverse.ai/v1/hosting/agents", json=agent_creation_data, headers={
+        "Authorization": token
+    }).json()
+    address = response_agent['address']
+    print(f'Agent Address : {address}')
     ```
 
 3. Take code from `agent.py` file. Then, store it in a dedicated script for the created agent:
 
     ```python
     # Reading code to be placed in agent
-    with open("agent.py", "r") as file:
+    with open('agent.py', 'r') as file:
         code = file.read()
-    agent_code_data = {"code": code}
+    agent_code_data = {
+        "code": code
+    }
 
-    # Creating agent.py script for created agent
-    response_code_update = requests.put(
-        f"https://agentverse.ai/v1/hosting/agents/{address}/code",
-        json=agent_code_data,
-        headers={"Authorization": token},
-    )
+        # Creating agent.py script for created agent
+        response_code_update = requests.put(f"https://agentverse.ai/v1/hosting/agents/{address}/code", json=agent_code_data, headers={
+            "Authorization": token
+        })
 
     # Starting the agent
-    requests.post(
-        f"https://agentverse.ai/v1/hosting/agents/{address}/start",
-        headers={"Authorization": token},
-    )
-    time.sleep(10)  # waiting before getting agent's protocol
+    requests.post(f"https://agentverse.ai/v1/hosting/agents/{address}/start", headers={
+        "Authorization": token
+    })
+
+    time.sleep(10) # waiting before getting agent's protocol
     ```
 
 4. Requesting protocol digest for the created Agent:
 
     ```python
     # Request to get agent protocol digest
-    response_protcol = requests.get(
-        f"https://agentverse.ai/v1/almanac/agents/{address}",
-        headers={"Authorization": token},
-    )
-    protocol_digest = response_protcol.json()["protocols"][1]
-    print(f"Protocol Digest : {protocol_digest}")
-    time.sleep(10)  # Waiting before getting model_digest
+    response_protcol = requests.get(f"https://agentverse.ai/v1/almanac/agents/{address}", headers={
+        "Authorization": token
+    })
+    protocol_digest = response_protcol.json()['protocols'][1]
+    print(f'Protocol Digest : {protocol_digest}')
+
+    time.sleep(10) # Waiting before getting model_digest
     ```
 
 5. Request `Model` digest and name using Almanac APIs:
 
     ```python
     # Request to get agent's model details
-    response_model = requests.get(
-        f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}",
-        headers={"Authorization": token},
-    )
-    model = response_model.json()["models"]
-    time.sleep(10)  # Waiting before storing details to create functions
+    response_model = requests.get(f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}", headers={
+        "Authorization": token
+    })
+    model = response_model.json()['models']
 
-    function_group_ids = requests.get(
-        "https://agentverse.ai/v1beta1/function-groups/", headers={"Authorization": token}
-    )
-    function_group_id = function_group_ids.json()[0]["uuid"]
-    time.sleep(10)
+    time.sleep(10) # Waiting before storing details to create services
     ```
 
 6. Now, save all the required details to create the Agent Function. Then, create the Agent Function on the basis of the details received:
@@ -213,60 +208,41 @@ import requests
 token = f'Bearer <Your_access_token>'
 
 # Take name of agent from user
-name = input("Please give name of your agent? ")
+name = input('Please give name of your agent? ')
 # Create payload for agent creation request
-agent_creation_data = {"name": name}
+agent_creation_data = {
+    "name": name
+}
 # Post request to create an agent and store address
-response_agent = requests.post(
-    "https://agentverse.ai/v1/hosting/agents",
-    json=agent_creation_data,
-    headers={"Authorization": token},
-).json()
+response_agent = requests.post("https://agentverse.ai/v1/hosting/agents", json=agent_creation_data, headers={"Authorization": token}).json()
 
-address = response_agent["address"]
-print(f"Agent Address : {address}")
+address = response_agent['address']
+print(f'Agent Address : {address}')
 
-# Reading code to be placed in agent
-with open("agent.py", "r") as file:
+ # Reading code to be placed in agent
+with open('agent.py', 'r') as file:
     code = file.read()
-agent_code_data = {"code": code}
+agent_code_data = {
+    "code": code
+}
 
 # Creating agent.py script for created agent
-response_code_update = requests.put(
-    f"https://agentverse.ai/v1/hosting/agents/{address}/code",
-    json=agent_code_data,
-    headers={"Authorization": token},
-)
+response_code_update = requests.put(f"https://agentverse.ai/v1/hosting/agents/{address}/code", json=agent_code_data, headers={"Authorization": token})
 
 # Starting the agent
-requests.post(
-    f"https://agentverse.ai/v1/hosting/agents/{address}/start",
-    headers={"Authorization": token},
-)
-time.sleep(10)  # waiting before getting agent's protocol
+requests.post(f"https://agentverse.ai/v1/hosting/agents/{address}/start", headers={"Authorization": token})
+time.sleep(10) # waiting before getting agent's protocol
 
 # Request to get agent protocol digest
-response_protcol = requests.get(
-    f"https://agentverse.ai/v1/almanac/agents/{address}",
-    headers={"Authorization": token},
-)
-protocol_digest = response_protcol.json()["protocols"][1]
-print(f"Protocol Digest : {protocol_digest}")
-time.sleep(10)  # Waiting before getting model_digest
+response_protcol = requests.get(f"https://agentverse.ai/v1/almanac/agents/{address}", headers={"Authorization": token})
+protocol_digest = response_protcol.json()['protocols'][1]
+print(f'Protocol Digest : {protocol_digest}')
+time.sleep(10) # Waiting before getting model_digest
 
 # Request to get agent's model details
-response_model = requests.get(
-    f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}",
-    headers={"Authorization": token},
-)
-model = response_model.json()["models"]
-time.sleep(10)  # Waiting before storing details to create functions
-
-function_group_ids = requests.get(
-    "https://agentverse.ai/v1beta1/function-groups/", headers={"Authorization": token}
-)
-function_group_id = function_group_ids.json()[0]["uuid"]
-time.sleep(10)
+response_model = requests.get(f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}", headers={"Authorization": token})
+model = response_model.json()['models']
+time.sleep(10) # Waiting before storing details to create services
 
 # Taking inputs from user for details required to create a function
 name_service = input("Please give function name: ")
