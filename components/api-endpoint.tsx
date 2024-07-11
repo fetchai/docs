@@ -9,10 +9,8 @@ import {
   Tab,
   DropDownTabs,
 } from "./mdx";
-import { useUserContext } from "theme/fetch-ai-docs/contexts/context-provider";
 import Tooltip from "./tooltip";
 import Link from "next/link";
-import fetchJson from "src/lib/fetch-json";
 
 interface PropertyType {
   name: string;
@@ -347,8 +345,6 @@ export const ApiEndpointRequestResponse: React.FC<{
     setIsModalOpen(false);
   };
 
-  const context = useUserContext();
-
   const hitRequestWithoutLogin = async () => {
     try {
       setLoading(true);
@@ -370,33 +366,6 @@ export const ApiEndpointRequestResponse: React.FC<{
       const responseText = JSON.stringify(data, null, 2);
       setActualResponse(responseText);
     } catch (error) {
-      setError(`Error: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const hitRequest = async () => {
-    try {
-      setLoading(true);
-      setError("");
-      const requestPayloadJSON = JSON.parse(requestPayload || "{}");
-      const apiUrlWithParams = (properties.apiUrl +
-        replacePathParameters(properties.path, pathParameters)) as string;
-
-      const response: { data: unknown } = await fetchJson(
-        `/docs/api/api-requests?url=${apiUrlWithParams}`,
-        {
-          method: properties.method,
-          body: properties.method.includes("GET") ? null : requestPayloadJSON,
-        },
-      );
-      const responseText = JSON.stringify(response.data, null, 2);
-      setActualResponse(responseText);
-    } catch (error) {
-      if (error.response.status === 422) {
-        context.signOut();
-      }
       setError(`Error: ${error.message}`);
     } finally {
       setLoading(false);
@@ -447,7 +416,7 @@ export const ApiEndpointRequestResponse: React.FC<{
               </div>
             </div>
             <div className="nx-mt-2 nx-mb-4 nx-border-t nx-border-gray-300" />
-            {!context?.isLoggedIn && isBearerTokenRequired && (
+            {isBearerTokenRequired && (
               <div className="md:nx-flex nx-block nx-items-center nx-ml-4">
                 <div className="nx-flex nx-gap-2 nx-w-1/4">
                   <p className="nextra-content nx-text-sm">
@@ -557,9 +526,7 @@ export const ApiEndpointRequestResponse: React.FC<{
               <div className="nx-w-1/4">
                 <button
                   className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm nx-mt-6"
-                  onClick={
-                    context?.isLoggedIn ? hitRequest : hitRequestWithoutLogin
-                  }
+                  onClick={hitRequestWithoutLogin}
                 >
                   Execute
                 </button>
