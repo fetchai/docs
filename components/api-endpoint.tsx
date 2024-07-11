@@ -349,6 +349,33 @@ export const ApiEndpointRequestResponse: React.FC<{
 
   const context = useUserContext();
 
+  const hitRequestWithoutLogin = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const requestPayloadJSON = JSON.parse(requestPayload || "{}");
+      const apiUrlWithParams = (properties.apiUrl +
+        replacePathParameters(properties.path, pathParameters)) as string;
+      const response = await fetch(apiUrlWithParams, {
+        method: properties.method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${bearerToken}`,
+        },
+        body: properties.method.includes("GET")
+          ? null
+          : JSON.stringify(requestPayloadJSON),
+      });
+      const data = await response.json();
+      const responseText = JSON.stringify(data, null, 2);
+      setActualResponse(responseText);
+    } catch (error) {
+      setError(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const hitRequest = async () => {
     try {
       setLoading(true);
@@ -530,7 +557,9 @@ export const ApiEndpointRequestResponse: React.FC<{
               <div className="nx-w-1/4">
                 <button
                   className="nx-bg-purple hover:nx-bg-purple-500 nx-text-white nx-py-2 nx-px-4 nx-rounded-xxl nx-text-sm nx-mt-6"
-                  onClick={hitRequest}
+                  onClick={
+                    context?.isLoggedIn ? hitRequest : hitRequestWithoutLogin
+                  }
                 >
                   Execute
                 </button>

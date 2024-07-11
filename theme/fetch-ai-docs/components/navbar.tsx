@@ -9,6 +9,10 @@ import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { useState } from "react";
 import React from "react";
+import { handleSignin } from "../helpers";
+import AccountMenu from "components/account-menu";
+import { useUserContext } from "../contexts/context-provider";
+import { useRouter } from "next/router";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -83,6 +87,12 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const activeRoute = useFSRoute();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { menu, setMenu } = useMenu();
+  const context = useUserContext();
+  const router = useRouter();
+  const handleSignOut = () => {
+    context.signOut();
+    router.push("/");
+  };
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -197,6 +207,21 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                 {renderComponent(config.project.icon)}
               </Anchor>
             ) : null}
+            {context.isLoggedIn ? (
+              <AccountMenu
+                email={context?.user?.email}
+                logo={context?.user?.avatarHref}
+                signOut={handleSignOut}
+              />
+            ) : (
+              <button
+                onClick={handleSignin}
+                id="sign_in"
+                className="button-primary nx-text-white"
+              >
+                Sign In
+              </button>
+            )}
             {renderComponent(config.navbar.extraContent)}
             <button
               type="button"
