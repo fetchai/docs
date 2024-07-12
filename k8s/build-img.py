@@ -23,6 +23,7 @@ BUILD_ENV_VARS = (
     'NEXT_PUBLIC_ALGOLIA_API_KEY',
     'NEXT_PUBLIC_ALGOLIA_INDEX',
     'NEWSLETTER_BASE_URL',
+    'SENDER_TOKEN'
 )
 
 def _profile(text: str) -> str:

@@ -4,7 +4,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { email } = req.body;
+  const email = req.body;
   try {
     const url = new URL(`${process.env.NEWSLETTER_BASE_URL}/v2/subscribers`);
     const headers = {
