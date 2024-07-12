@@ -28,7 +28,6 @@ import React from "react";
 import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
-import { UserInfoProvider, useUserContext } from "./contexts/context-provider";
 import Error404 from "components/error-404";
 import { useActiveAnchor } from "./contexts";
 
@@ -207,8 +206,6 @@ const InnerLayout = ({
   timestamp,
   children,
 }: PageOpts & { children: ReactNode }): ReactElement => {
-  const context = useUserContext();
-
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   const fsPath = useFSRoute();
@@ -268,11 +265,6 @@ const InnerLayout = ({
     ? localeConfig.direction === "rtl"
     : config.direction === "rtl";
   const direction = isRTL ? "rtl" : "ltr";
-
-  const check = activePath.at(-1)?.permission?.length
-    ? activePath.at(-1)?.permission.includes("fetch.ai") &&
-      context.isFetchAccount
-    : true;
   return (
     // This makes sure that selectors like `[dir=ltr] .nextra-container` work
     // before hydration as Tailwind expects the `dir` attribute to exist on the
@@ -318,36 +310,34 @@ const InnerLayout = ({
             includePlaceholder={themeContext.layout === "default"}
           />
           <SkipNavContent />
-          {check && (
-            <Body
-              themeContext={themeContext}
-              breadcrumb={
-                activeType !== "page" && themeContext.breadcrumb ? (
-                  <Breadcrumb activePath={activePath} />
-                ) : null
-              }
-              timestamp={timestamp}
-              navigation={
-                activeType !== "page" && themeContext.pagination ? (
-                  <NavLinks
-                    flatDirectories={flatDocsDirectories}
-                    currentIndex={activeIndex}
-                  />
-                ) : null
-              }
-              tags={activePath.at(-1)?.tags ?? undefined}
-              directoriesWithTags={directoriesWithTags}
+          <Body
+            themeContext={themeContext}
+            breadcrumb={
+              activeType !== "page" && themeContext.breadcrumb ? (
+                <Breadcrumb activePath={activePath} />
+              ) : null
+            }
+            timestamp={timestamp}
+            navigation={
+              activeType !== "page" && themeContext.pagination ? (
+                <NavLinks
+                  flatDirectories={flatDocsDirectories}
+                  currentIndex={activeIndex}
+                />
+              ) : null
+            }
+            tags={activePath.at(-1)?.tags ?? undefined}
+            directoriesWithTags={directoriesWithTags}
+          >
+            <MDXProvider
+              components={getComponents({
+                isRawLayout: themeContext.layout === "raw",
+                components: config.components,
+              })}
             >
-              <MDXProvider
-                components={getComponents({
-                  isRawLayout: themeContext.layout === "raw",
-                  components: config.components,
-                })}
-              >
-                {children}
-              </MDXProvider>
-            </Body>
-          )}
+              {children}
+            </MDXProvider>
+          </Body>
         </ActiveAnchorProvider>
       </div>
       {themeContext.footer &&
@@ -362,11 +352,9 @@ export default function Layout({
 }: NextraThemeLayoutProps): ReactElement {
   return (
     <ErrorBoundary FallbackComponent={Error404}>
-      <UserInfoProvider>
-        <ConfigProvider value={context}>
-          <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
-        </ConfigProvider>
-      </UserInfoProvider>
+      <ConfigProvider value={context}>
+        <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
+      </ConfigProvider>
     </ErrorBoundary>
   );
 }
