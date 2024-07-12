@@ -68,7 +68,16 @@ const Footer: React.FC = () => {
 
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+
   const onClick = async () => {
+    if (email === "") {
+      setMessage("Please enter your email address.");
+      return;
+    } else if (!regex.test(email)) {
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
     const option = {
       method: "POST",
       headers: {
@@ -78,6 +87,7 @@ const Footer: React.FC = () => {
     };
     await fetch("/docs/api/newsletter", option);
   };
+
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleBlur = () => {
     if (email === "") {
@@ -87,6 +97,9 @@ const Footer: React.FC = () => {
     } else {
       setMessage("Please enter a valid email address.");
     }
+    setTimeout(() => {
+      setMessage("");
+    }, 5000);
   };
 
   return (
