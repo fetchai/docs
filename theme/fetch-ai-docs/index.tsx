@@ -10,8 +10,6 @@ import "./polyfill";
 import type { PageTheme } from "nextra/normalize-pages";
 import { normalizePages } from "nextra/normalize-pages";
 import { ErrorBoundary } from "react-error-boundary";
-import { motion } from "framer-motion";
-import { useActiveAnchor } from "./contexts";
 import {
   Banner,
   Breadcrumb,
@@ -30,11 +28,8 @@ import React from "react";
 import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
-import { UserInfoProvider, useUserContext } from "./contexts/context-provider";
-import useBookMark from "theme/use-book-mark";
-import { isLinkInResponse } from "./helpers";
-import useContentVisited from "theme/use-content-visited";
 import Error404 from "components/error-404";
+import { useActiveAnchor } from "./contexts";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -49,8 +44,6 @@ interface BodyProps {
   navigation: ReactNode;
   tags: string[] | null;
   children: ReactNode;
-  onClickBookMark: (val: boolean) => void;
-  bookMark: boolean;
   directoriesWithTags: {
     route: string;
     tags: string[];
@@ -71,8 +64,6 @@ const Body = ({
   navigation,
   tags,
   children,
-  // bookMark,
-  // onClickBookMark,
   directoriesWithTags,
 }: BodyProps): ReactElement => {
   const config = useConfig();
@@ -215,19 +206,9 @@ const InnerLayout = ({
   timestamp,
   children,
 }: PageOpts & { children: ReactNode }): ReactElement => {
-  const context = useUserContext();
-  const {
-    state: { bookMarks, bookMarkSuccess },
-    action: { onClickBookMark, fetchBookMarks },
-  } = useBookMark(context);
-  const {
-    state: { contentVisited },
-    action: { onClickSetContentVisited, fetchContentVisited },
-  } = useContentVisited(context);
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   const fsPath = useFSRoute();
-  const bookMark = isLinkInResponse(bookMarks);
 
   useEffect(() => {
     setLastVisitedTimestamp();
@@ -284,11 +265,6 @@ const InnerLayout = ({
     ? localeConfig.direction === "rtl"
     : config.direction === "rtl";
   const direction = isRTL ? "rtl" : "ltr";
-
-  const check = activePath.at(-1)?.permission?.length
-    ? activePath.at(-1)?.permission.includes("fetch.ai") &&
-      context.isFetchAccount
-    : true;
   return (
     // This makes sure that selectors like `[dir=ltr] .nextra-container` work
     // before hydration as Tailwind expects the `dir` attribute to exist on the
@@ -322,8 +298,6 @@ const InnerLayout = ({
         renderComponent(config.navbar.component, {
           flatDirectories,
           items: docsDirectories,
-          bookMark,
-          fetchBookMarks,
         })}
       <div className="nx-mx-auto nx-flex">
         <ActiveAnchorProvider>
@@ -334,45 +308,36 @@ const InnerLayout = ({
             headings={headings}
             asPopover={hideSidebar}
             includePlaceholder={themeContext.layout === "default"}
-            contentVisited={contentVisited}
-            fetchContentVisited={fetchContentVisited}
           />
           <SkipNavContent />
-          {bookMarkSuccess && Toast(bookMarkSuccess)}
-          {check && (
-            <Body
-              themeContext={themeContext}
-              breadcrumb={
-                activeType !== "page" && themeContext.breadcrumb ? (
-                  <Breadcrumb activePath={activePath} />
-                ) : null
-              }
-              timestamp={timestamp}
-              navigation={
-                activeType !== "page" && themeContext.pagination ? (
-                  <NavLinks
-                    flatDirectories={flatDocsDirectories}
-                    currentIndex={activeIndex}
-                    onClickSetContentVisited={onClickSetContentVisited}
-                    fetchedContentVisited={contentVisited}
-                  />
-                ) : null
-              }
-              tags={activePath.at(-1)?.tags ?? undefined}
-              onClickBookMark={onClickBookMark}
-              bookMark={bookMark}
-              directoriesWithTags={directoriesWithTags}
+          <Body
+            themeContext={themeContext}
+            breadcrumb={
+              activeType !== "page" && themeContext.breadcrumb ? (
+                <Breadcrumb activePath={activePath} />
+              ) : null
+            }
+            timestamp={timestamp}
+            navigation={
+              activeType !== "page" && themeContext.pagination ? (
+                <NavLinks
+                  flatDirectories={flatDocsDirectories}
+                  currentIndex={activeIndex}
+                />
+              ) : null
+            }
+            tags={activePath.at(-1)?.tags ?? undefined}
+            directoriesWithTags={directoriesWithTags}
+          >
+            <MDXProvider
+              components={getComponents({
+                isRawLayout: themeContext.layout === "raw",
+                components: config.components,
+              })}
             >
-              <MDXProvider
-                components={getComponents({
-                  isRawLayout: themeContext.layout === "raw",
-                  components: config.components,
-                })}
-              >
-                {children}
-              </MDXProvider>
-            </Body>
-          )}
+              {children}
+            </MDXProvider>
+          </Body>
         </ActiveAnchorProvider>
       </div>
       {themeContext.footer &&
@@ -381,46 +346,15 @@ const InnerLayout = ({
   );
 };
 
-const Toast = (bookMarkSuccess: string) => (
-  <motion.div
-    initial={{ x: 200 }}
-    animate={{ x: 0 }}
-    transition={{
-      delay: 0,
-      ease: "easeInOut",
-      duration: 0.1,
-    }}
-    id="nx-toast-success"
-    className="nx-flex nx-fixed nx-bottom-0 nx-right-0 nx-w-[270px] nx-items-center nx-p-4 nx-mb-4 nx-text-gray-500 nx-bg-white nx-rounded-lg nx-shadow"
-    role="alert"
-  >
-    <div className="nx-inline-flex nx-items-center nx-justify-center nx-flex-shrink-0 nx-w-8 nx-h-8 nx-text-gray-500 nx-bg-white nx-rounded-lg">
-      <svg
-        className="nx-w-5 nx-h-5"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-      </svg>
-      <span className="nx-sr-only">Check icon</span>
-    </div>
-    <div className="nx-ms-3 nx-text-sm nx-font-normal">{bookMarkSuccess}</div>
-  </motion.div>
-);
-
 export default function Layout({
   children,
   ...context
 }: NextraThemeLayoutProps): ReactElement {
   return (
     <ErrorBoundary FallbackComponent={Error404}>
-      <UserInfoProvider>
-        <ConfigProvider value={context}>
-          <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
-        </ConfigProvider>
-      </UserInfoProvider>
+      <ConfigProvider value={context}>
+        <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
+      </ConfigProvider>
     </ErrorBoundary>
   );
 }
@@ -441,7 +375,6 @@ export {
   Collapse,
   NotFoundPage,
   ServerSideErrorPage,
-  Navbar,
   SkipNavContent,
   SkipNavLink,
   ThemeSwitch,

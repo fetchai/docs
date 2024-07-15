@@ -21,7 +21,6 @@ import { useActiveAnchor, useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { Collapse } from "./collapse";
-import { useUserContext } from "../contexts/context-provider";
 
 const TreeState: Record<string, boolean> = Object.create(null);
 
@@ -318,18 +317,6 @@ interface MenuProps {
   onlyCurrentDocs?: boolean;
 }
 
-const checkPermission = (item, context) => {
-  if (item?.children) {
-    // If item.children exists, check if any child satisfies the condition
-    return item.children.some((child) => checkPermission(child, context));
-  } else {
-    // If item.children is not present, perform the condition on item
-    return item?.permission?.length
-      ? item.permission.includes("fetch.ai") && context.isFetchAccount
-      : true;
-  }
-};
-
 function Menu({
   directories,
   anchors,
@@ -337,20 +324,16 @@ function Menu({
   onlyCurrentDocs,
   filesVisited,
 }: MenuProps): ReactElement {
-  const context = useUserContext();
   return (
     <ul className={cn(classes.list, className)}>
       {directories.map((item) => {
-        const permissionCheck = checkPermission(item, context);
         return !onlyCurrentDocs ||
           !item.theme ||
           (item.theme && item.theme.isUnderCurrentDocsTree)
           ? item.type === "menu" ||
             (item.children && (item.children.length > 0 || !item.withIndexPage))
-            ? permissionCheck && (
-                <Folder key={item.name} item={item} anchors={anchors} />
-              )
-            : permissionCheck &&
+            ? true && <Folder key={item.name} item={item} anchors={anchors} />
+            : true &&
               !item?.name?.includes("integrations") && (
                 <File
                   key={item.name}
@@ -372,8 +355,6 @@ interface SideBarProps {
   asPopover?: boolean;
   headings: Heading[];
   includePlaceholder: boolean;
-  contentVisited: string[];
-  fetchContentVisited: (context: unknown) => Promise<[string]>;
 }
 
 export function Sidebar({
@@ -381,7 +362,6 @@ export function Sidebar({
   asPopover = false,
   headings,
   includePlaceholder,
-  contentVisited,
 }: SideBarProps): ReactElement {
   const config = useConfig();
   const { menu, setMenu } = useMenu();
@@ -476,7 +456,6 @@ export function Sidebar({
                       directories={docsDirectories}
                       // When the viewport size is larger than `md`, hide the anchors in
                       // the sidebar when `floatTOC` is enabled.
-                      filesVisited={contentVisited}
                       anchors={config.toc.float ? [] : anchors}
                       onlyCurrentDocs
                     />
@@ -487,7 +466,6 @@ export function Sidebar({
                   // The mobile dropdown menu, shows all the directories.
                   directories={docsDirectories}
                   // Always show the anchor links on mobile (`md`).
-                  filesVisited={contentVisited}
                   anchors={anchors}
                 />
               </div>
