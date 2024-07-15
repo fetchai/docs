@@ -19,7 +19,11 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BUILD_ENV_VARS = (
     'BACKEND_URL',
     'NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID',
-    'SENDER_TOKEN',
+    'NEXT_PUBLIC_ALGOLIA_APP_ID',
+    'NEXT_PUBLIC_ALGOLIA_API_KEY',
+    'NEXT_PUBLIC_ALGOLIA_INDEX',
+    'NEWSLETTER_BASE_URL',
+    'SENDER_TOKEN'
 )
 
 def _profile(text: str) -> str:

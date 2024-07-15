@@ -15,12 +15,6 @@ Select the appropriate route, and create a new file ending in `.mdx`. Then, upda
 }
 ```
 
-## Deployments
-
-### Staging Website
-
-https://docs-staging.sandbox-london-b.fetch-ai.com/docs
-
 ## Developing
 
 ### Install dependencies
