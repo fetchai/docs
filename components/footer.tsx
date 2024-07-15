@@ -208,7 +208,7 @@ const Footer: React.FC = () => {
             <div className={styles.footerInputWrapper}>
               <div className={styles.footerInput}>
                 <span className={styles.footerText}>
-                  Sign up to for developer updates
+                  Sign up for developer updates
                 </span>
                 <div className={styles.inputBox}>
                   <input
