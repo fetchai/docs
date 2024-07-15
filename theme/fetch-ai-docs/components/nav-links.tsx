@@ -6,13 +6,10 @@ import type { ReactElement } from "react";
 import { useConfig } from "../contexts";
 import type { DocsThemeConfig } from "../index";
 import { Anchor } from "./anchor";
-import { isLinkInResponse } from "../helpers";
 
 interface NavLinkProps {
   currentIndex: number;
   flatDirectories: Item[];
-  onClickSetContentVisited: (contentPath: string) => void;
-  fetchedContentVisited: string[];
 }
 
 const classes = {
@@ -25,8 +22,6 @@ const classes = {
 export const NavLinks = ({
   flatDirectories,
   currentIndex,
-  onClickSetContentVisited,
-  fetchedContentVisited,
 }: NavLinkProps): ReactElement | null => {
   const config = useConfig();
   const nav = config.navigation;
@@ -37,11 +32,6 @@ export const NavLinks = ({
   let prev: any = navigation.prev && flatDirectories[currentIndex - 1];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let next: any = navigation.next && flatDirectories[currentIndex + 1];
-
-  const handleOnNavLinkClick = async () => {
-    const visitedContent = isLinkInResponse(fetchedContentVisited);
-    if (!visitedContent) onClickSetContentVisited(next.title);
-  };
 
   if (prev && !prev.isUnderCurrentDocsTree) prev = false;
   if (next && !next.isUnderCurrentDocsTree) next = false;
@@ -74,7 +64,6 @@ export const NavLinks = ({
             classes.link,
             "ltr:nx-ml-auto ltr:nx-pl-4 ltr:nx-text-right rtl:nx-mr-auto rtl:nx-pr-4 rtl:nx-text-left",
           )}
-          onClick={handleOnNavLinkClick}
         >
           {next.title}
           <ArrowRightIcon className={cn(classes.icon, "rtl:nx-rotate-180")} />
