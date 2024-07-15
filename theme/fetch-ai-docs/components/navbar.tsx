@@ -1,6 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
 import cn from "clsx";
-import React, { useEffect, useState } from "react";
 import { useFSRoute } from "nextra/hooks";
 import { ArrowRightIcon, MenuIcon } from "nextra/icons";
 import type { Item, MenuItem, PageItem } from "nextra/normalize-pages";
@@ -8,16 +7,12 @@ import type { ReactElement, ReactNode } from "react";
 import { useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
-import { useUserContext } from "../contexts/context-provider";
-import AccountMenu from "components/account-menu";
-import { useRouter } from "next/router";
-import { handleSignin } from "../helpers";
+import { useState } from "react";
+import React from "react";
 
 export type NavBarProps = {
   flatDirectories: Item[];
   items: (PageItem | MenuItem)[];
-  bookMark: boolean;
-  fetchBookMarks: (context: unknown, isBookMark: unknown) => Promise<[string]>;
 };
 
 const classes = {
@@ -83,34 +78,11 @@ function NavbarMenu({
   );
 }
 
-export function Navbar({
-  flatDirectories,
-  items,
-  bookMark,
-  fetchBookMarks,
-}: NavBarProps): ReactElement {
+export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const config = useConfig();
   const activeRoute = useFSRoute();
-  const { menu, setMenu } = useMenu();
-  const context = useUserContext();
-  const router = useRouter();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-
-  const handleSignOut = () => {
-    context.signOut();
-    router.push("/");
-  };
-
-  const fetchBookMarksData = async (contextvalues) => {
-    await fetchBookMarks(contextvalues, true);
-  };
-
-  useEffect(() => {
-    if (context?.user?.email) {
-      fetchBookMarksData(context?.user?.email);
-    }
-  }, [bookMark, context?.user?.email]);
-
+  const { menu, setMenu } = useMenu();
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -225,21 +197,6 @@ export function Navbar({
                 {renderComponent(config.project.icon)}
               </Anchor>
             ) : null}
-            {context.isLoggedIn ? (
-              <AccountMenu
-                email={context?.user?.email}
-                logo={context?.user?.avatarHref}
-                signOut={handleSignOut}
-              />
-            ) : (
-              <button
-                onClick={handleSignin}
-                id="sign_in"
-                className="button-primary  nx-text-white"
-              >
-                Sign In
-              </button>
-            )}
             {renderComponent(config.navbar.extraContent)}
             <button
               type="button"
@@ -251,7 +208,6 @@ export function Navbar({
             </button>
           </div>
         </div>
-
         <div className="search-bar-mobile nx-mt-6 nx-mb-2">
           {renderComponent(config.search.component, {
             directories: flatDirectories,
