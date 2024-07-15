@@ -22,10 +22,10 @@ type MyItem = NormalItem & {
 };
 
 const searchClient = algoliasearch(
-  "J27DIPDG4S",
-  "601cad4cf7041d99c1bdf42f4d4843d6",
+  `${process.env.NEXT_PUBLIC_ALGOLIA_APP_ID}`,
+  `${process.env.NEXT_PUBLIC_ALGOLIA_API_KEY}`,
 );
-const indexName = "12-6-24-index";
+const indexName = `${process.env.NEXT_PUBLIC_ALGOLIA_INDEX}`;
 
 const markdownToHTML = (markdownString) => {
   return remark().use(remarkHTML).processSync(markdownString).toString();
