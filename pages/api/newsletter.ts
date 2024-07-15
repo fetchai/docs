@@ -4,7 +4,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { email } = req.body;
+  const email = req.body;
   try {
     const url = new URL("https://api.sender.net/v2/subscribers");
     const headers = {
