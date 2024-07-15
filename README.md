@@ -2,18 +2,8 @@
 
 ## Updating docs
 
-### Creating docs for fetch.ai employees:
+Changes can be made on github or locally. To run docs locally you must have npm installed. 
 
-Select the appropriate route, and create a new file ending in `.mdx`. Then, update the `_meta.json` at the same level as the created file. You'll need to add your newly created page to the meta file like below:
-
-```
-{
-  "example": {
-    "title": "example page for employees",
-    "permission": ["fetch.ai"]
-  }
-}
-```
 
 ## Developing
 
@@ -51,10 +41,3 @@ The site is then visible at:
 
 http://127.0.0.1:3000/docs
 
-## Updating Alogolia Search
-
-In root of directory run: `node index-data-to-algolia.mjs`
-You will need to have API key, please update the file to have a new index.
-
-The update `theme/fetch-ai-docs/components/instant-algolia-search.tsx` var `indexName` to be the name of the index
-you're creating in the step before.
