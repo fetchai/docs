@@ -143,14 +143,14 @@ This script interacts with the Agentverse API to achieve the Agent and Function 
     })
     model = response_model.json()['models']
 
-    time.sleep(10) # Waiting before storing details to create services
+    time.sleep(10) # Waiting before storing details to create functions
     ```
 
 6. Now, save all the required details to create the Agent Function. Then, create the Agent Function on the basis of the details received:
 
     ```python
     # Taking inputs from user for details required to create a function
-    name_service = input("Please give function name: ")
+    name_function = input("Please give function name: ")
     description = input("Please enter function description: ")
     field_name = input("Please enter field name: ")
     field_description = input("Please enter field description: ")
@@ -158,7 +158,7 @@ This script interacts with the Agentverse API to achieve the Agent and Function 
 
     # Logging details provided by user
     print(
-        f"Service name: {name_service} \nFunction Description: {description} \nField Name: {field_name}\nField Description: {field_description}\nTask Type: {tasktype}"
+        f"Function name: {name_function} \nFunction Description: {description} \nField Name: {field_name}\nField Description: {field_description}\nTask Type: {tasktype}"
     )
 
     # Storing model digest and name to be used for function creation
@@ -170,7 +170,7 @@ This script interacts with the Agentverse API to achieve the Agent and Function 
     # Creating payload for function creation
     data = {
         "agent": address,
-        "name": name_service,
+        "name": name_function,
         "description": description,
         "protocolDigest": protocol_digest,
         "modelDigest": model_digest,
@@ -242,10 +242,10 @@ time.sleep(10) # Waiting before getting model_digest
 # Request to get agent's model details
 response_model = requests.get(f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}", headers={"Authorization": token})
 model = response_model.json()['models']
-time.sleep(10) # Waiting before storing details to create services
+time.sleep(10) # Waiting before storing details to create functions
 
 # Taking inputs from user for details required to create a function
-name_service = input("Please give function name: ")
+name_function = input("Please give function name: ")
 description = input("Please enter function description: ")
 field_name = input("Please enter field name: ")
 field_description = input("Please enter field description: ")
@@ -253,7 +253,7 @@ tasktype = input("Please tell primary or secondary function: ").upper()
 
 # Logging details provided by user
 print(
-    f"Service name: {name_service} \nFunction Description: {description} \nField Name: {field_name}\nField Description: {field_description}\nTask Type: {tasktype}"
+    f"Function name: {name_function} \nFunction Description: {description} \nField Name: {field_name}\nField Description: {field_description}\nTask Type: {tasktype}"
 )
 
 # Storing model digest and name to be used for function creation
@@ -265,7 +265,7 @@ print(f"Model Name : {model_name}")
 # Creating payload for function creation
 data = {
     "agent": address,
-    "name": name_service,
+    "name": name_function,
     "description": description,
     "protocolDigest": protocol_digest,
     "modelDigest": model_digest,
@@ -299,31 +299,31 @@ print(f"Function Created with name: {name}")
 3. Head over to the [Agentverse ↗️](https://agentverse.ai/profile/api-keys) and [generate API keys ↗️](#how-to-get-agentverse-api-tokens).
 4. Open script in editor and replace `token` field.
 5. Run command `python agent_create.py` and enter the required details.
-6. Provide Agent and Function Details as asked, then, check agent and function on Agentverse.
+6. Provide Agent and Function details as asked, then, check agent and function on Agentverse.
 
 ## Expected Output
 
 - Provide all details asked in the script:
 
-```
-abc@xyz-MacBook-Pro agents % python3 agents_create.py
-Please give name of your agent? my first API agent
-Agent Address : agent1q06l8hekn859e5rtwufewmyhwghe6j9y00g0wc8u7gcx05cjfk98jyf6lte
-Protocol Digest : c7a6f160fd8d8b7cb357dad9b5be420510ce466dbb67051c07caf2b860216b01
-Please give function name: location finder
-Please enter function description: this function helps to find nearest city using coordinates
-Please enter field name: location
-Please enter field description: this describes the coordinates of the location in string format longitude latitude
-Please tell primary or secondary function: primary
-Service name: location finder 
-Function Description: this function helps to find nearest city using coordinates 
-Field Name: location
-Field Description: this describes the coordinates of the location in string format longitude latitude
-Task Type: PRIMARY
-Model Digest : 10a2f843c4c92955688d5e7f22fabe79623869eabfcd97d97da83527b436d3e2
-Model Name : Coordinates
-Function Created with name: location finder
-```
+    ```
+    abc@xyz-MacBook-Pro agents % python3 agents_create.py
+    Please give name of your agent? my first API agent
+    Agent Address : agent1q06l8hekn859e5rtwufewmyhwghe6j9y00g0wc8u7gcx05cjfk98jyf6lte
+    Protocol Digest : c7a6f160fd8d8b7cb357dad9b5be420510ce466dbb67051c07caf2b860216b01
+    Please give function name: location finder
+    Please enter function description: this function helps to find nearest city using coordinates
+    Please enter field name: location
+    Please enter field description: this describes the coordinates of the location in string format longitude latitude
+    Please tell primary or secondary function: primary
+    Function name: location finder
+    Function Description: this function helps to find nearest city using coordinates
+    Field Name: location
+    Field Description: this describes the coordinates of the location in string format longitude latitude
+    Task Type: PRIMARY
+    Model Digest : 10a2f843c4c92955688d5e7f22fabe79623869eabfcd97d97da83527b436d3e2
+    Model Name : Coordinates
+    Function Created with name: location finder
+    ```
 
 - Agent created on Agentverse:
 
