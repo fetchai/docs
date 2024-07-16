@@ -5,8 +5,11 @@ import path from "node:path";
 import matter from "gray-matter";
 import striptags from "striptags";
 
-const client = algoliasearch("J27DIPDG4S", "");
-const index = client.initIndex("12-6-24-index");
+const client = algoliasearch(
+  `${process.env.NEXT_PUBLIC_ALGOLIA_APP_ID}`,
+  `${process.env.NEXT_PUBLIC_ALGOLIA_API_KEY}`,
+);
+const index = client.initIndex(`${process.env.NEXT_PUBLIC_ALGOLIA_INDEX}`);
 
 const docsPath = path.join(process.cwd(), "pages");
 
