@@ -78,8 +78,8 @@ jobs:
       - name: Deploy to Staging
         env:
           IMAGE_TAG: ${{ steps.lookup.outputs.version }}
-          HELM_NAME: staging
-          NAMESPACE: docs-staging
+          HELM_NAME: ${{ secrets.HELM_NAME }}
+          NAMESPACE: ${{ secrets.NAMESPACE }}
           GKE_PROJECT: fetch-ai-sandbox
           GKE_CLUSTER: london-b
           GKE_ZONE: europe-west2-b
