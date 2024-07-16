@@ -36,7 +36,7 @@ jobs:
           echo "VERSION: ${{ steps.lookup.outputs.version }}"
 
       - name: Build and Push Images
-        run: ./build-img.py -p staging
+        run: /.github/workflows/build-img.py -p staging
         env:
           BACKEND_URL: ${{ secrets.STAGING_NEXT_PUBLIC_BACKEND_URL }}
           NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
