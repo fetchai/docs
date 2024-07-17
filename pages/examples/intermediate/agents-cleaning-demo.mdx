@@ -8,28 +8,37 @@ This example shows how to set up a cleaning service using Agents ann uAgents lib
 ### Supporting documentation
 
 - [Creating an agent ↗️](/guides/agents/create-a-uagent)
-
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
-
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+- [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
 
-### The agents
-#### The Protocol
+### The Protocols
+#### __init__.py
+
+This protocol acts as a bridge cleaning service providers and users requesting cleaning services.
+
+The protocol defines the format for messages exchanged between the two parties. Users send `ServiceRequest` messages specifying details about their desired cleaning service, including location, time, duration, types of services needed, and their maximum budget. Providers respond with `ServiceResponse` messages indicating whether they can accept the request and, if so, their proposed price. Once a user confirms the booking with a `ServiceBooking` message containing all the agreed-upon details and price, the provider sends a `BookingResponse` message to confirm success or failure.
+
+The protocol ensures the provider's services are available to the user's location. It uses the `geopy` library to calculate the distance between the user and the provider. Additionally, it verifies if the requested cleaning services are offered by the provider and if the desired cleaning time falls within the provider's pre-defined availability schedule. Finally, it compares the user's budget with the provider's minimum hourly price multiplied by the cleaning duration to ensure affordability.
+
+Here is the full code:
 
 ```py copy filename="__init__.py"
 from datetime import datetime, timedelta
 from typing import List
 
-from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
-
+from geopy.geocoders import Nominatim
 from uagents import Context, Model, Protocol
-from .models import Provider, Availability, User
+
+from .models import Availability, Provider, User
 
 PROTOCOL_NAME = "cleaning"
 PROTOCOL_VERSION = "0.1.0"
+
 
 class ServiceRequest(Model):
     user: str
@@ -131,19 +140,69 @@ async def handle_book_request(ctx: Context, sender: str, msg: ServiceBooking):
     await ctx.send(sender, BookingResponse(success=success))
 ```
 
+#### models.py
+
+We now need to define the data structure for the cleaning service application. We account for the following `Models`:
+
+* `ServiceTypes`: to represent different cleaning services (floor, window, laundry, etc.).
+* `Users`: for information like name, address, and creation time.
+* `Service`: for cleaning service type offered.
+* `Provider`: for details like name, location, creation time, and links to their availability and offered services.
+* `Availability`: so to define the provider's service schedule, including maximum service distance, start and end times, and minimum hourly price.
+
+Here is the full code:
+
+```py copy filename="models.py"
+from enum import IntEnum
+
+from tortoise import fields, models
+
+class ServiceType(IntEnum):
+    FLOOR = 1
+    WINDOW = 2
+    LAUNDRY = 3
+    IRON = 4
+    BATHROOM = 5
+
+class User(models.Model):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=64)
+    address = fields.CharField(max_length=100)
+    created_at = fields.DatetimeField(auto_now_add=True)
+
+class Service(models.Model):
+    id = fields.IntField(pk=True)
+    type = fields.IntEnumField(ServiceType)
+
+class Provider(models.Model):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=64)
+    location = fields.CharField(max_length=64)
+    created_at = fields.DatetimeField(auto_now_add=True)
+    availability = fields.ReverseRelation["Availability"]
+    services = fields.ManyToManyField("models.Service")
+    markup = fields.FloatField(default=1.1)
+
+class Availability(models.Model):
+    id = fields.IntField(pk=True)
+    provider = fields.OneToOneField("models.Provider", related_name="availability")
+    max_distance = fields.IntField(default=10)
+    time_start = fields.DatetimeField()
+    time_end = fields.DatetimeField()
+    min_hourly_price = fields.FloatField(default=0.0)
+```
+
+### Agents
 #### The Cleaner Agent
 
 ```py copy filename="cleaner.py"
 from datetime import datetime
-from pytz import utc
-
-from tortoise import Tortoise
 
 from protocols.cleaning import cleaning_proto
 from protocols.cleaning.models import Availability, Provider, Service, ServiceType
-
+from pytz import utc
+from tortoise import Tortoise
 from uagents import Agent, Context
-from uagents.setup import fund_agent_if_low
 
 cleaner = Agent(
     name="cleaner",
@@ -153,8 +212,6 @@ cleaner = Agent(
         "http://127.0.0.1:8001/submit": {},
     },
 )
-
-fund_agent_if_low(cleaner.wallet.address())
 
 # build the cleaning service agent from the cleaning protocol
 cleaner.include(cleaning_proto)
@@ -192,23 +249,24 @@ if __name__ == "__main__":
     cleaner.run()
 ```
 
-#### The User Agent
+#### User
 
 ```py copy filename="user.py"
 from datetime import datetime, timedelta
-from pytz import utc
 
 from protocols.cleaning import (
-    ServiceBooking,
     BookingResponse,
+    ServiceBooking,
     ServiceRequest,
     ServiceResponse,
 )
 from protocols.cleaning.models import ServiceType
+from pytz import utc
 from uagents import Agent, Context
-from uagents.setup import fund_agent_if_low
 
-CLEANER_ADDRESS = "agent1qdfdx6952trs028fxyug7elgcktam9f896ays6u9art4uaf75hwy2j9m87w"
+CLEANER_ADDRESS = (
+    "test-agent://agent1qdfdx6952trs028fxyug7elgcktam9f896ays6u9art4uaf75hwy2j9m87w"
+)
 
 user = Agent(
     name="user",
@@ -219,7 +277,6 @@ user = Agent(
     },
 )
 
-fund_agent_if_low(user.wallet.address())
 
 request = ServiceRequest(
     user=user.name,

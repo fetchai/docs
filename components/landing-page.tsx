@@ -15,17 +15,17 @@ function LandingPage() {
   const startingGuides = [
     {
       label: "Building your first agent",
-      path: "/guides/agents/installing-uagent",
+      path: "/guides/agents/quickstart",
       image: buildYourAgent,
     },
     {
       label: "Creating an executable function for AI",
-      path: "guides/agents/communicating-with-other-agents",
+      path: "/guides/agents/intermediate/agent-functions",
       image: executable,
     },
     {
       label: "The Fetch.ai technology stack",
-      path: "/guides/agentverse/creating-a-hosted-agent",
+      path: "/concepts/introducing-fetchai",
       image: techStack,
     },
   ];
