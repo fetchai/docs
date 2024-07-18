@@ -26,6 +26,8 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
         GET /v1beta1/functions/
 
+        GET /v1beta1/functions/agent-functions/:agent_address/
+
         GET /v1beta1/functions/:function_id/
 
         PUT /v1beta1/functions/:function_id/
@@ -47,6 +49,8 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
         GET /v1beta1/functions/:function_id/groups/
 
         DELETE /v1beta1/functions/delete-functions-of-agent/:agent_address/
+
+        DELETE /v1beta1/functions/user/delete-all-functions/
         ```
     </Col>
 
@@ -176,6 +180,56 @@ properties={[
   ]}
   responseDescription="Returns a list of function summary objects associated with the user."
 />
+
+## Get all user's agent functions
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/functions/agents-functions/{agent_address}/"
+  description="Retrieves all user's functions of an agent."
+  responses={[
+    {
+        "uuid": "ebfa27ec-c978-4109-bb77-9d1809e3b0f6",
+        "agent": "agent1q0vmxjv06dwdlppuvspmfyff4ys2t4mdndpa09gulpsuq90n22xqy8k89l8",
+        "name": "Flights function",
+        "description": "Searches for flight offers.",
+        "protocolDigest": "proto:266661f975b0857631cc31b40f60c263aeabb0c7156ed6b2b940a23bfc6560a0",
+        "type": "PRIMARY",
+        "createdAt": "2023-10-22T21:08:47",
+        "updatedAt": "2023-10-22T21:08:47",
+        "status": "CREATED",
+        "numInteractions": 150
+    },
+    {
+        "uuid": "c0f248ea-1d78-ca3f-fb31-1a14ceef12a6",
+        "agent": "agent1q0vmxjv06dwdlppuvspmfyff4ys2t4mdndpa09gulpsuq90n22xqy8k89l8",
+        "name": "Booking Protocol",
+        "description": "Books a flight.",
+        "protocolDigest": "proto:05c3504f6d6486792e8410c9d1c6d626991fc8e0007bae960acb2ab1dd83072a",
+        "type": "PRIMARY",
+        "createdAt": "2023-10-22T21:08:47",
+        "updatedAt": "2023-10-22T21:08:47",
+        "status": "CREATED",
+        "numInteractions": 150
+    },
+  ]}
+  properties={[
+    {
+      name: "limit",
+      type: "int",
+      description: "The number of functions to return.",
+    },
+    {
+      name: "offset",
+      type: "int",
+      description: "The number of functions to skip.",
+    },
+  ]}
+  pathParameters={{agent_address:"your_agent_address",}}
+  responseDescription="Returns a list of function summary objects associated with the user."
+/>
+
 
 ## Fetch a function
 
@@ -510,12 +564,26 @@ properties={[
   responseDescription="Returns all function groups that the function (identified by a specific function_id) belongs to."
 />
 
+## Delete all user's agent functions
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="DELETE"
   path="/v1beta1/functions/delete-functions-of-agent/{agent_address}/"
   description="Delete all functions of an agent."
   pathParameters={{agent_address:"your_agent_address"}}
+  responses={
+    {}
+  }
+  responseDescription="Returns an empty JSON object."
+/>
+
+
+## Delete all user's functions
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="DELETE"
+  path="/v1beta1/functions/user/delete-all-functions/"
+  description="Delete all functions of a user."
   responses={
     {}
   }
