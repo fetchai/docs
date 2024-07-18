@@ -3,7 +3,7 @@ name: Deploy Staging
 on:
   push:
     branches:
-      - master
+      - chore/fix-up-deployment
 
 jobs:
   build:
@@ -35,8 +35,9 @@ jobs:
 
       - name: Build and Push Images
         run: |
-          ./k8s/build-img.py -p staging
+          ./scripts/build-img.py
         env:
+          IMAGE_REPOSITORY: ${{ secrets.STAGING_IMAGE_REPOSITORY }}
           BACKEND_URL: ${{ secrets.STAGING_NEXT_PUBLIC_BACKEND_URL }}
           NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
           NEXT_PUBLIC_ALGOLIA_APP_ID: ${{ secrets.NEXT_PUBLIC_ALGOLIA_APP_ID }}

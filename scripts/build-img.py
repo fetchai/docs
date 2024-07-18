@@ -5,16 +5,9 @@ import subprocess
 import argparse
 
 
-PROFILES = {
-    'staging': {
-        'repository': 'gcr.io/fetch-ai-sandbox/docs-website',
-    },
-    'production': {
-        'repository': 'gcr.io/fetch-ai-images/docs-website',
-    },
-}
-
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+REPOSITORY = os.environ.get('IMAGE_REPOSITORY')
 
 BUILD_ENV_VARS = (
     'BACKEND_URL',
@@ -26,18 +19,9 @@ BUILD_ENV_VARS = (
     'SENDER_TOKEN'
 )
 
-def _profile(text: str) -> str:
-    if text not in PROFILES:
-        available_profiles = ', '.join(PROFILES.keys())
-        print(f'Invalid profile {text}. Please select one of [{available_profiles}]')
-        sys.exit(1)
-
-    return text
-
 
 def parse_commandline() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--profile', type=_profile, default='staging', help='The profile to use')
     parser.add_argument('-n', '--no-push', dest='push', action='store_false', help='Disable pusing of the image')
     parser.add_argument('-f', '--force-build', action='store_true', help=argparse.SUPPRESS)
     return parser.parse_args()
@@ -55,6 +39,11 @@ def get_version() -> str:
 def main():
     args = parse_commandline()
 
+    # validate the repository environment variable
+    if REPOSITORY is None:
+        print('Missing IMAGE_REPOSITORY environment variable')
+        sys.exit(1)
+
     # argument validation / augmentation
     push = args.push
     if detect_local_modifications():
@@ -67,9 +56,8 @@ def main():
 
     # lookup the required information
     version = get_version()
-    repository = PROFILES[args.profile]['repository']
 
-    image_url = f'{repository}:{version}'
+    image_url = f'{REPOSITORY}:{version}'
 
     print()
     print(f'Project root: {PROJECT_ROOT}')
