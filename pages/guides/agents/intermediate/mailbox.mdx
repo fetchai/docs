@@ -3,10 +3,16 @@ import { Callout } from 'nextra/components'
 # Agent Mailboxes
 
 ## Introduction
-Agents can't always be online, say for a power-cut, or simply they're only online while you are. This can be a problem, ideally agents should be available online as much as they can so to not miss any opportunities, or contacts. For this reason we created the **Mailbox** feature on [Agentverse ↗️](https://agentverse.ai). A Mailbox is like a middleman that acts as a mailbox for all communication for you.
-Messages get stored there, and your agents will collect them when they're online back again.
+Agents can't always be online, say for a power-cut, or simply they're only online while you are. This can be a
+problem as agents should be available online as much as they can so that they do not miss any opportunities, or
+contacts. However, 100% uptime is of course sometimes challenging, especially if you're hosting agents locally on
+your own computer. For this reason we created
+the
+**Mailbox** feature on [Agentverse ↗️](https://agentverse.ai). A Mailbox is a
+middleman that acts as a mailbox for all communication to your agent. Messages are stored within the mailbox and your
+agents will collect them (calls for these messages as in startup of uAgents library) when they're online back again.
 
-First of all, we need to have an agent being set up and running locally before we can register it for a Mailbox on the Agentverse.
+First of all, we need to have an agent up and running locally before we can register it for a Mailbox on the Agentverse.
 
 Let's get started!
 
@@ -45,7 +51,7 @@ Let's start by creating a local agent named `alice`, alice responds hello to any
         agent.run()
    ```
 
-We now need to create a Mailbox for this agent and retrieve a Mailbox API key which should be then pasted within your local agent code by filling up the `AGENT_MAILBOX_KEY` field inline.
+We now need to create a Mailbox for this agent and retrieve a Mailbox API key which should be then pasted within your local agent code by filling up the `AGENT_MAILBOX_KEY` field.
 
 Run the above code in your terminal to retrieve your agent's address. You will need it in the next steps to set up an Agentverse Mailbox!
 When running the above agent, you should get something similar within your terminal output:
