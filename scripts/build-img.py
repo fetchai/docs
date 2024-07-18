@@ -61,7 +61,6 @@ def main():
 
     print()
     print(f'Project root: {PROJECT_ROOT}')
-    print(f'Profile.....: {args.profile}')
     print(f'Image Ref...: {image_url}')
     print(f'Push........: {push}')
     print()
