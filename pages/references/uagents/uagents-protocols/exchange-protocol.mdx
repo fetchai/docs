@@ -1,0 +1,81 @@
+import { Callout } from 'nextra/components'
+
+# Exchange protocol
+
+## Overview
+
+The **Exchange protocol** is a protocol designed as part of the Fetch.ai uAgents Framework. It defines a standardized method for communication between agents within the agents ecosystem.
+
+The Exchange protocol enables agents to exchange **messages** using a **JSON-based format**, which are structured as key-value pairs following the JSON standard. Messages can contain various types of information and are used to convey data and instructions between agents.
+
+Within the protocol, **envelopes** facilitate communication by encapsulating messages. Envelopes serve as containers for the messages and include additional metadata.
+
+In this protocol, gents can send **messages** enclosed in **envelopes**, which are then encoded and sent via HTTP to the [endpoints ↗️](/references/contracts/uagents-almanac/endpoints) of other agents.
+
+By adhering to the agents Exchange Protocol, agents within the Fetch.ai uAgents ecosystem can communicate with each other using a standardized and interoperable method.
+
+    <Callout type="info" emoji="ℹ️">
+      The protocol establishes a common format and structure for messages, enabling seamless interaction and integration between different agents and services.
+    </Callout>
+
+We break down each of these concepts in more detail below.
+
+## Core concepts
+
+### Messages
+
+Messages consist of key-value pairs following the standard JSON format.
+
+Here are a few examples:
+
+    ```json
+    { "message": "hello" }
+    ```
+
+    ```json
+    { "name": "alice", "age": 26, "languages": ["English", "Japanese", "Arabic"] }
+    ```
+
+    ```json
+    { "item": "pretzel", "bid": { "amount": 120, "denomination": "GBP" } }
+    ```
+
+Once messages are created, these are enclosed in envelopes containing some important metadata.
+
+### Envelopes
+
+Envelopes have the following form and are quite similar to blockchain transactions:
+
+    ```py
+    @dataclass
+    class Envelope(BaseModel):
+        version: int                     # Envelope version
+        sender: str:                     # Bech32-encoded public address of the sender
+        target: str:                     # Bech32-encoded public address of the target recipient
+        session: UUID4                   # UUID of the session
+        schema_digest: str               # Digest of the schema used for the payload
+        protocol_digest: Optional[str]   # Optional protocol digest for custom protocols
+        payload: Optional[str]           # JSON payload encoded as a base64 string
+        expires: Optional[int]           # Unix timestamp in seconds indicating expiration
+        nonce: Optional[int]             # Optional nonce
+        signature: Optional[str]         # Bech32-encoded signature
+    ```
+
+### Semantics
+
+    - The `sender` field exposes the address of the sender of the message.
+    - The `target` field exposes the address of the recipient of the message.
+    - The `protocol` contains the unique schema digest string for the message.
+    - The `payload` field exposes the payload of the protocol. Its JSON representation should be a base64 encoded string.
+    - The `expires` field contains the Unix timestamp in seconds at which the message is no longer valid.
+    - The `signature` field contains the signature that is used to authenticate that the message has been sent from the `sender` agent.
+
+Envelopes are then JSON encoded and sent to endpoints of other agents or services.
+
+### Endpoints
+
+The protocol supports only one standardised endpoint: `HTTP 1.1 POST /submit`, and expects data which is broadly JSON compatible.
+
+    <Callout type="info" emoji="ℹ️">
+      The protocol currently supports MIME content type `application/json`.
+    </Callout>

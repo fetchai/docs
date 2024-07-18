@@ -1,0 +1,33 @@
+import { Callout } from 'nextra/components'
+
+# Connecting to a blockchain
+
+Once you have installed CosmPy, you can **connect and begin interacting with Cosmos-based blockchains**. You can do so by running the following command:
+
+    ```py copy
+    import cosmpy
+    from cosmpy.aerial.client import LedgerClient, NetworkConfig
+
+    # Connecting to the Fetch.ai mainnet
+    ledger_client = LedgerClient(NetworkConfig.fetch_mainnet())
+    ```
+
+In the code snippet above, we are using the `LedgerClient` as a client object which takes a `NetworkConfig` as an argument. For ease of use, network configurations are provided automatically. For instance, `NetworkConfig.fetch_mainnet()` is the configuration for the [Fetch ledger ↗️](/concepts/fetch-network/ledger/intro). However, CosmPy allows you to customize the network configuration and interact with other chains.
+
+    <Callout type="info" emoji="ℹ️">
+      You can explore a full list of chain identifiers, denominations and endpoints at [chain registry ↗️](https://github.com/cosmos/chain-registry/).
+    </Callout>
+
+Below, you can find an example of a custom network configuration:
+
+    ```py copy
+    cfg = NetworkConfig(
+        chain_id="cosmoshub-4",
+        url="grpc+https://grpc-cosmoshub.blockapsis.com:429",
+        fee_minimum_gas_price=1,
+        fee_denomination="uatom",
+        staking_denomination="uatom",
+    )
+
+    ledger_client = LedgerClient(cfg)
+    ```
