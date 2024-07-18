@@ -26,11 +26,6 @@ A **Mailbox** allows your agent to receive messages sent to its address even whe
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
 
-    # Copy the address shown below
-    print(f"Your agent's address is: {agent.address}")
-
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 
     # Now your agent is ready to join the agentverse!
@@ -40,20 +35,26 @@ A **Mailbox** allows your agent to receive messages sent to its address even whe
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
 
+    # Copy the address shown below
+    print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+
+    # Then go to https://agentverse.ai, register your agent in the Mailroom and copy the agent's mailbox key. FIll the AGENT_MAILBOX_KEY in-line
+
     @agent.on_message(model=Message, replies={Message})
     async def handle_message(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+        # send the response
+        ctx.logger.info("Sending message to bob")
+        await ctx.send(sender, Message(message="hello there bob"))
 
     if __name__ == "__main__":
         agent.run()
    ```
 
-
 ### Agent 2: Agentverse Agent
 
     ```py copy filename="agent_2.py"
-    from uagents import Agent, Context, Model
-
     class Message(Model):
         message: str
 
@@ -62,13 +63,6 @@ A **Mailbox** allows your agent to receive messages sent to its address even whe
 
     # Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
-
-    # Now let's create the Agentverse agent
-    agent = Agent(
-        name="bob",
-        seed=SEED_PHRASE,
-        endpoint="http://127.0.0.1:8001/submit",
-    )
 
     @agent.on_interval(period=2.0)
     async def send_message(ctx: Context):
