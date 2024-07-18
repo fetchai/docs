@@ -1,0 +1,278 @@
+import {
+  Note,
+  Properties,
+  Property,
+  Warn,
+  Section,
+  ApiIntro,
+  Tag,
+  CodeHeading,
+} from "../../../components/mdx";
+import { DropDownTabs, Tab } from "../../../components/mdx";
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+  ApiRequest,
+  ApiResponses,
+} from "../../../components/api-endpoint";
+
+# Mailroom API
+
+<div className="nx-text-fetch-content">
+  Welcome to the Mailroom API documentation.
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The mailroom API allows you to interact and manage the mailroom service offered by the Agentverse. This involves exploring and deleting
+        mailroom envelopes, managing agent registration for the mailroom service and monitoring your agents mailroom usage.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        POST /v1/auth/challenge
+
+        GET /v1/agents
+        POST /v1/agents
+
+        GET /v1/agents/:address
+        PUT /v1/agents/:address
+        DELETE /v1/agents/:address
+
+        GET /v1/api-keys
+        DELETE /v1/api-keys/:uuid
+
+        GET /v1/profile/usage
+        ```
+    </Col>
+
+</Row>
+
+## Notable Objects
+
+### The Agent Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="address" type="string">
+                The given address of the agent.
+            </Property>
+            <Property name="name" type="string">
+                The name of the Agent. 
+            </Property>
+            <Property name="Pending_messages" type="integer">
+                Pending message for an agent in the mailroom. 
+            </Property>
+            <Property name="Bytes_transferred" type="integer">
+                Bytes transferred over the mailroom. 
+            </Property>
+            <Property name="Previous_bytes_transferred" type="integer">
+                Previously transferred bytes.
+            </Property> 
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Example Agent Object"
+        {
+            "name": "Example Name", 
+            "address": "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg", 
+            "Pending_messages": 1, 
+            "Bytes_transferred": 1, 
+            "Previous_Bytes_transferred": 1
+        }
+        ```
+    </Col>
+</Row>
+
+## Request and response library
+
+### Collecting Challenge
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1/auth/challenge"
+  description="Request for collecting challenge"
+  responses={{
+    challenge: "Example Challenge",
+  }}
+  responseDescription="On a success the response will be a challenge."
+/>
+
+### List Agents
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/agents"
+  description="List Agents registered for the mailroom"
+  responses={[
+    {
+      items: [
+        {
+          address:
+            "agent1qfd3nurhp4k8kcg6mhffqamlu0sm5v45mjg6mvfdf0xcxmuxykcv6kzunpf",
+          name: "Testing-002",
+          pending_messages: 0,
+          bytes_transferred: 0,
+          previous_bytes_transferred: 0,
+        },
+      ],
+      total: 1,
+      page: 1,
+      size: 50,
+    },
+  ]}
+  responseDescription="On success the response will be an array of json objects containing information about the properties of the agents."
+/>
+
+### Register Agents
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1/agents"
+  description="Register Agents for the mailroom"
+  responses={[
+    {
+      address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+      name: "Initialtest",
+      pending_messages: 0,
+      bytes_transferred: 0,
+      previous_bytes_transferred: 0,
+    },
+  ]}
+  responseDescription="On success the response will be a json array containing information about the properties of the agents."
+/>
+
+### Get specific Agent identified by address
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/agents/{address}"
+  pathParameters={{
+    address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+  }}
+  description="Get specific Agent identified by address"
+  responses={[
+    {
+      address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+      name: "Initialtest",
+      pending_messages: 0,
+      bytes_transferred: 0,
+      previous_bytes_transferred: 0,
+    },
+  ]}
+  responseDescription="On success the response will be an array of json objects containing the agent's properties."
+/>
+
+### Update specific Agent identified by address
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="PUT"
+  path="/v1/agents/{address}"
+  pathParameters={{
+    address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+  }}
+  description="Get specific Agent identified by address"
+  responses={[
+    {
+      address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+      name: "Initialtest",
+      pending_messages: 0,
+      bytes_transferred: 0,
+      previous_bytes_transferred: 0,
+    },
+  ]}
+  responseDescription="On success the response will be an array of json objects including the updated agent name."
+/>
+
+### Delete specific Agent identified by address
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="DELETE"
+  path="/v1/agents/{address}"
+  pathParameters={{
+    address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+  }}
+  description="Get specific Agent identified by address"
+  responses={{}}
+  responseDescription="On success the response will be the deletion of the agent specified by address."
+/>
+
+### List API-keys
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/api-keys"
+  description="List existing API-keys"
+  responses={[
+    {
+      items: [
+        {
+          uuid: "uuid-example",
+          key: "API-key example",
+          name: "Test",
+          expires_at: "2023-11-26T06:09:05.511108+00:00",
+        },
+      ],
+      total: 1,
+      page: 1,
+      size: 50,
+    },
+  ]}
+  responseDescription="On success the response will be an array of json objects containing information about the API keys and their properties."
+/>
+
+### Delete API-key
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="DELETE"
+  path="/v1/api-keys/{uuid}"
+  pathParameters={{
+    uuid:
+        "qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+  }}
+  description="Delete an existing API-key"
+  responses={{}}
+  responseDescription="On success the response will be the deletion of the API key specified by uuid."
+/>
+
+### Get profile usage
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/api-keys/{uuid}"
+  pathParameters={{
+    uuid:
+        "qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+  }}
+  description="Get profile usage"
+  responses={[
+    {
+      bytes_transferred: 0,
+      bytes_transferred_limit: 200000000,
+      num_messages: 0,
+      num_messages_limit: 10000,
+      bytes_stored: 0,
+      bytes_stored_limit: 50000000,
+      num_agents: 1,
+      num_agents_limit: 4,
+    },
+  ]}
+  responseDescription="On success the response will be an array of json objects containing information about the profile usage."
+/>

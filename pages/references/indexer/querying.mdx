@@ -1,0 +1,147 @@
+import { Callout } from 'nextra/components'
+
+# Querying
+
+The graphql API relies heavily on [postgraphile ↗️](https://www.graphile.org/postgraphile/usage-library/) (as a library) to resolve graphql requests.
+
+Postgraphile plugins also play a critical role. In particular, the [connection-filter ↗️](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter) and [pg-aggregates ↗️](https://github.com/graphile/pg-aggregates) plugins.
+
+## Pagination
+
+The graphql API implements [the connections specification ↗️](https://relay.dev/graphql/connections.htm) for pagination. For further information, have a look at [GraphQL pagination docs ↗️](https://graphql.org/learn/pagination/#end-of-list-counts-and-connections).
+
+<Callout type="info" emoji="💡️">
+  It is recommended to prefer using pagination operators by default (e.g. `first: <limit>`) to avoid unnecessary delays in query responses.
+</Callout>
+
+## Filtering
+
+Filtering is facilitated by [postgraphile ↗️](https://www.graphile.org/postgraphile/usage-library/) and its plugins. For specifics on supported operators and how to use them, please refer to their documentation:
+
+    - [Connection-filter plugin ↗️](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter)
+    - [Operators ↗️](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter/blob/master/docs/operators.md#json-jsonb)
+    - [Query examples ↗️](https://github.com/graphile-contrib/postgraphile-plugin-connection-filter/blob/master/docs/examples.md)
+
+### Examples
+
+1. Filtering `NativeTransfers` for a given sender address:
+
+    ```graphql
+    query nativeTransfersFromAddress {
+      nativeTransfers(first: 5, filter: {
+        fromAddress: {
+          equalTo: "fetch1t3qet68dr0qkmrjtq89lrx837qa2t05265qy6s"
+        }
+      }) {
+        nodes {
+          toAddress
+          amounts
+        }
+      }
+    }
+    ```
+
+2. Filtering for `Messages` from a given sender address:
+
+    ```graphql
+    query messagesFromAddress {
+      messages (first: 5, filter:  {
+        transaction: {
+          signerAddress: {
+            equalTo: "fetch1t3qet68dr0qkmrjtq89lrx837qa2t05265qy6s"
+          }
+        }
+      }) {
+        nodes {
+          transaction {
+            signerAddress
+          }
+        }
+      }
+    }
+    ```
+
+3. Filtering on `Events` within a given timeframe and with a given type:
+
+    ```graphql
+    query transferEventsDuring {
+      events(first: 5, filter:  {
+        block: {
+          timestamp: {
+            greaterThanOrEqualTo: "2022-09-15T01:44:13.719",
+            lessThanOrEqualTo: "2022-09-19T02:15:28.632"
+          }
+        },
+        type: {equalTo: "transfer"},
+      }) {
+        nodes {
+          attributes {
+            nodes {
+              key
+              value
+            }
+          }
+        }
+      }
+    }
+    ```
+
+## Order by / Sorting
+
+Each entity, by default, can be sorted by any of its respective fields. Additional support for ordering by certain fields on related entities is facilitated by custom ordering plugins generated from `makeAddPgTableOrderByPlugin`. Have a look at  [postgraphile-docs ↗️](https://www.graphile.org/postgraphile/make-add-pg-table-order-by-plugin/) for additional information.
+
+### Block height
+
+Any entity which relates to `Block` can be ordered by a related block's `height` field:
+
+    ```graphql
+    query contractExecByBlockHeight {
+      contractExecutionMessage (orderBy: EXECUTE_CONTRACT_MESSAGES_BY_BLOCK_HEIGHT_ASC) {
+        nodes {
+          id,
+          ...
+          Block {
+            height
+          }
+        }
+      }
+    }
+    ```
+
+### Contract code ID
+
+The `contract` entity can be sorted by `codeId` through the `storeMessage` and `instantiateMessage` relations:
+
+    ```graphql
+    query contractsByRelatedCodeID {
+      contracts (orderBy: CONTRACTS_BY_STORE_CONTRACT_MESSAGES_CODE_ID_ASC) {
+        #  or CONTRACTS_BY_INSTANTIATE_CONTRACT_MESSAGES_CODE_ID_ASC
+        nodes {
+          id,
+          ...
+          storeMessage {
+            codeId
+          }
+        }
+      }
+    }
+    ```
+
+### Order direction
+
+Each of these custom orders are implemented in both directions, ascending and descending. These directions are accessed through the ending characters of the order enum, by choosing either `_ASC` and `_DESC`.
+
+## Aggregation
+
+Aggregation is facilitated by the [pg-aggregates plugin ↗️](https://github.com/graphile/pg-aggregates).
+Features include:
+
+    - calculating aggregates
+    - grouped aggregates
+    - applying conditions to grouped aggregates
+    - ordering by relational aggregates
+    - filtering by the results of aggregates on related connections
+
+## Tests as examples
+
+Additional examples of queries and use cases can be found in the [end-to-end test suite ↗️](https://github.com/fetchai/ledger-subquery/tree/main/tests).

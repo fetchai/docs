@@ -1,0 +1,19 @@
+# Agents storage
+
+Agents storage is an important concept to understand how agents work within the uAgents Framework. You can use the `Context` object to modify storage information related to your agent. While writing the code for your agent, you can add within an event handler, different methods retrieved using `ctx` (i.e., the agent's `Context` object) to retrieve and edit storage values.
+
+For instance, you could use the `set` method of the `Context` object to set the agent's local storage by simply running:
+
+    ```py copy
+    ctx.storage.set("key", "value")
+    ```
+
+This will save the information in a **JSON file**. This information can be retrieved at any time using the `get` method of the `Context` object:
+
+    ```py copy
+    ctx.storage.get("key")
+    ```
+
+For a practical understanding of the concept of storage, have a look at the [Using agents storage function ↗️](/guides/agents/storage-function) guide in the [Agents guides ↗️](/guides#agents) section for a step-by-step example showing how to retrieve and set storage values.
+
+The [How to book a table at a restaurant using agents ↗️](/guides/agents/booking-demo) and the [How to use the agents to simulate a cleaning scenario ✨ ↗️](/examples/agents-cleaning-demo) guides in the [Agents guides ↗️](/guides#agents) section, instead, shows a more complex and real-world demonstrations making use of the agent's storage concept.
