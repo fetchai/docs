@@ -1,0 +1,60 @@
+import { Callout } from 'nextra/components'
+
+<Callout type="info" emoji="ℹ️">
+This article is a work-in-progress. It will be expanded rapidly.
+</Callout>
+
+
+# Agents running on agentverse
+
+Agents running on [Agentverse ↗️](https://agentverse.ai/) act as [Functions ↗️](/guides/agents/intermediate/agent-functions); they do this by having an orchestrator in the background that calls functions on the agent when a routine should execute, or a message is called. This helps us keep hosted agents costs down which are passed on to the user.
+
+However, you should be aware of how state works in a hosted agent. A global variable in agentverse will always have the value of the initialized value you set. Updating this value from a function will not work outside the scope of that function call, as the variable is set when the agent is loaded into the Orchestrator which does not load up the entire agent for each call, a global variable will always have the initial set value. To have values persist you must store this values in storage.
+
+Let's show this with an example:
+
+    ```python copy filename="storage_agent_example.py"
+    from uagents import Agent, Context
+
+    agent = Agent()
+
+    global_counter = 0
+
+    @agent.on_interval(period=1.0)
+    async def on_interval(ctx: Context):
+        global global_counter
+
+
+        # increment the global counter - bad!
+        global_counter += 1
+
+
+        current_count = int(ctx.storage.get("count") or 0)
+        current_count += 1
+
+        ctx.logger.info(f"My count is: {current_count}")
+        ctx.logger.info(f"My global is: {global_counter}")
+
+        ctx.storage.set("count", current_count)
+
+
+    if __name__ == "__main__":
+        agent.run()
+    ```
+
+Output in Agentverse would be:
+
+    ```
+    2024-06-27 09:05:14	Info	Agent	[INFO]: My count is: 1
+    2024-06-27 09:05:14	Info	Agent	[INFO]: My global is: 1
+    2024-06-27 09:05:15	Info	Agent	[INFO]: My count is: 2
+    2024-06-27 09:05:15	Info	Agent	[INFO]: My global is: 1
+    2024-06-27 09:05:17	Info	Agent	[INFO]: My count is: 3
+    2024-06-27 09:05:17	Info	Agent	[INFO]: My global is: 1
+    ```
+
+You can see from this output, **global is never updated**.
+
+To learn more about Agents storage and how it works in Agentverse, take a look at [Storage Functions ↗️]((/guides/agents/intermediate/storage-function).
+
+

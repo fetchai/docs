@@ -1,0 +1,32 @@
+# Entities
+
+## Introduction
+
+An entity refers to a specific type of data that the indexer keeps track of. These entities can range from fundamental building blocks such as blocks, transactions, and messages to more complex constructs. Anyway, each entity type has its own attributes and relationships, making it a fundamental unit of information within the system.
+
+Entities tracked by the indexer exist at varying levels of abstraction. "Lower-level" entities include the [primitives ↗️](/references/indexer/entities#primitive-entities) (i.e. blocks, transactions, messages, and events), upon which "higher-level" entities are constructed (e.g. LegacyBridgeSwaps).
+ 
+Some entities are derived from objects which do not correspond to any network state change (e.g. failed transactions and their messages).
+
+In the case of failed transactions, it is desirable to index the associated data for end-user reference.
+This notion may also apply to other objects but should be considered carefully to avoid storing invalid or useless data.
+
+## Primitive entities
+
+If you wish to have additional information, visit [schema.graphql ↗️](https://github.com/ledger-subquery/blob/main/schema.graphql).
+
+Primitive entities include:
+
+    - blocks
+    - transactions
+    - messages
+    - events
+    - event attributes
+
+## Entity relationship diagrams
+
+![entity relationship diagram legend](../../../src/images/docs/indexer/entities_legend_1.svg)
+
+![entity database relationship diagram](../../../src/images/docs/indexer/entities_legend_2.svg)
+
+![entity api relationship diagram](../../../src/images/docs/indexer/entities_legend_3.svg)
