@@ -6,11 +6,11 @@ Each agent within the Fetch ecosystem is characterized by different addresses. T
 
 It is possible to distinguish between two different types of addresses:
 
-    - `uAgent address`: this is the main agent identifier. Other agents can use this address to query the agent's information in the Almanac contract.
+    - `uAgent address`: this address identifies the agent within the Fetch Network. It's similar to a username within a chat platform, allowing other agents to discover and communicate with that specific agent by querying that agent's information from the Almanac contract.
 
-    - `Fetch network address`: this is the address providing the agent with the capabilities for interacting with the [Fetch Ledger ↗️](/concepts/fetch-network/ledger/intro), including [Registration in the Almanac ↗️](/guides/agents/register-in-almanac) contract.
+    - `Fetch network address`: this address is linked to the agent's wallet on the Fetch.ai network. It is essential to perform multiple functionalities like holding cryptocurrency, interacting with the [Fetch Ledger ↗️](/concepts/fetch-network/ledger/intro) , but also performing secure transactions. This address is also essential to register an agent on the [Almanac ↗️](/concepts/fetch-network/almanac) contract to ensure the agents has enough funds available to perform operations in the network.
 
-If you want to retrieve the address of your agent, you can either use the `print()` function and specify which of the above addresses you wish to print out, or by calling the `Context` class and related methods to retrieve specific information.
+If you want to retrieve the address of an agent, you can either use the `print()` function and specify which of the above addresses you wish to print out, or by calling the `.address()` and `.wallet.address()` methods using the `agent` object to retrieve specific information.
 
 **Let's now check how these ways of retrieving addresses look like!**
 
@@ -18,9 +18,9 @@ If you want to retrieve the address of your agent, you can either use the `print
 
 You can print the `uAgent address` related to your agent in the following way:
 
-1. First of all, create a Python script and name it by running: `touch uagent-address.py`
+1. First of all, create a Python script and name it: `touch uagent-address.py`
 
-2. We then need to import the `Agent` class from the `uagents` library to create an agent, `alice`. Then, using the `print` function, we will print the related `uAgent address`. Importantly, remember that the `seed` parameter is used, when creating an agent, to set fixed addresses, otherwise a random address will be generated every time you run the agent:
+2. We then need to import the `Agent` class from the `uagents` library to create an agent, `alice`. Then, using the `print()` function, we will print the related `uAgent address`. Importantly, remember that the `seed` parameter is used, when creating an agent, to set fixed addresses, otherwise a random address will be generated every time you run the agent:
 
    ```py copy filename="uagent-address.py"
    from uagents import Agent
@@ -38,16 +38,16 @@ You can print the `uAgent address` related to your agent in the following way:
 The output would be as follows:
 
     ```
-    uAgent address: agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
+    uAgent address: agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plflc0epzcjsv79t
     ```
 
 ## Print Fetch network address
 
 You can print the `Fetch network address` related to your agent in the following way:
 
-1. Let's create a Python script, and name it by running: `touch fetch-address.py`
+1. Let's create a Python script, and name it: `touch fetch-address.py`
 
-2. As before, we first need to import the `Agent` class from the `uagents` library to create a uAgent, `alice`. Then, using the `print()` function, we will print the related `Fetch Network address`:
+2. As before, we first need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `Fetch Network address`:
 
    ```py copy filename="fetch-address.py"
    from uagents import Agent
@@ -70,21 +70,19 @@ The output would be as follows:
 
 ## Print agent name and address using `name` and `address` methods
 
-In this guide, we aim at showing how to create an agent being able to say hello and printing its `name` and `address` retrieving such information from the `Context` class imported from the `uagents` library.
+In this guide, we aim at showing how to create an agent being able to say hello and printing its `name` and `address` using the `uagents` library tools. Indeed, it is possible to retrieve the `name` and `address` of any agent directly from the `agent` object representing the agent you create and initialise. More specifically, we refer to the following methods:
 
-The `Context` class is a crucial component which represents the execution context of an agent. It encapsulates different attributes and methods which allow an agent to interact with its environment, send and receive messages, and manage its state and identity. Within this class, we can distinguish multiple attributes and methods, including:
+    - `.name()`: this returns the provided name of the agent, if specified, otherwise, if the agent's name is not explicitly set, then it will use the first ten characters of the agent's address as its name.
 
-    - `name`: which returns the provided name of the agent, if specified, otherwise, if the agent's name is not explicitly set, then it will use the first ten characters of the agent's address as its name.
+    - `.address()`: this returns the unique address of the agent in the form `agent1...`. This address is essential for other agents to interact with your agent.
 
-    - `address`: which returns the unique address of the agent in the form `agent1...`. This address is essential for other agents to interact with your agent.
-
-**Let's get started and use the `Context` class to make our agent print its name and address!**
+**Let's get started and use the `agent` object to make our agent print its name and address!**
 
 ### Walk-through
 
-1. First of all, you need to create a Python script and name it by running: `touch my_agent.py`
+1. First of all, you need to create a Python script and name it: `touch my_agent.py`
 
-2. We then need to import the necessary classes `Agent` and `Context` from the `uagents` library, and then create an instance of the `Agent` class, `alice`:
+2. We then need to import the necessary classes `Agent` and `Context` from the `uagents` library, and then create an instance of the `Agent` class, `alice`. Below you can see the `agent` object being initialised:
 
    ```py copy
    from uagents import Agent, Context
@@ -92,7 +90,7 @@ The `Context` class is a crucial component which represents the execution contex
    agent = Agent(name="alice", seed="alice recovery phrase")
    ```
 
-3. We would then need to assign the agent the behavior to be executed. In this case, `agent` could send a message when it is being run saying hello and printing its `name` and `address`:
+3. We would then need to assign the agent the behavior to be executed. In this case, `agent` could send a message when it is being run saying hello and printing its `name` and `address` using the `agent` object:
 
    ```py copy
    @agent.on_event("startup")
@@ -124,9 +122,9 @@ if __name__ == "__main__":
 
 ### Run the script
 
-On your terminal, make sure to have activated the virtual environment.
+If you are using a Poetry virtual environment, make sure that you have activated it.
 
-Run the script: `my_agent.py`
+On your terminal, run the script: `python my_agent.py`
 
 The output should be as follows:
 
