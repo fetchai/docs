@@ -1,0 +1,212 @@
+
+
+# Endpoint Resolver
+
+
+
+
+#### query`_`record
+
+```python
+def query_record(agent_address: str, service: str) -> dict
+```
+
+Query a record from the Almanac contract.
+
+**Arguments**:
+
+- `agent_address` _str_ - The address of the agent.
+- `service` _str_ - The type of service to query.
+  
+
+**Returns**:
+
+- `dict` - The query result.
+
+
+
+#### get`_`agent`_`address
+
+```python
+def get_agent_address(name: str) -> str
+```
+
+Get the agent address associated with the provided name from the name service contract.
+
+**Arguments**:
+
+- `name` _str_ - The name to query.
+  
+
+**Returns**:
+
+- `str` - The associated agent address.
+
+
+
+#### is`_`agent`_`address
+
+```python
+def is_agent_address(address)
+```
+
+Check if the provided address is a valid agent address.
+
+**Arguments**:
+
+- `address` - The address to check.
+  
+
+**Returns**:
+
+- `bool` - True if the address is a valid agent address, False otherwise.
+
+
+
+## Resolver Objects
+
+```python
+class Resolver(ABC)
+```
+
+
+
+#### resolve
+
+```python
+@abstractmethod
+async def resolve(destination: str) -> Optional[str]
+```
+
+Resolve the destination to an endpoint.
+
+**Arguments**:
+
+- `destination` _str_ - The destination to resolve.
+  
+
+**Returns**:
+
+- `Optional[str]` - The resolved endpoint or None.
+
+
+
+## GlobalResolver Objects
+
+```python
+class GlobalResolver(Resolver)
+```
+
+
+
+#### resolve
+
+```python
+async def resolve(destination: str) -> Optional[str]
+```
+
+Resolve the destination using a combination of Almanac and NameService resolvers.
+
+**Arguments**:
+
+- `destination` _str_ - The destination to resolve.
+  
+
+**Returns**:
+
+- `Optional[str]` - The resolved endpoint or None.
+
+
+
+## AlmanacResolver Objects
+
+```python
+class AlmanacResolver(Resolver)
+```
+
+
+
+#### resolve
+
+```python
+async def resolve(destination: str) -> Optional[str]
+```
+
+Resolve the destination using the Almanac contract.
+
+**Arguments**:
+
+- `destination` _str_ - The destination to resolve.
+  
+
+**Returns**:
+
+- `Optional[str]` - The resolved endpoint or None.
+
+
+
+## NameServiceResolver Objects
+
+```python
+class NameServiceResolver(Resolver)
+```
+
+
+
+#### resolve
+
+```python
+async def resolve(destination: str) -> Optional[str]
+```
+
+Resolve the destination using the NameService contract.
+
+**Arguments**:
+
+- `destination` _str_ - The destination to resolve.
+  
+
+**Returns**:
+
+- `Optional[str]` - The resolved endpoint or None.
+
+
+
+## RulesBasedResolver Objects
+
+```python
+class RulesBasedResolver(Resolver)
+```
+
+
+
+#### `__`init`__`
+
+```python
+def __init__(rules: Dict[str, str])
+```
+
+Initialize the RulesBasedResolver with the provided rules.
+
+**Arguments**:
+
+- `rules` _Dict[str, str]_ - A dictionary of rules mapping destinations to endpoints.
+
+
+
+#### resolve
+
+```python
+async def resolve(destination: str) -> Optional[str]
+```
+
+Resolve the destination using the provided rules.
+
+**Arguments**:
+
+- `destination` _str_ - The destination to resolve.
+  
+
+**Returns**:
+
+- `Optional[str]` - The resolved endpoint or None.

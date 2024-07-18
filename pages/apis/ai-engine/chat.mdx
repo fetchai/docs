@@ -1,0 +1,738 @@
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+} from "../../../components/api-endpoint";
+
+# DELTA-V Chat API
+
+<div className="nx-text-fetch-content">
+  Most of the endpoints depends on various instances and are considered parameters for the actual endpoint, but these are not meant to be passed directly by the user.
+
+Instead, these instance-dependent elements are integrated and managed directly by the backend system. We refer to them as `*name_parameter`, where the asterisk (\*) is used to denote a specific instance-dependent parameter that the route relies on.
+
+Mind that: to access these APIs, user must be **authenticated** and have the **correct permissions**.
+
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The DeltaV Chat API allows you to interact with the DeltaV backend, allowing you to interact with your agents and more.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        GET /v1beta1/engine/chat/sessions
+        POST /v1beta1/engine/chat/sessions
+
+        DELETE /v1beta1/engine/chat/sessions/:session_id
+
+        POST /v1beta1/engine/chat/sessions/:session_id/submit
+
+        GET /v1beta1/engine/chat/sessions/:session_id/responses (Deprecated)
+
+        GET /v1beta1/engine/chat/sessions/:session_id/messages (Deprecated)
+
+        GET /v1beta1/engine/chat/sessions/:session_id/messages/all
+
+        GET /v1beta1/engine/chat/sessions/:session_id/new-messages
+
+        POST /v1beta1/engine/chat/sessions/:session_id/feedback
+
+        GET /v1beta1/engine/chat/remaining_tokens
+        ```
+    </Col>
+
+</Row>
+
+## Starting your session
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1beta1/engine/chat/sessions"
+  description="Start a new session for a user authenticated through JWT."
+    properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description: "Contains the data for the type of payload being sent.",
+    },
+    {
+      name: "email",
+      type: "email",
+      description: "The email of the user",
+    },
+    {
+      name: "requestModel",
+      type: "string",
+      description:
+        "The request model wherein the user wants to interact.",
+    },
+    {
+      name: "functionGroup",
+      type: "string",
+      description:
+        "The function group that the user wants to interact with. Previously known as service_group. Defaults to Public group!",
+    },
+  ]}
+    samplePayload={{
+    email: "your_email_address",
+    requestedModel: "talkative-01",
+    functionGroup: "ef6937d9-c086-4785-8bb1-748680821714"
+  }}
+  responses={[
+    {
+      session_id: "c320b5c4-518c-428b-889d-3cb8403901c0",
+      user: "YOUR_CLIENT_UID",
+      num_messages: 0,
+      last_message_timestamp: null,
+      messages: [],
+      model: "talkative-01",
+      remaining_tokens: 10000000,
+      function_group: "ef6937d9-c086-4785-8bb1-748680821714"
+    },
+  ]}
+  responseDescription="Returns the newly created Session object"
+/>
+
+## Get all sessions for a user
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/chat/sessions"
+  description="Retrieves all sessions for a user authenticated through JWT."
+  responses={[
+    {
+      session_id: "7be16891-39a6-44a6-88cb-377250dd8eb7",
+      user: "YOUR_CLIENT_UID",
+      num_messages: 0,
+      last_message_timestamp: null,
+      messages: [],
+      function_group: "ef6937d9-c086-4785-8bb1-748680821714",
+      model: "talkative-01",
+      remaining_tokens: 9999099,
+    },
+    {
+      session_id: "aed47bb4-9d73-4135-89f7-925036aa83bd",
+      user: "YOUR_CLIENT_UID",
+      num_messages: 0,
+      last_message_timestamp: null,
+      messages: [],
+      function_group: "ef6937d9-c086-4785-8bb1-748680821714",
+      model: "talkative-01",
+      remaining_tokens: 9999099,
+    },
+  ]}
+  responseDescription="Returns a list of Session objects associated with the user"
+/>
+
+## Sending a new message
+
+There are 4 types of messages that can be sent to the backend:
+
+- `start`: This is the first message that should be sent to the AI Engine for full session (search + execution). It contains the objective and context of the conversation. The objective and context are used to determine which agent to use for the conversation.
+- `execute_functions`: This is the first message that should be sent to the AI Engine for execution only (no search). It contains the list of function-ids you want to execute and a function group (for secondary function picks).
+- `user_message`: This is a message sent by the user.
+- `user_json`: This is a JSON message sent by the user.
+- `stop`: This is the last message that should be sent to the backend. It indicates that the conversation has ended.
+
+
+IMPORTANT: you need to either send `start` or `execute_functions`. These two can't be combined.
+### Sending start message
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
+  description="Sending start message"
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description: "Contains the data for the type of message being sent.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent. For starting the session set it to 'start'.",
+    },
+    {
+      name: "objective",
+      type: "string",
+      description:
+        "The objective of the conversation. This is used to determine which agent to use for the conversation.",
+    },
+    {
+      name: "context",
+      type: "string",
+      description:
+        "The context of the conversation. This is used to give information about the user to the agent.",
+    },
+    {
+      name: "recommend_only",
+      type: "boolean",
+      description: 
+        "Optional flag, if is set to true, AI Engine will only do search, it will match your objective to functions/agents and then stops. False by default. Only supported by Next Generation personality."
+    },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
+  ]}
+  samplePayload={{
+    payload: {
+      type: "start",
+      objective: "I'd like to go to London",
+      context:
+        "User full Name: Test User\nUser email: user@user.com\nUser location: latitude=51.5072, longitude=0.1276\n",
+    },
+  }}
+    pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+  responseDescription="On a successful request, there is no response"
+/>
+
+### Sending execute functions message
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
+  description="Sending execute functions message. Currently only supported by Next Generation personality. Don't use this if you already sent 'start' message."
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description: "Contains the data for the type of message being sent.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent. Set it to 'execute_functions'.",
+    },
+    {
+      name: "functions",
+      type: "string[]",
+      description:
+        "List of function ids you want the system to execute.",
+    },
+    {
+      name: "objective",
+      type: "string",
+      description:
+        "The objective of the conversation. This will guide context building.",
+    },
+    {
+      name: "context",
+      type: "string",
+      description:
+        "The context of the conversation. This is used to give information about the user to the agent.",
+    },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
+  ]}
+  samplePayload={{
+    payload: {
+      type: "execute_functions",
+      functions: ["b320b5c4-518c-428b-889d-3cb8403901c0"],
+      objective: "",
+      context: ""
+    },
+  }}
+    pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+  responseDescription="On a successful request, there is no response"
+/>
+
+### Sending user message
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
+  description="Send an answer to a question asked by the agent"
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description: "Contains the data for the type of message being sent.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent.",
+    },
+    {
+      name: "user_message",
+      type: "string",
+      description:
+        "The user response to a question asked by the agent or to confirm the context",
+    },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
+  ]}
+  samplePayload={{
+    payload: {
+      type: "user_message",
+      user_message: "The booking is for 2 people",
+    },
+  }}
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+  responseDescription="On a successful request, there is no response"
+/>
+
+### Sending user json message
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
+  description="Sending an option in a task list requested by an agent"
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description:
+        "Contains the data for the type of message being sent. The payload is different for each type of message.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent.",
+    },
+    {
+      name: "user_json",
+      type: "JSON",
+      description:
+        "The objective of the conversation. This is used to determine which agent to use for the conversation.",
+    },
+    {
+      name: "user_json-type",
+      type: "string",
+      description:
+        "The context of the conversation. type: `task_list`, `options`. `task_list` is used to select a task pertaining to a specific agent. `options` is used to select a subtask pertaining to a specific agent or select an option from a list of suggestions given by the agent.",
+    },
+    {
+      name: "user_json-selection",
+      type: "array",
+      description:
+        "The selection of the user from the list of options. The selection is an array of integers or UUID4",
+    },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
+
+]}
+samplePayload={{
+    payload: {
+      type: "user_json",
+      user_json: {
+        type: "task_list | options",
+        selection: ["0 | 9f157712-472d-4f0d-814d-d5aae9fd7b28"],
+      },
+    },
+  }}
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+responseDescription="On a successful request, there is no response"
+/>
+
+### Sending stop message
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1beta1/engine/chat/sessions/{session_id}/submit"
+  description="Sending a stop message to an agent"
+  properties={[
+    {
+      name: "payload",
+      type: "JSON",
+      description:
+        "Contains the data for the type of message being sent. The payload is different for each type of message.",
+    },
+    {
+      name: "type",
+      type: "string",
+      description: "The type of message being sent.",
+    },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
+  ]}
+  samplePayload={{
+    payload: {
+      type: "stop",
+    },
+  }}
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+  responseDescription="On a successful request, there is no response"
+/>
+
+## Delete a session for a user
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="DELETE"
+  path="/v1beta1/engine/chat/sessions/{session_id}"
+  description="Delete a specific session given a session id for a user authenticated through JWT."
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+/>
+
+## ~~Fetch new messages sent by agent~~ **Deprecated**
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/chat/sessions/{session_id}/responses"
+  description="Fetches new messages for a specific session identified by the session_id"
+  responses={[
+    {
+      agent_response:
+        '{"message_id": "c5c27376-0edc-41db-ae7b-980b4a6bfe8b", "timestamp": "2023-08-31T13:10:48.941865", "score": 0.0, "type": "agent_json", "agent_json": {"type": "task_list", "text": "Found tasks for your objective. Please select.", "options": [{"key": 0, "value": "TopActivities/TopActivities"}, {"key": 1, "value": "Flights/Flights"}, {"key": 2, "value": "Hotels/Hotels"}], "context_json": null}}',
+    },
+  ]}
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+  responseDescription="Return an agent_response object containing the agent response in JSON format, which can be parsed to retrieve the agent message. It can be an AgentMessage or an AgentJsonMessage. They are almost similar to user_message and user_json_message, but they are sent by the agent."
+/>
+
+## ~~Fetch recent messages given a timestamp~~ **Deprecated**
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/chat/sessions/{session_id}/messages?from_timestamp=2023-08-31T13:26:30.941865"
+  description="Fetches agent messages filtered by timestamps for a specific session identified by the session_id"
+  properties={[
+    {
+      name: "from_timestamp",
+      type: "datetime",
+      description:
+        "The timestamp from which to fetch the agent messages. The timestamp is in ISO 8601 format.",
+    },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
+  ]}
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+  responses={[
+    {
+      session_id: "063fcfef-a3ec-46c4-aa8e-c9a51b6f24b7",
+      messages: [
+        {
+          message_id: "922c9be4-28dd-4fdb-9b91-fc26f360d86c",
+          timestamp: "2023-08-31T13:26:42.093485",
+          score: 0.0,
+          type: "agent_info",
+          agent_info:
+            "I start building the context to execute 'TopActivities/TopActivities' task..",
+        },
+        {
+          message_id: "2969efc7-4a8b-46e1-8c9e-fb86dbe3f5fb",
+          timestamp: "2023-08-31T13:26:51.744958",
+          score: 0.0,
+          type: "agent_json",
+          agent_json: {
+            type: "context_json",
+            text: "Can you confirm the following context?",
+            options: null,
+            context_json: {
+              digest:
+                "model:77dcd01525f6f2f58bc5035942725bd57be171a9af44d2f19b796a01bd52cd91",
+              args: {
+                city: "London",
+                date: "[date]",
+                preferred_activities: "",
+              },
+            },
+          },
+        },
+      ],
+    },
+  ]}
+  responseDescription="Return the most recent list of agent messages given a timestamp. The timestamp is in ISO 8601 format."
+/>
+## Fetch all messages sent by agent in a session
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/chat/sessions/{session_id}/messages/all"
+  description="Fetches agent messages filtered by timestamps for a specific session identified by the session_id"
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+  responses={[
+    {
+      session_id: "063fcfef-a3ec-46c4-aa8e-c9a51b6f24b7",
+      messages: [
+        {
+          message_id: "24df920c-a8eb-41cb-aa10-4283d0602d5e",
+          timestamp: "2023-08-31T13:26:23.238697",
+          score: 0.0,
+          type: "agent_json",
+          agent_json: {
+            type: "task_list",
+            text: "Found tasks for your objective. Please select.",
+            options: [
+              {
+                key: 0,
+                value: "TopActivities/TopActivities",
+              },
+              {
+                key: 1,
+                value: "Flights/Flights",
+              },
+              {
+                key: 2,
+                value: "Hotels/Hotels",
+              },
+            ],
+            context_json: null,
+          },
+        },
+        {
+          message_id: "922c9be4-28dd-4fdb-9b91-fc26f360d86c",
+          timestamp: "2023-08-31T13:26:42.093485",
+          score: 0.0,
+          type: "agent_info",
+          agent_info:
+            "I start building the context to execute 'TopActivities/TopActivities' task..",
+        },
+        {
+          message_id: "2969efc7-4a8b-46e1-8c9e-fb86dbe3f5fb",
+          timestamp: "2023-08-31T13:26:51.744958",
+          score: 0.0,
+          type: "agent_json",
+          agent_json: {
+            type: "context_json",
+            text: "Can you confirm the following context?",
+            options: null,
+            context_json: {
+              digest:
+                "model:77dcd01525f6f2f58bc5035942725bd57be171a9af44d2f19b796a01bd52cd91",
+              args: {
+                city: "London",
+                date: "[date]",
+                preferred_activities: "",
+              },
+            },
+          },
+        },
+      ],
+    },
+  ]}
+  responseDescription="Return all the messages sent by the agent for a specific session."
+/>
+
+## Retrieve new messages sent by agent (with possible duplicate or missed messages)
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/chat/sessions/{session_id}/new-messages"
+  description="Retrieves a batch of new messages since the last retrieved message for a specific chat session."
+  properties={[
+    {
+      name: "session_id",
+      type: "UUID4",
+      description:
+        "The unique identifier of the chat session. It must be a valid UUID4 string.",
+    },
+    {
+      name: "last_message_id",
+      type: "string",
+      required: false,
+      description:
+        "The message ID of the last message that was retrieved. This is optional and, if provided, the service will return messages that were sent after this message.",
+    },
+  ]}
+  pathParameters={{
+    session_id: "your_session_id",
+  }}
+  queryParameters={[
+    {
+      name: "last_message_id",
+      description: "The message ID to start fetching messages from. If omitted, all messages will be fetched."
+    }
+  ]}
+  responses={[
+    {
+      status: 200,
+      agent_response: [
+        {
+          "session_id": "063fcfef-a3ec-46c4-aa8e-c9a51b6f24b7",
+          "messages": [
+            {
+              "message_id": "24df920c-a8eb-41cb-aa10-4283d0602d5e",
+              "timestamp": "2023-08-31T13:26:23.238697",
+              "score": 0,
+              "type": "agent_json",
+              "agent_json": {
+                "type": "task_list",
+                "text": "Found tasks for your objective. Please select.",
+                "options": [
+                  {
+                    "key": 0,
+                    "value": "TopActivities/TopActivities"
+                  },
+                  {
+                    "key": 1,
+                    "value": "Flights/Flights"
+                  },
+                  {
+                    "key": 2,
+                    "value": "Hotels/Hotels"
+                  }
+                ],
+                "context_json": null
+              }
+            },
+            {
+              "message_id": "922c9be4-28dd-4fdb-9b91-fc26f360d86c",
+              "timestamp": "2023-08-31T13:26:42.093485",
+              "score": 0,
+              "type": "agent_info",
+              "agent_info": "I start building the context to execute 'TopActivities/TopActivities' task.."
+            },
+            {
+              "message_id": "2969efc7-4a8b-46e1-8c9e-fb86dbe3f5fb",
+              "timestamp": "2023-08-31T13:26:51.744958",
+              "score": 0,
+              "type": "agent_json",
+              "agent_json": {
+                "type": "context_json",
+                "text": "Can you confirm the following context?",
+                "options": null,
+                "context_json": {
+                  "digest": "model:77dcd01525f6f2f58bc5035942725bd57be171a9af44d2f19b796a01bd52cd91",
+                  "args": {
+                    "city": "London",
+                    "date": "[date]",
+                    "preferred_activities": ""
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+    },
+  ]}
+  responseDescription="Returns a list of new messages for the session, if specified then returns the messages since the last checked message. If there are no new messages, an empty list is returned. If the session is not found, a 404 error with a descriptive message is returned."
+/>
+
+
+## Provide feedback for a session
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1beta1/engine/chat/sessions/{session_id}/feedback"
+  description="Give feedback for a specific session identified by the session_id"
+      pathParameters={{
+    session_id:
+      "your_session_id",
+  }}
+      samplePayload={{
+    feedback: "positive",
+  }}
+  properties={[
+    {
+      name: "models",
+      type: "array",
+      description:
+        "Contains the list of models that the user wants to query for remaining tokens. It is an array of strings where each string is the name of the model.",
+    },
+    {
+      name: "feedback",
+      type: "string",
+      description: "The feedback of the user. It can be positive or negative.",
+    },
+    {
+      name: "session_id",
+      type: "string",
+      description:
+        "The session ID, obtained from the Create Session API, uniquely identifies a session",
+    },
+  ]}
+  responses={{
+    model_tokens: {
+      "talkative-01": 9999099,
+      "creative-01": 5000000,
+    },
+  }}
+  responseDescription="On a successful request returns the remaining tokens for the models that have been queried"
+/>
+
+## Retrieve remaining tokens
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1beta1/engine/credit/remaining_tokens?models=talkative-01,creative-01&email=user@user.com"
+  description="Request for retrieving the amount of tokens left for each model"
+  properties={[
+    {
+      name: "models",
+      type: "array",
+      description:
+        "Contains the list of models that the user wants to query for remaining tokens. It is an array of strings where each string is the name of the model.",
+    },
+    {
+      name: "email",
+      type: "string",
+      description: "The email of the user",
+    },
+  ]}
+  responses={{
+    model_tokens: {
+      "talkative-01": 9999099,
+      "creative-01": 5000000,
+    },
+  }}
+  responseDescription="On a successful request returns the remaining tokens for the models that have been queried"
+/>
