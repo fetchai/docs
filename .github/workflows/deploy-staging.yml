@@ -51,6 +51,6 @@ jobs:
           curl -f -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Authorization: token ${{ secrets.ORG_DISPATCH_RENDER_TOKEN }}" \
           --request POST \
-          --data '{"event_type": "docs-staging-build", "client_payload": {"image": "'"${{ secrets.STAGING_IMAGE_REPOSITORY }}"'" , "image_path": "values", "commit_message_service": "Docs Staging", "tag": "'"${{ steps.lookup.outputs.version }}"'"}}' \
+          --data '{"event_type": "docs-staging-build", "client_payload": {"image": "'"${{ secrets.STAGING_IMAGE_REPOSITORY }}"'" , "image_path": "values", "key_path": ".website.image.tag", "commit_message_service": "Docs Staging", "tag": "'"${{ steps.lookup.outputs.version }}"'"}}' \
           https://api.github.com/repos/fetchai/infra-sandbox-london-b-deployment/dispatches
 
