@@ -1,6 +1,6 @@
 # Fetch.ai Documentation Repo
 
-Wlecome to the code repository for websites and contents of fetch.ai/docs. 
+Welcome to the code repository for websites and contents of fetch.ai/docs. 
 
 ## Updating docs
 
