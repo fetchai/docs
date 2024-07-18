@@ -94,7 +94,35 @@ Let's update `alice`, alice will now print to console any message she receives, 
 
 ## Creating an a second agent
 
-Optionally you can create this second agent to send messages to your other agent
+Let's create and run a second agent to message Alice every 3 seconds:
+
+``` python copy
+
+from uagents import Agent, Bureau, Context, Model
+from datetime import datetime
+
+class Message(Model):
+    message: str
+
+agent_2 = Agent(name="agent_2", seed="agent_2 recovery phrase")
+
+@agent_2.on_interval(period=3.0)
+async def send_message(ctx: Context):
+   await ctx.send([ALICE ADDRESS], Message(message=f"hello {datetime.datetime.now()}"))
+
+```
+
+## testing
+
+With both `alice` and `agent_2` running, stop `alice` and let `agent_2` run for a further 20 seconds, or so. After
+that period of time, restart `alice` and she should print out a bunch of messages from the mailbox, like so:
+
+```
+    INFO:     [alice]: Registering on almanac contract...complete
+    INFO:     [alice]: Connecting to mailbox server at agentverse.ai
+    INFO:     [alice]: Mailbox access token acquired
+```
+
 
  **You can now restart your agent!**
 
