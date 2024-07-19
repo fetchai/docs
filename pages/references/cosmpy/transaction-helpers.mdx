@@ -1,0 +1,134 @@
+# cosmpy.aerial.tx_helpers
+
+Transaction helpers.
+
+## MessageLog Objects
+
+    ```py
+    @dataclass
+    class MessageLog()
+    ```
+
+    Message MessageLog.
+
+
+## TxResponse Objects
+
+    ```py
+    @dataclass
+    class TxResponse()
+    ```
+
+    Transaction response.
+
+    **Raises**:
+
+        - `OutOfGasError`: out of gas error.
+        - `InsufficientFeesError`: insufficient fees.
+        - `BroadcastError`: broadcast exception.
+
+### is_successful
+
+    ```py
+    def is_successful() -> bool
+    ```
+
+    Checks if transaction is `is_successful`.
+
+    **Raises**:
+
+        - `OutOfGasError`: out of gas error.
+        - `InsufficientFeesError`: insufficient fees.
+        - `BroadcastError`: broadcast exception.
+
+## SubmittedTx Objects
+
+    ```py
+    class SubmittedTx()
+    ```
+
+    Submitted transaction.
+
+### __init__
+
+    ```py
+    def __init__(client: "LedgerClient", tx_hash: str)
+    ```
+
+    Init the submitted transaction.
+
+    **Arguments**:
+
+        - `client`: ledger Client.
+        - `tx_hash`: transaction hash.
+
+### tx_hash
+
+        ```py
+        @property
+        def tx_hash() -> str
+        ```
+
+    **Returns**:
+
+        Transaction hash.
+
+### response
+
+    ```py
+    @property
+    def response() -> Optional[TxResponse]
+    ```
+
+    Get the transaction response.
+
+    **Returns:**
+
+        Response.
+
+### contract_code_id
+
+    ```py
+    @property
+    def contract_code_id() -> Optional[int]
+    ```
+
+    Get the contract code id.
+
+    **Returns**:
+
+        Return contract code id if exists, else None.
+
+### contract_address
+
+    ```py
+    @property
+    def contract_address() -> Optional[Address]
+    ```
+
+    Get the contract address.
+
+    **Returns**:
+
+        Return contract address if it exists, else return None.
+
+
+### wait_to_complete
+
+    ```py
+    def wait_to_complete(
+        timeot: Optional[Union[int, float, timedelta]] = None,
+        poll_period: Optional[Union[int, float, timedelta]] = None
+    ) -> "SubmittedTx"
+    ```
+
+    Wait to complete the transaction.
+
+    **Arguments**:
+
+        - `timeout`: timeout, defaults to None.
+        - `poll_period`: poll period, defaults to None.
+
+    **Returns**:
+
+        Submitted transaction.

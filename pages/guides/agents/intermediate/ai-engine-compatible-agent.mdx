@@ -1,0 +1,96 @@
+import { Callout } from 'nextra/components'
+
+<Callout type="info" emoji="ℹ️">
+This article is a work-in-progress. It will be expanded rapidly.
+</Callout>
+
+# Make your agents AI Engine compatible
+
+ In the previous resource, ([Agent functions ↗️](/guides/agents/intermediate/agent-functions)) we created a simple agent that
+ returned a dice roll, however this agent was already ready to be callable by [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro). Let's get into how.
+
+## from ai_engine
+
+To enable communication from agents to the AI Engine, we import **3 objects** that define the allowed responses:
+
+1. `UAgentResponseType()`:
+
+    ```python
+    class UAgentResponseType(Enum):
+        FINAL = "final"
+        ERROR = "error"
+        VALIDATION_ERROR = "validation_error"
+        SELECT_FROM_OPTIONS = "select_from_options"
+        FINAL_OPTIONS = "final_options"
+    ```
+
+    - We used `FINAL` in our [dice roll ↗️](/examples/intermediate/dice-roll) example:
+
+        ```python
+            await ctx.send(
+                sender, UAgentResponse(message=str(result), type=UAgentResponseType.FINAL)
+            )
+        ```
+
+        `UAgentResponseType.FINAL` tells us that the message has no other responses.
+
+
+    - We can use `ERROR` to signify the agent has encountered an error:
+
+        ```python
+            await ctx.send(sender, UAgentResponse(message="Unexpected Error", type=UAgentResponseType.ERROR))
+
+        ```
+
+    - `UAgentResponseType.SELECT_FROM_OPTIONS` gives the user who is interacting with AI Engine options to select from, you could build this like so:
+
+        ```python
+                options = []
+                ctx_storage = {}
+                for idx, value in enumerate(response):
+                    options.append(KeyValue(key=idx, value=value))
+                if options:
+                    await ctx.send(
+                        sender,
+                        UAgentResponse(
+                            options=options,
+                            type=UAgentResponseType.SELECT_FROM_OPTIONS,
+                            request_id=request_id
+                        )
+                    )
+        ```
+
+    - `UAgentResponseType.FINAL_OPTIONS` signals the end of the options to AI Engine:
+
+        ```python
+                options = [KeyValue(key=x, value=x) for x in result if len(x) > 1]
+                await ctx.send(
+                    sender,
+                    UAgentResponse(options=options, type=UAgentResponseType.FINAL_OPTIONS),
+                )
+        ```
+
+2. The AI Engine also enforces `key` and `value` to be strings:
+
+    ```python
+    class KeyValue(Model):
+        key: str
+        value: str
+    ```
+
+3. `UAgentResponse` it an extension of the UAgents response type:
+
+    ```python
+    class UAgentResponse(Model):
+        version: Literal["v1"] = "v1"
+        type: UAgentResponseType
+        request_id: Optional[str]
+        agent_address: Optional[str]
+        message: Optional[str]
+        options: Optional[List[KeyValue]]
+        verbose_message: Optional[str]
+        verbose_options: Optional[List[KeyValue]]
+    ```
+
+    We don't need to alter `UAgentResponse`, using as `UAgentResponse(message=message, type=UAgentResponseType.*)` will
+    satisfy current requirements.
