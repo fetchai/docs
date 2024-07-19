@@ -1,0 +1,37 @@
+import { Callout } from 'nextra/components'
+
+# Public and private agents
+
+## Introduction
+
+Transparency is a fundamental principle in decentralized finance (DeFi) and blockchain systems. Within the Fetch.ai network, **users have the ability to determine the amount of information they wish to publish**. This is thanks to the ability for users to create Agents as either **public** or **private**, based on their **introspectivity** and **protocol exposure** through the [Agentverse ↗️](/concepts/agent-services/agentverse-intro) platform.
+
+![](src/images/concepts/ai-agents/public_and_private_agents.svg)
+
+This allows users to provide greater flexibility to Agents, creating a balance between transparency and privacy for every operation they perform on the network.
+
+For example, let's say a logistics company develops a public AI agent specialized in freight transport. By registering this agent as public, the manifest and associated logs become available on the Agentverse platform. Consequently, other users and companies can access its endpoint and understand its communication methods, enabling direct interaction. This visibility can be beneficial for collaboration, as it allows external agents to initiate communication and collaborate on logistical tasks.
+
+In contrast, a financial institution developing an AI agent for secure transactions might choose to keep it private. By classifying the agent as private during development, the details of the protocol are not exposed to the outside world, ensuring a higher level of confidentiality. This private agent can still be found via the almanac, but the details of the protocol remain hidden. Only agents who are explicitly aware of the protocol can communicate with it, ensuring a more controlled and secure communication environment.
+
+## Defining public and private agents
+
+![](src/images/concepts/ai-agents/privacy_spectrum.svg)
+
+In this context, users may not be willing to share information but want to keep it private for some reason. This is possible thanks to the ability to distinguish between **public** and **private** actors.
+
+There are two ways in which an agent can be classified as **public**:
+
+     1. By default, _at registration_ in the agentverse, when the protocol's manifest and associated digests are published, making the agent's [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) available to any other user for communication. This provides users with a way to access our registered agent's information and understand how to communicate with it.
+
+     2. By default, _during agent development_, the agent's specific protocol is set to accept introspection requests from any other external agent. This feature of the agent protocol can be turned on and off, but is _on_ by default so that introspection requests can be answered by it.
+
+In particular, public and private agents are demarcated by whether the specification of an agent protocol is made private or public. Indeed, **private** agents maintain a degree of privacy by not disclosing their protocol manifest to the outside world. Although they are private, these agents can still be found via the almanac. However, the details of the actual protocol remain hidden, even though the digests of the associated protocols are still visible, ensuring that only agents who know the protocol itself can communicate with it.
+
+    <Callout type="warning" emoji="⚠️">
+      By default, all agents are public and contactable by everyone but you need to know how to talk to them otherwise they will not answer back to you!
+
+      Checkout [The Almanac ↗️](/concepts/fetch-network/almanac) resource to understand the role of protocols and the Almanac contract in creating private and public agents.
+    </Callout>
+
+The distinction between public and private agents is valuable for users, developers and companies within the Fetch.ai ecosystem, as it allows for a flexible approach to data protection while enabling agents to interact efficiently. It is also consistent with the general principles of decentralization and trustless interactions that underpin blockchain and decentralized system technologies.

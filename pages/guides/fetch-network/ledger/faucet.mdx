@@ -1,0 +1,87 @@
+import { Callout } from 'nextra/components'
+
+# How to get testnet tokens via the token faucet 💰
+
+A **token faucet** is a service that provides free tokens to users for testing or development purposes on a blockchain network. It helps developers and users access a blockchain's test network with a small amount of cryptocurrency without having to purchase it. This allows them to interact with the blockchain, test applications, and simulate real-world scenarios without using actual funds. It is a valuable resource for developers who want to experiment with blockchain applications in a risk-free environment.
+
+For our [test networks ↗️](/references/ledger/active-networks#test-nets), we have a simple token faucet implemented to allow users to get started quickly. You can send the faucet an account address, and it will transfer some test tokens back to such address. Token faucets are network specific, depending on the network type they may or may not be deployed. Please check the [networks ↗️](/references/ledger/active-networks) page for specific details.
+
+The testnet token faucet itself is available from the network block explorer available within the [active networks ↗️](/references/ledger/active-networks) page. You will be asked to enter your **Fetch Account address** (`fetch...`) and you will have to wait a few blocks for the transaction to be processed, and you should see it appearing alongside with some funds on your account.
+
+Overall, you can obtain test tokens for your account in the following way:
+
+     1. Copy your account's address and paste it into the **token faucet** available within each [network ↗️](/references/ledger/active-networks) configuration. For the **Dorado testnet**, the faucet is available within the [block explorer ↗️](https://explore-dorado.fetch.ai/) homepage.
+     2. Within the block explorer homepage, press the **Get Funds** button.
+     3. Paste the address you wish to top-up in the pop-up window and then press **Add Funds**.
+     4. Then, you can return to your address page, via the person icon, and should be able to see that you have been allocated **1 TESTFET** token.
+
+    <Callout type="info" emoji="ℹ️">
+      The tokens provided by a faucet do not have any real-world market value. These tokens are specifically created for testing and development purposes within the blockchain's ecosystem. They are not intended for trading on cryptocurrency exchanges or for any commercial transactions. Therefore, while they have utility within the test network, they do not hold any value on the broader cryptocurrency market.
+    </Callout>
+
+# How to add funds to your wallet using faucet APIs
+
+You can also request and get testnet tokens in your wallet using the APIs, by running the following commands:
+
+## For **Eridanus** testnet:
+### Get `atestasi` tokens
+
+    ```bash
+    curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-eridanus-1.fetch.ai/api/v3/claims
+    ```
+
+### Get nanomobx tokens
+
+    ```bash
+    curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-mobx-eridanus-1.fetch.ai/api/v3/claims
+    ```
+
+### Get ulrn tokens
+
+    ```bash
+    curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-lrn-eridanus-1.fetch.ai/api/v3/claims
+    ```
+
+## For **Dorado** testnet:
+### Get atestfet tokens
+
+    ```bash
+    curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-dorado.fetch.ai/api/v3/claims
+    ```
+
+### Get nanomobx tokens
+
+    ```bash
+    curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-mobx-dorado.fetch.ai/api/v3/claims
+    ```
+
+### Get ulrn tokens
+
+    ```bash
+    curl -X POST -H 'Content-Type: application/json' -d '{"address":"<address>"}' https://faucet-lrn-dorado.fetch.ai/api/v3/claims
+    ```
+
+## Sample response for fund request to faucet API
+
+    ```text
+    {"status":"ok","uuid":"<uuid>","target":"<address>"}
+    ```
+
+## Check the wallet balance
+
+If you want to check your wallet balance, you need to run the following command:
+
+    ```bash
+    fetchd query bank balances <address>
+    ```
+
+The output would be:
+
+    ```text
+    balances:
+    - amount: "<balance>"
+      denom: atestfet
+    pagination:
+      next_key: null
+      total: "0"
+    ```

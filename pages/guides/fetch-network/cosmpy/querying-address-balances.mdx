@@ -1,0 +1,45 @@
+import { Callout } from 'nextra/components'
+
+# Querying balances
+
+Once you have established a [connection to a network node ↗️](/guides/fetch-network/cosmpy/establishing-node-connection), you can use the `LegderClient` object to perform many useful operations, such as **querying balances**. In particular the `LedgerClient` object allows you to:
+
+    1. Query all balances associated with a **particular address**.
+    2. Query all balances associated with a **particular denomination**.
+
+Let's explore how to achieve both.
+
+    1. We start by importing CosmPy as well as the relevant modules.
+    2. Then, we connect to the chain we want to perform the query on.
+    3. Once connected, we specify the address we want to query. In our example we will connect to the Fetch.ai mainnet and we query all balances associated with a particular address:
+
+        ```py copy
+        import cosmpy
+        from cosmpy.aerial.client import LedgerClient, NetworkConfig
+
+        ledger_client = LedgerClient(NetworkConfig.fetch_mainnet())
+
+        address: str = 'fetch12q5gw9l9d0yyq2th77x6pjsesczpsly8h5089x'
+        balances = ledger_client.query_bank_all_balances(address)
+        print(balances)
+        ```
+
+Whenever **querying all balances associated with a _particular address_** returns a `List` of `Coin` objects that contain `amount` and `denom` variables that correspond to all the funds held at the address and their denominations.
+
+    <Callout type="info" emoji="ℹ️">
+      This list includes all natively defined coins along with any tokens transferred using the inter-blockchain communication [IBC ↗️](https://ibcprotocol.org/) protocol.
+    </Callout>
+
+Once completed, you will see the following output in your terminal:
+
+    ```py copy
+    [Coin(amount='1616060698998992698400', denom='afet'), Coin(amount='10', denom='ibc/605C5B80A8253543F8038F96F56BA13BDD8D300E12F1B32A3FA2E1EB2A933FA1'), Coin(amount='5000000', denom='ibc/B58E6786772640EC4B538AFC4393F742C326734B74CCAFAFBF7EFDC7D435B428')]
+    ```
+
+In order to **query all balances associated with a _particular denomination_*+, we can run the same script but substitute the final balance command we used in the snippet above, with:
+
+    ```py
+    balance = ledger_client.query_bank_balance(address, denom='afet')
+    ```
+
+This will return the value of the (integer) funds held by the address with the specified denomination. If the `denom` argument is omitted the function will return the fee denomination specified in the `NetworkConfig` object used to initialize the `LedgerClient`.
