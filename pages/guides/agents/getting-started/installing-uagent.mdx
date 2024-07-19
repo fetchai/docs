@@ -1,0 +1,218 @@
+import { Callout } from 'nextra/components'
+
+# Installing the uAgents Framework
+
+## System Requirements
+
+Fetch.ai's [uagents ↗️](https://pypi.org/project/uagents/) Frameworks package is a Python library running on Ubuntu/Debian, MacOS, and Windows systems.
+
+On your computer, you may need to install:
+
+    - [Python ↗️](https://www.python.org/downloads/) 3.8+.
+    - [PIP ↗️](https://pypi.org/project/pip/) - the Python package manager.
+    - [Poetry ↗️](https://python-poetry.org/) for virtual environments (optional).
+    - [uagents library ↗️](https://pypi.org/project/uagents/)
+
+## Install with Pip
+
+    1. Create a directory for your agents project: `mkdir directory_name`
+
+    2. Within the directory, create and open a virtual environment using Poetry: `poetry init -n && poetry shell`
+
+    3. Install Fetch.ai `uagents` library: `pip install uagents`
+
+    4. Check if installation was successful: `pip show uagents`
+
+    <Callout type="info" emoji="ℹ️">
+      If you want to install a specific version of the `uagents` library (e.g., 0.12.0), you can do so by running the following:
+
+        `pip install uagents==0.12.0`
+
+    </Callout>
+
+
+## Install from source code
+
+    1. Download the latest released version from Github and navigate to the agents directory:
+
+           ```py
+           git clone https://github.com/fetchai/uAgents.git
+           cd uAgents
+           ```
+
+    2. Install the required dependencies:
+
+           ```py
+           poetry install
+           ```
+
+    3. Open the virtual environment:
+
+           ```py
+           poetry shell
+           ```
+
+## Troubleshooting
+
+It is possible that you may face issues during the installation process. Here, you can find common problems and their solutions.
+
+    <Callout type="error" emoji="🚫">
+      **Problem (MacOS/Python 3.11)**: `Installing coincurve (17.0.0): Failed`
+
+      **Solution**: install the latest versions of `automake`, `autoconf`, and `libtool`: `brew install automake autoconf libtool`
+    </Callout>
+
+For any other problems, please let us know by creating an [issue ↗️](https://github.com/fetchai/uAgents/issues).
+
+## Simplified Installation for Windows users 
+
+Installing the uagents framework on a Windows machine is a straightforward process. The `uagents` library is a Python package, so you'll need to have Python installed on your system before you can use it.
+
+If you don't already have Python installed on your Windows machine, visit the official Python website at [Python ↗️](https://www.python.org/downloads/windows/) and download the latest stable version of Python for Windows.
+
+Run the downloaded installer executable file (e.g., python-3.x.x.exe).
+
+During installation, make sure to check the box that says "Add Python X.X to PATH." This will automatically add Python to your system's PATH variable, making it easier to use from the command line.
+
+### Install uagents library using pip
+
+Once you have Python installed and added to your PATH, follow these steps to install the uagents framework using pip:
+
+    1. To install using PIP open your terminal. To ensure that PIP (Python's package manager) is up-to-date, run the following command:
+
+        ```
+        python -m pip install --upgrade pip
+        ```
+
+    2. Now, you can install the `uagents` framework by running the following command:
+
+        ```
+        pip install uagents
+        ```
+
+PIP will download and install the `uagents` package and its dependencies. Wait for the process to complete. To verify the complete installation explore your terminal. As part of the installation you will see a message showcasing the completion of the installation as well as the exact version.
+
+## Installing other essential python libraries
+
+### Installing AI Engine library
+
+If you wish to create [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) compatible Agents, you will need to get the `uagents-ai-engine` package installed. Checkout the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) to download it and start developing your AI Engine compatible Agents.
+
+You can install AI Engine with pip: `pip install uagents-ai-engine`
+
+    <Callout type="info" emoji="ℹ️">
+      Explore the additional resources we have on AI Engine compatible Agents:
+        - [DeltaV ↗️](/concepts/ai-engine/deltav)
+        - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
+        - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+        - [Register Agent Functions ↗️](/guides/agentverse/agentverse-functions/registering-agent-services)
+    </Callout>
+
+## Development tools
+
+#### Installing Homebrew
+
+**Homebrew** streamlines software installations on MacOS via the command line. To install and update Homebrew, execute the following commands:
+
+    ```
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+
+You can verify it [here ↗️](https://brew.sh/). Let's then ensure Homebrew is updated:
+
+    ```
+    brew update
+    ```
+
+    <Callout type="info" emoji="ℹ️">
+      For more information on Homebrew explore their [website ↗️](https://brew.sh/).
+    </Callout>
+
+#### Installing PyEnv
+
+Now, you need to install **PyEnv**. It is a simple tool to manage multiple versions of Python. Run:
+
+    ```
+    brew install pyenv
+    ```
+
+Once you have installed PyEnv you can configure the shell environment:
+
+    ```
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+    echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+    echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+    ```
+
+    <Callout type="info" emoji="ℹ️">
+      These commands configure your shell environment (specifically the **Zsh shell**) to work with PyEnv. These commands set up environment variables, modify the PATH, and initialize PyEnv so that you can easily manage and switch between different Python versions. You can verify all steps [here ↗️](https://github.com/pyenv/pyenv#installation).
+    </Callout>
+
+You are now ready to **install Python** if you haven't done it yet. You need to install a version of Python 3.8 or above (for this example, we use version 3.10):
+
+    ```
+    pyenv install 3.10
+    ```
+
+You can get help or check a command insights by running:
+
+    ```
+    pyenv help
+    ```
+
+Let's now ensure the **global version of Python** you are working with is not the default one in the system. Run:
+
+    ```
+    pyenv global 3.10 # this sets the global interpreter
+    pyenv versions # this verifies if it is set up correctly
+    ```
+
+#### Installing Poetry
+
+You now need to install **Poetry**. Poetry is used for managing Python project dependencies, handling virtual environments, packaging, and publishing Python libraries or applications.
+
+You can install Poetry by running the following command:
+
+    ```
+    curl -sSL https://install.python-poetry.org | python3 -
+    ```
+
+    <Callout type="info" emoji="ℹ️">
+      If you would like to learn more about Poetry, visit the [website ↗️](https://python-poetry.org/docs/#installation) for further information.
+    </Callout>
+
+#### Initialize your project with Poetry
+
+You now have all necessary tools installed. You are ready to initialize your project! Let's create a working directory and initialize Poetry 🎉.
+
+First, you need to create a working directory for your project using `mkdir` command. Then, you will need to change directory to this one, using `cd` command:
+
+    ```
+    mkdir development/agent-demo
+    cd development/agent-demo
+    ```
+
+You can ensure you are in the correct directory by checking your current path:
+
+    ```
+    pwd
+    # Example output: /Users/Jessica/Documents
+    ```
+
+If you are happy with the install location for the project, go ahead and **initialize Poetry**:
+
+    ```
+    poetry init
+    ```
+
+    <Callout type="info" emoji="ℹ️">
+      Follow the setup wizard to provide details including project name, version, author, license, and select dependencies (e.g., `uagents`).
+    </Callout>
+
+Once you complete the initialization, run:
+
+    ```
+    poetry install
+    ```
+
+This command will install the dependencies specified in the **pyproject.toml** file.

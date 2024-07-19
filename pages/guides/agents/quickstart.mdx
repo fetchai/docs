@@ -1,0 +1,162 @@
+# Quick Start Guide for uAgents Framework
+
+This **quickstart guide** quickly let you install the uAgents Framework and get started in few steps!
+
+## Installation
+
+### System requirements
+
+    - **Python 3.8+**: A popular programming language.
+    - **PIP**: Python package manager for installing libraries.
+    - **Poetry (optional)**: For managing virtual environments and dependencies.
+
+### Installation steps
+
+1. Create a **Project Directory**. Open your terminal and create a new directory for your project:
+
+    ```py
+    mkdir directory_name
+    cd directory_name
+    ```
+
+2. Initialize and activate virtual environment. Use **Poetry** to initialize and activate a virtual environment (optional but recommended):
+
+    ```py
+    poetry init -n && poetry shell
+    ```
+
+3. Install **uAgents Framework**. Use **PIP** to install the uAgents Framework package.
+
+    ```py
+    pip install uagents
+    ```
+
+4. Verify installation. Check if the installation was successful.
+
+    ```py
+    pip show uagents
+    ```
+
+### Troubleshooting
+
+**Problem on MacOS/Python 3.11**: Installing coincurve (17.0.0) fails.
+
+#### Solution
+
+Install the necessary tools.
+
+    ```py
+    brew install automake autoconf libtool
+    ```
+
+## Creating a simple agent
+
+This example shows how to make an agent perform a task periodically.
+
+Create a new Python script:
+
+    ```py
+    touch interval_task.py
+    ```
+
+Open `interval_task.py` in your text editor and add the following code:
+
+    ```py copy filename="interval_task.py"
+    from uagents import Agent, Context
+
+    # Create an agent named Alice
+    alice = Agent(name="alice", seed="YOUR NEW PHRASE")
+
+    # Define a periodic task for Alice
+    @alice.on_interval(period=2.0)
+    async def say_hello(ctx: Context):
+        ctx.logger.info(f'hello, my name is {alice.name}')
+
+    # Run the agent
+    if __name__ == "__main__":
+        alice.run()
+    ```
+
+Be sure to update `seed` with a unique phrase.
+
+#### Run Script
+
+Run the script to see the output:
+
+    ```py
+    python interval-task.py
+    ```
+
+**Expected Output**:
+
+    `hello, my name is alice`
+    `hello, my name is alice`
+    `hello, my name is alice`
+
+
+## Message Handling Example
+
+This guide will walk you through creating a simple interaction between two agents, Emma and Liam. Emma will send a message to Liam at regular intervals, and Liam will handle and log the received messages.
+
+Create a new Python script:
+
+    ```py
+    touch simple_example.py
+    ```
+
+Open `simple_example.py` in your text editor and add the following code:
+
+    ```py copy filename="simple_example.py"
+    from uagents import Agent, Bureau, Context, Model
+
+    # Define the message structure
+    class Message(Model):
+        message: str
+
+    # Create agents
+    emma = Agent(name="Emma", seed="emma_seed")
+    liam = Agent(name="Liam", seed="liam_seed")
+
+    # Define behavior for Emma
+    @emma.on_interval(period=3.0)
+    async def send_message(ctx: Context):
+        # Create an instance of the Message class with the desired content
+        message_to_liam = Message(message="Hey Liam, how's it going?")
+        # Send the message to Liam
+        await ctx.send(liam.address, message_to_liam)
+
+    # Define behavior for handling messages received by Liam
+    @liam.on_message(model=Message)
+    async def liam_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+    # Create a bureau and add agents
+    bureau = Bureau()
+    bureau.add(emma)
+    bureau.add(liam)
+
+    # Run the bureau
+    if __name__ == "__main__":
+        bureau.run()
+    ```
+
+Again, be sure to update `seed` with a unique phrase.
+
+#### Run Script
+
+Run the script to see the agents communicate:
+
+    ```py
+    python simple_example.py
+    ```
+
+**Expected Output**:
+
+    ```
+    [ Liam]: Received message from agent1q2aexr7d0e0x6z5r8zs972jyd8uq9429tc2qfgpax96x6ppyjs25keexnuk: Hey Liam, how's it going?
+    ```
+
+## Reach out to the Team!
+
+Cool! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network!
+Remember that our Team is available on [Telegram ↗️](https://t.me/fetch_ai) and [Discord ↗️](https://discord.gg/fetchai) channels for any additional inquiry.

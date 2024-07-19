@@ -1,0 +1,45 @@
+import { Callout } from 'nextra/components'
+
+# Validator security
+
+To bolster network resilience, each [validator ↗️](/concepts/fetch-network/ledger/validators) candidate is strongly encouraged to maintain independent operations. This diversity in setups serves as a robust defense for the network.
+
+## Key management with HSM
+
+Preserving the integrity of a validator's key is of paramount importance. Any vulnerability in this regard jeopardizes the entire delegated stake placed with the compromised validator. Employing **Hardware Security Modules (HSM)** constitutes a vital strategy in mitigating this risk. It is imperative that HSM modules support `ed25519` signatures.
+
+## Sentry nodes (DDOS protection)
+
+Validators bear the responsibility of ensuring the network's ability to withstand Denial of Service (DDoS) attacks.
+
+One highly recommended approach to mitigate these risks is for validators to meticulously structure their network topology using a **sentry node architecture**.
+
+    <Callout type="info" emoji="ℹ️">
+      Sentry nodes act as intermediaries between the validator node and the rest of the network. They are strategically placed to handle external connections and absorb potential DDoS attacks. Sentry nodes are usually exposed to the internet, allowing them to handle incoming traffic.
+    </Callout>
+
+Validator nodes should exclusively connect to full-nodes they have confidence in, either because they operate them themselves or because they are managed by other validators with whom they have established a social connection. This architecture shifts the burden of withstanding a denial-of-service attack from the validator's node directly to its sentry nodes. It may necessitate the deployment or activation of new sentry nodes to counteract attacks on existing ones.
+
+Sentry nodes can be rapidly deployed or have their IP addresses changed. Since the links to the sentry nodes exist in a private IP space, they are shielded from direct disruption by internet-based attacks. This ensures that validator block proposals and votes consistently reach the rest of the network.
+
+If you wish to set up your sentry node architecture, please follow the instructions provided below:
+
+    - Validators nodes should edit their `config.toml` file:
+
+        ```bash
+        # Comma separated list of nodes to keep persistent connections to
+        # Do not add private peers to this list if you don't want them advertised
+        persistent_peers =[list of sentry nodes]
+
+        # Set true to enable the peer-exchange reactor
+        pex = false
+        ```
+
+    - Sentry nodes should edit their `config.toml` file:
+
+        ```bash
+        # Comma separated list of peer IDs to keep private (will not be gossiped to other peers)
+        # Example ID: 3e16af0cead27979e1fc3dac57d03df3c7a77acc@3.87.179.235:26656
+
+        private_peer_ids = "node_ids_of_private_peers"
+        ```

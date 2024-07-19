@@ -1,0 +1,132 @@
+import { Callout } from 'nextra/components'
+
+# CLI - Managing keys 🔑
+
+Managing keys is an essential part of working with the Ledger, since all interactions are authenticated with these keys.
+
+## How to add keys
+
+If you want to **create a new local key**, you would need to run the following command:
+
+    ```bash
+    fetchd keys add <your_key_name>
+    ```
+
+<Callout type="info" emoji="ℹ️">
+  These keys are stored locally on your system. By default, these keys will be stored in the OS level keychain, however, in general these keys are considered less secure than using a hardware device
+</Callout>
+
+After running the above command, `fetchd` will print out a summary of the new key being produced. An output example is shown below:
+
+    ```text
+    - name: test
+      type: local
+      address: fetch142tawq2rj397mctc3jtw9dfzf03ns0ze4swat0
+      pubkey: fetchpub1addwnpepqvtmze0ekffynnjx9n85g6sexzl49ze2vpgc2f52fteyyghjtvvqw682nkx
+      mnemonic: ""
+      threshold: 0
+      pubkeys: []
+    ```
+
+This will be followed by a 24-word mnemonic that can be used to re-generate the private key and address for the account.want
+
+    <Callout type="warning" emoji="⚠️">
+      Keep this safe if ever use it to control Mainnet tokens!
+    </Callout>
+
+## How to look up for an address
+
+A common operation that you may want to carry out is to research the address related to specified key. This can be performed quickly, by running following command:
+
+    ```bash
+    fetchd keys show -a <name of key>
+    ```
+
+The expected output should be as shown below:
+
+    ```bash
+    fetch142tawq2rj397mctc3jtw9dfzf03ns0ze4swat0
+    ```
+
+A less common operation, but still useful, would be to look for the public key related to a specified key.
+This can be achieved with the following command:
+
+    ```bash
+    fetchd keys show -p <name of the key>
+    ```
+
+The expected output should be similar to what shown below:
+
+    ```bash
+    fetchpub1addwnpepqvtmze0ekffynnjx9n85g6sexzl49ze2vpgc2f52fteyyghjtvvqw682nkx
+    ```
+
+## How to list keys
+
+If you wish to research for more detailed information for all keys within your system, simply use the following command:
+
+    ```bash
+    fetchd keys list
+    ```
+
+This will show all your keys information in a `yaml` format similar to the one generated when you first created the key:
+
+    ```bash
+    - name: test
+      type: local
+      address: fetch142tawq2rj397mctc3jtw9dfzf03ns0ze4swat0
+      pubkey: fetchpub1addwnpepqvtmze0ekffynnjx9n85g6sexzl49ze2vpgc2f52fteyyghjtvvqw682nkx
+      mnemonic: ""
+      threshold: 0
+      pubkeys: []
+    ```
+
+## How to recover a key
+
+You can import a key from a 24-word mnemonic by running the following:
+
+    ```bash
+    fetchd keys add <name> --recover
+    > Enter your bip39 mnemonic
+    <type or paste your mnemonic>
+    ```
+
+You will be prompted to enter the **mnemonic phrase**, and it will then print the matching address and key details as when creating a new key.
+
+## Hardware wallets
+
+### Set up your hardware wallet
+
+**We recommend hardware wallets as a solution for managing private keys!**
+
+The Fetch ledger is compatible with **Ledger Nano hardware wallets**. To use your Ledger Nano, you will need to go through the following steps:
+
+    1. Set-up your wallet by creating a PIN and passphrase, which must be stored securely to enable recovery if the device is lost or damaged.
+    2. Connect your device to your PC and update the firmware to the latest version using the Ledger Live application.
+    3. Install the Cosmos application using the software manager (Manager > Cosmos > Install).
+
+### How to add a new key
+
+To use the hardware wallet address with the CLI, the user must first add it via `fetchd`. This process only records the public information about the key. You can **import the key** by first plugging in the device and enter the device pin. Once you have unlocked the device, navigate to the Cosmos app on the device and open it.
+
+Then, you can **add the key using the following command:
+
+    ```bash
+    fetchd keys add <name for the key> --ledger --index 0
+    ```
+
+    <Callout type="info" emoji="ℹ️">
+      The `--ledger` flag tells the command line tool to talk to the ledger device and the `--index` flag selects which HD index should be used.
+    </Callout>
+
+When running this command, the Ledger device will prompt you to verify the generated address. Once you have done this. you will get an output in the following form:
+
+    ```bash
+    - name: hw1
+      type: ledger
+      address: fetch1xqqftqp8ranv2taxsx8h594xprfw3qxl7j3ra2
+      pubkey: fetchpub1addwnpepq2dulyd9mly3xqnvfgdsjkqlqzsxldpdhd6cnpm67sx90zhfw2ragk9my5h
+      mnemonic: ""
+      threshold: 0
+      pubkeys: []
+    ```
