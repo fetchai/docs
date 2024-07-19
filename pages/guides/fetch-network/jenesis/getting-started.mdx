@@ -1,0 +1,137 @@
+import { Callout } from 'nextra/components'
+
+# Getting started
+
+There are multiple commands integrated into jenesis that allow you to perform a variety of tasks.
+A full list of these commands is provided below:
+
+    - `new`
+    - `init`
+    - `add`
+    - `update`
+    - `attach`
+    - `compile`
+    - `keys`
+    - `deploy`
+    - `run`
+    - `shell`
+    - `network`
+
+In the following section of this page, we will cover the first commands so to show you **how to create a new project** and **how to configure a network**.
+
+For additional information, have a look at the [Keys ↗️](/guides/fetch-network/jenesis/keys) documentation for information about managing keys using Jenesis and the Working with contracts section, which illustrates different contract related executable operations using Jenesis tools and commands.
+
+**Let's get started!**
+
+## Create a new project
+
+You can create a new project using the `new` command as depicted below:
+
+    ```
+    jenesis new my_project [--profile my_profile] [--network network_name]
+    ```
+
+This will create a new directory called `my_project`. You can use `--profile` and `--network` optional arguments to provide additional arguments for profile and network desired for the project. Whenever these arguments are not used, these will be set to `testing` and `fetchai-testnet` respectively.
+
+Inside this directory for your project, a `jenesis.toml` file will be created containing the following information:
+
+    ```toml
+    [project]
+    name = "my_project"
+    authors = [ "Alice Tyler <alice@mail.com>"]
+    keyring_backend = "os"
+
+    [profile.my_profile]
+    default = true
+
+    [profile.my_profile.network]
+    name = "fetchai-testnet"
+    chain_id = "dorado-1"
+    fee_minimum_gas_price = 5000000000
+    fee_denomination = "atestfet"
+    staking_denomination = "atestfet"
+    url = "grpc+https://grpc-dorado.fetch.ai"
+    faucet_url = "https://faucet-dorado.fetch.ai"
+    is_local = false
+
+    [profile.my_profile.contracts]
+    ```
+
+    The project's `name` is the argument passed to the `new` command while the authors field is populated by querying the user's GitHub username and email address. The profile's network will be filled with the relevant configuration variables. The contracts field will remain empty until new contracts are added. This `my_profile` profile will be set as the default profile, this means that every time you use a jenesis command without specifying a profile, `my_profile` will be used.
+
+An empty `contracts` folder will also be created inside `my_project` directory that will eventually contain all the information needed to compile and deploy the desired contracts.
+
+The `init` command is similar to the `new`` command, but in this case, you will not need a project `name` argument since **this command is intended to run inside an existing project directory**:
+
+    ```
+    jenesis init [--profile my_profile] [--network network_name]
+    ```
+
+This command will create the same files and folders inside your project directory as the ones described for the `new` command above.
+
+If using a cargo workspace, you just need to navigate to the top level of your project and run the `init` command shown above. This will create the `jenesis.toml` configuration file inside your workspace including all the relevant information from existing contracts.
+
+## Configure a network
+
+**Jenesis will configure the project to run on the latest stable Fetch.ai testnet by default,**. Use `fetchai-mainnet` to configure for the Fetch.ai mainnet or directly edit the `jenesis.toml` file to configure for other networks.
+
+If you want to test on a local node, you will need to pass the argument `--network fetchai-localnode` when creating a project:
+
+    ```
+    jenesis new my_project --network fetchai-localnode
+    ```
+
+or:
+
+    ```
+    jenesis init --network fetchai-localnode
+    ```
+
+The configuration can be found under the `network` heading in the `jenesis.toml` file and can be changed as desired:
+
+    ```toml
+    [profile.testing.network]
+    name = "fetchai-localnode"
+    chain_id = "localnode"
+    fee_minimum_gas_price = 5000000000
+    fee_denomination = "atestfet"
+    staking_denomination = "atestfet"
+    url = "grpc+http://127.0.0.1:9090/"
+    is_local = true
+    keep_running = false
+    cli_binary = "fetchd"
+    validator_key_name = "validator"
+    mnemonic = "gap bomb bulk border original scare assault pelican resemble found laptop skin gesture height inflict clinic reject giggle hurdle bubble soldier hurt moon hint"
+    password = "12345678"
+    moniker = "test-node"
+    genesis_accounts = [ "fetch1vas6cc9650z0s08230ytqjphgzl5tcq9crqhhu",]
+    timeout_commit = "5s"
+    debug_trace = true
+    ```
+
+    In particular, **to fund some accounts for testing**, replace the `genesis_accounts` field with the addresses to be funded.
+
+When running any of the commands `deploy`, `run`, `shell`, and `attach`, Jenesis will check for a currently running local node. If there is not one provided, a new one will be created in a docker container.
+
+If you wish to **keep a local node running**, you need to set the `keep_running` parameter to `true`. Otherwise, nodes will be stopped after any of the command mentioned above finish running.
+
+At any time, **you can start or stop a local node from running**, using the following commands:
+
+    ```
+    jenesis network start [--profile my_profile]
+    ```
+or:
+
+    ```
+    jenesis network stop [--profile my_profile]
+    ```
+
+You can also **view the logs from the local node**, by simply running:
+
+    ```
+    jenesis network logs [--profile my_profile]
+    ```
+
+    <Callout type="info" emoji="ℹ️">
+      Checkout our [GitHub repository ↗️](https://github.com/fetchai/jenesis) for Jenesis.
+    </Callout>

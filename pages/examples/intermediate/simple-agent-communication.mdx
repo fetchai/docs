@@ -1,0 +1,43 @@
+# Agents communication
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions. This example shows two agents communicating with each other using the uAgents Python library.
+
+#### Supporting documentation
+
+- [Creating an agent↗️](/guides/agents/create-a-uagent)
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+
+#### The agent
+
+    ```py copy filename="agents_communication.py"
+    from uagents import Agent, Bureau, Context, Model
+
+    class Message(Model):
+        message: str
+
+    sigmar = Agent(name="sigmar", seed="sigmar recovery phrase")
+    slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase")
+
+    @sigmar.on_interval(period=3.0)
+    async def send_message(ctx: Context):
+       await ctx.send(slaanesh.address, Message(message="hello there slaanesh"))
+
+    @sigmar.on_message(model=Message)
+    async def sigmar_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+    @slaanesh.on_message(model=Message)
+    async def slaanesh_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        await ctx.send(sigmar.address, Message(message="hello there sigmar"))
+
+    bureau = Bureau()
+    bureau.add(sigmar)
+    bureau.add(slaanesh)
+    if __name__ == "__main__":
+        bureau.run()
+    ```

@@ -1,0 +1,69 @@
+# Smart contracts
+
+## Deploy a smart contract
+
+CosmPy offers the possibility to easily deploy **smart contracts** using the `LedgerContract` object. For this, you will need the **path** to where the contract is stored (in this case `simple.wasm`), a [`LedgerClient` ↗️](/guides/fetch-network/cosmpy/establishing-node-connection) and a [Wallet ↗️](/guides/fetch-network/cosmpy/creating-wallet).
+
+The example below shows how to achieve this:
+
+    ```py copy
+    from cosmpy.aerial.contract import LedgerContract
+
+    PATH = "contracts/simple/simple.wasm"
+
+    contract = LedgerContract(PATH, ledger_client)
+    contract.deploy({}, wallet)
+    ```
+
+## Interact with smart contracts
+
+We can now start interacting with any smart contract in different ways by executing one of the following operations.
+
+### Retrieve contract address
+
+After deployment, you can obtain the address of the deployed contract on the network using the `address` method in the following way:
+
+    ```py copy
+    print(f"Contract deployed at: {contract.address}")
+    ```
+
+### Query contract's state variables
+
+We can also query the values of the contract's state variables using the `query` method and provide a dictionary specifying the query information:
+
+    ```py copy
+    result = contract.query({"get": {"owner": wallet}})
+    print("Initial state:", result)
+    ```
+
+### Set contract's state variables
+
+We can update the contract's state variables by using the `execute` method and by providing a dictionary specifying the update wanted. Use the `wait_to_complete()` method to wait for the execution to finish.
+
+The following code sets the state variable `value` to `foobar`:
+
+    ```py copy
+    contract.execute({"set": {"value": "foobar"}}, wallet).wait_to_complete()
+    ```
+
+Once you set a state variable to its updated value, you can query it again to confirm such changes took place effectively. Considering the example above, we can check if changes were set correctly in the following way:
+
+    ```py copy
+    result = contract.query({"get": {"owner": wallet)}})
+    print("State after set:", result)
+    ```
+
+### Clear state variables
+
+We can clear the contract's state variables using the `execute` method in the following way:
+
+    ```py copy
+    contract.execute({"clear": {}}, wallet).wait_to_complete()
+    ```
+
+Then, we can check if the operation was correctly executed by running what follows:
+
+    ```py copy
+    result = contract.query({"get": {"owner": wallet}})
+    print("State after clear:", result)
+    ```
