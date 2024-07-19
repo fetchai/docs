@@ -1,0 +1,111 @@
+# Agents Name Service
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to set up Agents Name Services using the uAgents and CosmPy Python libraries.
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+- [Wallets and private keys ↗️](/guides/fetch-network/cosmpy/creating-wallet)
+
+## The Agents
+
+### Agent 1
+
+```py copy filename="agent_1.py"
+from cosmpy.aerial.wallet import LocalWallet
+
+from uagents.network import get_name_service_contract
+from uagents.setup import fund_agent_if_low
+from uagents import Agent, Context, Model
+
+class Message(Model):
+    message: str
+
+bob = Agent(
+    name="bob-0",
+    seed="agent bob-0 secret phrase",
+    port=8001,
+    endpoint=["http://localhost:8001/submit"],
+)
+
+my_wallet = LocalWallet.from_unsafe_seed("registration test wallet")
+name_service_contract = get_name_service_contract(test=True)
+DOMAIN = "agent"
+
+for wallet in [my_wallet, bob.wallet]:
+    fund_agent_if_low(wallet.address())
+
+@bob.on_event("startup")
+async def register_agent_name(ctx: Context):
+    await name_service_contract.register(
+        bob.ledger, my_wallet, bob.address, bob.name, DOMAIN
+    )
+
+@bob.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+if __name__ == "__main__":
+    bob.run()
+```
+
+### Agent 2
+
+```py copy filename="agent_2.py"
+from uagents.setup import fund_agent_if_low
+from uagents import Agent, Context, Model
+
+class Message(Model):
+    message: str
+
+alice = Agent(
+    name="alice-0",
+    seed="agent alice-0 secret phrase",
+    port=8000,
+    endpoint=["http://localhost:8000/submit"],
+)
+
+fund_agent_if_low(alice.wallet.address())
+
+@alice.on_interval(period=5)
+async def alice_interval_handler(ctx: Context):
+    bob_name = "bob-0.agent"
+    ctx.logger.info(f"Sending message to {bob_name}...")
+    await ctx.send(bob_name, Message(message="Hello there bob."))
+
+if __name__ == "__main__":
+    alice.run()
+```
+
+## Expected output
+
+- Bob:
+
+    ```
+    INFO:     [bob-0]: Registering on almanac contract...
+    INFO:     [bob-0]: Registering on almanac contract...complete
+    INFO:     [network]: Registering name...
+    INFO:     [network]: Registering name...complete
+    INFO:     [bob-0]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    ```
+- Alice:
+
+    ```
+    INFO:     [alice-0]: Registering on almanac contract...
+    INFO:     [alice-0]: Registering on almanac contract...complete
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    INFO:     [alice-0]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    ```
