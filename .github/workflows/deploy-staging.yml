@@ -35,8 +35,9 @@ jobs:
 
       - name: Build and Push Images
         run: |
-          ./k8s/build-img.py -p staging
+          ./scripts/build-img.py
         env:
+          IMAGE_REPOSITORY: ${{ secrets.STAGING_IMAGE_REPOSITORY }}
           BACKEND_URL: ${{ secrets.STAGING_NEXT_PUBLIC_BACKEND_URL }}
           NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
           NEXT_PUBLIC_ALGOLIA_APP_ID: ${{ secrets.NEXT_PUBLIC_ALGOLIA_APP_ID }}
@@ -45,51 +46,10 @@ jobs:
           NEWSLETTER_BASE_URL: ${{ secrets.NEWSLETTER_BASE_URL }}
           SENDER_TOKEN: ${{ secrets.SENDER_TOKEN }}
 
-  deploy:
-    name: Deployment
-    runs-on: ubuntu-latest
-
-    needs:
-      - build
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Gcloud Auth
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
-
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-
-      - name: Set Image Tag
-        id: lookup
-        run: echo "version=$(git describe --always --dirty=-wip)" >> $GITHUB_OUTPUT
-
-      - name: Turnstyle
-        uses: softprops/turnstyle@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Deploy to Staging
-        env:
-          IMAGE_TAG: ${{ steps.lookup.outputs.version }}
-          HELM_NAME: staging
-          NAMESPACE: docs-staging
-          GKE_PROJECT: fetch-ai-sandbox
-          GKE_CLUSTER: london-b
-          GKE_ZONE: europe-west2-b
-
+      - name: Repository Dispatch
         run: |
-          gcloud components install gke-gcloud-auth-plugin
-          gcloud container clusters get-credentials $GKE_CLUSTER \
-            --zone $GKE_ZONE \
-            --project $GKE_PROJECT
-          helm upgrade --install --wait --timeout 300s $HELM_NAME \
-            ./k8s/docs/ \
-            --set-string website.image.tag=$IMAGE_TAG \
-            -n $NAMESPACE
+          curl -f -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Authorization: token ${{ secrets.ORG_DISPATCH_RENDER_TOKEN }}" \
+          --request POST \
+          --data '{"event_type": "docs-staging-build", "client_payload": {"image": "'"${{ secrets.STAGING_IMAGE_REPOSITORY }}"'" , "image_path": "values", "key_path": ".website.image.tag", "commit_message_service": "Docs Staging", "tag": "'"${{ steps.lookup.outputs.version }}"'"}}' \
+          https://api.github.com/repos/fetchai/infra-sandbox-london-b-deployment/dispatches
