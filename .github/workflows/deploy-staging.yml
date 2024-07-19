@@ -53,4 +53,3 @@ jobs:
           --request POST \
           --data '{"event_type": "docs-staging-build", "client_payload": {"image": "'"${{ secrets.STAGING_IMAGE_REPOSITORY }}"'" , "image_path": "values", "key_path": ".website.image.tag", "commit_message_service": "Docs Staging", "tag": "'"${{ steps.lookup.outputs.version }}"'"}}' \
           https://api.github.com/repos/fetchai/infra-sandbox-london-b-deployment/dispatches
-
