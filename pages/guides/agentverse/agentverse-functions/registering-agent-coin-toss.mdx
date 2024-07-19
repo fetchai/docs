@@ -1,0 +1,111 @@
+import { Callout } from 'nextra/components'
+
+# Agentverse Functions: register a coin toss agent as a Function
+
+## Introduction
+
+In the [Agentverse Functions: register your Functions on the Agentverse! ↗️](/guides/agentverse/registering-agent-services) guide, you have gotten familiar with the creation of an agent that can be registered as a Function and then be used in [DeltaV ↗️](/concepts/ai-engine/deltav).
+
+    <Callout type="info" emoji="ℹ️">
+      Checkout the [Functions ↗️](/guides/agents/intermediate/agent-functions) guide for additional information needed for Agent Functions and their registration on the Agentverse and Fetch network.
+    </Callout>
+
+## Create your coin toss agent!
+
+For this navigate to the [Agentverse: My Agents ↗️](https://agentverse.ai/agents) tab and click on the **+ New Agent** button:
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/hosted-agent-use-case-button.png)
+
+When the dialog is open, select the **Toss a Coin** use case:
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/use-case-dialog.png)
+
+A new agent will be created for you:
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/hosted-agent-in-list.png)
+
+## Run your coin toss agent!
+
+After clicking on the row of your newly created agent, you should be able to see the source code of your coin toss agent in the editor view:
+
+    ```python copy filename="agent.py"
+    # Here we demonstrate how we can create a simple coin toss agent that is compatible with DeltaV.
+
+    # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
+
+    import random
+    # third party modules used in this example
+    from pydantic import Field
+    from ai_engine import UAgentResponse, UAgentResponseType
+
+
+    class CoinToss(Model):
+        choice: str = Field(description="The choice. Must be heads or tails.")
+
+    coin_toss_protocol = Protocol("CoinToss")
+
+
+    @coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
+    async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
+        random_number = random.randint(0, 1)
+        if random_number == 0:
+            coin_tossed = "heads"
+        else:
+            coin_tossed = "tails"
+        if coin_tossed == msg.choice:
+            message = "You won!"
+        else:
+            message = "You lost!"
+        await ctx.send(
+            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+    )
+
+    agent.include(coin_toss_protocol, publish_manifest=True)
+    ````
+
+Now click on the **Run** button in the upper right corner of the editor so that you have your coin toss agent up and running!
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/run-hosted-agent.png)
+
+## Register your coin toss agent function!
+
+Similar to the this [guide ↗️](/guides/agentverse/agentverse-functions/registering-agent-services#register-your-agents-and-services), let's navigate to the [Agentverse: My Agents ↗️](https://agentverse.ai/) tab. Here, click on your agent to show the Agent Editor and then click on the **Deploy** tab to start registering your agent function.
+
+After clicking the **+ New Function** button, you will need to provide all details required. Fill the form out as follows:
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/new-service-dialog.png)
+
+    - **Fucntion title**: just the name of your Agent Function. In this example let's call it **Coin toss function**
+    - **Description**: Super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your Function does. In this example we can specify something like this: _Coin toss Function. Takes the "heads" or "tails" input from the user and based on it decides if the user won or lost._
+    - **Application**, **Protocol**, **Model** and **Field descriptions** will be automatically populated based on the source code of [your coin toss agent ↗️](/guides/agentverse/agentverse-functions/registering-agent-coin-toss#run-your-coin-toss-agent)
+
+## Let's find our service on DeltaV
+
+Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
+
+First, in the **What function would you like to assemble?** bar you can provide a predefined objective; let's type `Toss a coin`.
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/select-service-group.png)
+
+After being redirected to the chat screen, you will be asked to select an option.
+As your objective task (`Toss a coin`) specified on the previous screen contained words related to the [description of your coin toss agent ↗️](/guides/agentverse/agentverse-functions/registering-agent-coin-toss#run-your-coin-toss-agent), your Coin Toss Function is listed as an option.
+
+Let's select it.
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/select-task.png)
+
+After selecting the task, you will be asked if you want to pick `heads` or `tails`. The [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) behind DeltaV asks this question based on the description. The choice must be heads or tails.
+
+Select whichever option you feel like. In this case let's pick `heads`.
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/select-option.png)
+
+Then, you can confirm or reject the context that the AI Engine is planning to execute. Let's confirm it!
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/confirm-context.png)
+
+After your function has been executed you can see the `You won!` or `You lost!` message.
+
+![](src/images/guides/agentverse/registering-agent-coin-toss/task-completed.png)
+
+With that, **you have gotten a Coin Toss Function which can be discovered and contacted with DeltaV. Awesome!**

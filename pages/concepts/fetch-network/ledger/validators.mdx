@@ -1,0 +1,81 @@
+import { Callout } from 'nextra/components'
+
+# Validators
+
+## Overview: blockchains, consensus and validators
+
+A **blockchain** is a series of data records that functions as a distributed, replicated digital ledger of transactions across a network of computer systems. On blockchains, the records of transactions are compiled into **blocks** which are linked together to form a chain. Thus, blockchains consists of a stable chain of blocks and each one of these blocks stores a list of previously confirmed transactions.
+
+These transactions take place inside a [peer-to-peer (P2P) ↗️](https://www.investopedia.com/terms/p/peertopeer-p2p-service.asp) global network, thus, blockchains are considered borderless and immune to censorship. A blockchain network serves as a decentralized ledger since it is maintained by several computers located all over the world. This implies that each participant, namely a **node**, keeps a copy of the blockchain data and interacts with other participants to make sure that everyone is aware of the same information stored in the block.
+
+A blockchain, including the **Fetch.ai Ledger**, provides a secure and transparent way to record transactions, enabling trustless interactions between parties and removing the need for a central authority to overlook transactions.
+
+    <Callout type="info" emoji="ℹ️">
+      This is especially crucial in decentralized systems in which multiple parties need to engage in secure and verifiable transactions. Despite the absence of a central authority to confirm and authenticate the transactions, every blockchain transaction is considered totally safe and validated.
+    </Callout>
+
+Only the presence of a **consensus protocol** makes this feasible. A consensus algorithm allows every node in the blockchain network to agree on the distributed ledger's current state. The consensus protocol ensures that all nodes in the network reach a common agreement on the order and validity of transactions.
+
+More specifically, a **node** is any device or computer that participates in the network by maintaining a copy of the blockchain ledger, validating transactions, and broadcasting them to other nodes. Nodes can be categorized into different types, including **full** and **validator nodes**. These latter ones are specific type of node responsible for participating in the consensus process. These validate transactions, create new blocks, and contribute to the security and operation of the blockchain network. Validator nodes typically require a significant amount of cryptocurrency to be staked and which serves as collateral and as an incentive for them to act honestly.
+
+**The most well-known consensus mechanisms** are:
+
+    - **Proof of Work (PoW)**: this is the original consensus protocol used by Bitcoin. It requires nodes (i.e. miners) to perform computationally intensive tasks to validate transactions and create new blocks. The first miner to solve the mathematical puzzle gets to add a block to the blockchain.
+
+    - **Proof of Stake (PoS)**: in this protocol, nodes (i.e. validators) are chosen based on the amount of cryptocurrency they hold and are willing to stake as collateral. Validators take turns proposing and validating blocks, and they earn rewards for their participation in the form of transaction fees and block.
+
+**Compensation and incentives for validators** can take the form of:
+
+    - **Block rewards**: in PoW and some PoS systems, validators are rewarded with newly created cryptocurrency tokens for successfully adding a new block to the blockchain.
+
+    - **Transaction fees**: validators may receive transaction fees paid by users for including their transactions in a block.
+
+    - **Delegation rewards**: in PoS networks, validators who receive delegated stakes from token holders may share a portion of the rewards with their delegators. This encourages token holders to delegate their stakes to reputable validators.
+
+    - **Slashing penalties**: while not a form of compensation, validators can be penalized (i.e. slashed) for malicious behavior or violations of network rules. The penalties are typically deducted from the validator's committed stake.
+
+In this context, the Fetch.ai Ledger relies on a set of validators that are responsible for committing new blocks in the blockchain. These validators participate in the consensus protocol by broadcasting votes which contain cryptographic signatures signed by each validator's private key. As previously highlighted, validator candidates can have FET delegated or staked to them by token holders. The validators are determined by who has the most stake delegated to them. The top validator candidates with the most stake become **active validators** within the network.
+
+    <Callout type="warning" emoji="⚠️">
+      If validators double sign, are frequently offline or do not participate in governance, their staked FET (including FET of users that delegated to them) can be slashed. The penalty depends on the severity of the violation.
+    </Callout>
+
+### Test network (Testnet) vs Main Network (Mainnet)
+
+We can distinguish between:
+
+    - **Testnet**: it is a separate blockchain environment that developers and users can use to test new features or applications without risking real tokens. It allows for experimentation in a controlled environment.
+
+    - **Mainnet**: it is the actual production blockchain where real transactions occur with real tokens. It is the live version of the blockchain.
+
+    <Callout type="info" emoji="ℹ️">
+      By setting up and experimenting on a testnet first, developers can ensure that everything works as intended before deploying it on the mainnet. This helps in avoiding potential issues or vulnerabilities in a live environment.
+    </Callout>
+
+## Set up a validator node
+
+If you are willing to set up a validator node on the Fetch network, visit our dedicated [guide ↗️](/guides/fetch-network/ledger/setup-validator-node).
+
+### Hardware requirements
+
+The hardware resources for running a validator node largely depend on the network load. As a _recommended configuration_, we suggest the following requirements:
+
+    - 2 x CPU, either Intel or AMD, with the SSE4.1, SSE4.2 and AVX flags (use lscpu to verify).
+    - 8 GB RAM.
+    - 500 GB SSD.
+    - 100 Mbit/s always-on internet connection.
+    - Linux OS (Ubuntu 18.04 or 20.04 recommended)/MacOS.
+
+Up-time is incredibly important for being a validator. It is expected that validators will have appropriate redundancies for compute, power, connectivity and so on. While the blockchain itself is highly replicated, it is also expected that validators will perform local storage backups in order to minimise validator down-time.
+
+### Set up a website for your validator
+
+Set up a dedicated validator's website and signal your intention to become a validator on our [Discord ↗️](https://discord.gg/fetchai) server. This is important since delegators will want to have information about the entity they are delegating their FET to.
+
+This is not necessary, however, it is recommended given that as a validator on the network, you will want to get other community users to delegate stake to your validator. The higher the delegated stake to a specific validator, the greater the share of the block rewards it will take.
+
+## Community
+
+We highly recommend to check out the validator community on the discord channel for more information and to check the latest announcements about becoming a validator within the Fetch.ai network:
+
+    - [Discord ↗️](https://discord.gg/fetchai).
