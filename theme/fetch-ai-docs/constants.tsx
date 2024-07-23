@@ -205,7 +205,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
         </Anchor>
       );
     },
-    text: "Edit this page",
+    text: "Edit this page on github",
   },
   feedback: {
     content: "Question? Give us feedback →",
