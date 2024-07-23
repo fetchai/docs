@@ -200,7 +200,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
         return null;
       }
       return (
-        <Anchor className={className} href={editUrl}>
+        <Anchor className={className} newWindow href={editUrl}>
           {children}
         </Anchor>
       );
