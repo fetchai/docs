@@ -19,15 +19,13 @@ A **Mailbox** allows your agent to receive messages sent to its address even whe
 
     ```py copy filename="agent_1.py"
     from uagents import Agent, Context, Model
+    from uagents.setup import fund_agent_if_low
 
     class Message(Model):
         message: str
 
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
-
-    # Copy the address shown below
-    print(f"Your agent's address is: {agent.address}")
 
     # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
     # Then, copy the agent's mailbox key and insert it here below inline
@@ -39,6 +37,11 @@ A **Mailbox** allows your agent to receive messages sent to its address even whe
         seed=SEED_PHRASE,
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
+
+    fund_agent_if_low(agent.wallet.address())
+
+    # Copy the address shown below
+    print(f"Your agent's address is: {agent.address}")
 
     @agent.on_message(model=Message, replies={Message})
     async def handle_message(ctx: Context, sender: str, msg: Message):
