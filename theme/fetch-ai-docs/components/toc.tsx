@@ -18,7 +18,12 @@ export type TOCProps = {
   filePath: string;
 };
 
-export function TOC({ headings }: TOCProps): ReactElement {
+const linkClassName = cn(
+  "nx-text-xs nx-font-medium nx-text-gray-500 hover:nx-text-gray-900 dark:nx-text-gray-400 dark:hover:nx-text-gray-100",
+  "contrast-more:nx-text-gray-800 contrast-more:dark:nx-text-gray-50",
+);
+
+export function TOC({ headings, filePath }: TOCProps): ReactElement {
   const activeAnchor = useActiveAnchor();
   const config = useConfig();
   const tocRef = useRef<HTMLDivElement>(null);
@@ -102,11 +107,16 @@ export function TOC({ headings }: TOCProps): ReactElement {
         <div
           className={cn(
             hasHeadings &&
-              "nx-mt-8 nx-border-t nx-bg-white nx-pt-8 nx-shadow-[0_-12px_16px_white] dark:nx-bg-dark dark:nx-shadow-[0_-12px_16px_#111]",
+              "nx-border-t nx-bg-white nx-pt-4 nx-shadow-[0_-12px_16px_white] dark:nx-bg-dark dark:nx-shadow-[0_-12px_16px_#111]",
             "nx-sticky nx-bottom-0 nx-flex nx-flex-col nx-items-start nx-gap-2 nx-pb-8 dark:nx-border-neutral-800",
             "contrast-more:nx-border-t contrast-more:nx-border-neutral-400 contrast-more:nx-shadow-none contrast-more:dark:nx-border-neutral-400",
           )}
         >
+          {renderComponent(config.editLink.component, {
+            filePath,
+            className: linkClassName,
+            children: renderComponent(config.editLink.text),
+          })}
           {renderComponent(config.toc.extraContent)}
         </div>
       )}

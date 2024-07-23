@@ -12,7 +12,7 @@ const config: DocsThemeConfig = {
   chat: {
     link: "https://discord.gg/fetchai",
   },
-  docsRepositoryBase: "https://github.com/shuding/nextra-docs-template",
+  docsRepositoryBase: "https://github.com/fetchai/docs/tree/master/pages",
   footer: {
     component: <Footer />,
   },

@@ -7,5 +7,5 @@ export function useGitEditUrl(filePath = ""): string {
 
   if (!repo) throw new Error("Invalid `docsRepositoryBase` URL!");
 
-  return `${repo.href}/${filePath}`;
+  return `${repo.href}/${filePath}.mdx`;
 }
