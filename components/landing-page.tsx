@@ -93,6 +93,7 @@ function LandingPage() {
         </div>
         <div className="nx-relative nx-flex nx-w-full">
           <button
+            id={course.title?.toLowerCase().split(" ").join("-")}
             onClick={() => {
               router.push(course.path);
             }}
