@@ -34,6 +34,7 @@ jobs:
           gcloud auth list
           gcloud auth configure-docker -q
           echo "VERSION: ${{ steps.lookup.outputs.version }}"
+
       - name: Build and Push Images
         run: |
           ./scripts/build-img.py
@@ -79,7 +80,7 @@ jobs:
           mkdir -p ./charts
           helm repo add chartmuseum https://chartmuseum.example.com
           helm repo update
-          helm pull chartmuseum/gh-runner --version=0.0.8 --untar --untardir ./charts
+          helm pull chartmuseum/docs --version=0.2.4 --untar --untardir ./charts
 
       - name: Deploy to Staging
         env:
