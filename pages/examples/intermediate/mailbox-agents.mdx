@@ -46,6 +46,7 @@ A **Mailbox** allows your agent to receive messages sent to its address even whe
     @agent.on_message(model=Message, replies={Message})
     async def handle_message(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        ctx.logger.info("Sending message to bob")
         await ctx.send(sender, Message(message="hello there bob"))
 
     if __name__ == "__main__":
