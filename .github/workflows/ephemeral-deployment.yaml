@@ -78,7 +78,7 @@ jobs:
       - name: Pull Helm Chart from ChartMuseum
         run: |
           mkdir -p ./charts
-          helm repo add chartmuseum https://chartmuseum.example.com
+          helm repo add chartmuseum http://charts.management.fetch-ai.com/
           helm repo update
           helm pull chartmuseum/docs --version=0.2.4 --untar --untardir ./charts
 
