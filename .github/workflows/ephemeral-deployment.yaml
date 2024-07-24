@@ -36,7 +36,7 @@ jobs:
           echo "VERSION: ${{ steps.lookup.outputs.version }}"
       - name: Build and Push Images
         run: |
-          ./scripts/build-img.py -p
+          ./scripts/build-img.py
         env:
           IMAGE_REPOSITORY: ${{ secrets.STAGING_IMAGE_REPOSITORY }}
           BACKEND_URL: ${{ secrets.STAGING_NEXT_PUBLIC_BACKEND_URL }}
