@@ -98,6 +98,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           <div className="nx-flex nx-justify-center nx-items-center nx-gap-6">
             {config.logoLink ? (
               <Anchor
+                id="fetch-logo"
                 href={
                   typeof config.logoLink === "string" ? config.logoLink : "/"
                 }
@@ -149,6 +150,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                   activeRoute.startsWith(page.route + "/");
                 return (
                   <Anchor
+                    id={page.title}
                     onMouseOver={() => setHoveredLink(href)}
                     onMouseLeave={() => setHoveredLink(null)}
                     href={href}
