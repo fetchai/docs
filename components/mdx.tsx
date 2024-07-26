@@ -187,7 +187,9 @@ export function Tab(properties) {
 }
 
 export function Row({ children }: { children: ReactNode }) {
-  return <div className="nx-pt-4 nx-gap-8 nx-flex-mdx">{children}</div>;
+  return (
+    <div className="nx-pt-4 nx-gap-8 row-width nx-flex-mdx">{children}</div>
+  );
 }
 
 export function Col({ children }: { children: ReactNode }) {
