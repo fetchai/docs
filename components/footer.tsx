@@ -118,6 +118,7 @@ const Footer: React.FC = () => {
         <div className={styles.footerLower}>
           <div className={styles.footerMenu}>
             <Anchor
+              id="footer-social-twitter"
               className="nx-text-current"
               href="https://x.com/Fetch_ai"
               newWindow
@@ -130,6 +131,7 @@ const Footer: React.FC = () => {
               )}
             </Anchor>
             <Anchor
+              id="footer-social-telegram"
               className="nx-text-current"
               href="https://t.me/fetch_ai"
               newWindow
@@ -143,6 +145,7 @@ const Footer: React.FC = () => {
             </Anchor>
 
             <Anchor
+              id="footer-social-discord"
               className="nx-text-current"
               href="https://discord.gg/fetchai"
               newWindow
@@ -156,6 +159,7 @@ const Footer: React.FC = () => {
             </Anchor>
 
             <Anchor
+              id="footer-social-github"
               className="nx-text-current"
               href="https://github.com/fetchai"
               newWindow
@@ -168,6 +172,7 @@ const Footer: React.FC = () => {
               )}
             </Anchor>
             <Anchor
+              id="footer-social-youtube"
               className="nx-text-current"
               href="https://www.youtube.com/fetchai"
               newWindow
@@ -180,6 +185,7 @@ const Footer: React.FC = () => {
               )}
             </Anchor>
             <Anchor
+              id="footer-social-linkedin"
               className="nx-text-current"
               href="https://www.linkedin.com/company/fetch-ai/"
               newWindow
@@ -192,6 +198,7 @@ const Footer: React.FC = () => {
               )}
             </Anchor>
             <Anchor
+              id="footer-social-reddit"
               className="nx-text-current"
               href="https://www.linkedin.com/company/fetch-ai/"
               newWindow
