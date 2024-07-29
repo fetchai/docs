@@ -144,7 +144,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
       <>
         <li className={cn({ open, active }, "nx-w-full")}>
           <ComponentToUse
-            id={`sidebar-${item.name}`}
+            id={`sidebar${item.route?.split('/').join('-').toLowerCase()}`}
             href={isLink ? item.route : undefined}
             className={cn(
               "nx-items-center  nx-w-full nx-justify-between nx-gap-2",
@@ -259,7 +259,7 @@ function File({
   return (
     <li className={cn(classes.list, { active }, "nx-w-full")}>
       <Anchor
-        id={`sidebar-${item.name}`}
+        id={`sidebar${item.route?.split('/').join('-').toLowerCase()}`}
         href={(item as PageItem).href || item.route}
         newWindow={(item as PageItem).newWindow}
         className={cn(classes.link, active ? classes.active : classes.inactive)}
