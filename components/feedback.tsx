@@ -158,7 +158,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
             <Link
               className="nx-text-primary-600 nx-ml-1 nx-underline nx-decoration-from-font [text-underline-position:from-font]"
               target="_blank"
-              href={`https://github.com/fetchai/docs/issues/new?title=Issue: <Issue Related to ${pageUrl}>&description=hello`}
+              href={`https://github.com/fetchai/docs/issues/new?title=Issue: <Issue Related to ${pageUrl}>`}
             >
               on Github
             </Link>
