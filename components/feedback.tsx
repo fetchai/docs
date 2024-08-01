@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import {
   FaRegThumbsUp,
@@ -152,6 +153,16 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
               </button>
             </div>
           )}
+          <h3 className="md:nx-text-base nx-text-sm nx-flex nx-justify-center nx-mt-3">
+            You can also leave detailed feedback
+            <Link
+              className="nx-text-primary-600 nx-ml-1 nx-underline nx-decoration-from-font [text-underline-position:from-font]"
+              target="_blank"
+              href={`https://github.com/fetchai/docs/issues/new?title=Issue: <Issue Related to ${pageUrl}>`}
+            >
+              on Github
+            </Link>
+          </h3>
         </>
       )}
     </div>
