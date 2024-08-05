@@ -1,10 +1,8 @@
 # Fetch.ai Documentation Repo
 
-Welcome to the code repository for websites and contents of fetch.ai/docs.
+[![Official Website](https://img.shields.io/badge/Official%20Website-fetch.ai-blue?style=flat&logo=world&logoColor=white)](https://fetch.ai) [![Twitter Follow](https://img.shields.io/twitter/follow/fetch_ai?style=social)](https://twitter.com/fetch_ai)
 
-## Updating docs
-
-We welcome PRs from all members of our community, and details and formats of this can be seen in our [Code of Conduct](CODE_OF_CONDUCT.md).
+Welcome to the code repository for Fetch.ai's documentation at [fetch.ai/docs](fetch.ai/docs).
 
 ## Developing
 
@@ -26,12 +24,16 @@ http://127.0.0.1:3000/docs
 
 ## Contributing
 
-We welcome contributions from the community! Please see our Contributing Guide for information on how to get involved. Whether you're fixing bugs, adding new features, or improving documentation, your help is appreciated.
+All contributions are welcome! Remember, contribution includes not only code, but any help with docs or issues raised by other developers. See our [contribution guidelines](https://github.com/fetchai/uAgents/blob/main/CONTRIBUTING.md) for more details.
 
-## Support
+### Code of Conduct
 
-If you need help or have any questions, please post a discussion or join our community on [Discord](https://discord.com/invite/fetchai).
+Please be sure to read and follow our [Code of Conduct](https://github.com/fetchai/docs/blob/main/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
-## License
+### Development Guidelines
 
-The uAgents library is licensed under the APACHE License. For more details, see the [LICENSE](LICENSE) file.
+Read our [development guidelines](https://github.com/fetchai/docs/blob/main/DEVELOPING.md) to learn some useful tips related to development.
+
+### Issues, Questions, and Discussions
+
+We use [GitHub Issues](https://github.com/fetchai/docs/issues) for tracking requests and bugs, and [GitHub Discussions](https://github.com/fetchai/docs/discussions) for general questions and discussion.
