@@ -20,7 +20,7 @@ Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 ## <a name="question"></a> Question or Problem?
 
 <!-- markdown-link-check-disable -->
-Please use [GitHub Discussions](https://github.com/fetchai/uAgents/discussions) for support related questions and general discussions. Do NOT open issues as they are for bug reports and feature requests. This is because:
+Please use [GitHub Discussions](https://github.com/fetchai/docs/discussions) for support related questions and general discussions. Do NOT open issues as they are for bug reports and feature requests. This is because:
 <!-- markdown-link-check-enable -->
 
 - Questions and answers stay available for public viewing so your question/answer might help someone else.
@@ -44,11 +44,11 @@ If you would like to *implement* a new feature:
 ### <a name="submit-issue"></a> Submitting an Issue
 
 <!-- markdown-link-check-disable -->
-Before you submit an issue, please search the [issue tracker](https://github.com/fetchai/uAgents/issues). An issue for your problem might already exist and the discussion might inform you of workarounds readily available.
+Before you submit an issue, please search the [issue tracker](https://github.com/fetchai/docs/issues). An issue for your problem might already exist and the discussion might inform you of workarounds readily available.
 
 For bug reports, it is important that we can reproduce and confirm it. For this, we need you to provide a minimal reproduction instruction (this is part of the bug report issue template).
 
-You can file new issues by selecting from our [new issue templates](https://github.com/fetchai/uAgents/issues/new/choose) and filling out the issue template.
+You can file new issues by selecting from our [new issue templates](https://github.com/fetchai/docs/issues/new/choose) and filling out the issue template.
 <!-- markdown-link-check-enable -->
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
@@ -58,14 +58,14 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 1. All Pull Requests should be based off of and opened against the `main` branch.
 
     <!-- markdown-link-check-disable -->
-2. Search [Existing PRs](https://github.com/fetchai/uAgents/pulls) for an open or closed PR that relates to your submission.
+2. Search [Existing PRs](https://github.com/fetchai/docs/pulls) for an open or closed PR that relates to your submission.
    You don't want to duplicate existing efforts.
     <!-- markdown-link-check-enable -->
 
 3. Be sure that an issue exists describing the problem you're fixing, or the design for the feature you'd like to add.
 
     <!-- markdown-link-check-disable -->
-4. [Fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) the [repository](https://github.com/fetchai/uAgents).
+4. [Fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) the [repository](https://github.com/fetchai/docs).
     <!-- markdown-link-check-enable -->
 
 5. In your forked repository, make your changes in a new git branch created off of the `main` branch.

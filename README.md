@@ -24,7 +24,7 @@ http://127.0.0.1:3000/docs
 
 ## Contributing
 
-All contributions are welcome! Remember, contribution includes not only code, but any help with docs or issues raised by other developers. See our [contribution guidelines](https://github.com/fetchai/uAgents/blob/main/CONTRIBUTING.md) for more details.
+All contributions are welcome! Remember, contribution includes not only code, but any help with docs or issues raised by other developers. See our [contribution guidelines](https://github.com/fetchai/docs/blob/main/CONTRIBUTING.md) for more details.
 
 ### Code of Conduct
 
