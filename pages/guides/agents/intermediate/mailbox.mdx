@@ -3,18 +3,18 @@ import { Callout } from 'nextra/components'
 # Agent Mailboxes
 
 ## Introduction
-Agents can't always be online, say for a power-cut, or simply they're only online while you are. This can be a
-problem as agents should be available online as much as they can so that they do not miss any opportunities, or
-contacts. However, 100% uptime is of course sometimes challenging, especially if you're hosting agents locally on
-your own computer. For this reason we created
+Agents can't always be online; internet loss will cut your agent off from the network, or perhaps your agent is
+behind a firewall meaning you cannot accept inbound requests. To get around online requirements we created
 the
 **Mailbox** feature on [Agentverse ↗️](https://agentverse.ai). A Mailbox is a
 middleman that acts as a mailbox for all communication to your agent. Messages are stored within the mailbox and your
-agents will collect them (calls for these messages as in startup of uAgents library) when they're online back again.
+agents will collect them (calls for these in [uAgents library ↗️](https://github.com/fetchai/uAgents/blob/55fd0f1bd14d4d5fdaaa3dae82e4d6c6c5b9a3cd/python/src/uagents/mailbox.py#L65)) when they're online
+again.
 
-First of all, we need to have an agent up and running locally before we can register it for a Mailbox on the Agentverse.
+Let's get an agent using mailbox, and testing this logic. To begin we need our agents address, we use this to
+register the agent on the Mailbox.
 
-Let's get started!
+## Get your agents address
 
 ## Prerequisites
 
@@ -33,18 +33,11 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Local agent setup
 
-Let's start by creating a local agent named `alice`, alice responds hello to any agent that sends a message to it, provided the message has a type of `Message`.
-
-    ```py copy filename="agent_1.py"
+```py copy filename="agent_1.py"
     from uagents import Agent, Context, Model
 
     class Message(Model):
         message: str
-
-    # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
-    SEED_PHRASE = "put_your_seed_phrase_here"
-
-    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 
     # Now your agent is ready to join the agentverse!
     agent = Agent(
@@ -53,25 +46,14 @@ Let's start by creating a local agent named `alice`, alice responds hello to any
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
 
-    # Copy the address shown below and go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied. Then paste in within the AGENT_MAILBOX_KEY field above inline
+    # Copy the address shown below
     print(f"Your agent's address is: {agent.address}")
-
-    @agent.on_message(model=Message, replies={Message})
-    async def handle_message(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-        # send the response
-        ctx.logger.info("Sending message to bob")
-        await ctx.send(sender, Message(message="hello there bob"))
 
     if __name__ == "__main__":
         agent.run()
    ```
 
-We now need to create a Mailbox for this agent and retrieve a Mailbox API key which should be then pasted within your local agent code by filling up the `AGENT_MAILBOX_KEY` field.
-
-Run the above code in your terminal to retrieve your agent's address. You will need it in the next steps to set up an Agentverse Mailbox!
-When running the above agent, you should get something similar within your terminal output:
+You should get something similar within your terminal output:
 
     ```
     Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cukd7gkegxcm5vx5pku7kf
@@ -97,6 +79,66 @@ Once the agent is correctly retrieved, you will have to give it a **name**. When
 
 ![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3.png)
 
+## Updating your agent
+
+Let's update `alice`, alice will now print to console any message she receives, provided the message has a type of
+`Message`.
+
+    ```py copy filename="agent_1.py"
+    from uagents import Agent, Context, Model
+
+    class Message(Model):
+        message: str
+
+    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+
+    # Now your agent is ready to join the agentverse!
+    agent = Agent(
+        name="alice",
+        seed=SEED_PHRASE,
+        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+    )
+
+    @agent.on_message(model=Message, replies={Message})
+    async def handle_message(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+    if __name__ == "__main__":
+        agent.run()
+   ```
+
+## Creating an a second agent
+
+Let's create and run a second agent to message Alice every 3 seconds:
+
+``` python copy
+
+from uagents import Agent, Bureau, Context, Model
+from datetime import datetime
+
+class Message(Model):
+    message: str
+
+agent_2 = Agent(name="agent_2", seed="agent_2 recovery phrase")
+
+@agent_2.on_interval(period=3.0)
+async def send_message(ctx: Context):
+   await ctx.send([ALICE ADDRESS], Message(message=f"hello {datetime.datetime.now()}"))
+
+```
+
+## Testing
+
+With both `alice` and `agent_2` running, stop `alice` and let `agent_2` run for a further 20 seconds, or so. After
+that period of time, restart `alice` and she should print out a bunch of messages from the mailbox, like so:
+
+```
+    INFO:     [alice]: Registering on almanac contract...complete
+    INFO:     [alice]: Connecting to mailbox server at agentverse.ai
+    INFO:     [alice]: Mailbox access token acquired
+```
+
+
  **You can now restart your agent!**
 
     <Callout type="warning" emoji="⚠️">
@@ -106,9 +148,3 @@ Once the agent is correctly retrieved, you will have to give it a **name**. When
 Now your agent doesn't need to be running all the time as messages will be waiting when it comes back online.
 
 **Great! You correctly enrolled your local agent on the Agentverse using the Mailbox feature!**
-
-## Next steps
-
-Now that you have covered the setup of a local agent to be Mailbox compatible, you are ready to explore how an [Agentverse Hosted Agent ↗️](/guides/agentverse/creating-agentverse-agents/creating-a-hosted-agent) and a Local Agent communicate with one another using the Mailbox feature.
-
-Head over to this [guide ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox) to get started!

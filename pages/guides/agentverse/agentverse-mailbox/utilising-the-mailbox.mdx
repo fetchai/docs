@@ -47,6 +47,11 @@ Let's now start by creating a local agent named `alice` with a `handle_message()
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
 
+    # Copy the address shown below
+    print(f"Your agent's address is: {agent.address}")
+
+    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+    # Then, copy the agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 
     # Now your agent is ready to join the agentverse!
@@ -56,19 +61,9 @@ Let's now start by creating a local agent named `alice` with a `handle_message()
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
 
-    # Copy the address shown below
-    print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
-
-    # Then go to https://agentverse.ai, register your agent in the Mailroom and copy the agent's mailbox key. FIll the AGENT_MAILBOX_KEY in-line
-
     @agent.on_message(model=Message, replies={Message})
     async def handle_message(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-        # send the response
-        ctx.logger.info("Sending message to bob")
-        await ctx.send(sender, Message(message="hello there bob"))
-
 
     if __name__ == "__main__":
         agent.run()
@@ -78,17 +73,26 @@ You can then restart your agent; now your agent doesn't need to run all the time
 
 ### Agentverse agent setup
 
-Now create an Agentverse agent by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, select a blank script and add the following code into it:
+Now create an Agentverse agent `bob` by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, select a blank script and add the following code into it:
 
     ```py copy filename="agent_2.py"
+    from uagents import Agent, Context, Model
+
     class Message(Model):
         message: str
 
     # Copy ALICE_ADDRESS generated in agent_1.py
-    ALICE_ADDRESS = "agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuz7gkegxcm5vx5pku7kf"
+    ALICE_ADDRESS = "agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf"
 
     # Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
+
+    # Now let's create the Agentverse agent
+    agent = Agent(
+        name="bob",
+        seed=SEED_PHRASE,
+        endpoint="http://127.0.0.1:8001/submit",
+    )
 
     @agent.on_interval(period=2.0)
     async def send_message(ctx: Context):
@@ -103,7 +107,7 @@ Now create an Agentverse agent by selecting **+ New Agent** in the **My Agents**
         agent.run()
    ```
 
-Next, run this agent on the Agentverse.
+Next, run **bob** on the Agentverse.
 
 ### Expected output
 
