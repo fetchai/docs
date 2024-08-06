@@ -18,6 +18,26 @@ With the user's news preference in hand, the system redirects request to one of 
 
 All **Primary** and **Secondary** functions redirections are handled by **AI Engine**. It processes user preferences and triggers the appropriate functions to fulfil the user's objective. By providing clear and concise field descriptions for each Primary and Secondary functions, the AI Engine will ensure straightforward navigation through the News Reading System and operations, making it easy for users to stay informed on the topics that matter the most to them.
 
+## Prerequisites
+
+Make sure you have read the following resources before going on with this guide:
+
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Almanac contract ↗️](/concepts/fetch-network/almanac)
+    - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
+    - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
+    - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+    - [Multi-file agent pipeline for AI Engine: Hugging face API to create a multi agent pipeline ↗️](/guides/agents/intermediate/primary-secondary-functions)
+
+## Imports needed
+
+    - [uAgents ↗️](https://pypi.org/project/uagents/)
+    - [AI Engine ↗️](https://pypi.org/project/uagents-ai-engine/)
+
 ## Primary and Secondary functions
 
 The **Primary** and **Secondary** functions descriptions and names should be relevant to make it easy for the LLM to identify the type of Secondary function to trigger and when. Descriptions of Primary and Secondary functions should always indicate when specific Secondary functions should be triggered. In this case one of multiple Secondary functions is to be triggered, it should be provided in the dictionary to enhance the LLM's understanding. For instance, you can refer to the example below where the **News Reading Details Secondary function** triggers one of the **Generate news_type Secondary function** based on the user's requirement.

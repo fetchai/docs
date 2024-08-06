@@ -228,7 +228,7 @@ const items: { [key: string]: Item[] } = {
     },
     {
       title: "Wallet",
-      description: <>Let&apos;s get started with the Fetch wallet.</>,
+      description: <>Get started with the Fetch Wallet.</>,
       icon: walletIcon,
       path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
     },
