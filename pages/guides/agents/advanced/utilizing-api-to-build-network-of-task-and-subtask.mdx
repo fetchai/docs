@@ -439,18 +439,21 @@ Click **Save** button after filling out the form.
     - **Application**: Secondary function.
     - **Protocol** and **Data Model** will be automatically populated based on the source code of [your news generating agent ↗️](/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask#news-generating-agent).
     - **Field descriptions**: Below are the field descriptions for News reading system.
-        - news_subtype - **This describes the news subtype user wants to read and ask for question corresponding to user's choice of news type below. Only ask one of the below to user.**
-            **'categorical': One from list [business, entertainment, general, health, science, sports, technology].**
-            **'regional' : What is the country you want to get news for?,**
-            **'keyword' : What is the keyword you want to read news for?**
+        - news_subtype - **This describes the news subtype user wants to read and ask for question corresponding to user's choice of news type below. Only ask one of the below to user:**
+
+            - **'categorical': One from list [business, entertainment, general, health, science, sports, technology].**
+            - **'regional' : What is the country you want to get news for?,**
+            - **'keyword' : What is the keyword you want to read news for?**
             
         - news_type - **This is type of news user wants to read from options from Categorical, Regional or Keyword. After this ask user for field news_subtype.**
         - news_url_content - **Trigger corresponding secondary function according to 'news_type' given by user to get this field:**
-        **Categorical : Generate Categorical news Secondary function,**
-        **Regional :  Generate Regional News Secondary function,**
-        **Keyword : Generate Keyword News Secondary function**
-        ** This provides list of relevant news options, ask user which news they want to read.**
-        ** user category, keyword and country as provided by user in field 'news_subtype'.**
+
+            - **Categorical: Generate Categorical news Secondary function;**
+            - **Regional:  Generate Regional News Secondary function;**
+            - **Keyword: Generate Keyword News Secondary function.**
+
+                **This provides list of relevant news options, ask user which news they want to read.**
+                **user category, keyword and country as provided by user in field 'news_subtype'.**
 
 Click **Save** button after filling out the form.
 
@@ -459,10 +462,9 @@ Click **Save** button after filling out the form.
     - **Function title**: just the name of your service; in this example let's call it **Generate Categorical News**.
     - **Description for AI Engine**: Super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your function does; in this example we can specify something like "**This function helps generate list of options for categorical news for the user. Give these options to user and ask let them select the option they want to choose.**".
     - **Application**: Secondary function.
-    - **Protocol** and **Data Model** will be automatically populated based on the source code of [your generate categorical agent ↗️](/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask#generate
- -categorical-news).
+    - **Protocol** and **Data Model** will be automatically populated based on the source code of [your generate categorical agent ↗️](/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask#generate-categorical-news).
     - **Field descriptions**:
-        - _category_ - **this is provided by user in news subtype in news reading details. This is category for which user want to read news.**.
+        - _category_ - **this is provided by user in news subtype in news reading details. This is category for which user want to read news.**
 
 Click **Save** button after filling out the form.
 
@@ -494,6 +496,10 @@ Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
 Firstly, type in something like **I want to read news of my choice** into what function you would like to assemble and switch on **Advanced Options**. In advanced options select **All function groups** and click on **submit** button.
 
+    <Callout type="warning" emoji="⚠️">
+      We encourage everyone operating on DeltaV to select the **Next Generation** AI Engine personality type. This AI Engine personality stands as a significant personality type offering _enhanced scalability_, _reliability_, and _flexibility_. The major key features include advanced context understanding, improved function recommendations, and the ability to handle multiple dialogue formats.
+    </Callout>
+
 ![](../../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/querying-deltaV-for-reading-news.png)
 
 After being navigated to the chat screen, you will be asked to select an Objective (function).
@@ -504,7 +510,7 @@ Let's select it.
 
 ![](../../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/selection-of-news-reading-system-service.png)
 
-Subtask **News Reading Details Secondary function** will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading Secondary Function**.
+**News Reading Details Secondary function** will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading Secondary Function**.
 
 Select the news type and subtype you want to read.
 
