@@ -18,6 +18,26 @@ With the user's news preference in hand, the system redirects request to one of 
 
 All **Primary** and **Secondary** functions redirections are handled by **AI Engine**. It processes user preferences and triggers the appropriate functions to fulfil the user's objective. By providing clear and concise field descriptions for each Primary and Secondary functions, the AI Engine will ensure straightforward navigation through the News Reading System and operations, making it easy for users to stay informed on the topics that matter the most to them.
 
+## Prerequisites
+
+Make sure you have read the following resources before going on with this guide:
+
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Almanac contract ↗️](/concepts/fetch-network/almanac)
+    - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
+    - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
+    - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+    - [Multi-file agent pipeline for AI Engine: Hugging face API to create a multi agent pipeline ↗️](/guides/agents/intermediate/primary-secondary-functions)
+
+## Imports needed
+
+    - [uAgents ↗️](https://pypi.org/project/uagents/)
+    - [AI Engine ↗️](https://pypi.org/project/uagents-ai-engine/)
+
 ## Primary and Secondary functions
 
 The **Primary** and **Secondary** functions descriptions and names should be relevant to make it easy for the LLM to identify the type of Secondary function to trigger and when. Descriptions of Primary and Secondary functions should always indicate when specific Secondary functions should be triggered. In this case one of multiple Secondary functions is to be triggered, it should be provided in the dictionary to enhance the LLM's understanding. For instance, you can refer to the example below where the **News Reading Details Secondary function** triggers one of the **Generate news_type Secondary function** based on the user's requirement.
@@ -419,18 +439,21 @@ Click **Save** button after filling out the form.
     - **Application**: Secondary function.
     - **Protocol** and **Data Model** will be automatically populated based on the source code of [your news generating agent ↗️](/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask#news-generating-agent).
     - **Field descriptions**: Below are the field descriptions for News reading system.
-        - news_subtype - **This describes the news subtype user wants to read and ask for question corresponding to user's choice of news type below. Only ask one of the below to user.**
-            **'categorical': One from list [business, entertainment, general, health, science, sports, technology].**
-            **'regional' : What is the country you want to get news for?,**
-            **'keyword' : What is the keyword you want to read news for?**
+        - news_subtype - **This describes the news subtype user wants to read and ask for question corresponding to user's choice of news type below. Only ask one of the below to user:**
+
+            - **'categorical': One from list [business, entertainment, general, health, science, sports, technology].**
+            - **'regional' : What is the country you want to get news for?,**
+            - **'keyword' : What is the keyword you want to read news for?**
             
         - news_type - **This is type of news user wants to read from options from Categorical, Regional or Keyword. After this ask user for field news_subtype.**
         - news_url_content - **Trigger corresponding secondary function according to 'news_type' given by user to get this field:**
-        **Categorical : Generate Categorical news Secondary function,**
-        **Regional :  Generate Regional News Secondary function,**
-        **Keyword : Generate Keyword News Secondary function**
-        ** This provides list of relevant news options, ask user which news they want to read.**
-        ** user category, keyword and country as provided by user in field 'news_subtype'.**
+
+            - **Categorical: Generate Categorical news Secondary function;**
+            - **Regional:  Generate Regional News Secondary function;**
+            - **Keyword: Generate Keyword News Secondary function.**
+
+                **This provides list of relevant news options, ask user which news they want to read.**
+                **user category, keyword and country as provided by user in field 'news_subtype'.**
 
 Click **Save** button after filling out the form.
 
@@ -439,10 +462,9 @@ Click **Save** button after filling out the form.
     - **Function title**: just the name of your service; in this example let's call it **Generate Categorical News**.
     - **Description for AI Engine**: Super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your function does; in this example we can specify something like "**This function helps generate list of options for categorical news for the user. Give these options to user and ask let them select the option they want to choose.**".
     - **Application**: Secondary function.
-    - **Protocol** and **Data Model** will be automatically populated based on the source code of [your generate categorical agent ↗️](/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask#generate
- -categorical-news).
+    - **Protocol** and **Data Model** will be automatically populated based on the source code of [your generate categorical agent ↗️](/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask#generate-categorical-news).
     - **Field descriptions**:
-        - _category_ - **this is provided by user in news subtype in news reading details. This is category for which user want to read news.**.
+        - _category_ - **this is provided by user in news subtype in news reading details. This is category for which user want to read news.**
 
 Click **Save** button after filling out the form.
 
@@ -474,6 +496,10 @@ Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
 Firstly, type in something like **I want to read news of my choice** into what function you would like to assemble and switch on **Advanced Options**. In advanced options select **All function groups** and click on **submit** button.
 
+    <Callout type="warning" emoji="⚠️">
+      We encourage everyone operating on DeltaV to select the **Next Generation** AI Engine personality type. This AI Engine personality stands as a significant personality type offering _enhanced scalability_, _reliability_, and _flexibility_. The major key features include advanced context understanding, improved function recommendations, and the ability to handle multiple dialogue formats.
+    </Callout>
+
 ![](../../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/querying-deltaV-for-reading-news.png)
 
 After being navigated to the chat screen, you will be asked to select an Objective (function).
@@ -484,7 +510,7 @@ Let's select it.
 
 ![](../../../../src/images/guides/services/utilizing-api-to-build-network-of-task-and-subtask/selection-of-news-reading-system-service.png)
 
-Subtask **News Reading Details Secondary function** will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading Secondary Function**.
+**News Reading Details Secondary function** will be triggered once we select **News Reading URL System** and it will provide options as mentioned in field description for **News Reading Secondary Function**.
 
 Select the news type and subtype you want to read.
 
