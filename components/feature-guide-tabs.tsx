@@ -124,7 +124,7 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           title: "Fetch Wallet",
           description:
             "A guide helping you to get started with the Fetch wallet.",
-          path: "/guides/fetch-network/fetch-wallet/fetch-wallet/web-wallet/get-started",
+          path: "/guides/fetch-network/fetch-wallet/web-wallet/get-started",
         },
         {
           title: "How to convert FET to and from ERC20",
