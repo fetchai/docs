@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-On the [Agentverse ↗️](https://agentverse.ai/) you can create and host any type of agent you want to create using the [My Agents ↗️](/concepts/agent-services/agent-hosting) tab. Managed agents are currently a beta feature and therefore do not fully support the entire [Agents ↗️](/concepts/agents/agents) toolset for development. Improvements and upgrades are planned for the future!
+On the [Agentverse ↗️](https://agentverse.ai/) you can create and host any type of Agent you want to create using the [My Agents ↗️](/concepts/agent-services/agent-hosting) tab. Managed agents are currently a beta feature and therefore do not fully support the entire [uAgents ↗️](/concepts/agents/agents) Framework toolset for development. Improvements and upgrades are planned for the future!
 
     <Callout type="info" emoji="ℹ️">
       Check out the [Agentverse: allowed imports ↗️](/guides/agentverse/allowed-imports) guide for a better understanding of the packages available for development of Agents on the Agentverse.
@@ -14,6 +14,17 @@ Let's start by heading over to the **Agentverse: My Agents** tab, click on the *
 
     1.  From a **Blank Agent**.
     2.  From a **Skeleton Agent**.
+
+## Prerequisites
+
+Make sure you have read the following resources before going on with this guide:
+
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Almanac contract ↗️](/concepts/fetch-network/almanac)
+    - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+    - [Agents running on agentverse↗️](/guides/agents/intermediate/hosted-agent)
 
 ## Creating an agent from a blank script
 
@@ -37,7 +48,7 @@ If you click on your agent box, the code editor will be displayed. This is the *
 
 The Agent Editor has an integrated **agent.py** and **.env** files that allow you to start programming immediately! The Agent Editor offers you the option of structuring your project into several file windows, which are located on the left-hand side of the editor window. All you have to do is enter a name for the new file to be added. An additional feature of the Agent Editor is the **Agent Logs**; a built-in terminal that displays the output of your script after it has been executed. The Agent Logs provides multiple filters for the different log levels.
 
- The Agent Logs feature is available by clicking the _third bottom_ icon on the left side of the Agent Editor. The first and second buttons enable you to explore **Agents Secrets** and **Agent Storage** features.
+The Agent Logs feature is available by clicking the _third bottom_ icon on the left side of the Agent Editor. The first and second buttons enable you to explore **Agents Secrets** and **Agent Storage** features.
 
     <Callout type="info" emoji="ℹ️">
       This way, we aim at making agents' development as quick and efficient as possible. This is a great tool to determine if your code runs smoothly and to check if any error arises and solve it immediately!
@@ -74,19 +85,19 @@ There are different categories you can choose from:
     1. **Getting Started**: this category helps you in creating basic agents using the Agents technology.
        You can:
 
-           - Create your first agent.
-           - Send messages between two agents.
-           - Storing data.
-           - Organize your agents with protocols.
-           - Create an agent requesting data from a website.
-           - Create an agent sending tokens to another agent.
-           - Create an agent interacting with an oracle smart contract.
+           - _Create your first agent_.
+           - _Send messages between two agents_.
+           - _Storing data_.
+           - _Organize your agents with protocols_.
+           - _Create an agent requesting data from a website_.
+           - _Create an agent sending tokens to another agent_.
+           - _Create an agent interacting with an oracle smart contract_.
 
     2. **AI/ML**: this category allows you to develop AI/ML agents.
 
            You can choose to:
 
-           - Create an agent requesting data from an AI model.
+           - _Create an agent requesting data from an AI model_.
 
     3. **Smart Services**: this category is for building smart agents for different services.agent
 
@@ -99,16 +110,17 @@ There are different categories you can choose from:
            - _MongoDB Atlas integration_: this use case shows how to use MongoDB Atlas as a backend for agent storage with a restaurant booking example.
            - _PlanetScale integration_: this use case shows how to use PlanetScale as a backend for agent storage with a restaurant booking example.
 
-    4. **DeltaV Integration**: this category allows you to develop Agents offering different Agent Functions (i.e., Services) which are then made available through the [DeltaV ↗️](/concepts/ai-engine/deltav) chat based on a given template. These agents and related Functions need to register within the [Agentverse ↗️](/concepts/agent-services/services) first so for them to be available for queries from users operating and interacting DeltaV Agent. Checkout our dedicated guide for Agent Functions available [here ↗️](/guides/services/services).
+
+    4. **DeltaV Integration**: this category allows you to develop Agents offering different Agent Functions which are then made available through the [DeltaV ↗️](/concepts/ai-engine/deltav) chat based on a given template. These agents and related Functions need to register within the [Agentverse ↗️](/concepts/agent-services/services) first so for them to be available for queries from users operating and interacting with DeltaV Agent. Checkout our dedicated guide for Agent Functions available [here ↗️](/guides/agents/intermediate/agent-functions).
 
            You can choose to:
 
-           - _Stock Price Agent_: create a DeltaV compatible agent requesting stock price of a share.
+           - _Stock Price Agent_: create a DeltaV compatible agent requesting the price of a stock.
            - _Coin Toss Agent_: create a DeltaV compatible agent tossing a coin for you.
            - _Dice Roll Agent_: create a DeltaV compatible agent rolling a dice for you.
-           - _EV Charger Agent_: create a DeltaV compatible agent to find nearby EV charging stations via DeltaV chat.
-           - _Geocode Agent_: create a DeltaV compatible agent to find the latitude and longitude of a given address using DeltaV chat.
-           - _Restaurant Agent_: create a DeltaV compatible agent to find the nearby restaurants based on a location using DeltaV chat.
+           - _EV Charger Agent_: create a DeltaV compatible agent to find nearby EV charging stations.
+           - _Geocode Agent_: create a DeltaV compatible agent to find the latitude and longitude of a given address.
+           - _Restaurant Agent_: create a DeltaV compatible agent to find the nearby restaurants based on a given location.
 
 Let's assume you want to create your agent using the **Your first agent template** from the **Getting Started** window.
 Each template available presents a small number in the bottom right corner indicating the number of agents available for that particular template.
@@ -135,7 +147,7 @@ Additionally, you can now use `agent.run()` method, but this is also not require
 - For security reasons, imports are still restricted to those listed in [Agentverse: allowed imports ↗️](/guides/agentverse/allowed-imports). Soon we will be making available a new hosting environment which much fewer restrictions on the imports.
 
     <Callout type="info" emoji="ℹ️">
-      Checkout the [AVCTL - Agentverse Command Line Interface 💻 ↗️](/guides/avctl/avctl) to better understand how to possibly interact with the Agentverse. AVCTL provides multiple features (e.g., authorization and hosting management) allowing developers to log in, set up projects, and deploy Agents on the Agentverse.
+      Checkout the [AVCTL - Agentverse Command Line Interface ↗️](/guides/avctl/avctl) to better understand how to possibly interact with the Agentverse. AVCTL provides multiple features (e.g., authorization and hosting management) allowing developers to log in, set up projects, and deploy Agents on the Agentverse.
     </Callout>
     
 ## Register Domain Name

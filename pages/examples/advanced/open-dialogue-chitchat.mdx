@@ -279,7 +279,7 @@ The contents of this script are to be shared between the agents that want to use
                 ctx.logger.info(
                     f"Received conclude message from: {sender}; accessing history:"
                 )
-                ctx.logger.info(ctx.dialogue)
+                ctx.logger.info(chitchat_dialogue.get_conversation(ctx.session))
         except EOFError:
             await ctx.send(sender, ConcludeChitChatDialogue())
 
@@ -291,7 +291,7 @@ The contents of this script are to be shared between the agents that want to use
     ):
         # Do something when the dialogue is concluded after messages have been exchanged
         ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
-        ctx.logger.info(ctx.dialogue)
+        ctx.logger.info(chitchat_dialogue.get_conversation(ctx.session))
 
     agent.include(chitchat_dialogue)
 
@@ -391,7 +391,7 @@ The contents of this script are to be shared between the agents that want to use
                 ctx.logger.info(
                     f"Received conclude message from: {sender}; accessing history:"
                 )
-                ctx.logger.info(ctx.dialogue)
+                ctx.logger.info(chitchat_dialogue.get_conversation(ctx.session))
         except EOFError:
             await ctx.send(sender, ConcludeChitChatDialogue())
 
@@ -403,7 +403,7 @@ The contents of this script are to be shared between the agents that want to use
     ):
         # Do something when the dialogue is concluded after messages have been exchanged
         ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
-        ctx.logger.info(ctx.dialogue)
+        ctx.logger.info(chitchat_dialogue.get_conversation(ctx.session))
 
     agent.include(chitchat_dialogue)
 
@@ -411,8 +411,9 @@ The contents of this script are to be shared between the agents that want to use
     @agent.on_event("startup")
     async def start_cycle(ctx: Context):
         await sleep(5)
-        # use 'chitchat_dialogue.set_custom_session_id()' to set a custom session id (UUID4)
-        await ctx.send(CHIT_AGENT_ADDRESS, InitiateChitChatDialogue())
+        await chitchat_dialogue.start_dialogue(
+            ctx, CHIT_AGENT_ADDRESS, InitiateChitChatDialogue()
+        )
 
 
     if __name__ == "__main__":

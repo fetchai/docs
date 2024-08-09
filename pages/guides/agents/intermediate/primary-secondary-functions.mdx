@@ -10,6 +10,27 @@ The **Hugging Face Inference API** allows access to thousands of models for spec
 Hugging Face API with the Agentverse Agent, enabling users to select their preferred **text-classification** model. Users can choose 
 from the top downloaded models and make queries to them. This system consists of multiple layers of primary and secondary functions, with the  Hugging Face system as the main objective and Hugging Face request and model list as secondary functions. For a better understanding of the workflow, please refer to the documentation below.
 
+## Prerequisites
+
+Make sure you have read the following resources before going on with this guide:
+
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Using agents storage function ↗️](/guides/agents/intermediate/storage-function)
+    - [Almanac contract ↗️](/concepts/fetch-network/almanac)
+    - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
+    - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
+    - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+    - [Field descriptions for DeltaV ↗️](/guides/agentverse/agentverse-functions/field-descriptions-for-deltav)
+
+## Imports needed
+
+    - [uAgents ↗️](https://pypi.org/project/uagents/)
+    - [AI Engine ↗️](https://pypi.org/project/uagents-ai-engine/)
+
 ## Hugging face Inference API
 
 Login to [Hugging face ↗️](https://huggingface.co/settings/profile) and get your API key by logging in and going to account settings. 
@@ -200,7 +221,7 @@ The properties of function for each agent are listed below.
     - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your fucntion does - in this example we can specify something like this: **This function handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists secondary function**.
     - **Application**: Secondary function.
     - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agents/intermediate/primary-secondary-functions#hugging-face-request-agent).
-    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering subtask. In this example we can specify something like:
+    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like:
         - **Model_id**: **_Always go for model list secondary function. Never ask this field to user._**
         - **query**: **_Describes the query user wants to ask to the model Always ask this to user after model_id is given by model list secondary function._**
 
@@ -219,7 +240,11 @@ The properties of function for each agent are listed below.
 
 Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
-Type in **Hugging Face System** and click on `Advanced options`. Select `All Service Groups` and click on `Start` button.
+Type in **Hugging Face System** and click on `Advanced options`. Select `All Function Groups` and click on `Start` button.
+
+    <Callout type="warning" emoji="⚠️">
+      Whenever operating on DeltaV, we encourage everyone to select the **Next Generation AI Engine** personality type. This AI Engine personality stands as a significant AI Engine personality type offering _enhanced scalability_, _reliability_, and _flexibility_. The major key features include advanced context understanding, improved function recommendations, and the ability to handle multiple dialogue formats.
+    </Callout>
 
 ![](../../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-1.png)
 

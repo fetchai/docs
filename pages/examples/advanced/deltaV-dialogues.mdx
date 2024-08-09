@@ -2,7 +2,11 @@ import { Callout } from 'nextra/components'
 
 # DeltaV Compatible Dialogues Agent
 
-In this example we will create an agent on Agentverse which can handle multiple stocks price request in deltaV using [Dialogues](/guides/agents/advanced/dialogues).
+In this example we will create an agent on Agentverse which can handle multiple stocks price request in deltaV using [Dialogues ↗️](/guides/agents/advanced/dialogues).
+
+    <Callout type="warning" emoji="⚠️">
+      To test agents using **Dialogues or ChitChat** on DeltaV, users must select the **Next generation** personality type in [DeltaV ↗️](https://deltav.agentverse.ai/) when providing your query through the dedicated bar. The **Next Generation AI Engine** personality stands as a significant AI Engine personality type offering _enhanced scalability_, _reliability_, and _flexibility_. The major key features include advanced context understanding, improved function recommendations, and the ability to handle diverse dialogue formats.
+    </Callout>
 
 ## Guide
 
@@ -26,7 +30,6 @@ We need to import predefined AI engine dialogue and Dialogue Messages:
     from ai_engine.messages import DialogueMessage
     from uagents import Agent, Context, Model
     ```
-
 
 ## Step 2: Define dialogues message
 
@@ -167,7 +170,7 @@ Setup the functions making API calls to get ticker symbol and stock price:
     ):
         # do something when the dialogue is concluded after messages have been exchanged
         ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
-        ctx.logger.info(ctx.dialogue)
+        ctx.logger.info(chitchat_dialogue.get_conversation(ctx.session))
 
 
     agent.include(chitchat_dialogue, publish_manifest=True)
@@ -178,14 +181,14 @@ Setup the functions making API calls to get ticker symbol and stock price:
 
 To get the API key visit [Alphavantage ↗️](https://www.alphavantage.co/) get the free API key and save new secret as `API_KEY`.
 
-## Step 7: Create an deltaV function and fill in the required details
+## Step 7: Create a DeltaV function and fill in the required details
 
 The function details are as below:
 
     - **Name**: Stocks Price Dialogue.
-    - **AI description**: This service helps user to check stocks or share price for more than one company.
+    - **AI description**: This Function helps user to check stocks or share price for more than one company.
 
-Rest all details will be auto populated. Use deltaV to perform Agentverse Agent chit chat.
+Rest all details will be auto populated. Use DeltaV to perform Agentverse Agent chit chat.
 
 ## Expected output
 
