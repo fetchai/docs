@@ -1,0 +1,255 @@
+# Agents Name Service
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to set up the Agents Name Service contract using the `uagents` and `cosmpy` Python libraries. The **Fetch.ai Name Service Smart Contract** aims at enhancing the usability and accessibility of the Fetch.ai blockchain by providing a decentralized, secure, and user-friendly way to manage names for various digital entities. Indeed, the Name Service Smart Contract acts similarly to a phonebook for the Fetch.ai blockchain; It assigns memorable names (i.e., domains) to blockchain addresses, making it easier to find and interact with other agents and resources on the network. Imagine it as a way to give user-friendly names to complex wallet addresses.
+
+In this guide we set up a communication line between two agents, Alice and Bob, where Alice sends a message to Bob every 5 seconds by first constructing Bob's address using a predefined domain (example.agent) and Bob's name (bob-0).
+
+In turn, Bob is coded to listen for incoming messages and log them. On startup, Bob registers its name on a blockchain network using a name service contract. This ensures that Alice can address messages to Bob correctly.
+
+**Let's get started!**
+
+## Walk-through
+
+First of all, we need to create 2 Python scripts for our two agents using the following commands within your terminal:
+
+    Bob: `touch agent_1.py`
+
+    Alice: `touch agent_2.py`
+
+### Bob
+
+Let's start with the first agent of this example, Bob.
+
+1. First of all, we import the required libraries and modules:
+
+    ```python copy
+    from cosmpy.aerial.wallet import LocalWallet
+    from uagents import Agent, Context, Model
+    from uagents.network import get_faucet, get_name_service_contract
+    ```
+
+    - `LocalWallet`: From the `cosmpy.aerial.wallet` module, this is used to create and manage wallets for blockchain interactions.
+    - `Agent`, `Context`, `Model`: From the `uagents` module, these are used to define the agent, its context, and the message model.
+    - `get_faucet`: From the `uagents.network` module, this function is used to get a faucet for funding wallets.
+    - `get_name_service_contract`: From the `uagents.network` module, this function is used to get the contract for registering agent names on the network.
+
+2. We then define the Message model defining the structure of messages that Bob will be able to handle:
+
+    ```python copy
+    class Message(Model):
+        message: str
+    ```
+
+    We have defined a `Message` data model which contains a single attribute `message` of type string.
+
+3. We then need to initialise the agent:
+
+    ```python copy
+    bob = Agent(
+        name="bob-0",
+        seed="agent bob-0 secret phrase",
+        port=8001,
+        endpoint=["http://localhost:8001/submit"],
+    )
+    ```
+
+    We have created an agent named `bob-0` with a specified `seed`. The agent listens on port `8001` and has an `endpoint` for receiving messages.
+
+4. We are now ready to set up the **Wallet**, **Name Service Contract**, and **Faucet**:
+
+    ```python copy
+    my_wallet = LocalWallet.from_unsafe_seed("registration test wallet")
+    name_service_contract = get_name_service_contract(test=True)
+    faucet = get_faucet()
+    DOMAIN = "example.agent"
+
+    faucet.get_wealth(my_wallet.address())
+    ```
+
+    We first create a wallet from a seed phrase and this wallet is used for interacting with the Fetch.ai blockchain. We then proceed and define the Name Service Contract. It retrieves the name service contract to register the agent's name on the blockchain. The `test=True` parameter indicates this is a `test` setup. Then, we define the faucet used to fund the wallet with test tokens. We then define the domain for the agent's name registration and finally proceed to request funds from the faucet to ensure the agent's wallet has sufficient funds to operate.
+
+
+5. We continue and define Bob's functions. We start with a register_agent_name function which registers Bob's name within the blockchain using the agent's wallet, address, name and domain parameters:
+
+    ```python copy
+    @bob.on_event("startup")
+    async def register_agent_name(ctx: Context):
+        await name_service_contract.register(
+            bob.ledger, my_wallet, bob.address, bob.name, DOMAIN
+        )
+    ```
+
+    Here, we defined the `register_agent_name` function. It registers the agent's name on the blockchain when the agent is initialised. The function uses the name service contract to register `bob-0.example.agent` agent using the `my_wallet` wallet.
+
+7. We now define a `message_handler` function for Bob to handle incoming messages:
+
+    ```python copy
+    @bob.on_message(model=Message)
+    async def message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+    if __name__ == "__main__":
+        bob.run()
+    ```
+
+    Here we defined a function handling incoming messages of type `Message`. It logs the sender's address and the message content.
+
+8. Finally we save and run the script.
+
+The overall script for this example should look as follows:
+
+```python copy filename="agent_1.py"
+from cosmpy.aerial.wallet import LocalWallet
+from uagents import Agent, Context, Model
+from uagents.network import get_faucet, get_name_service_contract
+
+# NOTE: Run agent1.py before running agent2.py
+
+
+class Message(Model):
+    message: str
+
+
+bob = Agent(
+    name="bob-0",
+    seed="agent bob-0 secret phrase",
+    port=8001,
+    endpoint=["http://localhost:8001/submit"],
+)
+
+
+my_wallet = LocalWallet.from_unsafe_seed("registration test wallet")
+name_service_contract = get_name_service_contract(test=True)
+faucet = get_faucet()
+DOMAIN = "example.agent"
+
+faucet.get_wealth(my_wallet.address())
+
+
+@bob.on_event("startup")
+async def register_agent_name(ctx: Context):
+    await name_service_contract.register(
+        bob.ledger, my_wallet, bob.address, bob.name, DOMAIN
+    )
+
+
+@bob.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+
+if __name__ == "__main__":
+    bob.run()
+```
+
+### Alice
+
+Let's now define the code for our second agent, Alice.
+
+1. First of all, we import the required libraries and modules:
+
+    ```python copy
+    from uagents import Agent, Context, Model
+    ```
+
+2. Let's then define the message data model similarly to what we did for Bob:
+
+    ```python copy
+    class Message(Model):
+        message: str
+    ```
+
+3. We proceed and initialise the agent:
+
+    ```python copy
+    alice = Agent(
+        name="alice-0",
+        seed="agent alice-0 secret phrase",
+        port=8000,
+        endpoint=["http://localhost:8000/submit"],
+    )
+    ```
+
+    We initialise an agent named `alice-0` with a specified `seed`. The agent listens on port `8000` and has an `endpoint` for submitting messages.
+
+4. We then need to define the domain of the agent. The `DOMAIN` specifies the domain for the agent communication. This domain is used to construct the full address of Bob:
+
+    ```python copy
+    DOMAIN = "example.agent"
+    ```
+
+5. Finally we define the functions and behaviours for Alice:
+
+    ```python copy
+    @alice.on_interval(period=5)
+    async def alice_interval_handler(ctx: Context):
+        bob_name = "bob-0" + "." + DOMAIN
+        ctx.logger.info(f"Sending message to {bob_name}...")
+        await ctx.send(bob_name, Message(message="Hello there bob."))
+
+    if __name__ == "__main__":
+        alice.run()
+    ```
+
+    This `alice_interval_handler` function runs at regular intervals of 5 seconds to send messages. The handler constructs Bob's address using the domain and sends a message to Bob. It combines `bob-0` name with the `DOMAIN` to form `bob-0.example.agent`.
+    The agent logs the action and sends a message with the content "Hello there bob." to Bob agent.
+
+The overall script for this example should look as follows:
+
+```python copy filename="agent_2.py"
+from uagents import Agent, Context, Model
+
+class Message(Model):
+    message: str
+
+alice = Agent(
+    name="alice-0",
+    seed="agent alice-0 secret phrase",
+    port=8000,
+    endpoint=["http://localhost:8000/submit"],
+)
+
+DOMAIN = "example.agent"
+
+@alice.on_interval(period=5)
+async def alice_interval_handler(ctx: Context):
+    bob_name = "bob-0" + "." + DOMAIN
+    ctx.logger.info(f"Sending message to {bob_name}...")
+    await ctx.send(bob_name, Message(message="Hello there bob."))
+
+
+if __name__ == "__main__":
+    alice.run()
+```
+
+### Expected output
+
+Within your terminal windows you should see something similar to the following:
+
+1. **Bob**:
+
+    ```
+    INFO:     [bob-0]: Registering on almanac contract...
+    INFO:     [bob-0]: Registering on almanac contract...complete
+    INFO:     [network]: Registering name...
+    INFO:     [network]: Registering name...complete
+    INFO:     [bob-0]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    INFO:     [bob-0]: Received message from agent1qwquu2d237gntfugrnwch38g8jkl76vdr05qjm4wyps6ap04fvt8vtzhpqw: Hello there bob.
+    ```
+
+2. **Alice**:
+
+    ```
+    INFO:     [alice-0]: Registering on almanac contract...
+    INFO:     [alice-0]: Registering on almanac contract...complete
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    INFO:     [alice-0]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    INFO:     [alice-0]: Sending message to bob-0.agent...
+    ```
