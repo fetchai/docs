@@ -54,9 +54,8 @@ async def location_coordinates(latitude, longitude):
 async def location_coordinates_calculator(ctx: Context, sender: str, msg: Coordinates):
     ctx.logger.info(msg.location)
     latitude, longitude = map(str.strip, msg.location.split(','))
-    city = location_coordinates(latitude, longitude)
-    ctx.logger.info(city)
-    message = city
+    message = location_coordinates(latitude, longitude)
+    ctx.logger.info(f"Location found: {message}")
     await ctx.send(sender, UAgentResponse(message = message, type = UAgentResponseType.FINAL))
 
 agent.include(location_protocol)
