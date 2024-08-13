@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-This example creates a shopping assistant agent using FastAPI and uagents. The agent handles shopping questions, uses the OpenAI API to generate responses, and sends personalized shopping advice back to the user. The `on_query` method is key to processing and responding to these queries.
+This example creates a shopping assistant agent using FastAPI and uagents. The agent handles shopping questions, utilizes the OpenAI API to generate responses, and sends personalized shopping advice back to the user. The `on_query` method is key to processing and responding to these queries.
 
 
 ### Supporting Documents
@@ -22,7 +22,7 @@ This example creates a shopping assistant agent using FastAPI and uagents. The a
 
 # Shopping Assistance Agent
 
- - **models :** This code defines two data models, `ShoppingRequest` and `ShoppingAssistResponse`, using the uagents library, each with a single string attribute (question and answer, respectively).
+ - **models :** This code defines two data models, `ShoppingRequest` and `ShoppingAssistResponse`, using the uAgents library, each with a single string attribute (question and answer, respectively).
 
 ```py copy filename="models.py"
 from uagents import Model
@@ -232,25 +232,29 @@ To get started with this example, follow these steps:
  - Curl Request
 
 ```bash copy
-curl -G -L --data-urlencode "message=i want to purchase a macbook" "http://localhost:8000/api/question-answer/"
+curl -G -L --data-urlencode "message=I want to purchase a MacBook" "http://localhost:8000/api/question-answer/"
 ```
 
  - Curl Response
 
 ```bash
-{"response":"That's great! MacBooks are known for their sleek design and powerful performance. Here are a few options for you:\n\n1. MacBook Air: This is a great choice if you're looking for something lightweight and portable. It comes with a 13.3-inch retina display and is powered by Apple's M1 chip. The MacBook Air has up to 18 hours of battery life and comes with 256GB or 512GB of SSD storage.\n\n2. MacBook Pro: If you're a professional needing more power and features, this is the MacBook for you. It comes in two sizes; 13-inch and 16-inch, both powered by Apple's M1 chip. The MacBook Pro has a brighter Retina display than the Air,"}
+{"response":"Great choice! MacBooks are known for their sleek design, impressive performance, and high-quality display. Here are some things to consider before your purchase:\n\n1. **Model**: Apple currently offers MacBook Air and MacBook Pro. Each model comes with different sizes and specifications. The MacBook Air is a slim, lightweight machine, perfect for casual use or on-the-go work. The MacBook Pro is a more powerful machine, suitable for heavy-duty tasks like video editing, graphic design, and professional applications.\n\n2. **Specifications**: Depending on your needs, you might need more or less power. Consider the processor speed, the amount of RAM, the size of the solid-state drive (SSD), and the type of graphics card.\n\n3. **Budget**: Mac"}
 ```
 
  - Shopping Assistance Agent
 
 ```
-INFO:     [Shopping Assistant]: Received message from user1dg9tc03zc5n8fk0dlkrjpqeuehpa8gz8xtx832safvnljgvrlk4s0qsl9e with question: i want to purchase a macbook
-INFO:     [Shopping Assistant]: Question: i want to purchase a macbook
-Answer: That's a great choice! MacBooks are known for their high-quality performance, sleek design, and excellent customer service. Here are a few options for you:
+INFO:     [Shopping Assistant]: Almanac registration is up to date!
+INFO:     [Shopping Assistant]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     [Shopping Assistant]: Received message from user1fu0nqpf7mgxyms0wwvphgt8p3a7cvzfqqq6tkmxlhkr740glxzjsmzudat with question: I want to purchase a MacBook
+INFO:     [Shopping Assistant]: Question: I want to purchase a MacBook
+Answer: Great choice! MacBooks are known for their sleek design, impressive performance, and high-quality display. Here are some things to consider before your purchase:
 
-1. MacBook Air: This is a lightweight and portable option. It has a 13.3" Retina display, and comes with the new M1 chip from Apple, which increases its performance and battery life. 
+1. **Model**: Apple currently offers MacBook Air and MacBook Pro. Each model comes with different sizes and specifications. The MacBook Air is a slim, lightweight machine, perfect for casual use or on-the-go work. The MacBook Pro is a more powerful machine, suitable for heavy-duty tasks like video editing, graphic design, and professional applications.
 
-2. MacBook Pro: This is a larger and more powerful option. It's available in two sizes, 13.3" and 16". The 13.3" model also comes with the M1 chip, while the 16" model has Intel processors. The MacBook Pro is great if you do a lot of heavy computing tasks like video editing or
+2. **Specifications**: Depending on your needs, you might need more or less power. Consider the processor speed, the amount of RAM, the size of the solid-state drive (SSD), and the type of graphics card.
+
+3. **Budget**: Mac
 ```
 
 
