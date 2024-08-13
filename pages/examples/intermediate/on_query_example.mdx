@@ -1,0 +1,257 @@
+import { Callout } from 'nextra/components' 
+
+##  Shopping Assistance Agent using `on_query`
+
+## Introduction
+
+This example creates a shopping assistant agent using FastAPI and uagents. The agent handles shopping questions, uses the OpenAI API to generate responses, and sends personalized shopping advice back to the user. The `on_query` method is key to processing and responding to these queries.
+
+
+### Supporting Documents
+   
+    - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
+    - [How to create an agent ↗️](../../guides/agents/create-a-uagent).
+    - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
+    - [How to use on_query decorator ↗️](../../guides/agents/intermediate/handlers).
+    
+
+## Pre-requisites
+
+    - **Python :** Download and install from [Python official website ↗️](https://www.python.org/downloads/).
+
+
+# Shopping Assistance Agent
+
+ - **models :** This code defines two data models, `ShoppingRequest` and `ShoppingAssistResponse`, using the uagents library, each with a single string attribute (question and answer, respectively).
+
+```py copy filename="models.py"
+from uagents import Model
+
+
+class ShoppingRequest(Model):
+    question: str
+
+
+class ShoppingAssistResponse(Model):
+    answer: str
+
+```
+
+ - **Shopping Assistance Agent :** This code defines a shopping assistant agent using the uAgents framework. The agent listens for incoming `ShoppingRequest` messages, processes them by sending the user's question to OpenAI's GPT-4 API for a response, and then sends the generated response back to the sender as a `ShoppingAssistResponse`.
+
+```py copy filename="agent.py"
+from uagents import Agent, Context
+from uagents.setup import fund_agent_if_low
+from models import ShoppingAssistResponse, ShoppingRequest
+import requests
+import json
+
+
+agent = Agent(
+    name="Shopping Assistant",
+    seed="shopping_assistat_seed_phrase",
+    port=8001,
+    endpoint="http://localhost:8001/submit",
+)
+
+fund_agent_if_low(agent.wallet.address())
+
+YOUR_OPEN_AI_API_KEY = "PASTE_YOUR_OPEN_AI_API_KEY"
+
+
+def get_chat_response(messages):
+    """
+    Sends a request to the OpenAI GPT-4 API to generate a chat response.
+
+    Accepts:
+        - messages: A list of dictionaries representing the conversation history,
+                    where each dictionary contains a 'role' (e.g., 'system' or 'user')
+                    and 'content' (the message text).
+
+    What it does:
+        - Sends a POST request to the OpenAI API with the conversation history.
+        - Handles the API response, returning the generated response from the model
+          or an error message if the request fails.
+
+    Returns:
+        - A string containing the model's response if the request is successful.
+        - An error message string if the request fails.
+    """
+    api_url = "https://api.openai.com/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {YOUR_OPEN_AI_API_KEY}",
+        "Content-Type": "application/json",
+    }
+
+    data = {
+        "model": "gpt-4",
+        "messages": messages,
+        "max_tokens": 150,
+        "temperature": 0.7,
+    }
+
+    response = requests.post(api_url, headers=headers, data=json.dumps(data))
+
+    if response.status_code == 200:
+        result = response.json()
+        return result["choices"][0]["message"]["content"].strip()
+    else:
+        return f"Error: {response.status_code} - {response.text}"
+
+
+@agent.on_query(model=ShoppingRequest, replies=ShoppingAssistResponse)
+async def handler(ctx: Context, sender: str, msg: ShoppingRequest):
+    """
+    Handles incoming queries from other agents, specifically ShoppingRequest messages.
+
+    Accepts:
+        - ctx: The context object, used for logging and communication.
+        - sender: A string representing the address of the agent that sent the message.
+        - msg: A ShoppingRequest object containing the question from the user.
+
+    What it does:
+        - Logs the received question.
+        - Prepares a conversation history for the chat model with the role of the assistant and user.
+        - Sends the conversation history to the get_chat_response function to generate a response.
+        - Logs the generated response.
+        - Sends the response back to the sender as a ShoppingAssistResponse.
+
+    Returns:
+        - None (asynchronous function).
+    """
+    ctx.logger.info(f"Received message from {sender} with question: {msg.question}")
+    messages = [{"role": "system", "content": "You are a helpful shopping assistant."}]
+    messages.append({"role": "user", "content": msg.question})
+    response = get_chat_response(messages)
+    ctx.logger.info(f"Question: {msg.question}\nAnswer: {response}")
+    await ctx.send(sender, ShoppingAssistResponse(answer=response))
+
+
+if __name__ == "__main__":
+    agent.run()
+
+```
+
+<Callout type="info" emoji="ℹ️">
+   You need to have an OpenAI API key to run this example. You can get it from [OpenAI ↗️](https://openai.com/) .
+</Callout>
+
+ - **main.py :** This FastAPI code starts by defining an endpoint `/api/question-answer` that accepts a query parameter message, sends it to an agent for processing, and returns the agent's response.
+
+```py copy filename="main.py"
+from fastapi import FastAPI, Query
+from uagents.query import query
+from models import ShoppingRequest
+import json
+
+app = FastAPI()
+
+DESTINATION = "agent1qg9p5xppsdv6067lg570g8t3lzens32fg6d0fe88jawd2v0lsh8f6ru9ntc"
+
+
+@app.get("/api/question-answer")
+async def question_answering(
+    message: str = Query(..., description="The message or question you want to ask")
+):
+    """
+    Handles GET requests to the /api/question-answer endpoint.
+
+    Accepts:
+        - message: A string query parameter representing the message or question that you want to ask.
+
+    What it does:
+        - Creates a ShoppingRequest object using the provided message.
+        - Sends the ShoppingRequest object to the specified agent (DESTINATION) using the query function.
+        - Decodes the response payload received from the agent and parses it as JSON.
+
+    Returns:
+        - A dictionary containing the "response" with the answer retrieved from the agent.
+    """
+    shopping_request = ShoppingRequest(question=message)
+    answer = await query(destination=DESTINATION, message=shopping_request)
+    response_data = json.loads(answer.decode_payload())
+    return {"response": response_data.get("answer")}
+
+
+@app.get("/")
+async def root():
+    """
+    Handles GET requests to the root endpoint ("/").
+
+    What it does:
+        - Returns a simple "Hello World" message.
+
+    Returns:
+        - A dictionary containing a "message" key with the value "Hello World".
+    """
+    return {"message": "Hello World"}
+
+```
+
+
+ - **pyproject.toml :** Poetry Dependencies
+
+```py copy filename="pyproject.toml"
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+fastapi = "^0.112.0"
+uvicorn = {extras = ["standard"], version = "^0.30.5"}
+uagents = "^0.15.1"
+```
+
+## How to Run This Example
+
+To get started with this example, follow these steps:
+
+ - **Activate the Poetry Shell and Install Dependencies**
+
+   Open your terminal and run the following command to activate the Poetry shell and install all dependencies:
+
+   ```bash
+   poetry shell
+   ```
+
+ - **Start the FastAPI Server**
+
+   Navigate to the src directory and start the FastAPI server using uvicorn:
+ 
+   ```bash
+    cd src
+    uvicorn main:app
+   ```
+
+ - **Run the Agent Code**
+
+   Execute the agent code with the following command:
+   ```bash
+   python agent.py
+   ```
+
+## Expected output
+
+ - Curl Request
+
+```bash copy
+curl -G -L --data-urlencode "message=i want to purchase a macbook" "http://localhost:8000/api/question-answer/"
+```
+
+ - Curl Response
+
+```bash
+{"response":"That's great! MacBooks are known for their sleek design and powerful performance. Here are a few options for you:\n\n1. MacBook Air: This is a great choice if you're looking for something lightweight and portable. It comes with a 13.3-inch retina display and is powered by Apple's M1 chip. The MacBook Air has up to 18 hours of battery life and comes with 256GB or 512GB of SSD storage.\n\n2. MacBook Pro: If you're a professional needing more power and features, this is the MacBook for you. It comes in two sizes; 13-inch and 16-inch, both powered by Apple's M1 chip. The MacBook Pro has a brighter Retina display than the Air,"}
+```
+
+ - Shopping Assistance Agent
+
+```
+INFO:     [Shopping Assistant]: Received message from user1dg9tc03zc5n8fk0dlkrjpqeuehpa8gz8xtx832safvnljgvrlk4s0qsl9e with question: i want to purchase a macbook
+INFO:     [Shopping Assistant]: Question: i want to purchase a macbook
+Answer: That's a great choice! MacBooks are known for their high-quality performance, sleek design, and excellent customer service. Here are a few options for you:
+
+1. MacBook Air: This is a lightweight and portable option. It has a 13.3" Retina display, and comes with the new M1 chip from Apple, which increases its performance and battery life. 
+
+2. MacBook Pro: This is a larger and more powerful option. It's available in two sizes, 13.3" and 16". The 13.3" model also comes with the M1 chip, while the 16" model has Intel processors. The MacBook Pro is great if you do a lot of heavy computing tasks like video editing or
+```
+
+
+
