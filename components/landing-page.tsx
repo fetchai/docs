@@ -37,7 +37,7 @@ function LandingPage() {
         "This course is designed to introduce you to the development of Agents, providing a comprehensive guide",
       path: "/guides/agent-courses/introductory-course",
       image: coursesStack,
-      keywords: ["beginner", "python"],
+      keywords: ["Agents", "uAgents Framework"],
       vectors: vectorSquare,
     },
     {
@@ -46,7 +46,7 @@ function LandingPage() {
         "This course is designed to introduce you to building agents that are accessible to the AI Engine.",
       path: "/guides/agent-courses/agents-for-ai",
       image: coursesStackSecond,
-      keywords: ["novice", "python", "ai-engine", "gpt-3.5"],
+      keywords: ["Agents", "Agentverse", "AI Engine", "Multi-Agent Systems"],
       vectors: vectorPointer,
     },
   ];
