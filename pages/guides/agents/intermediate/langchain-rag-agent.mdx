@@ -1,10 +1,12 @@
 import {Callout} from 'nextra/components'
 
-# Build a LangChain RAG Agent to answer questions based on documents
+# Build a LangChain RAG Agent
 
 ## Introduction
 
 In this guide, we'll walk through how to create agents capable of answering questions based on any provided document using the Fetch.ai `uagents` and `ai_engine` libraries as well as `openai` and `cohere`. The aim is to assists you in building a **LangChain Retrieval-Augmented Generation (RAG) Agent**!
+
+The process of creating RAG agents has been improved by offering a decentralized and modular framework through the uagents and ai_engine libraries. These tools streamline the integration of AI models like OpenAI and Cohere, enabling more efficient and scalable development of intelligent agents. With enhanced interoperability, security, and resource management, this framework allows developers to quickly build and deploy sophisticated agents that can effectively answer questions based on any provided document, making the entire process faster and more robust.
 
     <Callout type="info" emoji="ℹ️">
       Check out the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) and [uAgents ↗️](https://pypi.org/project/uagents/) packages to download them and start integrating this tools within your Agents project!
@@ -386,11 +388,13 @@ We then define the code within this one which looks like the one provided here b
         bureau.run()
     ```
 
-## Run the project
+Now, both of agents are set up and you will need to **connect your local agents to the Agentverse** so for them to be retrievable for communication and interaction with any other registered agent on the Fetch Network. This way, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox) and afterward a [Agent Function ↗️](https://fetch.ai/docs/guides/agents/intermediate/agent-functions) will be created and [registered ↗️](https://fetch.ai/docs/guides/agentverse/agentverse-functions/registering-agent-services) for this agent.
 
-We are now ready to run the project. First of all, you will need to **connect your local agents to the Agentverse** for them to be retrievable for communication and interaction with any other registered agent on the Fetch Network. This way, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox) and afterward a [Agent Function ↗️](https://fetch.ai/docs/guides/agents/intermediate/agent-functions) will be created and [registered ↗️](https://fetch.ai/docs/guides/agentverse/agentverse-functions/registering-agent-services) for this agent. The `langchain_rag_user` agent is used as a testing agent for the RAG agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
+The `langchain_rag_user` agent is used as a testing agent for the RAG agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
 
-Head over to the following [guide ↗️](/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) for a better understanding of local agent registration on the Agentverse.
+    <Callout type="info" emoji="ℹ️">
+      Head over to the following [guide ↗️](/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) for a better understanding of local agent registration on the Agentverse.
+    </Callout>
 
 ### Expected output
 
