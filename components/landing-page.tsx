@@ -143,7 +143,7 @@ function LandingPage() {
     <section className={styles.page}>
       <div className={styles.headingSection}>
         <p className={styles.welcomeText}>Welcome to</p>
-        <p className={styles.mainTitle}>The Fetch.ai developer portal</p>
+        <h1 className={styles.mainTitle}>The Fetch.ai developer portal</h1>
         <p className={styles.description}>
           Explore our documentation, guides and examples to get to know Fetch.ai
           tools and products. Create an account to claim badges, and take part
