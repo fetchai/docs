@@ -3,7 +3,7 @@
 ## Introduction
 
 This file can be run on any platform supporting Python, with the necessary install permissions.
-This example shows how to set up a cleaning service using Agents ann uAgents library tools.
+This example shows how to set up a cleaning service using Agents and uAgents library tools.
 
 ### Supporting documentation
 
@@ -18,7 +18,7 @@ This example shows how to set up a cleaning service using Agents ann uAgents lib
 ### The Protocols
 #### __init__.py
 
-This protocol acts as a bridge cleaning service providers and users requesting cleaning services.
+This protocol acts as a bridge between cleaning service providers and users requesting cleaning services.
 
 The protocol defines the format for messages exchanged between the two parties. Users send `ServiceRequest` messages specifying details about their desired cleaning service, including location, time, duration, types of services needed, and their maximum budget. Providers respond with `ServiceResponse` messages indicating whether they can accept the request and, if so, their proposed price. Once a user confirms the booking with a `ServiceBooking` message containing all the agreed-upon details and price, the provider sends a `BookingResponse` message to confirm success or failure.
 
@@ -148,7 +148,7 @@ We now need to define the data structure for the cleaning service application. W
 * `Users`: for information like name, address, and creation time.
 * `Service`: for cleaning service type offered.
 * `Provider`: for details like name, location, creation time, and links to their availability and offered services.
-* `Availability`: so to define the provider's service schedule, including maximum service distance, start and end times, and minimum hourly price.
+* `Availability`: to define the provider's service schedule, including maximum service distance, start and end times, and minimum hourly price.
 
 Here is the full code:
 
