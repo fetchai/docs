@@ -71,7 +71,7 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
     >
       {hasHeadings && (
         <>
-          <p className="first-title">{config.toc.title.toString()}</p>
+          <p className="first-title">{config.toc.title}</p>
           <ul>
             {items.map(({ id, value, depth }) => (
               <li className="nx-my-2 nx-scroll-my-6 nx-scroll-py-6" key={id}>
