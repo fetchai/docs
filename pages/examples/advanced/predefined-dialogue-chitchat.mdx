@@ -246,7 +246,7 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
         # Instantiate the dialogues
         chitchat_dialogue = ChitChatDialogue(
             version="0.1",
-            agent_address=agent.address,
+            storage=agent.storage,
         )
 
         # Get an overview of the dialogue structure
@@ -311,9 +311,8 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
         # Instantiate the dialogues
         chitchat_dialogue = ChitChatDialogue(
             version="0.1",
-            agent_address=agent.address,
+            storage=agent.storage,
         )
-
 
         @chitchat_dialogue.on_continue_dialogue()
         async def continue_chitchat(

@@ -29,7 +29,6 @@ import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
 import Error404 from "components/error-404";
-import { useActiveAnchor } from "./contexts";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -37,9 +36,16 @@ type MyItem = Item & {
   permission: string[];
 };
 
+type Heading = {
+  depth: number;
+  value: string;
+  id: string;
+};
+
 interface BodyProps {
   themeContext: PageTheme;
   breadcrumb: ReactNode;
+  headings: Heading[];
   timestamp?: number;
   navigation: ReactNode;
   tags: string[] | null;
@@ -65,6 +71,7 @@ const Body = ({
   tags,
   children,
   directoriesWithTags,
+  headings,
 }: BodyProps): ReactElement => {
   const config = useConfig();
   const mounted = useMounted();
@@ -123,13 +130,10 @@ const Body = ({
     </div>
   );
 
-  const tocData = useActiveAnchor();
-  const structuredHeadings = Object.entries(tocData).map(([key, value]) => ({
-    // eslint-disable-next-line unicorn/prefer-string-replace-all
-    value: key.replace(/-/g, " "),
-    id: key,
-    depth: 2,
-    isActive: value.isActive,
+  const structuredHeadings = headings.map((heading) => ({
+    value: heading.value,
+    id: heading.id,
+    depth: heading.depth,
   }));
 
   const routeOriginal = useFSRoute();
@@ -311,6 +315,7 @@ const InnerLayout = ({
           />
           <SkipNavContent />
           <Body
+            headings={headings}
             themeContext={themeContext}
             breadcrumb={
               activeType !== "page" && themeContext.breadcrumb ? (
