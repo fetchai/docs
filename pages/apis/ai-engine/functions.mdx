@@ -108,6 +108,50 @@ properties={[
       type: "string",
       description: "Type of the function. Can be PRIMARY or SECONDARY.",
     },
+    {
+      name: "isDialogue",
+      type: "boolean",
+      description: "Default is true. Denotes if the registered function is dialogue or not.",
+      required: false,
+    },
+    {
+      name: "metadata",
+      type: "JSON",
+      description:
+        'Optional JSON object. Gives user the option to add additional metadata related to the function. Currently only geo-location data is supported. Structure is {"geo_location":{"location":{"lat":${lat},"lon":${lon}},"radius":${radius}}} - see details below.',
+      required: false,
+    },
+    {
+      name: "metadata-geo_location",
+      type: "JSON",
+      description:
+        'JSON object. Currently this is the only metadata supported. Structure is {"location":{"lat":${lat},"lon":${lon}},"radius":${radius}} - see details below.',
+    },
+    {
+      name: "metadata-geo_location-location",
+      type: "JSON",
+      description:
+        'JSON object. Latitude and longitude data relate. Structure is {"lat":${lat},"lon":${lon}} - see details below.',
+    },
+    {
+      name: "metadata-geo_location-location-lat",
+      type: "float",
+      description:
+        'Latitude related to the function.',
+    },
+    {
+      name: "metadata-geo_location-location-lon",
+      type: "float",
+      description:
+        'Longitude related to the function.',
+    },
+    {
+      name: "metadata-geo_location-radius",
+      type: "float",
+      description:
+        'Optional radius related to the function.',
+      required: false,
+    },
   ]}
   samplePayload={{
     "agent": "agent1qdnt5j8wr7cyzupu759w79scp3uaz50m33lfqazsf2tpfz84qfazjgnvfvy",
@@ -117,7 +161,16 @@ properties={[
     "modelDigest": "model:4ec922f7f18419cf7c6742f96eb4543a7ed5c131af077ca2b267607f65e62eb2",
     "modelName": "StockPrice/StocksProtocol",
     "arguments": [{"name": "symbol", "required": true, "type": "string", "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."}],
-    "type": "PRIMARY"
+    "type": "PRIMARY",
+    "metadata": {
+      "geo_location": {
+        "location": {
+          "lat": 52.205338,
+          "lon": 0.121817
+        },
+        "radius": 10
+      }
+    }
   }}
   responses={
     {
@@ -139,7 +192,17 @@ properties={[
         "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "CREATED"
+        "status": "CREATED",
+        "isDialogue": false,
+        "metadata": {
+          "geo_location": {
+            "location": {
+              "lat": 52.205338,
+              "lon": 0.121817
+            },
+            "radius": 10
+          }
+        }
     }
   }
   responseDescription="Returns the newly created function object"
@@ -258,7 +321,8 @@ properties={[
         "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
         "updatedAt": "2023-10-22T21:28:46",
-        "status": "CREATED"
+        "status": "CREATED",
+        "isDialogue": false
     }
   }
   pathParameters={{function_id:"your_function_id",}}
@@ -316,7 +380,51 @@ properties={[
       name: "type",
       type: "Optional[string]",
       description: "Optional - Type of the function. Can be PRIMARY or SECONDARY.",
-    }
+    },
+    {
+      name: "isDialogue",
+      type: "boolean",
+      description: "Default is false. Denotes if the registered function is dialogue or not.",
+      required: false,
+    },
+    {
+      name: "metadata",
+      type: "JSON",
+      description:
+        'Optional JSON object. Gives user the option to add additional metadata related to the function. Currently only geo-location data is supported. Structure is {"geo_location":{"location":{"lat":${lat},"lon":${lon}},"radius":${radius}}} - see details below.',
+      required: false,
+    },
+    {
+      name: "metadata-geo_location",
+      type: "JSON",
+      description:
+        'JSON object. Currently this is the only metadata supported. Structure is {"location":{"lat":${lat},"lon":${lon}},"radius":${radius}} - see details below.',
+    },
+    {
+      name: "metadata-geo_location-location",
+      type: "JSON",
+      description:
+        'JSON object. Latitude and longitude data relate. Structure is {"lat":${lat},"lon":${lon}} - see details below.',
+    },
+    {
+      name: "metadata-geo_location-location-lat",
+      type: "float",
+      description:
+        'Latitude related to the function.',
+    },
+    {
+      name: "metadata-geo_location-location-lon",
+      type: "float",
+      description:
+        'Longitude related to the function.',
+    },
+    {
+      name: "metadata-geo_location-radius",
+      type: "float",
+      description:
+        'Optional radius related to the function.',
+      required: false,
+    },
   ]}
   samplePayload={
     {
@@ -334,7 +442,16 @@ properties={[
                 "description": "The symbol of the share, for example: AAPL, GOOG, MSFT, etc."
             }
         ],
-        "type": "PRIMARY"
+        "type": "PRIMARY",
+        "metadata": {
+          "geo_location": {
+            "location": {
+              "lat": 52.205338,
+              "lon": 0.121817
+            },
+            "radius": 10
+          }
+        }
     }
   }
   responses={
@@ -356,8 +473,18 @@ properties={[
         ],
         "type": "PRIMARY",
         "createdAt": "2023-10-22T21:28:46",
-        "updatedAt": "2023-10-22T21:28:46",
-        "status": "CREATED"
+        "updatedAt": "2023-10-23T21:28:46",
+        "status": "CREATED",
+        "isDialogue": false,
+        "metadata": {
+          "geo_location": {
+            "location": {
+              "lat": 52.205338,
+              "lon": 0.121817
+            },
+            "radius": 10
+          }
+        }
     }
   }
   responseDescription="Returns the updated function object identified by a specific function_id."

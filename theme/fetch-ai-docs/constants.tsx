@@ -150,7 +150,7 @@ export const themeSchema = z.strictObject({
     headingComponent: z
       .custom<FC<{ id: string; children: string }>>(...fc)
       .optional(),
-    title: z.custom<ReactNode | FC>(...reactNode),
+    title: z.string(),
   }),
   useNextSeoProps: z.custom<() => NextSeoProps | void>(isFunction),
 });
