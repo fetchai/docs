@@ -158,7 +158,7 @@ const EXTERNAL_HREF_REGEX = /https?:\/\//;
 
 export const Link = ({ href = "", className, ...props }: AnchorProps) => {
   const childrenArray = React.Children.toArray(props?.children);
-  const splitChildren = childrenArray.map((child: any) =>
+  const splitChildren = childrenArray.map((child: string) =>
     typeof child === "string" ? child.split("↗️")[0] : child,
   );
 
