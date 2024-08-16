@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-const PackageVersion = ({ packageName, packageType }) => {
+const PackageVersion = ({
+  packageName,
+  packageType,
+}: {
+  packageName: string;
+  packageType: string;
+}) => {
   const [version, setVersion] = useState("");
 
   useEffect(() => {
