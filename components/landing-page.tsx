@@ -34,19 +34,19 @@ function LandingPage() {
     {
       title: "Agents 101",
       description:
-        "This course is designed to introduce you to the development of Agents, providing a comprehensive guide",
+        "This course is designed to introduce you to the development of Agents, providing a comprehensive guide.",
       path: "/guides/agent-courses/introductory-course",
       image: coursesStack,
-      keywords: ["beginner", "python"],
+      keywords: ["Beginner", "Python", "Courses"],
       vectors: vectorSquare,
     },
     {
       title: "Agents 101 for AI Engine",
       description:
-        "This course is designed to introduce you to building agents that are accessible to the AI Engine.",
+        "This course is designed to introduce you to building Agents that are accessible to the AI Engine.",
       path: "/guides/agent-courses/agents-for-ai",
       image: coursesStackSecond,
-      keywords: ["novice", "python", "ai-engine", "gpt-3.5"],
+      keywords: ["Beginner", "Python", "AI-Engine", "GPT-3.5", "Courses"],
       vectors: vectorPointer,
     },
   ];
@@ -146,8 +146,7 @@ function LandingPage() {
         <h1 className={styles.mainTitle}>The Fetch.ai developer portal</h1>
         <p className={styles.description}>
           Explore our documentation, guides and examples to get to know Fetch.ai
-          tools and products. Create an account to claim badges, and take part
-          in competitions.
+          tools and products.
         </p>
       </div>
       <section className="nx-mt-60">
