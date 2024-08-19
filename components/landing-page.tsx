@@ -46,7 +46,7 @@ function LandingPage() {
         "This course is designed to introduce you to building Agents that are accessible to the AI Engine.",
       path: "/guides/agent-courses/agents-for-ai",
       image: coursesStackSecond,
-      keywords: ["Beginner", "Python", "AI Engine", "GPT-3.5", "Courses"],
+      keywords: ["Beginner", "Python", "AI-Engine", "GPT-3.5", "Courses"],
       vectors: vectorPointer,
     },
   ];
