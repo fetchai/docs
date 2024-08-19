@@ -363,6 +363,11 @@ module.exports = withNextra({
         destination: "/examples/advanced/chat_api_example",
         permanent: true,
       },
+      {
+        source: "/guides/agents/cleaning-demo",
+        destination: "/examples/intermediate/agents-cleaning-demo",
+        permanent: true,
+      },
     ];
   },
 });
