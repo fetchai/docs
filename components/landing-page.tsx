@@ -146,8 +146,7 @@ function LandingPage() {
         <h1 className={styles.mainTitle}>The Fetch.ai developer portal</h1>
         <p className={styles.description}>
           Explore our documentation, guides and examples to get to know Fetch.ai
-          tools and products. Create an account to claim badges, and take part
-          in competitions.
+          tools and products.
         </p>
       </div>
       <section className="nx-mt-60">
