@@ -66,6 +66,28 @@ my_group = next(
 )
 ```
 
+
+### Sharing function groups
+
+Allow other users to use functions, under a function-group, without replicating that function or allowing
+them alter those functions or funtion-group data.
+
+If you wish to give access to a certain function-group (use, not alter the data/state of it), you can use the following method in the following way:
+
+``` python
+# assuming `ai_engine` is a valid instance of AiEngine
+
+what_function_group_identifier_i_want_share="normally-this-is-an-uuid4"
+user_email_i_want_to_share_the_function_group_with = "random@domain.com"
+await ai_engine.share_function_group(
+	function_group_id=what_function_group_identifier_i_want_share,
+	target_user_email=user_email_i_want_to_share_the_function_group_with
+)
+```
+Now, if you were requesting the available function-groups for the user with email assigned to the `target_user_email` argument, the function-group with the id assigned to `function_group_id`.
+
+You can check that by using the `AiEngine.get_function_groups` method.
+
 ### Creating a session with the AI Engine.
 
 This code starts a session with the AI Engine using the UUID of the selected function group.
