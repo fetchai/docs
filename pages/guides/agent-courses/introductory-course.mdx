@@ -151,7 +151,7 @@ Agents are identified by **two types of addresses**, serving as identifiers for 
     2. **Fetch Address**: this cryptographic public address is linked to the agent and its wallet on the Fetch.ai blockchain; it enables various functionalities, including interacting with the [Fetch ledger ↗️](/concepts/fetch-network/ledger/intro), registering in the Almanac contract and performing operations, including token or asset transfers on the blockchain.
 
     <Callout type="info" emoji="ℹ️">
-      Check out the [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address) guide to learn more on this topic.
+      Check out the [Getting an agent addresses ↗️](/guides/agents/getting-uagent-address) guide to learn more on this topic.
     </Callout>
 
 #### Storage
@@ -278,7 +278,7 @@ The output of the above would look similar to:
     ```
 
     <Callout type="info" emoji="ℹ️">
-      Check out our [Getting an agent addresses 🤖📫↗️](/guides/agents/getting-uagent-address) guide for an in-depth understanding of these topics.
+      Check out our [Getting an agent addresses ↗️](/guides/agents/getting-uagent-address) guide for an in-depth understanding of these topics.
     </Callout>
 
 ### Agents and interval tasks
@@ -480,7 +480,6 @@ We can start with `alice` agent. Let's create a Python script for it: `touch rem
 
 We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our agents. We also need to provide Bob's address as a recipient address for reference. We can then create our agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. The script would be as follows:
 
-
     ```py copy filename="remote_alice.py"
     from uagents import Agent, Context, Model
     from uagents.setup import fund_agent_if_low
@@ -488,7 +487,7 @@ We first import the required modules. We then use the `Model` class to define a 
     class Message(Model):
         message: str
 
-    RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+    RECIPIENT_ADDRESS = "agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
 
     agent = Agent(
         name="alice",
@@ -510,6 +509,10 @@ We first import the required modules. We then use the `Model` class to define a 
     if __name__ == "__main__":
         agent.run()
     ```
+
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `RECIPIENT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this example.
+    </Callout>
 
 Similarly, we need to define a script for `bob` so to create a remote communication with `alice` agent. Let's create a Python script for it: `touch remote_bob.py`. Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
 
@@ -538,6 +541,10 @@ Similarly, we need to define a script for `bob` so to create a remote communicat
     if __name__ == "__main__":
         agent.run()
     ```
+
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this example.
+    </Callout>
 
 In different terminal windows, first run `remote_bob.py` and then `remote_alice.py`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two agents in parallel terminals use the `poetry run python remote_alice.py` and `poetry run python remote_bob.py`. The expected output would be:
 
@@ -924,6 +931,10 @@ The overall script would be as follow:
         restaurant.run()
     ```
 
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this example.
+    </Callout>
+
 #### User agent
 
 We can now define the script for our `user` agent querying and booking a table at the `restaurant`.
@@ -1070,6 +1081,10 @@ The overall script would be:
     if __name__ == "__main__":
         user.run()
     ```
+
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `RESTAURANT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this example.
+    </Callout>
 
 We are ready to run the example.
 

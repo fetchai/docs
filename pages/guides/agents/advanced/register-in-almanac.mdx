@@ -46,6 +46,10 @@ async def hi(ctx: Context):
 agent.run()
    ```
 
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `name`, `seed`, `port` and `endpoint` parameters to correctly run this code.
+    </Callout>
+
 There's a few things happening in this script; we initialize Alice with an endpoint. An endpoint is the address in which other agents can send messages to where Alice will be listening. As highlighted in [Registration and Endpoints Weighting ↗️](/references/contracts/uagents-almanac/endpoints), agents can communicate by querying the Almanac and retrieving an endpoint from the recipient agent. Therefore, we need to specify the service endpoints when defining our agents.
 
 We also have to define `agent.run()`. This `.run()` function runs the agent, but more importantly this registers the agent to the Almanac when code is initialized.

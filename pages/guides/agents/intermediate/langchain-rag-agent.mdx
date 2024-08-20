@@ -186,6 +186,7 @@ The script for this agent looks as follows:
         seed=LANGCHAIN_RAG_SEED,
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
+
     fund_agent_if_low(agent.wallet.address())
 
     docs_bot_protocol = Protocol("DocsBot")
@@ -307,6 +308,10 @@ The script for this agent looks as follows:
 
     Finally, the agent is set to include the `DocsBot` protocol and is then run, which starts the agent and allows it to receive and process incoming messages.
 
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `name`, `seed`, `mailbox`, `LANGCHAIN_RAG_SEED` and `AGENT_MAILBOX_KEY` parameters to correctly run this example.
+    </Callout>
+
 ### LangChain User Agent
 
 We are now ready to define the **LangChain User Agent** which interacts with the LangChain RAG agent defined previously to ask a question based on documents found at specified URLs. The user agent sends a request to the RAG agent to retrieve and process information from the web page and then handle the response. The agent is defined as a [local agent with an endpoint ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-with-an-endpoint).
@@ -353,6 +358,10 @@ The script looks as follows:
     if __name__ == "__main__":
         rag_user.run()
     ```
+
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `QUESTION`, `URL`, `DEEP_READ`, `RAG_AGENT_ADDRESS`, `name`, `seed`  and `endpoint` parameters to correctly run this example.
+    </Callout>
 
     Here, we have created the User Agent which interacts with the LangChain RAG Agent we previously defined. The User Agent periodically asks the RAG Agent a predefined question and then handles the response.
 

@@ -33,11 +33,14 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Local agent setup
 
-```py copy filename="agent_1.py"
+    ```py copy filename="agent_1.py"
     from uagents import Agent, Context, Model
 
     class Message(Model):
         message: str
+
+    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+    SEED_PHRASE = "put_your_seed_phrase_here"
 
     # Now your agent is ready to join the agentverse!
     agent = Agent(
@@ -52,6 +55,10 @@ Make sure you have read the following resources before going on with this guide:
     if __name__ == "__main__":
         agent.run()
    ```
+
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters to correctly run this example.
+    </Callout>
 
 You should get something similar within your terminal output:
 
@@ -81,8 +88,7 @@ Once the agent is correctly retrieved, you will have to give it a **name**. When
 
 ## Updating your agent
 
-Let's update `alice`, alice will now print to console any message she receives, provided the message has a type of
-`Message`.
+Let's update `alice`, alice will now print to console any message it receives, provided the message is of type `Message`.
 
     ```py copy filename="agent_1.py"
     from uagents import Agent, Context, Model
@@ -91,6 +97,7 @@ Let's update `alice`, alice will now print to console any message she receives, 
         message: str
 
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+    SEED_PHRASE = "put_your_seed_phrase_here"
 
     # Now your agent is ready to join the agentverse!
     agent = Agent(
@@ -107,6 +114,10 @@ Let's update `alice`, alice will now print to console any message she receives, 
         agent.run()
    ```
 
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`,  `name`, `seed`  and `mailbox` parameters to correctly run this example.
+    </Callout>
+
 ## Creating an a second agent
 
 Let's create and run a second agent to message Alice every 3 seconds:
@@ -121,11 +132,18 @@ class Message(Model):
 
 agent_2 = Agent(name="agent_2", seed="agent_2 recovery phrase")
 
+ALICE_ADDRESS = "add_address_of_alice_agent"
+
 @agent_2.on_interval(period=3.0)
 async def send_message(ctx: Context):
-   await ctx.send([ALICE ADDRESS], Message(message=f"hello {datetime.datetime.now()}"))
+   await ctx.send([ALICE_ADDRESS], Message(message=f"hello {datetime.datetime.now()}"))
 
 ```
+
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `ALICE_ADDRESS`, `name` and `seed` parameters to correctly run this example.
+    </Callout>
+
 
 ## Testing
 
