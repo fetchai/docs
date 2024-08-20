@@ -2,11 +2,17 @@ import { Callout } from 'nextra/components'
 
 # Indexer / Ledger SubQuery
 
-##  Introduction
+##  Overview
 
-The **ledger-subquery** is a [SubQuery-based ↗️](https://www.subquery.network/) indexer for the [Fetch ledger ↗️](/concepts/fetch-network/ledger/intro). This indexer provides a [Graphql ↗️](https://www.subquery.network/) API for querying tracked entities.
+The **ledger-subquery** is a [SubQuery-based ↗️](https://www.subquery.network/) indexer for the [Fetch ledger ↗️](/concepts/fetch-network/ledger/intro). It provides a [Graphql ↗️](https://www.subquery.network/) API for querying tracked entities, allowing for streamlined and efficient data retrieval from the Fetch ledger.
 
-For a list of tracked entities, see the [schema.graphql file ↗️](https://github.com/fetchai/ledger-subquery/blob/main/schema.graphql).
+### Key Features
+
+    - **SubQuery-Based Indexer**: Utilizes SubQuery to index data from the Fetch ledger.
+    - **GraphQL API Access**: Allows querying of tracked entities through a powerful GraphQL API.
+    - **Schema Access**: A detailed list of tracked entities is accessible via the [schema.graphql file ↗️](https://github.com/fetchai/ledger-subquery/blob/main/schema.graphql).
+
+### Documentation and Learning Resources
 
 You can learn more on how to [run ↗️](https://academy.subquery.network/run_publish/run.html) or [change the SubQuery Project ↗️](https://academy.subquery.network/quickstart/quickstart_chains/cosmos.html), get your own custom GraphQL API for your app, by [visiting the SubQuery Academy ↗️](https://academy.subquery.network/) for further documentation.
 
@@ -14,6 +20,55 @@ You can learn more on how to [run ↗️](https://academy.subquery.network/run_p
       Checkout our [GitHub repository ↗️](https://github.com/fetchai/ledger-subquery) to improve your knowledge on the Indexer. Also, do not forget to check the [Indexer references ↗️](/references#indexer) to further expand your understanding on the concepts surrounding the Indexer and its features.
     </Callout>
 
-    <Callout type="warning" emoji="⚠️">
-      This documentation is currently under construction, and the content may not be up-to-date.
+## Architecture: Components Diagram
+
+The ledger-subquery architecture comprises several key components that work together to provide a GraphQL API for querying data from the Fetch ledger.
+
+The architecture follows a client-server model, enabling efficient data retrieval and interaction with the Fetch ledger.
+
+Here below we outline the components and their relationships in a UML component diagram.
+
+![subquery architecture component diagram](../../../../src/images/docs/indexer/architecture_legend_1.svg)
+
+### Key Components
+
+    - **Public GraphQL endpoint**: This serves as the entry point for external clients to interact with the system using GraphQL queries.
+    - **SubQuery Node**: A central hub that processes incoming GraphQL queries and coordinates data retrieval.
+    - **Indexer manager**: Manages the lifecycle of indexers, which are responsible for processing blockchain data and storing relevant information.
+    - **Fetch service**: Retrieves data from various sources, including the Fetch ledger.
+    - **Apollo Server**: Handles the parsing, execution, and response formatting of GraphQL queries.
+    - **Postgraphile**: Generates a GraphQL API based on the structure of the PostgreSQL database.
+    - **Store service**: Manages the storage and retrieval of indexed data.
+    - **Postgres DB**: The database that stores indexed data for efficient querying.
+    - **Private DB endpoint**: Provides access to the PostgreSQL database for internal operations.
+    - **Public RPC endpoint**: Offers a public interface for interacting with the Fetchd Node.
+    - **Fetchd Node**: A full node responsible for validating transactions and maintaining the blockchain.
+
+### Data Flow
+
+1. **Client Interaction**
+    - The client sends a GraphQL query to the public GraphQL endpoint. This is the entry point for external users to interact with the system.
+
+2. **Query Processing**
+    - The SubQuery Node receives the incoming GraphQL query.
+    - The GraphQL API, utilizing Apollo Server and Postgraphile, processes the query.
+
+3. **Data Retrieval and Processing**
+
+    - The Indexer manager and Fetch service within the SubQuery Node collaborate to retrieve the necessary data. This might involve accessing a blockchain through the Fetchd Node using the public RPC endpoint.
+
+4. **Data Storage**
+    - The processed data is sent to the Store service, which stores it in the Postgres DB using the private DB endpoint.
+
+5. **Response Generation**
+    - The Store service retrieves the processed data based on the GraphQL query. The GraphQL API formats the data into a response compatible with the GraphQL query. The formatted response is sent back to the client through the public GraphQL endpoint.
+
+    <Callout type="info" emoji="ℹ️">
+      The Fetchd Node is primarily involved in data retrieval for blockchain-related operations.
+      The Postgre DB serves as the primary data storage for the system.
+      The SubQuery Node acts as the central orchestrator for the entire data flow process.
     </Callout>
+
+![subquery architecture component diagram](../../../../src/images/docs/indexer/architecture_legend_2.svg)
+
+This architecture enables efficient data retrieval and querying, providing a powerful tool for developers to interact with the Fetch ledger.
