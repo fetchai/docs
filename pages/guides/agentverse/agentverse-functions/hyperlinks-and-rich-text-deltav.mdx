@@ -79,7 +79,7 @@ Here's the example of how to do this in:
         return hyperlinks_combined
 
     @news_protocol.on_message(model=NewsRequest, replies=UAgentResponse)
-    async def on_finbert_request(ctx: Context, sender: str, msg: NewsRequest):
+    async def on_news_request(ctx: Context, sender: str, msg: NewsRequest):
         ctx.logger.info(msg.company_name)
         symbol = await fetch_symbol(msg.company_name)
         ctx.logger.info(symbol)
@@ -98,7 +98,7 @@ Here's the example of how to do this in:
 
         1. `fetch_symbol()`: This asynchronous function retrieves the stock symbol for a company using the Alpha Vantage API. The function constructs a URL with the company name and API key, sends a request, and parses the response. If a match is found, it returns the best-matching symbol. If not, it returns `No Symbol found`.
         2. `analyze_news()`: This function fetches news articles related to the company using the GNews API. The function processes the list of articles, extracts their URLs, and formats each URL as a clickable hyperlink using the HTML `<a>` tag. The hyperlinks are then combined into a single string, with each link on a new line, and returned.
-        3. `on_finbert_request()`: This is the main function that handles incoming requests based on the NewsRequest model. When a request is received, it logs the company name, fetches the company’s stock symbol, retrieves and formats the news articles as hyperlinks, and sends the final response back to the sender. The response includes the rich text (formatted hyperlinks) as the message content.
+        3. `on_news_request()`: This is the main function that handles incoming requests based on the NewsRequest model. When a request is received, it logs the company name, fetches the company’s stock symbol, retrieves and formats the news articles as hyperlinks, and sends the final response back to the sender. The response includes the rich text (formatted hyperlinks) as the message content.
 
     <Callout type="info" emoji="ℹ️">
       Use HTML tags to format text as rich text. For example, use `<b>` for bold, `<i>` for italics, and `<u>` for underline. Embed hyperlinks using the `<a>` tag.
