@@ -1,10 +1,19 @@
 import { Callout } from 'nextra/components'
+import PackageVersion from 'components/package-version'
 
 # Rich Text and Hyperlinks in responses in DeltaV
 
 ## Introduction
 
 This guide will help you understand how to utilise **rich text** and **hyperlinks** within responses in your [DeltaV ↗️](/concepts/ai-engine/deltav) application based on a practical example. This is particularly useful for developers who need to generate interactive and informative content.
+
+    <Callout type="info" emoji="ℹ️">
+      Checkout the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) to download it and start integrating your Agents with this tool!
+
+      Current version of the AI Engine package is <PackageVersion packageName="uagents-ai-engine" packageType="pypi" />
+
+      Remember to check out the following [guide ↗️](/guides/agents/intermediate/ai-engine-compatible-agent) to make your agents AI-Engine and DeltaV compatible!
+    </Callout>
 
 ## Understanding Rich Text and Hyperlinks
 
@@ -66,20 +75,22 @@ Here's the example of how to do this in:
         response = requests.get(url)
         articles = response.json().get('articles', [])
 
-        # Extract URLs and convert them to hyperlinks
-        url_list = []
+        # Extract URLs and convert them to hyperlinks with titles
+        button_list = []
         for article in articles:
+            title = article.get("title", "No Title")
             url = article.get("url", "No Url")
             if url != "No Url":
-                url_list.append(f'<a href="{url}">{url}</a>')
+                # Create a clickable button with the title as text
+                button_list.append(f'<a href="{url}">{title}</a>')
 
-        # Combine hyperlinks into a single string with line breaks
-        hyperlinks_combined = '\n'.join(url_list)
+        # Combine buttons into a single string with line breaks
+        buttons_combined = '\n'.join(button_list)
 
-        return hyperlinks_combined
+        return buttons_combined
 
     @news_protocol.on_message(model=NewsRequest, replies=UAgentResponse)
-    async def on_news_request(ctx: Context, sender: str, msg: NewsRequest):
+    async def on_institute_news_request(ctx: Context, sender: str, msg: NewsRequest):
         ctx.logger.info(msg.company_name)
         symbol = await fetch_symbol(msg.company_name)
         ctx.logger.info(symbol)
@@ -88,7 +99,8 @@ Here's the example of how to do this in:
         await ctx.send(sender, UAgentResponse(message=news_content, type=UAgentResponseType.FINAL))
 
     agent.include(news_protocol)
-    ```
+
+        ```
 
     <Callout type="warning" emoji="⚠️">
       Remember that you need to get a `ALPHA_VANTAGE_API_KEY` Key from [GNews ↗️](https://gnews.io/) to correctly run this example.
@@ -96,9 +108,13 @@ Here's the example of how to do this in:
 
     The script integrates two key concepts: **fetching data from APIs** and **formatting the response with rich text** (specifically, HTML hyperlinks). We first import the needed libraries and then define the `NewsRequest` Data Model. This takes in a `company_name` as input, which will be used to fetch relevant data from GNews. We proceed and define a communication [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) within the DeltaV agent named `Institute News`. Protocols are used to handle specific types of messages or requests, in this case, news-related requests about a company. We go on and define 3 different functions:
 
-        1. `fetch_symbol()`: This asynchronous function retrieves the stock symbol for a company using the Alpha Vantage API. The function constructs a URL with the company name and API key, sends a request, and parses the response. If a match is found, it returns the best-matching symbol. If not, it returns `No Symbol found`.
-        2. `analyze_news()`: This function fetches news articles related to the company using the GNews API. The function processes the list of articles, extracts their URLs, and formats each URL as a clickable hyperlink using the HTML `<a>` tag. The hyperlinks are then combined into a single string, with each link on a new line, and returned.
-        3. `on_news_request()`: This is the main function that handles incoming requests based on the NewsRequest model. When a request is received, it logs the company name, fetches the company’s stock symbol, retrieves and formats the news articles as hyperlinks, and sends the final response back to the sender. The response includes the rich text (formatted hyperlinks) as the message content.
+        1. `fetch_symbol()`: Fetches the stock symbol of a company by querying the **Alpha Vantage API** with the company name. The function constructs the API request URL, sends the request, and parses the JSON response to extract the first match from the `bestMatches` list. If no match is found, it returns `No Symbol found`.
+        2. `analyze_news()`: This function fetches news articles related to the company using the **GNews API**. The function processes the list of articles, extracts their URLs, and formats each URL as a clickable hyperlink using the HTML `<a>` tag. The hyperlinks are then combined into a single string, with each link on a new line, and returned.
+        3. `on_news_request()`: This is the main function that handles incoming requests based on the `NewsRequest` model. The flow is:
+            - Logs the company name received in the request.
+            - Calls `fetch_symbol()` to retrieve the company's stock symbol.
+            - Calls `analyze_news()` to fetch and format the news articles into clickable links.
+            - Sends the final response containing the news content back to the sender, using the `UAgentResponse` class with a `FINAL` message type.
 
     <Callout type="info" emoji="ℹ️">
       Use HTML tags to format text as rich text. For example, use `<b>` for bold, `<i>` for italics, and `<u>` for underline. Embed hyperlinks using the `<a>` tag.
@@ -113,6 +129,8 @@ Here's the example of how to do this in:
 
     </Callout>
 
-## Conclusions
+## Expected output
+
+![](src/images/guides/deltav/hyperlinks-richtext/hyperlinks-richtext.png)
 
 This guide details how to enhance DeltaV responses using rich text and hyperlinks. Rich text allows for enhanced formatting of responses, while hyperlinks make content interactive by providing clickable links to additional resources. The example code demonstrates how to fetch data from APIs, format it with HTML links, and handle requests within a DeltaV agent. Proper use of these features improves readability, engagement, and the overall effectiveness of your responses.
