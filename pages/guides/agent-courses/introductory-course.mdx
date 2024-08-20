@@ -478,7 +478,9 @@ In this example, we provide scripts for two agents. To establish a line of remot
 
 We can start with `alice` agent. Let's create a Python script for it: `touch remote_alice.py`.
 
-We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our agents. We also need to provide Bob's address as a recipient address for reference. We can then create our agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. The script would be as follows:
+We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our agents. We also need to provide Bob's address as a recipient address for reference. We can then create our agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. Remember that you need to provide the `RECIPIENT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent and code.
+
+The script would be as follows:
 
     ```py copy filename="remote_alice.py"
     from uagents import Agent, Context, Model
@@ -510,10 +512,6 @@ We first import the required modules. We then use the `Model` class to define a 
         agent.run()
     ```
 
-    <Callout type="warning" emoji="⚠️">
-      Remember that you need to provide the `RECIPIENT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this example.
-    </Callout>
-
 Similarly, we need to define a script for `bob` so to create a remote communication with `alice` agent. Let's create a Python script for it: `touch remote_bob.py`. Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
 
     ```py copy filename="remote_bob.py"
@@ -542,9 +540,7 @@ Similarly, we need to define a script for `bob` so to create a remote communicat
         agent.run()
     ```
 
-    <Callout type="warning" emoji="⚠️">
-      Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this example.
-    </Callout>
+Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent!
 
 In different terminal windows, first run `remote_bob.py` and then `remote_alice.py`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two agents in parallel terminals use the `poetry run python remote_alice.py` and `poetry run python remote_bob.py`. The expected output would be:
 
@@ -876,7 +872,7 @@ Let's now move forward and create our restaurant agent in a separate file. In th
     )
     ```
 
-Let's build the `restaurant` agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the `restaurant` agent storage:
+Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly set up the agent. Let's build the `restaurant` agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the `restaurant` agent storage:
 
    ```py copy
     # build the restaurant agent from stock protocols and publish their details
@@ -931,10 +927,6 @@ The overall script would be as follow:
         restaurant.run()
     ```
 
-    <Callout type="warning" emoji="⚠️">
-      Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this example.
-    </Callout>
-
 #### User agent
 
 We can now define the script for our `user` agent querying and booking a table at the `restaurant`.
@@ -963,7 +955,7 @@ Once we've imported the necessary classes from the `uagents` library and the two
     )
     ```
 
-Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. Then, we need to create an `on_interval()` function which periodically queries the `restaurant`, asking for the availability of a table given the `table_query` parameters:
+Remember that you need to provide the `RESTAURANT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly set up the agent and code. Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. Then, we need to create an `on_interval()` function which periodically queries the `restaurant`, asking for the availability of a table given the `table_query` parameters:
 
     ```py copy
     table_query = QueryTableRequest(
@@ -1081,10 +1073,6 @@ The overall script would be:
     if __name__ == "__main__":
         user.run()
     ```
-
-    <Callout type="warning" emoji="⚠️">
-      Remember that you need to provide the `RESTAURANT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this example.
-    </Callout>
 
 We are ready to run the example.
 

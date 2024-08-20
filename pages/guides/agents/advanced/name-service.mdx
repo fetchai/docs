@@ -63,12 +63,13 @@ Let's start with the first agent of this example, Bob.
     my_wallet = LocalWallet.from_unsafe_seed("registration test wallet")
     name_service_contract = get_name_service_contract(test=True)
     faucet = get_faucet()
+
     DOMAIN = "example.agent"
 
     faucet.get_wealth(my_wallet.address())
     ```
 
-    We first create a wallet from a seed phrase and this wallet is used for interacting with the Fetch.ai blockchain. We then proceed and define the Name Service Contract. It retrieves the name service contract to register the agent's name on the blockchain. The `test=True` parameter indicates this is a `test` setup. Then, we define the faucet used to fund the wallet with test tokens. We then define the domain for the agent's name registration and finally proceed to request funds from the faucet to ensure the agent's wallet has sufficient funds to operate.
+    We first create a wallet from a seed phrase and this wallet is used for interacting with the Fetch.ai blockchain. We then proceed and define the Name Service Contract. It retrieves the name service contract to register the agent's name on the blockchain. The `test=True` parameter indicates this is a `test` setup. Then, we define the faucet used to fund the wallet with test tokens. We then define the domain for the agent's name registration and finally proceed to request funds from the faucet to ensure the agent's wallet has sufficient funds to operate. Remember that you need to provide the `name`, `seed`, `port`, `endpoint` and `DOMAIN` parameters to correctly run this code!
 
 
 5. We continue and define Bob's functions. We start with a register_agent_name function which registers Bob's name within the blockchain using the agent's wallet, address, name and domain parameters:
@@ -145,10 +146,6 @@ if __name__ == "__main__":
     bob.run()
 ```
 
-    <Callout type="warning" emoji="⚠️">
-      Remember that you need to provide the `name`, `seed`, `port`, `endpoint` and `DOMAIN` parameters to correctly run this code.
-    </Callout>
-
 ### Alice
 
 Let's now define the code for our second agent, Alice.
@@ -198,8 +195,9 @@ Let's now define the code for our second agent, Alice.
         alice.run()
     ```
 
-    This `alice_interval_handler()` function runs at regular intervals of 5 seconds to send messages. The handler constructs Bob's address using the domain and sends a message to Bob. It combines `bob-0` name with the `DOMAIN` to form `bob-0.example.agent`.
-    The agent logs the action and sends a message with the content "Hello there bob." to Bob agent.
+    This `alice_interval_handler()` function runs at regular intervals of 5 seconds to send messages. The handler constructs Bob's address using the domain and sends a message to Bob. It combines `bob-0` name with the `DOMAIN` to form `bob-0.example.agent`. The agent logs the action and sends a message with the content "Hello there bob." to Bob agent.
+
+    Remember that you need to provide the `name`, `seed`, `port`, `endpoint` and `DOMAIN` parameters to correctly run this code!
 
 The overall script for this example should look as follows:
 
@@ -228,10 +226,6 @@ async def alice_interval_handler(ctx: Context):
 if __name__ == "__main__":
     alice.run()
 ```
-
-    <Callout type="warning" emoji="⚠️">
-      Remember that you need to provide the `name`, `seed`, `port`, `endpoint` and `DOMAIN` parameters to correctly run this code.
-    </Callout>
 
 ### Expected output
 
