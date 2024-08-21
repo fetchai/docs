@@ -72,6 +72,8 @@ Consider the following Agent:
     agent.run()
     ```
 
+To correctly run this code, you need to provide the `name`, `seed`, `port` and `endpoint` parameters.
+
 You'll need to be running this agent on infrastructure that allows you to **open a port**; in our example, we run on port `6145`.
 
 The agent is initialized with an endpoint, and a port; this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an `int` as seen in the `Request` object.
@@ -93,7 +95,7 @@ Finally, we  run our agent as follows: `python agent.py`
     ```
 
     <Callout type="info" emoji="ℹ️">
-      Checkout the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) to download it and start integrating your Agents with this tool!
+      Check out the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) to download it and start integrating your Agents with this tool!
 
       Current version of the package is <PackageVersion packageName="uagents-ai-engine" packageType="pypi" />.
     </Callout>
@@ -136,6 +138,8 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
     if __name__ == "__main__":
         agent.run()
    ```
+
+To correctly run this code, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters.
 
 You can easily create a Mailbox by first retrieving your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**.
 
