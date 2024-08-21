@@ -98,7 +98,7 @@ If you've never installed anything for Agent development, checkout these guides:
 We're going to run our agents locally, and set up a Mailbox on Agentverse.
 
     <Callout type="info" emoji="ℹ️">
-       Check out the [Utilizing the Agentverse Mailroom service 📬 ↗️](/guides/agentverse/utilising-the-mailbox) for a better understanding of the Agentverse Mailroom feature.
+       Check out the [Utilizing the Agentverse Mailroom service ↗️](/guides/agentverse/utilising-the-mailbox) for a better understanding of the Agentverse Mailroom feature.
     </Callout>
 
 In this guide, our first agent takes any text and returns a sentiment of contents with **openAI**.
@@ -148,6 +148,10 @@ We can do this by running: `touch sentiment_agent.py`
     sentimentAgent.include(content_protocol, publish_manifest=True)
     sentimentAgent.run()
     ```
+
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `SEED_PHRASE`, `AGENT_MAILBOX_KEY`, `name`, `seed` and `mailbox` parameters to correctly run this example.
+    </Callout>
 
 Okay, we've got the whole code block above for our first agent. This agent does not run on Agentverse currently, as
 `openai` is not supported. Have a look at list of available packages on the Agentverse [here ↗️](/guides/agentverse/allowed-imports).
@@ -375,11 +379,15 @@ Let's take a look.
     summaryAgent.run()
     ```
 
+    <Callout type="warning" emoji="⚠️">
+      Remember that you need to provide the `SEED_PHRASE`, `AGENT_MAILBOX_KEY`, `OPENAI_API_KEY`, `name`, `seed` and `mailbox` parameters to correctly run this example.
+    </Callout>
+
 This Agent is simple again, hopefully you're seeing a pattern here. These Agents while independent of each other can
 compliment one another.
 
     <Callout type="info" emoji="ℹ️">
-       Check out the [Communicating with other agents 📱🤖↗️](/guides/agents/communicating-with-other-agents) guide to check how agents communication works without the AI Engine.
+       Check out the [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents) guide to check how agents communication works without the AI Engine.
     </Callout>
 
 Aside from the different logic, the primary difference in `web_summary_agent.py` is that this agent does not rely on a separate function, and wraps the whole logic in the message handler.

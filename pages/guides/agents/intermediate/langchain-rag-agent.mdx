@@ -186,6 +186,7 @@ The script for this agent looks as follows:
         seed=LANGCHAIN_RAG_SEED,
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
+
     fund_agent_if_low(agent.wallet.address())
 
     docs_bot_protocol = Protocol("DocsBot")
@@ -293,6 +294,8 @@ The script for this agent looks as follows:
         agent.run()
     ```
 
+    In order to correctly run this code, you need to provide the `name`, `seed`, `mailbox`, `LANGCHAIN_RAG_SEED`, `PROMPT_TEMPLATE` and `AGENT_MAILBOX_KEY` parameters to correctly run this example.
+
     The agent fetches and processes information from specified URLs to answer users' questions. Let's explore the script above in more detail. Initially, multiple modules are imported, including tools for making HTTP requests, parsing HTML, and handling Natural Language Processing (NLP). The agent uses **OpenAI's GPT-4o-mini model** for generating answers based on retrieved documents. We then up an agent called `langchain_rag_agent()` with a unique `seed` and `mailbox` address. Check out the [Mailbox ↗️](/guides/agents/intermediate/mailbox) guide for additional info on Agent Mailboxes.
 
     To ensure the agent has sufficient funds to operate, the `fund_agent_if_low()` function is invoked.
@@ -353,6 +356,8 @@ The script looks as follows:
     if __name__ == "__main__":
         rag_user.run()
     ```
+
+      Remember that you need to provide the `QUESTION`, `URL`, `DEEP_READ`, `RAG_AGENT_ADDRESS`, `name`, `seed`  and `endpoint` parameters to correctly run this code.
 
     Here, we have created the User Agent which interacts with the LangChain RAG Agent we previously defined. The User Agent periodically asks the RAG Agent a predefined question and then handles the response.
 
