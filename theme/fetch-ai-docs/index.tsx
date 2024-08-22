@@ -23,12 +23,13 @@ import {
 import { DEFAULT_LOCALE } from "./constants";
 import { ActiveAnchorProvider, ConfigProvider, useConfig } from "./contexts";
 import { getComponents } from "./mdx-components";
-import { renderComponent } from "./utils";
+import { renderComponent, useGitEditUrl } from "./utils";
 import React from "react";
 import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
 import Error404 from "components/error-404";
+import LastUpdatedTime from "components/last-updated";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -91,16 +92,6 @@ const Body = ({
       ? new Date(timestamp)
       : null;
 
-  const gitTimestampEl =
-    // Because a user's time zone may be different from the server page
-    mounted && date ? (
-      <div className="nx-flex nx-text-xs nx-mt-12 nv-mb-6 nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400">
-        {renderComponent(config.gitTimestamp, { timestamp: date })}
-      </div>
-    ) : (
-      <div className="nx-mt-16" />
-    );
-
   const handleTagClick = (tag: string) => {
     const filteredRoutes = directoriesWithTags.filter((directory) =>
       directory.tags.includes(tag),
@@ -139,6 +130,8 @@ const Body = ({
 
   const routeOriginal = useFSRoute();
   const [route] = routeOriginal.split("#");
+  const editUrl = useGitEditUrl(routeOriginal);
+  const pagesUrl = editUrl.split("/pages/")[1];
   const content = (
     <>
       {tagsComponent}
@@ -148,7 +141,7 @@ const Body = ({
         ""
       )}
       {children}
-      {gitTimestampEl}
+      <LastUpdatedTime filePath={`pages${pagesUrl}`} />
       {themeContext.timestamp && (
         <div className="nx-flex nx-justify-center nx-mb-6">
           <FeedbackComponent pageUrl={route} />
