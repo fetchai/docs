@@ -200,7 +200,7 @@ const Footer: React.FC = () => {
             <Anchor
               id="footer-social-reddit"
               className="nx-text-current"
-              href="https://www.linkedin.com/company/fetch-ai/"
+              href="https://www.reddit.com/r/FetchAI_Community/"
               newWindow
             >
               {renderComponent(
