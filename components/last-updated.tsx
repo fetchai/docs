@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 
 const LastUpdatedTime = ({ filePath }: { filePath: string }) => {
   const DEFAULT_LOCALE = "en-US";
-  const { locale = DEFAULT_LOCALE } = useRouter();
+  const { locale = DEFAULT_LOCALE, pathname } = useRouter();
   const [lastUpdated, setLastUpdated] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
@@ -31,16 +31,19 @@ const LastUpdatedTime = ({ filePath }: { filePath: string }) => {
 
   return (
     <>
-      <div className="nx-flex nx-gap-1 nx-text-xs nx-font-normal nx-mt-12 nv-mb-6 nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400">
-        <span>Last updated on </span>
-        <time dateTime={lastUpdated?.toISOString()}>
-          {lastUpdated?.toLocaleDateString(locale, {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
-        </time>
-      </div>
+      {pathname !== "/" && (
+        <div className="nx-flex nx-gap-1 nx-text-xs nx-font-normal nx-mt-12 nv-mb-6 nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400">
+          <span>Last updated on </span>
+
+          <time dateTime={lastUpdated?.toISOString()}>
+            {lastUpdated?.toLocaleDateString(locale, {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </time>
+        </div>
+      )}
     </>
   );
 };
