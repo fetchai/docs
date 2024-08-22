@@ -75,7 +75,6 @@ const Body = ({
   headings,
 }: BodyProps): ReactElement => {
   const config = useConfig();
-  const mounted = useMounted();
   const [matchingTagRoute, setMatchingTagRoute] =
     useState<{ route: string; tags: string[] }[]>();
 
@@ -86,11 +85,6 @@ const Body = ({
   if (themeContext.layout === "raw") {
     return <div className={classes.main}>{children}</div>;
   }
-
-  const date =
-    themeContext.timestamp && config.gitTimestamp && timestamp
-      ? new Date(timestamp)
-      : null;
 
   const handleTagClick = (tag: string) => {
     const filteredRoutes = directoriesWithTags.filter((directory) =>
