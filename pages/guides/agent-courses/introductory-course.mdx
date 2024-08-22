@@ -151,7 +151,7 @@ Agents are identified by **two types of addresses**, serving as identifiers for 
     2. **Fetch Address**: this cryptographic public address is linked to the agent and its wallet on the Fetch.ai blockchain; it enables various functionalities, including interacting with the [Fetch ledger ↗️](/concepts/fetch-network/ledger/intro), registering in the Almanac contract and performing operations, including token or asset transfers on the blockchain.
 
     <Callout type="info" emoji="ℹ️">
-      Check out the [Getting an agent addresses 🤖📫 ↗️](/guides/agents/getting-uagent-address) guide to learn more on this topic.
+      Check out the [Getting an agent addresses ↗️](/guides/agents/getting-uagent-address) guide to learn more on this topic.
     </Callout>
 
 #### Storage
@@ -278,7 +278,7 @@ The output of the above would look similar to:
     ```
 
     <Callout type="info" emoji="ℹ️">
-      Check out our [Getting an agent addresses 🤖📫↗️](/guides/agents/getting-uagent-address) guide for an in-depth understanding of these topics.
+      Check out our [Getting an agent addresses ↗️](/guides/agents/getting-uagent-address) guide for an in-depth understanding of these topics.
     </Callout>
 
 ### Agents and interval tasks
@@ -478,8 +478,9 @@ In this example, we provide scripts for two agents. To establish a line of remot
 
 We can start with `alice` agent. Let's create a Python script for it: `touch remote_alice.py`.
 
-We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our agents. We also need to provide Bob's address as a recipient address for reference. We can then create our agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. The script would be as follows:
+We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our agents. We also need to provide Bob's address as a recipient address for reference. We can then create our agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. Remember that you need to provide the `RECIPIENT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent and code.
 
+The script would be as follows:
 
     ```py copy filename="remote_alice.py"
     from uagents import Agent, Context, Model
@@ -488,7 +489,7 @@ We first import the required modules. We then use the `Model` class to define a 
     class Message(Model):
         message: str
 
-    RECIPIENT_ADDRESS="agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+    RECIPIENT_ADDRESS = "agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
 
     agent = Agent(
         name="alice",
@@ -538,6 +539,8 @@ Similarly, we need to define a script for `bob` so to create a remote communicat
     if __name__ == "__main__":
         agent.run()
     ```
+
+Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent!
 
 In different terminal windows, first run `remote_bob.py` and then `remote_alice.py`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two agents in parallel terminals use the `poetry run python remote_alice.py` and `poetry run python remote_bob.py`. The expected output would be:
 
@@ -869,7 +872,7 @@ Let's now move forward and create our restaurant agent in a separate file. In th
     )
     ```
 
-Let's build the `restaurant` agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the `restaurant` agent storage:
+Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly set up the agent. Let's build the `restaurant` agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the `restaurant` agent storage:
 
    ```py copy
     # build the restaurant agent from stock protocols and publish their details
@@ -952,7 +955,7 @@ Once we've imported the necessary classes from the `uagents` library and the two
     )
     ```
 
-Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. Then, we need to create an `on_interval()` function which periodically queries the `restaurant`, asking for the availability of a table given the `table_query` parameters:
+Remember that you need to provide the `RESTAURANT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly set up the agent and code. Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. Then, we need to create an `on_interval()` function which periodically queries the `restaurant`, asking for the availability of a table given the `table_query` parameters:
 
     ```py copy
     table_query = QueryTableRequest(
