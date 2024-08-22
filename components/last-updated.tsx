@@ -31,9 +31,10 @@ const LastUpdatedTime = ({ filePath }: { filePath: string }) => {
 
   return (
     <>
-      <div className="nx-flex nx-gap-1 nx-text-xs nx-font-normal nx-mt-12 nv-mb-6 nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400">
-        <span>Last updated on </span>
-        {pathname !== "/" && (
+      {pathname !== "/" && (
+        <div className="nx-flex nx-gap-1 nx-text-xs nx-font-normal nx-mt-12 nv-mb-6 nx-text-gray-500 ltr:nx-text-right rtl:nx-text-left dark:nx-text-gray-400">
+          <span>Last updated on </span>
+
           <time dateTime={lastUpdated?.toISOString()}>
             {lastUpdated?.toLocaleDateString(locale, {
               day: "numeric",
@@ -41,8 +42,8 @@ const LastUpdatedTime = ({ filePath }: { filePath: string }) => {
               year: "numeric",
             })}
           </time>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };
