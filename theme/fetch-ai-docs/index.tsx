@@ -85,6 +85,7 @@ const Body = ({
   if (themeContext.layout === "raw") {
     return <div className={classes.main}>{children}</div>;
   }
+
   const date =
     themeContext.timestamp && config.gitTimestamp && timestamp
       ? new Date(timestamp)
