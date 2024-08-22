@@ -4,7 +4,7 @@ import type { ReactElement, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import "focus-visible";
 import cn from "clsx";
-import { useFSRoute, useMounted } from "nextra/hooks";
+import { useFSRoute } from "nextra/hooks";
 import { MDXProvider } from "nextra/mdx";
 import "./polyfill";
 import type { PageTheme } from "nextra/normalize-pages";
@@ -67,7 +67,6 @@ const classes = {
 const Body = ({
   themeContext,
   breadcrumb,
-  timestamp,
   navigation,
   tags,
   children,
