@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 
 export function getLastUpdatedDate(filePath: string) {
   try {
