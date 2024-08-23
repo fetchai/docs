@@ -8,7 +8,9 @@ ARG NEXT_PUBLIC_ALGOLIA_INDEX=""
 ARG NEWSLETTER_BASE_URL=""
 ARG SENDER_TOKEN=""
 
-RUN apk add tree && corepack prepare pnpm@8.6.10 --activate && corepack enable
+RUN apk add --no-cache git tree && \
+    corepack prepare pnpm@8.6.10 --activate && \
+    corepack enable
 
 WORKDIR /app
 ADD package.json pnpm-lock.yaml /app/

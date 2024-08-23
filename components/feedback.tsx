@@ -88,7 +88,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
         </p>
       ) : (
         <>
-          <h3 className="nx-text-lg nx-flex nx-justify-center ">
+          <h3 className="nx-text-lg md:nx-mt-0 nx-mt-3 nx-flex nx-justify-center ">
             Was this page helpful?
           </h3>
           <div
