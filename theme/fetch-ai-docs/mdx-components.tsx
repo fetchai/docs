@@ -9,6 +9,8 @@ import type { DocsThemeConfig } from "./constants";
 import { DetailsProvider, useDetails, useSetActiveAnchor } from "./contexts";
 import { useIntersectionObserver, useSlugs } from "./contexts/active-anchor";
 import React from "react";
+import Image from "next/image";
+import LinkImage from "../../src/svgs/external-link.svg";
 
 // Anchor links
 function HeadingLink({
@@ -154,22 +156,38 @@ const Summary = (props: ComponentProps<"summary">): ReactElement => {
 
 const EXTERNAL_HREF_REGEX = /https?:\/\//;
 
-export const Link = ({ href = "", className, ...props }: AnchorProps) => (
-  <Anchor
-    href={href}
-    newWindow={EXTERNAL_HREF_REGEX.test(href)}
-    className={cn(
-      "nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]",
-      className,
-    )}
-    {...props}
-  />
-);
+export const Link = ({ href = "", className, ...props }: AnchorProps) => {
+  const childrenArray = React.Children.toArray(props?.children);
+  const splitChildren = childrenArray.map((child: string) =>
+    typeof child === "string" ? child.split("↗️")[0] : child,
+  );
+
+  return (
+    <>
+      <span className="nx-inline-flex nx-gap-1">
+        <Anchor
+          href={href}
+          newWindow={EXTERNAL_HREF_REGEX.test(href)}
+          className={cn(
+            "nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]",
+            className,
+          )}
+          {...props}
+        >
+          {splitChildren}
+        </Anchor>
+        <Image src={LinkImage} alt="" width={20} height={20} />
+      </span>
+    </>
+  );
+};
 
 // eslint-disable-next-line react/prop-types
-const A = ({ href = "", ...props }) => (
-  <Anchor href={href} newWindow={EXTERNAL_HREF_REGEX.test(href)} {...props} />
-);
+const A = ({ href = "", ...props }) => {
+  return (
+    <Anchor href={href} newWindow={EXTERNAL_HREF_REGEX.test(href)} {...props} />
+  );
+};
 
 export const getComponents = ({
   isRawLayout,
