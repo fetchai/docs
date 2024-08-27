@@ -134,7 +134,7 @@ const Body = ({
         ""
       )}
       {children}
-      <LastUpdatedTime filePath={`pages${pagesUrl}`} />
+
       {themeContext.timestamp && (
         <div className="nx-flex nx-justify-center nx-mb-6">
           <FeedbackComponent pageUrl={route} />
