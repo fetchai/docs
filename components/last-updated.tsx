@@ -18,9 +18,12 @@ const LastUpdatedTime = ({ filePath }: { filePath: string }) => {
             filePath,
           }),
         });
-        const responseJson = await response.json();
-        const updatedDate = new Date(responseJson?.lastUpdatedDate);
-        setLastUpdated(updatedDate);
+        const { lastUpdatedDate } = await response.json();
+        if (lastUpdatedDate) {
+          setLastUpdated(new Date(lastUpdatedDate));
+        } else {
+          setLastUpdated(undefined);
+        }
       } catch (error) {
         console.error("Error fetching the last updated time:", error);
       }
