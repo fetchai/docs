@@ -57,7 +57,7 @@ ${
 
 requests.${method.toLowerCase()}("${actualUrl}", json=data, headers={
     "Authorization": "bearer <your token here>"
-}
+})
     `
     : `\
 import requests
@@ -68,9 +68,9 @@ ${
     : ``
 }
 
-requests.${method.toLowerCase()}("${actualUrl}",, headers={
+requests.${method.toLowerCase()}("${actualUrl}", headers={
     "Authorization": "bearer <your token here>"
-}
+})
     `;
 
   return (
@@ -309,12 +309,17 @@ export const ApiRequest: React.FC<{
   );
 };
 
+type SamplePayload = {
+  code?: unknown;
+  [key: string]: unknown;
+};
+
 export const ApiEndpointRequestResponse: React.FC<{
   apiUrl: string;
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   path: string;
   description: string;
-  samplePayload?: unknown;
+  samplePayload?: SamplePayload;
   responses?: unknown;
   responseProperties?: PropertyType[];
   responseDescription?: string;
@@ -350,6 +355,11 @@ export const ApiEndpointRequestResponse: React.FC<{
       setLoading(true);
       setError("");
       const requestPayloadJSON = JSON.parse(requestPayload || "{}");
+      const bodyPayload = properties.samplePayload?.code
+        ? JSON.stringify({
+            code: JSON.stringify(properties.samplePayload.code),
+          })
+        : JSON.stringify(requestPayloadJSON);
       const apiUrlWithParams = (properties.apiUrl +
         replacePathParameters(properties.path, pathParameters)) as string;
       const response = await fetch(apiUrlWithParams, {
@@ -358,9 +368,7 @@ export const ApiEndpointRequestResponse: React.FC<{
           "Content-Type": "application/json",
           Authorization: `Bearer ${bearerToken}`,
         },
-        body: properties.method.includes("GET")
-          ? null
-          : JSON.stringify(requestPayloadJSON),
+        body: properties.method.includes("GET") ? null : bodyPayload,
       });
       const data = await response.json();
       const responseText = JSON.stringify(data, null, 2);
