@@ -1,0 +1,140 @@
+# Agent Asynchronous Loops
+
+## Introduction
+
+In this example, we demonstrate how to use agents to communicate and exchange status updates in a decentralized system. Agents will send status messages to each other and handle acknowledgments in response. This example is useful for understanding how agents can interact, process messages, and maintain state.
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
+
+### The scripts
+
+#### Script 1
+
+    ```py copy filename="external_loop_attach.py"
+    import asyncio
+    import contextlib
+
+    from uagents import Agent, Bureau, Context
+
+    loop = asyncio.get_event_loop()
+
+
+    agent = Agent(
+        name="looper",
+        seed="<YOUR_SEED>",
+    )
+
+    bureau = Bureau(
+        agents=[agent],
+    )
+
+
+    @agent.on_event("startup")
+    async def startup(ctx: Context):
+        ctx.logger.info(">>> Looper is starting up.")
+
+
+    @agent.on_event("shutdown")
+    async def shutdown(ctx: Context):
+        ctx.logger.info(">>> Looper is shutting down.")
+
+
+    async def coro():
+        while True:
+            print("Doing hard work...")
+            await asyncio.sleep(1)
+
+
+    if __name__ == "__main__":
+        print("Attaching the agent or bureau to the external loop...")
+        loop.create_task(coro())
+
+        # > when attaching the agent to the external loop
+        loop.create_task(agent.run_async())
+
+        # > when attaching a bureau to the external loop
+        # loop.create_task(bureau.run_async())
+
+        with contextlib.suppress(KeyboardInterrupt):
+            loop.run_forever()
+    ```
+
+    This script demonstrates how to run an agent using an external event loop. For this example to run correctly, remember to provide a `seed` phrase to the agent. It initializes an agent and attaches it to a loop where it performs continuous background work (`coro()` function) alongside the agent's operations. You can choose to run either the agent or the entire `bureau` with the external loop. This approach provides greater flexibility when integrating the agent with other asynchronous tasks.
+
+#### Script 2
+
+    ```py copy filename="external_loop_run.py"
+    import asyncio
+
+    from uagents import Agent, Bureau, Context
+
+    loop = asyncio.get_event_loop()
+
+
+    agent = Agent(
+        name="looper",
+        seed="<YOUR_SEED>",
+        loop=loop,
+    )
+
+    bureau = Bureau(
+        agents=[agent],
+        loop=loop,
+    )
+
+
+    @agent.on_event("startup")
+    async def startup(ctx: Context):
+        ctx.logger.info(">>> Looper is starting up.")
+
+
+    @agent.on_event("shutdown")
+    async def shutdown(ctx: Context):
+        ctx.logger.info(">>> Looper is shutting down.")
+
+
+    async def coro():
+        while True:
+            print("Doing hard work...")
+            await asyncio.sleep(1)
+
+
+    if __name__ == "__main__":
+        print("Starting the external loop from the agent or bureau...")
+        loop.create_task(coro())
+
+        # > when starting the external loop from the agent
+        agent.run()
+
+        # > when starting the external loop from the bureau
+        # bureau.run()
+    ```
+
+    This script shows how to run an agent with its own **internal event loop**. For this example to run correctly, remember to provide a `seed` phrase to the agent. The agent is initialized with the `loop`, and both the agent and its background coroutine (`coro()` function) run within the same loop. This setup simplifies the integration by keeping everything within a single event `loop`, which can be advantageous for applications where you want the agent's lifecycle tightly coupled with its event handling function.
+
+### Expected Output
+
+- Script 1:
+
+    ```
+    Attaching the agent or bureau to the external loop...
+    Doing hard work...
+    Doing hard work...
+    Doing hard work...
+    >>> Looper is starting up.
+    ```
+
+- Script 2:
+
+    ```
+    Starting the external loop from the agent or bureau...
+    Doing hard work...
+    Doing hard work...
+    Doing hard work...
+    >>> Looper is starting up.
+    ```
