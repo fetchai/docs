@@ -146,17 +146,17 @@ We are now ready to run the script: `python agents_communication.py`
 The output would be:
 
     ```
-    [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
-    [slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
-    [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
-    [slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
-    [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
+    INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
+    INFO:     [slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
+    INFO:     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
+    INFO:     [slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
+    INFO:     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
     ```
 
 ## Agents Remote Communication: the Almanac Contract
 
-To speak, search or be found, your agent must register to the  [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview). Agents then query this to retrieve an HTTP endpoint for a recipient agent. [Registration in the Almanac ↗️](/guides/agents/register-in-almanac) requires paying a small fee, so make sure to have enough funds to allow for this. You can query the Almanac now, by using the search feature on [Agentverse ↗️](https://agentverse.ai/).
+An agent must register to the  [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) to communicate, to be searched or found. Agents can query this contract to retrieve an HTTP endpoint for a recipient agent. [Registration in the Almanac ↗️](/guides/agents/register-in-almanac) requires paying a small fee, so make sure to have enough funds to allow for this. You can query the Almanac now, by using the search feature on [Agentverse ↗️](https://agentverse.ai/).
 
 Whenever an agent registers in the Almanac, it must specify the service [endpoints ↗️](/references/contracts/uagents-almanac/endpoints) alongside a weight parameter for each endpoint provided. Agents trying to communicate with your agent will choose the service endpoints using a weighted random selection.
 
