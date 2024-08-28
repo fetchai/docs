@@ -4,13 +4,14 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-Within the uAgents Framework, you can allow agents to perform specific actions at the moment some sort of condition has been satisfied. You can do so, you will need to use a specific handler. These are like decorators and are identified by the following code syntax: `.on_...`.
+Within the uAgents Framework, functions can be decorated with handlers, to only be triggered on a condition caught be the uAgents library. 
 
 Below, we show how to use the following different event handlers:
 
     1. **Interval tasks**: `.on_interval()`
     2. **Handle messages**: `.on_message()`
     3. **Answer queries**: `.on_query()`
+    4. **Triggered by event**: `on_event()`
 
 ## Creating an interval task with `on_interval()` handler
 
@@ -413,3 +414,32 @@ In separate terminals:
 2. Run the **agent**: `python agent.py`
 
 3. Query the agent via the proxy: `curl -d '{"message": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/endpoint`
+
+
+
+## Catching events with  `on_event()` handler
+
+During startup, and shutdown there are two events that are caught by the uAgents library, `startup` and `shutdown`. 
+
+Here's an example: 
+
+### on_event("startup")
+
+```python 
+    @agent.on_event("startup")
+    async def introduce_agent(ctx: Context):
+        ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+        ...
+ 
+```
+
+### on_event("shutdown")
+```python 
+    @agent.on_event("shutdown")
+    async def introduce_agent(ctx: Context):
+        ctx.logger.info(f"Hello, I'm agent {agent.name} and I am shutting down")
+        ...
+ 
+```
+
+
