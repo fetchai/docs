@@ -246,6 +246,29 @@ To fully leverage the wallet APIs and ensure direct interaction between the wall
 
 </Row>
 
+### Disable Permissions
+
+<Row>
+    <Col>
+    Deletes permissions granted to an origin. If specific chain IDs are provided, only permissions granted to each specified chain ID are deleted. Otherwise, all permissions granted to the origin are removed, including those not assigned to specific chains.
+
+    **Params**
+
+    **`chainId`** *string* (optional): The chain id of the chain for which permissions are to be disabled.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        // Permissions deleted for all networks
+        await window.fetchBrowserWallet.wallet.disable();
+
+        // Permissions deleted for ‘fetchhub-4’
+        await window.fetchBrowserWallet.wallet.disable('fetchhub-4');
+        ```
+    </Col>
+
+</Row>
+
 ### Get Network
 
 <Row>
@@ -399,7 +422,7 @@ To fully leverage the wallet APIs and ensure direct interaction between the wall
 
 </Row>
 
-### Enable Permissions
+### Switch Network
 
 <Row>
     <Col>
@@ -415,7 +438,7 @@ To fully leverage the wallet APIs and ensure direct interaction between the wall
 
     **Error**
 
-    - If the wallet is locked
+    - If the wallet is locked.
     - If the dApp does not have permission to the networks API.
 
     </Col>
