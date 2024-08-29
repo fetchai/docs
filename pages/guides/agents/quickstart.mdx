@@ -89,10 +89,12 @@ Run the script to see the output:
 
 **Expected Output**:
 
-    `hello, my name is alice`
-    `hello, my name is alice`
-    `hello, my name is alice`
-
+    ```
+    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     hello, my name is alice
+    INFO:     hello, my name is alice
+    INFO:     hello, my name is alice
+    ```
 
 ## Message Handling Example
 
@@ -117,7 +119,7 @@ Open `simple_example.py` in your text editor and add the following code:
     emma = Agent(name="Emma", seed="emma_seed")
     liam = Agent(name="Liam", seed="liam_seed")
 
-    # Define behavior for Emma
+    # Define behaviour for Emma
     @emma.on_interval(period=3.0)
     async def send_message(ctx: Context):
         # Create an instance of the Message class with the desired content
@@ -125,10 +127,16 @@ Open `simple_example.py` in your text editor and add the following code:
         # Send the message to Liam
         await ctx.send(liam.address, message_to_liam)
 
+    # Define behavior for handling messages received by Emma
+    @emma.on_message(model=Message)
+    async def sigmar_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
     # Define behavior for handling messages received by Liam
     @liam.on_message(model=Message)
     async def liam_message_handler(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        await ctx.send(emma.address, Message(message="Hello Emma! Great and you?"))
 
     # Create a bureau and add agents
     bureau = Bureau()
@@ -153,7 +161,9 @@ Run the script to see the agents communicate:
 **Expected Output**:
 
     ```
-    [ Liam]: Received message from agent1q2aexr7d0e0x6z5r8zs972jyd8uq9429tc2qfgpax96x6ppyjs25keexnuk: Hey Liam, how's it going?
+    INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [ Liam]: Received message from agent1q2aexr7d0e0x6z5r8zs972jyd8uq9429tc2qfgpax96x6ppyjs25keexnuk: Hey Liam, how's it going?
+    INFO:     [ Emma]: Received message from agent1qfnv7prv0u9rc8p54yt373w4a2r6pyfsrschpfr7m3xqhjd6eyk2208022q: Hello Emma! Great and you?
     ```
 
 ## Reach out to the Team!

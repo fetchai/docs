@@ -2,15 +2,15 @@
 
 ## Introduction
 
-Each agent within the Fetch ecosystem is characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
+Agents within the Fetch Ecosystem are characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
 
 It is possible to distinguish between two different types of addresses:
 
     - `uAgent address`: this address identifies the agent within the Fetch Network. It's similar to a username within a chat platform, allowing other agents to discover and communicate with that specific agent by querying that agent's information from the Almanac contract.
 
-    - `Fetch network address`: this address is linked to the agent's wallet on the Fetch.ai network. It is essential to perform multiple functionalities like holding cryptocurrency, interacting with the [Fetch Ledger ↗️](/concepts/fetch-network/ledger/intro) , but also performing secure transactions. This address is also essential to register an agent on the [Almanac ↗️](/concepts/fetch-network/almanac) contract to ensure the agents has enough funds available to perform operations in the network.
+    - `Fetch network address`: this address is linked to the agent's wallet on the Fetch.ai network. It is essential to perform multiple functionalities like holding cryptocurrency, interacting with the [Fetch Ledger ↗️](/concepts/fetch-network/ledger/intro) and performing secure transactions. This address is needed to register an agent to the [Almanac ↗️](/concepts/fetch-network/almanac) contract. Note, you must ensure the agents has enough funds available to perform operations in the Fetch Network, however this is all done automatically and no funds are currently required. 
 
-If you want to retrieve the address of an agent, you can either use the `print()` function and specify which of the above addresses you wish to print out, or by calling the `.address()` and `.wallet.address()` methods using the `agent` object to retrieve specific information.
+If you want to retrieve the address of an agent, you can either use the `print()` function and specify which of the above addresses you wish to print out, or by calling the `.address()` or `.wallet.address()` methods using the `agent` object to retrieve specific information.
 
 **Let's now check how these ways of retrieving addresses look like!**
 
@@ -50,6 +50,7 @@ The output would be as follows:
 
     ```
     uAgent address: agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plflc0epzcjsv79t
+    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
     ```
 
 ## Print Fetch network address
@@ -77,6 +78,7 @@ The output would be as follows:
 
     ```
     Fetch network address: fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
+    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
     ```
 
 ## Print agent name and address using `name` and `address` methods
@@ -140,5 +142,6 @@ On your terminal, run the script: `python my_agent.py`
 The output should be as follows:
 
     ```
-    Hello, I'm agent alice and my address is agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t.
+    INFO:     Hello, I'm agent alice and my address is agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t.
+    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
     ```
