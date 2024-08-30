@@ -381,6 +381,7 @@ import json
 from fastapi import FastAPI
 from uagents import Model
 from uagents.query import query
+from uagents.envelope import Envelope 
 
 AGENT_ADDRESS = "agent1qt6ehs6kqdgtrsduuzslqnrzwkrcn3z0cfvwsdj22s27kvatrxu8sy3vag0"
 
@@ -388,9 +389,11 @@ class TestRequest(Model):
     message: str
 
 async def agent_query(req):
-    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
-    data = json.loads(response.decode_payload())
-    return data["text"]
+    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15)
+    if isinstance(response, Envelope):
+        data = json.loads(response.decode_payload())
+        return data["text"]
+    return response
 
 app = FastAPI()
 
