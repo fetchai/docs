@@ -121,9 +121,9 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
       label: "Other",
       content: [
         {
-          title: "Fetch Wallet",
+          title: "ASI Alliance Wallet",
           description:
-            "A guide helping you to get started with the Fetch wallet.",
+            "A guide helping you to get started with the ASI Alliance Wallet.",
           path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
         },
         {
