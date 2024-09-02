@@ -364,8 +364,9 @@ Let's explore the Proxy code script step-by-step:
     ```py copy
     @app.post("/endpoint")
     async def make_agent_call(req: TestRequest):
+        model = TestRequest.parse_obj(await req.json())
         try:
-            res = await agent_query(req)
+            res = await agent_query(model)
             return f"successful call - agent response: {res}"
         except Exception:
             return "unsuccessful agent call"
