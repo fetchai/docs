@@ -123,8 +123,8 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
         {
           title: "ASI Alliance Wallet",
           description:
-            "A guide helping you to get started with the ASI Alliance Wallet.",
-          path: "/guides/fetch-network/fetch-wallet/fetch-wallet-getting-started",
+            "A guide helping you to get started with the ASI Alliance wallet.",
+          path: "/guides/fetch-network/fetch-wallet/web-wallet/get-started",
         },
         {
           title: "How to convert FET to and from ERC20",
