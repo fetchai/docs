@@ -23,7 +23,6 @@ interface Item {
   path: string; // Link to the content
 }
 
-
 interface SectionProperties {
   heading: string;
   items: Item[];
