@@ -1,0 +1,140 @@
+import {Callout} from 'nextra/components'
+
+# How to add custom REST endpoints to your Agent
+
+
+## Introduction
+uAgents now support custom REST endpoints using the `on_rest_get()` and `on_rest_post()` decorators, enabling them to handle HTTP GET and POST requests directly. With this addition, agents can define specific routes, create request and response models, and interact seamlessly with REST clients. This feature enhances the flexibility of agents, allowing them to communicate with external systems using standard web protocols while ensuring that all responses conform to predefined models.
+
+Let's get started!
+
+## Prerequisites
+
+Make sure you have read the following resources before going on with this guide:
+
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
+    - [Almanac contract ↗️](/concepts/fetch-network/almanac)
+    - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
+    - [Options for running your Agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
+
+<Callout type="warning" emoji="⚠️">
+   Please note that this feature is only available at the 'agent level', meaning that you cannot add REST endpoints to uAgents protocols
+</Callout>
+
+## Usage
+
+To use the new REST API feature in your agent, follow these steps to define custom `GET` and `POST` routes, run the agent, and query the endpoints.
+
+### Define Custom GET and POST Routes
+
+#### GET Endpoint:
+Use the `@on_rest_get()` decorator to define a custom GET endpoint. You will need to specify the endpoint route and the response model.
+
+```py copy
+@agent.on_rest_get("/custom_get_route", Response)
+async def handle_get(ctx: Context) -> Dict[str, Any]:
+    return {
+        "field": <value>,
+    }
+
+```
+#### POST Endpoint:
+Use the `@on_rest_post()` decorator to define a custom POST endpoint. You need to provide both a request model (for input) and a response model (for output).
+
+```py copy
+@agent.on_rest_post("/custom_post_route", Request, Response)
+async def handle_post(ctx: Context, req: Request) -> Response:
+    ctx.logger.info(req)
+    return Response(...)
+```
+
+<Callout type="info" emoji="ℹ️">
+    For querying the agent you have to make sure that:
+
+   - You use the correct REST method ("GET" or "POST")
+   - You address the agent endpoint together with its route e.g `http://localhost:8000/custom_route`
+</Callout>
+
+### Example of custom GET and POST Routes:
+
+```py copy filename="agent.py"
+import time
+from typing import Any, Dict
+
+from uagents import Agent, Context, Model
+
+
+class Request(Model):
+    text: str
+
+
+class Response(Model):
+    timestamp: int
+    text: str
+    agent_address: str
+
+
+# You can also use empty models to represent empty request/response bodies
+class EmptyMessage(Model):
+    pass
+
+
+agent = Agent(name="Rest API")
+
+
+@agent.on_rest_get("/rest/get", Response)
+async def handle_get(ctx: Context) -> Dict[str, Any]:
+    ctx.logger.info("Received GET request")
+    return {
+        "timestamp": int(time.time()),
+        "text": "Hello from the GET handler!",
+        "agent_address": ctx.agent.address,
+    }
+
+
+@agent.on_rest_post("/rest/post", Request, Response)
+async def handle_post(ctx: Context, req: Request) -> Response:
+    ctx.logger.info("Received POST request")
+    return Response(
+        text=f"Received: {req.text}",
+        agent_address=ctx.agent.address,
+        timestamp=int(time.time()),
+    )
+
+
+if __name__ == "__main__":
+    agent.run()
+```
+
+## Run the example
+- 1. Run the agent: `python agent.py`
+- 2. Query the agent directly through your predefined interfaces:
+
+```bash
+curl -d '{"text": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/rest/post
+```
+
+
+### Expected Output
+
+- Curl Response:
+
+```curl copy
+{"timestamp": 1725610956, "text": "Received: test", "agent_address": "agent1q2qavahvzm2yw237g2cq40pe8p590ppysclaffp2dd0gtk9evtxag7c8djd"}
+```
+
+- Agent Logs:
+
+```agent copy
+WARNING:  [Rest API]: No endpoints provided. Skipping registration: Agent won't be reachable.
+INFO:     [Rest API]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     [Rest API]: Received POST request
+```
+
+
+
+
