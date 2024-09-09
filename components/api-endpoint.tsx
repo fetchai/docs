@@ -157,7 +157,9 @@ const CurlCodeTab: React.FC<{
 curl \\
 -X ${method} \\
 ${
-  isBearerTokenRequired ? `-H Authorization: bearer <your token here> \\\n` : ""
+  isBearerTokenRequired
+    ? `-H Authorization: bearer <your token here> -H 'Content-Type: application/json' \\\n`
+    : ""
 }${url}`;
 
   if (samplePayload) {
@@ -165,15 +167,22 @@ ${
   }
 
   return (
-    <Pre filename="bash" hasCopyCode={true} className="nx-pre-code">
-      {code.split("\n").map((line) => {
-        return (
-          <>
-            {line}
-            <br />
-          </>
-        );
-      })}
+    <Pre
+      filename="bash"
+      data-lanuage="curl"
+      hasCopyCode={true}
+      className="nx-pre-code"
+    >
+      <Code data-lanuage="bash" data-theme="default">
+        {code.split("\n").map((line) => {
+          return (
+            <>
+              {line}
+              <br />
+            </>
+          );
+        })}
+      </Code>
     </Pre>
   );
 };
@@ -432,7 +441,7 @@ export const ApiEndpointRequestResponse: React.FC<{
                   </p>
                   <Tooltip>
                     <p className="nx-text-sm nx-font-bold nx-text-gray-800 nx-pb-1">
-                      To access your Agentverse account, please follow these
+                      To access your Agentverse API key, please follow these
                       steps:
                     </p>
                     <ol className="nx-text-xs nx-leading-4 nx-text-gray-600 nx-pb-3 nx-list-decimal nx-mt-2 nx-p-[10px]">
@@ -448,28 +457,17 @@ export const ApiEndpointRequestResponse: React.FC<{
                         account.
                       </li>
                       <li>
-                        Once logged in, open the developer tools in your web
-                        browser.
+                        Once logged in, click on your profile icon in the
+                        top-right corner.
                       </li>
                       <li>
-                        In the developer tools, navigate to the{" "}
-                        <b>Applications</b> tab
+                        In the dropdown menu, select <b>API Keys</b>.
                       </li>
                       <li>
-                        Within the Applications tab, you will find a section for{" "}
-                        <b>cookies</b>.
+                        If you haven`t generated an API key yet, click on{" "}
+                        <b>Create New API Key</b>.
                       </li>
-                      <li>
-                        Look for a specific cookie named <b>Fauna</b> Name. This
-                        cookie contains your Fauna token
-                      </li>
-                      <li>
-                        Copy the value of the <b>Fauna</b> token from the
-                        cookie.
-                      </li>
-                      <li>
-                        Paste the copied <b>Fauna</b> token here.
-                      </li>
+                      <li>Copy the generated API key and paste it here.</li>
                     </ol>
                   </Tooltip>
                 </div>
