@@ -1,0 +1,202 @@
+# Getting started with Fetch.ai x Langchain
+
+Fetch.ai creates a dynamic communication layer that allows you to abstract away components into individual [agents](). Agents are microservices that are programmed to communicate with other agents, and or humans. By using agents to represent different parts of your Lanchain program you give your project the option to be used by [other parties]() for economic benefit.
+
+## something simple with langchain
+
+Let's create a simple script that can find any information in a PDF. Using a document loader from langchain, and FAISS vector store along with open ai, we can load pdf, use FAISS to create a vector store, open_ai to create embeddings on the documents, and then use FAISS to do a similarity search. Quite complicated for a small example, but it is only a handful of lines of code:
+
+
+```python 
+
+from langchain_community.document_loaders import PyPDFLoader
+import os
+import getpass
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+
+openai_api_key = os.environ['OPENAI_API_KEY']
+
+loader = PyPDFLoader("./your-pdf.pdf")
+pages = loader.load_and_split()
+
+faiss_index = FAISS.from_documents(pages, OpenAIEmbeddings(openai_api_key=openai_api_key))
+
+docs = faiss_index.similarity_search("what problem does fetch solve?", k=2)
+for doc in docs:
+    print(str(doc.metadata["page"]) + ":", doc.page_content[:600])
+
+
+```
+
+## something simple with Fetch.ai
+
+Fetch.ai has the concept of an agent which at a base level an agent cannot do what langchain does, but an agent is the
+componenet that links them together.
+
+You can read more about agents communication in our [guides]()
+
+Let's install what we need:
+
+```bash
+
+poetry init
+poetry add uagents
+```
+
+Check out more detailed instructions for installation
+
+### agent 1
+
+Agent one 
+
+```python agent1.py
+from uagents import Agent, Context, Model
+from uagents.setup import fund_agent_if_low
+ 
+class Message(Model):
+    message: bool
+ 
+RECIPIENT_ADDRESS=""
+ 
+agent = Agent(
+    name="agent",
+    port=8000,
+    seed="",
+    endpoint=["http://127.0.0.1:8000/submit"],
+)
+ 
+fund_agent_if_low(agent.wallet.address())
+ 
+@agent.on_interval(period=2.0)
+async def send_message(ctx: Context):
+    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
+ 
+@agent.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+ 
+if __name__ == "__main__":
+    agent.run()
+
+```
+
+### agent two
+
+```python agent2.py
+
+from uagents.setup import fund_agent_if_low
+from uagents import Agent, Context, Model
+ 
+class Message(Model):
+    message: str
+ 
+agent = Agent(
+    name="slaanesh",
+    port=8001,
+    seed="",
+    endpoint=["http://127.0.0.1:8001/submit"],
+)
+ 
+fund_agent_if_low(slaanesh.wallet.address())
+ 
+@agent.on_event("startup")
+async def start(ctx: Context):
+	ctx.logger.info(f"agent address is {agent.address})
+
+@agent.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+ 
+    await ctx.send(sender, Message(message="hello there"))
+ 
+if __name__ == "__main__":
+    agent.run()
+
+```
+
+### Running the agents
+
+`poetry run python agent2.py`
+
+We must run the second agent first to get their unique address. This is output in the log. Let's update agent1.py `RECIPIENT_ADDRESS` to be that of the output agent address from agent2. 
+
+Updated agent1.py script:
+
+Agent one 
+
+```python agent1.py
+from uagents import Agent, Context, Model
+from uagents.setup import fund_agent_if_low
+ 
+class Message(Model):
+    message: bool
+ 
+RECIPIENT_ADDRESS="agent...."
+ 
+agent = Agent(
+    	...
+```
+
+`poetry run python agent1.py`
+
+### Output:
+
+```
+....
+```
+
+## wrapping them together, building a service: 
+
+Let's change our agents scripts, one of which sends a PDF address to the other, then the other agent using langchain returns information on the PDF based on the questions asked.
+
+### agent one, the requester agent.
+
+We have a couple of `Model` classes below, these represent a request and a response. Other agents must also know these classes. This agent sends a local path to a PDF, and a question that the other agent must answer about the PDF.
+
+
+```python agent1.py
+from uagents import Agent, Context, Protocol, Model
+from ai_engine import UAgentResponse, UAgentResponseType
+
+class DocumentUnderstanding(Model):
+    pdf_path: str
+    question: str
+
+
+class DocumentsResponse(Model):
+    learnings: str
+
+
+agent = Agent(
+    name="find_in_pdf",
+    seed=ENTER YOUR OWN RANDOM STR,
+    port=8001,
+    endpoint=["http://127.0.0.1:8001/submit"]
+)
+
+print("uAgent address: ", agent.address)
+summary_protocol = Protocol("Text Summariser")
+
+RECIPIENT_PDF_AGENT = ""
+
+
+@agent.on_event("startup")
+async def on_startup(ctx: Context):
+    await ctx.send(RECIPIENT_PDF_AGENT, DocumentUnderstanding(pdf_path="./a.pdf", question="What is the core aim of the project?",
+                                                session=str(uuid.uuid4())))
+
+
+@agent.on_message(model=DocumentsResponse)
+async def document_load(ctx: Context, sender: str, msg: DocumentsResponse):
+    ctx.logger.info(msg.learnings)
+
+
+agent.include(summary_protocol, publish_manifest=True)
+agent.run()
+
+```
+
+
+
+## next steps
