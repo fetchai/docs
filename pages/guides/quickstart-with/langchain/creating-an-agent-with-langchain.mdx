@@ -1,5 +1,7 @@
 # Getting started with Fetch.ai x Langchain
 
+## everything untested.
+
 Fetch.ai creates a dynamic communication layer that allows you to abstract away components into individual [agents](). Agents are microservices that are programmed to communicate with other agents, and or humans. By using agents to represent different parts of your Lanchain program you give your project the option to be used by [other parties]() for economic benefit.
 
 ## something simple with langchain
@@ -165,7 +167,7 @@ class DocumentUnderstanding(Model):
 
 
 class DocumentsResponse(Model):
-    learnings: str
+    learnings: str[]
 
 
 agent = Agent(
@@ -197,6 +199,66 @@ agent.run()
 
 ```
 
+### Agent two, wrapping the langchain bits
+
+
+```python
+from langchain_community.document_loaders import PyPDFLoader
+import os
+import getpass
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+from uagents import Agent, Context, Protocol, Model
+from typing import List
+
+
+class DocumentUnderstanding(Model):
+    pdf_path: str
+    question: str
+
+
+class DocumentsResponse(Model):
+    learnings: List[str]
+
+
+pdf_questioning_agent = Agent(
+    name="pdf_questioning_agent",
+    seed="ewgqregrexexgrqthrtwhrtehyjhb9wedcbobt",
+    port=8003,
+    endpoint=["http://127.0.0.1:8003/submit"],
+)
+
+print("uAgent address: ", pdf_questioning_agent.address)
+pdf_loader_protocol = Protocol("Text Summariser")
+
+
+@pdf_questioning_agent.on_message(model=DocumentUnderstanding, replies=DocumentsResponse)
+async def document_load(ctx: Context, sender: str, msg: DocumentUnderstanding):
+    loader = PyPDFLoader(msg.pdf_path)
+    pages = loader.load_and_split()
+    openai_api_key = os.environ['OPENAI_API_KEY']
+    learnings = []
+
+    faiss_index = FAISS.from_documents(pages, OpenAIEmbeddings(openai_api_key=openai_api_key))
+
+    docs = faiss_index.similarity_search(msg.question, k=2)
+
+    for doc in docs:
+        learnings.append(str(doc.metadata["page"]) + ":", doc.page_content[:600])
+
+    await ctx.send(sender, DocumentsResponse(learnings=learnings))
+
+
+pdf_questioning_agent.include(pdf_questioning_agent, publish_manifest=True)
+pdf_questioning_agent.run()
+
+
+```
+
+### output:
+
 
 
 ## next steps
+
+In the next part of this introduction, we will create a multi agent pipeline where we split the logic of the PDF agent into three more agents, one which verifes a PDF, the nexrt loads and splits a PDF and the final agent uses faiss to do the similarity search. 
