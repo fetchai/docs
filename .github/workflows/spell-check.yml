@@ -17,7 +17,7 @@ jobs:
     name: Check Spelling
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write
       actions: read
       security-events: write
     runs-on: ubuntu-latest
@@ -30,9 +30,10 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        pip install check-spelling
+    - name: Install check-spelling tool
+      uses: check-spelling/check-spelling@v1
+      with:
+        config: .github/spelling.yml
 
     - name: Run spell check
       id: spell-check
