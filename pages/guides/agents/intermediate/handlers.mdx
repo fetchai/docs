@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-Within the uAgents Framework, functions can be decorated with handlers, to only be triggered on a condition caught be the uAgents library. 
+Within the uAgents Framework, functions can be decorated with handlers, to only be triggered on a condition caught by the uAgents library.
 
 Below, we show how to use the following different event handlers:
 
@@ -93,9 +93,11 @@ Run the script: `python interval-task.py`
 The output should be as follows:
 
     ```
-    hello, my name is alice
-    hello, my name is alice
-    hello, my name is alice
+    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [alice]: Hello, I'm agent alice and my address is agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t.
+    INFO:     [alice]: Hello!
+    INFO:     [alice]: Hello!
+    INFO:     [alice]: Hello!
     ```
 
 ## Handle messages using the `on_message()` handler
@@ -324,9 +326,10 @@ Let's explore the Proxy code script step-by-step:
     ```py copy
     import json
 
-    from fastapi import FastAPI
+    from fastapi import FastAPI, Request
     from uagents import Model
     from uagents.query import query
+    from uagents.envelope import Envelope
 
     AGENT_ADDRESS = "agent1qt6ehs6kqdgtrsduuzslqnrzwkrcn3z0cfvwsdj22s27kvatrxu8sy3vag0"
 
@@ -338,9 +341,11 @@ Let's explore the Proxy code script step-by-step:
 
     ```py copy
     async def agent_query(req):
-        response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
-        data = json.loads(response.decode_payload())
-        return data["text"]
+        response = await query(destination=AGENT_ADDRESS, message=req, timeout=15)
+        if isinstance(response, Envelope):
+            data = json.loads(response.decode_payload())
+            return data["text"]
+        return response
     ```
 
 5. Initialize a `FastAPI` app:
@@ -361,9 +366,10 @@ Let's explore the Proxy code script step-by-step:
 
     ```py copy
     @app.post("/endpoint")
-    async def make_agent_call(req: TestRequest):
+    async def make_agent_call(req: Request):
+        model = TestRequest.parse_obj(await req.json())
         try:
-            res = await agent_query(req)
+            res = await agent_query(model)
             return f"successful call - agent response: {res}"
         except Exception:
             return "unsuccessful agent call"
@@ -376,9 +382,10 @@ The overall script should look as follows:
 ```py copy filename="on_query.py"
 import json
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from uagents import Model
 from uagents.query import query
+from uagents.envelope import Envelope 
 
 AGENT_ADDRESS = "agent1qt6ehs6kqdgtrsduuzslqnrzwkrcn3z0cfvwsdj22s27kvatrxu8sy3vag0"
 
@@ -386,9 +393,11 @@ class TestRequest(Model):
     message: str
 
 async def agent_query(req):
-    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
-    data = json.loads(response.decode_payload())
-    return data["text"]
+    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15)
+    if isinstance(response, Envelope):
+        data = json.loads(response.decode_payload())
+        return data["text"]
+    return response
 
 app = FastAPI()
 
@@ -397,9 +406,10 @@ def read_root():
     return "Hello from the Agent controller"
 
 @app.post("/endpoint")
-async def make_agent_call(req: TestRequest):
+async def make_agent_call(req: Request):
+    model = TestRequest.parse_obj(await req.json())
     try:
-        res = await agent_query(req)
+        res = await agent_query(model)
         return f"successful call - agent response: {res}"
     except Exception:
         return "unsuccessful agent call"
