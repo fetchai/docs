@@ -1,0 +1,251 @@
+# Multi agent workflows with Fetch.ai x Langchain
+
+Multi agent workflows are at the forefront of modern agent development; the idea that individual agents can be utilised to create larger more complex services for people has created lots of excitement in the AI space. With Fetch.ai we're building the agent communication layer, this perfecly compliments lanchain libraries. 
+
+Agents representing smaller parts of a service, allow for many agents to represent a whole. Agents reduce technical requirements in projects, for example you wouldn't need to write a function to calculate the hisorical index of a stock price, an agent will already return that data for you. 
+
+## The system
+
+3 agents, 
+
+![](src/images/guides/quickstart-with/langchain/multi-agent-workflow-simple.drawio.svg)
+
+
+In this example we are hard coding the agents addresses, meaning we know them. To search for agents dynamically, take a look at [the almanac]()
+
+## Installation
+
+```
+poerty init
+poetry add uagents requests langchain openai langchain-openai tiktoken faiss-cpu validators
+```
+
+Versions used for this example:
+
+```
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+uagents = "0.12.0"
+requests = "^2.31.0"
+langchain = "^0.1.7"
+openai = "^1.12.0"
+langchain-openai = "^0.0.6"
+tiktoken = "^0.6.0"
+faiss-cpu = "^1.7.4"
+validators = "^0.22.0"
+unstructured = "^0.12.4"
+```
+
+
+### environment setup
+
+```
+export OPENAI_API_KEY="YOUR_OPENAI_API_KEY"
+```
+
+### Agent 1, provides a question and a source
+
+Our simplest agent, this agent provides a link to a PDF and question to be answered from the document. 
+
+```python
+from uagents import Agent, Context, Protocol, Model
+
+
+class DocumentUnderstanding(Model):
+    pdf_path: str
+    question: str
+
+
+class DocumentsResponse(Model):
+    learnings: str
+
+
+agent = Agent(
+    name="find_in_pdf",
+    seed="iwfwieifeiwbf39fh230bf4n4203ni5gn20ri99dqwehdf328hf2bpbfwfenw",
+    port=8001,
+    endpoint=["http://127.0.0.1:8001/submit"],
+)
+
+print("uAgent address: ", agent.address)
+summary_protocol = Protocol("Text Summariser")
+
+AGENT_2_FAISS = "agent1q2dtm28a49jwzyjfy7f379ad3qrc0wetpzmvq582xj2dw553rvnjygnqacz"
+
+
+@agent.on_event("startup")
+async def on_startup(ctx: Context):
+    await ctx.send(
+        AGENT_2_FAISS,
+        DocumentUnderstanding(pdf_path="./a.pdf", question="What is the Fetch token?"),
+    )
+
+
+@agent.on_message(model=DocumentsResponse)
+async def document_load(ctx: Context, sender: str, msg: DocumentsResponse):
+    ctx.logger.info(msg.learnings)
+
+
+agent.include(summary_protocol, publish_manifest=True)
+agent.run()
+
+
+```
+
+### Agent 2, takes a request, and returns a result.
+
+Agent 2 gets the PDF and the request, but is unable to split the PDF. The agent sends a request to agent 3 to split the PDF, when the pages are returned FAISS similarity search is ran on the pages. 
+
+```python
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.vectorstores import FAISS
+from langchain_community.docstore.in_memory import InMemoryDocstore
+from langchain_openai import OpenAIEmbeddings
+from uagents import Agent, Context, Protocol, Model
+from langchain_openai import OpenAIEmbeddings
+from langchain_core.documents import Document
+import sys
+from typing import List
+import asyncio
+import time
+import os
+import uuid
+import faiss
+
+
+class PDF_Request(Model):
+    pdf_path: str
+    session: str
+
+
+class DocumentUnderstanding(Model):
+    pdf_path: str
+    question: str
+
+
+class PagesResponse(Model):
+    pages: List
+    session: str
+
+
+class DocumentsResponse(Model):
+    learnings: str
+
+
+faiss_pdf_agent = Agent(
+    name="faiss_pdf_agent",
+    seed="ewgqregregrqthrtwhrtehyt",
+    port=8002,
+    endpoint=["http://127.0.0.1:8002/submit"],
+)
+
+print("uAgent address: ", faiss_pdf_agent.address)
+faiss_protocol = Protocol("FAISS")
+
+AGENT_1_ADDRESS = "agent1qd25p4duuqhs3re8m4dszd3fy8qyhlpn5hu3p44rcyax5thqk79aynrzrce"
+PDF_splitter_address = (
+    "agent1qwk9slv474gwwf7mjgsrcje4swcmwgns43k5pp6phhzq2q9g9x2c6hk97en"
+)
+
+openai_api_key = os.environ["OPENAI_API_KEY"]
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+
+
+@faiss_pdf_agent.on_message(model=DocumentUnderstanding, replies=PDF_Request)
+async def document_load(ctx: Context, sender: str, msg: DocumentUnderstanding):
+    ctx.logger.info(msg)
+    ref = str(uuid.uuid4())
+    ctx.storage.set(ref, msg.question)
+    await ctx.send(
+        PDF_splitter_address, PDF_Request(pdf_path=msg.pdf_path, session=ref)
+    )
+
+
+@faiss_pdf_agent.on_message(model=PagesResponse, replies=DocumentsResponse)
+async def document_understand(ctx: Context, sender: str, msg: PagesResponse):
+    index = faiss.IndexFlatL2(len(embeddings.embed_query("hello")))
+
+    vector_store = FAISS(
+        embedding_function=embeddings,
+        index=index,
+        docstore=InMemoryDocstore(),
+        index_to_docstore_id={},
+    )
+
+    documents = []
+    for page in msg.pages:
+        documents.append(
+            Document(page_content=page["page_content"], metadata=page["metadata"])
+        )
+
+    uuids = [str(uuid.uuid4()) for _ in range(len(documents))]
+
+    vector_store.add_documents(documents=documents, ids=uuids)
+
+    results = vector_store.similarity_search(
+        ctx.storage.get(msg.session),
+        k=2,
+    )
+
+    if len(results) > 0:
+        await ctx.send(
+            AGENT_1_ADDRESS, DocumentsResponse(learnings=results[0].page_content)
+        )
+
+
+faiss_pdf_agent.include(faiss_protocol, publish_manifest=True)
+faiss_pdf_agent.run()
+
+```
+
+
+### Agent 3, validates a PDF, loads and returns the split.
+
+
+Agent three received the PDF, and splits the document using the langchain commiunity document loader PyPDFLoader. Returns an array of pages. 
+
+```python
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+from uagents import Agent, Context, Protocol, Model
+from ai_engine import UAgentResponse, UAgentResponseType
+from typing import List
+
+
+class PDF_Request(Model):
+    pdf_path: str
+    session: str
+
+
+class PagesResponse(Model):
+    pages: List
+    session: str
+
+
+pdf_loader_agent = Agent(
+    name="pdf_loader_agent",
+    seed="ewgqregrexexgrqthrtwhrtehyjhb9wedcbobt",
+    port=8003,
+    endpoint=["http://127.0.0.1:8003/submit"],
+)
+
+print("uAgent address: ", pdf_loader_agent.address)
+pdf_loader_protocol = Protocol("Text Summariser")
+
+
+@pdf_loader_agent.on_message(model=PDF_Request, replies=PagesResponse)
+async def document_load(ctx: Context, sender: str, msg: PDF_Request):
+    loader = PyPDFLoader(msg.pdf_path)
+    pages = loader.load_and_split()
+    await ctx.send(sender, PagesResponse(pages=pages, session=msg.session))
+
+
+pdf_loader_agent.include(pdf_loader_protocol, publish_manifest=True)
+pdf_loader_agent.run()
+
+
+```
+
+
+

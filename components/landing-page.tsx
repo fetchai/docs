@@ -19,7 +19,7 @@ function LandingPage() {
     {
       name: "Langchain",
       icon: langchain,
-      link: "/guides/agents/intermediate/langchain-rag-agent",
+      link: "/guides/quickstart-with/langchain/creating-an-agent-with-langchain",
     },
     {
       name: "FastAPI",

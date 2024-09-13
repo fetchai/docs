@@ -1,10 +1,10 @@
 # Getting started with Fetch.ai x Langchain
 
-## everything untested.
-
 Fetch.ai creates a dynamic communication layer that allows you to abstract away components into individual [agents](). Agents are microservices that are programmed to communicate with other agents, and or humans. By using agents to represent different parts of your Lanchain program you give your project the option to be used by [other parties]() for economic benefit.
 
-## something simple with langchain
+Let's take a look at a simple Langchain example, then see how we can extend this with agents.
+
+## A simple langchain example
 
 Let's create a simple script that can find any information in a PDF. Using a document loader from langchain, and FAISS vector store along with open ai, we can load pdf, use FAISS to create a vector store, open_ai to create embeddings on the documents, and then use FAISS to do a similarity search. Quite complicated for a small example, but it is only a handful of lines of code:
 
@@ -31,10 +31,11 @@ for doc in docs:
 
 ```
 
-## something simple with Fetch.ai
+However, there is a lot of smaller bits happening there. If we use agents for each step, then other agents can use those pieces of code 💡
 
-Fetch.ai has the concept of an agent which at a base level an agent cannot do what langchain does, but an agent is the
-componenet that links them together.
+## A simple agent with Fetch.ai
+
+Fetch.ai has the concept of an agent which at a base level an agent cannot do what langchain does, but an agent is the componenet that links them together.
 
 You can read more about agents communication in our [guides]()
 
@@ -104,7 +105,7 @@ fund_agent_if_low(slaanesh.wallet.address())
  
 @agent.on_event("startup")
 async def start(ctx: Context):
-	ctx.logger.info(f"agent address is {agent.address})
+	ctx.logger.info(f"agent address is {agent.address}")
 
 @agent.on_message(model=Message)
 async def message_handler(ctx: Context, sender: str, msg: Message):
@@ -123,7 +124,7 @@ if __name__ == "__main__":
 
 We must run the second agent first to get their unique address. This is output in the log. Let's update agent1.py `RECIPIENT_ADDRESS` to be that of the output agent address from agent2. 
 
-Updated agent1.py script:
+Updated agent1.py script sample:
 
 Agent one 
 
@@ -152,7 +153,7 @@ agent = Agent(
 
 Let's change our agents scripts, one of which sends a PDF address to the other, then the other agent using langchain returns information on the PDF based on the questions asked.
 
-### agent one, the requester agent.
+### Agent one, provides PDF and requests information.
 
 We have a couple of `Model` classes below, these represent a request and a response. Other agents must also know these classes. This agent sends a local path to a PDF, and a question that the other agent must answer about the PDF.
 
@@ -261,4 +262,4 @@ pdf_questioning_agent.run()
 
 ## next steps
 
-In the next part of this introduction, we will create a multi agent pipeline where we split the logic of the PDF agent into three more agents, one which verifes a PDF, the nexrt loads and splits a PDF and the final agent uses faiss to do the similarity search. 
+In the next part of this introduction, we will create a multi agent workflow where we split the logic of the PDF agent into three more agents, one which verifes a PDF, the next loads and splits a PDF and the final agent uses faiss to do the similarity search. 
