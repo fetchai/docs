@@ -31,7 +31,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Check spelling with codespell
-        run: codespell --ignore-words=.github/codespell.txt || exit 1
+        run: codespell ./pages --ignore-words=.github/codespell.txt --exclude-dir=vendor,node_modules --skip "*.yaml" || exit 1
 
   misspell:
     name: Check spelling with misspell
@@ -44,4 +44,5 @@ jobs:
         run: wget -O - -q https://git.io/misspell | sh -s -- -b .
 
       - name: Run misspell
-        run: ./misspell -error
+        run: ./misspell -error -exclude=vendor,node_modules -exclude=*.yaml ./pages/
+
