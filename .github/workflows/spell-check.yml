@@ -3,16 +3,16 @@ name: Check Spelling
 on:
   push:
     branches:
-    - '**'
+      - "**"
     tags-ignore:
-    - '**'
+      - "**"
   pull_request_target:
     branches:
-    - '**'
+      - "**"
     types:
-    - 'opened'
-    - 'reopened'
-    - 'synchronize'
+      - "opened"
+      - "reopened"
+      - "synchronize"
 
 jobs:
   spelling:
@@ -24,23 +24,22 @@ jobs:
       security-events: write
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Run spell check
-      uses: check-spelling/check-spelling@main  # Use the main branch or the latest version available
-      with:
-        checkout: true
-        check_file_names: 1
-        spell_check_this: check-spelling/spell-check-this@main  # Use the main branch or the latest version available
-        use_magic_file: 1
-        report-timing: 1
-        warnings: bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check
-        experimental_apply_changes_via_bot: 1
-        use_sarif: 1
-        extra_dictionary_limit: 20
-        extra_dictionaries:
-          cspell:software-terms/dict/softwareTerms.txt
+      - name: Run spell check
+        uses: check-spelling/check-spelling@main # Use the main branch or the latest version available
+        with:
+          checkout: true
+          check_file_names: 1
+          spell_check_this: check-spelling/spell-check-this@main # Use the main branch or the latest version available
+          use_magic_file: 1
+          report-timing: 1
+          warnings: bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check
+          experimental_apply_changes_via_bot: 1
+          use_sarif: 1
+          extra_dictionary_limit: 20
+          extra_dictionaries: cspell:software-terms/dict/softwareTerms.txt
 
   comment-pr:
     name: Report (PR)
@@ -51,10 +50,10 @@ jobs:
       pull-requests: write
     if: success() || failure()
     steps:
-    - name: Comment PR
-      uses: check-spelling/check-spelling@main
-      with:
-        checkout: true
-        spell_check_this: check-spelling/spell-check-this@main
-        task: ${{ needs.spelling.outputs.followup }}
-        experimental_apply_changes_via_bot: 1
+      - name: Comment PR
+        uses: check-spelling/check-spelling@main
+        with:
+          checkout: true
+          spell_check_this: check-spelling/spell-check-this@main
+          task: ${{ needs.spelling.outputs.followup }}
+          experimental_apply_changes_via_bot: 1
