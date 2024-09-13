@@ -1,6 +1,9 @@
 name: Spell Checking
 
-on: [pull_request]
+on:
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   codespell:
@@ -10,24 +13,32 @@ jobs:
       matrix:
         python-version: [3.8]
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python $
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: $
+          python-version: ${{ matrix.python-version }}
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install codespell
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
       - name: Check spelling with codespell
         run: codespell --ignore-words=codespell.txt || exit 1
+
   misspell:
     name: Check spelling with misspell
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install misspell
         run: wget -O - -q https://git.io/misspell | sh -s -- -b .
-      - name: Misspell
+
+      - name: Run misspell
         run: ./misspell -error
