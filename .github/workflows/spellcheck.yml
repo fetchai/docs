@@ -4,7 +4,7 @@ name: Spell Check Documentation
 on:
   pull_request:
     paths:
-      - "docs/pulls/**/*.mdx"  # Scan all .mdx files in docs/pulls and its subdirectories
+      - "docs/pulls/**/*.mdx" # Scan all .mdx files in docs/pulls and its subdirectories
 
 jobs:
   spell-check:
@@ -20,7 +20,7 @@ jobs:
       - name: Spell Check Action
         uses: check-spelling/check-spelling@main
         with:
-          config: .github/actions/spelling/spelling.yml  # Reference the spellcheck config
+          config: .github/actions/spelling/spelling.yml # Reference the spellcheck config
 
       - name: Upload spellcheck logs
         if: failure()
