@@ -1,5 +1,6 @@
 import { Code, Pre } from "nextra/components";
-import React, { useState } from "react";
+import { useRef } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   ApiIntro,
   Col,
@@ -11,13 +12,77 @@ import {
 } from "./mdx";
 import Tooltip from "./tooltip";
 import Link from "next/link";
-
+import { CodeIcon, CopyIcon } from "src/icons/shared-icons";
 interface PropertyType {
   name: string;
   type: string;
   description: string;
   required?: boolean;
 }
+
+const CustomPre = ({
+  children,
+  filename,
+  dataLanguage,
+  hasCopyCode = true,
+}: {
+  children: ReactNode;
+  filename?: string;
+  dataLanguage?: string;
+  hasCopyCode?: boolean;
+}) => {
+  const [isCopied, setIsCopied] = useState(false);
+  const codeRef = useRef<HTMLDivElement>(null);
+
+  const handleCopy = () => {
+    if (codeRef.current?.textContent) {
+      navigator.clipboard.writeText(codeRef.current.textContent).then(() => {
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 5000);
+      });
+    }
+  };
+
+  return (
+    <Pre data-language={dataLanguage} className="custom-pre">
+      <div
+        style={{ overflowX: "hidden" }}
+        className="nx-flex nx-w-full nx-items-center nx-justify-between"
+      >
+        <CodeIcon />
+        <span className="nx-code-name">{`${filename} command`}</span>
+        {hasCopyCode && (
+          <div
+            onClick={handleCopy}
+            className="nx-cursor-pointer nx-flex nx-gap-2 nx-items-center"
+          >
+            {isCopied && (
+              <>
+                <svg
+                  width="12"
+                  height="8"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
+                    fill="#0B1742"
+                  />
+                </svg>
+                <span className="nx-copy-text">Copied</span>
+              </>
+            )}
+            <CopyIcon />
+          </div>
+        )}
+      </div>
+      <div style={{ overflowX: "scroll", width: "100%" }} ref={codeRef}>
+        {children}
+      </div>
+    </Pre>
+  );
+};
 
 // Helper function to replace path parameters in the URL
 const replacePathParameters = (
@@ -74,16 +139,11 @@ requests.${method.toLowerCase()}("${actualUrl}", headers={
     `;
 
   return (
-    <Pre
-      filename="python"
-      data-language="python"
-      hasCopyCode={true}
-      className="nx-pre-code"
-    >
+    <CustomPre filename="python" dataLanguage="python" hasCopyCode={true}>
       <Code data-lanuage="python" data-theme="default">
         {code}
       </Code>
-    </Pre>
+    </CustomPre>
   );
 };
 
@@ -130,11 +190,10 @@ await fetch("${actualUrl}", {
 })`;
 
   return (
-    <Pre
-      filename="javascript"
-      data-lanuage="javascript"
+    <CustomPre
       hasCopyCode={true}
-      className="nx-pre-code"
+      dataLanguage="javascript"
+      filename="javascript"
     >
       <Code
         data-lanuage="javascript"
@@ -143,8 +202,14 @@ await fetch("${actualUrl}", {
       >
         {code}
       </Code>
-    </Pre>
+    </CustomPre>
   );
+};
+
+const escapeQuotes = (jsonObject) => {
+  const jsonString = JSON.stringify(jsonObject);
+  const escapedString = jsonString.replaceAll(/(?<!\\)"/g, '"');
+  return escapedString;
 };
 
 const CurlCodeTab: React.FC<{
@@ -153,26 +218,20 @@ const CurlCodeTab: React.FC<{
   samplePayload?: unknown;
   isBearerTokenRequired?: boolean;
 }> = ({ method, url, samplePayload, isBearerTokenRequired }) => {
-  let code = `\
-curl \\
--X ${method} \\
+  let code = `
+curl -X ${method}
 ${
   isBearerTokenRequired
-    ? `-H Authorization: bearer <your token here> -H 'Content-Type: application/json' \\\n`
+    ? ` -H "Authorization: bearer <your token here>" -H "Content-Type: application/json"\n `
     : ""
 }${url}`;
 
   if (samplePayload) {
-    code += ` \\\n -d '${JSON.stringify(samplePayload)}'`;
+    code += ` -d ${JSON.stringify(escapeQuotes(samplePayload))}`;
   }
 
   return (
-    <Pre
-      filename="bash"
-      data-lanuage="curl"
-      hasCopyCode={true}
-      className="nx-pre-code"
-    >
+    <CustomPre hasCopyCode={true} dataLanguage="Curl" filename="Curl">
       <Code data-lanuage="bash" data-theme="default">
         {code.split("\n").map((line) => {
           return (
@@ -183,7 +242,7 @@ ${
           );
         })}
       </Code>
-    </Pre>
+    </CustomPre>
   );
 };
 
@@ -193,9 +252,9 @@ const JsonCodeTab: React.FC<{
   const formattedJson = JSON.stringify(samplePayload, undefined, 2);
 
   return (
-    <Pre className="nx-pre-code" filename="json" hasCopyCode={true}>
+    <CustomPre filename="json" hasCopyCode={true}>
       {formattedJson}
-    </Pre>
+    </CustomPre>
   );
 };
 
