@@ -27,34 +27,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install check-spelling
-        run: |
-          python -m pip install --upgrade pip
-          pip install check-spelling
-
       - name: Run spell check
-        run: |
-          check-spelling \
-            --config .github/actions/spelling/check-spelling.yml \
-            --exclude .github/actions/spelling/excludes.txt \
-            --allow .github/actions/spelling/allow.txt \
-            --patterns .github/actions/spelling/patterns.txt \
-            --dictionaries cspell:software-terms/dict/softwareTerms.txt \
-            --output .github/spellcheck-results.json \
-            --report-timing \
-            --warnings bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check
-
-      - name: Upload spell check results
-        if: success() || failure()
-        uses: actions/upload-artifact@v3
+        uses: check-spelling/check-spelling@main
         with:
-          name: spellcheck-results
-          path: .github/spellcheck-results.json
+          checkout: true
+          spell_check_this: check-spelling/spell-check-this@main
+          use_magic_file: 1
+          report-timing: 1
+          warnings: bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check
+          experimental_apply_changes_via_bot: 1
+          use_sarif: 1
+          extra_dictionary_limit: 20
+          extra_dictionaries: cspell:software-terms/dict/softwareTerms.txt
 
   comment-pr:
     name: Comment PR
@@ -69,8 +53,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const fs = require('fs');
-            const results = JSON.parse(fs.readFileSync('.github/spellcheck-results.json', 'utf8'));
+            const results = require('./path/to/spellcheck-results.json');
             const issueComment = `Spell check results:\n\n${results.issues.map(issue => `- ${issue.file}: ${issue.message}`).join('\n')}`;
             await github.rest.issues.createComment({
               ...context.repo,
