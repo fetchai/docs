@@ -1,0 +1,25 @@
+name: Spell Check
+
+on:
+  pull_request: # Runs on pull request events
+
+jobs:
+  spellcheck:
+    runs-on: ubuntu-latest # Run on Ubuntu runners
+    steps:
+      - uses: actions/checkout@v3 # Checkout the repository code
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.8" # Adjust based on your requirements
+
+      - name: Install dependencies
+        run: |
+          python -m pip install spell-checker-action
+
+      - name: Spell Check PR Changes
+        uses: check-spelling/spell-check-this@v1
+        with:
+          fail_on_errors: true # Optional: fail the workflow if errors found
+          # Optional: Add other configuration options (refer to action docs)
