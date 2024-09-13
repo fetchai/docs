@@ -1,0 +1,45 @@
+name: Check Spelling
+
+on:
+  push:
+    branches:
+      - '**'  # Trigger on all branches
+  pull_request:
+    branches:
+      - '**'  # Trigger on all branches
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  spelling:
+    name: Check Spelling
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
+      security-events: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install check-spelling
+
+    - name: Run spell check
+      id: spell-check
+      run: |
+        check-spelling --files '**/*.mdx' || true
+
+    - name: Report results
+      if: failure()
+      run: |
+        echo "Spell check failed. See the results above."
