@@ -40,6 +40,15 @@ jobs:
           use_sarif: 1
           extra_dictionary_limit: 20
           extra_dictionaries: cspell:software-terms/dict/softwareTerms.txt
+          files:
+            - '**/*.mdx'
+          ignore:
+            - '**/node_modules/**'
+            - '**/vendor/**'
+            - '**/*.jpg'
+            - '**/*.png'
+            - '**/*.gif'
+            - '**/*.yml'
 
   comment-pr:
     name: Report (PR)
