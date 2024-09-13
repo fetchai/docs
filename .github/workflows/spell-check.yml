@@ -28,11 +28,11 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Run spell check
-      uses: check-spelling/check-spelling@main
+      uses: check-spelling/check-spelling@main  # Use the main branch or the latest version available
       with:
         checkout: true
         check_file_names: 1
-        spell_check_this: check-spelling/spell-check-this@main
+        spell_check_this: check-spelling/spell-check-this@main  # Use the main branch or the latest version available
         use_magic_file: 1
         report-timing: 1
         warnings: bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check
@@ -40,9 +40,7 @@ jobs:
         use_sarif: 1
         extra_dictionary_limit: 20
         extra_dictionaries:
-          cspell: software-terms/dict/softwareTerms.txt
-        exclude:
-          - '**/*.yml'  # Exclude .yml files
+          cspell:software-terms/dict/softwareTerms.txt
 
   comment-pr:
     name: Report (PR)
