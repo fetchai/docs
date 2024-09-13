@@ -28,18 +28,21 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run spell check
-        uses: check-spelling/check-spelling@main # Use the main branch or the latest version available
+        uses: check-spelling/check-spelling@main
         with:
           checkout: true
           check_file_names: 1
-          spell_check_this: check-spelling/spell-check-this@main # Use the main branch or the latest version available
+          spell_check_this: check-spelling/spell-check-this@main
           use_magic_file: 1
           report-timing: 1
           warnings: bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check
           experimental_apply_changes_via_bot: 1
           use_sarif: 1
           extra_dictionary_limit: 20
-          extra_dictionaries: cspell:software-terms/dict/softwareTerms.txt
+          extra_dictionaries:
+            custom: .github/workflows/custom_dict.txt # Adjust the path to your custom dictionary
+          ignore:
+            - .github/
 
   comment-pr:
     name: Report (PR)
@@ -57,3 +60,21 @@ jobs:
           spell_check_this: check-spelling/spell-check-this@main
           task: ${{ needs.spelling.outputs.followup }}
           experimental_apply_changes_via_bot: 1
+
+  update:
+    name: Update PR
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@check-spelling-bot apply')
+    concurrency:
+      group: spelling-update-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    steps:
+      - name: Apply spelling updates
+        uses: check-spelling/check-spelling@main
+        with:
+          experimental_apply_changes_via_bot: 1
+          checkout: true
+          ssh_key: "${{ secrets.CHECK_SPELLING }}"
