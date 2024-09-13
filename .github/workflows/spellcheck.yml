@@ -28,23 +28,21 @@ jobs:
       group: spelling-${{ github.event.pull_request.number || github.ref }}
       cancel-in-progress: true
     steps:
-      - name: check-spelling
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check Spelling
         id: spelling
-        uses: check-spelling/check-spelling@main
+        uses: check-spelling/spell-check-this@main
         with:
-          suppress_push_for_open_pull_request: ${{ github.actor != 'dependabot[bot]' && 1 }}
-          checkout: true
-          check_file_names: 1
-          spell_check_this: check-spelling/spell-check-this@prerelease
-          post_comment: 0  # Disables automatic comment posting
-          use_magic_file: 1
-          report-timing: 1
-          warnings: bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check
-          # experimental_apply_changes_via_bot: 1  # Uncomment for automatic fix application (testing recommended)
-          use_sarif: ${{ (!github.event.pull_request || (github.event.pull_request.head.repo.full_name == github.repository)) && 1 }}  # Optional for Sarif report (requires security-events: write permission)
-          extra_dictionary_limit: 20
-          extra_dictionaries:
-            cspell: software-terms/dict/softwareTerms.txt  # Replace with path to your custom dictionary (optional)
+          # Options to customize the spell checking process
+          # Refer to https://github.com/check-spelling/spell-check-this/blob/main/.github/actions/spelling/README.md for details
+          # Some examples:
+          #   check_file_names: 1  # Check filenames for typos
+          #   post_comment: 0  # Disable automatic comment posting
+          #   use_magic_file: 1  # Use magic file for file type detection
+          #   report-timing: 1  # Report execution time of each step
+          #   warnings: bad-regex,...  # Specify warnings to identify (comma separated list)
 
 # Optional jobs for automatic comment reporting (requires configuration)
 # Comment out these sections if not desired
@@ -58,10 +56,9 @@ jobs:
 #        if: (success() || failure()) && needs.spelling.outputs.followup && github.event_name == 'push'
 #        steps:
 #          - name: comment
-#            uses: check-spelling/check-spelling@main
+#            uses: check-spelling/spell-check-this@main
 #            with:
 #              checkout: true
-#              spell_check_this: check-spelling/spell-check-this@prerelease
 #              task: ${{ needs.spelling.outputs.followup }}
 
 #      comment-pr:
@@ -70,13 +67,11 @@ jobs:
 #        needs: spelling
 #        permissions:
 #          contents: read
-#          pull-requests: write
+#          pull_requests: write
 #        if: (success() || failure()) && needs.spelling.outputs.followup && contains(github.event_name, 'pull_request')
 #        steps:
 #          - name: comment
-#            uses: check-spelling/check-spelling@main
+#            uses: check-spelling/spell-check-this@main
 #            with:
 #              checkout: true
-#              spell_check_this: check-spelling/spell-check-this@prerelease
 #              task: ${{ needs.spelling.outputs.followup }}
-#              experimental_apply_changes_via_bot: 1  # Uncomment for automatic fix application in PRs (testing recommended)
