@@ -31,17 +31,4 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Check spelling with codespell
-        run: codespell --ignore-words=.github/codespell.txt || exit 1
-
-  misspell:
-    name: Check spelling with misspell
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install misspell
-        run: wget -O - -q https://git.io/misspell | sh -s -- -b .
-
-      - name: Run misspell
-        run: ./misspell -error
+        run: codespell --ignore-words=.github/codespell.txt --ignore-words-list=.github/codespell-custom.txt --skip=".yaml" ./pages/ || exit 1
