@@ -38,16 +38,5 @@ jobs:
             echo "No custom ignore list found."
           fi
 
-      - name: Verify ignore lists
-        run: |
-          echo "Contents of .github/codespell.txt:"
-          cat .github/codespell.txt
-
       - name: Check spelling
-        run: |
-          codespell --ignore-words=.github/codespell.txt --skip=".yaml" ./pages/
-          if [ $? -ne 0 ]; then
-            echo "Spell check failed."
-            exit 1
-          fi
-
+        run: codespell --ignore-words=.github/codespell.txt --skip=".yaml" ./pages/ || exit 1
