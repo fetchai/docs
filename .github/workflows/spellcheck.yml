@@ -65,6 +65,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyspelling
 
+      - name: Install aspell
+        run: sudo apt-get install -y aspell aspell-en
+
       - name: Run PySpelling
         run: |
           pyspelling -c .github/spellcheck.yml || exit 1
