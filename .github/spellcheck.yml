@@ -1,19 +1,33 @@
 matrix:
-- name: Markdown
-  aspell:
-    lang: en
-    ignore-case: true
-  dictionary:
-    wordlists:
-    - .wordlist.txt
-    encoding: utf-8
-  pipeline:
-  - pyspelling.filters.markdown:
-  - pyspelling.filters.html:
-      comments: false
-      ignores:
-      - code
-      - pre
-  sources:
-  - './pages/**/*.mdx'
-  default_encoding: utf-8
+  - name: Markdown
+    aspell:
+      lang: en
+      ignore-case: true
+    dictionary:
+      wordlists:
+        - .wordlist.txt
+      encoding: utf-8
+    pipeline:
+      - pyspelling.filters.markdown:
+      - pyspelling.filters.html:
+          comments: false
+          ignores:
+            - code
+            - pre
+    sources:
+      - './pages/**/*.mdx'  # Specify .mdx files from the pages directory
+    default_encoding: utf-8
+
+pipeline:
+  - name: markdown
+    sources:
+      - './pages/**/*.mdx'  # Specify .mdx files from the pages directory
+    dictionary:
+      wordlists:
+        - .github/codespell-dictionary.txt
+    filters:
+      - name: markdown
+        ignore:
+          - code         # Ignores fenced code blocks (```code```)
+          - inlinecode   # Ignores inline code (`code`)
+          - html         # Ignores HTML content
