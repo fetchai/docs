@@ -1,34 +1,77 @@
-name: Spellcheck Action
+name: Spell Checking
 
 on:
-  push:
-    branches:
-      - "**"
   pull_request:
     branches:
       - "**"
 
 jobs:
-  build:
-    name: Spellcheck
+  codespell:
+    name: Check Spelling with codespell
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        python-version: [3.8]
     steps:
-    # Checkout the repository
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    # Run spellcheck
-    - name: Run Spellcheck
-      uses: rojopolis/spellcheck-github-actions@v0.41.0
-      with:
-        config_path: .github/spellcheck.yml
-        source_files: './pages/**/*.mdx'
-        output_file: spellcheck-output.txt
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    # Upload the output artifact
-    - name: Upload Spellcheck Output
-      uses: actions/upload-artifact@v3
-      if: '!cancelled()'
-      with:
-        name: Spellcheck Output
-        path: spellcheck-output.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install codespell
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Check spelling with codespell
+        run: |
+          codespell \
+            --ignore-words=.github/codespell-ignore.txt \
+            --ignore-words-list=.github/codespell-dictionary.txt \
+            --skip=".yaml" \
+            ./pages/ || exit 1
+
+  misspell:
+    name: Check Spelling with misspell
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install misspell
+        run: wget -O - -q https://git.io/misspell | sh -s -- -b .
+
+      - name: Run misspell
+        run: ./misspell -error ./pages/
+
+  pyspelling:
+    name: Check Spelling with PySpelling
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyspelling
+
+      - name: Run PySpelling
+        run: |
+          pyspelling -c .github/spellcheck.yml || exit 1
+
+      - name: Upload PySpelling Output
+        uses: actions/upload-artifact@v3
+        if: '!cancelled()'
+        with:
+          name: PySpelling Output
+          path: spellcheck-output.txt
