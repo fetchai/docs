@@ -273,7 +273,7 @@ The main script flow includes:
         3. POST start request with query to AI Engine.
         4. Getting latest responses from AI Engine chat API using GET Request.
 
-- Selecting required fucntion from options and sending response back to AI Engine:
+- Selecting required function from options and sending response back to AI Engine:
 
     ```python
     # Getting agent response for the services options
@@ -590,7 +590,7 @@ print("Session Id:", session_id)
 # Taking user query as input
 objective = input('What Service would you like to assemble?\n')
 
-# Defining initial payload for quering deltaV
+# Defining initial payload for querying deltaV
 data2 = {
     "payload": {
         "type": "start",
@@ -690,7 +690,7 @@ while True:
                     args = agent_json['context_json']['args']
                     for key, value in args.items():
                         print(f"{key}: {value}")
-                user_confirmation = input("Your confirmation/details: ") # Confirming arguements by user
+                user_confirmation = input("Your confirmation/details: ") # Confirming arguments by user
                 send_user_message(session_id, user_confirmation, token)
                 last_response = user_confirmation  # Update last response
 
