@@ -1,5 +1,7 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState, useEffect, useRef } from "react";
 import { Tab as HeadlessTab } from "@headlessui/react";
+import { DropDownArrow, Tickicon } from "src/icons/shared-icons";
+import { motion } from "framer-motion";
 
 function InfoIcon(properties) {
   return (
@@ -155,30 +157,81 @@ export function Tabs({
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function DropDownTabs({ children }: { children: any }) {
-  const [selectedTab, setSelectedTab] = useState(0);
+interface TabProps {
+  heading: string;
+  children: ReactNode;
+}
 
-  const handleTabChange = (event) => {
-    setSelectedTab(Number.parseInt(event.target.value));
+interface DropDownTabsProps {
+  children: React.ReactElement<TabProps>[] | React.ReactElement<TabProps>;
+}
+
+export function DropDownTabs({ children }: DropDownTabsProps) {
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const tabs = React.Children.toArray(
+    children,
+  ) as React.ReactElement<TabProps>[];
+
+  const handleTabChange = (index: number) => {
+    setSelectedTab(index);
+    setIsOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
   return (
-    <div>
-      <select
-        className="pr-6 outline-none nx-rounded-lg nx-p-4 nx-text-sm nx-font-medium nx-bg-white nx-border nx-border-black/10"
-        value={selectedTab}
-        onChange={handleTabChange}
+    <>
+      <div
+        className="nx-relative nx-mb-5 nx-items-center nx-gap-2 nx-cursor-pointer nx-justify-center nx-dropdown-container"
+        onClick={() => setIsOpen(!isOpen)}
+        style={{ userSelect: "none" }}
       >
-        {React.Children.map(children, (child, index) => (
-          <option key={index} value={index}>
-            {child.props.heading}
-          </option>
-        ))}
-      </select>
-      {React.Children.map(children, (child, index) =>
-        index === selectedTab ? child.props.children : undefined,
-      )}
-    </div>
+        {tabs[selectedTab]?.props.heading}
+        <DropDownArrow />
+      </div>
+      <div ref={dropdownRef}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+            transition={{ duration: 0.1 }}
+            className="nx-z-50 nx-absolute dropDown"
+            style={{ overflow: "hidden" }}
+          >
+            {tabs.map((child, index) => (
+              <div
+                key={index}
+                className={`dropdown-tab nx-justify-between tab-text nx-cursor-pointer ${
+                  index === selectedTab && `indgo-100`
+                }`}
+                onClick={() => handleTabChange(index)}
+              >
+                {child?.props.heading}
+                {index === selectedTab && <Tickicon />}
+              </div>
+            ))}
+          </motion.div>
+        )}
+        <div className="mt-4">{tabs[selectedTab]?.props.children}</div>
+      </div>
+    </>
   );
 }
 
