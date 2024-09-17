@@ -24,7 +24,7 @@ class DocumentUnderstanding(Model):
 
 is passed between each agent, 
 
- - Agent provides the `DocumentUnderstanding` object.
+ - RequestAgent provides the `DocumentUnderstanding` object.
 - Agent two upon receiving `DocumentUnderstanding` sends a request to the third agent to validate and split the document. 
 - Agent three upon receiving the request, returns a list of pages to agent two.
 - Agent two upto receiving the message from agent three processes the pages to answer the question from agent one, then returns that answer. 
@@ -61,7 +61,7 @@ unstructured = "^0.12.4"
 export OPENAI_API_KEY="YOUR_OPENAI_API_KEY"
 ```
 
-### Agent 1, provides a question and a source
+### RequestAgent, provides a question and a source
 
 Our simplest agent, this agent provides a link to a PDF and question to be answered from the document. 
 
@@ -110,9 +110,9 @@ agent.run()
 
 ```
 
-### Agent 2, takes a request, and returns a result.
+### PDFQuestionAgent, takes a request, and returns a result.
 
-Agent 2 gets the PDF and the request, but is unable to split the PDF. The agent sends a request to agent 3 to split the PDF, when the pages are returned FAISS similarity search is ran on the pages. 
+PDFQuestionAgent gets the PDF and the request, but is unable to split the PDF. The agent sends a request to agent 3 to split the PDF, when the pages are returned FAISS similarity search is ran on the pages. 
 
 ```python
 from langchain_community.document_loaders import PyPDFLoader
@@ -160,7 +160,7 @@ faiss_pdf_agent = Agent(
 print("uAgent address: ", faiss_pdf_agent.address)
 faiss_protocol = Protocol("FAISS")
 
-AGENT_1_ADDRESS = ""
+RequestAgent = ""
 PDF_splitter_address = ""
 
 openai_api_key = os.environ["OPENAI_API_KEY"]
@@ -171,7 +171,7 @@ embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 async def document_load(ctx: Context, sender: str, msg: DocumentUnderstanding):
     ctx.logger.info(msg)
     ref = str(uuid.uuid4())
-    ctx.storage.set(ref, msg.question)
+    ctx.storage.set(ref, {"question": msg.question, "sender": sender})
     await ctx.send(
         PDF_splitter_address, PDF_Request(pdf_path=msg.pdf_path, session=ref)
     )
@@ -198,14 +198,16 @@ async def document_understand(ctx: Context, sender: str, msg: PagesResponse):
 
     vector_store.add_documents(documents=documents, ids=uuids)
 
+    prev = ctx.storage.get(msg.session)
+
     results = vector_store.similarity_search(
-        ctx.storage.get(msg.session),
+        prev["question"],
         k=2,
     )
 
     if len(results) > 0:
         await ctx.send(
-            AGENT_1_ADDRESS, DocumentsResponse(learnings=results[0].page_content)
+            prev["sender"], DocumentsResponse(learnings=results[0].page_content)
         )
 
 
@@ -213,14 +215,14 @@ faiss_pdf_agent.include(faiss_protocol, publish_manifest=True)
 faiss_pdf_agent.run()
 
 ```
-The core difference with agent two compared to agents you wil have seen so far is that there are multiple `on_message` decorators. Your agent can have any number of message handlers. 
+The core difference with agent two compared to agents you will have seen so far is that there are multiple `on_message` decorators. Your agent can have any number of message handlers. 
 
-Agent 2 also has every request/response model to communicat with agent 1 and 3. 
+PDFQuestionAgent also has every request/response model to communicat with request_agent and 3. 
 
-### Agent 3, validates a PDF, loads and returns the split.
+### PDFSplitAgent, validates a PDF, loads and returns the split.
 
 
-Agent three received the PDF, and splits the document using the langchain commiunity document loader PyPDFLoader. Returns an array of pages. 
+PDFSplitAgent received the PDF, and splits the document using the langchain commiunity document loader PyPDFLoader. Returns an array of pages. 
 
 ```python
 from langchain_community.document_loaders import PyPDFLoader
@@ -270,19 +272,22 @@ pdf_loader_agent.run()
 
 We need to run the agents backwards so that we can generate their addresses and the update the other agents with their addresses. 
 
-Let's run agent 3, and update agent 2 with their address: 
+Let's run PDFSplitAgent, and update agent 2 with their address: 
 
-`poetry run python agent3.py`
+`poetry run python pdf_split_agent.py`
 
-Update agent2.py `PDF_splitter_address = OUTPUT ADDRESS`
+Update pdf_question_agent.py `PDF_splitter_address = OUTPUT ADDRESS`
 
-Run agent2.py 
+Run `poetry run python pdf_question_agent.py`
+
+Update request_agent.py `AGENT_2_FAISS = OUTPUT ADDRESS`
+
+Run `poetry run python request_agent.py`
 
 ### output 
 
-### output:
 
-agent 1:
+`request_agent.py:`
 
 ```
 INFO:     [find_in_pdf]: ['0: this is a tale of two cities which ...']
