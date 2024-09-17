@@ -259,9 +259,56 @@ Add the address of the first agent in the dedicated field `RequestAgent` within 
 
 ### Output
 
-- `request_agent.py:`
+- `request_agent.py`:
 
     ```
-    INFO:     [find_in_pdf]: ['0: this is a tale of two cities which ...']
+    uAgent address:  agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp
+    INFO:     [find_in_pdf]: Manifest published successfully: Text Summariser
+    INFO:     [find_in_pdf]: Registering on almanac contract...
+    INFO:     [find_in_pdf]: Registering on almanac contract...complete
+    INFO:     [find_in_pdf]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [find_in_pdf]: GuidesAI AgentsGetting StartedWhat's an Agent?
+    Beginner Python
+    Agents - uAgents Framework
+    Introduction
+    Agents are autonomous software programs that can commuicate with eachother, they're
+    designed to solve problems alone, or as part of a multi agent system. Standardised
+    communication protocols allows agents to communicate eciently, aiding negotiation and
+    problem resolution. Unlike microservices or centralized systems, agents are reactive and self
+    reasoning. Agents are built using the uAgents framework, and with additional libraries are
+    party to the AI Engine.
+    Agents oer intercontevity for larger systems, where centralised systmes may have some
+    fault tolerance, multi agent systemsd allow for plug and play design; agents can be replaced
+    or upgraded in a live system without downtime. Agents can be built to only care for one
+    process or rule. In your systems, agents may have a totally independant network.
+    Agents aren't just agents, you can wrap LLMs and other models to create self reasoning, self
+    learning chat interfaces or services. This, is a simple as 12 lines of code link
+    ```
+
+- `pdf_question_agent.py`:
 
     ```
+    INFO:faiss.loader:Loading faiss with AVX2 support.
+    INFO:faiss.loader:Successfully loaded faiss with AVX2 support.
+    uAgent address:  agent1qt89fz44fp0nxvkpgfts4lm566lj8gs7qnlh7yz3lwz5f5scp7nrkcpt3qe
+    INFO:     [faiss_pdf_agent]: Manifest published successfully: FAISS
+    INFO:     [faiss_pdf_agent]: Registration on Almanac API successful
+    INFO:     [faiss_pdf_agent]: Registering on almanac contract...
+    INFO:     [faiss_pdf_agent]: Registering on almanac contract...complete
+    INFO:     [faiss_pdf_agent]: Starting server on http://0.0.0.0:8002 (Press CTRL+C to quit)
+    INFO:     [faiss_pdf_agent]: pdf_path='./a.pdf' question='What is the story about?'
+    INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+    INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+    INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+    ```
+
+- `pdf_split_agent.py`:
+
+    ```
+    uAgent address:  agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp
+    INFO:     [pdf_loader_agent]: Manifest published successfully: Text Summariser
+    INFO:     [pdf_loader_agent]: Registering on almanac contract...
+    INFO:     [pdf_loader_agent]: Registering on almanac contract...complete
+    INFO:     [pdf_loader_agent]: Starting server on http://0.0.0.0:8003 (Press CTRL+C to quit)
+    ```
+    
