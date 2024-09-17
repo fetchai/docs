@@ -13,7 +13,7 @@ Three agents make up a simple agent worflow.
 
 ![](src/images/guides/quickstart-with/langchain/multi-agent-workflow-simple.drawio.svg)
 
-A varation of 
+A variation of
 
 ```
 class DocumentUnderstanding(Model):
@@ -50,8 +50,6 @@ langchain = "^0.1.7"
 openai = "^1.12.0"
 langchain-openai = "^0.0.6"
 faiss-cpu = "^1.7.4"
-validators = "^0.22.0"
-unstructured = "^0.12.4"
 ```
 
 
@@ -115,17 +113,12 @@ agent.run()
 PDFQuestionAgent gets the PDF and the request, but is unable to split the PDF. The agent sends a request to agent 3 to split the PDF, when the pages are returned FAISS similarity search is ran on the pages. 
 
 ```python
-from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import FAISS
 from langchain_community.docstore.in_memory import InMemoryDocstore
 from langchain_openai import OpenAIEmbeddings
 from uagents import Agent, Context, Protocol, Model
-from langchain_openai import OpenAIEmbeddings
 from langchain_core.documents import Document
-import sys
 from typing import List
-import asyncio
-import time
 import os
 import uuid
 import faiss
@@ -226,10 +219,7 @@ PDFSplitAgent received the PDF, and splits the document using the langchain comm
 
 ```python
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
 from uagents import Agent, Context, Protocol, Model
-from ai_engine import UAgentResponse, UAgentResponseType
 from typing import List
 
 
