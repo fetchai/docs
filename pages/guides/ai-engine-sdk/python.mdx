@@ -46,26 +46,44 @@ from ai_engine_sdk import AiEngine
 ai_engine: AiEngine = AiEngine(api_key)
 ```
 
-### Querying Function Groups in AI Engine SDK
+## Querying Function Groups
 
-```py copy
-function_groups: list[FunctionGroup] = await ai_engine.get_function_groups()
+The AI Engine SDK allows you to query different groups of functions, such as `private functions`, `public functions`, or `Fetch.ai-verified functions`. You can filter function groups using the respective methods provided by the SDK based on your needs.
 
-public_group = next(
-	(g for g in function_groups if g.name == "Fetch Verified"), 
-	None
+### Querying Private Functions
+
+Private functions are those that you have created and are not accessible to the public or other users. To access your private functions, use the `get_private_function_groups()` method. This will return all functions under your account, giving you access to personal or proprietary models and algorithms.
+
+#### Example
+
+```python
+private = await ai_engine.get_private_function_groups()
+
+private_functions = next(
+    (g for g in private if g.name == "My Functions"), 
+    None
 )
 ```
 
-If you would like to use the functions in your own My Functions function group instead then you can use this filter instead:
+#### Querying Public Functions
+
+Public functions are accessible by anyone on the platform. These functions include your publicly available functions and functions verified by Fetch.ai. To access public function groups, use the `get_public_function_groups()` method. You can further filter by two important groups: `Public` and `Fetch Verified`.
 
 ```py copy
-my_group = next(
-	(g for g in function_groups if g.name == "My Functions"), 
-	None
+public = await ai_engine.get_public_function_groups()
+
+# Access your public functions
+public_functions = next(
+    (g for g in public if g.name == "Public"), 
+    None
+)
+
+# Access Fetch.ai-verified functions
+fetch_verified_group = next(
+    (g for g in public if g.name == "Fetch Verified"), 
+    None
 )
 ```
-
 
 ### Sharing function groups
 

@@ -319,13 +319,13 @@ The main script flow includes:
     last_response = ""
 
     while True:
-    time.sleep(5)  # Wait before fetching responses to avoid overwhelming the server
-    response = get_request(f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/responses", {"Authorization": token})
+        time.sleep(5)  # Wait before fetching responses to avoid overwhelming the server
+        response = get_request(f"https://agentverse.ai/v1beta1/engine/chat/sessions/{session_id}/responses", {"Authorization": token})
 
-    if response.status_code != 200:
-        raise Exception(f"Error in fetching responses: Status code {response.status_code}")
+        if response.status_code != 200:
+            raise Exception(f"Error in fetching responses: Status code {response.status_code}")
 
-    response = response.json()
+        response = response.json()
 
     # Handling unresponsive deltaV
     if not response['agent_response']:
