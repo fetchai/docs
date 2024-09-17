@@ -5,19 +5,29 @@ matrix:
       ignore-case: true
     dictionary:
       wordlists:
-        - .github/wordlist.txt
+        - .wordlist.txt
       encoding: utf-8
     pipeline:
       - pyspelling.filters.markdown:
-          markdown_extensions:
-            - pymdownx.superfences  # Enables handling of fenced code blocks
       - pyspelling.filters.html:
           comments: false
           ignores:
-            - code   # Ignore fenced code blocks
-            - pre    # Ignore preformatted text (typically used for code)
-            - inlinecode  # Ignore inline code snippets (`code`)
-            - html   # Ignore HTML content
+            - code
+            - pre
     sources:
-      - './pages/**/*.mdx'  # Specify .mdx files to check within the pages directory
+      - './pages/**/*.mdx'
     default_encoding: utf-8
+
+pipeline:
+  - name: markdown
+    sources:
+      - './pages/**/*.mdx'
+    dictionary:
+      wordlists:
+        - .github/codespell-dictionary.txt
+    filters:
+      - name: markdown
+        ignore:
+          - code         # Ignores fenced code blocks (```code```)
+          - inlinecode   # Ignores inline code (`code`)
+          - html         # Ignores HTML content

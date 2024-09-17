@@ -13,23 +13,26 @@ jobs:
       matrix:
         python-version: [3.8]
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install aspell
-        run: sudo apt-get install -y aspell aspell-en  # Install aspell
-
-      - name: Install pyspelling and pymdown-extensions
+      # Step 3: Install dependencies including pyspelling, aspell, and pymdown-extensions
+      - name: Install pyspelling, aspell, and dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install -y aspell aspell-en  # Install aspell and the English dictionary
           python -m pip install --upgrade pip
-          pip install pyspelling pymdown-extensions
+          pip install pyspelling pymdown-extensions  # Install pyspelling and pymdown-extensions
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      # Step 4: Run pyspelling with the provided configuration file
       - name: Run pyspelling
         run: |
           pyspelling -c .github/spellcheck.yml || exit 1
