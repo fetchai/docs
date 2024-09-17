@@ -1,14 +1,33 @@
-# Multi agent workflows with Fetch.ai x Langchain
+# Multi-agent workflows with Fetch.ai x Langchain
 
-Multi agent workflows are at the forefront of modern agent development; the idea that individual agents can be utilised to create larger more complex services for people has created lots of excitement in the AI space. With Fetch.ai we're building the agent communication layer, this perfecly compliments lanchain libraries. 
+Multi-agent workflows are at the forefront of modern agent development; the idea that individual agents can be utilised to create larger more complex services for people has created lots of excitement in the AI space. With Fetch.ai we're building the agent communication layer, this perfecly compliments lanchain libraries.
 
 Agents representing smaller parts of a service, allow for many agents to represent a whole. Agents reduce technical requirements in projects, for example you wouldn't need to write a function to calculate the hisorical index of a stock price, an agent will already return that data for you. 
 
+Before we go any further please read over our introduction guide to [agents and lancgain](/guides/quickstart-with/langchain/creating-an-agent-with-langchain.mdx
+)
+
 ## The system
 
-3 agents, 
+Three agents make up a simple agent worflow. 
 
 ![](src/images/guides/quickstart-with/langchain/multi-agent-workflow-simple.drawio.svg)
+
+A varation of 
+
+```
+class DocumentUnderstanding(Model):
+    pdf_path: str
+    question: str
+
+```
+
+is passed between each agent, 
+
+ - Agent provides the `DocumentUnderstanding` object.
+- Agent two upon receiving `DocumentUnderstanding` sends a request to the third agent to validate and split the document. 
+- Agent three upon receiving the request, returns a list of pages to agent two.
+- Agent two upto receiving the message from agent three processes the pages to answer the question from agent one, then returns that answer. 
 
 
 In this example we are hard coding the agents addresses, meaning we know them. To search for agents dynamically, take a look at [the almanac]()
@@ -61,7 +80,7 @@ class DocumentsResponse(Model):
 
 agent = Agent(
     name="find_in_pdf",
-    seed="iwfwieifeiwbf39fh230bf4n4203ni5gn20ri99dqwehdf328hf2bpbfwfenw",
+    seed="",
     port=8001,
     endpoint=["http://127.0.0.1:8001/submit"],
 )
@@ -69,7 +88,7 @@ agent = Agent(
 print("uAgent address: ", agent.address)
 summary_protocol = Protocol("Text Summariser")
 
-AGENT_2_FAISS = "agent1q2dtm28a49jwzyjfy7f379ad3qrc0wetpzmvq582xj2dw553rvnjygnqacz"
+AGENT_2_FAISS = ""
 
 
 @agent.on_event("startup")
@@ -133,7 +152,7 @@ class DocumentsResponse(Model):
 
 faiss_pdf_agent = Agent(
     name="faiss_pdf_agent",
-    seed="ewgqregregrqthrtwhrtehyt",
+    seed="",
     port=8002,
     endpoint=["http://127.0.0.1:8002/submit"],
 )
@@ -141,10 +160,8 @@ faiss_pdf_agent = Agent(
 print("uAgent address: ", faiss_pdf_agent.address)
 faiss_protocol = Protocol("FAISS")
 
-AGENT_1_ADDRESS = "agent1qd25p4duuqhs3re8m4dszd3fy8qyhlpn5hu3p44rcyax5thqk79aynrzrce"
-PDF_splitter_address = (
-    "agent1qwk9slv474gwwf7mjgsrcje4swcmwgns43k5pp6phhzq2q9g9x2c6hk97en"
-)
+AGENT_1_ADDRESS = ""
+PDF_splitter_address = ""
 
 openai_api_key = os.environ["OPENAI_API_KEY"]
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
@@ -196,7 +213,9 @@ faiss_pdf_agent.include(faiss_protocol, publish_manifest=True)
 faiss_pdf_agent.run()
 
 ```
+The core difference with agent two compared to agents you wil have seen so far is that there are multiple `on_message` decorators. Your agent can have any number of message handlers. 
 
+Agent 2 also has every request/response model to communicat with agent 1 and 3. 
 
 ### Agent 3, validates a PDF, loads and returns the split.
 
@@ -246,5 +265,28 @@ pdf_loader_agent.run()
 
 ```
 
+
+## run the agents
+
+We need to run the agents backwards so that we can generate their addresses and the update the other agents with their addresses. 
+
+Let's run agent 3, and update agent 2 with their address: 
+
+`poetry run python agent3.py`
+
+Update agent2.py `PDF_splitter_address = OUTPUT ADDRESS`
+
+Run agent2.py 
+
+### output 
+
+### output:
+
+agent 1:
+
+```
+INFO:     [find_in_pdf]: ['0: this is a tale of two cities which ...']
+
+```
 
 
