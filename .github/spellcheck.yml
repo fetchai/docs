@@ -14,22 +14,6 @@ matrix:
           ignores:
             - code
             - pre
-            - '```.*?```'
-            - :matches(code, pre)
     sources:
       - "./pages/**/*.mdx"
     default_encoding: utf-8
-
-pipeline:
-  - name: markdown
-    sources:
-      - "./pages/**/*.mdx"
-    dictionary:
-      wordlists:
-        - .github/codespell-dictionary.txt
-    filters:
-      - name: markdown
-        ignore:
-          - code # Ignores fenced code blocks (```code```)
-          - inlinecode # Ignores inline code (`code`)
-          - html # Ignores HTML content
