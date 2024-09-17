@@ -93,7 +93,7 @@ AGENT_2_FAISS = ""
 async def on_startup(ctx: Context):
     await ctx.send(
         AGENT_2_FAISS,
-        DocumentUnderstanding(pdf_path="./a.pdf", question="What is the Fetch token?"),
+        DocumentUnderstanding(pdf_path="./a.pdf", question="What is the story about?"),
     )
 
 
@@ -235,7 +235,7 @@ class PagesResponse(Model):
 
 pdf_loader_agent = Agent(
     name="pdf_loader_agent",
-    seed="ewgqregrexexgrqthrtwhrtehyjhb9wedcbobt",
+    seed="",
     port=8003,
     endpoint=["http://127.0.0.1:8003/submit"],
 )
