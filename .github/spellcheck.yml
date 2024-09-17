@@ -9,14 +9,11 @@ matrix:
       encoding: utf-8
     pipeline:
       - pyspelling.filters.markdown:
-          markdown_extensions:
-            - pymdownx.superfences
       - pyspelling.filters.html:
           comments: false
           ignores:
             - code
             - pre
-            - html
     sources:
       - './pages/**/*.mdx'
     default_encoding: utf-8
@@ -33,4 +30,4 @@ pipeline:
         ignore:
           - code         # Ignores fenced code blocks (```code```)
           - inlinecode   # Ignores inline code (`code`)
-          - html         # Ignores raw HTML content
+          - html         # Ignores HTML content
