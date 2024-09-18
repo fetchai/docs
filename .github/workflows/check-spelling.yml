@@ -25,8 +25,6 @@ jobs:
       pull-requests: read
       actions: read
       security-events: write
-    outputs:
-      followup: ${{ steps.spelling.outputs.followup }}
     runs-on: ubuntu-latest
     if: ${{ contains(github.event_name, 'pull_request') || github.event_name == 'push' }}
     concurrency:
@@ -37,7 +35,7 @@ jobs:
         id: spelling
         uses: check-spelling/check-spelling@main
         with:
-          suppress_push_for_open_pull_request: ${{ github.actor != 'dependabot[bot]' && 1 }}
+          suppress_push_for_open_pull_request: 1
           checkout: true
           check_file_names: 1
           spell_check_this: check-spelling/spell-check-this@prerelease
@@ -46,8 +44,58 @@ jobs:
           report-timing: 1
           warnings: bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check
           experimental_apply_changes_via_bot: 1
-          use_sarif: ${{ (!github.event.pull_request || (github.event.pull_request.head.repo.full_name == github.repository)) && 1 }}
+          use_sarif: 1
           extra_dictionary_limit: 20
-          extra_dictionaries:
-            cspell:software-terms/dict/softwareTerms.txt
-
+          extra_dictionaries: cspell:software-terms/dict/softwareTerms.txt
+          config: .github/actions/spelling
+          experimental_path: .
+          dictionary_url: https://raw.githubusercontent.com/check-spelling/check-spelling/dictionary-20200211/dict.txt
+          dictionary_version: 20200211
+          experimental_parallel_jobs: 2
+          dictionary_source_prefixes: '{"cspell": "https://raw.githubusercontent.com/check-spelling/cspell-dicts/v20230509/dictionaries/"}'
+          check_extra_dictionaries: |
+            cspell:ada/dict/ada.txt
+            cspell:aws/aws.txt
+            cspell:clojure/src/clojure.txt
+            cspell:companies/src/companies.txt
+            cspell:cpp/src/compiler-clang-attributes.txt
+            cspell:cpp/src/compiler-gcc.txt
+            cspell:cpp/src/compiler-msvc.txt
+            cspell:cpp/src/ecosystem.txt
+            cspell:cpp/src/lang-jargon.txt
+            cspell:cpp/src/lang-keywords.txt
+            cspell:cpp/src/people.txt
+            cspell:cpp/src/stdlib-c.txt
+            cspell:cpp/src/stdlib-cerrno.txt
+            cspell:cpp/src/stdlib-cmath.txt
+            cspell:cpp/src/stdlib-cpp.txt
+            cspell:cpp/src/template-strings.txt
+            cspell:cryptocurrencies/cryptocurrencies.txt
+            cspell:csharp/csharp.txt
+            cspell:css/dict/css.txt
+            cspell:dart/src/dart.txt
+            cspell:django/dict/django.txt
+            cspell:django/requirements.txt
+            cspell:docker/src/docker-words.txt
+            cspell:dotnet/dict/dotnet.txt
+            cspell:elixir/dict/elixir.txt
+            cspell:filetypes/filetypes.txt
+            cspell:fonts/fonts.txt
+            cspell:fullstack/dict/fullstack.txt
+            cspell:gaming-terms/dict/gaming-terms.txt
+            cspell:golang/dict/go.txt
+            cspell:haskell/dict/haskell.txt
+            cspell:html-symbol-entities/entities.txt
+          shortest_word: 3
+          largest_file: 1048576
+          unknown_word_limit: 5
+          notices: candidate-pattern
+          candidate_example_limit: 3
+          summary_table: 1
+          ignore-pattern: '[^a-zA-Z\']'
+          upper-pattern: '[A-Z]'
+          lower-pattern: '[a-z]'
+          not-lower-pattern: '[^a-z]'
+          not-upper-or-lower-pattern: '[^A-Za-z]'
+          punctuation-pattern: "'"
+          cache-dictionaries: 1
