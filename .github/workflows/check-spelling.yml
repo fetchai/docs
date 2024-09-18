@@ -3,12 +3,12 @@ name: Check Spelling
 on:
   push:
     branches:
-      - "**"
+      - '**'
     tags-ignore:
-      - "**"
+      - '**'
   pull_request_target:
     branches:
-      - "**"
+      - '**'
     types:
       - opened
       - reopened
@@ -31,7 +31,10 @@ jobs:
       group: spelling-${{ github.event.pull_request.number || github.ref }}
       cancel-in-progress: true
     steps:
-      - name: check-spelling
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Spelling
         id: spelling
         uses: check-spelling/check-spelling@main
         with:
@@ -99,3 +102,4 @@ jobs:
           not-upper-or-lower-pattern: '[^A-Za-z]'
           punctuation-pattern: "'"
           cache-dictionaries: 1
+
