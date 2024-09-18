@@ -33,17 +33,10 @@ jobs:
       group: spelling-${{ github.event.pull_request.number || github.ref }}
       cancel-in-progress: true
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: check-spelling
         id: spelling
         uses: check-spelling/check-spelling@main
         with:
-          spellcheck_dir: pages
-
-          filters: pages/**
-
           suppress_push_for_open_pull_request: ${{ github.actor != 'dependabot[bot]' && 1 }}
           checkout: true
           check_file_names: 1
@@ -51,4 +44,10 @@ jobs:
           post_comment: 0
           use_magic_file: 1
           report-timing: 1
-          warnings: bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file
+          warnings: bad-regex,binary-file,deprecated-feature,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check
+          experimental_apply_changes_via_bot: 1
+          use_sarif: ${{ (!github.event.pull_request || (github.event.pull_request.head.repo.full_name == github.repository)) && 1 }}
+          extra_dictionary_limit: 20
+          extra_dictionaries:
+            cspell:software-terms/dict/softwareTerms.txt
+
