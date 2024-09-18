@@ -1,0 +1,53 @@
+# Ignore fenced code blocks (```...```)
+^```.*$
+.*```$
+
+# Ignore inline code (text wrapped in single backticks ``)
+`[^`]+`
+
+# Ignore URLs (starting with http, https, or ftp)
+(?:https?|ftp)://\S+
+
+# Ignore data URIs (used in HTML/CSS)
+^data:\S*
+
+# Ignore git commits
+\b[0-9a-f]{7,40}\b
+
+# Ignore image paths with extensions (e.g., .jpg, .png, .gif, etc.)
+\S+\.(jpg|jpeg|png|gif|svg|webp|ico)$
+
+# Ignore email addresses
+\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b
+
+# Ignore file paths (e.g., /path/to/file)
+(?:\/[A-Za-z0-9._-]+)+
+
+# Ignore code-related file extensions (e.g., .js, .css, .html, etc.)
+\S+\.(js|ts|css|scss|html|json|mdx|md)$
+
+# Ignore hex colors in CSS (e.g., #FFFFFF)
+#[0-9a-fA-F]{3,6}\b
+
+# Ignore HTML tags
+<[^>]+>
+
+# Ignore CSS class selectors (e.g., .class-name)
+\.[a-zA-Z_][a-zA-Z0-9_-]*
+
+# Ignore ID selectors in CSS (e.g., #id-name)
+#[a-zA-Z_][a-zA-Z0-9_-]*
+
+# Ignore names of people or company-specific terms
+\bfetchai\b
+\bAgentverse\b
+
+# Ignore HTML attributes (e.g., class, id, style)
+\b(class|id|style|href|src|alt|title|rel|type|name|value|action|method)\b
+
+# Custom Rule: Ignore words that start with 'fetch1...'
+\bfetch1\w*\b
+
+# Capitalization Rule: Check proper capitalization for company and personal names
+\b[A-Z][a-z]+(?:\s[A-Z][a-z]+)*\b
+# This checks that names start with a capital letter and contain lowercase letters
