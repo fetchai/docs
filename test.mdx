@@ -1,0 +1,680 @@
+import {
+  Properties,
+  Property,
+} from "../../../components/mdx";
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse
+} from "../../../components/api-endpoint";
+
+# Hosting API
+
+<div className="nx-text-fetch-content">
+  Welcome to the Hosting API documentation.
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The hosting API allows you to manage your agents that are hosted by Agentverse. This involves creating new
+        agents, updating the code of existing agents, starting and stopping agents, and getting logs of agents.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        GET /v1/hosting/agents
+        POST /v1/hosting/agents
+
+        GET /v1/hosting/agents/:agentAddress
+        DELETE /v1/hosting/agents/:agentAddress
+
+        GET /v1/hosting/agents/:agentAddress/code
+        PUT /v1/hosting/agents/:agentAddress/code
+
+        POST /v1/hosting/agents/:agentAddress/start
+        POST /v1/hosting/agents/:agentAddress/stop
+
+        GET /v1/hosting/agents/:agentAddress/logs/latest
+        DELETE /v1/hosting/agents/:agentAddress/logs
+
+        GET /v1/hosting/usage/current
+        GET /v1/hosting/usage/:year/:month
+
+        GET /v1/hosting/usage/agents/:address/current
+        GET /v1/hosting/usage/agents/:address/:year/:month
+        ```
+    </Col>
+
+</Row>
+
+## Notable Objects
+
+### The Agent Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="name" type="string">
+                The given name of the agent. This is only a label that is used internally so users can keep track of
+                their agents.
+            </Property>
+            <Property name="address" type="string">
+                The address of the agent. This is also the current public key of the agent.
+            </Property>
+            <Property name="running" type="boolean">
+                The current state of the agent. `true` if the agent is currently running, `false` otherwise.
+            </Property>
+            <Property name="compiled" type="boolean | null">
+                The current code compilation status for the agent. `true` if the agent is compiled, `false` if the
+                compilation failed, `null` if the agent has not been compiled yet.
+            </Property>
+            <Property name="revision" type="integer">
+                The current revision of the agent. Everytime an update is made to the agent, the revision is incremented.
+            </Property>
+            <Property name="code_digest" type="string | null">
+                The current digest of the code of the agent. Useful for determining if there have been code changes that
+                need to be applied to the agent.
+
+                This value can be `null` if the agent has not been compiled yet.
+            </Property>
+            <Property name="wallet_address" type="string | null">
+                The wallet address that is associated with the agent. If a wallet address is not associated with the
+                agent, this value will be `null`.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json
+        {
+            "name": "My first agent",
+            "address": "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+            "running": false,
+            "compiled": true,
+            "revision": 7,
+            "code_digest": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+            "wallet_address": "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk"
+        }
+        ```
+
+
+        <code>
+        {
+            "name": "My first agent",
+            "address": "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+            "running": false,
+            "compiled": true,
+            "revision": 7,
+            "code_digest": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+            "wallet_address": "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk"
+        }
+        </code>
+    </Col>
+
+</Row>
+
+### The AgentCode Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="digest" type="string">
+                Digest of the Agent's code.
+            </Property>
+            <Property name="code" type="string">
+                The Agent's code. 
+            </Property>
+            <Property name="timestamp" type="string, date-time">
+                Timestamp of when the code was updated. 
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample AgentCode Object"
+        {
+            "digest": "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530",
+            "code": "alice = Agent(name="alice", seed="sample seed")",
+            "timestamp": "2023-08-22T14:09:48.259000"
+        }
+        ```
+    </Col>
+</Row>
+
+### The AgentCodeDigest Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="digest" type="string">
+                Digest of the Agent's code.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample AgentCodeDigest Object"
+        {
+            "digest": "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530"
+        }
+        ```
+    </Col>
+</Row>
+
+### The AgentLog Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="log_timestamp" type="string, date-time">
+                Timestamp of the log entry. 
+            </Property>
+            <Property name="log_entry" type="string">
+               Log entry text. 
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample AgentLog Object"
+        {
+            "log_timestamp": "2023-08-22T14:09:48.259000", 
+            "log_entry": "[INFO]: My count is: 0"
+        }
+        ```
+    </Col>
+</Row>
+
+### The NewAgent Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="NewAgent" type="string">
+                Name of the new Agent.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample NewAgent Object"
+        {
+            "name": "My first agent"
+        }
+        ```
+    </Col>
+</Row>
+
+### The UpdateAgentCode Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="Code" type="string">
+                The code for the new Agent. 
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample UpdateAgentCode Object"
+        {
+            "code": "alice = Agent(name="alice", seed="sample seed")"
+        }
+        ```
+    </Col>
+</Row>
+
+## Request and response library
+
+### Getting a list of your agents
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/hosting/agents"
+  description="Request for listing all of your agents at once"
+  responses={[
+    {
+      name: "My first agent",
+      address:
+        "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+      running: false,
+      compiled: true,
+      revision: 7,
+      code_digest:
+        "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      wallet_address: "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk",
+    },
+  ]}
+  responseDescription="On a success the response will be an array of Agent Object properties."
+/>
+
+### Creating a new agent
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1/hosting/agents"
+  description="Request for creating a new agent"
+  properties={[
+    {
+      name: "name",
+      type: "string",
+      description:
+        "The given name of the agent. This is only a label that is used internally so users can keep track of their agents.",
+    },
+  ]}
+  samplePayload={{
+    name: "My newest agent",
+  }}
+  responses={{
+    name: "My newest agent",
+    address:
+      "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+    running: false,
+    compiled: true,
+    revision: 1,
+    code_digest:
+      "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+    wallet_address: "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk",
+  }}
+  responseDescription="On a success the response will be an array of Agent object properties."
+/>
+
+### Look up specific Agent
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/hosting/agents/{agentAddress}"
+  description="Looks up a specific agent by address on the hosting platform"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent",
+    },
+  ]}
+  pathParameters={{
+    agentAddress:
+      "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+  }}
+  responses={[
+    {
+      name: "InitialTest",
+      address:
+        "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
+      domain: "None",
+      running: false,
+      compiled: null,
+      revision: 0,
+      code_digest: null,
+      wallet_address: "fetch1mh0zmyddgcvspz7ye5zdrzjcfjtz54cgafak67",
+    },
+  ]}
+  responseDescription="On success, the response will be an array of the specified Agent's properties."
+/>
+
+### Delete Specified Agent
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="DELETE"
+  path="/v1/hosting/agents/{agentAddress}"
+  description="Delete a specific agent, identified by address"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent",
+    },
+  ]}
+  pathParameters={{
+    agentAddress:
+      "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+  }}
+  responses={{}}
+  responseDescription="On a success the response will be the deletion of the specified Agent from the platform"
+/>
+
+### Look up Agent code
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/hosting/agents/{agentAddress}/code"
+  description="Looks up the code for an agent, specified by address."
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent.",
+    },
+  ]}
+  pathParameters={{
+    agentAddress:
+      "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+  }}
+  responses={[
+    {
+      digest:
+        "4a8d510d546de8ff74aa27abaa7ebd95bf7876d8b31b265f6022c49d7b49cf45",
+      code: "Example code",
+      timestamp: "2023-08-22T12:49:45.856000+00:00",
+    },
+  ]}
+  responseDescription="On success, the response will be an array of JSON objects containing the digest, code, and timestamp."
+/>
+
+### Update Agent Code for a specific Agent
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="PUT"
+  path="/v1/hosting/agents/{agentAddress}/code"
+  description="Updates the code for a specific agent, identified by address."
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent.",
+    },
+    {
+      name: "code",
+      type: "string",
+      description:
+        "The code for a specific agent on the Agentverse, provided as a collection of files. Each file includes an id, name, value (the code content), and language.",
+    },
+  ]}
+  samplePayload={{
+    code: [
+        {
+            "id": 0,
+            "name": "agent.py",
+            "value": "\n# Congratulations on creating your first agent!\n#\n# This agent simply writes a greeting in the logs on a scheduled time interval.\n#\n# In this example we will use:\n# - 'agent': this is your instance of the 'Agent' class that we will give an 'on_interval' task\n# - 'ctx': this is the agent's 'Context', which gives you access to all the agent's important functions\n\n# A decorator (marked by the '@' symbol) just wraps the function defined under it in another function.\n# This decorator tells your agent to run the function on a time interval with the specified 'period' in seconds.\n# These functions must be 'async' because agents need to be able to perform many tasks concurrently.\n@agent.on_interval(period=3.0)\nasync def say_hello(ctx: Context):\n    # ctx.logger is a standard Python logger that can log text with various levels of urgency\n    # (exception, warning, info, debug). Here we will just use the 'info' level to write a greeting\n    ctx.logger.info(f\"Hello, I'm an agent and my address is {agent.address}.\")\n",
+            "language": "python",
+        },
+        {
+            "id": 1,
+            "name": ".env",
+            "value": "AGENT_SEED=YOUR_AGENT_SEED",
+            "language": "python",
+        },
+    ]
+
+  }}
+  pathParameters={{
+    agentAddress:
+      "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
+  }}
+  responses={[
+    {
+      digest:
+        "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530",
+    },
+  ]}
+  responseDescription="On success, the response will be a JSON object with the updated digest."
+/>
+
+### Start a specific agent, identified by address.
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1/hosting/agents/{address}/start"
+  description="Starts a specific agent, identified by address"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent.",
+    },
+  ]}
+  pathParameters={{
+    address:
+      "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+  }}
+  responses={[
+    {
+      name: "InitialTest",
+      address:
+        "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+      domain: "None",
+      running: "True",
+      compiled: "False",
+      revision: "4",
+      code_digest:
+        "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530",
+      wallet_address: "None",
+    },
+  ]}
+  responseDescription="On success, the agent selected by address will start, and the API will return an array with the Agent's properties."
+/>
+
+### Stop a specific agent, identified by address.
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="POST"
+  path="/v1/hosting/agents/{address}/stop"
+  description="Stops a specific agent, identified by address"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent.",
+    },
+  ]}
+  pathParameters={{
+    address:
+      "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+  }}
+  responses={[
+    {
+      name: "InitialTest",
+      address:
+        "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+      domain: "None",
+      running: "False",
+      compiled: "False",
+      revision: "4",
+      code_digest:
+        "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530",
+      wallet_address: "None",
+    },
+  ]}
+  responseDescription="On success, the agent selected by address will stop, and the API will return an array with the Agent's properties."
+/>
+
+### Get Latest Logs For Agent
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/hosting/agents/{address}/logs/latest"
+  description="Get the latest logs for an Agent, identified by address"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent.",
+    },
+  ]}
+  pathParameters={{
+    address:
+      "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+  }}
+  responses={[
+    {
+      log_timestamp: "2023-08-22T14:09:48.259000",
+      log_entry: "[INFO]: My count is: 0",
+    },
+  ]}
+  responseDescription="On successful retrieval of the specified agent logs, the response will be an array of json objects containing the timestamp and log entry."
+/>
+
+### Delete the latest logs for an Agent
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="DELETE"
+  path="/v1/hosting/agents/{address}/logs"
+  description="Delete the latest logs for an Agent, identified by address"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent.",
+    },
+  ]}
+  pathParameters={{
+    address: "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+    
+  }}
+  responses={{
+
+}}
+responseDescription="On success, the response will be the deletion of the specified agent logs. "
+/>
+
+### Get current Agent usage
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/hosting/usage/current"
+  description="Get data about the usage of the currently selected Agent"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent.",
+    },
+  ]}
+  samplePayload={{
+    address:
+      "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+  }}
+  responses={[
+    {
+      year: "2023",
+      month: "8",
+      computation_time: "2291",
+      num_messages: "12",
+      num_message_bytes: "0",
+      num_agents: "4",
+      quota_computation_time: "3100000000",
+      quota_num_messages: "31000000",
+      quota_message_bytes: "63488000000",
+      quota_agents: "1000",
+    },
+  ]}
+  responseDescription="On success, the response will be a json array with properties containing data about the usage of the currently selected agent."
+/>
+
+### Get Agent Usage for a specific year and month
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/hosting/usage/{year}/{month}"
+  description="Get data about the usage of the currently selected Agent for a selected year and month"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description: "",
+    },
+  ]}
+  samplePayload={{
+    address:
+      "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+  }}
+  pathParameters={{
+    year: "2023",
+    month: "8",
+  }}
+  responses={[
+    {
+      year: "2023",
+      month: "8",
+      computation_time: "2291",
+      num_messages: "12",
+      num_message_bytes: "0",
+      num_agents: "4",
+      quota_computation_time: "3100000000",
+      quota_num_messages: "31000000",
+      quota_message_bytes: "63488000000",
+      quota_agents: "1000",
+    },
+  ]}
+  responseDescription="On success, the response will be a json array with properties containing data about the usage of the currently selected Agent for a selected year and month."
+/>
+
+### Get Agent Usage for a specific year and month
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/hosting/usage/agents/{address}/current"
+  description="Get data about the usage for an Agent, identified by address"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent.",
+    },
+  ]}
+  pathParameters={{
+    address:
+      "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+  }}
+  responses={[
+    {
+      year: "2023",
+      month: "8",
+      computation_time: "1230",
+      num_messages: "4",
+      num_message_bytes: "0",
+    },
+  ]}
+  responseDescription="On success the response will be an array of json properties containing information about the current usage for a specified Agent identified by address."
+/>
+
+### Get current Agent usage selected by address year and month
+
+<ApiEndpointRequestResponse
+  apiUrl="https://agentverse.ai"
+  method="GET"
+  path="/v1/hosting/usage/agents/{address}/{year}/{month}"
+  description="Get data about the usage for an Agent, identified by address for a specific year and month"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      description:
+        "The address of the agent. This is also the current public key of the agent.",
+    },
+  ]}
+  pathParameters={{
+    address:
+      "agent1qvnppqyhk4hu0q64tnfkspux8hpd9zayyclhafvkz5340uqx3ax02txfll7",
+    year: "2023",
+    month: "3",
+  }}
+  responses={[
+    {
+      year: "2023",
+      month: "3",
+      computation_time: "1230",
+      num_messages: "4",
+      num_message_bytes: "0",
+    },
+  ]}
+  responseDescription="On success, the response will be a json array with properties for the specified Agent identified by address for a specific year and month"
+/>
