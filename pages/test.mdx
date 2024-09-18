@@ -1,19 +1,38 @@
-# Spell Check Test
+import {
+  Note,
+  Properties,
+  Property,
+  Warn,
+  Section,
+  ApiIntro,
+  Tag,
+  CodeHeading,
+} from "../../../components/mdx";
+import { DropDownTabs, Tab } from "../../../components/mdx";
+import { Row, Col } from "../../../components/mdx";
+import {
+  ApiEndpointRequestResponse,
+  ApiRequest,
+  ApiResponses,
+} from "../../../components/api-endpoint";
 
-This document is created to test the spell checker action.
+# Spell Check Test Document
 
-## Basic Text
+This document is intended to test the spell-checker script.
 
-This is a simple text paragraph to test the spell checker. Check for **spelling** mistakes in this section.
+## Basic Text with Spelling Errors
 
-### Code Blocks
+The folowing paragraf contains spelling errrors. It shuld be flagged by the spell checker.
 
-Here’s a Python code block:
+## Code Blocks
+
+Here's a Python code block. Words like `def`, `return`, and `print` should **not** be flagged as spelling errors.
 
 ```python
-def add_numbers(a, b):
+def add_nubers(a, b):
     # Adds two numbers
     return a + b
+```
 
 # Example function call
 result = add_numbers(3, 5)
