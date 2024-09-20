@@ -71,9 +71,7 @@ def extract_text_from_mdx(file_path):
     return '\n'.join(text), code_blocks
 
 # Function to check for spelling errors
-# Function to check for spelling errors
 def check_spelling(text, is_code_block=False):
-
     def split_underscore_words(word):
         return re.split(r'[_\s]+', word)
 
@@ -100,12 +98,13 @@ def check_spelling(text, is_code_block=False):
         if (
             i.lower() not in custom_words
             and not escape_sequence_pattern.search(i)
-            and "'" not in i
+            and "'" not in i  # Exclude words with apostrophes for misspelling check
             and not n_prefix_pattern.match(i)  # Exclude "n-prefixed" words
             and not css_value_pattern.match(i)  # Exclude CSS values
             and not hex_color_pattern.match(i)  # Exclude hex colors
             and not eth_address_pattern.match(i)  # Exclude Ethereum addresses
             and not hash_pattern.match(i)  # Exclude hash-like strings
+            and i.strip()  # Exclude empty strings
         )
     ]
     misspelled = spell.unknown(reduced_words)
@@ -120,7 +119,6 @@ def check_directory(directory):
     for root, _, files in os.walk(directory):
         for file in files:
             if file.endswith('.mdx'):
-
                 file_path = os.path.join(root, file)
                 print(f'========== Checking file: {file_path} ==========')
 
@@ -134,9 +132,6 @@ def check_directory(directory):
                     for error in errors:
                         print(f'  - {error}')
                     has_errors = True
-                else:
-                    pass
-                    # print(f'No spelling errors found in the main text of {file_path}')
 
                 # Check for spelling errors in code blocks (warnings)
                 warnings = []
