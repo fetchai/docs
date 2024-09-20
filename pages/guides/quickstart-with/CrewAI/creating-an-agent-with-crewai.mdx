@@ -1,6 +1,6 @@
 # Getting started with Fetch.ai x CrewAI
 
-Fetch.ai creates a dynamic communication layer that allows you to abstract away components into individual [agents ↗️](/guides/agents/getting-started/whats-an-agent). At Fetch.ao, our Agents are micro-services that are programmed to communicate with other agents, and or humans. Other frameworks make agents too, in this case we're looking at CrewAI to see how fetch.ai and CrewAI can benefit each other.
+Fetch.ai creates a dynamic communication layer that allows you to abstract away components into individual [agents ↗️](/guides/agents/getting-started/whats-an-agent). At Fetch.ai, our Agents are micro-services that are programmed to communicate with other agents, and or humans. Other frameworks make agents too, in this case we're looking at CrewAI to see how fetch.ai and CrewAI can benefit each other.
 
 By using agents to represent different parts of your Crew you give your project the option to be used by [other parties ↗️](/guides/agents/intermediate/communicating-with-other-agents) for economic benefit.
 
@@ -249,132 +249,293 @@ Great! You should now be seeing some log out output with our messages being disp
 
 Let's go further now and change our agents scripts by splitting the logic of the CrewAI example above. Let's have one agent Create a task and another agents fulfil this.  
 
-### Agent one: providing PDF and requesting information
+### Agent one: SeniorResearchAnalyst Agent
 
-This agent sends `DocumentUnderstanding` model which contains a local path to a PDF, and a question that the other agent must answer about the PDF. It's a small update on our first agent script.
+The SeniorResearchAnalyst agent, is designed to handle requests for city-specific information by researching advancements in artificial intelligence (AI) and providing current weather updates. It utilizes the SerperDevTool for web searches and employs models for managing input and output.
 
-However now, `.on_message(model=DocumentsResponse)` expects a `DocumentsResponse` object instead of a string.
+- `create_task(city: str) -> Task`: This method formulates a task description that outlines the specific research and weather update needed for the given city, returning a Task object.
 
-To learn more about communication with other agents check out the following [Guide ↗️](/guides/agents/intermediate/communicating-with-other-agents)
+- `run_process(city: str)`: This method coordinates the execution of the created task. It initializes a Crew process that includes the research agent and the task, allowing it to gather results efficiently.
 
-```python copy filename="agent1.py"
-from uagents import Agent, Context, Protocol, Model
-from ai_engine import UAgentResponse, UAgentResponseType
-from typing import List
+- `handle_city_request(ctx: Context, sender: str, msg: CityRequestModel)`: This function listens for incoming messages containing city names. Upon receiving a request, it logs the city name, initiates the research process, and sends back a report that includes both AI advancements and weather data.
 
-class DocumentUnderstanding(Model):
-    pdf_path: str
-    question: str
+When a request is received with a city name, the agent logs the request, conducts a comprehensive analysis, and returns a report that combines AI insights with real-time weather data. This functionality makes it a valuable tool for research organizations and tech consultancies seeking relevant information.
 
-class DocumentsResponse(Model):
-    learnings: List
-
-agent = Agent(
-    name="find_in_pdf",
-    seed="",
-    port=8001,
-    endpoint=["http://127.0.0.1:8001/submit"]
-)
-
-print("uAgent address: ", agent.address)
-summary_protocol = Protocol("Text Summariser")
-
-RECIPIENT_PDF_AGENT = ""
-
-@agent.on_event("startup")
-async def on_startup(ctx: Context):
-    await ctx.send(RECIPIENT_PDF_AGENT, DocumentUnderstanding(pdf_path="../a-little-story.pdf", question="What's the synopsis?"))
-
-@agent.on_message(model=DocumentsResponse)
-async def document_load(ctx: Context, sender: str, msg: DocumentsResponse):
-    ctx.logger.info(msg.learnings)
-
-agent.include(summary_protocol, publish_manifest=True)
-agent.run()
-
-```
-
-### Agent two: wrapping the Langchain bits
-
-Agent two defines the same models as agent one, but this time, it wraps the logic for the Langchain PDF question in the `document_load()` function, which is decorated with `.on_message(model=DocumentUnderstanding, replies=DocumentsResponse)` . You can specify a `replies` argument in your `on_message` decorators; this is useful for being more explicit with communication.
-
-```python copy filename="agent2.py"
-from langchain_community.document_loaders import PyPDFLoader
+```python copy filename="crewai_agent_1.py"
+from uagents import Agent, Context, Model
 import os
-from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
-from uagents import Agent, Context, Protocol, Model
-from typing import List
+from crewai import Agent as CrewAiAgent, Task, Crew, Process
+from crewai_tools import SerperDevTool
 
-class DocumentUnderstanding(Model):
-    pdf_path: str
-    question: str
-
-class DocumentsResponse(Model):
-    learnings: List
-
-pdf_questioning_agent = Agent(
-    name="pdf_questioning_agent",
-    seed="",
-    port=8003,
-    endpoint=["http://127.0.0.1:8003/submit"],
+senior_research_analyst_agent = Agent(
+    name="senior_research_analyst_agent",
+    seed="senior_research_analyst_agent_seed",
+    port=8001,
+    endpoint=["http://127.0.0.1:8001/submit"],
 )
 
-print("uAgent address: ", pdf_questioning_agent.address)
-pdf_loader_protocol = Protocol("Text Summariser")
 
-@pdf_questioning_agent.on_message(model=DocumentUnderstanding, replies=DocumentsResponse)
-async def document_load(ctx: Context, sender: str, msg: DocumentUnderstanding):
-    loader = PyPDFLoader(msg.pdf_path)
-    pages = loader.load_and_split()
-    openai_api_key = os.environ['OPENAI_API_KEY']
-    learnings = []
+class CityRequestModel(Model):
+    city: str
 
-    faiss_index = FAISS.from_documents(pages, OpenAIEmbeddings(openai_api_key=openai_api_key))
 
-    docs = faiss_index.similarity_search(msg.question, k=2)
+class ResearchReportModel(Model):
+    report: str
 
-    for doc in docs:
-        learnings.append(str(doc.metadata["page"]) + ":" + doc.page_content[:600])
 
-    await ctx.send(sender, DocumentsResponse(learnings=learnings))
+os.environ["OPENAI_API_KEY"] = ""
+os.environ["SERPER_API_KEY"] = ""
 
-pdf_questioning_agent.include(pdf_loader_protocol, publish_manifest=True)
-pdf_questioning_agent.run()
+
+class SeniorResearchAnalyst:
+    def __init__(self):
+        """
+        Initializes the Senior Research Analyst agent with a search tool.
+        """
+        self.search_tool = SerperDevTool()
+
+        self.researcher = CrewAiAgent(
+            role="Senior Research Analyst",
+            goal="Uncover cutting-edge developments in AI and provide weather updates.",
+            backstory="""You work at a leading tech think tank.
+            Your expertise lies in identifying emerging trends and understanding external factors like weather.""",
+            verbose=True,
+            allow_delegation=False,
+            tools=[self.search_tool],
+        )
+
+    def create_task(self, city: str) -> Task:
+        """
+        Creates a task for conducting research on AI advancements and retrieving weather updates.
+
+        Parameters:
+        - city: str, the city for which the weather update is requested.
+
+        Returns:
+        - Task: The created task with the specified description and expected output.
+        """
+        task_description = (
+            f"Conduct a comprehensive analysis of the latest advancements in AI in 2024. "
+            f"Also, use the search tool to provide the current weather update for {city}."
+        )
+
+        return Task(
+            description=task_description,
+            expected_output="Full analysis report with weather data",
+            agent=self.researcher,
+        )
+
+    def run_process(self, city: str):
+        """
+        Runs the process for the created task and retrieves the result.
+
+        Parameters:
+        - city: str, the city for which the task is run.
+
+        Returns:
+        - result: The output from the CrewAI process after executing the task.
+        """
+        task = self.create_task(city)
+        crew = Crew(
+            agents=[self.researcher],
+            tasks=[task],
+            verbose=True,
+            process=Process.sequential,
+        )
+        result = crew.kickoff()
+        return result
+
+
+@senior_research_analyst_agent.on_message(model=CityRequestModel, replies=ResearchReportModel)
+async def handle_city_request(ctx: Context, sender: str, msg: CityRequestModel):
+    """
+    Handles incoming messages requesting city information.
+
+    What it does:
+    - Logs the received city name.
+    - Runs the research process for the specified city and sends the report back to the sender.
+
+    Parameters:
+    - ctx: Context, provides the execution context for logging and messaging.
+    - sender: str, the address of the sender agent.
+    - msg: CityRequestModel, the received message containing the city name.
+
+    Returns:
+    - None: Sends the research report to the sender agent.
+    """
+    ctx.logger.info(f"Received message from {sender} with city: {msg.city}")
+    research_analyst = SeniorResearchAnalyst()
+    gather_task_result = research_analyst.run_process(msg.city)
+    await ctx.send(sender, ResearchReportModel(report=str(gather_task_result)))
+
+
+if __name__ == "__main__":
+    """
+    Starts the communication agent and begins listening for messages.
+
+    What it does:
+    - Runs the agent, enabling it to send/receive messages and handle events.
+
+    Returns:
+    - None: Runs the agent loop indefinitely.
+    """
+    senior_research_analyst_agent.run()
 
 ```
 
-With these agents now being defined, it is time to run them. Let's run Agent two first to get its address and then update Agent one to send a message to it by filling the `RECIPIENT_PDF_AGENT` field in-line.
+### Agent two: ResearchAsking Agent
+
+The ResearchAsking agent is designed to initiate requests for city-specific research information and manage responses related to research reports.
+
+- Models: `CityRequestModel` for storing the city name and `ResearchReportModel` for the research findings.
+
+- Startup Event: The `on_startup` function logs the agent's name and address, then sends a message to a target agent with the default city (London).
+
+- Message Handling: The `handle_research_report` function processes incoming reports, logging the sender's address and the content of the research report.
+
+This agent operates continuously, enabling effective communication and retrieval of city-related research insights.
+
+```python copy filename="crewai_agent_2.py"
+from uagents import Agent, Context, Model
+
+
+class CityRequestModel(Model):
+    city: str
+
+
+class ResearchReportModel(Model):
+    report: str
+
+
+research_asking_agent = Agent(
+    name="research_asking_agent",
+    seed="research_asking_agent_seed",
+    port=8000,
+    endpoint=["http://127.0.0.1:8000/submit"],
+)
+
+TARGET_AGENT_ADDRESS = (
+    "agent1qgxfhzy78m2qfdsg726gtj4vnd0hkqx96xwprng2e4rmn0xfq7p35u6dz8q"
+)
+DEFAULT_CITY = "London"
+
+
+@research_asking_agent.on_event("startup")
+async def on_startup(ctx: Context):
+    """
+    Triggered when the agent starts up.
+
+    What it does:
+    - Logs the agent's name and address.
+    - Sends a message to the target agent with the default city (e.g., 'London').
+
+    Parameters:
+    - ctx: Context, provides the execution context for logging and messaging.
+
+    Returns:
+    - None: Sends the message to the target agent asynchronously.
+    """
+    ctx.logger.info(
+        f"Hello, I'm {research_asking_agent.name}, and my address is {research_asking_agent.address}."
+    )
+
+    await ctx.send(TARGET_AGENT_ADDRESS, CityRequestModel(city=DEFAULT_CITY))
+
+
+@research_asking_agent.on_message(model=ResearchReportModel)
+async def handle_research_report(ctx: Context, sender: str, msg: ResearchReportModel):
+    """
+    Triggered when a message of type ResearchReportModel is received.
+
+    What it does:
+    - Logs the sender's address and the research report received.
+
+    Parameters:
+    - ctx: Context, provides the execution context for logging and messaging.
+    - sender: str, the address of the sender agent.
+    - msg: ResearchReportModel, the received research report.
+
+    Returns:
+    - None: Processes the message and logs it.
+    """
+    ctx.logger.info(f"Received research report from {sender}: {msg.report}")
+
+
+if __name__ == "__main__":
+    """
+    Starts the research analyst agent and begins listening for events.
+
+    What it does:
+    - Runs the agent, enabling it to send/receive messages and handle events.
+
+    Returns:
+    - None: Runs the agent loop indefinitely.
+    """
+    research_asking_agent.run()
+
+```
 
 ### Output
 
-Run `poetry run python langchain_agent_2.py` first and then `poetry run python langchain_agent_1.py`.
+Run `poetry run python crewai_agent_1.py` first and then `poetry run python crewai_agent_2.py`.
 
 You should get something similar to the following for each agent:
-
-- **Agent 1**:
-
-    ```
-    uAgent address agent:  agent1qv9qmj3ug83vcrg774g2quz0urmlyqlmzh6a5t3r88q3neejlrffz405p7x
-    INFO:     [find_in_pdf]: Manifest published successfully: Text Summariser
-    INFO:     [find_in_pdf]: Registration on Almanac API successful
-    INFO:     [find_in_pdf]: Almanac contract registration is up to date!
-    INFO:     [find_in_pdf]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
-    INFO:     [find_in_pdf]: ['0: This is a simple story about two ... ]
-    ```
 
 - **Agent 2**:
 
     ```
-    uAgent address:  agent1qfwfpz6dpyzvz0f0tgxax58fpppaknnqm99fpggmm2wffjcxgqe8sn4cwx3
-    INFO:     [pdf_questioning_agent]: Manifest published successfully: Text Summariser
-    INFO:     [pdf_questioning_agent]: Registration on Almanac API successful
-    INFO:     [pdf_questioning_agent]: Almanac contract registration is up to date!
-    INFO:     [pdf_questioning_agent]: Starting server on http://0.0.0.0:8003 (Press CTRL+C to quit)
-    INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
-    INFO:faiss.loader:Loading faiss with AVX2 support.
-    INFO:faiss.loader:Successfully loaded faiss with AVX2 support.
-    INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+    INFO:     [research_asking_agent]: Registration on Almanac API successful
+    INFO:     [research_asking_agent]: Almanac contract registration is up to date!
+    INFO:     [research_asking_agent]: Hello, I'm research_asking_agent, and my address is agent1qvfw094hmsfrvmlw8amg4ypyvd2wm8hvahxt0zwmareus6fzajpm5dpgh3f.
+    INFO:     [research_asking_agent]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [research_asking_agent]: Received research report from agent1qgxfhzy78m2qfdsg726gtj4vnd0hkqx96xwprng2e4rmn0xfq7p35u6dz8q: **Comprehensive Analysis of the Latest Advancements in AI in 2024**
+
+    The year 2024 has emerged as a pivotal period for artificial intelligence, with several groundbreaking trends and developments. After analyzing multiple sources, here are the key advancements in AI for this year:
+
+    1. **Multimodal AI**:
+    Multimodal AI involves the integration of multiple forms of data including text, audio, and visual inputs to create more sophisticated and context-aware AI models. This development allows for more accurate and comprehensive AI systems capable of better mimicking human understanding.
+
+    2. **Small Language Models**:
+    As opposed to massive language models like GPT-3, smaller language models are becoming more prevalent. These models are more efficient, faster, and require fewer resources while maintaining a high level of performance.
+
+    3. **Customizable Generative AI**:
+    The rise of generative AI that can be fine-tuned for specific tasks has been significant. Such AI systems can be adapted to meet the unique needs of different users and industries, providing more personalized and effective solutions.
+
+    4. **Agentic AI**:
+    These are AI systems designed to act autonomously to achieve specific goals, showing more complex behavior and decision-making capabilities. This advancement heralds a future where AI can conduct complex tasks with minimal human intervention.
+
+    5. **Open Source AI**:
+    There is a growing trend towards open-sourcing AI models which facilitates collaboration and innovation among researchers and developers worldwide. This movement is democratizing access to advanced AI technologies.
+
+    6. **Retrieval-Augmented Generation**:
+    This involves AI systems that can search for and retrieve external information to enhance their responses. This technology is particularly useful in creating more accurate and up-to-date AI systems.
+
+    7. **Generative AI and Copyright Challenges**:
+    The rise of generative AI has brought about new discussions around copyright and usage laws. As AI becomes more creative, legal frameworks must adapt to address ownership and licensing issues.
+
+    8. **Licensing Innovations**:
+    To keep up with the rapid development in AI, new licensing models are being explored. These models aim to balance innovation with fair use and protection of intellectual property.
+
+    9. **AI Patent Developments**:
+    Innovations in AI are leading to an increase in AI-related patents. This increase highlights the competitive landscape and the importance of intellectual property in the field of AI.
+
+    10. **Healthcare Applications**:
+        AI’s role in healthcare continues to grow, particularly in diagnostics, personalized medicine, and patient care. AI technologies are aiding in early detection of diseases and creating more effective treatment plans.
+
+    These developments collectively signify a year of significant progress in AI, promising transformative impacts across various industries.
+
+    **Current Weather Update for London**
+
+    As of the latest reports, the current weather in London, England, United Kingdom is as follows:
+
+    - Morning: 65°F, partly cloudy with an 11% chance of rain.
+    - Afternoon: 71°F, sunny with 0% chance of rain.
+    - Evening: 62°F, partly cloudy with a 6% chance of rain.
+    - Overnight: 60°F, clear skies.
+
+    Overall, London is experiencing mild weather with clear skies and minimal chances of rain throughout the day.
+
+    This comprehensive analysis and weather update should provide valuable insights into the latest advancements in AI and the current weather conditions in London.`
     ```
 ## Next steps
 
