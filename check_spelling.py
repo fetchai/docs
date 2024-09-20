@@ -21,6 +21,12 @@ path_pattern = re.compile(r'path:\s*"/[^"]*"')
 guidebox_pattern = re.compile(r'<GuideBox[\s\S]*?/>', re.IGNORECASE)
 hex_colours = re.compile(r'([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})')
 
+# Corrected word pattern to allow apostrophes in valid words
+word_pattern = re.compile(r"\b\w+(?:'\w+)?\b")
+
+# Pattern to exclude words containing escape sequences (\n, \u, etc.)
+escape_sequence_pattern = re.compile(r'\\[nu][0-9a-fA-F]+|u[0-9a-fA-F]{4}')
+
 # Function to extract text while ignoring specified components and handling code blocks differently
 def extract_text_from_mdx(file_path):
     with open(file_path, 'r') as file:
@@ -65,12 +71,14 @@ def extract_text_from_mdx(file_path):
     return '\n'.join(text), code_blocks
 
 # Function to check for spelling errors
+# Function to check for spelling errors
 def check_spelling(text, is_code_block=False):
 
     def split_underscore_words(word):
         return re.split(r'[_\s]+', word)
 
-    words = re.findall(r'\b\w+\b', text)
+    # Use the updated word pattern to find words
+    words = word_pattern.findall(text)
     processed_words = []
     for word in words:
         if '_' in word:
@@ -78,7 +86,28 @@ def check_spelling(text, is_code_block=False):
         else:
             processed_words.append(word)
 
-    reduced_words = [i.lower() for i in processed_words if i.lower() not in custom_words]
+    # Patterns to exclude
+    n_prefix_pattern = re.compile(r'\bn\w+')
+    css_value_pattern = re.compile(r'^\d+(px|%|em|rem|vh|vw|pt|cm|mm|in|s|ms|deg)?$')  # CSS values
+    hex_color_pattern = re.compile(r'^(#?[A-Fa-f0-9]{3}|#?[A-Fa-f0-9]{6})$')  # Hex colors
+    eth_address_pattern = re.compile(r'^0x[a-fA-F0-9]{40}$')  # Ethereum addresses
+    hash_pattern = re.compile(r'^[a-f0-9]{40}$')  # Hash-like strings (40 hex characters)
+
+    # Filter out custom words, valid words with apostrophes,
+    # words matching escape sequences, "n-prefixed" words, CSS values, hex colors, ETH addresses, and hash strings
+    reduced_words = [
+        i.lower() for i in processed_words
+        if (
+            i.lower() not in custom_words
+            and not escape_sequence_pattern.search(i)
+            and "'" not in i
+            and not n_prefix_pattern.match(i)  # Exclude "n-prefixed" words
+            and not css_value_pattern.match(i)  # Exclude CSS values
+            and not hex_color_pattern.match(i)  # Exclude hex colors
+            and not eth_address_pattern.match(i)  # Exclude Ethereum addresses
+            and not hash_pattern.match(i)  # Exclude hash-like strings
+        )
+    ]
     misspelled = spell.unknown(reduced_words)
 
     # Return misspelled words with a flag indicating if they came from code
@@ -115,12 +144,9 @@ def check_directory(directory):
                     warnings = check_spelling(code_block, is_code_block=True).get('warnings', [])
 
                 if warnings:
-                        print(f'Warnings (spelling errors in code block) in {file_path}:')
-                        for warning in warnings:
-                            print(f'  - {warning}')
-
-
-
+                    print(f'Warnings (spelling errors in code block) in {file_path}:')
+                    for warning in warnings:
+                        print(f'  - {warning}')
 
     return has_errors
 
