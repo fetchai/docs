@@ -9,6 +9,8 @@ import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { useState } from "react";
 import React from "react";
+import { Gear } from "src/icons/shared-icons";
+import NavDropdown from "./nav-dropdown";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -83,6 +85,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const activeRoute = useFSRoute();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { menu, setMenu } = useMenu();
+  const [openOs, setOpenOs] = useState<boolean>(false);
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -188,7 +191,10 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                 directories: flatDirectories,
               })}
             </div>
-
+            <div className="nx-relative">
+              <Gear onClickHandler={() => setOpenOs((prev) => !prev)} />
+              {openOs && <NavDropdown />}
+            </div>
             {config.project.link ? (
               <Anchor
                 className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
