@@ -9,9 +9,29 @@ import Image from "next/image";
 import systemDiagram from "../src/svgs/system-diagram.svg";
 import coursesStack from "../src/svgs/courses-stack.svg";
 import coursesStackSecond from "../src/svgs/courses-stack-second.svg";
+import langchain from "../src/svgs/langchain.svg";
+import crewai from "../src/svgs/crewai.svg";
+import fastapi from "../src/svgs/fastapi.svg";
 import { Arrow, vectorPointer, vectorSquare } from "src/icons/shared-icons";
 
 function LandingPage() {
+  const comingFromSomewhere = [
+    {
+      name: "Langchain",
+      icon: langchain,
+      link: "/guides/quickstart-with/langchain/creating-an-agent-with-langchain",
+    },
+    {
+      name: "FastAPI",
+      icon: fastapi,
+      link: "/guides/agents/intermediate/rest-endpoints",
+    },
+    {
+      name: "CrewAi",
+      icon: crewai,
+      link: "/guides/quickstart-with/CrewAI/startup-idea-analyser",
+    },
+  ];
   const startingGuides = [
     {
       label: "Building your first agent",
@@ -56,6 +76,49 @@ function LandingPage() {
       <span className={styles.keywordtext}>{keyword}</span>
     </div>
   );
+
+  const ComingFromSomeWhere = ({
+    icon,
+    name,
+    link,
+  }: {
+    icon: string;
+    name: string;
+    link: string;
+  }) => {
+    const router = useRouter();
+    return (
+      <div
+        onClick={() => router.push(link)}
+        className={styles.comingSomewhereWrapper}
+      >
+        <div className="nx-flex nx-w-full nx-flex-row nx-justify-between">
+          <div className="nx-flex nx-flex-row nx-gap-3 ">
+            <Image
+              src={icon}
+              alt="somewhere-img"
+              className={styles.comingSomewhereImg}
+            />
+            <span className={styles.comingSomewhereTitle}>{name}</span>
+          </div>
+          <p className=" nx-flex nx-justify-center nx-items-center">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.75 7.5625L8.25 12.8125C7.9375 13.0938 7.46875 13.0938 7.1875 12.7812C6.90625 12.4688 6.90625 12 7.21875 11.7188L11.375 7.75H0.75C0.3125 7.75 0 7.4375 0 7C0 6.59375 0.3125 6.25 0.75 6.25H11.375L7.21875 2.3125C6.90625 2.03125 6.90625 1.53125 7.1875 1.25C7.46875 0.9375 7.96875 0.9375 8.25 1.21875L13.75 6.46875C13.9062 6.625 14 6.8125 14 7C14 7.21875 13.9062 7.40625 13.75 7.5625Z"
+                fill="#8A9FB8"
+              />
+            </svg>
+          </p>
+        </div>
+      </div>
+    );
+  };
 
   const CourseStack = ({
     course,
@@ -158,6 +221,19 @@ function LandingPage() {
           <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-3 nx-gap-8">
             {startingGuides.map((guide, index) => (
               <GuideBox key={index} guide={guide} />
+            ))}
+          </div>
+        </div>
+        <div className=" nx-flex nx-flex-col nx-gap-3">
+          <p className={styles.subDescription}>Coming from somewhere?</p>
+          <div className=" nx-grid sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-grid-cols-1 nx-w-full nx-gap-3">
+            {comingFromSomewhere.map((item, index) => (
+              <ComingFromSomeWhere
+                link={item.link}
+                icon={item.icon}
+                name={item.name}
+                key={index}
+              />
             ))}
           </div>
         </div>
