@@ -9,7 +9,7 @@ Welcome to the code repository for Fetch.ai's documentation at [fetch.ai/docs](f
 ### Install dependencies
 
 ```bash
-pnpm install wielhfpq3hgpit4b test
+pnpm install test
 ```
 
 ### Run Development Server
