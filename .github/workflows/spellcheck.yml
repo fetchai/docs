@@ -7,7 +7,7 @@ on:
 
 jobs:
   spellcheck:
-    name: Check Spelling with pyspelling
+    name: Check Spelling with custom Python script
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,16 +23,17 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # Step 3: Install dependencies including pyspelling, aspell, and pymdown-extensions
-      - name: Install pyspelling, aspell, and dependencies
+      # Step 3: Install dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y aspell aspell-en  # Install aspell and the English dictionary
           python -m pip install --upgrade pip
-          pip install pyspelling pymdown-extensions  # Install pyspelling and pymdown-extensions
+          pip install spacy markdown-it-py pyspellchecker
+          python -m spacy download en_core_web_sm  # Install spaCy language model
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # Step 4: Run pyspelling with the provided configuration file
-      - name: Run pyspelling
+      # Step 4: Run the custom Python spell-checking script
+      - name: Run spell-check script
         run: |
-          pyspelling -c .github/spellcheck.yml || exit 1
+          python check_spelling.py || exit 1
