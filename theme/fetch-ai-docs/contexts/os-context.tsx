@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface OsContextType {
   selectedOS: string;
@@ -9,6 +15,21 @@ const OsContext = createContext<OsContextType | undefined>(undefined);
 
 export const OsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [selectedOS, setSelectedOS] = useState<string>("Windows");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedOS = localStorage.getItem("selectedOS");
+      if (savedOS) {
+        setSelectedOS(savedOS);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selectedOS", selectedOS);
+    }
+  }, [selectedOS]);
 
   return (
     <OsContext.Provider value={{ selectedOS, setSelectedOS }}>

@@ -57,10 +57,7 @@ export const CustomPre = ({
   return (
     <div className="nx-flex nx-w-full nx-mt-5 nx-flex-col">
       <Pre data-language={dataLanguage} className="custom-pre">
-        <div
-          style={{ overflowX: "hidden" }}
-          className="nx-flex nx-w-full nx-items-center nx-justify-between"
-        >
+        <div className="nx-flex nx-w-full nx-items-center nx-justify-between">
           <CodeIcon />
           <div>
             {filename && <span className="nx-code-name">{`${filename}`}</span>}

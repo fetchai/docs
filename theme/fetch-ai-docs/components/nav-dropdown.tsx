@@ -1,20 +1,20 @@
 import React from "react";
 
-import { Mac, Windows, Ubuntu } from "src/icons/shared-icons";
+import { Mac, Ubuntu, Windows } from "src/icons/os-icons";
 import { useOs } from "../contexts/os-context";
 
 const osmenu = [
   {
     name: "Windows",
-    icon: <Windows />,
+    icon: Windows,
   },
   {
     name: "Mac",
-    icon: <Mac />,
+    icon: Mac,
   },
   {
     name: "Ubuntu",
-    icon: <Ubuntu />,
+    icon: Ubuntu,
   },
 ];
 
@@ -33,7 +33,7 @@ const NavDropdown = () => {
               }`}
               onClick={() => setSelectedOS(item.name)}
             >
-              {item.icon}
+              <item.icon selectedOS={selectedOS} name={item.name} />
             </div>
           ))}
         </div>

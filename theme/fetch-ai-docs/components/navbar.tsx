@@ -7,7 +7,7 @@ import type { ReactElement, ReactNode } from "react";
 import { useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
 import { Gear } from "src/icons/shared-icons";
 import NavDropdown from "./nav-dropdown";
@@ -86,6 +86,23 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { menu, setMenu } = useMenu();
   const [openOs, setOpenOs] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenOs(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -193,7 +210,11 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
             </div>
             <div className="nx-relative">
               <Gear onClickHandler={() => setOpenOs((prev) => !prev)} />
-              {openOs && <NavDropdown />}
+              {openOs && (
+                <div ref={dropdownRef}>
+                  <NavDropdown />
+                </div>
+              )}
             </div>
             {config.project.link ? (
               <Anchor

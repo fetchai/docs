@@ -1,5 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CustomPre } from "../../../components/api-endpoint";
 
 # Agents 101 for AI Engine
 
@@ -104,7 +105,18 @@ We're going to run our agents locally, and set up a Mailbox on Agentverse.
 In this guide, our first agent takes any text and returns a sentiment of contents with **openAI**.
 
 We need to create a Python file for this example.
-We can do this by running: `touch sentiment_agent.py`
+We can do this by running:
+
+   <CustomPre 
+        commands={{
+        windows: `echo. > sentiment_agent.py`,
+        mac: `touch sentiment_agent.py`,
+        ubuntu: `touch sentiment_agent.py`
+        }} 
+        dataLanguage="bash"
+        hasCopyCode={true}
+        osMenu={true}
+    />
 
     ```py copy filename="sentiment_agent.py"
     from uagents import Agent, Context, Protocol, Model
