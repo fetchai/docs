@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components'
 
 ## Introduction
 
-This example shows how to build a react application integrated with a flask backend, using various agents to perform tasks such as fetching news, scrapping webpage data and also getting the sentiment of news using hugging face finbert model of [HF infrence API ↗️](https://huggingface.co/docs/api-inference/en/index).
+This example shows how to build a react application integrated with a flask backend, using various agents to perform tasks such as fetching news, scrapping webpage data and also getting the sentiment of news using hugging face finbert model of [HF inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
 
 ### Supporting Documents
 
@@ -68,418 +68,417 @@ In this section we will setup agents and as well as flask app which will respond
 
 1. Flask Application ('app.py'):
 
-- Define routes for fetching news_urls, scrapping news content and get finbert sentiments.
-- Utilise agents to handle specific tasks.
+   - Define routes for fetching news_urls, scrapping news content and get finbert sentiments.
+   - Utilise agents to handle specific tasks.
 
-```python copy filename="app.py"
-from flask import Flask
-from flask_cors import CORS
-from uagents.query import query
-from uagents import Model
-import json
-
-# Define Request Data Model classes for interacting with different agents
-class NewsRequest(Model):
-    company_name: str
-
-class UrlRequest(Model):
-    company_name: str
-
-class wrapRequest(Model):
-    url : str
-
-class SentimentRequest(Model):
-    news : str
-
-# Initialize Flask application
-app = Flask(__name__)
-CORS(app)  # Enables CORS for all domains on all routes
-
-# Define agent addresses
-news_agent_address = "agent1q2e9kfdrxfa5dxn6zeyw47287ca36cdur9xevhmdzzfmf4cwlmahv73mpev"
-news_content_agent_address = "agent1qvumqq9xju7musr82l6ulqsvgka7d7z77jvvdrkyyr7n5s0u0lfdvse6k4t"
-sentiment_agent_address = "agent1q2pm392d2uux3wjsydatd4zhagrtq0lrwfgw4s8pv4x0090sfzk9qpgztaz"
-
-
-@app.route('/')
-def home():
-    return "Welcome to the Company Analyzer API!"
-
-# Define an asynchronous endpoint to get news for a given company
-@app.route('/api/news/<string:company_name>', methods=['GET'])
-async def get_news(company_name):
-    response = await query(destination=news_agent_address, message=NewsRequest(company_name=company_name), timeout=15.0)
-    data = json.loads(response.decode_payload())
-    print(data)
-    return data["news_list"]
-
-
-# Define an asynchronous endpoint to analyse sentiment for a given company
-@app.route('/api/sentiment/<string:company_name>', methods=['GET'])
-async def get_sentiment(company_name):
-    urls = await query(destination=news_agent_address, message=UrlRequest(company_name=company_name), timeout=15.0)
-    data = json.loads(urls.decode_payload())
-    sentiments = []
-    content_list = []
-    sentiment_scores = {}
-    url_list = data.get("url_list", [])
-
-    # For each URL, query for content and perform sentiment analysis
-    for url in url_list:
-        content = await query(destination=news_content_agent_address, message=wrapRequest(url=url), timeout=15.0)
-        news_summary = json.loads(content.decode_payload())
-        summary_text = news_summary.get('summary', '')
-        cleaned_text = summary_text.replace('\u00a0', ' ')
-        if len(cleaned_text) > 100:
-            content_list.append(cleaned_text)
-    for content in content_list:
-        sentiment = await query(destination=sentiment_agent_address, message=SentimentRequest(news=content), timeout=15.0)
-        data = json.loads(sentiment.decode_payload())
-        sentiment = data.get("sentiment", [])
-        sentiments.append(sentiment)
-    for sentiment in sentiments:
-        label,score = sentiment.split(',')
-        score = float(score)
-        if label in sentiment_scores:
-            sentiment_scores[label].append(score)
-        else:
-            sentiment_scores[label] = [score]
-        sentiment_means = {label: sum(scores) / len(scores) for label, scores in sentiment_scores.items() if scores}
-
-    # Calculate average sentiment scores and determine the predominant sentiment
-    if sentiment_means:
-        max_sentiment = max(sentiment_means, key=sentiment_means.get)
-        final_sentiment = str(max_sentiment) + ' : ' +str(round(sentiment_means[max_sentiment],2))
-        return final_sentiment
-    else:
-        return None, None
-
-# Start the Flask application in debug mode
-if __name__ == '__main__':
-    app.run(debug=True)
-```
-
+   ```python copy filename="app.py"
+   from flask import Flask
+   from flask_cors import CORS
+   from uagents.query import query
+   from uagents import Model
+   import json
+   
+   # Define Request Data Model classes for interacting with different agents
+   class NewsRequest(Model):
+       company_name: str
+   
+   class UrlRequest(Model):
+       company_name: str
+   
+   class wrapRequest(Model):
+       url : str
+   
+   class SentimentRequest(Model):
+       news : str
+   
+   # Initialize Flask application
+   app = Flask(__name__)
+   CORS(app)  # Enables CORS for all domains on all routes
+   
+   # Define agent addresses
+   news_agent_address = "agent1q2e9kfdrxfa5dxn6zeyw47287ca36cdur9xevhmdzzfmf4cwlmahv73mpev"
+   news_content_agent_address = "agent1qvumqq9xju7musr82l6ulqsvgka7d7z77jvvdrkyyr7n5s0u0lfdvse6k4t"
+   sentiment_agent_address = "agent1q2pm392d2uux3wjsydatd4zhagrtq0lrwfgw4s8pv4x0090sfzk9qpgztaz"
+   
+   
+   @app.route('/')
+   def home():
+       return "Welcome to the Company Analyzer API!"
+   
+   # Define an asynchronous endpoint to get news for a given company
+   @app.route('/api/news/<string:company_name>', methods=['GET'])
+   async def get_news(company_name):
+       response = await query(destination=news_agent_address, message=NewsRequest(company_name=company_name), timeout=15.0)
+       data = json.loads(response.decode_payload())
+       print(data)
+       return data["news_list"]
+   
+   
+   # Define an asynchronous endpoint to analyse sentiment for a given company
+   @app.route('/api/sentiment/<string:company_name>', methods=['GET'])
+   async def get_sentiment(company_name):
+       urls = await query(destination=news_agent_address, message=UrlRequest(company_name=company_name), timeout=15.0)
+       data = json.loads(urls.decode_payload())
+       sentiments = []
+       content_list = []
+       sentiment_scores = {}
+       url_list = data.get("url_list", [])
+   
+       # For each URL, query for content and perform sentiment analysis
+       for url in url_list:
+           content = await query(destination=news_content_agent_address, message=wrapRequest(url=url), timeout=15.0)
+           news_summary = json.loads(content.decode_payload())
+           summary_text = news_summary.get('summary', '')
+           cleaned_text = summary_text.replace('\u00a0', ' ')
+           if len(cleaned_text) > 100:
+               content_list.append(cleaned_text)
+       for content in content_list:
+           sentiment = await query(destination=sentiment_agent_address, message=SentimentRequest(news=content), timeout=15.0)
+           data = json.loads(sentiment.decode_payload())
+           sentiment = data.get("sentiment", [])
+           sentiments.append(sentiment)
+       for sentiment in sentiments:
+           label,score = sentiment.split(',')
+           score = float(score)
+           if label in sentiment_scores:
+               sentiment_scores[label].append(score)
+           else:
+               sentiment_scores[label] = [score]
+           sentiment_means = {label: sum(scores) / len(scores) for label, scores in sentiment_scores.items() if scores}
+   
+       # Calculate average sentiment scores and determine the predominant sentiment
+       if sentiment_means:
+           max_sentiment = max(sentiment_means, key=sentiment_means.get)
+           final_sentiment = str(max_sentiment) + ' : ' +str(round(sentiment_means[max_sentiment],2))
+           return final_sentiment
+       else:
+           return None, None
+   
+   # Start the Flask application in debug mode
+   if __name__ == '__main__':
+       app.run(debug=True)
+   ```
+   
 2. Agents:
 
     - **News and URL agent:** Fetches news articles titles and url for them as well.
-
+ 
+   ```python copy filename="news_agent.py"
+   # Import Required libraries
+   import requests
+   import os
+   from uagents import Agent, Context, Model
+   from uagents.setup import fund_agent_if_low
     
-```python copy filename="news_agent.py"
-# Import Required libraries
-import requests
-import os
-from uagents import Agent, Context, Model
-from uagents.setup import fund_agent_if_low
- 
-# Define Request and Response Models
-class NewsRequest(Model):
-    company_name: str
+   # Define Request and Response Models
+   class NewsRequest(Model):
+       company_name: str
+   
+   class UrlRequest(Model):
+       company_name: str
+   
+   class NewsResponse(Model):
+       news_list : list
+   
+   class UrlResponse(Model):
+       url_list: list
+   
+   class ErrorResponse(Model):
+       error : str
+   
+   ALPHA_VANTAGE_API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
+   GNEWS_API_KEY = os.getenv('GNEWS_API_KEY')
+    
+   # Define function to get ticker symbol for given company name
+   async def fetch_symbol(company_name):
+       url = f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={company_name}&apikey={ALPHA_VANTAGE_API_KEY}"
+       response = requests.get(url)
+       if response.status_code == 200:
+           data = response.json()
+           # Typically, the best match will be the first item in the bestMatches list
+           if data.get('bestMatches') and len(data['bestMatches']) > 0:
+               Symbol = data['bestMatches'][0]['1. symbol'] # Return the symbol of the best match
+               return Symbol
+           else:
+               return 'No Symbol found'
+       else:
+           return 'No Symbol found'
+    
+   async def fetch_news(company_name): # get news urls and description for the given news company or ticker
+       url = f"https://gnews.io/api/v4/search?q={company_name}&token={GNEWS_API_KEY}&lang=en"
+       response = requests.get(url)
+       articles = response.json().get('articles', [])
+       # Return a list of titles and descriptions with hyperlinks
+       news_list = []
+       for article in articles:
+           article_url = article.get('url', 'No url')
+           description = article.get("description", "No Description")
+           # Create a hyperlink using HTML anchor tag
+           hyperlink = {"url": article_url,
+                        "title": description}
+           news_list.append(hyperlink)
+       return news_list
+   
+   async def fetch_url(company_name): # Get the news url's for given company name or symbol
+       url = f"https://gnews.io/api/v4/search?q={company_name}&token={GNEWS_API_KEY}&lang=en"
+       response = requests.get(url)
+       articles = response.json().get('articles', [])
+       # Return a list of titles and descriptions with hyperlinks
+       url_list = []
+       for article in articles:
+           article_url = article.get('url', 'No url')
+           url_list.append(article_url)
+       return url_list
+    
+   # Define News Agent
+   NewsAgent = Agent(
+       name="NewsAgent",
+       port=8000,
+       seed="News Agent secret phrase",
+       endpoint=["http://127.0.0.1:8000/submit"],
+   )
+    
+   # Registering agent on Almanac and funding it.
+   fund_agent_if_low(NewsAgent.wallet.address())
+    
+   # On agent startup printing address
+   @NewsAgent.on_event('startup')
+   async def agent_details(ctx: Context):
+       ctx.logger.info(f'Search Agent Address is {NewsAgent.address}')
+   
+   # On_query handler for news request
+   @NewsAgent.on_query(model=NewsRequest, replies={NewsResponse})
+   async def query_handler(ctx: Context, sender: str, msg: NewsRequest):
+       try:
+           ctx.logger.info(f'Fetching news details for company_name: {msg.company_name}')
+           symbol = await fetch_symbol(msg.company_name)
+           ctx.logger.info(f' Symbol for company provided is {symbol}')
+           if symbol  != None: #if company symbol fetch successfully getting news using ticker symbol else using the company name itself.
+               news_list = await fetch_news(symbol)
+           else:
+               news_list = await fetch_news(msg.company_name)
+               ctx.logger.info(str(news_list))
+           await ctx.send(sender, NewsResponse(news_list=news_list))
+   
+       except Exception as e:
+           error_message = f"Error fetching job details: {str(e)}"
+           ctx.logger.error(error_message)
+           # Ensure the error message is sent as a string
+           await ctx.send(sender, ErrorResponse(error=str(error_message)))
+   
+   # On_query handler for news_url request
+   @NewsAgent.on_query(model=UrlRequest, replies={UrlResponse})
+   async def query_handler(ctx: Context, sender: str, msg: UrlRequest):
+       try:
+           ctx.logger.info(f'Fetching news url details for company_name: {msg.company_name}')
+           symbol = await fetch_symbol(msg.company_name)
+           ctx.logger.info(f' Symbol for company provided is {symbol}')
+           if symbol  != None:
+               url_list = await fetch_url(symbol)
+           else:
+               url_list = await fetch_url(msg.company_name)
+           ctx.logger.info(str(url_list))
+           await ctx.send(sender, UrlResponse(url_list=url_list))
+       except Exception as e:
+           error_message = f"Error fetching job details: {str(e)}"
+           ctx.logger.error(error_message)
+           # Ensure the error message is sent as a string
+           await ctx.send(sender, ErrorResponse(error=str(error_message)))
+   
+   
+   if __name__ == "__main__":
+       NewsAgent.run() 
+   ```
 
-class UrlRequest(Model):
-    company_name: str
+   <Callout type="info" emoji="ℹ️">
+       Get your [Alphavantage ↗️](https://www.alphavantage.co/) and [Gnews ↗️](https://gnews.io/) API keys and update it in the virtual environment.
+   </Callout>
 
-class NewsResponse(Model):
-    news_list : list
+   - **WebScraper agent:** Scraps the webpage content for the given url.
 
-class UrlResponse(Model):
-    url_list: list
+      ```python copy filename="webscraper_agent.py"
+      # Import Required libraries
+      import requests
+      import aiohttp
+      from uagents import Agent, Context, Model
+      from uagents.setup import fund_agent_if_low
+      from bs4 import BeautifulSoup
+      import time
+       
+      # Define data Models to handle request
+      class wrapRequest(Model):
+          url : str
+      
+      class Message(Model):
+          message : str
+      
+      class wrapResponse(Model):
+          summary : str
+      
+      class ErrorResponse(Model):
+          error : str
+      
+      # Define webscraper Agent
+      webScraperAgent = Agent(
+          name="Web Scraper Agent",
+          port=8001,
+          seed="Web Scraper Agent secret phrase",
+          endpoint=["http://127.0.0.1:8001/submit"],
+      )
+       
+      # Define function to scrap webpage and get paragraph content.
+      async def get_webpage_content(url):
+          try:
+              async with aiohttp.ClientSession() as session:
+                  async with session.get(url) as response:
+                      if response.status == 200:
+                          response_text = await response.text()
+                          soup = BeautifulSoup(response_text, 'html.parser')
+                          
+                          for script_or_style in soup(["script", "style", "header", "footer", "nav", "aside"]):
+                              script_or_style.decompose()
+      
+                          text_blocks = soup.find_all('p')
+                          text_content = ' '.join(block.get_text(strip=True) for block in text_blocks if block.get_text(strip=True))
+      
+                          words = text_content.split()
+                          limited_text = ' '.join(words[:500])  # Limit to first 500 words for faster response of sentiment agent.
+                          return limited_text
+                      else:
+                          return "Error: Unable to fetch content."
+          except Exception as e:
+              return f"Error encountered: {str(e)}"
+      
+       
+      # On agent startup printing address
+      @webScraperAgent.on_event('startup')
+      async def agent_details(ctx: Context):
+          ctx.logger.info(f'Search Agent Address is {webScraperAgent.address}')
+      
+      # On_query handler to handle webpage wrapping
+      @webScraperAgent.on_query(model=wrapRequest, replies={wrapResponse})
+      async def query_handler(ctx: Context, sender: str, msg: wrapRequest):
+          try:
+              ctx.logger.info(f'URL wrapper for request : {msg.url}')
+              news_content = await get_webpage_content(msg.url)
+              ctx.logger.info(news_content)
+              if "Error" not in news_content:
+                  await ctx.send(sender, wrapResponse(summary = news_content))
+              else:
+                  await ctx.send(sender, ErrorResponse(error = "ERROR" + news_content))
+          except Exception as e:
+              error_message = f"Error fetching job details: {str(e)}"
+              ctx.logger.error(error_message)
+              # Ensure the error message is sent as a string
+              await ctx.send(sender, ErrorResponse(error=str(error_message)))
+      
+      if __name__ == "__main__":
+          webScraperAgent.run()
+      ```
 
-class ErrorResponse(Model):
-    error : str
+   - **Sentiment agent:** Provides sentiment of news content provided using HF API and finBERT model.
 
-ALPHA_VANTAGE_API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
-GNEWS_API_KEY = os.getenv('GNEWS_API_KEY')
- 
-# Define function to get ticker symbol for given company name
-async def fetch_symbol(company_name):
-    url = f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={company_name}&apikey={ALPHA_VANTAGE_API_KEY}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        # Typically, the best match will be the first item in the bestMatches list
-        if data.get('bestMatches') and len(data['bestMatches']) > 0:
-            Symbol = data['bestMatches'][0]['1. symbol'] # Return the symbol of the best match
-            return Symbol
-        else:
-            return 'No Symbol found'
-    else:
-        return 'No Symbol found'
- 
-async def fetch_news(company_name): # get news urls and description for the given news company or ticker
-    url = f"https://gnews.io/api/v4/search?q={company_name}&token={GNEWS_API_KEY}&lang=en"
-    response = requests.get(url)
-    articles = response.json().get('articles', [])
-    # Return a list of titles and descriptions with hyperlinks
-    news_list = []
-    for article in articles:
-        article_url = article.get('url', 'No url')
-        description = article.get("description", "No Description")
-        # Create a hyperlink using HTML anchor tag
-        hyperlink = {"url": article_url,
-                     "title": description}
-        news_list.append(hyperlink)
-    return news_list
+      ```python copy filename="sentiment_agent.py"
+      # Import Required libraries
+      import requests
+      from uagents import Agent, Context, Model
+      from uagents.setup import fund_agent_if_low
+      import time
+      import asyncio
+      import aiohttp
+      import json
+       
+      # Define Request and Response Data Models
+      class SentimentRequest(Model):
+          news : str
+      
+      class SentimentResponse(Model):
+          sentiment : str
+      
+      class ErrorResponse(Model):
+          error : str
+      
+      # Define Sentiment analysis Agent
+      SentimentAgent = Agent(
+          name="Sentiment Agent",
+          port=8002,
+          seed="Sentiment Agent secret phrase",
+          endpoint=["http://127.0.0.1:8002/submit"],
+      )
+      
+      # Registering agent on Almanac and funding it.
+      fund_agent_if_low(SentimentAgent.wallet.address())
+       
+      # Define function to provide sentiment for given content
+      async def sentiment_analysis(news):
+          API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert"
+          headers = {"Authorization": "Bearer <Hugging face API>"}
+      
+          payload = {"inputs": news}
+      
+          async with aiohttp.ClientSession() as session:
+              async with session.post(API_URL, headers=headers, json=payload) as response:
+                  if response.status == 200:
+                      sentiments = await response.json()
+                      await asyncio.sleep(5)  # Proper async sleep
+                      # Flatten the list of dicts to a single list
+                      flattened_sentiments = [item for sublist in sentiments for item in sublist]
+                      max_sentiment = max(flattened_sentiments, key=lambda s: s['score'])
+                      max_label = str(max_sentiment['label'])
+                      max_score = str(round(max_sentiment['score'], 3))
+                      return f"{max_label},{max_score}"
+                  else:
+                      return "Error: Failed to fetch data from API"
+      
+      # On agent startup printing address
+      @SentimentAgent.on_event('startup')
+      async def agent_details(ctx: Context):
+          ctx.logger.info(f'Search Agent Address is {SentimentAgent.address}')
+      
+      # On_query handler for processing sentiment request
+      @SentimentAgent.on_query(model=SentimentRequest, replies={SentimentResponse})
+      async def query_handler(ctx: Context, sender: str, msg: SentimentRequest):
+          try:
+              sentiment = await sentiment_analysis(msg.news)
+              if sentiment == "Error: Failed to fetch data from API":
+                  sentiment = await sentiment_analysis(msg.news[:500]) # if model is not ale to perform sentiment request we will just take string with 500 characters
+                  ctx.logger.info(msg.news[:300])
+              ctx.logger.info(sentiment)
+              await ctx.send(sender, SentimentResponse(sentiment = sentiment))
+          except Exception as e:
+              error_message = f"Error fetching job details: {str(e)}"
+              ctx.logger.error(error_message)
+              # Ensure the error message is sent as a string
+              await ctx.send(sender, ErrorResponse(error=str(error_message)))
+      
+      if __name__ == "__main__":
+          SentimentAgent.run()
+      ```
 
-async def fetch_url(company_name): # Get the news url's for given company name or symbol
-    url = f"https://gnews.io/api/v4/search?q={company_name}&token={GNEWS_API_KEY}&lang=en"
-    response = requests.get(url)
-    articles = response.json().get('articles', [])
-    # Return a list of titles and descriptions with hyperlinks
-    url_list = []
-    for article in articles:
-        article_url = article.get('url', 'No url')
-        url_list.append(article_url)
-    return url_list
- 
-# Define News Agent
-NewsAgent = Agent(
-    name="NewsAgent",
-    port=8000,
-    seed="News Agent secret phrase",
-    endpoint=["http://127.0.0.1:8000/submit"],
-)
- 
-# Registering agent on Almanac and funding it.
-fund_agent_if_low(NewsAgent.wallet.address())
- 
-# On agent startup printing address
-@NewsAgent.on_event('startup')
-async def agent_details(ctx: Context):
-    ctx.logger.info(f'Search Agent Address is {NewsAgent.address}')
-
-# On_query handler for news request
-@NewsAgent.on_query(model=NewsRequest, replies={NewsResponse})
-async def query_handler(ctx: Context, sender: str, msg: NewsRequest):
-    try:
-        ctx.logger.info(f'Fetching news details for company_name: {msg.company_name}')
-        symbol = await fetch_symbol(msg.company_name)
-        ctx.logger.info(f' Symbol for company provided is {symbol}')
-        if symbol  != None: #if company symbol fetch successfully getting news using ticker symbol else using the company name itself.
-            news_list = await fetch_news(symbol)
-        else:
-            news_list = await fetch_news(msg.company_name)
-            ctx.logger.info(str(news_list))
-        await ctx.send(sender, NewsResponse(news_list=news_list))
-
-    except Exception as e:
-        error_message = f"Error fetching job details: {str(e)}"
-        ctx.logger.error(error_message)
-        # Ensure the error message is sent as a string
-        await ctx.send(sender, ErrorResponse(error=str(error_message)))
-
-# On_query handler for news_url request
-@NewsAgent.on_query(model=UrlRequest, replies={UrlResponse})
-async def query_handler(ctx: Context, sender: str, msg: UrlRequest):
-    try:
-        ctx.logger.info(f'Fetching news url details for company_name: {msg.company_name}')
-        symbol = await fetch_symbol(msg.company_name)
-        ctx.logger.info(f' Symbol for company provided is {symbol}')
-        if symbol  != None:
-            url_list = await fetch_url(symbol)
-        else:
-            url_list = await fetch_url(msg.company_name)
-        ctx.logger.info(str(url_list))
-        await ctx.send(sender, UrlResponse(url_list=url_list))
-    except Exception as e:
-        error_message = f"Error fetching job details: {str(e)}"
-        ctx.logger.error(error_message)
-        # Ensure the error message is sent as a string
-        await ctx.send(sender, ErrorResponse(error=str(error_message)))
-
-
-if __name__ == "__main__":
-    NewsAgent.run() 
-```
-
-<Callout type="info" emoji="ℹ️">
-    Get your [Alphavantage ↗️](https://www.alphavantage.co/) and [Gnews ↗️](https://gnews.io/) API keys and update it in the virtual environment.
-</Callout>
-
-    - **WebScraper agent:** Scraps the webpage content for the given url.
-
-```python copy filename="webscraper_agent.py"
-# Import Required libraries
-import requests
-import aiohttp
-from uagents import Agent, Context, Model
-from uagents.setup import fund_agent_if_low
-from bs4 import BeautifulSoup
-import time
- 
-# Define data Models to handle request
-class wrapRequest(Model):
-    url : str
-
-class Message(Model):
-    message : str
-
-class wrapResponse(Model):
-    summary : str
-
-class ErrorResponse(Model):
-    error : str
-
-# Define webscraper Agent
-webScraperAgent = Agent(
-    name="Web Scraper Agent",
-    port=8001,
-    seed="Web Scraper Agent secret phrase",
-    endpoint=["http://127.0.0.1:8001/submit"],
-)
- 
-# Define function to scrap webpage and get paragraph content.
-async def get_webpage_content(url):
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                if response.status == 200:
-                    response_text = await response.text()
-                    soup = BeautifulSoup(response_text, 'html.parser')
-                    
-                    for script_or_style in soup(["script", "style", "header", "footer", "nav", "aside"]):
-                        script_or_style.decompose()
-
-                    text_blocks = soup.find_all('p')
-                    text_content = ' '.join(block.get_text(strip=True) for block in text_blocks if block.get_text(strip=True))
-
-                    words = text_content.split()
-                    limited_text = ' '.join(words[:500])  # Limit to first 500 words for faster response of sentiment agent.
-                    return limited_text
-                else:
-                    return "Error: Unable to fetch content."
-    except Exception as e:
-        return f"Error encountered: {str(e)}"
-
- 
-# On agent startup printing address
-@webScraperAgent.on_event('startup')
-async def agent_details(ctx: Context):
-    ctx.logger.info(f'Search Agent Address is {webScraperAgent.address}')
-
-# On_query handler to handle webpage wrapping
-@webScraperAgent.on_query(model=wrapRequest, replies={wrapResponse})
-async def query_handler(ctx: Context, sender: str, msg: wrapRequest):
-    try:
-        ctx.logger.info(f'URL wrapper for request : {msg.url}')
-        news_content = await get_webpage_content(msg.url)
-        ctx.logger.info(news_content)
-        if "Error" not in news_content:
-            await ctx.send(sender, wrapResponse(summary = news_content))
-        else:
-            await ctx.send(sender, ErrorResponse(error = "ERROR" + news_content))
-    except Exception as e:
-        error_message = f"Error fetching job details: {str(e)}"
-        ctx.logger.error(error_message)
-        # Ensure the error message is sent as a string
-        await ctx.send(sender, ErrorResponse(error=str(error_message)))
-
-if __name__ == "__main__":
-    webScraperAgent.run()
-```
-
-    - **Sentiment agent:** Provides sentiment of news content provided using HF API and finBERT model.
-
-```python copy filename="sentiment_agent.py"
-# Import Required libraries
-import requests
-from uagents import Agent, Context, Model
-from uagents.setup import fund_agent_if_low
-import time
-import asyncio
-import aiohttp
-import json
- 
-# Define Request and Response Data Models
-class SentimentRequest(Model):
-    news : str
-
-class SentimentResponse(Model):
-    sentiment : str
-
-class ErrorResponse(Model):
-    error : str
-
-# Define Sentiment analysis Agent
-SentimentAgent = Agent(
-    name="Sentiment Agent",
-    port=8002,
-    seed="Sentiment Agent secret phrase",
-    endpoint=["http://127.0.0.1:8002/submit"],
-)
-
-# Registering agent on Almanac and funding it.
-fund_agent_if_low(SentimentAgent.wallet.address())
- 
-# Define function to provide sentiment for given content
-async def sentiment_analysis(news):
-    API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert"
-    headers = {"Authorization": "Bearer <Hugging face API>"}
-
-    payload = {"inputs": news}
-
-    async with aiohttp.ClientSession() as session:
-        async with session.post(API_URL, headers=headers, json=payload) as response:
-            if response.status == 200:
-                sentiments = await response.json()
-                await asyncio.sleep(5)  # Proper async sleep
-                # Flatten the list of dicts to a single list
-                flattened_sentiments = [item for sublist in sentiments for item in sublist]
-                max_sentiment = max(flattened_sentiments, key=lambda s: s['score'])
-                max_label = str(max_sentiment['label'])
-                max_score = str(round(max_sentiment['score'], 3))
-                return f"{max_label},{max_score}"
-            else:
-                return "Error: Failed to fetch data from API"
-
-# On agent startup printing address
-@SentimentAgent.on_event('startup')
-async def agent_details(ctx: Context):
-    ctx.logger.info(f'Search Agent Address is {SentimentAgent.address}')
-
-# On_query handler for processing sentiment request
-@SentimentAgent.on_query(model=SentimentRequest, replies={SentimentResponse})
-async def query_handler(ctx: Context, sender: str, msg: SentimentRequest):
-    try:
-        sentiment = await sentiment_analysis(msg.news)
-        if sentiment == "Error: Failed to fetch data from API":
-            sentiment = await sentiment_analysis(msg.news[:500]) # if model is not ale to perform sentiment request we will just take string with 500 characters
-            ctx.logger.info(msg.news[:300])
-        ctx.logger.info(sentiment)
-        await ctx.send(sender, SentimentResponse(sentiment = sentiment))
-    except Exception as e:
-        error_message = f"Error fetching job details: {str(e)}"
-        ctx.logger.error(error_message)
-        # Ensure the error message is sent as a string
-        await ctx.send(sender, ErrorResponse(error=str(error_message)))
-
-if __name__ == "__main__":
-    SentimentAgent.run()
-```
-
-    <Callout type="info" emoji="ℹ️">
-        Get your [Hugging Face Inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
-    </Callout>
+       <Callout type="info" emoji="ℹ️">
+           Get your [Hugging Face Inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
+       </Callout>
 
 3. Requirement.txt:
 
-```
-aiohttp==3.9.5
-aiosignal==1.3.1
-beautifulsoup4==4.12.3
-bs4==0.0.2
-cosmpy==0.9.2
-grpcio==1.63.0
-jsonschema==4.22.0
-msgpack==1.0.8
-multidict==6.0.5
-packaging==24.0
-requests==2.31.0
-uagents==0.11.1
-urllib3==2.2.1
-uvicorn==0.20.0
-websockets==10.4
-yarl==1.9.4
-```
+   ```
+   aiohttp==3.9.5
+   aiosignal==1.3.1
+   beautifulsoup4==4.12.3
+   bs4==0.0.2
+   cosmpy==0.9.2
+   grpcio==1.63.0
+   jsonschema==4.22.0
+   msgpack==1.0.8
+   multidict==6.0.5
+   packaging==24.0
+   requests==2.31.0
+   uagents==0.11.1
+   urllib3==2.2.1
+   uvicorn==0.20.0
+   websockets==10.4
+   yarl==1.9.4
+   ```
 
     - Activate virtual environment using `source venv/bin/activate`.
     - Install libraries using `pip install -r requirements.txt` in your terminal.
@@ -490,244 +489,244 @@ yarl==1.9.4
 
     - `NewsFeed.jsx`:
 
-```
-import React from 'react';
-
-function NewsFeed({ news }) {
-    return (
-        <div className="news-feed">
-            <h2>News Titles</h2>
-            {news.length > 0 ? (
-                <ul>
-                    {news.map((item, index) => (
-                    <li key={index}>
-                        <a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a>
-                        </li>
-                        ))}
-                </ul>
-            ) : (
-                <p>No news found.</p>
-            )}
-        </div>
-        );
-        }
-export default NewsFeed;
-```
+   ```
+   import React from 'react';
+   
+   function NewsFeed({ news }) {
+       return (
+           <div className="news-feed">
+               <h2>News Titles</h2>
+               {news.length > 0 ? (
+                   <ul>
+                       {news.map((item, index) => (
+                       <li key={index}>
+                           <a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a>
+                           </li>
+                           ))}
+                   </ul>
+               ) : (
+                   <p>No news found.</p>
+               )}
+           </div>
+           );
+           }
+   export default NewsFeed;
+   ```
 
     - `SearchComponent.jsx`:
 
-```
-import React, { useState } from 'react';
-import './SearchComponent.css'; // Importing CSS for styling
-
-function SearchComponent({ onSearch }) {
-    const [searchTerm, setSearchTerm] = useState('');
-    const handleSubmit = (event) => {
-    event.preventDefault();
-    onSearch(searchTerm); // This function would be passed down from the parent component or defined here to handle the search logic
-    };
-
-    return (
-        <div className="search-area">
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    placeholder="Enter Company Name" 
-                    value={searchTerm} 
-                    onChange={(e) => setSearchTerm(e.target.value)} 
-                />
-                <button type="submit">Search</button>
-            </form>
-        </div>
-    );
-    }
-export default SearchComponent;
-
-```
+   ```
+   import React, { useState } from 'react';
+   import './SearchComponent.css'; // Importing CSS for styling
+   
+   function SearchComponent({ onSearch }) {
+       const [searchTerm, setSearchTerm] = useState('');
+       const handleSubmit = (event) => {
+       event.preventDefault();
+       onSearch(searchTerm); // This function would be passed down from the parent component or defined here to handle the search logic
+       };
+   
+       return (
+           <div className="search-area">
+               <form onSubmit={handleSubmit}>
+                   <input 
+                       type="text" 
+                       placeholder="Enter Company Name" 
+                       value={searchTerm} 
+                       onChange={(e) => setSearchTerm(e.target.value)} 
+                   />
+                   <button type="submit">Search</button>
+               </form>
+           </div>
+       );
+       }
+   export default SearchComponent;
+   
+   ```
 
     - `SearchComponent.css`:
 
-```
-.search-area {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px; /* Approx 1 inch */
-    background-color: #007BFF; /* Blue background */
-    }
-  
-.search-area form {
-    display: flex;
-    gap: 20px;
-    }
-  
-.search-area input {
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    }
-  
-.search-area button {
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    cursor: pointer;
-    }
-  
-.search-area button:hover {
-    background-color: #004494;
-    }
-```
+   ```
+   .search-area {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       height: 100px; /* Approx 1 inch */
+       background-color: #007BFF; /* Blue background */
+       }
+     
+   .search-area form {
+       display: flex;
+       gap: 20px;
+       }
+     
+   .search-area input {
+       padding: 8px;
+       border-radius: 4px;
+       border: 1px solid #ccc;
+       }
+     
+   .search-area button {
+       background-color: #0056b3;
+       color: white;
+       border: none;
+       border-radius: 4px;
+       padding: 8px 16px;
+       cursor: pointer;
+       }
+     
+   .search-area button:hover {
+       background-color: #004494;
+       }
+   ```
 
 2. App.css:
 
-```
-.App {
-    text-align: center;
-    }
-
-.search-container, .news-feed, .stock-info {
-    margin: 20px;
-    padding: 10px;
-    }
-
-input[type="text"] {
-    margin-right: 10px;
-    }
-
-.news-feed div {
-    margin: 5px;
-    }
-
-button {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    }
-
-button:hover {
-    opacity: 0.8;
-    }
-
-.news-feed {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f4f4f4;
-    border-radius: 5px;
-    color: black;
-    text-decoration: none;
-    }
-
-.news-feed a:hover {
-    color: black; 
-    text-decoration: underline;
-    } 
-
-
-.news-feed ul {
-    list-style-type: none;
-    padding: 0;
-    }
-
-.news-feed li {
-    margin-bottom: 10px;
-    padding: 5px;
-    background-color: #fff;
-    border-radius: 4px;
-    color: black; /* Black color for text */
-    text-align: left;
-    }
-
-.sentiment-block {
-    margin-top: 30px;
-    padding: 10px;
-    background-color: #dff0d8; 
-    color: #3c763d; 
-    border-radius: 5px;
-    font-size: 20px;
-    text-align: center;
-    }
-
-.sentiment-block.neutral {
-    background-color: #fcf8e3;
-    color: #8a6d3b; 
-    }
-
-.sentiment-block.negative {
-    background-color: #f2dede; 
-    color: #a94442; 
-    }
-
-.title-bar {
-    background-color: #007BFF; 
-    color: white;
-    padding: 10px 0;
-    font-size: 24px;
-    }
-```
+   ```
+   .App {
+       text-align: center;
+       }
+   
+   .search-container, .news-feed, .stock-info {
+       margin: 20px;
+       padding: 10px;
+       }
+   
+   input[type="text"] {
+       margin-right: 10px;
+       }
+   
+   .news-feed div {
+       margin: 5px;
+       }
+   
+   button {
+       background-color: red;
+       color: white;
+       border: none;
+       padding: 10px 20px;
+       cursor: pointer;
+       }
+   
+   button:hover {
+       opacity: 0.8;
+       }
+   
+   .news-feed {
+       margin-top: 20px;
+       padding: 10px;
+       background-color: #f4f4f4;
+       border-radius: 5px;
+       color: black;
+       text-decoration: none;
+       }
+   
+   .news-feed a:hover {
+       color: black; 
+       text-decoration: underline;
+       } 
+   
+   
+   .news-feed ul {
+       list-style-type: none;
+       padding: 0;
+       }
+   
+   .news-feed li {
+       margin-bottom: 10px;
+       padding: 5px;
+       background-color: #fff;
+       border-radius: 4px;
+       color: black; /* Black color for text */
+       text-align: left;
+       }
+   
+   .sentiment-block {
+       margin-top: 30px;
+       padding: 10px;
+       background-color: #dff0d8; 
+       color: #3c763d; 
+       border-radius: 5px;
+       font-size: 20px;
+       text-align: center;
+       }
+   
+   .sentiment-block.neutral {
+       background-color: #fcf8e3;
+       color: #8a6d3b; 
+       }
+   
+   .sentiment-block.negative {
+       background-color: #f2dede; 
+       color: #a94442; 
+       }
+   
+   .title-bar {
+       background-color: #007BFF; 
+       color: white;
+       padding: 10px 0;
+       font-size: 24px;
+       }
+   ```
 
 3. App.js:
 
-```
-// Import necessary React libraries and components
-import React, { useState } from 'react';
-import SearchComponent from './components/SearchComponent';
-import NewsFeed from './components/NewsFeed';
-import './App.css';  // Import CSS for styling
-
-// Define the main React functional component
-function App() {
-  // State hooks to manage news data, sentiment, and type of sentiment
-  const [news, setNews] = useState([]);
-  const [sentiment, setSentiment] = useState('');
-  const [sentimentType, setSentimentType] = useState('');
-
-  // Function to handle search operations
-  const handleSearch = async (searchTerm) => {
-    try {
-      // API request to fetch news based on a search term
-      const newsResponse = await fetch(`http://127.0.0.1:5000/api/news/${searchTerm}`);
-      const newsData = await newsResponse.json();  // Convert response to JSON
-      setNews(newsData);  // Update the news state
-      console.log('Fetched news:', newsData);  // Log the fetched news data
-
-      // API request to fetch sentiment analysis for the search term
-      const sentimentResponse = await fetch(`http://127.0.0.1:5000/api/sentiment/${searchTerm}`);
-      const sentimentData = await sentimentResponse.text();  // Get response as text
-      console.log('Fetched sentiment:', sentimentData);  // Log the fetched sentiment
-      processSentiment(sentimentData);  // Process the fetched sentiment text
-    } catch (error) {
-      console.error('Failed to fetch data:', error);  // Log any errors
-      setNews([]);  // Reset news state on error
-      setSentiment('');  // Reset sentiment state on error
-      setSentimentType('');  // Reset sentiment type state on error
-    }
-  };
-
-  // Helper function to process the sentiment text and update state
-  const processSentiment = (sentimentText) => {
-    const parts = sentimentText.split(':');  // Split sentiment text by colon
-    const sentimentValue = parts[0].trim().toLowerCase();  // Extract sentiment label and normalize it
-    setSentiment(sentimentText);  // Update sentiment state
-    setSentimentType(sentimentValue);  // Update sentiment type state
-  };
-
-  // Render the application UI
-  return (
-    <div className="App">
-      <SearchComponent onSearch={handleSearch} />  // Search component with search handler
-      <NewsFeed news={news} />  // News feed component to display news
-      {sentiment && <div className={`sentiment-block ${sentimentType}`}>{sentiment}</div>}  // Conditionally render sentiment block
-    </div>
-  );
-}
-
-export default App;  // Export the App component for use in other parts of the application
-```
+   ```
+   // Import necessary React libraries and components
+   import React, { useState } from 'react';
+   import SearchComponent from './components/SearchComponent';
+   import NewsFeed from './components/NewsFeed';
+   import './App.css';  // Import CSS for styling
+   
+   // Define the main React functional component
+   function App() {
+     // State hooks to manage news data, sentiment, and type of sentiment
+     const [news, setNews] = useState([]);
+     const [sentiment, setSentiment] = useState('');
+     const [sentimentType, setSentimentType] = useState('');
+   
+     // Function to handle search operations
+     const handleSearch = async (searchTerm) => {
+       try {
+         // API request to fetch news based on a search term
+         const newsResponse = await fetch(`http://127.0.0.1:5000/api/news/${searchTerm}`);
+         const newsData = await newsResponse.json();  // Convert response to JSON
+         setNews(newsData);  // Update the news state
+         console.log('Fetched news:', newsData);  // Log the fetched news data
+   
+         // API request to fetch sentiment analysis for the search term
+         const sentimentResponse = await fetch(`http://127.0.0.1:5000/api/sentiment/${searchTerm}`);
+         const sentimentData = await sentimentResponse.text();  // Get response as text
+         console.log('Fetched sentiment:', sentimentData);  // Log the fetched sentiment
+         processSentiment(sentimentData);  // Process the fetched sentiment text
+       } catch (error) {
+         console.error('Failed to fetch data:', error);  // Log any errors
+         setNews([]);  // Reset news state on error
+         setSentiment('');  // Reset sentiment state on error
+         setSentimentType('');  // Reset sentiment type state on error
+       }
+     };
+   
+     // Helper function to process the sentiment text and update state
+     const processSentiment = (sentimentText) => {
+       const parts = sentimentText.split(':');  // Split sentiment text by colon
+       const sentimentValue = parts[0].trim().toLowerCase();  // Extract sentiment label and normalize it
+       setSentiment(sentimentText);  // Update sentiment state
+       setSentimentType(sentimentValue);  // Update sentiment type state
+     };
+   
+     // Render the application UI
+     return (
+       <div className="App">
+         <SearchComponent onSearch={handleSearch} />  // Search component with search handler
+         <NewsFeed news={news} />  // News feed component to display news
+         {sentiment && <div className={`sentiment-block ${sentimentType}`}>{sentiment}</div>}  // Conditionally render sentiment block
+       </div>
+     );
+   }
+   
+   export default App;  // Export the App component for use in other parts of the application
+   ```
 
 ## Setup and Running the application
 ### Backend Setup (Flask and Agents)
@@ -783,37 +782,37 @@ export default App;  // Export the App component for use in other parts of the a
 
 ### Frontend Setup (React)
 
-    1. Navigate to the Frontend Directory:
+1. Navigate to the Frontend Directory:
 
-        - Change into your project's frontend directory where the React app is located.
+    - Change into your project's frontend directory where the React app is located.
 
     ```
     cd path/to/your/Frontend
     ```
 
-    2. Install Dependencies:
+2. Install Dependencies:
 
-        - Install the required node modules specified in `package.json`:
+    - Install the required node modules specified in `package.json`:
 
-    ```
-    npm install
-    ```
+   ```
+   npm install
+   ```
 
-    3. Start the React Development Server:
+3. Start the React Development Server:
 
-        - Run the following command to start the React development server:
+    - Run the following command to start the React development server:
 
-    ```
-    npm start
-    ```
+   ```
+   npm start
+   ```
 
-        - This typically starts the React application on `http://localhost:3000`.
+       - This typically starts the React application on `http://localhost:3000`.
 
 
 ### Accessing the Application
 
-    - Open your web browser and go to `http://localhost:3000`. You should see your React application's interface.
-    - Use the search component to input a company name and fetch news and sentiment data, which will be displayed accordingly.
+- Open your web browser and go to `http://localhost:3000`. You should see your React application's interface.
+- Use the search component to input a company name and fetch news and sentiment data, which will be displayed accordingly.
 
 ## Expected Output
 

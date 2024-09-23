@@ -1,6 +1,6 @@
 # Multi-agent workflows with Fetch.ai x Langchain
 
-Multi-agent workflows are at the forefront of modern agent development; the idea that individual [Agents ↗️](/guides/agents/getting-started/whats-an-agent) can be utilised to create larger more complex services for people has created lots of excitement in the AI space. At Fetch.ai, we're building the agent communication layer which perfectly compliments Langchain libraries.
+Multi-agent workflows are at the forefront of modern agent development; the idea that individual [Agents ↗️](/guides/agents/getting-started/whats-an-agent) can be utilized to create larger more complex services for people has created lots of excitement in the AI space. At Fetch.ai, we're building the agent communication layer which perfectly compliments Langchain libraries.
 
 Agents representing smaller parts of a service, allow for many agents to represent a whole. Agents reduce technical requirements in projects, for example you wouldn't need to write a function to calculate the historical index of a stock price, an agent will already return that data for you.
 
@@ -81,7 +81,7 @@ agent = Agent(
 )
 
 print("uAgent address: ", agent.address)
-summary_protocol = Protocol("Text Summariser")
+summary_protocol = Protocol("Text Summarizer")
 
 AGENT_2_FAISS = ""
 
@@ -226,7 +226,7 @@ pdf_loader_agent = Agent(
 )
 
 print("uAgent address: ", pdf_loader_agent.address)
-pdf_loader_protocol = Protocol("Text Summariser")
+pdf_loader_protocol = Protocol("Text Summarizer")
 
 @pdf_loader_agent.on_message(model=PDF_Request, replies=PagesResponse)
 async def document_load(ctx: Context, sender: str, msg: PDF_Request):
@@ -263,7 +263,7 @@ Add the address of the first agent in the dedicated field `RequestAgent` within 
 
     ```
     uAgent address:  agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp
-    INFO:     [find_in_pdf]: Manifest published successfully: Text Summariser
+    INFO:     [find_in_pdf]: Manifest published successfully: Text Summarizer
     INFO:     [find_in_pdf]: Registering on almanac contract...
     INFO:     [find_in_pdf]: Registering on almanac contract...complete
     INFO:     [find_in_pdf]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
@@ -306,7 +306,7 @@ Add the address of the first agent in the dedicated field `RequestAgent` within 
 
     ```
     uAgent address:  agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp
-    INFO:     [pdf_loader_agent]: Manifest published successfully: Text Summariser
+    INFO:     [pdf_loader_agent]: Manifest published successfully: Text Summarizer
     INFO:     [pdf_loader_agent]: Registering on almanac contract...
     INFO:     [pdf_loader_agent]: Registering on almanac contract...complete
     INFO:     [pdf_loader_agent]: Starting server on http://0.0.0.0:8003 (Press CTRL+C to quit)

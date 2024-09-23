@@ -341,7 +341,7 @@ The script looks as follows:
     @rag_user.on_interval(60, messages=RagRequest)
     async def ask_question(ctx: Context):
         ctx.logger.info(
-            f"Asking RAG agent to answer {QUESTION} based on document located at {URL}, readin nested pages too: {DEEP_READ}"
+            f"Asking RAG agent to answer {QUESTION} based on document located at {URL}, reading nested pages too: {DEEP_READ}"
         )
         await ctx.send(
             RAG_AGENT_ADDRESS, RagRequest(question=QUESTION, url=URL, deep_read=DEEP_READ)
