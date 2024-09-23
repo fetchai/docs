@@ -41,7 +41,7 @@ Similarly to the delegate option, re-delegating is the process of unbonding stak
 
 Undelegated funds go through an **unbonding period** (i.e., typically 14 to 21 days for Cosmos sdk based projects) and once their unbonding period is complete funds become transferable. The code snippet we have shared, showcases how to use the `LedgerClient` object to invoke the undelegation (in this case 5 tokens) and start the cool down process.
 
-Importantly, the cool down is tracked for each undelegation invokation. For instance, if you trigger 3 undelegate actions on 3 consecutive days the first batch of tokens will become available 3 days before the final batch. In the snipet below, we provide the command needed to undelegate your tokens:
+Importantly, the cool down is tracked for each undelegation invocation. For instance, if you trigger 3 undelegate actions on 3 consecutive days the first batch of tokens will become available 3 days before the final batch. In the snippet below, we provide the command needed to undelegate your tokens:
 
     ```py copy
     tx = ledger_client.undelegate_tokens(validator_address, 5, wallet)
