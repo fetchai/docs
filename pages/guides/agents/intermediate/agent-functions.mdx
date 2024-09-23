@@ -3,7 +3,7 @@ import PackageVersion from 'components/package-version'
 
 # Agent Functions
 
-Agents can act as executable functions for the AI Engine. We can enable this by utilising Agentverse and registering
+Agents can act as executable functions for the AI Engine. We can enable this by utilizing Agentverse and registering
 our agent's function on the platform. AI Engine then indexes the registered function and can then communicate with
 your agent. Checkout the [Agents 101 for AI Engine ↗️](/guides/agent-courses/agents-for-ai#agent-agentverse-ai-engine-and-deltav) for a wider explanation of how this works.
 
@@ -87,11 +87,11 @@ It is important that you provide the `name`, `port`, `seed` and `endpoint` for y
 
 A few things to note; you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`.
 
-The agent is initialised with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an int as seen in the `Request` object.
+The agent is initialized with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an int as seen in the `Request` object.
 
 Our `on_message` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of  `UAgentResponse` which is essential to communicate with DeltaV.
 
-`.run()` initialises the agent.
+`.run()` initializes the agent.
 
 Finally, we  run our agent as follows: `python agent.py`
 

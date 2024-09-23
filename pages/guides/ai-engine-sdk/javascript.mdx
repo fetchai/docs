@@ -75,7 +75,7 @@ await session.start("Find a holiday destination");
 
 ### Querying new messages
 
-This line asynchronously queries the AI engine to retrieve a list of messages related to the current session. Use setTimeout or setInterval to regularly check for new messages.
+This line asynchronously queries the AI engine to retrieve a list of messages related to the current session. Use `setTimeout` or `setInterval` to regularly check for new messages.
 
 ```javascript copy
 const messages = await session.getMessages();
@@ -170,7 +170,7 @@ const main = async () => {
     throw new Error('Could not find "Public" function group.');
   }
 
-  const session = await aiEngine.createSession(publicGroup.uuid);
+  const session = await aiEngine.createsession(publicGroup.uuid);
   await session.start(await rl.question("What is your objective: "));
 
   try {
