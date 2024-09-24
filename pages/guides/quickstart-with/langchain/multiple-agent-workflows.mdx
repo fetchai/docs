@@ -61,7 +61,7 @@ Versions used for this example are:
 ### Agent 1 - RequestAgent: provides a question and a source
 
 
-This is the our simplest agent; this agent provides a link to a PDF and question to be answered from the document.
+This is our simplest agent; this agent provides a link to a PDF and question to be answered from the document.
 
 ```python copy filename="request_agent.py"
 from uagents import Agent, Context, Protocol, Model
@@ -108,7 +108,6 @@ agent.run()
 The PDFQuestionAgent gets the PDF and the request from the first agent, but is unable to split the PDF. This second agent sends a request to the third agent to split the PDF. Once the pages from the PDF are returned, a FAISS similarity search is ran on the pages by the second agent.
 
 ```python copy filename="pdf_question_agent.py"
-from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import FAISS
 from langchain_community.docstore.in_memory import InMemoryDocstore
 from langchain_openai import OpenAIEmbeddings
@@ -121,7 +120,6 @@ import faiss
 
 class PDF_Request(Model):
     pdf_path: str
-    session: str
 
 class DocumentUnderstanding(Model):
     pdf_path: str
@@ -129,7 +127,6 @@ class DocumentUnderstanding(Model):
 
 class PagesResponse(Model):
     pages: List
-    session: str
 
 class DocumentsResponse(Model):
     learnings: str
@@ -153,10 +150,9 @@ embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 @faiss_pdf_agent.on_message(model=DocumentUnderstanding, replies=PDF_Request)
 async def document_load(ctx: Context, sender: str, msg: DocumentUnderstanding):
     ctx.logger.info(msg)
-    ref = str(uuid.uuid4())
-    ctx.storage.set(ref, {"question": msg.question, "sender": sender})
+    ctx.storage.set(str(ctx.session), {"question": msg.question, "sender": sender})
     await ctx.send(
-        PDF_splitter_address, PDF_Request(pdf_path=msg.pdf_path, session=ref)
+        PDF_splitter_address, PDF_Request(pdf_path=msg.pdf_path)
     )
 
 @faiss_pdf_agent.on_message(model=PagesResponse, replies=DocumentsResponse)
@@ -180,7 +176,7 @@ async def document_understand(ctx: Context, sender: str, msg: PagesResponse):
 
     vector_store.add_documents(documents=documents, ids=uuids)
 
-    prev = ctx.storage.get(msg.session)
+    prev = ctx.storage.get(str(ctx.session))
 
     results = vector_store.similarity_search(
         prev["question"],
@@ -212,11 +208,9 @@ from typing import List
 
 class PDF_Request(Model):
     pdf_path: str
-    session: str
 
 class PagesResponse(Model):
     pages: List
-    session: str
 
 pdf_loader_agent = Agent(
     name="pdf_loader_agent",
@@ -232,7 +226,7 @@ pdf_loader_protocol = Protocol("Text Summarizer")
 async def document_load(ctx: Context, sender: str, msg: PDF_Request):
     loader = PyPDFLoader(msg.pdf_path)
     pages = loader.load_and_split()
-    await ctx.send(sender, PagesResponse(pages=pages, session=msg.session))
+    await ctx.send(sender, PagesResponse(pages=pages))
 
 pdf_loader_agent.include(pdf_loader_protocol, publish_manifest=True)
 pdf_loader_agent.run()
