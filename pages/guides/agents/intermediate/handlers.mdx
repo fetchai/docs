@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CustomPre } from "../../../../components/api-endpoint";
 
 # Agent Handlers
 
@@ -35,7 +36,19 @@ Make sure you have read the following resources before going on with this guide:
 
 ### Walk-through
 
-1. Let's create a Python script for this task, and name it: `interval-task.py`
+1. Let's create a Python script for this task, and name it:
+
+    <CustomPre 
+        commands={{
+        windows: `echo. > interval-task.py`,
+        mac: `touch interval-task.py`,
+        ubuntu: `touch interval-task.py`
+        }} 
+        dataLanguage="bash"
+        hasCopyCode={true}
+        osMenu={true}
+    />
+
 2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
 
    ```py copy
@@ -109,6 +122,17 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 ### Walk-through
 
 1. First of all, let's create a Python script for this task, and name it: `broadcast.py`
+
+    <CustomPre 
+        commands={{
+        windows: `echo. > broadcast.py`,
+        mac: `touch broadcast.py`,
+        ubuntu: `touch broadcast.py`
+        }} 
+        dataLanguage="bash"
+        hasCopyCode={true}
+        osMenu={true}
+    />
 
 2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library, and the `fund_agent_if_low` from `uagents.setup`. Then, let's create the 3 different agents using the class `Agent`. Each agent is initialized with a unique name and a seed phrase for wallet recovery. Additionally, if an agent's wallet balance is low, the `fund_agent_if_low()` function is called to add funds to their wallet:
 
@@ -320,7 +344,19 @@ The proxy is implemented using `FastAPI`. It sets up two routes: `"/"` for a sim
 Let's explore the Proxy code script step-by-step:
 
 1. First of all navigate to directory where you want to create your project.
-2. Create a Python script name `on_query.py` by running `touch on_query.py`.
+2. Create a Python script name `on_query.py` by running:
+
+    <CustomPre 
+        commands={{
+        windows: `echo. > on_query.py`,
+        mac: `touch on_query.py`,
+        ubuntu: `touch on_query.py`
+        }} 
+        dataLanguage="bash"
+        hasCopyCode={true}
+        osMenu={true}
+    />
+
 3. We need to import `json`, `fastapi`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `TestRequest` class as a subclass of `Model`:
 
     ```py copy
@@ -424,8 +460,6 @@ In separate terminals:
 2. Run the **agent**: `python agent.py`
 
 3. Query the agent via the proxy: `curl -d '{"message": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/endpoint`
-
-
 
 ## Catching events with  `on_event()` handler
 
