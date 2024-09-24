@@ -1,0 +1,1958 @@
+import { Row, Col } from "components/mdx";
+import {
+  ApiEndpointRequestResponse,
+} from "components/api-endpoint";
+
+# ASI Alliance Wallet API
+
+<div className="nx-text-fetch-content">
+
+This comprehensive resource serves as a detailed reference guide for the **ASI Alliance Wallet APIs**, providing developers with the essential information to integrate and interact with the ASI Browser Wallet in their decentralized applications (dApps).
+
+This resource covers a wide range of API endpoints, including **wallet detection**, **status checks**, **network management**, **account operations**, and more. Each API is thoroughly explained with its purpose, parameters, return values, and potential error scenarios. To enhance understanding and facilitate implementation, the document includes practical code snippets and example responses for each API call. This reference is designed to empower developers to leverage the full capabilities of the ASI Alliance Wallet in their blockchain projects, ensuring seamless integration and optimal user experience.
+
+To fully leverage the wallet APIs and ensure direct interaction between the wallet and your dApp, please refer to our example [integration app ↗️](https://github.com/fetchai/asi-alliance-wallet/tree/main/wallet-api-example).
+
+</div>
+
+## Detect ASI Alliance Browser Wallet
+
+<Row>
+    <Col>
+        You can determine whether ASI Alliance Wallet is installed on the user's device by checking `window.fetchBrowserWallet`.
+
+        If `window.fetchBrowserWallet` returns `undefined` after the document loads, then the ASI Alliance Browser Wallet is not installed.
+
+        There are several ways to wait for the load event to check this. We recommend tracking the document's ready state through an event listener.
+    </Col>
+    <Col>
+        ```javascript copy
+        async getFetchBrowserWallet(): Promise<FetchBrowserWallet | undefined> {
+            if (window.fetchBrowserWallet) {
+                return window.fetchBrowserWallet;
+            }
+
+            if (document.readyState === "complete") {
+                return window.fetchBrowserWallet;
+            }
+
+            return new Promise((resolve) => {
+                const documentStateChange = (event: Event) => {
+                    if (
+                        event.target &&
+                        (event.target as Document).readyState === "complete"
+                    ) {
+                        resolve(window.fetchBrowserWallet);
+                        document.removeEventListener("readystatechange", documentStateChange);
+                    }
+                };
+
+                document.addEventListener("readystatechange", documentStateChange);
+            });
+        }
+        ```
+    </Col>
+
+</Row>
+
+## Using with Typescript
+
+<Row>
+    <Col>
+    The `@fetchai/wallet-types` package has the type definition related to ASI Alliance Browser Wallet.
+
+    If you're using TypeScript, run `npm install --save-dev @fetchai/wallet-types` or `yarn add -D @fetchai/wallet-types` to install `@fetchai/wallet-types`.
+
+    Then, you can add the `@fetchai/wallet-types` window to a global window object and register the ASI Alliance Browser Wallet related types.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="window.d.ts"
+        import { Window as FetchBrowserWalletWindow } from "@fetchai/wallet-types";
+
+        declare global {
+          // eslint-disable-next-line @typescript-eslint/no-empty-interface
+          interface Window extends FetchBrowserWalletWindow {}
+        }
+        ```
+    </Col>
+
+</Row>
+
+## Legacy Keplr APIs (will be deprecated)
+
+<Row>
+    <Col>
+    We recognize that Keplr APIs are broadly utilized in most Cosmos dApps.
+
+    To assist dApp creators, we support Keplr APIs, allowing them to use their existing logic with the ASI Alliance Wallet. This support facilitates a gradual transition to more advanced APIs of the ASI Browser Wallet.
+
+    To access keplr APIs, you can simply refer to the `keplr` property of the `FetchBrowserWallet` window object. Something like to the one provided on the left.
+
+    To use keplr APIs, refer to the keplr [docs ↗️](https://docs.keplr.app/api/#).
+
+    </Col>
+    <Col>
+        ```javascript copy
+        const fetchBrowserWallet = await getFetchBrowserWallet();
+        const keplr = fetchBrowserWallet.keplr;
+
+        // Keplr specific features can be accessed now.
+        await keplr.enable("fetchhub-4");
+        ```
+    </Col>
+
+</Row>
+
+## ASI Alliance Wallet APIs
+
+<Row>
+    <Col>
+    To access ASI Alliance Wallet APIs, you can simply refer to the `wallet` property of the `FetchBrowserWallet` window object.
+
+    Something like this:
+
+    </Col>
+    <Col>
+        ```javascript copy
+        const fetchBrowserWallet = await getFetchBrowserWallet();
+        const fetchWallet = fetchBrowserWallet.wallet;
+
+        // Fetch wallet specific features can be accessed now.
+        await fetchWallet.status();
+        ```
+    </Col>
+
+</Row>
+
+### Wallet Status
+
+<Row>
+    <Col>
+    Provides the status of the wallet, indicating whether it is **`NOTLOADED`**, **`EMPTY`**, **`LOCKED`**, or **`UNLOCKED`**. Description for each status can be found [here ↗️](/apis/fetch-wallet/fetch-wallet#walletstatus).
+
+    **Params**
+
+    `none`
+
+    **Returns**
+
+    `Promise<WalletStatus>`
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.status();
+        ```
+        ```javascript copy filename="result"
+        3 // WalletStatus.UNLOCKED
+        ```
+    </Col>
+
+</Row>
+
+### Unlock Wallet
+
+<Row>
+    <Col>
+    This initiates a user interaction that unlocks the wallet through a pop-up interface. Upon calling the API, the wallet pop-up requests the wallet password to unlock it.
+
+    **Params**
+
+    `none`
+
+    **Returns**
+
+    `Promise<void>`
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.unlockWallet();
+        ```
+    </Col>
+
+</Row>
+
+### Lock Wallet
+
+<Row>
+    <Col>
+    Locks the wallet keyring and updates the wallet status to `LOCKED`.
+
+    **Params**
+
+    `none`
+
+    **Returns**
+
+    `Promise<void>`
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.lockWallet();
+        ```
+    </Col>
+
+</Row>
+
+### Restore Wallet
+
+<Row>
+    <Col>
+    This method restores the wallet and provides its status, similar to the status method of the API. This is necessary when there are upgrades to the wallet version and the wallet has to be reloaded. It's recommended to perform this action every time the dApp is initialized. Description for each status can be found [here ↗️](/apis/fetch-wallet/fetch-wallet#walletstatus).
+
+    **Params**
+
+    `none`
+
+    **Returns**
+
+    `Promise<WalletStatus>`
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await window.fetchBrowserWallet.wallet.restoreWallet();
+        ```
+        ```javascript copy filename="result"
+        await window.fetchBrowserWallet.wallet.restoreWallet();
+        ```
+    </Col>
+
+</Row>
+
+### Enable Permissions
+
+<Row>
+    <Col>
+    This is used to grant basic permissions to the dApp. Users need to provide these permissions so the dApp can fetch details such as networks and accounts. When this API is called, a popup appears, asking the user for approval.
+
+    **Params**
+
+    **`chainId`** *string* (required): The chain id of the chain for which permissions are to be enabled.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        // Permissions deleted for all networks
+        await window.fetchBrowserWallet.wallet.disable();
+
+        // Permissions deleted for ‘fetchhub-4’
+        await window.fetchBrowserWallet.wallet.disable('fetchhub-4');
+        ```
+    </Col>
+
+</Row>
+
+### Disable Permissions
+
+<Row>
+    <Col>
+    Deletes permissions granted to an origin. If specific chain IDs are provided, only permissions granted to each specified chain ID are deleted. Otherwise, all permissions granted to the origin are removed, including those not assigned to specific chains.
+
+    **Params**
+
+    **`chainId`** *string* (optional): The chain id of the chain for which permissions are to be disabled.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        // Permissions deleted for all networks
+        await window.fetchBrowserWallet.wallet.disable();
+
+        // Permissions deleted for ‘fetchhub-4’
+        await window.fetchBrowserWallet.wallet.disable('fetchhub-4');
+        ```
+    </Col>
+
+</Row>
+
+### Get Network
+
+<Row>
+    <Col>
+    Retrieves the current network configuration that the wallet is currently pointing to.
+
+    **Params**
+
+    `none`
+
+    **Returns**
+
+     `Promise<NetworkConfig>`
+
+    Further reference documentation is available here: [NetworkConfig ↗️](/apis/fetch-wallet/fetch-wallet#networkconfig)
+
+    **Error**
+
+    - If the wallet is locked
+    - If the dApp does not have permission to the networks API.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.networks.getNetwork();
+        ```
+        ```javascript copy filename="result"
+        {
+          "chainId": "dorado-1",
+          "chainName": "Dorado",
+          "networkType": "cosmos",
+          "rpcUrl": "https://rpc-dorado.fetch.ai",
+          "restUrl": "https://rest-dorado.fetch.ai",
+          "bip44s": [
+            {
+              "coinType": 118
+            }
+          ],
+          "bech32Config": {
+            "bech32PrefixAccAddr": "fetch",
+            "bech32PrefixAccPub": "fetchpub",
+            "bech32PrefixValAddr": "fetchvaloper",
+            "bech32PrefixValPub": "fetchvaloperpub",
+            "bech32PrefixConsAddr": "fetchvalcons",
+            "bech32PrefixConsPub": "fetchvalconspub"
+          },
+          "currencies": [
+            {
+              "type": "native",
+              "description": "",
+              "display": "",
+              "name": "",
+              "decimals": 18,
+              "denomUnits": [
+                {
+                  "name": "TESTFET",
+                  "exponent": 18
+                },
+                {
+                  "name": "atestfet",
+                  "exponent": 0
+                }
+              ]
+            },
+            {
+              "type": "native",
+              "description": "",
+              "display": "",
+              "name": "",
+              "decimals": 9,
+              "denomUnits": [
+                {
+                  "name": "MOBX",
+                  "exponent": 9
+                },
+                {
+                  "name": "nanomobx",
+                  "exponent": 0
+                }
+              ]
+            }
+          ],
+          "feeCurrencies": [
+            {
+              "type": "native",
+              "description": "",
+              "display": "",
+              "name": "",
+              "decimals": 18,
+              "denomUnits": [
+                {
+                  "name": "TESTFET",
+                  "exponent": 18
+                },
+                {
+                  "name": "atestfet",
+                  "exponent": 0
+                }
+              ]
+            },
+            {
+              "type": "native",
+              "description": "",
+              "display": "",
+              "name": "",
+              "decimals": 9,
+              "denomUnits": [
+                {
+                  "name": "MOBX",
+                  "exponent": 9
+                },
+                {
+                  "name": "nanomobx",
+                  "exponent": 0
+                }
+              ]
+            }
+          ],
+          "stakeCurrency": {
+            "type": "native",
+            "description": "",
+            "display": "",
+            "name": "",
+            "decimals": 18,
+            "denomUnits": [
+              {
+                "name": "TESTFET",
+                "exponent": 18
+              },
+              {
+                "name": "atestfet",
+                "exponent": 0
+              }
+            ]
+          },
+          "gasPriceStep": {
+            "low": 0,
+            "average": 5000000000,
+            "high": 6250000000
+          },
+          "features": [
+            "cosmwasm",
+            "ibc-go",
+            "ibc-transfer",
+            "wasmd_0.24+",
+            "query:/cosmos/bank/v1beta1/spendable_balances"
+          ]
+        }
+        ```
+    </Col>
+
+</Row>
+
+### Switch Network
+
+<Row>
+    <Col>
+    Add a specified network if it doesn't exist and switch to it. The user will be asked for approval, and all the permissions for the new chain ID will be provided to the dApp.
+
+    **Params** (required)
+
+    [NetworkConfig ↗️](/apis/fetch-wallet/fetch-wallet#networkconfig)
+
+    **Returns**
+
+    `Promise<void>`
+
+    **Error**
+
+    - If the wallet is locked.
+    - If the dApp does not have permission to the networks API.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.switchToNetwork(networkConfig);
+        ```
+    </Col>
+
+</Row>
+
+### Switch Network By ChainId
+
+<Row>
+    <Col>
+    Switch to an existing network by chain ID. The user will be asked for approval, and all the permissions for the new chain ID will be provided to the dApp.
+
+    **Params**
+
+    **`chainId`** *string* (required): The chain id of the new network to target.
+
+    **Error**
+
+    - If the wallet is locked
+    - If the dApp does not have permission to the networks API.
+    - If the chain id does not exist.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.networks.switchToNetwork(chainId);
+        ```
+    </Col>
+
+</Row>
+
+### List Networks
+
+<Row>
+    <Col>
+    List all the currently known networks in the wallet.
+
+    **Params**
+
+    `none`
+
+    **Returns**
+
+    `Promise<NetworkConfig[]>`
+
+    Further reference documentation is available here: [NetworkConfig ↗️](/apis/fetch-wallet/fetch-wallet#networkconfig)
+
+    **Error**
+
+    - If the wallet is locked
+    - If the dApp does not have permission to the networks API.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.networks.listNetworks();
+        ```
+        ```javascript copy filename="result"
+        [
+          {
+            "chainId": "fetchhub-4",
+            "chainName": "fetchhub",
+            "networkType": "cosmos",
+            "rpcUrl": "https://rpc-fetchhub.fetch.ai:443",
+            "restUrl": "https://rest-fetchhub.fetch.ai",
+            "bip44s": [
+              {
+                "coinType": 118
+              }
+            ],
+            "bech32Config": {
+              "bech32PrefixAccAddr": "fetch",
+              "bech32PrefixAccPub": "fetchpub",
+              "bech32PrefixConsAddr": "fetchvalcons",
+              "bech32PrefixConsPub": "fetchvalconspub",
+              "bech32PrefixValAddr": "fetchvaloper",
+              "bech32PrefixValPub": "fetchvaloperpub"
+            },
+            "currencies": [
+              {
+                "type": "native",
+                "description": "",
+                "display": "",
+                "name": "",
+                "coinGeckoId": "fetch-ai",
+                "decimals": 18,
+                "denomUnits": [
+                  {
+                    "name": "FET",
+                    "exponent": 18
+                  },
+                  {
+                    "name": "afet",
+                    "exponent": 0
+                  }
+                ]
+              },
+              {
+                "type": "native",
+                "description": "",
+                "display": "",
+                "name": "",
+                "decimals": 9,
+                "denomUnits": [
+                  {
+                    "name": "MOBX",
+                    "exponent": 9
+                  },
+                  {
+                    "name": "nanomobx",
+                    "exponent": 0
+                  }
+                ]
+              },
+              {
+                "type": "native",
+                "description": "",
+                "display": "",
+                "name": "",
+                "decimals": 9,
+                "denomUnits": [
+                  {
+                    "name": "NOMX",
+                    "exponent": 9
+                  },
+                  {
+                    "name": "nanonomx",
+                    "exponent": 0
+                  }
+                ]
+              },
+              {
+                "type": "native",
+                "description": "",
+                "display": "",
+                "name": "",
+                "decimals": 6,
+                "denomUnits": [
+                  {
+                    "name": "LRN",
+                    "exponent": 6
+                  },
+                  {
+                    "name": "ulrn",
+                    "exponent": 0
+                  }
+                ]
+              }
+            ],
+            "feeCurrencies": [
+              {
+                "type": "native",
+                "description": "",
+                "display": "",
+                "name": "",
+                "coinGeckoId": "fetch-ai",
+                "decimals": 18,
+                "denomUnits": [
+                  {
+                    "name": "FET",
+                    "exponent": 18
+                  },
+                  {
+                    "name": "afet",
+                    "exponent": 0
+                  }
+                ]
+              },
+              {
+                "type": "native",
+                "description": "",
+                "display": "",
+                "name": "",
+                "decimals": 9,
+                "denomUnits": [
+                  {
+                    "name": "MOBX",
+                    "exponent": 9
+                  },
+                  {
+                    "name": "nanomobx",
+                    "exponent": 0
+                  }
+                ]
+              },
+              {
+                "type": "native",
+                "description": "",
+                "display": "",
+                "name": "",
+                "decimals": 9,
+                "denomUnits": [
+                  {
+                    "name": "NOMX",
+                    "exponent": 9
+                  },
+                  {
+                    "name": "nanonomx",
+                    "exponent": 0
+                  }
+                ]
+              },
+              {
+                "type": "native",
+                "description": "",
+                "display": "",
+                "name": "",
+                "decimals": 6,
+                "denomUnits": [
+                  {
+                    "name": "LRN",
+                    "exponent": 6
+                  },
+                  {
+                    "name": "ulrn",
+                    "exponent": 0
+                  }
+                ]
+              }
+            ],
+            "stakeCurrency": {
+              "type": "native",
+              "description": "",
+              "display": "",
+              "name": "",
+              "coinGeckoId": "fetch-ai",
+              "decimals": 18,
+              "denomUnits": [
+                {
+                  "name": "FET",
+                  "exponent": 18
+                },
+                {
+                  "name": "afet",
+                  "exponent": 0
+                }
+              ]
+            },
+            "gasPriceStep": {
+              "average": 0.025,
+              "high": 0.035,
+              "low": 0.025
+            },
+            "features": [
+              "cosmwasm",
+              "ibc-go",
+              "ibc-transfer",
+              "wasmd_0.24+",
+              "query:/cosmos/bank/v1beta1/spendable_balances"
+            ],
+            "chainSymbolImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/fetchhub/fet.png"
+          },
+          ...
+        ]
+        ```
+    </Col>
+
+</Row>
+
+### Current Account
+
+<Row>
+    <Col>
+    Get the currently selected account in the wallet.
+
+    **Params**
+
+    `none`
+
+    **Returns**
+
+    `Promise<Account>`
+
+    Further reference documentation is available here: [Account ↗️](/apis/fetch-wallet/fetch-wallet#account)
+
+    **Error**
+
+    - If the wallet is locked
+    - The dApp does not have permission to access the Accounts API.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.accounts.currentAccount();
+        ```
+        ```javascript copy filename="result"
+        {
+          "name": "test2",
+          "algo": "secp256k1",
+          "pubKey": {
+            "0": 2,
+            "1": 133,
+            "2": 61,
+            "3": 149,
+            "4": 34,
+            "5": 47,
+                ...
+          },
+          "address": {
+            "0": 180,
+            "1": 186,
+            "2": 122,
+            "3": 150,
+            "4": 163,
+            "5": 23,
+                ...
+          },
+          "bech32Address": "fetch1kja8494rza32y5nh0r8krqcp5ngdq8g994wm50",
+          "isNanoLedger": false,
+          "isKeystone": false,
+          "EVMAddress": "" // This will come if the selected network is an EVM network
+        }
+        ```
+    </Col>
+
+</Row>
+
+### Switch Account
+
+<Row>
+    <Col>
+    Change the current active account to the specified address in the parameters. The user will be asked for approval via the wallet popup. All account and signing permissions will be given by default.
+
+    **Params**
+
+    **`address`** *(string):* The address to switch to
+
+    **Returns**
+
+    `Promise<void>`
+
+    **Error**
+
+    - If the wallet is locked
+    - The dApp does not have permission to access the Accounts API.
+    - If the provided address does not exist.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.accounts.switchAccount("fetch1kja8494rza32y5nh0r8krqcp5ngdq8g994wm50);
+        ```
+    </Col>
+
+</Row>
+
+### List Accounts
+
+<Row>
+    <Col>
+    Allows the user to list the available accounts for the selected network.
+
+    **Params**
+
+    `none`
+
+    **Returns**
+
+    `Promise<Account[]>`
+
+    Further reference documentation is available here: [Account ↗️](/apis/fetch-wallet/fetch-wallet#account)
+
+    **Error**
+
+    - If the wallet is locked
+    - The dApp does not have permission to access the Accounts API.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.accounts.listAccounts();
+        ```
+        ```javascript copy filename="result"
+        [
+          {
+            "name": "test2",
+            "algo": "secp256k1",
+            "pubKey": {
+              "0": 2,
+              "1": 133,
+              "2": 61,
+              "3": 149,
+              "4": 34,
+              "5": 47,
+                    ...
+            },
+            "address": {
+              "0": 180,
+              "1": 186,
+              "2": 122,
+              "3": 150,
+              "4": 163,
+              "5": 23,
+              "6": 98,
+              "7": 162,
+              "8": 82,
+                    ...
+            },
+            "bech32Address": "fetch1kja8494rza32y5nh0r8krqcp5ngdq8g994wm50",
+            "isNanoLedger": false,
+            "isKeystone": false,
+            "EVMAddress": "" // This will come if the selected network is an EVM network
+          },
+          ...
+        ]
+        ```
+    </Col>
+
+</Row>
+
+### Get Account
+
+<Row>
+    <Col>
+    Allows the user to look up a specific account by its address.
+
+    **Params**
+
+    **`address`** (string) required: The address of the account to lookup.
+
+    **Returns**
+
+    `Promise<Account>`
+
+    Further reference documentation is available here: [Account ↗️](/apis/fetch-wallet/fetch-wallet#account)
+
+    **Error**
+
+    - If the wallet is locked
+    - The dApp does not have permission to access the Accounts API.
+    - If the provided address does not exist.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.accounts.getAccount("fetch1kja8494rza32y5nh0r8krqcp5ngdq8g994wm50");
+        ```
+        ```javascript copy filename="result"
+        {
+          "name": "test2",
+          "algo": "secp256k1",
+          "pubKey": {
+            "0": 2,
+            "1": 133,
+            "2": 61,
+            "3": 149,
+            "4": 34,
+            "5": 47,
+                ...
+          },
+          "address": {
+            "0": 180,
+            "1": 186,
+            "2": 122,
+            "3": 150,
+            "4": 163,
+            "5": 23,
+                ...
+          },
+          "bech32Address": "fetch1kja8494rza32y5nh0r8krqcp5ngdq8g994wm50",
+          "isNanoLedger": false,
+          "isKeystone": false,
+          "EVMAddress": ""
+        }
+        ```
+    </Col>
+
+</Row>
+
+### List Address Book Entries
+
+<Row>
+    <Col>
+    Get all the address book entries stored in the wallet.
+
+    **Params**
+
+    `none`
+
+    **Returns**
+
+    `Promise<AddressBookEntry[]>`
+
+    Further reference documentation is available here: [AddressBookEntry ↗️](/apis/fetch-wallet/fetch-wallet#addressbookentry)
+
+    **Error**
+
+    - If the wallet is locked
+    - If dApp does not have permission to access the address book.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.addressBook.listEntries();
+        ```
+        ```javascript copy filename="result"
+        [
+          {
+            "address": "fetch1w2thz2rfv63yufy6qxssu7vaq80j50rtxwt243",
+            "memo": "Personal account",
+            "name": "acc 1"
+          },
+          {
+            "address": "fetch1kja8494rza32y5nh0r8krqcp5ngdq8g994wm50",
+            "memo": "Checking account",
+            "name": "acc 2"
+          }
+        ]
+        ```
+    </Col>
+
+</Row>
+
+### Add Address Book Entry
+
+<Row>
+    <Col>
+    Adds an address book entry to the wallet.
+
+    **Params**
+
+    [AddressBookEntry ↗️](/apis/fetch-wallet/fetch-wallet#addressbookentry)
+
+    **Returns**
+
+    `Promise<void>`
+
+    **Error**
+
+    - If the entry address already exists in the address book.
+    - The wallet is locked.
+    - If the dApp does not have permission to access the address book.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.addressBook.addEntry({
+          "address": "fetch1w2thz2rfv63yufy6qxssu7vaq80jxxxxxxxxx"
+          "memo": "This is my testing account",
+          "name": "Account 3"
+        });
+        ```
+
+    </Col>
+
+</Row>
+
+### Update Address Book Entry
+
+<Row>
+    <Col>
+    Updates an existing address book entry (memo or name) in the wallet by address.
+
+    **Params**
+
+    [AddressBookEntry ↗️](/apis/fetch-wallet/fetch-wallet#addressbookentry)
+
+    **Returns**
+
+    `Promise<void>`
+
+    **Error**
+
+    - If the entry address does not exist in the address book.
+    - The wallet is locked.
+    - If the dApp does not have permission to access the address book.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.addressBook.updateEntry({
+          "address": "fetch1w2thz2rfv63yufy6qxssu7vaq80jxxxxxxxxx",
+          "memo": "This is a modified memo",
+          "name": "test account 4"
+        });
+        ```
+
+    </Col>
+
+</Row>
+
+### Delete Address Book Entry
+
+<Row>
+    <Col>
+    Deletes a specified address from the address book.
+
+    **Params**
+
+    **`address`** *(string) required*
+
+    **Returns**
+
+    `Promise<void>`
+
+    **Error**
+
+    - If the entry address does not exist in the address book.
+    - The wallet is locked.
+    - If the dApp does not have permission to access the address book.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await window.fetchBrowserWallet.wallet.addressBook.deleteEntry("fetch1w2thz2rfv63yufy6qxssu7vaq80jxxxxxxxxx");
+        ```
+
+    </Col>
+
+</Row>
+
+### Sign Amino
+
+<Row>
+    <Col>
+    Signs a transaction using the Amino format.
+
+    **Params**
+
+    1. **`chainId`** *(string)*: The chain ID of the target blockchain.
+    2. **`signer`** *(string)*: The address of the signer.
+    3. **`StdSignDoc`** *(object)*: The sign document containing transaction details.
+
+        Further reference documentation is available here: [StdSignDoc ↗️](/apis/fetch-wallet/fetch-wallet#stdsigndoc)
+
+    4. **`signOptions`** *(KeplrSignOptions)*: Additional signing options (default is an empty object).
+        - **`preferNoSetFee`** *(boolean) optional*
+        - **`preferNoSetMemo`** *(boolean) optional*
+        - **`disableBalanceCheck`** *(boolean) optional*
+
+    **Returns**
+
+    `Promise<AminoSignResponse>`
+
+    Further reference documentation is available here: [AminoSignResponse ↗️](/apis/fetch-wallet/fetch-wallet#aminosignresponse)
+
+    **Error**
+
+    - If chainId or Signer does not exist.
+    - If the dApp does not have permissions for signing API.
+    </Col>
+
+    <Col>
+        ```javascript copy filename="request"
+        const signer = "fetch1w2thz2rfv63yufy6qxssu7vaq80j50rtxwt243";
+        const signDoc = {
+          "chain_id": "",
+          "account_number": "0",
+          "sequence": "0",
+          "fee": {
+            "gas": "0",
+            "amount": [
+
+            ]
+          },
+          "msgs": [
+            {
+              "type": "sign/MsgSignData",
+              "value": {
+                "signer": signer,
+                "data": "aGVsbG8=" //Buffer.from("hello").toString("base64")
+              }
+            }
+          ],
+          "memo": ""
+        };
+
+        const response = await fetchWallet.signing.signAmino("dorado-1", signer, signDoc);
+        ```
+        ```javascript copy filename="response"
+        {
+          "signed": {
+            "account_number": "0",
+            "chain_id": "",
+            "fee": {
+              "amount": [
+
+              ],
+              "gas": "0"
+            },
+            "memo": "",
+            "msgs": [
+              {
+                "type": "sign/MsgSignData",
+                "value": {
+                  "data": "aGVsbG8=",
+                  "signer": "fetch1w2thz2rfv63yufy6qxssu7vaq80j50rtxwt243"
+                }
+              }
+            ],
+            "sequence": "0"
+          },
+          "signature": {
+            "pub_key": {
+              "type": "tendermint/PubKeySecp256k1",
+              "value": "AxJkltEn3Tivz4gltmcqNUn6eJm/b2u8zsGn3m0KOd2U"
+            },
+            "signature": "ycTOgfNGLFwMsCmxm9vBnuog+cdj4fs8WBEOpw2IXhoSuWkPSgWzEGHgMBxShLzTywoWaApaJqztIturE96EKw=="
+          }
+        }
+        ```
+
+    </Col>
+
+</Row>
+
+### Sign Direct/Protobuf
+
+<Row>
+    <Col>
+    Sign transactions directly without using Amino encoding. Signs Proto-encoded `StdSignDoc` ([StdSignDoc ↗️](/apis/fetch-wallet/fetch-wallet#aminosignresponse))
+
+    **Params**
+
+    1. **`chainId`** *(string)*: The chain ID of the target blockchain.
+    2. **`signer`** *(string)*: The address of the signer.
+    3. **`signDoc`** *(object)*: The sign document containing transaction details.
+        a. **`bodyBytes`** *(Uint8Array | null) optional* : The body bytes of the transaction.
+        b. `authInfoBytes` *(Uint8Array | null) optional* : The authorization info bytes of the transaction.
+        c. **`chainId`** *(string | null) optional* : The chain ID of the transaction.
+        d. **`accountNumber`** *(Long | null) optional* : The account number of the transaction.
+    4. **`signOptions`** *(KeplrSignOptions)*: Additional signing options (default is an empty object).
+
+    **Returns**
+
+    `Promise<DirectSignResponse>`
+
+    Further reference documentation is available here: [DirectSignResponse ↗️](/apis/fetch-wallet/fetch-wallet#directsignresponse)
+
+    **Error**
+
+    - If chainId or Signer does not exist.
+    - If the dApp does not have permissions for signing API.
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        const signer = "fetch1w2thz2rfv63yufy6qxssu7vaq80j50rtxwt243";
+        const signDoc = {
+          bodyBytes: new Uint8Array([1, 2, 3, 4]), // Mock body bytes
+          authInfoBytes: new Uint8Array([5, 6, 7, 8]), // Mock auth info bytes
+          chainId: "dorado-1",
+          accountNumber: Long.fromNumber(0), // Mock account number};
+        }
+
+        const response = await fetchWallet.signing.signDirect("dorado-1", signer, signDoc);
+        ```
+        ```javascript copy filename="response"
+        {
+          "signed": {
+            "bodyBytes": "...",
+            "authInfoBytes": "...",
+            "chainId": "...",
+            "accountNumber": "..."
+          },
+          "signature": {
+            "pub_key": {
+              "type": "tendermint/PubKeySecp256k1",
+              "value": "..."
+            },
+            "signature": "..."
+          }
+        }
+        ```
+
+    </Col>
+
+</Row>
+
+### Sign Arbitrary Message
+
+<Row>
+    <Col>
+    This can be used to sign any arbitrary message to prove ownership of an account.
+
+    **Params**
+
+    1. `chainId` *(string)*: The chain ID of the network.
+    2. `signer` *(string)*: The address of the account signing the transaction.
+    3. `data` *(string | Uint8Array)*: The data to be signed
+
+    **Returns**
+
+    `Promise<***StdSignature***>`
+
+    Further reference documentation is available here: [StdSignature ↗️](/apis/fetch-wallet/fetch-wallet#stdsignature)
+
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.signing.signArbitrary(
+            "dorado-1",
+            "fetch1kja8494rza32y5nh0r8krqcp5ngdq8g994wm50",
+            "hello"
+        );
+        ```
+        ```javascript copy filename="response"
+        {
+          "pub_key": {
+            "type": "tendermint/PubKeySecp256k1",
+            "value": "AoU9lSIv+Zf7+gSjlikKQqNhYp0o1H72A5XFgoJW1yvL"
+          },
+          "signature": "BZZOpR6HPO7Eskzo7fB5LTsTPKRcOyJ4lOYY95fMsM1Vo9myKMkVU694g3CndUhLA6KgHOwlZwAiGqqCT/6+Fw=="
+        }
+        ```
+
+    </Col>
+
+</Row>
+
+### Verify Arbitrary Message
+
+<Row>
+    <Col>
+    Verifies a signature made via the `signArbitrary` API.
+
+    *Params*
+
+    1. `chainId` The target chain id
+    2. `signer` The target signer
+    3. `data` The data that should have been signed
+    4. `signature` The signature to verify
+
+    *Returns*
+
+    `Promise<boolean>`
+
+    True if the signature is verified, otherwise false.
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.signing.signArbitrary(
+            "dorado-1",
+            "fetch1kja8494rza32y5nh0r8krqcp5ngdq8g994wm50",
+            "hello",
+            {
+                "pub_key": {
+                    "type": "tendermint/PubKeySecp256k1",
+                    "value": "AoU9lSIv+Zf7+gSjlikKQqNhYp0o1H72A5XFgoJW1yvL"
+                },
+                "signature": "BZZOpR6HPO7Eskzo7fB5LTsTPKRcOyJ4lOYY95fMsM1Vo9myKMkVU694g3CndUhLA6KgHOwlZwAiGqqCT/6+Fw=="
+            }
+        );
+        ```
+        ```javascript copy filename="response"
+        true
+        ```
+
+    </Col>
+
+</Row>
+
+### Get Offline Signer
+
+<Row>
+    <Col>
+    Get a signer capable of either Direct or Amino signing methods.
+
+    **Params**
+
+    **`chainId`**: The targeted chain id.
+
+    **Returns**
+
+    `Promise<OfflineDirectSigner | OfflineAminoSigner>`
+
+    A CosmJS compatible signer.
+
+    Type description:
+
+    - **`OfflineDirectSigner`**
+        - **`getAccounts()`**
+
+            Get AccountData array from wallet. Rejects if not enabled.
+
+            Returns `Promise<readonly AccountData[]>`
+
+        - **`signDirect(signerAddress: string, signDoc: SignDoc)`**
+
+            Sign transactions directly without using Amino encoding.
+
+    - **`OfflineAminoSigner`**
+        - **`getAccounts()`**
+
+            Get AccountData array from wallet. Rejects if not enabled.
+
+            Returns `*Promise<readonly AccountData[]>*`
+
+        - **`signAmino(signerAddress: string, signDoc: StdSignDoc)`**
+
+            Request signature from whichever key corresponds to provided bech32-encoded address. Rejects if not enabled.
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.signing.getOfflineSigner(chainId);
+        ```
+
+    </Col>
+
+</Row>
+
+### Get Offline Amino Signer
+
+<Row>
+    <Col>
+    Get a signer capable of Amino signing methods.
+
+    **Params**
+
+    **`chainId`**: The targeted chain id.
+
+    **Returns**
+
+    `Promise<OfflineAminoSigner>`
+
+    A CosmJS compatible amino signer.
+
+    Type description:
+
+    - **`OfflineAminoSigner`**
+        - **`getAccounts()`**
+
+            Get AccountData array from wallet. Rejects if not enabled.
+
+            Returns `Promise<readonly AccountData[]>`
+
+        - **`signAmino(signerAddress: string, signDoc: StdSignDoc)`**
+
+            Request signature from whichever key corresponds to provided bech32-encoded address. Rejects if not enabled.
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.signing.getOfflineAminoSigner(chainId);
+        ```
+
+    </Col>
+
+</Row>
+
+### Get Offline Direct Signer
+
+<Row>
+    <Col>
+    Get a signer capable of Direct signing methods.
+
+    **Params**
+
+    **`chainId`**: The targeted chain id.
+
+    **Returns**
+
+    `Promise<OfflineDirectSigner>`
+
+    A CosmJS compatible direct signer.
+
+    Type description:
+
+    - **`OfflineDirectSigner`**
+        - **`getAccounts()`**
+
+            Get AccountData array from wallet. Rejects if not enabled.
+
+            Returns `Promise<readonly AccountData[]>`
+
+        - **`signDirect(signerAddress: string, signDoc: SignDoc)`**
+
+            Sign transactions directly without using Amino encoding.
+    </Col>
+    <Col>
+        ```javascript copy filename="request"
+        await fetchWallet.signing.getOfflineDirectSigner(chainId);
+        ```
+
+    </Col>
+
+</Row>
+
+### Sign Ethereum
+
+<Row>
+    <Col>
+    This method signs Ethereum transactions or Arbitrary messages using the current chainId and current wallet account.
+
+    **Params**
+
+    1. `data` *(string | Uint8Array)*: The data that needs to be signed
+    2. `type` *([EthSignType ↗️](/apis/fetch-wallet/fetch-wallet#ethsigntype))*: The type of Ethereum signature.
+
+    **Returns**
+
+    `Promise<Uint8Array>`
+
+    Signature in uint8array format.
+    </Col>
+    <Col>
+        ```javascript copy filename="Example request: EthSignType.MESSAGE"
+        await fetchWallet.signing.signEthereum("hello", EthSignType.MESSAGE);
+        ```
+        ```javascript copy filename="Example response: EthSignType.MESSAGE"
+        {
+          "0": 164,
+          "1": 222,
+          "2": 173,
+          "3": 32,
+          "4": 98,
+          "5": 213,
+          "6": 72,
+        ...
+        }
+        ```
+        ```javascript copy filename="Example request: EthSignType.TRANSACTION"
+        const encoder = new TextEncoder();
+        const valueInWei = ethers.parseEther(value ? value : "0.000001").toString();
+        const rawTx = {
+            to: "0x16eb926F78A1b557A1FC5Da62ceBC1b9b6F6ccf2",
+            value: ethers.hexlify(ethers.toUtf8Bytes(valueInWei)),
+            nonce: 0,
+            chainId: 11155111,
+            gasLimit: ethers.hexlify(ethers.toUtf8Bytes("21000")),
+        };
+
+        const signData = await fetchWallet.signing.signEthereum(
+            encoder.encode(JSON.stringify(rawTx)),
+            EthSignType.TRANSACTION
+        );
+        ```
+        ```javascript copy filename="Example response: EthSignType.TRANSACTION"
+        {
+          "0": 248,
+          "1": 109,
+          "2": 128,
+          "3": 128,
+          "4": 133,
+          "5": 50,
+          "6": 49,
+          "7": 48,
+          "8": 48,
+          "9": 48,
+        ...
+        }
+        ```
+
+    </Col>
+
+</Row>
+
+## Events
+
+<div className="nx-text-fetch-content">
+
+The wallet emits certain window events that can be useful to update the data shown in the dApp. Currently there are 3 events emitted.
+
+</div>
+
+### Status Changed
+<Row>
+    <Col>
+
+    `fetchwallet_walletstatuschange`
+
+    When the status of the wallet changes as described [here ↗️](/apis/fetch-wallet/fetch-wallet#wallet-status) (from the wallet or the dApp), the dApp can react accordingly to the updated status. For example, if the wallet is locked, the dApp can show a screen that allows unlocking the wallet. Once unlocked, the dApp can use this event to fetch all the required data like account and network details.
+
+    </Col>
+    <Col>
+        ```javascript copy
+        window.addEventListener("fetchwallet_walletstatuschange", () => {
+            console.log("Wallet status is changed. You may need to update the screen to reflect the new status")
+        })
+        ```
+
+    </Col>
+
+</Row>
+
+### Network Changed
+
+<Row>
+    <Col>
+
+    `fetchwallet_networkchange`
+
+    This event is emitted when the network is changed in the wallet (either from the wallet or from the dApp). When the network is switched in the wallet, the bech32 address and other network-specific parameters change as well. It's a good idea to listen for this event and update the network parameters accordingly.
+
+    </Col>
+    <Col>
+        ```javascript copy
+        window.addEventListener("fetchwallet_networkchange", () => {
+            console.log("Wallet network is changed. You may need to refetch network info")
+        })
+        ```
+
+    </Col>
+
+</Row>
+
+### Account Changed
+
+<Row>
+    <Col>
+
+    `fetchwallet_keystorechange`
+
+    When the user switches their key store/account after the webpage has received the information on the key store/account the key that the webpage is aware of may not match the selected key in the wallet which may cause issues in the interactions.
+
+    To prevent this from happening, when the key store/account is changed, the wallet emits a `fetchwallet_keystorechange` event to the webpage's window. You can request the new key/account based on this event listener.
+
+    </Col>
+    <Col>
+        ```javascript copy
+        window.addEventListener("fetchwallet_keystorechange", () => {
+            console.log("Wallet network is changed. You may need to refetch keyring data")
+        })
+        ```
+
+    </Col>
+
+</Row>
+
+## Types
+
+### WalletStatus
+
+<Row>
+    <Col>
+
+    </Col>
+
+    <Col>
+
+        ```javascript copy
+        enum EthSignType {
+                // The wallet accounts are not yet loaded.
+            NOTLOADED = 0,
+            // There are no accounts configured in the wallet yet.
+            EMPTY = 1,
+            // Wallet is locked.
+            LOCKED = 2,
+            // Wallet is unlocked and ready to use.
+            UNLOCKED = 3
+        }
+        ```
+
+    </Col>
+
+</Row>
+
+### NetworkConfig
+
+<Row>
+    <Col>
+    - **`chainId`** *(string)*
+
+        The chain id of the network name.
+
+    - **`chainName`** *(string)*
+
+        The human-readable name for the network.
+
+    - **`networktype`** *(“cosmos” | “evm”)*
+
+        The network type.
+
+    - **`rpcUrl`** *(string)*
+
+        The base RPC used for interacting with the network.
+
+    - **`grpUrl`** *(string)* *optional*
+
+        Cosmos only, optional: The URL to the GRPC interface for the network.
+
+    - **`restUrl`** *(string)* *optional deprecated*
+
+        Cosmos only, optional: The `URL` to the `REST` or `LCD` interface.
+
+    - **`type`** *( “mainnet” | “testnet”)* *optional*
+
+        The type of the network, i.e. is it a main network or using for testing.
+
+    - **`status`** *(“alpha” | “beta” | “production”) optional*
+
+        The status or maturity of the network. i.e. is it production quality or not.
+
+    - **`bip44s`** *(BIP44[])*
+
+        The set of `BIP44` configurations used for determining HD wallets. A valid configuration must have at least only entry in this list. The first entry in this list is considered the primary `BIP44` configuration. Additional `BIP44` configurations are also permitted.
+
+        - **`BIP44`** *(object)*
+            - **`coinType`** *(number)*
+
+                The coin type value to be appended into the HD Path.
+
+    - **`bech32Config`** *(Bech32Config)*
+
+        Cosmos only, required: The `Bech32` prefixes that are required for the network.
+
+        - **`Bech32Config`** *(object)*
+            - `bech32PrefixAccAddr` *(string)*
+            - `bech32PrefixAccPub` *(string)*
+            - `bech32PrefixValAddr` *(string)*
+            - `bech32PrefixValPub` *(string)*
+            - `bech32PrefixConsAddr` *(string)*
+            - `bech32PrefixConsPub` *(string)*
+
+    - **`currencies`** (array[Currency])
+
+        The complete set of currencies that are known for the network.
+
+        - **`Currency`** *(type)*
+
+            NativeCurrency | IBCCurrency | CW20Currency | ERC20Currency
+
+            these above currencies are all derived from `BaseCurrency` and have few extra properties of their own.
+
+            - **`BaseCurrency`**
+                - **`type`** *(string)*
+
+                    “native” | “cw20” | “erc20” | “ibc”
+
+                - **`description`** *(string)* *optional*
+
+                    An optional description for the currency.
+
+                - **`denomUnits`** *(DenomUnit[])*
+
+                    The set of units that are applicable for this currency.
+
+                    - **`DenomUnit`** *(object)*
+                        - **`name`** *(string)*
+
+                            The name of the unit.
+
+                        - **`exponent`** *(number)*
+                            - The exponent for the number of units in the form 10^(exponent).
+
+                        - **`aliases`** *(array[string])* *optional*
+                            - An optional set of aliases for the unit.
+
+                - **`display`** *(string)*
+
+                    The display name for the currency.
+
+                - **`name`** *(string)*
+
+                    The canonical name for the currency.
+
+                - **`decimals`** *(number)*
+
+                    The decimals of the currency
+
+                - **`coinGeckoId`** *(string)* *optional*
+
+                    This is used to fetch asset’s fiat value from coingecko. You can get id from [here ↗️](https://api.coingecko.com/api/v3/coins/list).
+
+                - **`imageUrl`** *(string)* *optional*
+
+                    The optional URL for the currency image.
+
+
+            > Extra properties in:
+            >
+            > - **`NativeCurrency`**
+            >
+            >     a native currency.
+            >
+            >     - **`denom`** *(string)*
+            >
+            >         The canonical denomination for the currency.
+            >
+            > - **`IBCCurrency`**
+            >
+            >     An IBCCurrency is the currency that is sent from the other chain via IBC. This will be handled as similar to the native currency. However, additional information is required about the IBC channels and paths that were used.
+            >
+            >     - **`paths`** *(array[IbcPath])*
+            >
+            >         The IBC paths associated with this currency.
+            >
+            >         - **`portId`** *(string)*
+            >
+            >             The IBC port id.
+            >
+            >         - **`channelId`** *(string)*
+            >
+            >             The IBC channel id.
+            >
+            >     - **`originChainId`** *(string | undefined)*
+            >
+            >         The chain id that the currency is from if known.
+            >
+            >     - **`originCurrency`** *(NativeCurrency | CW20Currency | undefined)*
+            >
+            >         The origin currency if known.
+            >
+            > - **`CW20Currency`**
+            >
+            >     CW20 (contract based) currency.
+            >
+            >     - **`contractAddress`** *(string)*
+            >
+            >         The contract address for the currency.
+            >
+            > - **`ERC20Currency`**
+            >     - **`contractAddress`** *(string)*
+            >
+            >         The contract address for the currency.
+            >
+    - **`feeCurrencies`** *(array[NativeCurrency])*
+
+        The subset of the currencies that are allows for paying fees.
+
+    - **`stakeCurrency`** *(NativeCurrency)*
+
+        The native currency that is allowed for staking.
+
+    - **`gasPriceStep`** *(gas price config object) optional*
+
+        The gas price configuration for the network.
+
+    - **`features`** *(array[string])*
+
+        Set of features enabled for the network.
+
+    - **`explorerUrl`** *(string)* *optional*
+
+        Explorer url for the network.
+
+    - **`chainSymbolImageUrl`** *(string)* *optional*
+
+        Network logo.
+
+    </Col>
+
+    <Col>
+
+    </Col>
+
+</Row>
+
+### Account
+
+<Row>
+    <Col>
+    - **`address`** *(Uint8Array)*
+
+        The address of the account.
+
+    - **`pubKey`** *(Uint8Array)*
+
+        The public key of the account.
+
+    - **`name`** *(string)*
+
+        The name of the account.
+
+    - **`algo`** *(string)*
+
+        The algo used for the account.
+
+    - **`bech32Address`** *(string)*
+
+        The bech32Address of the account.
+
+    - **`EVMAddress`** *(string)*
+
+        The Hex Address of the account.
+
+    - **`isNanoLedger`** *(boolean)*
+
+        Is Nano Ledger account.
+
+    - **`isKeystone`** *(boolean)*
+
+        Is Keystone account.
+    </Col>
+
+    <Col>
+
+
+    </Col>
+
+</Row>
+
+### AddressBookEntry
+
+<Row>
+    <Col>
+    - **`address`** *(string)*
+
+        The representation is chain specific. For example in the case of the Fetch chain it should be bech32 encoded and should have the prefix `fetch`.
+
+    - **`name`** *(string)*
+
+        The human-readable name associated with the address.
+
+    - **`memo`** (string)
+
+        The human-readable memo associated with the address.
+    </Col>
+
+    <Col>
+
+
+    </Col>
+
+</Row>
+
+### StdSignDoc
+
+<Row>
+    <Col>
+
+    - **`chain_id`** *(string)*
+    - **`account_number`** *(string)*
+    - **`sequence`** *(string)*
+    - **`timeout_height`** *(string) optional*
+    - **`fee`** *(stdFee)*
+        - **`amount`** *(Coin[])*
+            - **`denom`** *(string)*
+            - **`amount`** *(string)*
+        - **`gas`** *(string)*
+        - **`payer`** *(string) optional*
+        - **`granter`** *(string) optional*
+        - **`feePayer`** *(string) optional*
+    - **`msgs`** *(Msg[])*
+    - **`memo`** *(string)*
+    </Col>
+
+    <Col>
+
+
+    </Col>
+
+</Row>
+
+### AminoSignResponse
+
+<Row>
+    <Col>
+    - **`signed`** *([StdSignDoc↗️](/apis/fetch-wallet/fetch-wallet#stdsigndoc))*
+    - **`signature`** *(StdSignature)*
+        - **`pub_key`** *(PubKey)*
+            - **`type`** *(string)*
+            - **`value`** *(string)*
+        - **`Signature`** *(string)*
+    </Col>
+
+    <Col>
+
+
+    </Col>
+
+</Row>
+
+### DirectSignResponse
+
+<Row>
+    <Col>
+    - **`signed`** *(SignDoc)*
+        - **`bodyBytes`**: *(Uint8Array)*
+        - **`authInfoBytes`**: *(Uint8Array)*
+        - **`chainId`**: *(string)*
+        - **`accountNumber`**: *(Long)*
+    - **`signature`** *(StdSignature)*
+        - **`pub_key`** *(PubKey)*
+            - **`type`** *(string)*
+            - **`value`** *(string)*
+        - **`Signature`** *(string)*
+    </Col>
+
+    <Col>
+
+
+    </Col>
+
+</Row>
+
+### StdSignature
+
+<Row>
+    <Col>
+    - **`pub_key`** *(PubKey)*
+        - **`type`** *(string)*
+        - **`value`** *(string)*
+    - **`Signature`** *(string)*
+    </Col>
+
+    <Col>
+
+    </Col>
+
+</Row>
+
+### EthSignType
+
+<Row>
+    <Col>
+
+    </Col>
+
+    <Col>
+
+        ```javascript copy
+        enum EthSignType {
+            MESSAGE = "message",
+            TRANSACTION = "transaction",
+            EIP712 = "eip-712"
+        }
+
+        ```
+
+    </Col>
+
+</Row>
