@@ -13,7 +13,6 @@ import {
 import Tooltip from "./tooltip";
 import Link from "next/link";
 import { CodeIcon, CopyIcon } from "src/icons/shared-icons";
-import { useOs } from "theme/fetch-ai-docs/contexts/os-context";
 import { Mac, Ubuntu, Windows } from "src/icons/os-icons";
 
 interface PropertyType {
@@ -57,9 +56,10 @@ export const CustomPre = ({
   dataLanguage,
   hasCopyCode,
   children,
+  osMenu,
 }: CodeBoxProps) => {
-  const { selectedOS: activeOS } = useOs();
   const [isCopied, setIsCopied] = useState(false);
+  const [selectedOS, setSelectedOS] = useState<string>("Windows");
   const codeRef = useRef<HTMLDivElement>(null);
 
   const handleCopy = () => {
@@ -79,26 +79,29 @@ export const CustomPre = ({
       Ubuntu: commands?.ubuntu,
     };
 
-    return osCommands[activeOS] ? <Code>{osCommands[activeOS]}</Code> : null;
+    return osCommands[selectedOS] ? (
+      <Code>{osCommands[selectedOS]}</Code>
+    ) : null;
   };
-
-  const { selectedOS, setSelectedOS } = useOs();
 
   return (
     <div className="nx-flex nx-mt-5 nx-flex-col">
-      <div className="osmenu-container-nav nx-w-[132px]">
-        {osmenu.map((item, index) => (
-          <div
-            key={index}
-            className={`osmenu-tab-container nx-justify-center nx-cursor-pointer nx-items-center ${
-              selectedOS === item.name ? "blue-background" : ""
-            }`}
-            onClick={() => setSelectedOS(item.name)}
-          >
-            <item.icon selectedOS={selectedOS} name={item.name} />
-          </div>
-        ))}
-      </div>
+      {osMenu && (
+        <div className="osmenu-container-nav nx-w-[132px]">
+          {osmenu.map((item, index) => (
+            <div
+              key={index}
+              className={`osmenu-tab-container nx-justify-center nx-cursor-pointer nx-items-center ${
+                selectedOS === item.name ? "blue-background" : ""
+              }`}
+              onClick={() => setSelectedOS(item.name)}
+            >
+              <item.icon selectedOS={selectedOS} name={item.name} />
+            </div>
+          ))}
+        </div>
+      )}
+
       <Pre data-language={dataLanguage} className="custom-pre">
         <div className="nx-flex nx-w-full nx-items-center nx-justify-between">
           <CodeIcon />

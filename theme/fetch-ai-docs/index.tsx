@@ -10,7 +10,6 @@ import "./polyfill";
 import type { PageTheme } from "nextra/normalize-pages";
 import { normalizePages } from "nextra/normalize-pages";
 import { ErrorBoundary } from "react-error-boundary";
-import { OsProvider } from "./contexts/os-context";
 import {
   Banner,
   Breadcrumb,
@@ -346,9 +345,7 @@ export default function Layout({
   return (
     <ErrorBoundary FallbackComponent={Error404}>
       <ConfigProvider value={context}>
-        <OsProvider>
-          <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
-        </OsProvider>
+        <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
       </ConfigProvider>
     </ErrorBoundary>
   );
