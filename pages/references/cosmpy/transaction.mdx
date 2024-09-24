@@ -56,7 +56,7 @@ Transaction.
 ## Transaction Objects
 
     ```py
-    class Transaciton()
+    class Transaction()
     ```
 
     Transaction.
@@ -151,7 +151,7 @@ def state() -> TxState
     def seal(signing_cfgs: Union[signing_cfg, List[SigningCfg]],
     fee: str,
     gas_limit: int,
-    memo: Optional[str] = None) -> "Transaciton"
+    memo: Optional[str] = None) -> "Transaction"
     ```
 
     Seal the transaction.
@@ -172,7 +172,7 @@ def state() -> TxState
     def sign(signer: Signer,
     chain_id: str,
     account_number: int,
-    deterministic: bool = False) -> "Transaciton"
+    deterministic: bool = False) -> "Transaction"
     ```
 
     Sign the transaction.
@@ -188,13 +188,13 @@ def state() -> TxState
 
         - `RuntimeError`: If transaction is not sealed.
 
-    **Retunrs**:
+    **Returns**:
 
       Signed transaction
 
 ### complete
     ```py
-    def complete() -> "Transaciton"
+    def complete() -> "Transaction"
     ```
 
     Update transaction state to Final.
