@@ -1,3 +1,5 @@
+import { CustomPre } from "../../../../components/api-endpoint";
+
 # Agent Asynchronous Loops
 
 ## Introduction
@@ -21,7 +23,18 @@ The following scripts show how to define agents, manage their life-cycle and att
 
 The first script depicts how to **attach an agent to an external event loop** and allow it to run _simultaneously_ with other asynchronous tasks.
 
-First of all, let's create a Python script: `touch external_loop_attach.py`
+First of all, let's create a Python script:
+
+    <CustomPre 
+        commands={{
+        windows: `echo. > external_loop_attach.py`,
+        mac: `touch external_loop_attach.py`,
+        ubuntu: `touch external_loop_attach.py`
+        }} 
+        dataLanguage="bash"
+        hasCopyCode={true}
+        osMenu={true}
+    />
 
 Now, paste the below code into it:
 

@@ -121,7 +121,7 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
 ### Walk-through
 
-1. First of all, let's create a Python script for this task, and name it: `broadcast.py`
+1. First of all, let's create a Python script for this task, and name it:
 
     <CustomPre 
         commands={{
@@ -469,7 +469,7 @@ Here's an example:
 
 ### on_event("startup")
 
-```python 
+```python copy
     @agent.on_event("startup")
     async def introduce_agent(ctx: Context):
         ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
@@ -478,7 +478,8 @@ Here's an example:
 ```
 
 ### on_event("shutdown")
-```python 
+
+```python copy
     @agent.on_event("shutdown")
     async def introduce_agent(ctx: Context):
         ctx.logger.info(f"Hello, I'm agent {agent.name} and I am shutting down")

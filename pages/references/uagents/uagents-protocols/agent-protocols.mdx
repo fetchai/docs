@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CustomPre } from "../../../../components/api-endpoint";
 
 # Agents protocols
 
@@ -17,7 +18,19 @@ Let's use a _simple restaurant table booking request_ as an example to better un
 1. Let's start by creating a folder for our **protocols**. Then, let's create Python script within it, and name it:
 
    `mkdir protocols`
-   `touch book.py`
+
+   and 
+
+    <CustomPre 
+        commands={{
+        windows: `echo. > book.py`,
+        mac: `touch book.py`,
+        ubuntu: `touch book.py`
+        }} 
+        dataLanguage="bash"
+        hasCopyCode={true}
+        osMenu={true}
+    />
 
 2. We import from `uagents` library the necessary classes `Context`, `Model`, and `Protocol`. Then, need to define the type of messages that the handler will receive and send:
 
