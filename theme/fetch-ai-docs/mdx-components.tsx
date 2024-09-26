@@ -11,7 +11,7 @@ import { useIntersectionObserver, useSlugs } from "./contexts/active-anchor";
 import React from "react";
 import Image from "next/image";
 import LinkImage from "../../src/svgs/external-link.svg";
-import { CustomPre } from "components/api-endpoint";
+import { CustomPre } from "components/code";
 
 // Anchor links
 function HeadingLink({
