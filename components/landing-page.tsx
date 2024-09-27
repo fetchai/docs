@@ -91,6 +91,7 @@ function LandingPage() {
       <div
         onClick={() => router.push(link)}
         className={styles.comingSomewhereWrapper}
+        id={`home_tooling_${name}`}
       >
         <div className="nx-flex nx-w-full nx-flex-row nx-justify-between">
           <div className="nx-flex nx-flex-row nx-gap-3 ">
