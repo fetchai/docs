@@ -1,4 +1,4 @@
-import { CustomPre } from "../../../../../components/api-endpoint";
+import { CodeGroup } from "../../../../../components/code";
 
 # Stake auto-compounder
 
@@ -79,16 +79,21 @@ Below we provide a step-by-step guide to create an auto compounder using the `co
 
 1. First of all, create a Python script and name it:
 
-    <CustomPre 
-        commands={{
-        windows: `echo. > aerial_compounder.py`,
-        mac: `touch aerial_compounder.py`,
-        ubuntu: `touch aerial_compounder.py`
-        }} 
-        dataLanguage="bash"
-        hasCopyCode={true}
-        osMenu={true}
-    />
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch aerial_compounder.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > aerial_compounder.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch aerial_compounder.py
+        ```
+
+    </CodeGroup>
 
 2. We need to import the necessary modules, including `argparse`, `time`, and various modules from the `cosmpy.aerial` package:
 

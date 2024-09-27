@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components'
-import { CustomPre } from "../../../components/api-endpoint";
+import { CodeGroup } from "../../../components/code";
 
 # Predefined Dialogue Chit-Chat
 
@@ -25,17 +25,22 @@ This example illustrates an automated dialogue scenario using a hardcoded dialog
 - Open a terminal and create a directory using `mkdir Dialogues` and navigate into it with `cd Dialogues`.
 - Create a python file `hardcoded_chitchat.py` in `Dialogues` directory:
 
-    <CustomPre 
-        commands={{
-        windows: `echo. > chitchat.py`,
-        mac: `touch chitchat.py`,
-        ubuntu: `touch chitchat.py`
-        }} 
-        dataLanguage="bash"
-        hasCopyCode={true}
-        osMenu={true}
-    />
+    <CodeGroup isOSFile>
 
+        ```py copy filename="mac"
+        touch chitchat.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > chitchat.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch chitchat.py
+        ```
+
+    </CodeGroup>
+  
 - Import required libraries.
 
     ```python

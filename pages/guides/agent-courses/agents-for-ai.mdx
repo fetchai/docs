@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
-import { CustomPre } from "../../../components/api-endpoint";
+import { CodeGroup } from "../../../components/code";
 
 # Agents 101 for AI Engine
 
@@ -107,16 +107,21 @@ In this guide, our first agent takes any text and returns a sentiment of content
 We need to create a Python file for this example.
 We can do this by running:
 
-   <CustomPre 
-        commands={{
-        windows: `echo. > sentiment_agent.py`,
-        mac: `touch sentiment_agent.py`,
-        ubuntu: `touch sentiment_agent.py`
-        }} 
-        dataLanguage="bash"
-        hasCopyCode={true}
-        osMenu={true}
-    />
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch sentiment_agent.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > sentiment_agent.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch sentiment_agent.py
+        ```
+
+    </CodeGroup>
 
     ```py copy filename="sentiment_agent.py"
     from uagents import Agent, Context, Protocol, Model
@@ -318,16 +323,21 @@ Okay, take a quick break then let's create the second Agent; it's time to introd
 
 The next agent in the chain is the **Summary agent**. Let's name the script `web_summary_agent.py`. To do so run:
 
-    <CustomPre 
-        commands={{
-        windows: `echo. > web_summary_agent.py`,
-        mac: `touch web_summary_agent.py`,
-        ubuntu: `touch web_summary_agent.py`
-        }} 
-        dataLanguage="bash"
-        hasCopyCode={true}
-        osMenu={true}
-    />
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch web_summary_agent.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > web_summary_agent.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch web_summary_agent.py
+        ```
+
+    </CodeGroup>
 
 This Agent has the same structure as the sentiment Agent we previously defined.
 

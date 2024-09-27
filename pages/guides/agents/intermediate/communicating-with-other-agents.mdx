@@ -1,5 +1,5 @@
 import {Callout} from 'nextra/components'
-import { CustomPre } from "../../../../components/api-endpoint";
+import { CodeGroup } from "../../../../components/code";
 
 # Communicating with other agents
 
@@ -40,17 +40,22 @@ The first step to better understand how agents communicate is to introduce how 2
 
 1. First of all, let's create a Python script for this task:
 
-    <CustomPre 
-        commands={{
-        windows: `echo. > agents_communication.py`,
-        mac: `touch agents_communication.py`,
-        ubuntu: `touch agents_communication.py`
-        }} 
-        dataLanguage="bash"
-        hasCopyCode={true}
-        osMenu={true}
-    />
+    <CodeGroup isOSFile>
 
+        ```py copy filename="mac"
+        touch agents_communication.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > agents_communication.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch agents_communication.py
+        ```
+
+    </CodeGroup>
+   
 2. Then, we import  `Agent`, `Context`, `Bureau`, and `Model` from the uagents library and we then define the message structure for messages to be exchanged between the agents using the class `Model`:
 
     ```py copy
@@ -180,30 +185,39 @@ The first step would be to create two different Python scripts for this task, ea
 
     Slaanesh:
 
-    <CustomPre 
-        commands={{
-        windows: `echo. > remote_agents_slaanesh.py`,
-        mac: `touch remote_agents_slaanesh.py`,
-        ubuntu: `touch remote_agents_slaanesh.py`
-        }} 
-        dataLanguage="bash"
-        hasCopyCode={true}
-        osMenu={true}
-    />
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch remote_agents_slaanesh.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > remote_agents_slaanesh.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch remote_agents_slaanesh.py
+        ```
+
+    </CodeGroup>
 
     Sigmar:
 
-    <CustomPre 
-        commands={{
-        windows: `echo. > remote_agents_sigmar.py`,
-        mac: `touch remote_agents_sigmar.py`,
-        ubuntu: `touch remote_agents_sigmar.py`
-        }} 
-        dataLanguage="bash"
-        hasCopyCode={true}
-        osMenu={true}
-    />
+    <CodeGroup isOSFile>
 
+        ```py copy filename="mac"
+        touch remote_agents_sigmar.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > remote_agents_sigmar.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch remote_agents_sigmar.py
+        ```
+
+    </CodeGroup>
 Let's start by defining the script for **sigmar**.
 
 #### Sigmar

@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components'
-import { CustomPre } from "../../../../components/api-endpoint";
+import { CodeGroup } from "../../../../components/code";
 
 
 # How to use agents to send tokens
@@ -28,17 +28,22 @@ Make sure you have read the following resources before going on with this guide:
 
 1. First of all, create a Python script for this task, and name it:
 
-    <CustomPre 
-        commands={{
-        windows: `echo. > sending_tokens.py`,
-        mac: `touch sending_tokens.py`,
-        ubuntu: `touch sending_tokens.py`
-        }} 
-        dataLanguage="bash"
-        hasCopyCode={true}
-        osMenu={true}
-    />
+    <CodeGroup isOSFile>
 
+        ```py copy filename="mac"
+        touch sending_tokens.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > sending_tokens.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch sending_tokens.py
+        ```
+
+    </CodeGroup>
+   
 2. Then, import the necessary modules from `uagents`, `uagents.network`, and `uagents.setup`. Let's then define two data models: `PaymentRequest` and `TransactionInfo`. We then need to set up the values for the `AMOUNT` and `DENOM` variables, which define the default amount and denomination for the payment requests:
 
     ```py copy
