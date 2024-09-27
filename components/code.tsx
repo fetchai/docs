@@ -64,7 +64,7 @@ export const CodeBlockHeader = ({
       {isLocalHostedFile && (
         <div className="osmenu-container-nav nx-gap-3">
           <div
-            className={`osmenu-tab-new nx-justify-center hover:blue-background nx-px-2 nx-cursor-pointer nx-items-center ${
+            className={`osmenu-tab-new nx-justify-center hover:blue-background nx-px-2 nx-cursor-pointer nx-items-center hover:nx-bg-[#efebff] ${
               selectedType === "local" ? "blue-background" : ""
             }`}
             onClick={() => handleSelect("local")}
@@ -72,7 +72,7 @@ export const CodeBlockHeader = ({
             <span>Local Agent</span>
           </div>
           <div
-            className={`osmenu-tab-new nx-justify-center hover:blue-background nx-px-2 nx-cursor-pointer nx-items-center ${
+            className={`osmenu-tab-new nx-justify-center hover:blue-background nx-px-2 nx-cursor-pointer nx-items-center hover:nx-bg-[#efebff] ${
               selectedType === "hosted" ? "blue-background" : ""
             }`}
             onClick={() => handleSelect("hosted")}
