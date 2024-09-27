@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components'
-import { CustomPre } from "../../../../components/api-endpoint";
+import { CodeGroup } from "../../../../components/code";
 
 # Agents protocols
 
@@ -21,16 +21,21 @@ Let's use a _simple restaurant table booking request_ as an example to better un
 
    and 
 
-    <CustomPre 
-        commands={{
-        windows: `echo. > book.py`,
-        mac: `touch book.py`,
-        ubuntu: `touch book.py`
-        }} 
-        dataLanguage="bash"
-        hasCopyCode={true}
-        osMenu={true}
-    />
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch book.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > book.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch book.py
+        ```
+
+    </CodeGroup>
 
 2. We import from `uagents` library the necessary classes `Context`, `Model`, and `Protocol`. Then, need to define the type of messages that the handler will receive and send:
 
