@@ -2,7 +2,7 @@ import { CodeGroup } from "../../../components/code";
 
 # Quick Start Guide for uAgents Framework
 
-This **quickstart guide** quickly guides you through installing the uAgents Framework and building a couple of agnets in a few steps.
+This **quickstart guide** quickly guides you through installing the uAgents Framework and building a couple of agents in a few steps.
 
 ## Installation
 
@@ -115,86 +115,151 @@ Run the script to see the output:
 
 ## Message Handling Example
 
-This guide will walk you through creating a simple interaction between two agents, Emma and Liam. Emma will send a message to Liam at regular intervals, and Liam will handle and log the received messages.
+This guide will walk you through creating a simple interaction between two agents. The first will send a message to the second one at regular intervals, and this latter one will handle and log the received messages.
 
-Create a new Python script:
+Create 2 new Python scripts:
 
     <CodeGroup isOSFile>
 
         ```py copy filename="mac"
-        touch simple_example.py
+        touch SenderAgent.py
         ```
 
         ```py copy filename="windows"
-        echo. > simple_example.py
+        echo. > SenderAgent.py
         ```
 
         ```py copy filename="ubuntu"
-        touch simple_example.py
+        touch SenderAgent.py
         ```
 
     </CodeGroup>
 
-Open `simple_example.py` in your text editor and add the following code:
+    <CodeGroup isOSFile>
 
-    ```py copy filename="simple_example.py"
-    from uagents import Agent, Bureau, Context, Model
+        ```py copy filename="mac"
+        touch ReceiverAgent.py
+        ```
 
-    # Define the message structure
-    class Message(Model):
-        message: str
+        ```py copy filename="windows"
+        echo. > ReceiverAgent.py
+        ```
 
-    # Create agents
-    emma = Agent(name="Emma", seed="emma_seed")
-    liam = Agent(name="Liam", seed="liam_seed")
+        ```py copy filename="ubuntu"
+        touch ReceiverAgent.py
+        ```
 
-    # Define behaviour for Emma
-    @emma.on_interval(period=3.0)
-    async def send_message(ctx: Context):
-        # Create an instance of the Message class with the desired content
-        message_to_liam = Message(message="Hey Liam, how's it going?")
-        # Send the message to Liam
-        await ctx.send(liam.address, message_to_liam)
+    </CodeGroup>
 
-    # Define behavior for handling messages received by Emma
-    @emma.on_message(model=Message)
-    async def emma_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+Open `SenderAgent.py` in your text editor and add the following code:
 
-    # Define behavior for handling messages received by Liam
-    @liam.on_message(model=Message)
-    async def liam_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-        await ctx.send(emma.address, Message(message="Hello Emma! Great and you?"))
+      ```py copy filename="SenderAgent.py"
+      from uagents import Agent, Context, Model
+      
+      
+      class Message(Model):
+          message: str
+      
+      
+      RECIPIENT_ADDRESS = (
+          "test-agent://agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859"
+      )
+      
+      SenderAgent = Agent(
+          name="SenderAgent",
+          port=8000,
+          seed="SenderAgent secret phrase",
+          endpoint=["http://127.0.0.1:8000/submit"],
+      )
+      
+      print(SenderAgent.address)
 
-    # Create a bureau and add agents
-    bureau = Bureau()
-    bureau.add(emma)
-    bureau.add(liam)
+      @SenderAgent.on_interval(period=2.0)
+      async def send_message(ctx: Context):
+          await ctx.send(RECIPIENT_ADDRESS, Message(message="Hi there. Let's start our conversation!"))
+      
+      
+      @SenderAgent.on_message(model=Message)
+      async def message_handler(ctx: Context, sender: str, msg: Message):
+          ctx.logger.info(f"Received message from {sender}: {msg.message}")
+      
+      
+      if __name__ == "__main__":
+          SenderAgent.run()
+      ```
 
-    # Run the bureau
-    if __name__ == "__main__":
-        bureau.run()
-    ```
+Then, open `ReceiverAgent.py` in your text editor and add the following code into it:
 
+       ```py copy filename="ReceiverAgent.py"
+      from uagents import Agent, Context, Model
+      
+      # NOTE: Run ReceiverAgent.py before running SenderAgent.py
+      
+      
+      class Message(Model):
+          message: str
+      
+      
+      ReceiverAgent = Agent(
+          name="ReceiverAgent",
+          port=8001,
+          seed="ReceiverAgent secret phrase",
+          endpoint=["http://127.0.0.1:8001/submit"],
+      )
+      
+      print(ReceiverAgent.address)
+      
+      @ReceiverAgent.on_message(model=Message)
+      async def message_handler(ctx: Context, sender: str, msg: Message):
+          ctx.logger.info(f"Received message from {sender}: {msg.message}")
+      
+          # send the response
+          await ctx.send(sender, Message(message="Cool! Let's get started!"))
+      
+      
+      if __name__ == "__main__":
+          ReceiverAgent.run()
+       ```
 Again, be sure to update `seed` with a unique phrase.
 
 #### Run Script
 
-Run the script to see the agents communicate:
+Run the scripts to see the agents communicating:
 
-    ```py
-    python simple_example.py
-    ```
+   ```py copy
+   python SenderAgent.py
+   ```
+
+   ```py copy
+   python ReceiverAgent.py
+   ```
 
 **Expected Output**:
 
-    ```
-    INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    INFO:     [ Liam]: Received message from agent1q2aexr7d0e0x6z5r8zs972jyd8uq9429tc2qfgpax96x6ppyjs25keexnuk: Hey Liam, how's it going?
-    INFO:     [ Emma]: Received message from agent1qfnv7prv0u9rc8p54yt373w4a2r6pyfsrschpfr7m3xqhjd6eyk2208022q: Hello Emma! Great and you?
-    ```
 
+- **SenderAgent**:
+
+   ```
+   agent1qdw67s95esk0zwn8qxf0ln22e8zah9rqfrqqa4qyda7mjtpf3hsw640wuwr
+   INFO:     [SenderAgent]: Registering on almanac contract...
+   INFO:     [SenderAgent]: Registering on almanac contract...complete
+   INFO:     [SenderAgent]: Received message from agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859: Cool! Let's get started!
+   INFO:     [SenderAgent]: Received message from agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859: Cool! Let's get started!
+   INFO:     [SenderAgent]: Received message from agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859: Cool! Let's get started!
+   ```
+
+- **ReceiverAgent**:
+
+   ```
+   agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859
+   INFO:     [ReceiverAgent]: Registering on almanac contract...
+   INFO:     [ReceiverAgent]: Registering on almanac contract...complete
+   INFO:     [ReceiverAgent]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+   INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
+   INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
+   INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
+   ```
+  
 ## Reach out to the Team!
 
 Excellent! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network! if you're keen to skip the more code focused guides, you're best next steps would be [Communicating with agents](intermediate/communicating-with-other-agents).
