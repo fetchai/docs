@@ -2,7 +2,7 @@ import { CodeGroup } from "../../../components/code";
 
 # Quick Start Guide for uAgents Framework
 
-This **quickstart guide** quickly let you install the uAgents Framework and get started in few steps!
+This **quickstart guide** quickly guides you through installing the uAgents Framework and building a couple of agnets in a few steps.
 
 ## Installation
 
@@ -11,35 +11,38 @@ This **quickstart guide** quickly let you install the uAgents Framework and get 
     - **Python 3.8+**: A popular programming language.
     - **PIP**: Python package manager for installing libraries.
     - **Poetry (optional)**: For managing virtual environments and dependencies.
+    - **Windows, Mac or Ubuntu**.
 
 ### Installation steps
 
 1. Create a **Project Directory**. Open your terminal and create a new directory for your project:
 
-    ```py
+    ```py copy
     mkdir directory_name
     cd directory_name
     ```
 
 2. Initialize and activate virtual environment. Use **Poetry** to initialize and activate a virtual environment (optional but recommended):
 
-    ```py
+    ```py copy
     poetry init -n && poetry shell
     ```
 
-3. Install **uAgents Framework**. Use **PIP** to install the uAgents Framework package.
+3. Install **uAgents Framework**.
 
-    ```py
-    pip install uagents
+    ```py copy
+    poetry add uagents
     ```
 
 4. Verify installation. Check if the installation was successful.
 
-    ```py
-    pip show uagents
+    ```py copy
+    poetry show uagents
     ```
 
 ### Troubleshooting
+
+Sometimes you may face errors installing, we list the most common reasons below:
 
 **Problem on MacOS/Python 3.11**: Installing coincurve (17.0.0) fails.
 
@@ -53,7 +56,7 @@ Install the necessary tools.
 
 ## Creating a simple agent
 
-This example shows how to make an agent perform a task periodically.
+We should create something simple to get started, below the most basic of agents performs a task periodically.
 
 Create a new Python script:
 
@@ -79,7 +82,7 @@ Open `interval_task.py` in your text editor and add the following code:
     from uagents import Agent, Context
 
     # Create an agent named Alice
-    alice = Agent(name="alice", seed="YOUR NEW PHRASE")
+    alice = Agent(name="alice", seed=YOUR NEW PHRASE)
 
     # Define a periodic task for Alice
     @alice.on_interval(period=2.0)
@@ -91,13 +94,13 @@ Open `interval_task.py` in your text editor and add the following code:
         alice.run()
     ```
 
-Be sure to update `seed` with a unique phrase.
+Be sure to update `seed` with a unique phrase, your seed will need to be wrapped in `"`.
 
 #### Run Script
 
 Run the script to see the output:
 
-    ```py
+    ```py copy
     python interval_task.py
     ```
 
@@ -194,5 +197,6 @@ Run the script to see the agents communicate:
 
 ## Reach out to the Team!
 
-Cool! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network!
-Remember that our Team is available on [Telegram ↗️](https://t.me/fetch_ai) and [Discord ↗️](https://discord.gg/fetchai) channels for any additional inquiry.
+Excellent! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network! if you're keen to skip the more code focused guides, you're best next steps would be [Communicating with agents](intermediate/communicating-with-other-agents).
+
+Note that our Team is available on [Discord ↗️](https://discord.gg/fetchai) for any additional inquiry.
