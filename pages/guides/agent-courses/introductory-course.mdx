@@ -1,5 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CodeGroup } from "../../../components/code";
 
 # Agents 101
 
@@ -201,7 +202,23 @@ The agents registered in the Almanac provide service endpoints for remote commun
 ## Coding and implementation
 ### Create your first agent
 
-Creating your first agent is a straightforward process. First of all, we need to create a Python file for this example. We can do this by running: `touch alice_agent.py`
+Creating your first agent is a straightforward process. First of all, we need to create a Python file for this example. We can do this by running:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch alice_agent.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > alice_agent.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch alice_agent.py
+        ```
+
+    </CodeGroup>
 
 We can now code our agent. Let's start by importing the required modules. In our case, we would need to import the `Agent` module from the `uagents` library, and proceed to instantiate the agent by providing a `name`. The following code exemplifies the creation of the simplest possible agent:
 
@@ -318,7 +335,23 @@ The output would look as follows:
 
 We can now introduce a second agent to demonstrate how two agents can interact with one another. Considering the previous example, we create two agents, each one with a name and seed phrase, and enable them to periodically engage with each other. We need to introduce the `Bureau` class which enables agents, within the same program, to be run together from the same script.
 
-Let's create a new Python file for these agents: `touch duo_agent.py`.
+Let's create a new Python file for these agents:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch duo_agent.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > duo_agent.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch duo_agent.py
+        ```
+
+    </CodeGroup>
 
 The script will look as follows:
 
@@ -361,7 +394,23 @@ The output would look as follows:
 
 We can now show how to enable effective communication between different agents. To do so, we need to introduce the `Model` class which allows to create a structured message format for messages to be exchanged between the agents.
 
-Let's create a new script for this example: `touch agent_communication.py`.
+Let's create a new script for this example:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch agent_communication.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > agent_communication.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch agent_communication.py
+        ```
+
+    </CodeGroup>
 
 We can now define the `Message` data model and our two agents:
 
@@ -438,7 +487,23 @@ We first import modules, then initialize our agents and include a function ensur
       HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. These endpoints define the entry points for various operations or functions offered by a web service or application.
     </Callout>
 
-Let's create a Python script for this example: `touch almanac_registration.py`.
+Let's create a Python script for this example:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch almanac_registration.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > almanac_registration.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch almanac_registration.py
+        ```
+
+    </CodeGroup>
 
 We will have what follows:
 
@@ -476,7 +541,23 @@ Agents can also interact **remotely**. To achieve a remote communication, we sim
 
 In this example, we provide scripts for two agents. To establish a line of remote communication, both agents need to be registered on the Almanac contract and need to have non-zero balances in their Fetch wallet addresses.
 
-We can start with `alice` agent. Let's create a Python script for it: `touch remote_alice.py`.
+We can start with `alice` agent. Let's create a Python script for it:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch remote_alice.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > remote_alice.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch remote_alice.py
+        ```
+
+    </CodeGroup>
 
 We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our agents. We also need to provide Bob's address as a recipient address for reference. We can then create our agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. Remember that you need to provide the `RECIPIENT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent and code.
 
@@ -512,7 +593,25 @@ The script would be as follows:
         agent.run()
     ```
 
-Similarly, we need to define a script for `bob` so to create a remote communication with `alice` agent. Let's create a Python script for it: `touch remote_bob.py`. Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
+Similarly, we need to define a script for `bob` so to create a remote communication with `alice` agent. Let's create a Python script for it:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch remote_bob.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > remote_bob.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch remote_bob.py
+        ```
+
+    </CodeGroup>
+
+Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
 
     ```py copy filename="remote_bob.py"
     from uagents.setup import fund_agent_if_low
@@ -577,7 +676,25 @@ Retrieving or setting storage information within the Framework is achieved throu
 
 An example is provided below. In this example we have a full script for an agent holding a number, incrementing it by one and saving the new number to its storage.
 
-We first create the Python file containing the script. Run: `touch storage.py` in your terminal. The script for this example is:
+We first create the Python file containing the script. Run: 
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch storage.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > storage.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch storage.py
+        ```
+
+    </CodeGroup>
+
+The script for this example is:
 
     ```py copy filename="storage.py"
     from uagents import Agent, Context
@@ -874,7 +991,7 @@ Let's now move forward and create our restaurant agent in a separate file. In th
 
 Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly set up the agent. Let's build the `restaurant` agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the `restaurant` agent storage:
 
-   ```py copy
+    ```py copy
     # build the restaurant agent from stock protocols and publish their details
     restaurant.include(query_proto, publish_manifest=True)
     restaurant.include(book_proto, publish_manifest=True)

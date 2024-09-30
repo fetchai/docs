@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup } from "../../../../components/code";
 
 # Agents protocols
 
@@ -17,7 +18,24 @@ Let's use a _simple restaurant table booking request_ as an example to better un
 1. Let's start by creating a folder for our **protocols**. Then, let's create Python script within it, and name it:
 
    `mkdir protocols`
-   `touch book.py`
+
+   and 
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch book.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > book.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch book.py
+        ```
+
+    </CodeGroup>
 
 2. We import from `uagents` library the necessary classes `Context`, `Model`, and `Protocol`. Then, need to define the type of messages that the handler will receive and send:
 

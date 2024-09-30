@@ -10,50 +10,50 @@ In this guide, we'll walk you through a simple CrewAI example to understand its 
 
 Let's use a shortened example that CrewAI provides; in this example we define an Agent and a Task. At a high level here, Agent is defining the LLMs "personality" and the Task is what that LLM is to solve.
 
-  ```python copy filename="crew.py"
-  fimport os
-  from crewai import Agent, Task, Crew, Process
-  from crewai_tools import SerperDevTool
-  
-  os.environ["OPENAI_API_KEY"] = "YOUR_API_KEY"
-  os.environ["SERPER_API_KEY"] = "Your Key" # serper.dev API key
-  
-  search_tool = SerperDevTool()
-  
-  # Define your agents with roles and goals
-  researcher = Agent(
-    role='Senior Research Analyst',
-    goal='Uncover cutting-edge developments in AI and data science',
-    backstory="""You work at a leading tech think tank.
-    Your expertise lies in identifying emerging trends.
-    You have a knack for dissecting complex data and presenting actionable insights.""",
-    verbose=True,
-    allow_delegation=False,
-    tools=[search_tool]
-  )
-  
-  # Create tasks for your agents
-  task1 = Task(
-    description="""Conduct a comprehensive analysis of the latest advancements in AI in 2024.
-    Identify key trends, breakthrough technologies, and potential industry impacts.""",
-    expected_output="Full analysis report in bullet points",
-    agent=researcher
-  )
-  
-  # Instantiate your crew with a sequential process
-  crew = Crew(
-    agents=[researcher,],
-    tasks=[task1, ],
-    verbose=True,
-    process = Process.sequential
-  )
-  
-  # Get your crew to work!
-  result = crew.kickoff()
-  
-  print("######################")
-  print(result)
-  ```
+    ```python copy filename="crew.py"
+    fimport os
+    from crewai import Agent, Task, Crew, Process
+    from crewai_tools import SerperDevTool
+    
+    os.environ["OPENAI_API_KEY"] = "YOUR_API_KEY"
+    os.environ["SERPER_API_KEY"] = "Your Key" # serper.dev API key
+    
+    search_tool = SerperDevTool()
+    
+    # Define your agents with roles and goals
+    researcher = Agent(
+      role='Senior Research Analyst',
+      goal='Uncover cutting-edge developments in AI and data science',
+      backstory="""You work at a leading tech think tank.
+      Your expertise lies in identifying emerging trends.
+      You have a knack for dissecting complex data and presenting actionable insights.""",
+      verbose=True,
+      allow_delegation=False,
+      tools=[search_tool]
+    )
+    
+    # Create tasks for your agents
+    task1 = Task(
+      description="""Conduct a comprehensive analysis of the latest advancements in AI in 2024.
+      Identify key trends, breakthrough technologies, and potential industry impacts.""",
+      expected_output="Full analysis report in bullet points",
+      agent=researcher
+    )
+    
+    # Instantiate your crew with a sequential process
+    crew = Crew(
+      agents=[researcher,],
+      tasks=[task1, ],
+      verbose=True,
+      process = Process.sequential
+    )
+    
+    # Get your crew to work!
+    result = crew.kickoff()
+    
+    print("######################")
+    print(result)
+    ```
 
 This is a nice feature; we love the idea of having many tasks and then orchestrating to agents which can execute them.
 But what if we want to create a workflow, perhaps one where information is passed back and forwards?
@@ -67,11 +67,11 @@ Fetch.ai has the concept of an agent where this is an agent that is the componen
 You can read more about agents communication in our [guides ↗️](/guides/agents/intermediate/communicating-with-other-agents)
 
 Let's install what we need:
-
-  ```bash copy
-  poetry init
-  poetry add uagents
-  ```
+  
+    ```bash copy
+    poetry init
+    poetry add uagents
+    ```
 
 Check out more detailed instructions for [installation ↗️](/guides/agents/getting-started/installing-uagent) of `uagents` library on your end.
 
@@ -79,49 +79,49 @@ Check out more detailed instructions for [installation ↗️](/guides/agents/ge
 
 Our first agent is simple; it sends a message every two seconds to a static address. When this agent receives a message, it prints that to log:
 
-  ```python copy filename="agent1.py"
-  from uagents import Agent, Context, Model
-  from uagents.setup import fund_agent_if_low
-  
-  class Message(Model):
-      message: str
-  
-  RECIPIENT_ADDRESS = "agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp"
-  
-  agent = Agent(
-      name="agent",
-      port=8000,
-      seed="",
-      endpoint=["http://127.0.0.1:8000/submit"],
-  )
-  
-  fund_agent_if_low(agent.wallet.address())
-  
-  @agent.on_interval(period=2.0)
-  async def send_message(ctx: Context):
-      await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
-  
-  @agent.on_message(model=Message)
-  async def message_handler(ctx: Context, sender: str, msg: Message):
-      ctx.logger.info(f"Received message from {sender}: {msg.message}")
-  
-  if __name__ == "__main__":
-      agent.run()
-  
-  ```
+    ```python copy filename="agent1.py"
+    from uagents import Agent, Context, Model
+    from uagents.setup import fund_agent_if_low
+    
+    class Message(Model):
+        message: str
+    
+    RECIPIENT_ADDRESS = "agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp"
+    
+    agent = Agent(
+        name="agent",
+        port=8000,
+        seed="",
+        endpoint=["http://127.0.0.1:8000/submit"],
+    )
+    
+    fund_agent_if_low(agent.wallet.address())
+    
+    @agent.on_interval(period=2.0)
+    async def send_message(ctx: Context):
+        await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
+    
+    @agent.on_message(model=Message)
+    async def message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    
+    if __name__ == "__main__":
+        agent.run()
+    
+    ```
 
 This first agent introduces a few core concepts you will need to be aware of when creating any agent.
 
 Agents are defined with the `Agent` class:
 
-  ```python copy
-      agent = Agent(
-      name="agent",
-      port=8000,
-      seed="",
-      endpoint=["http://127.0.0.1:8000/submit"],
-  )
-  ```
+    ```python copy
+        agent = Agent(
+        name="agent",
+        port=8000,
+        seed="",
+        endpoint=["http://127.0.0.1:8000/submit"],
+    )
+    ```
 
 A `seed` is a unique phrase which `uagents` library uses to create a unique private key pair for your agent. If you change your `seed` you may lose access to previous messages, and also, the agent's address registered to the Almanac will change subsequently. The `port` allows us to define a local port for messages to be received. The `endpoint` defines the path to the in-built Rest API. The `name` defines the name of the agent.
 
@@ -129,10 +129,10 @@ There are more options for the `Agent` class; see [`Agent` Class ↗️](/refere
 
 We then need to define our **communication model**:
 
-  ```python copy
-      class Message(Model):
-          message: str
-  ```
+    ```python copy
+        class Message(Model):
+            message: str
+    ```
 
 The `Model` defines the object sent from agent to agent and represents the type of messages the agent is able to handle. For explicit communication, both agents must handle the same `Model` class. `Model` is the base class that inherits from Pydantic BaseModel.
 
@@ -142,55 +142,55 @@ Finally, agents have two decorated functions.
 
 The first one is the `agent.on_interval()` function. This one sends a message every 2 seconds. `ctx.send()` has the args of `destination_address` and `Message` which we defined earlier.
 
-  ```python copy
-  @agent.on_interval(period=2.0)
-  async def send_message(ctx: Context):
-      await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
-  ```
+    ```python copy
+    @agent.on_interval(period=2.0)
+    async def send_message(ctx: Context):
+        await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
+    ```
 
 The second one is `agent.on_message()` which is a little different; when the agent receives a message at the `endpoint` we defined earlier, the `uagent` library unpacks the message and triggers any function which handles that message; in our case, the `agent.on_message()` function:
 
-  ```python copy
-  @agent.on_message(model=Message)
-  async def message_handler(ctx: Context, sender: str, msg: Message):
-      ctx.logger.info(f"Received message from {sender}: {msg.message}")
-  ```
+    ```python copy
+    @agent.on_message(model=Message)
+    async def message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    ```
 
 ### Second Agent
 
 Agent two doesn't do anything different to agent one; it has different args for the Agent instantiation, and instead of sending a message `on_event("startup")`, agent two just logs its address to screen. Whenever agent two receives a message matching `Message` data model, it will send a response to the sender.
 
-  ```python copy filename="agent2.py"
-  from uagents.setup import fund_agent_if_low
-  from uagents import Agent, Context, Model
-  
-  
-  class Message(Model):
-      message: str
-  
-  agent = Agent(
-      name="agent 2",
-      port=8001,
-      seed="",
-      endpoint=["http://127.0.0.1:8001/submit"],
-  )
-  
-  fund_agent_if_low(agent.wallet.address())
-  
-  @agent.on_event("startup")
-  async def start(ctx: Context):
-      ctx.logger.info(f"agent address is {agent.address}")
-  
-  @agent.on_message(model=Message)
-  async def message_handler(ctx: Context, sender: str, msg: Message):
-      ctx.logger.info(f"Received message from {sender}: {msg.message}")
-  
-      await ctx.send(sender, Message(message="hello there"))
-  
-  if __name__ == "__main__":
-      agent.run()
-  
-  ```
+    ```python copy filename="agent2.py"
+    from uagents.setup import fund_agent_if_low
+    from uagents import Agent, Context, Model
+    
+    
+    class Message(Model):
+        message: str
+    
+    agent = Agent(
+        name="agent 2",
+        port=8001,
+        seed="",
+        endpoint=["http://127.0.0.1:8001/submit"],
+    )
+    
+    fund_agent_if_low(agent.wallet.address())
+    
+    @agent.on_event("startup")
+    async def start(ctx: Context):
+        ctx.logger.info(f"agent address is {agent.address}")
+    
+    @agent.on_message(model=Message)
+    async def message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    
+        await ctx.send(sender, Message(message="hello there"))
+    
+    if __name__ == "__main__":
+        agent.run()
+    
+    ```
 
 Okay, let's now run these agents.
 
@@ -202,18 +202,18 @@ Let's run the second agent's script first using this command: `poetry run python
 
 Updated `agent1.py` script sample:
 
-  ```python copy filename="agent1.py"
-  from uagents import Agent, Context, Model
-  from uagents.setup import fund_agent_if_low
-   
-  class Message(Model):
-      message: bool
-   
-  RECIPIENT_ADDRESS="agent...."
-   
-  agent = Agent(
-          ...
-  ```
+    ```python copy filename="agent1.py"
+    from uagents import Agent, Context, Model
+    from uagents.setup import fund_agent_if_low
+     
+    class Message(Model):
+        message: bool
+     
+    RECIPIENT_ADDRESS="agent...."
+     
+    agent = Agent(
+            ...
+    ```
 
 Then, let's run the script for the first agent using this command: `poetry run python agent1.py`
 
@@ -232,14 +232,14 @@ Great! You should now be seeing some log out output with our messages being disp
     INFO:     [agent]: Received message from agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp: hello there
     ```
 
-- **Agent 2**:
+  - **Agent 2**:
 
-    ```
-    INFO:     [agent 2]: Registering on almanac contract...
-    INFO:     [agent 2]: Registering on almanac contract...complete
-    INFO:     [agent 2]: agent address is agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp
-    INFO:     [agent 2]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
-    ```
+      ```
+      INFO:     [agent 2]: Registering on almanac contract...
+      INFO:     [agent 2]: Registering on almanac contract...complete
+      INFO:     [agent 2]: agent address is agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp
+      INFO:     [agent 2]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+      ```
 
 # happy to here
 
@@ -259,127 +259,127 @@ The `senior_research_analyst_agent`, is designed to handle requests for city-spe
 
 When a request is received with a city name, the agent logs the request, conducts a comprehensive analysis, and returns a report that combines AI insights with real-time weather data. This functionality makes it a valuable tool for research organizations and tech consultancies seeking relevant information.
 
-  ```python copy filename="crewai_agent_1.py"
-  from uagents import Agent, Context, Model
-  import os
-  from crewai import Agent as CrewAIAgent, Task, Crew, Process
-  from crewai_tools import SerperDevTool
-  
-  senior_research_analyst_agent = Agent(
-      name="senior_research_analyst_agent",
-      seed="senior_research_analyst_agent_seed",
-      port=8001,
-      endpoint=["http://127.0.0.1:8001/submit"],
-  )
-  
-  
-  class CityRequestModel(Model):
-      city: str
-  
-  
-  class ResearchReportModel(Model):
-      report: str
-  
-  
-  os.environ["OPENAI_API_KEY"] = ""
-  os.environ["SERPER_API_KEY"] = ""
-  
-  
-  class SeniorResearchAnalyst:
-      def __init__(self):
-          """
-          Initializes the Senior Research Analyst agent with a search tool.
-          """
-          self.search_tool = SerperDevTool()
-  
-          self.researcher = CrewAIAgent(
-              role="Senior Research Analyst",
-              goal="Uncover cutting-edge developments in AI and provide weather updates.",
-              backstory="""You work at a leading tech think tank.
-              Your expertise lies in identifying emerging trends and understanding external factors like weather.""",
-              verbose=True,
-              allow_delegation=False,
-              tools=[self.search_tool],
-          )
-  
-      def create_task(self, city: str) -> Task:
-          """
-          Creates a task for conducting research on AI advancements and retrieving weather updates.
-  
-          Parameters:
-          - city: str, the city for which the weather update is requested.
-  
-          Returns:
-          - Task: The created task with the specified description and expected output.
-          """
-          task_description = (
-              f"Conduct a comprehensive analysis of the latest advancements in AI in 2024. "
-              f"Also, use the search tool to provide the current weather update for {city}."
-          )
-  
-          return Task(
-              description=task_description,
-              expected_output="Full analysis report with weather data",
-              agent=self.researcher,
-          )
-  
-      def run_process(self, city: str):
-          """
-          Runs the process for the created task and retrieves the result.
-  
-          Parameters:
-          - city: str, the city for which the task is run.
-  
-          Returns:
-          - result: The output from the CrewAI process after executing the task.
-          """
-          task = self.create_task(city)
-          crew = Crew(
-              agents=[self.researcher],
-              tasks=[task],
-              verbose=True,
-              process=Process.sequential,
-          )
-          result = crew.kickoff()
-          return result
-  
-  
-  @senior_research_analyst_agent.on_message(model=CityRequestModel, replies=ResearchReportModel)
-  async def handle_city_request(ctx: Context, sender: str, msg: CityRequestModel):
-      """
-      Handles incoming messages requesting city information.
-  
-      What it does:
-      - Logs the received city name.
-      - Runs the research process for the specified city and sends the report back to the sender.
-  
-      Parameters:
-      - ctx: Context, provides the execution context for logging and messaging.
-      - sender: str, the address of the sender agent.
-      - msg: CityRequestModel, the received message containing the city name.
-  
-      Returns:
-      - None: Sends the research report to the sender agent.
-      """
-      ctx.logger.info(f"Received message from {sender} with city: {msg.city}")
-      research_analyst = SeniorResearchAnalyst()
-      gather_task_result = research_analyst.run_process(msg.city)
-      await ctx.send(sender, ResearchReportModel(report=str(gather_task_result)))
-  
-  
-  if __name__ == "__main__":
-      """
-      Starts the communication agent and begins listening for messages.
-  
-      What it does:
-      - Runs the agent, enabling it to send/receive messages and handle events.
-  
-      Returns:
-      - None: Runs the agent loop indefinitely.
-      """
-      senior_research_analyst_agent.run()
-  
-  ```
+    ```python copy filename="crewai_agent_1.py"
+    from uagents import Agent, Context, Model
+    import os
+    from crewai import Agent as CrewAIAgent, Task, Crew, Process
+    from crewai_tools import SerperDevTool
+    
+    senior_research_analyst_agent = Agent(
+        name="senior_research_analyst_agent",
+        seed="senior_research_analyst_agent_seed",
+        port=8001,
+        endpoint=["http://127.0.0.1:8001/submit"],
+    )
+    
+    
+    class CityRequestModel(Model):
+        city: str
+    
+    
+    class ResearchReportModel(Model):
+        report: str
+    
+    
+    os.environ["OPENAI_API_KEY"] = ""
+    os.environ["SERPER_API_KEY"] = ""
+    
+    
+    class SeniorResearchAnalyst:
+        def __init__(self):
+            """
+            Initializes the Senior Research Analyst agent with a search tool.
+            """
+            self.search_tool = SerperDevTool()
+    
+            self.researcher = CrewAIAgent(
+                role="Senior Research Analyst",
+                goal="Uncover cutting-edge developments in AI and provide weather updates.",
+                backstory="""You work at a leading tech think tank.
+                Your expertise lies in identifying emerging trends and understanding external factors like weather.""",
+                verbose=True,
+                allow_delegation=False,
+                tools=[self.search_tool],
+            )
+    
+        def create_task(self, city: str) -> Task:
+            """
+            Creates a task for conducting research on AI advancements and retrieving weather updates.
+    
+            Parameters:
+            - city: str, the city for which the weather update is requested.
+    
+            Returns:
+            - Task: The created task with the specified description and expected output.
+            """
+            task_description = (
+                f"Conduct a comprehensive analysis of the latest advancements in AI in 2024. "
+                f"Also, use the search tool to provide the current weather update for {city}."
+            )
+    
+            return Task(
+                description=task_description,
+                expected_output="Full analysis report with weather data",
+                agent=self.researcher,
+            )
+    
+        def run_process(self, city: str):
+            """
+            Runs the process for the created task and retrieves the result.
+    
+            Parameters:
+            - city: str, the city for which the task is run.
+    
+            Returns:
+            - result: The output from the CrewAI process after executing the task.
+            """
+            task = self.create_task(city)
+            crew = Crew(
+                agents=[self.researcher],
+                tasks=[task],
+                verbose=True,
+                process=Process.sequential,
+            )
+            result = crew.kickoff()
+            return result
+    
+    
+    @senior_research_analyst_agent.on_message(model=CityRequestModel, replies=ResearchReportModel)
+    async def handle_city_request(ctx: Context, sender: str, msg: CityRequestModel):
+        """
+        Handles incoming messages requesting city information.
+    
+        What it does:
+        - Logs the received city name.
+        - Runs the research process for the specified city and sends the report back to the sender.
+    
+        Parameters:
+        - ctx: Context, provides the execution context for logging and messaging.
+        - sender: str, the address of the sender agent.
+        - msg: CityRequestModel, the received message containing the city name.
+    
+        Returns:
+        - None: Sends the research report to the sender agent.
+        """
+        ctx.logger.info(f"Received message from {sender} with city: {msg.city}")
+        research_analyst = SeniorResearchAnalyst()
+        gather_task_result = research_analyst.run_process(msg.city)
+        await ctx.send(sender, ResearchReportModel(report=str(gather_task_result)))
+    
+    
+    if __name__ == "__main__":
+        """
+        Starts the communication agent and begins listening for messages.
+    
+        What it does:
+        - Runs the agent, enabling it to send/receive messages and handle events.
+    
+        Returns:
+        - None: Runs the agent loop indefinitely.
+        """
+        senior_research_analyst_agent.run()
+    
+    ```
 
 ### Agent two: Research Asking Agent
 
@@ -393,85 +393,85 @@ The `research_asking_agent` agent is designed to initiate requests for city-spec
 
 This agent operates continuously, enabling effective communication and retrieval of city-related research insights.
 
-  ```python copy filename="crewai_agent_2.py"
-  from uagents import Agent, Context, Model
-  
-  
-  class CityRequestModel(Model):
-      city: str
-  
-  
-  class ResearchReportModel(Model):
-      report: str
-  
-  
-  research_asking_agent = Agent(
-      name="research_asking_agent",
-      seed="research_asking_agent_seed",
-      port=8000,
-      endpoint=["http://127.0.0.1:8000/submit"],
-  )
-  
-  TARGET_AGENT_ADDRESS = (
-      "agent1qgxfhzy78m2qfdsg726gtj4vnd0hkqx96xwprng2e4rmn0xfq7p35u6dz8q"
-  )
-  DEFAULT_CITY = "London"
-  
-  
-  @research_asking_agent.on_event("startup")
-  async def on_startup(ctx: Context):
-      """
-      Triggered when the agent starts up.
-  
-      What it does:
-      - Logs the agent's name and address.
-      - Sends a message to the target agent with the default city (e.g., 'London').
-  
-      Parameters:
-      - ctx: Context, provides the execution context for logging and messaging.
-  
-      Returns:
-      - None: Sends the message to the target agent asynchronously.
-      """
-      ctx.logger.info(
-          f"Hello, I'm {research_asking_agent.name}, and my address is {research_asking_agent.address}."
-      )
-  
-      await ctx.send(TARGET_AGENT_ADDRESS, CityRequestModel(city=DEFAULT_CITY))
-  
-  
-  @research_asking_agent.on_message(model=ResearchReportModel)
-  async def handle_research_report(ctx: Context, sender: str, msg: ResearchReportModel):
-      """
-      Triggered when a message of type ResearchReportModel is received.
-  
-      What it does:
-      - Logs the sender's address and the research report received.
-  
-      Parameters:
-      - ctx: Context, provides the execution context for logging and messaging.
-      - sender: str, the address of the sender agent.
-      - msg: ResearchReportModel, the received research report.
-  
-      Returns:
-      - None: Processes the message and logs it.
-      """
-      ctx.logger.info(f"Received research report from {sender}: {msg.report}")
-  
-  
-  if __name__ == "__main__":
-      """
-      Starts the research analyst agent and begins listening for events.
-  
-      What it does:
-      - Runs the agent, enabling it to send/receive messages and handle events.
-  
-      Returns:
-      - None: Runs the agent loop indefinitely.
-      """
-      research_asking_agent.run()
-  
-  ```
+    ```python copy filename="crewai_agent_2.py"
+    from uagents import Agent, Context, Model
+    
+    
+    class CityRequestModel(Model):
+        city: str
+    
+    
+    class ResearchReportModel(Model):
+        report: str
+    
+    
+    research_asking_agent = Agent(
+        name="research_asking_agent",
+        seed="research_asking_agent_seed",
+        port=8000,
+        endpoint=["http://127.0.0.1:8000/submit"],
+    )
+    
+    TARGET_AGENT_ADDRESS = (
+        "agent1qgxfhzy78m2qfdsg726gtj4vnd0hkqx96xwprng2e4rmn0xfq7p35u6dz8q"
+    )
+    DEFAULT_CITY = "London"
+    
+    
+    @research_asking_agent.on_event("startup")
+    async def on_startup(ctx: Context):
+        """
+        Triggered when the agent starts up.
+    
+        What it does:
+        - Logs the agent's name and address.
+        - Sends a message to the target agent with the default city (e.g., 'London').
+    
+        Parameters:
+        - ctx: Context, provides the execution context for logging and messaging.
+    
+        Returns:
+        - None: Sends the message to the target agent asynchronously.
+        """
+        ctx.logger.info(
+            f"Hello, I'm {research_asking_agent.name}, and my address is {research_asking_agent.address}."
+        )
+    
+        await ctx.send(TARGET_AGENT_ADDRESS, CityRequestModel(city=DEFAULT_CITY))
+    
+    
+    @research_asking_agent.on_message(model=ResearchReportModel)
+    async def handle_research_report(ctx: Context, sender: str, msg: ResearchReportModel):
+        """
+        Triggered when a message of type ResearchReportModel is received.
+    
+        What it does:
+        - Logs the sender's address and the research report received.
+    
+        Parameters:
+        - ctx: Context, provides the execution context for logging and messaging.
+        - sender: str, the address of the sender agent.
+        - msg: ResearchReportModel, the received research report.
+    
+        Returns:
+        - None: Processes the message and logs it.
+        """
+        ctx.logger.info(f"Received research report from {sender}: {msg.report}")
+    
+    
+    if __name__ == "__main__":
+        """
+        Starts the research analyst agent and begins listening for events.
+    
+        What it does:
+        - Runs the agent, enabling it to send/receive messages and handle events.
+    
+        Returns:
+        - None: Runs the agent loop indefinitely.
+        """
+        research_asking_agent.run()
+    
+    ```
 
 ### Output
 

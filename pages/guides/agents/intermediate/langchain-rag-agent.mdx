@@ -1,5 +1,6 @@
 import {Callout} from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CodeGroup } from "../../../../components/code";
 
 # Build a LangChain RAG Agent
 
@@ -118,7 +119,26 @@ You'll need several Python packages for the project. These can be managed effici
 
 ### RagRequest Model
 
-We now need to define the `requests.py` file under the `messages` folder in the project. Here, the `RagRequest` message data model represents the request to retrieve an answer to an user's question from a specified document URL. The script includes an optional parameter, `deep_read`, to determine if nested pages should also be read to retrieve the answer. This parameter is set to `no` as `default`.
+We now need to define the `requests.py` file under the `messages` folder in the project. 
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch requests.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > requests.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch requests.py
+        ```
+
+    </CodeGroup>
+
+
+Here, the `RagRequest` message data model represents the request to retrieve an answer to an user's question from a specified document URL. The script includes an optional parameter, `deep_read`, to determine if nested pages should also be read to retrieve the answer. This parameter is set to `no` as `default`.
 
 The script look like the following:
 
@@ -148,7 +168,23 @@ The script look like the following:
 
 ### LangChain RAG Agent
 
-This step involves setting up the **LangChain Retrieval-Augmented Generation (RAG) Agent** which is able to scrape web content, retrieve relevant documents, and generate answers to user queries based on that content. Let's create the file within the `agents` directory we created under `src` directory of our project and name it `langchain_rag_agent.py` by using the following command: `touch langchain_rag_agent.py`
+This step involves setting up the **LangChain Retrieval-Augmented Generation (RAG) Agent** which is able to scrape web content, retrieve relevant documents, and generate answers to user queries based on that content. Let's create the file within the `agents` directory we created under `src` directory of our project and name it `langchain_rag_agent.py` by using the following command:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch langchain_rag_agent.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > langchain_rag_agent.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch langchain_rag_agent.py
+        ```
+
+    </CodeGroup>
 
 The agent is defined as a [local agent with a Mailbox ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) and it is able to answer questions by fetching and summarizing information from a given website URL.
 
@@ -314,6 +350,24 @@ The script for this agent looks as follows:
 
 We are now ready to define the **LangChain User Agent** which interacts with the LangChain RAG agent defined previously to ask a question based on documents found at specified URLs. The user agent sends a request to the RAG agent to retrieve and process information from the web page and then handle the response. The agent is defined as a [local agent with an endpoint ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-with-an-endpoint).
 
+Create a file for this agent:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch langchain_rag_user.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > langchain_rag_user.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch langchain_rag_user.py
+        ```
+
+    </CodeGroup>
+
 The script looks as follows:
 
     ```python copy filename="langchain_rag_user.py"
@@ -357,7 +411,7 @@ The script looks as follows:
         rag_user.run()
     ```
 
-      Remember that you need to provide the `QUESTION`, `URL`, `DEEP_READ`, `RAG_AGENT_ADDRESS`, `name`, `seed`  and `endpoint` parameters to correctly run this code.
+    Remember that you need to provide the `QUESTION`, `URL`, `DEEP_READ`, `RAG_AGENT_ADDRESS`, `name`, `seed`  and `endpoint` parameters to correctly run this code.
 
     Here, we have created the User Agent which interacts with the LangChain RAG Agent we previously defined. The User Agent periodically asks the RAG Agent a predefined question and then handles the response.
 
@@ -376,7 +430,23 @@ Finally, the LangChain RAG user protocol is then included using the `.include()`
 
 ## Main script
 
-We are now ready to define the main script for our project. In the `src` folder of our project we create a Python script named main.py using the following command: `touch main.py`
+We are now ready to define the main script for our project. In the `src` folder of our project we create a Python script named `main.py` using the following command:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch main.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > main.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch main.py
+        ```
+
+    </CodeGroup>
 
 We then define the code within this one which looks like the one provided here below:
 
@@ -394,7 +464,7 @@ We then define the code within this one which looks like the one provided here b
         bureau.run()
     ```
 
-Now, both of agents are set up and you will need to **connect your local agents to the Agentverse** so for them to be retrievable for communication and interaction with any other registered agent on the Fetch Network. This way, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox) and afterward a [Agent Function ↗️](https://fetch.ai/docs/guides/agents/intermediate/agent-functions) will be created and [registered ↗️](https://fetch.ai/docs/guides/agentverse/agentverse-functions/registering-agent-services) for this agent.
+Now, both of agents are set up, and you will need to **connect your local agents to the Agentverse** so for them to be retrievable for communication and interaction with any other registered agent on the Fetch Network. This way, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox) and afterward a [Agent Function ↗️](https://fetch.ai/docs/guides/agents/intermediate/agent-functions) will be created and [registered ↗️](https://fetch.ai/docs/guides/agentverse/agentverse-functions/registering-agent-services) for this agent.
 
 The `langchain_rag_user` agent is used as a testing agent for the RAG agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
 
