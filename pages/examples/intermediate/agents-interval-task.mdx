@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code"
+
 # Interval task with Agents
 
 ## Introduction
@@ -15,15 +17,25 @@ This example shows how to use the uAgents Framework library to set up an interva
 
 ### The agent
 
-```py copy filename="interval-task.py"
-from uagents import Agent, Context
+ <CodeGroup isLocalHostedFile>
+    ```py copy filename="interval-task-local.py"
+    from uagents import Agent, Context
 
-alice = Agent(name="alice", seed="alice recovery phrase")
+    alice = Agent(name="alice", seed="alice recovery phrase")
 
-@alice.on_interval(period=2.0)
-async def say_hello(ctx: Context):
-    ctx.logger.info(f'hello, my name is {alice.name}')
+    @alice.on_interval(period=2.0)
+    async def say_hello(ctx: Context):
+        ctx.logger.info(f'hello, my name is {ctx.name}')
 
-if __name__ == "__main__":
-    alice.run()
-```
+    if __name__ == "__main__":
+        alice.run()
+    ```
+    
+    ```py copy filename="interval-task-hosted.py"
+    from uagents import Agent, Context
+
+    @agent.on_interval(period=2.0)
+    async def say_hello(ctx: Context):
+        ctx.logger.info(f'hello, my name is {ctx.name}')
+    ```
+</CodeGroup>

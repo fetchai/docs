@@ -1,4 +1,5 @@
 import {Callout} from 'nextra/components'
+import { CodeGroup } from "../../../../components/code";
 
 # Communicating with other agents
 
@@ -37,8 +38,24 @@ Make sure you have read the following resources before going on with this guide:
 
 The first step to better understand how agents communicate is to introduce how 2 agents perform a local communication. Let's consider a basic example in which two agents say hello to each other.
 
-1. First of all, let's create a Python script for this task and name it: `agents_communication.py`
+1. First of all, let's create a Python script for this task:
 
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch agents_communication.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > agents_communication.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch agents_communication.py
+        ```
+
+    </CodeGroup>
+   
 2. Then, we import  `Agent`, `Context`, `Bureau`, and `Model` from the uagents library and we then define the message structure for messages to be exchanged between the agents using the class `Model`:
 
     ```py copy
@@ -59,7 +76,7 @@ The first step to better understand how agents communicate is to introduce how 2
 
     In this example we're running multiple agents from one file.
 
-3. Let's now define `sigmar`'s behaviors. We need to define a function for `sigmar` to send messages to `slaanesh` periodically:
+4. Let's now define `sigmar`'s behaviors. We need to define a function for `sigmar` to send messages to `slaanesh` periodically:
 
     ```py copy
     @sigmar.on_interval(period=3.0)
@@ -69,7 +86,7 @@ The first step to better understand how agents communicate is to introduce how 2
 
     We can use the `.on_interval()` decorator to define a coroutine `send_message()` function that will be called every 3 seconds. The coroutine function sends a message to `slaanesh` using the `ctx.send()` method of the `Context` object.
 
-4. We then need to define a `sigmar_message_handler()` function for `sigmar` to manage incoming messages:
+5. We then need to define a `sigmar_message_handler()` function for `sigmar` to manage incoming messages:
 
     ```py copy
     @sigmar.on_message(model=Message)
@@ -79,7 +96,7 @@ The first step to better understand how agents communicate is to introduce how 2
 
     This defines the coroutine function `sigmar_message_handler()` that serves as a message handler for `sigmar`. It is triggered whenever `sigmar` receives a message of type `Message`.
 
-5. Let's now define the behavior of our second agent, `slaanesh`:
+6. Let's now define the behavior of our second agent, `slaanesh`:
 
     ```py copy
     @slaanesh.on_message(model=Message)
@@ -96,7 +113,7 @@ The first step to better understand how agents communicate is to introduce how 2
      await ctx.send(sender.address, Message(message="hello there sigmar"))
      ```
 
-6. Let's then use the `Bureau` class to create a `Bureau` object. This will allow us to run agents together in the same script:
+7. Let's then use the `Bureau` class to create a `Bureau` object. This will allow us to run agents together in the same script:
 
     ```py copy
     bureau = Bureau()
@@ -107,7 +124,7 @@ The first step to better understand how agents communicate is to introduce how 2
         bureau.run()
    ```
 
-7. Save the script.
+8. Save the script.
 
 The complete script should be looking as follows:
 
@@ -166,10 +183,41 @@ Here, we show you how to create two agents and make them remotely communicate by
 
 The first step would be to create two different Python scripts for this task, each one representing a remote agent:
 
-    Slaanesh: `remote_agents_slaanesh.py`
+    Slaanesh:
 
-    Sigmar: `remote_agents_sigmar.py`
+    <CodeGroup isOSFile>
 
+        ```py copy filename="mac"
+        touch remote_agents_slaanesh.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > remote_agents_slaanesh.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch remote_agents_slaanesh.py
+        ```
+
+    </CodeGroup>
+
+    Sigmar:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch remote_agents_sigmar.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > remote_agents_sigmar.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch remote_agents_sigmar.py
+        ```
+
+    </CodeGroup>
 Let's start by defining the script for **sigmar**.
 
 #### Sigmar

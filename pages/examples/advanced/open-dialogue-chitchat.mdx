@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup } from "../../../components/code";
 
 # Open Dialogue Chit-Chat
 
@@ -22,7 +23,25 @@ This example demonstrates how to set up and execute a simple agent-based dialogu
 This script sets up the `ChitChatDialogue` class, This system includes nodes representing different states of the dialogue and edges defining possible transitions between these states.
 
 - Open a terminal and create a directory using `mkdir Dialogues` and navigate into it with `cd Dialogues`.
-- Create a python file `chitchat.py` using `touch chitchat.py` in `Dialogues` directory.
+- Create a python file `chitchat.py` in `Dialogues` directory.
+
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch chitchat.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > chitchat.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch chitchat.py
+        ```
+
+    </CodeGroup>
+
 - Import required libraries.
 
     ```python
@@ -183,7 +202,24 @@ The contents of this script are to be shared between the agents that want to use
 - Setup `agent1` which receives initiate session from `agent2` and accepts the state.
 - `agent2` sends continues chit chat dialogue message to agent 1 and continues the chat.
 - if any of the agent sends `exit` message the dialogue is concluded.
-- Run `cd ..` to go out of `Dialogues` directory and create Python script: `touch agent1.py`; copy the below script into that.
+- Run `cd ..` to go out of `Dialogues` directory and create `agent1.py` Python script
+
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch agent1.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > agent1.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch agent1.py
+        ```
+
+    </CodeGroup>
 
     ```python copy filename="agent1.py"
     # Import required libraries
@@ -300,7 +336,25 @@ The contents of this script are to be shared between the agents that want to use
         agent.run()
     ```
 
-- Create Python script: `touch agent2.py`; copy the below script into that.
+- Create Python `agent2.py` script:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch agent2.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > agent2.py
+        ```
+        
+        ```py copy filename="ubuntu"
+        touch agent2.py
+        ```
+        
+
+    </CodeGroup>
+
 
     ```python copy filename="agent2.py"
     """Chit chat dialogue example"""

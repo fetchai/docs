@@ -198,14 +198,17 @@ export function DropDownTabs({ children }: DropDownTabsProps) {
 
   return (
     <>
-      <div
-        className="nx-relative nx-mb-5 nx-items-center nx-gap-2 nx-cursor-pointer nx-justify-center nx-dropdown-container"
-        onClick={() => setIsOpen(!isOpen)}
-        style={{ userSelect: "none" }}
-      >
-        {tabs[selectedTab]?.props.heading}
-        <DropDownArrow />
+      <div className="nx-w-full nx-flex nx-gap-[14px]">
+        <div
+          className="nx-relative nx-mb-5 nx-items-center nx-gap-2 nx-cursor-pointer nx-justify-center nx-dropdown-container"
+          onClick={() => setIsOpen(!isOpen)}
+          style={{ userSelect: "none" }}
+        >
+          {tabs[selectedTab]?.props.heading}
+          <DropDownArrow />
+        </div>
       </div>
+
       <div ref={dropdownRef}>
         {isOpen && (
           <motion.div

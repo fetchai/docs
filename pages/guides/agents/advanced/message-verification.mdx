@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../../components/code";
+
 # How to use agents to verify messages
 
 ## Introduction
@@ -23,8 +25,24 @@ Make sure you have read the following resources before going on with this guide:
 
 1. First of all, you need to navigate towards the directory you created for your project.
 
-2. In here, let's create a Python script for this task and name it: `touch message_verification.py`.
+2. In here, let's create a Python script for this task and name it:
 
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch message_verification.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > message_verification.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch message_verification.py
+        ```
+
+    </CodeGroup>
+   
 3. We now need to import the necessary classes from `uagents` (`Agent`, `Bureau`, `Context`, and `Model`), `uagents.crypto` (`Identity`) and `hashlib`. Then we would need to define the messages format using the `Message` class as a subclass of `Model`:
 
    ```py copy

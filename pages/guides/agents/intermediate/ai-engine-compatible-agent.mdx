@@ -44,14 +44,14 @@ To enable communication from agents to the AI Engine, we import **3 objects** th
         `UAgentResponseType.FINAL` tells us that the message has no other responses.
 
 
-    - We can use `ERROR` to signify the agent has encountered an error:
+   - We can use `ERROR` to signify the agent has encountered an error:
 
         ```python
             await ctx.send(sender, UAgentResponse(message="Unexpected Error", type=UAgentResponseType.ERROR))
 
         ```
 
-    - `UAgentResponseType.SELECT_FROM_OPTIONS` gives the user who is interacting with AI Engine options to select from, you could build this like so:
+   - `UAgentResponseType.SELECT_FROM_OPTIONS` gives the user who is interacting with AI Engine options to select from, you could build this like so:
 
         ```python
                 options = []
@@ -69,7 +69,7 @@ To enable communication from agents to the AI Engine, we import **3 objects** th
                     )
         ```
 
-    - `UAgentResponseType.FINAL_OPTIONS` signals the end of the options to AI Engine:
+   - `UAgentResponseType.FINAL_OPTIONS` signals the end of the options to AI Engine:
 
         ```python
                 options = [KeyValue(key=x, value=x) for x in result if len(x) > 1]

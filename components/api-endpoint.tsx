@@ -1,6 +1,7 @@
-import { Code, Pre } from "nextra/components";
-import { useRef } from "react";
-import React, { ReactNode, useState } from "react";
+import { Code } from "nextra/components";
+import { CustomPre } from "./code";
+
+import React, { useState } from "react";
 import {
   ApiIntro,
   Col,
@@ -12,77 +13,13 @@ import {
 } from "./mdx";
 import Tooltip from "./tooltip";
 import Link from "next/link";
-import { CodeIcon, CopyIcon } from "src/icons/shared-icons";
+
 interface PropertyType {
   name: string;
   type: string;
   description: string;
   required?: boolean;
 }
-
-const CustomPre = ({
-  children,
-  filename,
-  dataLanguage,
-  hasCopyCode = true,
-}: {
-  children: ReactNode;
-  filename?: string;
-  dataLanguage?: string;
-  hasCopyCode?: boolean;
-}) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const codeRef = useRef<HTMLDivElement>(null);
-
-  const handleCopy = () => {
-    if (codeRef.current?.textContent) {
-      navigator.clipboard.writeText(codeRef.current.textContent).then(() => {
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 5000);
-      });
-    }
-  };
-
-  return (
-    <Pre data-language={dataLanguage} className="custom-pre">
-      <div
-        style={{ overflowX: "hidden" }}
-        className="nx-flex nx-w-full nx-items-center nx-justify-between"
-      >
-        <CodeIcon />
-        <span className="nx-code-name">{`${filename} command`}</span>
-        {hasCopyCode && (
-          <div
-            onClick={handleCopy}
-            className="nx-cursor-pointer nx-flex nx-gap-2 nx-items-center"
-          >
-            {isCopied && (
-              <>
-                <svg
-                  width="12"
-                  height="8"
-                  viewBox="0 0 12 8"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
-                    fill="#0B1742"
-                  />
-                </svg>
-                <span className="nx-copy-text">Copied</span>
-              </>
-            )}
-            <CopyIcon />
-          </div>
-        )}
-      </div>
-      <div style={{ overflowX: "scroll", width: "100%" }} ref={codeRef}>
-        {children}
-      </div>
-    </Pre>
-  );
-};
 
 // Helper function to replace path parameters in the URL
 const replacePathParameters = (

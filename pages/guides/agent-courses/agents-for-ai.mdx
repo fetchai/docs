@@ -1,5 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CodeGroup } from "../../../components/code";
 
 # Agents 101 for AI Engine
 
@@ -104,7 +105,23 @@ We're going to run our agents locally, and set up a Mailbox on Agentverse.
 In this guide, our first agent takes any text and returns a sentiment of contents with **openAI**.
 
 We need to create a Python file for this example.
-We can do this by running: `touch sentiment_agent.py`
+We can do this by running:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch sentiment_agent.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > sentiment_agent.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch sentiment_agent.py
+        ```
+
+    </CodeGroup>
 
     ```py copy filename="sentiment_agent.py"
     from uagents import Agent, Context, Protocol, Model
@@ -185,7 +202,7 @@ There are a lot of really cool, neat things you need to know from code above. Le
 
     - `OPENAI_API_KEY` is our API key to OpenAI's APIs.
 
-We can now initialize the Agent and define the [Protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). To read more about **Agent objects**, please checkout [the reference docs ↗️](/references/uagents/uagents-api/agent#agent-objects).
+We can now initialize the Agent and define the [Protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). To read more about **Agent objects**, please check out [the reference docs ↗️](/references/uagents/uagents-api/agent#agent-objects).
 
 Then, we have the **on_message()** handler:
 
@@ -304,7 +321,23 @@ Okay, take a quick break then let's create the second Agent; it's time to introd
 
 ### Create the Webpage Summary Agent
 
-The next agent in the chain is the **Summary agent**. Let's name the script `web_summary_agent.py`.
+The next agent in the chain is the **Summary agent**. Let's name the script `web_summary_agent.py`. To do so run:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch web_summary_agent.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > web_summary_agent.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch web_summary_agent.py
+        ```
+
+    </CodeGroup>
 
 This Agent has the same structure as the sentiment Agent we previously defined.
 
@@ -413,7 +446,7 @@ This MUST NOT be a URL or something that looks like a webpage address. If one of
 that must be generated from another subtask.
 Text is the content to be analyzed, this must be a structured body of prose."
 
-We're talking to an LLM and the above should reinforce that. We're telling the AI Engine that this function returns sentiment analysis on text. However when this function is called, the user could also provide a URL. If a URL is provided then the AI Engine must get that from somewhere else. Let's test this.
+We're talking to an LLM and the above should reinforce that. We're telling the AI Engine that this function returns sentiment analysis on text. However, when this function is called, the user could also provide a URL. If a URL is provided then the AI Engine must get that from somewhere else. Let's test this.
 
 ## Let's go to DeltaV!
 

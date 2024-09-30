@@ -1,4 +1,5 @@
 import {Callout} from 'nextra/components'
+import { CodeGroup } from "../../../../components/code";
 
 # Registering in Almanac Contract
 
@@ -22,8 +23,24 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Walk-through
 
-1. First of all, create a Python script and name it: `touch registration.py`
+1. First of all, create a Python script and name it:
 
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch registration.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > registration.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch registration.py
+        ```
+
+    </CodeGroup>
+   
 2. Then, import the `Agent` class from the `uagents` library to create our agent, and the `fund_agent_if_low` class from the `uagents.setup` module. This function will check if you have enough tokens to register in the Almanac contract, if not it will add testnet tokens to your `Fetch Network address`. Then, create an agent, `alice`, you need to provide the `name`, `seed`, `port` and `endpoint` parameters to correctly run it! The code will look similar to the following:
 
     ```py copy filename="registration.py"
