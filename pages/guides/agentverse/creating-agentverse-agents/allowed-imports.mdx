@@ -44,6 +44,40 @@ In the [Agentverse ↗️](https://agentverse.ai/) code editor, you have the fre
 
     - [`re` ↗️](/guides/agentverse/allowed-imports#re).
 
+    - [`bs64` ↗️](/guides/agentverse/allowed-imports#bs64).
+
+    - [`faiss-cpu` ↗️](/guides/agentverse/allowed-imports#faiss-cpu).
+
+    - [`fetchai-babble` ↗️](/guides/agentverse/allowed-imports#fetchai-babble).
+
+    - [`google-generativeai` ↗️](/guides/agentverse/allowed-imports#google-generativeai).
+
+    - [`langchain-anthropic` ↗️](/guides/agentverse/allowed-imports#langchain-anthropic).
+
+    - [`langchain-community` ↗️](/guides/agentverse/allowed-imports#langchain-community).
+
+    - [`langchain-core` ↗️](/guides/agentverse/allowed-imports#langchain-core).
+
+    - [`langchain-google-genai` ↗️](/guides/agentverse/allowed-imports#langchain-google-genai).
+
+    - [`langchain-google-vertexai` ↗️](/guides/agentverse/allowed-imports#langchain-google-vertexai).
+
+    - [`langchain-openai` ↗️](/guides/agentverse/allowed-imports#langchain-openai).
+
+    - [`langchain-text-splitters` ↗️](/guides/agentverse/allowed-imports#langchain-text-splitters).
+
+    - [`langchain` ↗️](/guides/agentverse/allowed-imports#langchain).
+
+    - [`nltk` ↗️](/guides/agentverse/allowed-imports#nltk).
+
+    - [`openai` ↗️](/guides/agentverse/allowed-imports#openai).
+
+    - [`tenacity` ↗️](/guides/agentverse/allowed-imports#tenacity).
+
+    - [`unstructured` ↗️](/guides/agentverse/allowed-imports#unstructured).
+
+    - [`validators` ↗️](/guides/agentverse/allowed-imports#validators).
+
 ## Allowed imports
 
 #### uagents
@@ -478,6 +512,385 @@ This package is used for generating random numbers, managing random selections, 
             print("Pattern not found.")
           ```
 
+#### bs4 (BeautifulSoup)
+
+`bs4` make it easy to parse and interact with HTML and XML documents for web scraping or data extraction.
+
+        **Example**:
+
+        ```py copy
+        from bs4 import BeautifulSoup
+        import requests
+        
+        # Fetch the content of a webpage
+        response = requests.get("https://example.com")
+        
+        # Parse the HTML content
+        soup = BeautifulSoup(response.content, "html.parser")
+        
+        # Extract and print the page title
+        print(soup.title.string)
+
+        ```
+
+#### faiss-cpu
+
+`faiss-cpu` allow you to efficiently perform nearest neighbor search on high-dimensional dense vectors. It is used in machine learning for clustering and similarity search.
+
+        **Example**:
+
+        ```py copy
+        import faiss
+        import numpy as np
+        
+        # Create a dataset of 128-dimensional vectors
+        data = np.random.random((100, 128)).astype('float32')
+        
+        # Create an index using L2 (Euclidean) distance
+        index = faiss.IndexFlatL2(128)
+        
+        # Add vectors to the index
+        index.add(data)
+        
+        # Perform a search to find the 5 nearest neighbors
+        query = np.random.random((1, 128)).astype('float32')
+        distances, indices = index.search(query, k=5)
+        print(indices)
+
+        ```
+
+#### fetchai-babble
+
+`fetchai-babble` allows you to interact with the Fetch.ai messaging service (called Memorandum). Further reference [here ↗️](https://pypi.org/project/fetchai-babble/).
+
+        **Example**:
+
+        ```py copy
+        from babble import Client, Identity
+        
+        # create a set of agents with random identities
+        client1 = Client('agent1.....', Identity.generate())
+        client2 = Client('agent1.....', Identity.generate())
+        
+        # send a message from one client to another
+        client1.send(client2.delegate_address, "why hello there")
+        
+        # receive the messages from the other client
+        for msg in client2.receive():
+            print(msg.text)
+        ```
+
+#### google-generativeai
+
+`google-generativeai` allows you to build with the Gemini API. The Gemini API gives you access to Gemini models created by Google DeepMind. Gemini models are built from the ground up to be multimodal, so you can reason seamlessly across text, images, and code. Further reference [here ↗️](https://pypi.org/project/google-generativeai/).
+
+        **Example**:
+
+        ```py copy
+        import google.generativeai as genai
+        import os
+        
+        genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content("The opposite of hot is")
+        print(response.text)
+        ```
+
+#### langchain-anthropic
+
+`langchain-anthropic` contains the LangChain integration for Anthropic's generative models. Further reference [here ↗️](https://pypi.org/project/langchain-anthropic/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_anthropic import ChatAnthropic
+        from langchain_core.messages import AIMessage, HumanMessage
+        
+        model = ChatAnthropic(model="claude-3-opus-20240229", temperature=0, max_tokens=1024)
+        
+        message = HumanMessage(content="What is the capital of France?")
+        
+        response = model.invoke([message])
+
+        ```
+
+#### langchain-community
+
+`langchain-community` contains third-party integrations that implement the base interfaces defined in LangChain Core, making them ready-to-use in any LangChain application. It is automatically installed by langchain, but can also be used separately. Further reference [here ↗️](https://pypi.org/project/langchain-community/).
+
+        **Example**:
+
+        ```py copy
+        import bs4
+        from langchain_community.document_loaders import WebBaseLoader
+        
+        # Only keep post title, headers, and content from the full HTML.
+        bs4_strainer = bs4.SoupStrainer(class_=("post-title", "post-header", "post-content"))
+        loader = WebBaseLoader(
+            web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+            bs_kwargs={"parse_only": bs4_strainer},
+        )
+        docs = loader.load()
+        
+        len(docs[0].page_content)
+        ```
+#### langchain-core
+
+`langchain-core` contains the base abstractions that power the rest of the LangChain ecosystem. Further reference [here ↗️](https://pypi.org/project/langchain-core/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_core.messages import HumanMessage
+        from langchain_google_genai import ChatGoogleGenerativeAI
+        
+        llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+        # example
+        message = HumanMessage(
+            content=[
+                {
+                    "type": "text",
+                    "text": "What's in this image?",
+                },  # You can optionally provide text parts
+                {"type": "image_url", "image_url": "https://picsum.photos/seed/picsum/200/300"},
+            ]
+        )
+        llm.invoke([message])
+
+        ```
+
+#### langchain-google-genai
+
+`langchain-google-genai` contains the LangChain integrations for Gemini through their generative-ai SDK. Further reference [here ↗️](https://pypi.org/project/langchain-google-genai/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_core.messages import HumanMessage
+        from langchain_google_genai import ChatGoogleGenerativeAI
+        
+        llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+        # example
+        message = HumanMessage(
+            content=[
+                {
+                    "type": "text",
+                    "text": "What's in this image?",
+                },  # You can optionally provide text parts
+                {"type": "image_url", "image_url": "https://picsum.photos/seed/picsum/200/300"},
+            ]
+        )
+        llm.invoke([message])
+
+        ```
+
+#### langchain-google-vertexai
+
+`langchain-google-vertexai` contains the LangChain integrations for Google Cloud generative models. Further reference [here ↗️](https://pypi.org/project/langchain-google-vertexai/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_core.messages import HumanMessage
+        from langchain_google_vertexai import ChatVertexAI
+        
+        llm = ChatVertexAI(model_name="gemini-pro-vision")
+        # example
+        message = HumanMessage(
+            content=[
+                {
+                    "type": "text",
+                    "text": "What's in this image?",
+                },  # You can optionally provide text parts
+                {"type": "image_url", "image_url": {"url": "https://picsum.photos/seed/picsum/200/300"}},
+            ]
+        )
+        llm.invoke([message])
+
+        ```
+
+#### langchain-openai
+
+`langchain-openai` contains the LangChain integrations for OpenAI through their `openai` SDK. Further reference [here ↗️](https://pypi.org/project/langchain-openai/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_openai import ChatOpenAI
+        
+        llm = ChatOpenAI(
+            model="gpt-4o",
+            temperature=0,
+            max_tokens=None,
+            timeout=None,
+            max_retries=2,
+            # api_key="...",  # if you prefer to pass api key in directly instaed of using env vars
+            # base_url="...",
+            # organization="...",
+            # other params...
+        )
+        ```
+
+#### langchain-text-splitters
+
+`langchain-text-splitters` contains utilities for splitting into chunks a wide variety of text documents. Further reference [here ↗️](https://pypi.org/project/langchain-text-splitters/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_text_splitters import RecursiveCharacterTextSplitter
+        
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000, chunk_overlap=200, add_start_index=True
+        )
+        all_splits = text_splitter.split_documents(docs)
+        
+        len(all_splits)
+        ```
+
+#### langchain
+
+`langchain` assists in the development of applications integrating with LLMs. Further reference [here ↗️](https://pypi.org/project/langchain/).
+
+        **Example**:
+
+        ```py copy
+        import bs4
+        from langchain import hub
+        from langchain_chroma import Chroma
+        from langchain_community.document_loaders import WebBaseLoader
+        from langchain_core.output_parsers import StrOutputParser
+        from langchain_core.runnables import RunnablePassthrough
+        from langchain_openai import OpenAIEmbeddings
+        from langchain_text_splitters import RecursiveCharacterTextSplitter
+        
+        # Load, chunk and index the contents of the blog.
+        loader = WebBaseLoader(
+            web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+            bs_kwargs=dict(
+                parse_only=bs4.SoupStrainer(
+                    class_=("post-content", "post-title", "post-header")
+                )
+            ),
+        )
+        docs = loader.load()
+        
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        splits = text_splitter.split_documents(docs)
+        vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
+        
+        # Retrieve and generate using the relevant snippets of the blog.
+        retriever = vectorstore.as_retriever()
+        prompt = hub.pull("rlm/rag-prompt")
+        
+        
+        def format_docs(docs):
+            return "\n\n".join(doc.page_content for doc in docs)
+        
+        
+        rag_chain = (
+            {"context": retriever | format_docs, "question": RunnablePassthrough()}
+            | prompt
+            | llm
+            | StrOutputParser()
+        )
+        
+        rag_chain.invoke("What is Task Decomposition?")
+        ```
+
+#### nltk
+
+`nltk` is a package for natural language processing.
+
+        **Example**:
+
+        ```py copy
+        import nltk
+        nltk.download('punkt')
+        
+        from nltk.tokenize import word_tokenize
+        
+        text = "This is an example sentence, showing off the tokenization process."
+        
+        tokens = word_tokenize(text)
+        
+        print(tokens)
+        
+        # ['This', 'is', 'an', 'example', 'sentence', ',', 'showing', 'off', 'the', 'tokenization', 'process', '.']
+        ```
+
+#### openai
+
+`openai` provides easy access to the OpenAI REST API. The library includes type definitions for all request params and response fields, and offers both synchronous and asynchronous clients powered by httpx.
+
+        **Example**:
+
+        ```py copy
+        import os
+        from openai import OpenAI
+        
+        client = OpenAI(
+            # This is the default and can be omitted
+            api_key=os.environ.get("OPENAI_API_KEY"),
+        )
+        
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": "Say this is a test",
+                }
+            ],
+            model="gpt-3.5-turbo",
+        )  
+        ```
+
+#### tenacity
+
+`tenacity` is a general-purpose retrying library to simplify the task of adding retry behavior to just about anything.
+
+        **Example**:
+
+        ```py copy
+        import random
+        from tenacity import retry
+        
+        @retry
+        def do_something_unreliable():
+            if random.randint(0, 10) > 1:
+                raise IOError("Broken sauce, everything is hosed!!!111one")
+            else:
+                return "Awesome sauce!"
+        
+        print(do_something_unreliable())
+        ```
+
+#### unstructured
+
+`unstructured` is a library for processing and extracting data from unstructured file formats such as PDFs, Word documents, and more.
+
+        **Example**:
+
+        ```py copy
+        from unstructured.partition.auto import partition
+        
+        elements = partition(filename="example-docs/fake-email.eml")
+        print("\n\n".join([str(el) for el in elements]))
+        ```
+
+#### validators
+
+`validators` is a Python library designed for data validation. It provides simple functions to verify the validity of various types of data. Further reference [here ↗️](https://pypi.org/project/validators/).
+
+        **Example**:
+
+        ```py copy
+        import validators
+        print(validators.email('someone@example.com'))  # True
+        print(validators.email('invalid-email'))  # ValidationFailure
+
+        ```
 ## Multi-file Support
 
 The Agentverse Code Editor enhances your agent development experience with multi-file support, enabling you to tackle complex projects with ease. Leverage this feature to:

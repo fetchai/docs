@@ -1,5 +1,5 @@
 import cn from "clsx";
-import { Code, Pre, Table, Td, Th, Tr } from "nextra/components";
+import { Code, Table, Td, Th, Tr } from "nextra/components";
 import type { Components } from "nextra/mdx";
 import type { ComponentProps, ReactElement, ReactNode } from "react";
 import { Children, cloneElement, useEffect, useRef, useState } from "react";
@@ -11,6 +11,7 @@ import { useIntersectionObserver, useSlugs } from "./contexts/active-anchor";
 import React from "react";
 import Image from "next/image";
 import LinkImage from "../../src/svgs/external-link.svg";
+import { CustomPre } from "components/code";
 
 // Anchor links
 function HeadingLink({
@@ -256,9 +257,7 @@ export const getComponents = ({
     td: Td,
     details: Details,
     summary: Summary,
-    pre: (props) => (
-      <Pre className="nx-pre-code nx-text-fetch-main" {...props} />
-    ),
+    pre: (props) => <CustomPre {...props} />,
     code: Code,
     ...components,
   };

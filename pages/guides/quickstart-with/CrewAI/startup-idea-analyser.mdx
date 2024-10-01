@@ -1,9 +1,12 @@
-# Startup Idea Analyzer with CrewAI and uAgents
-
+# Startup Idea Analyzer with CrewAI and Agents
 
 ## Introduction
 
-This guide aims at demonstrating a **Startup Idea Analyzer** built using **CrewAI** and **Agents**. The system leverages specialized [Agents ↗️](/guides/agents/getting-started/whats-an-agent) to assess market demand, technological feasibility, and business strategy. The agents collaborate to provide a comprehensive evaluation, helping entrepreneurs validate their startup ideas efficiently.
+The fast-paced startup environment and market makes it essential to correctly and efficiently validate a business idea quickly in order to attract users and investors. Fetch.ai [Agents ↗️](/guides/agents/getting-started/whats-an-agent) technology makes it possible to develop an application being able to evaluate startup ideas autonomously. By using **CrewAI** and **Agents** it is possible to design a **Startup Idea Analyzer** offering a structured way to assess the feasibility and validity of any business idea you may have. By leveraging agents, which are programmable micro-services designed to communicate with one another, this system can independently evaluate key aspects of your business including market demand, technological needs, and business strategies with the aim of providing a comprehensive evaluation of your startup idea.
+
+This guide aims at walking you through the setting up and running of a simple evaluation system, allowing you to not only assess your ideas viability but also to integrate them with other systems, users and agents, thus unlocking new potential for economic collaboration and growth.
+
+Let's get started!
 
 ### Supporting documentation
 
@@ -28,7 +31,7 @@ This guide aims at demonstrating a **Startup Idea Analyzer** built using **CrewA
 The Agent project presented in this guide has the following structure:
 
     ```
-    .startup-idea-analyser
+    .startup-idea-analyzer
     ├── agent.py
     ├── crew_ai.py
     ├── poetry.lock
@@ -37,7 +40,7 @@ The Agent project presented in this guide has the following structure:
     └── README.md
     ```
 
-    Each file serves a specific purpose in building and managing the **Startup Idea Analyzer** system:
+Each file serves a specific purpose in building and managing the **Startup Idea Analyzer** system:
 
     - `agent.py`: this defines the core agent setup and protocol communication.
     - `crew_ai.py`: it defines the market research, technology assistance and business strategy processes.
@@ -84,9 +87,9 @@ Here below we depict how the system works:
 
 ### Agent System
 
-This system defines an Agent called **startup idea analyser** that interacts with other Agents using a [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). The Agent listens for messages containing a startup idea `description` and forwards this input to a market research process, which returns a response based on the input provided.
+This system defines an Agent called **startup idea analyzer** that interacts with other Agents using a [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). The Agent listens for messages containing a startup idea `description` and forwards this input to a market research process, which returns a response based on the input provided.
 
-    ```py copy filename="agent.py"
+    ```python copy filename="agent.py"
     import os
 
     from ai_engine import UAgentResponse, UAgentResponseType
@@ -99,25 +102,26 @@ This system defines an Agent called **startup idea analyser** that interacts wit
     SEED_PHRASE = "YOUR_SEED_PHRASE"
 
     agent = Agent(
-        name="startup idea analyser",
+        name="startup idea analyzer",
         seed=SEED_PHRASE,
         mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
     )
 
-    protocol = Protocol("Startup idea Analyser version", version="0.1.2")
+    protocol = Protocol("Startup idea Analyzer version", version="0.1.2")
+
     researcher = MarketResearchProcess()
 
     print(agent.address, "agent_address")
 
     fund_agent_if_low(agent.wallet.address())
 
-    class StartUpIdeaAnalyser(Model):
+    class StartUpIdeaAnalyzer(Model):
         description: str = Field(
             description = "describes the field which will be the description of the startup idea and it is provided by the user in context"
         )
 
-    @protocol.on_message(model=StartUpIdeaAnalyser, replies={UAgentResponse})
-    async def on_message(ctx: Context, sender: str, msg: StartUpIdeaAnalyser):
+    @protocol.on_message(model=StartUpIdeaAnalyzer, replies={UAgentResponse})
+    async def on_message(ctx: Context, sender: str, msg: StartUpIdeaAnalyzer):
         ctx.logger.info(f"Received message from {sender}, message {msg.description}")
         result = researcher.run_process(msg.description)
         await ctx.send(
@@ -129,15 +133,15 @@ This system defines an Agent called **startup idea analyser** that interacts wit
     agent.run()
     ```
 
-    The `Agent` is defined using a seed phrase for wallet generation and a mailbox for message exchanges. Then, a protocol named `Startup idea Analyser version` (`version 0.1.2`) defines how the agent processes incoming messages. The agent uses this protocol to respond to requests containing startup idea descriptions. The agent relies on a component called `MarketResearchProcess` from an external module `crew_ai` to conduct market research on the provided startup idea. This research process is triggered upon receiving a startup idea description. The `StartUpIdeaAnalyser` class defines a data model for startup idea descriptions; this model expects a field `description` that holds the string of text describing the startup idea provided by the user.
+    The `Agent` is defined using a seed phrase for wallet generation and a mailbox for message exchanges. Then, a protocol named `Startup idea Analyzer version` (`version 0.1.2`) defines how the agent processes incoming messages. The agent uses this protocol to respond to requests containing startup idea descriptions. The agent relies on a component called `MarketResearchProcess` from an external module `crew_ai` to conduct market research on the provided startup idea. This research process is triggered upon receiving a startup idea description. The `StartUpIdeaAnalyzer` class defines a data model for startup idea descriptions; this model expects a field `description` that holds the string of text describing the startup idea provided by the user.
 
-    Whenever the agent receives a message matching the `StartUpIdeaAnalyser` model, it logs the incoming message, sends the startup description to the `MarketResearchProcess`, and then responds to the sender with the result. The agent is set to include this `protocol`, publish a manifest of its functionalities, and run continuously to process incoming requests.
+    Whenever the agent receives a message matching the `StartUpIdeaAnalyzer` model, it logs the incoming message, sends the startup description to the `MarketResearchProcess`, and then responds to the sender with the result. The agent is set to include this `protocol`, publish a manifest of its functionalities, and run continuously to process incoming requests.
 
 ### CrewAI System
 
 The following script defines a `MarketResearchProcess` class that sets up a market research workflow using three specialized agents: a `Market Research Analyst`, a `Technology Expert`, and a `Business Development Consultant`. The script creates and assigns tasks to these agents, such as analyzing market demand, assessing technological needs, and developing a business plan. It then uses the `Crew` class to execute these tasks sequentially, passing the results from one agent to the next one, to then return the final outcome.
 
-    ```py copy filename="crew_ai.py"
+    ```python copy filename="crew_ai.py"
     import os
 
     from crewai import Agent, Crew, Process, Task

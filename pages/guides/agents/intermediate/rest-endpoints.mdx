@@ -22,7 +22,7 @@ Make sure you have read the following resources before going on with this guide:
     - [Options for running your Agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
 
 <Callout type="warning" emoji="⚠️">
-   Please note that this feature is only available at the 'agent level', meaning that you cannot add REST endpoints to uAgents protocols
+   Please note that this feature is only available at the 'agent level', meaning that you cannot add REST endpoints to uAgents protocols.
 </Callout>
 
 ## Usage
@@ -31,7 +31,8 @@ To use the new REST API feature in your agent, follow these steps to define cust
 
 ### Define Custom GET and POST Routes
 
-#### GET Endpoint:
+#### GET Endpoint
+
 Use the `@on_rest_get()` decorator to define a custom GET endpoint. You will need to specify the endpoint route and the response model.
 
 ```py copy
@@ -42,24 +43,26 @@ async def handle_get(ctx: Context) -> Dict[str, Any]:
     }
 
 ```
-#### POST Endpoint:
+
+#### POST Endpoint
+
 Use the `@on_rest_post()` decorator to define a custom POST endpoint. You need to provide both a request model (for input) and a response model (for output).
 
-```py copy
-@agent.on_rest_post("/custom_post_route", Request, Response)
-async def handle_post(ctx: Context, req: Request) -> Response:
-    ctx.logger.info(req)
-    return Response(...)
-```
+    ```py copy
+    @agent.on_rest_post("/custom_post_route", Request, Response)
+    async def handle_post(ctx: Context, req: Request) -> Response:
+        ctx.logger.info(req)
+        return Response(...)
+    ```
 
-<Callout type="info" emoji="ℹ️">
-    For querying the agent you have to make sure that:
+    <Callout type="info" emoji="ℹ️">
+        For querying the agent you have to make sure that:
 
-   - You use the correct REST method ("GET" or "POST")
-   - You address the agent endpoint together with its route e.g `http://localhost:8000/custom_route`
-</Callout>
+         - You use the correct REST method ("GET" or "POST")
+         - You address the agent endpoint together with its route e.g `http://localhost:8000/custom_route`
+    </Callout>
 
-### Example of custom GET and POST Routes:
+### Example of custom GET and POST Routes
 
 ```py copy filename="agent.py"
 import time
@@ -111,29 +114,29 @@ if __name__ == "__main__":
 ```
 
 ## Run the example
-- 1. Run the agent: `python agent.py`
-- 2. Query the agent directly through your predefined interfaces:
 
-```bash
-curl -d '{"text": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/rest/post
-```
+1. Run the agent: `python agent.py`
+2. Query the agent directly through your predefined interfaces:
 
+    ```bash
+    curl -d '{"text": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/rest/post
+    ```
 
-### Expected Output
+### Expected output
 
 - Curl Response:
 
-```curl copy
-{"timestamp": 1725610956, "text": "Received: test", "agent_address": "agent1q2qavahvzm2yw237g2cq40pe8p590ppysclaffp2dd0gtk9evtxag7c8djd"}
-```
+    ```
+    {"timestamp": 1725610956, "text": "Received: test", "agent_address": "agent1q2qavahvzm2yw237g2cq40pe8p590ppysclaffp2dd0gtk9evtxag7c8djd"}
+    ```
 
 - Agent Logs:
 
-```agent copy
-WARNING:  [Rest API]: No endpoints provided. Skipping registration: Agent won't be reachable.
-INFO:     [Rest API]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     [Rest API]: Received POST request
-```
+    ```
+    WARNING:  [Rest API]: No endpoints provided. Skipping registration: Agent won't be reachable.
+    INFO:     [Rest API]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [Rest API]: Received POST request
+    ```
 
 
 

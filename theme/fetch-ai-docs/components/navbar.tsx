@@ -83,6 +83,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const activeRoute = useFSRoute();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { menu, setMenu } = useMenu();
+
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
       <div
@@ -188,7 +189,6 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                 directories: flatDirectories,
               })}
             </div>
-
             {config.project.link ? (
               <Anchor
                 className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"

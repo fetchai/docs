@@ -1,4 +1,6 @@
-import { Code, Pre } from "nextra/components";
+import { Code } from "nextra/components";
+import { CustomPre } from "./code";
+
 import React, { useState } from "react";
 import {
   ApiIntro,
@@ -74,16 +76,11 @@ requests.${method.toLowerCase()}("${actualUrl}", headers={
     `;
 
   return (
-    <Pre
-      filename="python"
-      data-language="python"
-      hasCopyCode={true}
-      className="nx-pre-code"
-    >
+    <CustomPre filename="python" dataLanguage="python" hasCopyCode={true}>
       <Code data-lanuage="python" data-theme="default">
         {code}
       </Code>
-    </Pre>
+    </CustomPre>
   );
 };
 
@@ -130,11 +127,10 @@ await fetch("${actualUrl}", {
 })`;
 
   return (
-    <Pre
-      filename="javascript"
-      data-lanuage="javascript"
+    <CustomPre
       hasCopyCode={true}
-      className="nx-pre-code"
+      dataLanguage="javascript"
+      filename="javascript"
     >
       <Code
         data-lanuage="javascript"
@@ -143,8 +139,14 @@ await fetch("${actualUrl}", {
       >
         {code}
       </Code>
-    </Pre>
+    </CustomPre>
   );
+};
+
+const escapeQuotes = (jsonObject) => {
+  const jsonString = JSON.stringify(jsonObject);
+  const escapedString = jsonString.replaceAll(/(?<!\\)"/g, '"');
+  return escapedString;
 };
 
 const CurlCodeTab: React.FC<{
@@ -153,26 +155,20 @@ const CurlCodeTab: React.FC<{
   samplePayload?: unknown;
   isBearerTokenRequired?: boolean;
 }> = ({ method, url, samplePayload, isBearerTokenRequired }) => {
-  let code = `\
-curl \\
--X ${method} \\
+  let code = `
+curl -X ${method}
 ${
   isBearerTokenRequired
-    ? `-H Authorization: bearer <your token here> -H 'Content-Type: application/json' \\\n`
+    ? ` -H "Authorization: bearer <your token here>" -H "Content-Type: application/json"\n `
     : ""
 }${url}`;
 
   if (samplePayload) {
-    code += ` \\\n -d '${JSON.stringify(samplePayload)}'`;
+    code += ` -d ${JSON.stringify(escapeQuotes(samplePayload))}`;
   }
 
   return (
-    <Pre
-      filename="bash"
-      data-lanuage="curl"
-      hasCopyCode={true}
-      className="nx-pre-code"
-    >
+    <CustomPre hasCopyCode={true} dataLanguage="Curl" filename="Curl">
       <Code data-lanuage="bash" data-theme="default">
         {code.split("\n").map((line) => {
           return (
@@ -183,7 +179,7 @@ ${
           );
         })}
       </Code>
-    </Pre>
+    </CustomPre>
   );
 };
 
@@ -193,9 +189,9 @@ const JsonCodeTab: React.FC<{
   const formattedJson = JSON.stringify(samplePayload, undefined, 2);
 
   return (
-    <Pre className="nx-pre-code" filename="json" hasCopyCode={true}>
+    <CustomPre filename="json" hasCopyCode={true}>
       {formattedJson}
-    </Pre>
+    </CustomPre>
   );
 };
 

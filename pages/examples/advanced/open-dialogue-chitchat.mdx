@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup } from "../../../components/code";
 
 # Open Dialogue Chit-Chat
 
@@ -22,7 +23,25 @@ This example demonstrates how to set up and execute a simple agent-based dialogu
 This script sets up the `ChitChatDialogue` class, This system includes nodes representing different states of the dialogue and edges defining possible transitions between these states.
 
 - Open a terminal and create a directory using `mkdir Dialogues` and navigate into it with `cd Dialogues`.
-- Create a python file `chitchat.py` using `touch chitchat.py` in `Dialogues` directory.
+- Create a python file `chitchat.py` in `Dialogues` directory.
+
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch chitchat.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > chitchat.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch chitchat.py
+        ```
+
+    </CodeGroup>
+
 - Import required libraries.
 
     ```python
@@ -183,7 +202,24 @@ The contents of this script are to be shared between the agents that want to use
 - Setup `agent1` which receives initiate session from `agent2` and accepts the state.
 - `agent2` sends continues chit chat dialogue message to agent 1 and continues the chat.
 - if any of the agent sends `exit` message the dialogue is concluded.
-- Run `cd ..` to go out of `Dialogues` directory and create Python script: `touch agent1.py`; copy the below script into that.
+- Run `cd ..` to go out of `Dialogues` directory and create `agent1.py` Python script
+
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch agent1.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > agent1.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch agent1.py
+        ```
+
+    </CodeGroup>
 
     ```python copy filename="agent1.py"
     # Import required libraries
@@ -300,7 +336,25 @@ The contents of this script are to be shared between the agents that want to use
         agent.run()
     ```
 
-- Create Python script: `touch agent2.py`; copy the below script into that.
+- Create Python `agent2.py` script:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch agent2.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > agent2.py
+        ```
+        
+        ```py copy filename="ubuntu"
+        touch agent2.py
+        ```
+        
+
+    </CodeGroup>
+
 
     ```python copy filename="agent2.py"
     """Chit chat dialogue example"""
@@ -530,7 +584,7 @@ The contents of this script are to be shared between the agents that want to use
     > Hello Chat agent, It's nice meeting you sir.
     INFO:     [chit_agent]: Received message: Do you know we are setting up example of how to use dialogues with agents.
     Please enter your message:
-    > Ohh Really...!! Thats amazing.
+    > Ohh Really...!! That's amazing.
     INFO:     [chit_agent]: Received message: We have done it, lets exit this conversation.
     Please enter your message:
     > exit
@@ -548,9 +602,9 @@ The contents of this script are to be shared between the agents that want to use
     INFO:     [chat_agent]: Received message: Hello Chat agent, It's nice meeting you sir.
     Please enter your message:
     > Do you know we are setting up example of how to use dialogues with agents.
-    INFO:     [chat_agent]: Received message: Ohh Really...!! Thats amazing.
+    INFO:     [chat_agent]: Received message: Ohh Really...!! That's amazing.
     Please enter your message:
     > We have done it, lets exit this conversation.
     INFO:     [chat_agent]: Received conclude message from: agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j; accessing history:
-    INFO:     [chat_agent]: [{'message_type': 'InitiateChitChatDialogue', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{}', 'timestamp': 1713352925.25236, 'timeout': 60}, {'message_type': 'AcceptChitChatDialogue', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{}', 'timestamp': 1713352925.363479, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "Hello!"}', 'timestamp': 1713352925.364252, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{"text": "Hello Chat agent, It\'s nice meeting you sir."}', 'timestamp': 1713352940.489155, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "Do you now we are setting up example of how to use dialogues with agents."}', 'timestamp': 1713352978.223705, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{"text": "Ohh Really...!! Thats amazing."}', 'timestamp': 1713353000.452756, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "We have done it, lets exit this conversation."}', 'timestamp': 1713353026.271922, 'timeout': 60}, {'message_type': 'ConcludeChitChatDialogue', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{}', 'timestamp': 1713353031.887555, 'timeout': 60}]
+    INFO:     [chat_agent]: [{'message_type': 'InitiateChitChatDialogue', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{}', 'timestamp': 1713352925.25236, 'timeout': 60}, {'message_type': 'AcceptChitChatDialogue', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{}', 'timestamp': 1713352925.363479, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "Hello!"}', 'timestamp': 1713352925.364252, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{"text": "Hello Chat agent, It\'s nice meeting you sir."}', 'timestamp': 1713352940.489155, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "Do you now we are setting up example of how to use dialogues with agents."}', 'timestamp': 1713352978.223705, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{"text": "Ohh Really...!! That's amazing."}', 'timestamp': 1713353000.452756, 'timeout': 60}, {'message_type': 'ChitChatDialogueMessage', 'sender': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'receiver': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'message_content': '{"text": "We have done it, lets exit this conversation."}', 'timestamp': 1713353026.271922, 'timeout': 60}, {'message_type': 'ConcludeChitChatDialogue', 'sender': 'agent1qvhlqy2a4lk9gge8ug7l65a6k07wc92hh2d5jhwtat0zakrtg08njmfn00j', 'receiver': 'agent1qgp7urkvx24a2gs8e7496fajzy78h4887vz7va4h7klzf7azzhthsz7zymu', 'message_content': '{}', 'timestamp': 1713353031.887555, 'timeout': 60}]
     ```
