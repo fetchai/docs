@@ -87,8 +87,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
           {options.map((option) => (
             <div
               key={option}
-              className={`dropdown-tab nx-justify-between tab-text nx-cursor-pointer ${option === selectedOption && "indgo-100"
-                }`}
+              className={`dropdown-tab nx-justify-between tab-text nx-cursor-pointer ${
+                option === selectedOption && "indgo-100"
+              }`}
               onClick={() => {
                 onOptionSelect(option);
                 setIsDropdownOpen(false);
@@ -182,64 +183,9 @@ const osmenu = [
   { name: "ubuntu", icon: Ubuntu },
 ];
 
-// export const CodeBlockHeader = ({
-//   onOSChange,
-//   handleSelect,
-//   selectedType,
-//   selectedOS,
-//   isOSFile = false,
-//   isLocalHostedFile = false,
-// }: {
-//   filename: string;
-//   onOSChange: (os: string) => void;
-//   handleSelect: (type: "local" | "hosted") => void;
-//   selectedType: string;
-//   selectedOS: string;
-//   isOSFile: boolean;
-//   isLocalHostedFile: boolean;
-// }) => {
-//   return (
-//     <div className="nx-flex nx-gap-3">
-//       {isOSFile && (
-//         <div className="osmenu-container-nav nx-w-[132px]">
-//           {osmenu.map((item, index) => (
-//             <div
-//               key={index}
-//               className={`osmenu-tab-container nx-justify-center nx-cursor-pointer nx-items-center ${selectedOS === item.name ? "blue-background" : ""
-//                 }`}
-//               onClick={() => onOSChange(item.name)}
-//             >
-//               <item.icon selectedOS={selectedOS} name={item.name} />
-//             </div>
-//           ))}
-//         </div>
-//       )}
-
-//       {isLocalHostedFile && (
-//         <div className="osmenu-container-nav nx-gap-3">
-//           <div
-//             className={`osmenu-tab-new nx-justify-center hover:blue-background nx-px-2 nx-cursor-pointer nx-items-center hover:nx-bg-[#efebff] ${selectedType === "local" ? "blue-background" : ""
-//               }`}
-//             onClick={() => handleSelect("local")}
-//           >
-//             <span>Local Agent</span>
-//           </div>
-//           <div
-//             className={`osmenu-tab-new nx-justify-center hover:blue-background nx-px-2 nx-cursor-pointer nx-items-center hover:nx-bg-[#efebff] ${selectedType === "hosted" ? "blue-background" : ""
-//               }`}
-//             onClick={() => handleSelect("hosted")}
-//           >
-//             <span>Hosted Agent</span>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
 const agentType = [
   { name: "Self hosted", label: "local" },
-  { name: "Agentverse hosted", label: "hosted" },
+  { name: "Agentverse", label: "hosted" },
 ];
 
 export const CustomPre: React.FC<CodeBoxProps> = ({
@@ -251,7 +197,7 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
   const [isCopied, setIsCopied] = useState(false);
   const codeRef = useRef<HTMLDivElement>(null);
 
-  const [selectedType, setSelectedType] = useState("local");
+  const [selectedType, setSelectedType] = useState(agentType[0].name);
   const [selectedOS, setSelectedOS] = useState("windows");
 
   const renderChild = () => {
@@ -265,27 +211,34 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
 
   const matchFilename = (filename: string): boolean => {
     const regexMap = {
-      local: /local/i,
-      hosted: /hosted/i,
+      self_hosted: /local/i,
+      agentverse: /hosted/i,
       windows: /windows/i,
       mac: /mac/i,
       ubuntu: /ubuntu/i,
     };
+
     return (
-      regexMap[selectedType]?.test(filename) ||
-      regexMap[selectedOS.toLowerCase()]?.test(filename)
+      regexMap[selectedType.split(" ").join("_").toLowerCase()]?.test(
+        filename,
+      ) || regexMap[selectedOS.toLowerCase()]?.test(filename)
     );
   };
 
   const handleCopy = () => {
-    const codeContent = codeRef.current?.textContent;
-    if (codeContent) {
-      navigator.clipboard.writeText(codeContent).then(() => {
+    const codeElements = codeRef.current?.querySelectorAll("code");
+    const codeText = [...(codeElements ?? [])]
+      .map((el) => el.textContent)
+      .join("\n");
+
+    if (codeText) {
+      navigator.clipboard.writeText(codeText).then(() => {
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 5000);
       });
     }
   };
+
 
   return (
     <div className="nx-flex nx-flex-col">
@@ -297,7 +250,7 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
                 selectedOption={selectedType}
                 onOptionSelect={setSelectedType}
                 placeholder="Select Language"
-                options={agentType.map((item) => item.label)}
+                options={agentType.map((item) => item.name)}
               />
             )}
             {isOSFile && (
@@ -344,7 +297,6 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
             style={{ overflowX: "scroll", width: "100%" }}
             ref={codeRef}
           >
-            {/* {filename && <span className="filename">{filename}</span>} */}
             {renderChild()}
           </div>
         </div>
@@ -353,6 +305,9 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
   );
 };
 
+const isLocalOrHosted = (name?: string) =>
+name?.startsWith("local-") || name?.startsWith("hosted-");
+
 export const ModifiedPre = ({
   children,
   filename,
@@ -360,13 +315,33 @@ export const ModifiedPre = ({
   children?: ReactNode;
   filename?: string;
 }) => {
+  const osMenu = ["windows", "mac", "ubuntu"];
+
+  const shouldApplyPreNormal = Boolean(filename && isLocalOrHosted(filename));
+
+  if (osMenu.includes(filename || "")) {
+    return (
+      <div>
+        <span className="filename">
+          {filename?.replace(/^(local-|hosted-)/, "")}
+        </span>
+        <div>{children}</div>
+      </div>
+    );
+  }
+
   return (
-    <Pre className="pre-normal">
-      <span>{filename}</span>
+    <Pre className={shouldApplyPreNormal ? "" : "pre-normal"}>
+      {filename && (
+        <span className="filename">
+          {filename.replace(/^(local-|hosted-)/, "")}
+        </span>
+      )}
       {children}
     </Pre>
   );
 };
+
 
 export const CodeGroup: React.FC<CodeGroupProps> = ({
   children,
