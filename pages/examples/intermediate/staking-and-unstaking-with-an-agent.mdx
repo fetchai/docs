@@ -1,0 +1,323 @@
+import { Callout } from 'nextra/components'
+
+# Staking and unstaking with an Agent  
+
+## Introduction
+
+In this example, we explore the implementation of staking and unstaking tokens using autonomous uAgents in a Web3 environment. Staking refers to the process of locking tokens in a smart contract to support network operations or earn rewards, while unstaking involves the withdrawal of these tokens after a specified period or conditions have been met. By leveraging the uAgents library and Web3, this setup enables agents to interact with smart contracts.
+
+
+### Supporting Documents
+   
+    - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
+    - [How to create an agent ↗️](../../guides/agents/create-a-uagent).
+    - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
+    - [Creating an interval task ↗️](/guides/agents/interval-task)
+    - [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+
+## Pre-requisites
+
+- **Python:** Download and install from [Python official website ↗️](https://www.python.org/downloads/).
+- **Poetry:** Install by following the instructions on [Poetry's official website ↗️](https://python-poetry.org/docs/#installation).
+- A running Ethereum node (or a provider like Infura) on [Infura official website ↗️](https://www.infura.io/).
+- **Contract ABI:** The ABI of the deployed contract where you want to perform staking and unstaking operations is required.
+
+
+## Project Structure
+
+```
+.staking-and-unstaking-with-agent
+├── poetry.lock
+├── pyproject.toml
+├── README.md
+└── web3
+    ├── contract_abi.json
+    └── staking-and-unstaking-with-agent.py
+```
+
+## Staking and Unstaking the Tokens with an Agents
+
+This example uses `uAgents` to facilitate staking and unstaking of tokens on a blockchain. The `user_agent` gathers user input to decide on the action and directs either the `stake_agent` or `unstake_agent` to execute the transaction. The `stake_agent` locks funds by creating and sending a staking transaction, while the `unstake_agent` processes unstaking transactions. Both agents handle transaction signing and receipt retrieval. All agents are managed and executed within a `Bureau`.
+
+
+### For staking and unstaking tokens, you need to consider the following:
+
+- Infura API Key and Endpoints: Obtain your Infura API key and endpoints to connect to the Ethereum network. you can see steps [Link ↗️](sending-and-verifying-token-transactions-with-agent#get-the-infura-api-key-and-endpoints)
+
+#### ABI JSON and Contract Information: 
+- ABI JSON: Obtain the ABI (Application Binary Interface) JSON of the deployed staking contract. Alternatively, you can deploy your own contract with staking and unstaking functions. For instance, you can create and deploy your own contract using [Remix ↗️](https://remix-project.org/?lang=en). In this example, we have deployed our own contract.
+- Contract Address: Get the address of the deployed staking contract.
+- Private Key: Use your wallet private key to sign transactions.
+
+
+
+<Callout type="info" emoji="ℹ️">
+  Approve the Contract: Ensure that the contract has been approved to perform staking and unstaking operations on your behalf.
+</Callout>
+
+
+### Agents Overview
+
+#### 1. `User Agent`
+- Purpose: Acts as the primary interface for user interaction. It listens for `startup` events and prompts the user to decide whether to stake or unstake tokens.
+- Key Actions:
+  - On startup, it asks the user if they want to stake or unstake tokens.
+  - Based on user input, it sends a `StakingRequest` to either the `stake_agent` or `unstake_agent`.
+
+#### 2. `Stake Agent`
+- Purpose: Handles the staking of tokens.
+- Key Actions:
+  - Receives a `StakingRequest` with the action `stake_tokens`.
+  - Constructs and sends a transaction to stake tokens.
+  - After the transaction is processed, it sends a `StakingResponse` with the transaction receipt back to the `user_agent`.
+
+#### 3. `Unstake Agent`
+- Purpose: Handles the unstaking of tokens.
+- Key Actions:
+  - Receives a `StakingRequest` with the action `unstake_tokens`.
+  - Constructs and sends a transaction to unstake tokens.
+  - After the transaction is processed, it sends a `StakingResponse` with the transaction receipt back to the `user_agent`.
+
+### Workflow
+
+#### 1. User Interaction:
+   - When the system starts, the `user_agent` triggers a startup event.
+   - The `user_agent` prompts the user to choose between staking or unstaking tokens.
+
+#### 2. Request Handling:
+   - Based on the user's choice, the `user_agent` sends a `StakingRequest` to the appropriate agent (`stake_agent` or `unstake_agent`).
+
+#### 3. Transaction Execution:
+   - The `stake_agent` or `unstake_agent` receives the `StakingRequest` and performs the following:
+     - Builds and signs a transaction using the Web3 library.
+     - Sends the transaction to the blockchain.
+     - Waits for the transaction to be mined and retrieves the transaction receipt.
+
+4. Response Handling:
+   - After processing the transaction, the `stake_agent` or `unstake_agent` sends a `StakingResponse` back to the `user_agent`.
+   - The `user_agent` receives the response and logs the transaction receipt details.
+   - The `user_agent` updates the storage with the transaction receipt and informs the user of the transaction status.
+
+
+```py copy filename="staking-and-unstaking-with-agent.py"
+from uagents import Agent, Bureau, Context, Model
+from web3 import Web3
+from dotenv import load_dotenv
+from typing import Optional, Dict
+import os
+import json
+
+load_dotenv()
+
+
+provider_url = os.getenv("WEB3_PROVIDER_URL")
+sender_address = os.getenv("SENDER_ADDRESS")
+sender_private_key = os.getenv("SENDER_PRIVATE_KEY")
+deployed_contract_address = os.getenv("DEPLOYED_CONTRACT_ADDRESS")
+amount = os.getenv("AMOUNT")
+
+
+with open("contract_abi.json") as abi_file:
+    proxy_abi = json.load(abi_file)
+
+
+w3 = Web3(Web3.HTTPProvider(provider_url))
+proxy_contract = w3.eth.contract(address=deployed_contract_address, abi=proxy_abi)
+stake_amount = w3.to_wei(amount, "mwei")
+
+
+class StakingRequest(Model):
+    action: str
+    transaction_hash: Optional[str] = None
+
+
+class StakingResponse(Model):
+    message: str
+    transaction_receipt: Optional[Dict] = None
+
+
+user_agent = Agent(name="user_agent", seed="user_agent recovery phrase")
+stake_agent = Agent(name="stake_agent", seed="stake_agent recovery phrase")
+unstake_agent = Agent(name="unstake_agent", seed="unstake_agent recovery phrase")
+
+
+def create_receipt_dict(receipt) -> Dict:
+    """
+    Creates a dictionary from the transaction receipt details.
+    Args:
+        receipt: The transaction receipt returned by the Web3 `wait_for_transaction_receipt` function.
+    Returns:
+        A dictionary containing details of the transaction receipt.
+    """
+    return {
+        "transactionHash": receipt.transactionHash.hex(),
+        "transactionIndex": receipt.transactionIndex,
+        "blockNumber": receipt.blockNumber,
+        "blockHash": receipt.blockHash.hex(),
+        "cumulativeGasUsed": receipt.cumulativeGasUsed,
+        "gasUsed": receipt.gasUsed,
+        "status": receipt.status,
+    }
+
+
+def sign_and_send_transaction(transaction, sender_account):
+    """
+    Signs and sends a transaction to the blockchain.
+    Args:
+        transaction: The transaction to be sent.
+        sender_account: The account object used to sign the transaction.
+    Returns:
+        The receipt of the transaction.
+    """
+    signed_txn = sender_account.sign_transaction(transaction)
+    tx_hash = w3.eth.send_raw_transaction(signed_txn.raw_transaction)
+    return w3.eth.wait_for_transaction_receipt(tx_hash)
+
+
+@user_agent.on_event("startup")
+async def handle_user_input(ctx: Context):
+    ctx.logger.info(f"*** User Agent startup event triggered. ***")
+    action = input("Do you want to 'stake' or 'unstake' tokens? ")
+    if action.lower() == "stake":
+        await ctx.send(stake_agent.address, StakingRequest(action="stake_tokens"))
+    elif action.lower() == "unstake":
+        await ctx.send(unstake_agent.address, StakingRequest(action="unstake_tokens"))
+    else:
+        ctx.logger.info("*** Invalid action. Please enter 'stake' or 'unstake'. ***")
+
+
+@user_agent.on_message(model=StakingResponse)
+async def user_agent_response_handler(ctx: Context, sender: str, msg: StakingResponse):
+    ctx.logger.info(f"*** Received response from {sender}: {msg.message} ***")
+    if msg.transaction_receipt is not None:
+        ctx.storage.set("receipt", msg.transaction_receipt)
+        ctx.logger.info(f"*** Transaction successful: {msg.transaction_receipt} ***")
+
+
+@stake_agent.on_message(model=StakingRequest, replies=StakingResponse)
+async def stake_handler(ctx: Context, sender: str, msg: StakingRequest):
+    sender_account = w3.eth.account.from_key(sender_private_key)
+    gas_price = w3.eth.gas_price
+    nonce = w3.eth.get_transaction_count(sender_address)
+    ctx.logger.info(f"*** Preparing to stake tokens ***")
+    stake_transaction = proxy_contract.functions.stake(stake_amount).build_transaction(
+        {
+            "chainId": w3.eth.chain_id,
+            "gas": 400000,
+            "gasPrice": gas_price,
+            "nonce": nonce,
+        }
+    )
+    receipt = sign_and_send_transaction(stake_transaction, sender_account)
+    receipt_dict = create_receipt_dict(receipt)
+    ctx.logger.info(
+        f"*** Staking Transaction complete. Receipt details: {receipt_dict} ***"
+    )
+    await ctx.send(
+        sender,
+        StakingResponse(
+            message="Staking Transaction complete", transaction_receipt=receipt_dict
+        ),
+    )
+
+
+@unstake_agent.on_message(model=StakingRequest, replies=StakingResponse)
+async def unstake_handler(ctx: Context, sender: str, msg: StakingRequest):
+    sender_account = w3.eth.account.from_key(sender_private_key)
+    gas_price = w3.eth.gas_price
+    nonce = w3.eth.get_transaction_count(sender_address)
+    ctx.logger.info(f"*** Preparing to unstake tokens ***")
+    unstake_transaction = proxy_contract.functions.unstake(
+        stake_amount
+    ).build_transaction(
+        {
+            "chainId": w3.eth.chain_id,
+            "gas": 400000,
+            "gasPrice": gas_price,
+            "nonce": nonce,
+        }
+    )
+    receipt = sign_and_send_transaction(unstake_transaction, sender_account)
+    receipt_dict = create_receipt_dict(receipt)
+    ctx.logger.info(
+        f"*** Unstaking Transaction complete. Receipt details: {receipt_dict} ***"
+    )
+    await ctx.send(
+        sender,
+        StakingResponse(
+            message="Unstaking Transaction complete", transaction_receipt=receipt_dict
+        ),
+    )
+
+
+bureau = Bureau()
+bureau.add(user_agent)
+bureau.add(stake_agent)
+bureau.add(unstake_agent)
+if __name__ == "__main__":
+    bureau.run()
+```
+
+### Poetry Dependencies
+
+```pyproject.toml copy filename="pyproject.toml"
+[tool.poetry.dependencies]
+python = "^3.10"
+web3 = "^7.0.0"
+python-dotenv = "^1.0.1"
+uagents = { version = "^0.13.0", python = ">=3.10,<3.13" }
+```
+
+### How to Run This Example
+
+#### Update the Required environment variables
+
+```env copy filename=".env.example"
+WEB3_PROVIDER_URL=
+SENDER_ADDRESS=
+SENDER_PRIVATE_KEY=
+DEPLOYED_CONTRACT_ADDRESS=
+AMOUNT=
+```
+
+#### Instructions to execute the example.
+
+- Navigate to the root folder of the example.
+- Update the `.env` file.
+- Install dependencies by running `poetry install`.
+- Execute the script with `python staking-and-unstaking-with-agent.py`.
+
+### Expected Output
+
+![](src/images/examples/explorer.png)
+
+#### Output for Staking the Token:
+
+```
+INFO:     [user_agent]: *** User Agent startup event triggered. ***
+Do you want to 'stake' or 'unstake' tokens? stake
+INFO:     [stake_agent]: *** Preparing to stake tokens ***
+INFO:     [stake_agent]: *** Staking Transaction complete. Receipt details: {'transactionHash': 'e9df2da422e44944abcb643e898958b6a938c70ad4fef7e05f23b8c9439160a7', 'transactionIndex': 19, 'blockNumber': 6630791, 'blockHash': '9e15205b94d9fff8f0818ed8ae1b2c3ac74b718be03efb43ce66ce42c62b60e6', 'cumulativeGasUsed': 1501911, 'gasUsed': 67147, 'status': 1} ***
+INFO:     [user_agent]: *** Received response from agent1qw2lerut2he47tr5rn8yngvzcwt7kak99q9cafux54s8tua5ueu2jgvudue: Staking Transaction complete ***
+INFO:     [user_agent]: *** Transaction successful: {'transactionHash': 'e9df2da422e44944abcb643e898958b6a938c70ad4fef7e05f23b8c9439160a7', 'transactionIndex': 19, 'blockNumber': 6630791, 'blockHash': '9e15205b94d9fff8f0818ed8ae1b2c3ac74b718be03efb43ce66ce42c62b60e6', 'cumulativeGasUsed': 1501911, 'gasUsed': 67147, 'status': 1} ***
+INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+```
+
+#### Output for Unstaking the Token:
+
+```
+INFO:     [user_agent]: *** User Agent startup event triggered. ***
+Do you want to 'stake' or 'unstake' tokens? unstake
+INFO:     [unstake_agent]: *** Preparing to unstake tokens ***
+INFO:     [unstake_agent]: *** Unstaking Transaction complete. Receipt details: {'transactionHash': '8e5ad8ce49c85bbdd6b0babc87f0f5c5c661353fbd9383c543115703073840fe', 'transactionIndex': 62, 'blockNumber': 6630800, 'blockHash': '4abd693bd7e51efadba94e77ce894ed8660bfb773f16af03f5fd701b5cd4837c', 'cumulativeGasUsed': 9297352, 'gasUsed': 61263, 'status': 1} ***
+INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     [user_agent]: *** Received response from agent1qgl0x9vpre6almvnytddl8gqtrtcx4cmxssp4m5adhs5gq99y30jy3v60ct: Unstaking Transaction complete ***
+INFO:     [user_agent]: *** Transaction successful: {'transactionHash': '8e5ad8ce49c85bbdd6b0babc87f0f5c5c661353fbd9383c543115703073840fe', 'transactionIndex': 62, 'blockNumber': 6630800, 'blockHash': '4abd693bd7e51efadba94e77ce894ed8660bfb773f16af03f5fd701b5cd4837c', 'cumulativeGasUsed': 9297352, 'gasUsed': 61263, 'status': 1} ***
+```
+
+
+
+
+
+
+
