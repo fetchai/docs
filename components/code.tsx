@@ -38,6 +38,77 @@ interface DropdownProps {
   placeholder?: string;
 }
 
+interface OsOption {
+  name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  icon: any;
+}
+
+interface OsDropDownProps {
+  selectedOption: string | null;
+  onOptionSelect: (option: string) => void;
+  placeholder: string;
+  options: OsOption[];
+}
+
+export const OsDropDown: React.FC<OsDropDownProps> = ({
+  selectedOption,
+  onOptionSelect,
+  placeholder,
+  options,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionSelect = (option: string) => {
+    onOptionSelect(option);
+    setIsOpen(false);
+  };
+
+  const selectedOptionData = options.find((opt) => opt.name === selectedOption);
+
+  return (
+    <div className="os-dropdown">
+      <div
+        className="nx-gap-1 nx-items-center nx-cursor-pointer nx-relative nx-flex"
+        onClick={toggleDropdown}
+      >
+        {selectedOptionData ? (
+          <>{selectedOptionData.icon && <selectedOptionData.icon />}</>
+        ) : (
+          placeholder
+        )}
+        <DropDownArrow />
+      </div>
+      {isOpen && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          transition={{ duration: 0.1 }}
+          className="nx-z-50 nx-mt-2 nx-absolute dropDown-os"
+        >
+          {options.map((option, index) => (
+            <div
+              key={index}
+              className={`osmenu-tab-container nx-justify-center nx-cursor-pointer nx-items-center ${
+                selectedOption === option.name ? "blue-background" : ""
+              }`}
+              onClick={() => handleOptionSelect(option.name)}
+            >
+              {option.icon && (
+                <option.icon selectedOS={selectedOption} name={option.name} />
+              )}
+            </div>
+          ))}
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
 export const Dropdown: React.FC<DropdownProps> = ({
   options,
   selectedOption,
@@ -253,11 +324,11 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
               />
             )}
             {isOSFile && (
-              <Dropdown
+              <OsDropDown
                 selectedOption={selectedOS}
                 onOptionSelect={setSelectedOS}
                 placeholder="Select Language"
-                options={osmenu.map((item) => item.name)}
+                options={osmenu as []}
               />
             )}
           </div>
@@ -310,11 +381,30 @@ const isLocalOrHosted = (name?: string) =>
 export const ModifiedPre = ({
   children,
   filename,
+  hasCopyCode,
 }: {
   children?: ReactNode;
   filename?: string;
+  hasCopyCode?: boolean;
 }) => {
   const osMenu = ["windows", "mac", "ubuntu"];
+
+  const [isCopied, setIsCopied] = useState(false);
+  const codeRef = useRef<HTMLDivElement>(null);
+
+  const handleCopy = () => {
+    const codeElements = codeRef.current?.querySelectorAll("code");
+    const codeText = [...(codeElements ?? [])]
+      .map((el) => el.textContent)
+      .join("\n");
+
+    if (codeText) {
+      navigator.clipboard.writeText(codeText).then(() => {
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 5000);
+      });
+    }
+  };
 
   const shouldApplyPreNormal = Boolean(filename && isLocalOrHosted(filename));
 
@@ -331,12 +421,46 @@ export const ModifiedPre = ({
 
   return (
     <Pre className={shouldApplyPreNormal ? "" : "pre-normal"}>
-      {filename && (
-        <span className="filename">
-          {filename.replace(/^(local-|hosted-)/, "")}
-        </span>
+      {!isLocalOrHosted(filename) && (
+        <div
+          className={`nx-p-2 nx-flex ${
+            filename ? "nx-justify-between nx-items-center" : "nx-justify-end"
+          } nx-w-full`}
+        >
+          {filename && (
+            <span className="filename">
+              {filename.replace(/^(local-|hosted-)/, "")}
+            </span>
+          )}
+          {hasCopyCode && (
+            <div
+              onClick={handleCopy}
+              className="nx-cursor-pointer nx-ml-auto nx-flex nx-gap-2 nx-items-center"
+            >
+              {isCopied ? (
+                <>
+                  <svg
+                    width="12"
+                    height="8"
+                    viewBox="0 0 12 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
+                      fill="#0B1742"
+                    />
+                  </svg>
+                  <span className="nx-copy-text">Copied</span>
+                </>
+              ) : (
+                <CopyIcon />
+              )}
+            </div>
+          )}
+        </div>
       )}
-      {children}
+      <div ref={codeRef}>{children}</div>
     </Pre>
   );
 };
