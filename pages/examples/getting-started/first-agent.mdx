@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code"
+
 # Create your first Agent
 
 ## Introduction
@@ -19,23 +21,36 @@ Let's get started and explore the basic concepts you need to develop your first 
 
 ## The agent
 
-```py copy filename="agent.py"
-# Import necessary classes from the uAgents library
-from uagents import Agent, Context
+<CodeGroup isLocalHostedFile>
 
-# Create an agent named alice
-agent = Agent(name="alice")
+        ```py copy filename="agent-local.py"
+        # Import necessary classes from the uAgents library
+        from uagents import Agent, Context
 
-# Function to be called when the agent is started
-@agent.on_event("startup")
-async def introduce_agent(ctx: Context):
-    # Print a greeting message with the agent's name and its address
-    print(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+        # Create an agent named alice
+        agent = Agent(name="alice")
 
-# Run the agent only when the script is executed directly
-if __name__ == "__main__":
-    agent.run()
-```
+        # Function to be called when the agent is started
+        @agent.on_event("startup")
+        async def introduce_agent(ctx: Context):
+            # Print a greeting message with the agent's name and its address
+            print(f"Hello, I'm agent {ctx.name} and my address is {agent.address}.")
+
+        # Run the agent only when the script is executed directly
+        if __name__ == "__main__":
+            agent.run()
+        ```
+
+        ```py copy filename="agent-hosted.py"
+        # Import necessary classes from the uAgents library
+        from uagents import Agent, Context
+        # Function to be called when the agent is started
+        @agent.on_interval(period=3.0)
+        async def introduce_agent(ctx: Context):
+            # Print a greeting message with the agent's name and its address
+            print(f"Hello, I'm agent {ctx.name} and my address is {agent.address}.")
+        ```
+</CodeGroup>
 
 ## Expected Output
 

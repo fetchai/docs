@@ -43,12 +43,12 @@ validators_stake = [int(validator.tokens) for validator in resp.validators if va
 total_stake = sum(validators_stake)
 
 # For every bonded validator, we print commission and percentage of total stake
-print("MONIKER      COMISSION   % of TOTAL STAKE")
+print("MONIKER      COMMISSION   % of TOTAL STAKE")
 for validator in resp.validators:
     if validator.status == 3:
         moniker = validator.description.moniker
-        comission = int(validator.commission.commission_rates.rate)/1e18*100
-        print(moniker[:10]," ", comission,"%     ", round(int(validator.tokens)/total_stake*100,3),"%")
+        commission = int(validator.commission.commission_rates.rate)/1e18*100
+        print(moniker[:10]," ", commission,"%     ", round(int(validator.tokens)/total_stake*100,3),"%")
 ```
 
 Once you run the code above, you will observe each validator commission rate and its percentage delegated of the total stake. The most important parameter to observe in each validator is the commission it takes from rewards. We should always select a validator with the lower commission as long as it has a reasonable stake compared with the total stake.
@@ -62,7 +62,7 @@ selected_validator = "validator0"
 validator = [v for v in validators if v.moniker == selected_validator][0]
 query_validator = [v for v in resp.validators if v.description.moniker == selected_validator][0]
 
-# Set the comission %
+# Set the commission %
 commission = int(query_validator.commission.commission_rates.rate)/1e18
 
 # Set percentage delegated of total stake
@@ -143,10 +143,10 @@ We can now proceed to calculate a theoretical staking rewards rate using the var
 
 ```py copy
 # Calculate annual reward
-anual_reward = (inflation * total_supply) *pct_delegated* (1- community_tax)*(1- commission)
+annual_reward = (inflation * total_supply) *pct_delegated* (1- community_tax)*(1- commission)
 
 # Convert from annual reward to minute reward
-minute_reward = anual_reward/360/24/60
+minute_reward = annual_reward/360/24/60
 
 # Set the rate
 rate = minute_reward/initial_stake
@@ -325,7 +325,7 @@ def main():
     total_stake = sum(validators_stake)
 
     # Get validators commissions
-    validators_comission = [
+    validators_commission = [
         int(validator.commission.commission_rates.rate)
         for validator in resp.validators
         if validator.status == 3
@@ -337,10 +337,10 @@ def main():
     # Choose a threshold for a validators minimum percentage of total stake delegated
     stake_threshold = 0.10
 
-    for _i in range(len(validators_comission)):
+    for _i in range(len(validators_commission)):
 
         # Choose validator with lower commission
-        validator_index = validators_comission.index(min(validators_comission))
+        validator_index = validators_commission.index(min(validators_commission))
 
         # Verify that it meets the minimum % threshold
         validator_stake_pct = validators_stake[validator_index] / total_stake
@@ -350,12 +350,12 @@ def main():
             validator = validators[validator_index]
             break
 
-        # We omit this validator by setting his commssion to infinity
-        validators_comission[validator_index] = float("inf")
+        # We omit this validator by setting his commission to infinity
+        validators_commission[validator_index] = float("inf")
 
     if validator == "not_selected":
-        # Restart validators_comission list with original values
-        validators_comission = [
+        # Restart validators_commission list with original values
+        validators_commission = [
             int(validator.commission.commission_rates.rate)
             for validator in resp.validators
             if validator.status == 3
@@ -364,7 +364,7 @@ def main():
         print("No validator meets the minimum stake threshold requirement")
 
         # Proceed to select the validator with the lowest commission
-        validator_index = validators_comission.index(min(validators_comission))
+        validator_index = validators_commission.index(min(validators_commission))
         validator = validators[validator_index]
 
     # Query validator commission
@@ -430,7 +430,7 @@ def main():
     community_tax = float(json.loads(resp.param.value))
 
     # Annual reward calculation
-    anual_reward = (
+    annual_reward = (
         (inflation * total_supply)
         * pct_delegated
         * (1 - community_tax)
@@ -438,7 +438,7 @@ def main():
     )
 
     # Convert from annual reward to minute reward
-    minute_reward = anual_reward / 360 / 24 / 60
+    minute_reward = annual_reward / 360 / 24 / 60
     rate = minute_reward / initial_stake
 
     # Compute optimal period

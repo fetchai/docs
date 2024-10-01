@@ -33,46 +33,46 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Local agent setup
 
-    ```py copy filename="agent_1.py"
-    from uagents import Agent, Context, Model
-
-    class Message(Model):
-        message: str
-
-    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-    SEED_PHRASE = "put_your_seed_phrase_here"
-
-    # Now your agent is ready to join the agentverse!
-    agent = Agent(
-        name="alice",
-        seed=SEED_PHRASE,
-        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-    )
-
-    # Copy the address shown below
-    print(f"Your agent's address is: {agent.address}")
-
-    if __name__ == "__main__":
-        agent.run()
-   ```
+        ```py copy filename="agent_1.py"
+        from uagents import Agent, Context, Model
+    
+        class Message(Model):
+            message: str
+    
+        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+        SEED_PHRASE = "put_your_seed_phrase_here"
+    
+        # Now your agent is ready to join the agentverse!
+        agent = Agent(
+            name="alice",
+            seed=SEED_PHRASE,
+            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+        )
+    
+        # Copy the address shown below
+        print(f"Your agent's address is: {agent.address}")
+    
+        if __name__ == "__main__":
+            agent.run()
+       ```
 
 Importantly, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters to correctly run this example.
 
 You should get something similar within your terminal output:
 
-    ```
-    Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cukd7gkegxcm5vx5pku7kf
-    INFO:     [alice]: Registering on almanac contract...
-    INFO:     [alice]: Registering on almanac contract...complete
-    INFO:     [alice]: Connecting to mailbox server at agentverse.ai
-    INFO:     [alice]: Mailbox access token acquired
-    ```
+        ```
+        Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cukd7gkegxcm5vx5pku7kf
+        INFO:     [alice]: Registering on almanac contract...
+        INFO:     [alice]: Registering on almanac contract...complete
+        INFO:     [alice]: Connecting to mailbox server at agentverse.ai
+        INFO:     [alice]: Mailbox access token acquired
+        ```
 
 Now that you have correctly retrieved your agent's address, let's head over to the [Agentverse ↗️](https://agentverse.ai)!
 
 ## Create a Mailbox in Agentverse
 
-Make sure that you are signed into the [Agentverse ↗️](https://agentverse.ai) platform. We will now create a Mailbox for our local agent above. To do so, copy the [local agent address ↗️](/guides/agents/getting-started/getting-uagent-address#print-uagent-address) available within your terminal and head over to the **Agentverse: My Agents** tab. Once there, click on the **Local Agents** tab and click on **Connect Local Agent** button.
+Make sure that you are signed in to the [Agentverse ↗️](https://agentverse.ai) platform. We will now create a Mailbox for our local agent above. To do so, copy the [local agent address ↗️](/guides/agents/getting-started/getting-uagent-address#print-uagent-address) available within your terminal and head over to the **Agentverse: My Agents** tab. Once there, click on the **Local Agents** tab and click on **Connect Local Agent** button.
 
 ![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1.png)
 
@@ -88,65 +88,65 @@ Once the agent is correctly retrieved, you will have to give it a **name**. When
 
 Let's update `alice`, alice will now print to console any message it receives, provided the message is of type `Message`. Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`,  `name`, `seed`  and `mailbox` parameters to correctly run this code:
 
-    ```py copy filename="alice.py"
-    from uagents import Agent, Context, Model
-
-    class Message(Model):
-        message: str
-
-    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-    SEED_PHRASE = "put_your_seed_phrase_here"
-
-    # Now your agent is ready to join the agentverse!
-    agent = Agent(
-        name="alice",
-        seed=SEED_PHRASE,
-        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-    )
-
-    @agent.on_message(model=Message, replies={Message})
-    async def handle_message(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    if __name__ == "__main__":
-        agent.run()
-   ```
+        ```py copy filename="alice.py"
+        from uagents import Agent, Context, Model
+    
+        class Message(Model):
+            message: str
+    
+        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+        SEED_PHRASE = "put_your_seed_phrase_here"
+    
+        # Now your agent is ready to join the agentverse!
+        agent = Agent(
+            name="alice",
+            seed=SEED_PHRASE,
+            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+        )
+    
+        @agent.on_message(model=Message, replies={Message})
+        async def handle_message(ctx: Context, sender: str, msg: Message):
+            ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    
+        if __name__ == "__main__":
+            agent.run()
+       ```
 
 ## Creating a second agent
 
 Let's create and run a second agent to message Alice every 3 seconds. You need to provide the `ALICE_ADDRESS`, `name` and `seed` parameters to correctly run this code:
 
-    ```py copy filename="agent_2.py"
-
-    from uagents import Agent, Bureau, Context, Model
-    from datetime import datetime
-
-    class Message(Model):
-        message: str
-
-    agent_2 = Agent(name="agent_2", seed="agent_2 recovery phrase", port=8001, endpoint="http://localhost:8001/submit")
-
-    ALICE_ADDRESS = "add_address_of_alice_agent"
-
-    @agent_2.on_interval(period=3.0)
-    async def send_message(ctx: Context):
-       await ctx.send(ALICE_ADDRESS, Message(message=f"hello {datetime.today().date()}"))
-
-    if __name__ == "__main__":
-        agent.run()
-
-    ```
+        ```py copy filename="agent_2.py"
+    
+        from uagents import Agent, Bureau, Context, Model
+        from datetime import datetime
+    
+        class Message(Model):
+            message: str
+    
+        agent_2 = Agent(name="agent_2", seed="agent_2 recovery phrase", port=8001, endpoint="http://localhost:8001/submit")
+    
+        ALICE_ADDRESS = "add_address_of_alice_agent"
+    
+        @agent_2.on_interval(period=3.0)
+        async def send_message(ctx: Context):
+           await ctx.send(ALICE_ADDRESS, Message(message=f"hello {datetime.today().date()}"))
+    
+        if __name__ == "__main__":
+            agent.run()
+    
+        ```
 
 ## Testing
 
 With both `alice` and `agent_2` running, stop `alice` and let `agent_2` run for a further 20 seconds, or so. After
 that period of time, restart `alice` and she should print out a bunch of messages from the mailbox, like so:
 
-    ```
-        INFO:     [alice]: Registering on almanac contract...complete
-        INFO:     [alice]: Connecting to mailbox server at agentverse.ai
-        INFO:     [alice]: Mailbox access token acquired
-    ```
+        ```
+            INFO:     [alice]: Registering on almanac contract...complete
+            INFO:     [alice]: Connecting to mailbox server at agentverse.ai
+            INFO:     [alice]: Mailbox access token acquired
+        ```
 
  **You can now restart your agent!**
 

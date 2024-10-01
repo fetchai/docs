@@ -1,8 +1,10 @@
+import { CodeGroup } from "../../../../../components/code";
+
 # Stake auto-compounder
 
 ## Introduction
 
-The Stake Auto-Compounder is a CosmPy based use case developed using Python and designed to automate the process of staking tokens in a blockchain network, claiming rewards, and compounding those rewards by re-delegating them to a validator. When an account delegates tokens to a network's validator, it will start generating rewards proportionally to the amount of [`Stake` ↗️](/guides/fetch-network/cosmpy/staking) delegated. But since rewards aren not automatically added to your stake and therefore do not contribute to future rewards, we can perform a compounding strategy to generate exponential rewards.
+The Stake Auto-Compounder is a CosmPy based use case developed using Python and designed to automate the process of staking tokens in a blockchain network, claiming rewards, and compounding those rewards by re-delegating them to a validator. When an account delegates tokens to a network's validator, it will start generating rewards proportionally to the amount of [`Stake` ↗️](/guides/fetch-network/cosmpy/staking) delegated. But since rewards are not automatically added to your stake and therefore do not contribute to future rewards, we can perform a compounding strategy to generate exponential rewards.
 
 ## Delegate your tokens
 
@@ -75,7 +77,24 @@ After having defined such parameters, we can then start a timer that claims rewa
 
 Below we provide a step-by-step guide to create an auto compounder using the `cosmpy.aerial` package.
 
-1. First of all, create a Python script and name it: `touch aerial_compounder.py`
+1. First of all, create a Python script and name it:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch aerial_compounder.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > aerial_compounder.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch aerial_compounder.py
+        ```
+
+    </CodeGroup>
+
 2. We need to import the necessary modules, including `argparse`, `time`, and various modules from the `cosmpy.aerial` package:
 
     ```py copy

@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../../../components/code";
+
 # Wallet top-up 💵
 
 ## Introduction
@@ -8,7 +10,24 @@ The following guide is about how to top-up a wallet using the CosmPy library. To
 
 ### Aerial authorization: authorization address and authorization wallet
 
-1. Let's start by creating a Python script for this: `touch aerial_authz.py`
+1. Let's start by creating a Python script for this:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch aerial_authz.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > aerial_authz.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch aerial_authz.py
+        ```
+
+    </CodeGroup>
+
 2. First of all, we need to import the necessary classes:
 
     ```py copy
@@ -55,7 +74,6 @@ The following guide is about how to top-up a wallet using the CosmPy library. To
         return parser.parse_args()
     ```
 
-
     The `_parse_commandline()` function is using the `argparse` module to define a command-line interface for this script. It expects and processes three command-line arguments:
 
         1. `authz_address`: this is a required argument. It expects the user to provide an address that will be granted authorization to send tokens from a wallet.
@@ -64,9 +82,9 @@ The following guide is about how to top-up a wallet using the CosmPy library. To
 
         3. `spend_limit`: this is another optional argument. If provided, it should be an integer representing the maximum tokens that the `authz_wallet` will be able to spend from the wallet. If not provided, it defaults to `1000000000000000000`.
 
-    The `help` parameter provides a description of what each argument is for, which can be helpful for users who might not be familiar with the script. After defining these arguments, the function uses `parser.parse_args()` to process the command-line arguments provided by the user and return them as an object containing the values provided for `authz_address`, `total_authz_time`, and `spend_limit`.
+        The `help` parameter provides a description of what each argument is for, which can be helpful for users who might not be familiar with the script. After defining these arguments, the function uses `parser.parse_args()` to process the command-line arguments provided by the user and return them as an object containing the values provided for `authz_address`, `total_authz_time`, and `spend_limit`.
 
-4. We can the define our `main()` function:
+4. We can then define our `main()` function:
 
     ```py copy
     def main():
@@ -226,7 +244,24 @@ if __name__ == "__main__":
 
 We are now ready to write a Python script which automates the process of topping-up the designated wallet (`task_wallet`) from the main wallet (`wallet`) after authorization from `authz_wallet`, whenever the balance of `task_wallet` falls below a certain threshold (`minimum_balance`).
 
-1. Let's create a Python script for this and name it: `touch aerial_topup.py`
+1. Let's create a Python script for this and name it: 
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch aerial_topup.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > aerial_topup.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch aerial_topup.py
+        ```
+
+    </CodeGroup>
+
 2. Let's then import the needed modules such as `argparse` for command-line argument parsing and modules from the `cosmpy` library for blockchain interaction:
 
     ```py copy

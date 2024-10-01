@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../../../components/code";
+
 # Oracles 🔮
 
 ## Introduction
@@ -17,7 +19,24 @@ We initially need to download the binaries for both contracts, which can be done
 
 ### Aerial oracle
 
-1. First of all, create a Python script and name it: `touch aerial_oracle.py`
+1. First of all, create a Python script and name it:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch aerial_oracle.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > aerial_oracle.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch aerial_oracle.py
+        ```
+
+    </CodeGroup>
+   
 2. We would then also require the following imports:
 
     ```py copy
@@ -41,7 +60,7 @@ We initially need to download the binaries for both contracts, which can be done
     DEFAULT_TIMEOUT = 60.0
     ```
 
-5. We then proceed and define a `_parse_commandline()` function by first importing the `argparse` module, which is a standard Python module for parsing command-line arguments:
+4. We then proceed and define a `_parse_commandline()` function by first importing the `argparse` module, which is a standard Python module for parsing command-line arguments:
 
     ```py copy
     def _parse_commandline():
@@ -60,7 +79,7 @@ We initially need to download the binaries for both contracts, which can be done
 
    This first creates an argument `parser` object. The `ArgumentParser` class provides a way to specify the arguments your script should accept and automatically generates help messages and error messages. We then use `add_argument()` to add a positional argument named `contract_path`. This argument is required and should be a path to the oracle contract that you want to upload. The help argument provides a description of what this argument does. We further add another positional argument named `contract_address`. This argument is optional (`nargs="?"` allows it to be omitted), and it should be of type `Address`. The `type` argument specifies the type of the argument. In this case, `Address` is a custom type or class used to represent addresses. The `help` argument provides a description of what this argument does. At the end, we parse the command-line arguments provided when the script is executed. It returns an object that contains the values of the parsed arguments.
 
-6. We then need to proceed and define our `main()` function:
+5. We then need to proceed and define our `main()` function:
 
     ```py copy
     def main():
@@ -122,9 +141,9 @@ We initially need to download the binaries for both contracts, which can be done
 
     We can finally define a second `while` loop which runs indefinitely: it sends a GET request to a URL (`COIN_PRICE_URL`) to retrieve coin prices, then extracts the price in USD. It then calculates a value based on the price and the specified decimal precision (`ORACLE_VALUE_DECIMALS`), and sets up an update message with the new oracle value. Lastly, it executes the update message, waits for the transaction to complete, prints the updated oracle value and indicates when the next update will occur.
 
-This script let us interact with a blockchain ledger, deploy a contract, and perform oracle-related tasks such as updating values based on external data.
+    This script let us interact with a blockchain ledger, deploy a contract, and perform oracle-related tasks such as updating values based on external data.
 
-7. Save the script.
+6. Save the script.
 
 The overall script should be as follows:
 
@@ -216,7 +235,24 @@ if __name__ == "__main__":
 
 Now, we will write a script that deploys a contract that can request the oracle value in exchange for the required fee.
 
-1. Let's first create a Python script and name it: `touch aerial_oracle_client.py`
+1. Let's first create a Python script and name it:
+
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch aerial_oracle_client.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > aerial_oracle_client.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch aerial_oracle_client.py
+        ```
+
+    </CodeGroup>
+
 2. We start by importing the needed classes and define a `REQUEST_INTERVAL_SECONDS` variable:
 
     ```py copy

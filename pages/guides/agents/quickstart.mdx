@@ -1,6 +1,8 @@
+import { CodeGroup } from "../../../components/code";
+
 # Quick Start Guide for uAgents Framework
 
-This **quickstart guide** quickly let you install the uAgents Framework and get started in few steps!
+This **quickstart guide** quickly guides you through installing the uAgents Framework and building a couple of agents in a few steps.
 
 ## Installation
 
@@ -9,35 +11,38 @@ This **quickstart guide** quickly let you install the uAgents Framework and get 
     - **Python 3.8+**: A popular programming language.
     - **PIP**: Python package manager for installing libraries.
     - **Poetry (optional)**: For managing virtual environments and dependencies.
+    - **Windows, Mac or Ubuntu**.
 
 ### Installation steps
 
 1. Create a **Project Directory**. Open your terminal and create a new directory for your project:
 
-    ```py
+    ```py copy
     mkdir directory_name
     cd directory_name
     ```
 
 2. Initialize and activate virtual environment. Use **Poetry** to initialize and activate a virtual environment (optional but recommended):
 
-    ```py
+    ```py copy
     poetry init -n && poetry shell
     ```
 
-3. Install **uAgents Framework**. Use **PIP** to install the uAgents Framework package.
+3. Install **uAgents Framework**.
 
-    ```py
-    pip install uagents
+    ```py copy
+    poetry add uagents
     ```
 
 4. Verify installation. Check if the installation was successful.
 
-    ```py
-    pip show uagents
+    ```py copy
+    poetry show uagents
     ```
 
 ### Troubleshooting
+
+Sometimes you may face errors installing, we list the most common reasons below:
 
 **Problem on MacOS/Python 3.11**: Installing coincurve (17.0.0) fails.
 
@@ -51,13 +56,25 @@ Install the necessary tools.
 
 ## Creating a simple agent
 
-This example shows how to make an agent perform a task periodically.
+We should create something simple to get started, below the most basic of agents performs a task periodically.
 
 Create a new Python script:
 
-    ```py
-    touch interval_task.py
-    ```
+    <CodeGroup isOSFile>
+
+        ```py copy filename="mac"
+        touch interval_task.py
+        ```
+
+        ```py copy filename="windows"
+        echo. > interval_task.py
+        ```
+
+        ```py copy filename="ubuntu"
+        touch interval_task.py
+        ```
+
+    </CodeGroup>
 
 Open `interval_task.py` in your text editor and add the following code:
 
@@ -65,7 +82,7 @@ Open `interval_task.py` in your text editor and add the following code:
     from uagents import Agent, Context
 
     # Create an agent named Alice
-    alice = Agent(name="alice", seed="YOUR NEW PHRASE")
+    alice = Agent(name="alice", seed=YOUR NEW PHRASE)
 
     # Define a periodic task for Alice
     @alice.on_interval(period=2.0)
@@ -77,14 +94,14 @@ Open `interval_task.py` in your text editor and add the following code:
         alice.run()
     ```
 
-Be sure to update `seed` with a unique phrase.
+Be sure to update `seed` with a unique phrase, your seed will need to be wrapped in `"`.
 
 #### Run Script
 
 Run the script to see the output:
 
-    ```py
-    python interval-task.py
+    ```py copy
+    python interval_task.py
     ```
 
 **Expected Output**:
@@ -98,75 +115,153 @@ Run the script to see the output:
 
 ## Message Handling Example
 
-This guide will walk you through creating a simple interaction between two agents, Emma and Liam. Emma will send a message to Liam at regular intervals, and Liam will handle and log the received messages.
+This guide will walk you through creating a simple interaction between two agents. The first will send a message to the second one at regular intervals, and this latter one will handle and log the received messages.
 
-Create a new Python script:
+Create 2 new Python scripts:
 
-    ```py
-    touch simple_example.py
-    ```
+    <CodeGroup isOSFile>
 
-Open `simple_example.py` in your text editor and add the following code:
+        ```py copy filename="mac"
+        touch SenderAgent.py
+        ```
 
-    ```py copy filename="simple_example.py"
-    from uagents import Agent, Bureau, Context, Model
+        ```py copy filename="windows"
+        echo. > SenderAgent.py
+        ```
 
-    # Define the message structure
-    class Message(Model):
-        message: str
+        ```py copy filename="ubuntu"
+        touch SenderAgent.py
+        ```
 
-    # Create agents
-    emma = Agent(name="Emma", seed="emma_seed")
-    liam = Agent(name="Liam", seed="liam_seed")
+    </CodeGroup>
 
-    # Define behaviour for Emma
-    @emma.on_interval(period=3.0)
-    async def send_message(ctx: Context):
-        # Create an instance of the Message class with the desired content
-        message_to_liam = Message(message="Hey Liam, how's it going?")
-        # Send the message to Liam
-        await ctx.send(liam.address, message_to_liam)
+    <CodeGroup isOSFile>
 
-    # Define behavior for handling messages received by Emma
-    @emma.on_message(model=Message)
-    async def emma_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        ```py copy filename="mac"
+        touch ReceiverAgent.py
+        ```
 
-    # Define behavior for handling messages received by Liam
-    @liam.on_message(model=Message)
-    async def liam_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-        await ctx.send(emma.address, Message(message="Hello Emma! Great and you?"))
+        ```py copy filename="windows"
+        echo. > ReceiverAgent.py
+        ```
 
-    # Create a bureau and add agents
-    bureau = Bureau()
-    bureau.add(emma)
-    bureau.add(liam)
+        ```py copy filename="ubuntu"
+        touch ReceiverAgent.py
+        ```
 
-    # Run the bureau
-    if __name__ == "__main__":
-        bureau.run()
-    ```
+    </CodeGroup>
 
+Open `SenderAgent.py` in your text editor and add the following code:
+
+      ```py copy filename="SenderAgent.py"
+      from uagents import Agent, Context, Model
+      
+      
+      class Message(Model):
+          message: str
+      
+      
+      RECIPIENT_ADDRESS = (
+          "test-agent://agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859"
+      )
+      
+      SenderAgent = Agent(
+          name="SenderAgent",
+          port=8000,
+          seed="SenderAgent secret phrase",
+          endpoint=["http://127.0.0.1:8000/submit"],
+      )
+      
+      print(SenderAgent.address)
+
+      @SenderAgent.on_interval(period=2.0)
+      async def send_message(ctx: Context):
+          await ctx.send(RECIPIENT_ADDRESS, Message(message="Hi there. Let's start our conversation!"))
+      
+      
+      @SenderAgent.on_message(model=Message)
+      async def message_handler(ctx: Context, sender: str, msg: Message):
+          ctx.logger.info(f"Received message from {sender}: {msg.message}")
+      
+      
+      if __name__ == "__main__":
+          SenderAgent.run()
+      ```
+
+Then, open `ReceiverAgent.py` in your text editor and add the following code into it:
+
+       ```py copy filename="ReceiverAgent.py"
+      from uagents import Agent, Context, Model
+      
+      # NOTE: Run ReceiverAgent.py before running SenderAgent.py
+      
+      
+      class Message(Model):
+          message: str
+      
+      
+      ReceiverAgent = Agent(
+          name="ReceiverAgent",
+          port=8001,
+          seed="ReceiverAgent secret phrase",
+          endpoint=["http://127.0.0.1:8001/submit"],
+      )
+      
+      print(ReceiverAgent.address)
+      
+      @ReceiverAgent.on_message(model=Message)
+      async def message_handler(ctx: Context, sender: str, msg: Message):
+          ctx.logger.info(f"Received message from {sender}: {msg.message}")
+      
+          # send the response
+          await ctx.send(sender, Message(message="Cool! Let's get started!"))
+      
+      
+      if __name__ == "__main__":
+          ReceiverAgent.run()
+       ```
 Again, be sure to update `seed` with a unique phrase.
 
 #### Run Script
 
-Run the script to see the agents communicate:
+Run the scripts to see the agents communicating:
 
-    ```py
-    python simple_example.py
-    ```
+   ```py copy
+   python SenderAgent.py
+   ```
+
+   ```py copy
+   python ReceiverAgent.py
+   ```
 
 **Expected Output**:
 
-    ```
-    INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    INFO:     [ Liam]: Received message from agent1q2aexr7d0e0x6z5r8zs972jyd8uq9429tc2qfgpax96x6ppyjs25keexnuk: Hey Liam, how's it going?
-    INFO:     [ Emma]: Received message from agent1qfnv7prv0u9rc8p54yt373w4a2r6pyfsrschpfr7m3xqhjd6eyk2208022q: Hello Emma! Great and you?
-    ```
 
+- **SenderAgent**:
+
+   ```
+   agent1qdw67s95esk0zwn8qxf0ln22e8zah9rqfrqqa4qyda7mjtpf3hsw640wuwr
+   INFO:     [SenderAgent]: Registering on almanac contract...
+   INFO:     [SenderAgent]: Registering on almanac contract...complete
+   INFO:     [SenderAgent]: Received message from agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859: Cool! Let's get started!
+   INFO:     [SenderAgent]: Received message from agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859: Cool! Let's get started!
+   INFO:     [SenderAgent]: Received message from agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859: Cool! Let's get started!
+   ```
+
+- **ReceiverAgent**:
+
+   ```
+   agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859
+   INFO:     [ReceiverAgent]: Registering on almanac contract...
+   INFO:     [ReceiverAgent]: Registering on almanac contract...complete
+   INFO:     [ReceiverAgent]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+   INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
+   INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
+   INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
+   ```
+  
 ## Reach out to the Team!
 
-Cool! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network!
-Remember that our Team is available on [Telegram ↗️](https://t.me/fetch_ai) and [Discord ↗️](https://discord.gg/fetchai) channels for any additional inquiry.
+Excellent! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network! if you're keen to skip the more code focused guides, your best next steps would be [Communicating with agents](intermediate/communicating-with-other-agents).
+
+Note that our Team is available on [Discord ↗️](https://discord.gg/fetchai) for any additional inquiry.
