@@ -239,7 +239,6 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
     }
   };
 
-
   return (
     <div className="nx-flex nx-flex-col">
       <div className="custom-pre">
@@ -306,7 +305,7 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
 };
 
 const isLocalOrHosted = (name?: string) =>
-name?.startsWith("local-") || name?.startsWith("hosted-");
+  name?.startsWith("local-") || name?.startsWith("hosted-");
 
 export const ModifiedPre = ({
   children,
@@ -341,7 +340,6 @@ export const ModifiedPre = ({
     </Pre>
   );
 };
-
 
 export const CodeGroup: React.FC<CodeGroupProps> = ({
   children,
