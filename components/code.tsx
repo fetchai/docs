@@ -175,7 +175,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   );
 };
 
-export const MyComponent: React.FC<{
+export const CodeBlock: React.FC<{
   codeBlocks?: CodeBlock[];
   hasCopy?: boolean;
 }> = ({ codeBlocks, hasCopy }) => {

@@ -1,5 +1,5 @@
 import { Code, Pre } from "nextra/components";
-import { MyComponent } from "./code";
+import { CodeBlock } from "./code";
 
 import React, { useState } from "react";
 import { ApiIntro, Col, Properties, Property, Row } from "./mdx";
@@ -215,7 +215,7 @@ export const ApiResponses: React.FC<{
           ) : undefined}
         </Col>
         <Col>
-          <MyComponent
+          <CodeBlock
             hasCopy={true}
             codeBlocks={[
               {
@@ -272,7 +272,7 @@ export const ApiRequest: React.FC<{
           ) : undefined}
         </Col>
         <Col>
-          <MyComponent
+          <CodeBlock
             hasCopy={true}
             codeBlocks={[
               {
