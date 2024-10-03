@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code"
+
 # Query an agent using a proxy API
 
 ## Introduction
@@ -15,7 +17,33 @@ This example shows how to query an agent using a proxy API.
 
 #### The agent
 
-```py copy filename="agent.py"
+<CodeGroup hasCopy isLocalHostedFile>
+```py copy filename="hosted-agent.py"
+from uagents import Agent, Context, Model
+
+class TestRequest(Model):
+    message: str
+
+class Response(Model):
+    text: str
+
+@agent.on_event("startup")
+async def startup(ctx: Context):
+    ctx.logger.info(f"Starting up {agent.name}")
+    ctx.logger.info(f"With address: {agent.address}")
+    ctx.logger.info(f"And wallet address: {agent.wallet.address()}")
+
+@agent.on_query(model=TestRequest, replies={Response})
+async def query_handler(ctx: Context, sender: str, _query: TestRequest):
+    ctx.logger.info("Query received")
+    try:
+        # do something here
+        await ctx.send(sender, Response(text="success"))
+    except Exception:
+        await ctx.send(sender, Response(text="fail"))
+```
+
+```py copy filename="local-agent.py"
 from uagents import Agent, Context, Model
 
 class TestRequest(Model):
@@ -49,6 +77,7 @@ async def query_handler(ctx: Context, sender: str, _query: TestRequest):
 if __name__ == "__main__":
     agent.run()
 ```
+</CodeGroup>
 
 The agent is created using the `Agent` class from `uagents` library. It is initialized with a `name`, `seed`, `port`, and `endpoint`.
 It defines an `on_event` handler for the "startup" event, where it logs information about the agent's initialization.

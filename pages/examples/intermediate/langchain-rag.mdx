@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code"
+
 # Langchain RAG Agent
 
 
@@ -272,7 +274,9 @@ if __name__ == "__main__":
 
 The agent is designed to ask a predefined question to a RAG agent at regular intervals and handle the responses.
 
-```python copy filename="langchain_rag_user.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+```python copy filename="local-langchain_rag_user.py"
 from uagents import Agent, Context, Protocol
 from messages.requests import RagRequest
 from ai_engine import UAgentResponse
@@ -317,6 +321,51 @@ if __name__ == "__main__":
     rag_user.run()
 
 ```
+
+```python copy filename="hosted-langchain_rag_user.py"
+from uagents import Agent, Context, Protocol, Field
+from ai_engine import UAgentResponse
+
+QUESTION = "How to install uagents using pip"
+URL = "https://fetch.ai/docs/guides/agents/installing-uagent"
+DEEP_READ = (
+    "no"
+)
+
+class RagRequest(Model):
+    question: str = Field(
+        description="The question that the user wants to have an answer for."
+    )
+    url: str = Field(description="The url of the docs where the answer is.")
+    deep_read: Optional[str] = Field(
+        description="Specifies weather all nested pages referenced from the starting URL should be read or not. The value should be yes or no.",
+        default="no",
+    )
+
+RAG_AGENT_ADDRESS = "YOUR_LANGCHAIN_RAG_AGENT_ADDRESS"
+
+rag_user = Protocol("LangChain RAG user")
+
+
+@agent.on_interval(60, messages=RagRequest)
+async def ask_question(ctx: Context):
+    ctx.logger.info(
+        f"Asking RAG agent to answer {QUESTION} based on document located at {URL}, reading nested pages too: {DEEP_READ}"
+    )
+    await ctx.send(
+        RAG_AGENT_ADDRESS, RagRequest(question=QUESTION, url=URL, deep_read=DEEP_READ)
+    )
+
+
+@agent.on_message(model=UAgentResponse)
+async def handle_data(ctx: Context, sender: str, data: UAgentResponse):
+    ctx.logger.info(f"Got response from RAG agent: {data.message}")
+
+
+agent.include(rag_user)
+
+```
+</CodeGroup>
 
 ```python copy filename="main.py"
 from uagents import Bureau
