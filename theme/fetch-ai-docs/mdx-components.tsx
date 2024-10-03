@@ -11,8 +11,7 @@ import { useIntersectionObserver, useSlugs } from "./contexts/active-anchor";
 import React from "react";
 import Image from "next/image";
 import LinkImage from "../../src/svgs/external-link.svg";
-import { CustomPre } from "components/code";
-
+import { ModifiedPre } from "components/code";
 // Anchor links
 function HeadingLink({
   tag: Tag,
@@ -257,7 +256,7 @@ export const getComponents = ({
     td: Td,
     details: Details,
     summary: Summary,
-    pre: (props) => <CustomPre {...props} />,
+    pre: (props) => <ModifiedPre {...props} />,
     code: Code,
     ...components,
   };

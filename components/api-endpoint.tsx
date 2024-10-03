@@ -1,16 +1,8 @@
-import { Code } from "nextra/components";
-import { CustomPre } from "./code";
+import { Code, Pre } from "nextra/components";
+import { CodeBlock } from "./code";
 
 import React, { useState } from "react";
-import {
-  ApiIntro,
-  Col,
-  Properties,
-  Property,
-  Row,
-  Tab,
-  DropDownTabs,
-} from "./mdx";
+import { ApiIntro, Col, Properties, Property, Row } from "./mdx";
 import Tooltip from "./tooltip";
 import Link from "next/link";
 
@@ -76,11 +68,11 @@ requests.${method.toLowerCase()}("${actualUrl}", headers={
     `;
 
   return (
-    <CustomPre filename="python" dataLanguage="python" hasCopyCode={true}>
+    <Pre>
       <Code data-lanuage="python" data-theme="default">
         {code}
       </Code>
-    </CustomPre>
+    </Pre>
   );
 };
 
@@ -127,11 +119,7 @@ await fetch("${actualUrl}", {
 })`;
 
   return (
-    <CustomPre
-      hasCopyCode={true}
-      dataLanguage="javascript"
-      filename="javascript"
-    >
+    <Pre>
       <Code
         data-lanuage="javascript"
         data-theme="default"
@@ -139,7 +127,7 @@ await fetch("${actualUrl}", {
       >
         {code}
       </Code>
-    </CustomPre>
+    </Pre>
   );
 };
 
@@ -168,7 +156,7 @@ ${
   }
 
   return (
-    <CustomPre hasCopyCode={true} dataLanguage="Curl" filename="Curl">
+    <Pre>
       <Code data-lanuage="bash" data-theme="default">
         {code.split("\n").map((line) => {
           return (
@@ -179,7 +167,7 @@ ${
           );
         })}
       </Code>
-    </CustomPre>
+    </Pre>
   );
 };
 
@@ -188,11 +176,7 @@ const JsonCodeTab: React.FC<{
 }> = ({ samplePayload }) => {
   const formattedJson = JSON.stringify(samplePayload, undefined, 2);
 
-  return (
-    <CustomPre filename="json" hasCopyCode={true}>
-      {formattedJson}
-    </CustomPre>
-  );
+  return <Pre>{formattedJson}</Pre>;
 };
 
 export const ApiResponses: React.FC<{
@@ -231,11 +215,17 @@ export const ApiResponses: React.FC<{
           ) : undefined}
         </Col>
         <Col>
-          <DropDownTabs>
-            <Tab heading="HTTP 200">
-              <JsonCodeTab samplePayload={properties.samplePayload} />
-            </Tab>
-          </DropDownTabs>
+          <CodeBlock
+            hasCopy={true}
+            codeBlocks={[
+              {
+                filename: "HTTP 200",
+                component: (
+                  <JsonCodeTab samplePayload={properties.samplePayload} />
+                ),
+              },
+            ]}
+          />
         </Col>
       </Row>
     </>
@@ -282,32 +272,44 @@ export const ApiRequest: React.FC<{
           ) : undefined}
         </Col>
         <Col>
-          <DropDownTabs>
-            <Tab heading="Curl">
-              <CurlCodeTab
-                method={properties.method}
-                url={properties.apiUrl + properties.path}
-                samplePayload={properties.samplePayload}
-                isBearerTokenRequired={properties.isBearerTokenRequired}
-              />
-            </Tab>
-            <Tab heading="Python">
-              <PythonCodeTab
-                method={properties.method}
-                url={properties.apiUrl + properties.path}
-                samplePayload={properties.samplePayload}
-                pathParameters={properties.pathParameters}
-              />
-            </Tab>
-            <Tab heading="Javascript">
-              <JavascriptCodeTab
-                method={properties.method}
-                url={properties.apiUrl + properties.path}
-                samplePayload={properties.samplePayload}
-                pathParameters={properties.pathParameters}
-              />
-            </Tab>
-          </DropDownTabs>
+          <CodeBlock
+            hasCopy={true}
+            codeBlocks={[
+              {
+                filename: "Curl",
+                component: (
+                  <CurlCodeTab
+                    method={properties.method}
+                    url={properties.apiUrl + properties.path}
+                    samplePayload={properties.samplePayload}
+                    isBearerTokenRequired={properties.isBearerTokenRequired}
+                  />
+                ),
+              },
+              {
+                filename: "Python",
+                component: (
+                  <PythonCodeTab
+                    method={properties.method}
+                    url={properties.apiUrl + properties.path}
+                    samplePayload={properties.samplePayload}
+                    pathParameters={properties.pathParameters}
+                  />
+                ),
+              },
+              {
+                filename: "JavaScript",
+                component: (
+                  <JavascriptCodeTab
+                    method={properties.method}
+                    url={properties.apiUrl + properties.path}
+                    samplePayload={properties.samplePayload}
+                    pathParameters={properties.pathParameters}
+                  />
+                ),
+              },
+            ]}
+          />
         </Col>
       </Row>
     </>

@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/no-nested-ternary */
 import React, { useState } from "react";
 
-interface OSProps {
+export interface OSProps {
   selectedOS?: string;
   name?: string;
 }

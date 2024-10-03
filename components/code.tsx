@@ -1,12 +1,14 @@
 import React, { useState, ReactNode, useRef } from "react";
 import { Pre } from "nextra/components";
-import { CodeIcon, CopyIcon } from "src/icons/shared-icons";
-import { Windows, Mac, Ubuntu } from "src/icons/os-icons";
-
+import { CopyIcon, DropDownArrow } from "src/icons/shared-icons";
+import { Windows, Mac, Ubuntu, OSProps } from "src/icons/os-icons";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
 interface CodeGroupProps {
   children: ReactNode;
   isOSFile?: boolean;
   isLocalHostedFile?: boolean;
+  hasCopy?: boolean;
 }
 
 interface CodeBlockProps {
@@ -19,78 +21,175 @@ type CodeBoxProps = {
   dataLanguage?: string;
   hasCopyCode?: boolean;
   children?: React.ReactNode;
+  isOSFile?: boolean;
+  isLocalHostedFile?: boolean;
 };
 
-const osmenu = [
-  { name: "windows", icon: Windows },
-  { name: "mac", icon: Mac },
-  { name: "ubuntu", icon: Ubuntu },
-];
+type CodeBlock = {
+  filename?: string;
+  component?: ReactNode;
+  hasCopy?: boolean;
+};
 
-export const CodeBlockHeader = ({
-  onOSChange,
-  handleSelect,
-  selectedType,
-  selectedOS,
-  isOSFile = false,
-  isLocalHostedFile = false,
-}: {
-  filename: string;
-  onOSChange: (os: string) => void;
-  handleSelect: (type: "local" | "hosted") => void;
-  selectedType: string;
-  selectedOS: string;
-  isOSFile: boolean;
-  isLocalHostedFile: boolean;
+interface DropdownProps {
+  options: string[];
+  selectedOption: string;
+  onOptionSelect: (option: string) => void;
+  placeholder?: string;
+}
+
+interface OsOption {
+  name: string;
+  icon: React.FC<OSProps>;
+}
+
+interface OsDropDownProps {
+  selectedOption: string | null;
+  onOptionSelect: (option: string) => void;
+  placeholder: string;
+  options: OsOption[];
+}
+
+export const OsDropDown: React.FC<OsDropDownProps> = ({
+  selectedOption,
+  onOptionSelect,
+  placeholder,
+  options,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionSelect = (option: string) => {
+    onOptionSelect(option);
+    setIsOpen(false);
+  };
+
+  const selectedOptionData = options.find((opt) => opt.name === selectedOption);
+
   return (
-    <div className="nx-flex nx-gap-3">
-      {isOSFile && (
-        <div className="osmenu-container-nav nx-w-[132px]">
-          {osmenu.map((item, index) => (
+    <div className="os-dropdown">
+      <div
+        className="nx-gap-1 nx-items-center nx-cursor-pointer nx-relative nx-flex"
+        onClick={toggleDropdown}
+      >
+        {selectedOptionData ? (
+          <>{selectedOptionData.icon && <selectedOptionData.icon />}</>
+        ) : (
+          placeholder
+        )}
+        <DropDownArrow />
+      </div>
+      {isOpen && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          transition={{ duration: 0.1 }}
+          className="nx-z-50 nx-mt-2 nx-absolute dropDown-os"
+        >
+          {options.map((option, index) => (
             <div
               key={index}
               className={`osmenu-tab-container nx-justify-center nx-cursor-pointer nx-items-center ${
-                selectedOS === item.name ? "blue-background" : ""
+                selectedOption === option.name ? "blue-background" : ""
               }`}
-              onClick={() => onOSChange(item.name)}
+              onClick={() => handleOptionSelect(option.name)}
             >
-              <item.icon selectedOS={selectedOS} name={item.name} />
+              {option.icon && (
+                <option.icon selectedOS={selectedOption} name={option.name} />
+              )}
             </div>
           ))}
-        </div>
-      )}
-
-      {isLocalHostedFile && (
-        <div className="osmenu-container-nav nx-gap-3">
-          <div
-            className={`osmenu-tab-new nx-justify-center hover:blue-background nx-px-2 nx-cursor-pointer nx-items-center hover:nx-bg-[#efebff] ${
-              selectedType === "local" ? "blue-background" : ""
-            }`}
-            onClick={() => handleSelect("local")}
-          >
-            <span>Local Agent</span>
-          </div>
-          <div
-            className={`osmenu-tab-new nx-justify-center hover:blue-background nx-px-2 nx-cursor-pointer nx-items-center hover:nx-bg-[#efebff] ${
-              selectedType === "hosted" ? "blue-background" : ""
-            }`}
-            onClick={() => handleSelect("hosted")}
-          >
-            <span>Hosted Agent</span>
-          </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
 };
 
-export const CustomPre: React.FC<CodeBoxProps> = ({
-  filename,
-  dataLanguage,
-  hasCopyCode,
-  children,
+export const Dropdown: React.FC<DropdownProps> = ({
+  options,
+  selectedOption,
+  onOptionSelect,
+  placeholder = "Select",
 }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div ref={dropdownRef} className="dropdown-outer">
+      <div
+        onClick={toggleDropdown}
+        className="nx-relative nx-flex nx-items-center nx-gap-1 nx-cursor-pointer"
+      >
+        <span className="dropdown-text">{selectedOption || placeholder}</span>
+        <DropDownArrow />
+      </div>
+      {isDropdownOpen && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          transition={{ duration: 0.1 }}
+          className="nx-z-50 nx-mt-2 nx-absolute dropDown"
+          style={{ overflow: "hidden" }}
+        >
+          {options.map((option) => (
+            <div
+              key={option}
+              className={`dropdown-tab nx-justify-between tab-text nx-cursor-pointer ${
+                option === selectedOption && "indgo-100"
+              }`}
+              onClick={() => {
+                onOptionSelect(option);
+                setIsDropdownOpen(false);
+              }}
+            >
+              {option}
+            </div>
+          ))}
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
+export const CodeBlock: React.FC<{
+  codeBlocks?: CodeBlock[];
+  hasCopy?: boolean;
+}> = ({ codeBlocks, hasCopy }) => {
+  const [selectedLabel, setSelectedLabel] = useState<string>(
+    codeBlocks && codeBlocks.length > 0 ? codeBlocks[0].filename : "",
+  );
+
+  if (!codeBlocks || codeBlocks.length === 0) {
+    return <div>No code blocks available</div>;
+  }
+
+  const selectedCodeBlock = codeBlocks.find(
+    (block) => block.filename === selectedLabel,
+  );
+
   const [isCopied, setIsCopied] = useState(false);
   const codeRef = useRef<HTMLDivElement>(null);
 
@@ -105,17 +204,243 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
   };
 
   return (
-    <div className="nx-flex nx-flex-col">
-      <Pre data-language={dataLanguage} className="custom-pre">
-        <div className="nx-flex nx-w-full nx-items-center nx-justify-between">
-          <CodeIcon />
-          <div>
-            {filename && <span className="nx-code-name">{filename}</span>}
+    <div className="pre-out-code">
+      <header className="nx-w-full nx-flex nx-justify-between">
+        <Dropdown
+          options={codeBlocks.map((block) => block.filename)}
+          selectedOption={selectedLabel}
+          onOptionSelect={setSelectedLabel}
+          placeholder="Select Language"
+        />
+        {hasCopy && (
+          <div
+            onClick={handleCopy}
+            className="nx-cursor-pointer nx-flex nx-gap-2 nx-items-center"
+          >
+            {isCopied ? (
+              <>
+                <svg
+                  width="12"
+                  height="8"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
+                    fill="#0B1742"
+                  />
+                </svg>
+                <span className="nx-copy-text">Copied</span>
+              </>
+            ) : (
+              <CopyIcon />
+            )}
           </div>
+        )}
+      </header>
+      <span className="filename">{selectedLabel}</span>
+      <div ref={codeRef} style={{ overflowX: "scroll", width: "100%" }}>
+        {selectedCodeBlock?.component ?? "No code block selected"}
+      </div>
+    </div>
+  );
+};
+
+const osmenu = [
+  { name: "windows", icon: Windows },
+  { name: "mac", icon: Mac },
+  { name: "ubuntu", icon: Ubuntu },
+];
+
+const agentType = [
+  { name: "Self hosted", label: "local" },
+  { name: "Agentverse", label: "hosted" },
+];
+
+export const CustomPre: React.FC<CodeBoxProps> = ({
+  hasCopyCode,
+  children,
+  isLocalHostedFile,
+  isOSFile,
+}) => {
+  const [isCopied, setIsCopied] = useState(false);
+  const codeRef = useRef<HTMLDivElement>(null);
+
+  const [selectedType, setSelectedType] = useState(agentType[0].name);
+  const [selectedOS, setSelectedOS] = useState("windows");
+
+  const renderChild = () => {
+    return React.Children.map(children, (child) => {
+      if (React.isValidElement<CodeBlockProps>(child)) {
+        return matchFilename(child.props.filename) ? child : null;
+      }
+      return null;
+    });
+  };
+
+  const matchFilename = (filename: string): boolean => {
+    const regexMap = {
+      self_hosted: /local/i,
+      agentverse: /hosted/i,
+      windows: /windows/i,
+      mac: /mac/i,
+      ubuntu: /ubuntu/i,
+    };
+
+    return (
+      regexMap[selectedType.split(" ").join("_").toLowerCase()]?.test(
+        filename,
+      ) || regexMap[selectedOS.toLowerCase()]?.test(filename)
+    );
+  };
+
+  const handleCopy = () => {
+    const codeElements = codeRef.current?.querySelectorAll("code");
+    const codeText = [...(codeElements ?? [])]
+      .map((el) => el.textContent)
+      .join("\n");
+
+    if (codeText) {
+      navigator.clipboard.writeText(codeText).then(() => {
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 5000);
+      });
+    }
+  };
+
+  return (
+    <div className="nx-flex nx-flex-col">
+      <div className="custom-pre">
+        <div className="nx-w-full nx-flex nx-justify-between">
+          <div className="nx-flex nx-gap-3">
+            {isLocalHostedFile && (
+              <Dropdown
+                selectedOption={selectedType}
+                onOptionSelect={setSelectedType}
+                placeholder="Select Language"
+                options={agentType.map((item) => item.name)}
+              />
+            )}
+            {isOSFile && (
+              <OsDropDown
+                selectedOption={selectedOS}
+                onOptionSelect={setSelectedOS}
+                placeholder="Select Language"
+                options={osmenu as []}
+              />
+            )}
+          </div>
+          <div className="nx-flex nx-p-2 nx-w-full">
+            {hasCopyCode && (
+              <div
+                onClick={handleCopy}
+                className="nx-cursor-pointer nx-ml-auto nx-flex nx-gap-2 nx-items-center"
+              >
+                {isCopied ? (
+                  <>
+                    <svg
+                      width="12"
+                      height="8"
+                      viewBox="0 0 12 8"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
+                        fill="#0B1742"
+                      />
+                    </svg>
+                    <span className="nx-copy-text">Copied</span>
+                  </>
+                ) : (
+                  <CopyIcon />
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="nx-gap-4 nx-flex nx-flex-col">
+          <div
+            className="code-style-outer"
+            style={{ overflowX: "scroll", width: "100%" }}
+            ref={codeRef}
+          >
+            {renderChild()}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const isLocalOrHosted = (name?: string) =>
+  name?.startsWith("local-") || name?.startsWith("hosted-");
+
+export const ModifiedPre = ({
+  children,
+  filename,
+  hasCopyCode,
+}: {
+  children?: ReactNode;
+  filename?: string;
+  hasCopyCode?: boolean;
+}) => {
+  const osMenu = ["windows", "mac", "ubuntu"];
+
+  const [isCopied, setIsCopied] = useState(false);
+  const codeRef = useRef<HTMLDivElement>(null);
+
+  const handleCopy = () => {
+    const codeElements = codeRef.current?.querySelectorAll("code");
+    const codeText = [...(codeElements ?? [])]
+      .map((el) => el.textContent)
+      .join("\n");
+
+    if (codeText) {
+      navigator.clipboard.writeText(codeText).then(() => {
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 5000);
+      });
+    }
+  };
+
+  const shouldApplyPreNormal = Boolean(filename && isLocalOrHosted(filename));
+
+  if (osMenu.includes(filename || "")) {
+    return (
+      <div>
+        <span className="filename">
+          {filename?.replace(/^(local-|hosted-)/, "")}
+        </span>
+        <div>{children}</div>
+      </div>
+    );
+  }
+
+  return (
+    <Pre className={shouldApplyPreNormal ? "" : "pre-normal"}>
+      {isLocalOrHosted(filename) ? (
+        filename && (
+          <span className="filename">
+            {filename.replace(/^(local-|hosted-)/, "")}
+          </span>
+        )
+      ) : (
+        <div
+          className={`nx-p-2 nx-flex ${
+            filename ? "nx-justify-between nx-items-center" : "nx-justify-end"
+          } nx-w-full`}
+        >
+          {filename && (
+            <span className="filename">
+              {filename.replace(/^(local-|hosted-)/, "")}
+            </span>
+          )}
           {hasCopyCode && (
             <div
               onClick={handleCopy}
-              className="nx-cursor-pointer nx-flex nx-gap-2 nx-items-center"
+              className="nx-cursor-pointer nx-ml-auto nx-flex nx-gap-2 nx-items-center"
             >
               {isCopied ? (
                 <>
@@ -139,15 +464,9 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
             </div>
           )}
         </div>
-        <div
-          className="code-style-outer"
-          style={{ overflowX: "scroll", width: "100%" }}
-          ref={codeRef}
-        >
-          {children}
-        </div>
-      </Pre>
-    </div>
+      )}
+      <div ref={codeRef}>{children}</div>
+    </Pre>
   );
 };
 
@@ -155,48 +474,17 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
   children,
   isOSFile,
   isLocalHostedFile,
+  hasCopy,
 }) => {
-  const [selectedType, setSelectedType] = useState<"local" | "hosted">("local");
-  const [selectedOS, setSelectedOS] = useState("windows");
-
-  const handleSelect = (type: "local" | "hosted") => setSelectedType(type);
-  const handleOSChange = (os: string) => setSelectedOS(os);
-
-  const renderChild = () => {
-    return React.Children.map(children, (child) => {
-      if (React.isValidElement<CodeBlockProps>(child)) {
-        return matchFilename(child.props.filename) ? child : null;
-      }
-      return null;
-    });
-  };
-
-  const matchFilename = (filename: string): boolean => {
-    const regexMap = {
-      local: /local/i,
-      hosted: /hosted/i,
-      windows: /windows/i,
-      mac: /mac/i,
-      ubuntu: /ubuntu/i,
-    };
-    return (
-      regexMap[selectedType]?.test(filename) ||
-      regexMap[selectedOS.toLowerCase()]?.test(filename)
-    );
-  };
-
   return (
     <div className="nx-mt-3">
-      <CodeBlockHeader
-        isOSFile={isOSFile}
+      <CustomPre
         isLocalHostedFile={isLocalHostedFile}
-        handleSelect={handleSelect}
-        filename={selectedType}
-        onOSChange={handleOSChange}
-        selectedType={selectedType}
-        selectedOS={selectedOS}
-      />
-      <div className="nx-mt-3">{renderChild()}</div>
+        isOSFile={isOSFile}
+        hasCopyCode={hasCopy}
+      >
+        {children}
+      </CustomPre>
     </div>
   );
 };
