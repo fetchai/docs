@@ -10,7 +10,7 @@ nlp = spacy.load("en_core_web_sm")
 spell = SpellChecker()
 
 # Load custom dictionary
-custom_dict_path = './known_words_corpus.txt'
+custom_dict_path = 'known_words_corpus.txt'
 with open(custom_dict_path, 'r') as f:
     custom_words = set(line.strip().lower() for line in f)
 
