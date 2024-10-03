@@ -1,7 +1,7 @@
 import React, { useState, ReactNode, useRef } from "react";
 import { Pre } from "nextra/components";
 import { CopyIcon, DropDownArrow } from "src/icons/shared-icons";
-import { Windows, Mac, Ubuntu } from "src/icons/os-icons";
+import { Windows, Mac, Ubuntu, OSProps } from "src/icons/os-icons";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 interface CodeGroupProps {
@@ -40,8 +40,7 @@ interface DropdownProps {
 
 interface OsOption {
   name: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon: any;
+  icon: React.FC<OSProps>;
 }
 
 interface OsDropDownProps {
@@ -421,7 +420,13 @@ export const ModifiedPre = ({
 
   return (
     <Pre className={shouldApplyPreNormal ? "" : "pre-normal"}>
-      {!isLocalOrHosted(filename) && (
+      {isLocalOrHosted(filename) ? (
+        filename && (
+          <span className="filename">
+            {filename.replace(/^(local-|hosted-)/, "")}
+          </span>
+        )
+      ) : (
         <div
           className={`nx-p-2 nx-flex ${
             filename ? "nx-justify-between nx-items-center" : "nx-justify-end"
