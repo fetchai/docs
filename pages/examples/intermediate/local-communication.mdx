@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code"
+
 # Local Network Interaction
 
 ## Introduction
@@ -14,7 +16,9 @@ This file can be run on any platform supporting Python, with the necessary insta
 
 ### Agent 1
 
-```py copy filename="agent_1.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+```py copy filename="local-agent_1.py"
 from uagents import Agent, Context, Model
 
 # NOTE: Run agent1.py before running agent2.py
@@ -40,9 +44,28 @@ if __name__ == "__main__":
     bob.run()
 ```
 
+```py copy filename="hosted-agent_1.py"
+from uagents import Agent, Context, Model
+
+# NOTE: Run agent1.py before running agent2.py
+
+class Message(Model):
+    message: str
+
+@agent.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+    # send the response
+    await ctx.send(sender, Message(message="Hello there alice."))
+```
+</CodeGroup>
+
 ### Agent 2
 
-```py copy filename="agent_2.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+```py copy filename="local-agent_2.py"
 from uagents import Agent, Context, Model
 
 class Message(Model):
@@ -70,6 +93,26 @@ async def message_handler(ctx: Context, sender: str, msg: Message):
 if __name__ == "__main__":
     alice.run()
 ```
+
+```py copy filename="hosted-agent_2.py"
+from uagents import Agent, Context, Model
+
+class Message(Model):
+    message: str
+
+RECIPIENT_ADDRESS = (
+    "test-agent://agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+)
+
+@agent.on_interval(period=2.0)
+async def send_message(ctx: Context):
+    await ctx.send(RECIPIENT_ADDRESS, Message(message="Hello there bob."))
+
+@agent.on_message(model=Message)
+async def message_handler(ctx: Context, sender: str, msg: Message):
+    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+```
+</CodeGroup>
 
 ### Expected output
 
