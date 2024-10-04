@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code"
+
 # Locally Hosted Agent with LangChain Integration
 
 ## Introduction
@@ -22,7 +24,9 @@ This guide demonstrates how to run an agent on your own hardware or infrastructu
 
 ### The agent
 
-```py copy filename = 'agent.py'
+<CodeGroup hasCopy isLocalHostedFile>
+
+```py copy filename="local-agent.py"
 from langchain_community.tools import WikipediaQueryRun
 from langchain_community.utilities import WikipediaAPIWrapper
 from uagents.setup import fund_agent_if_low
@@ -66,7 +70,7 @@ async def load_dalle(ctx: Context, sender: str, msg: WikiReq):
 WikiAgent.include(wiki_protocol, publish_manifest=True)
 WikiAgent.run()
 ```
-
+</CodeGroup>
 ### Register Agent Function
 
 Head to this [guide ↗️](/guides/agentverse/agentverse-functions/registering-agent-services) for a detailed overview of the registration process of Agent Functions on the Agentverse.

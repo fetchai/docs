@@ -1,3 +1,4 @@
+import { CodeGroup } from "../../../components/code"
 
 # Running an Agent with Docker
 
@@ -42,8 +43,9 @@ This example shows how to run an agent using the uAgents library inside a Docker
 
 This example demonstrates a simple agent-based communication system using the uAgents library. The `data_sender` agent sends a `DataPacket` message to the `data_receiver` agent every 4 seconds. Upon receiving the message, `data_receiver` logs it and sends an acknowledgment back to data_sender. Both agents log the messages they receive. The agents are running with Docker Compose using Docker.
 
+<CodeGroup hasCopy isLocalHostedFile>
 
-```py copy filename="agent.py"
+```py copy filename="local-agent.py"
 
 from uagents import Agent, Bureau, Context, Model
 
@@ -114,6 +116,7 @@ bureau.add(data_receiver)
 if __name__ == "__main__":
     bureau.run()
 ```
+</CodeGroup>
 
 ### `Dockerfile`
 
