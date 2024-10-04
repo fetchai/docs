@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code"
+
 # Cleaning service with Agents
 
 ## Introduction
@@ -27,7 +29,9 @@ The protocol ensures the provider's services are available to the user's locatio
 
 Here is the full code:
 
-```py copy filename="__init__.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+```py copy filename="local-__init__.py"
 from datetime import datetime, timedelta
 from typing import List
 
@@ -140,6 +144,7 @@ async def handle_book_request(ctx: Context, sender: str, msg: ServiceBooking):
     # send the response
     await ctx.send(sender, BookingResponse(success=success))
 ```
+</CodeGroup>
 
 #### models.py
 
@@ -195,8 +200,9 @@ class Availability(models.Model):
 
 ### Agents
 #### The Cleaner Agent
+<CodeGroup hasCopy isLocalHostedFile>
 
-```py copy filename="cleaner.py"
+```py copy filename="local-cleaner.py"
 from datetime import datetime
 
 from protocols.cleaning import cleaning_proto
@@ -249,10 +255,12 @@ async def shutdown(_ctx: Context):
 if __name__ == "__main__":
     cleaner.run()
 ```
+</CodeGroup>
 
 #### User
 
-```py copy filename="user.py"
+<CodeGroup hasCopy isLocalHostedFile>
+```py copy filename="local-user.py"
 from datetime import datetime, timedelta
 
 from protocols.cleaning import (
@@ -328,3 +336,4 @@ async def handle_book_response(ctx: Context, _sender: str, msg: BookingResponse)
 if __name__ == "__main__":
     user.run()
 ```
+</CodeGroup>

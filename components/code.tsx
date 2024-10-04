@@ -17,7 +17,7 @@ interface CodeBlockProps {
 }
 
 type CodeBoxProps = {
-  filename?: string;
+  filename?: string[];
   dataLanguage?: string;
   hasCopyCode?: boolean;
   children?: React.ReactNode;
@@ -263,11 +263,14 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
   children,
   isLocalHostedFile,
   isOSFile,
+  filename,
 }) => {
   const [isCopied, setIsCopied] = useState(false);
   const codeRef = useRef<HTMLDivElement>(null);
 
-  const [selectedType, setSelectedType] = useState(agentType[0].name);
+  const [selectedType, setSelectedType] = useState(
+    filename[0].includes("local") ? agentType[0].name : agentType[1].name,
+  );
   const [selectedOS, setSelectedOS] = useState("windows");
 
   const renderChild = () => {
@@ -278,6 +281,14 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
       return null;
     });
   };
+
+  const filteredAgentType =
+    isLocalHostedFile && filename.length == 2
+      ? agentType
+      : agentType.filter(
+          (type) =>
+            type.label === (filename[0].includes("local") ? "local" : "hosted"),
+        );
 
   const matchFilename = (filename: string): boolean => {
     const regexMap = {
@@ -319,7 +330,7 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
                 selectedOption={selectedType}
                 onOptionSelect={setSelectedType}
                 placeholder="Select Language"
-                options={agentType.map((item) => item.name)}
+                options={filteredAgentType.map((item) => item.name)}
               />
             )}
             {isOSFile && (
@@ -476,12 +487,22 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
   isLocalHostedFile,
   hasCopy,
 }) => {
+  const renderFileName = () => {
+    return React.Children.map(children, (child) => {
+      if (React.isValidElement<CodeBlockProps>(child)) {
+        return child.props.filename;
+      }
+      return null;
+    });
+  };
+  const filename = renderFileName();
   return (
     <div className="nx-mt-3">
       <CustomPre
         isLocalHostedFile={isLocalHostedFile}
         isOSFile={isOSFile}
         hasCopyCode={hasCopy}
+        filename={filename}
       >
         {children}
       </CustomPre>

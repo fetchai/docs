@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code";
+
 # Agent Asynchronous Loops
 
 ## Introduction
@@ -15,7 +17,9 @@ In this example, we demonstrate how to use agents to communicate and exchange st
 
 #### Script 1
 
-    ```py copy filename="external_loop_attach.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+    ```py copy filename="local-external_loop_attach.py"
     import asyncio
     import contextlib
 
@@ -63,12 +67,14 @@ In this example, we demonstrate how to use agents to communicate and exchange st
         with contextlib.suppress(KeyboardInterrupt):
             loop.run_forever()
     ```
-
+</CodeGroup>
     This script demonstrates how to run an agent using an external event loop. For this example to run correctly, remember to provide a `seed` phrase to the agent. It initializes an agent and attaches it to a loop where it performs continuous background work (`coro()` function) alongside the agent's operations. You can choose to run either the agent or the entire `bureau` with the external loop. This approach provides greater flexibility when integrating the agent with other asynchronous tasks.
 
 #### Script 2
 
-    ```py copy filename="external_loop_run.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+    ```py copy filename="local-external_loop_run.py"
     import asyncio
 
     from uagents import Agent, Bureau, Context
@@ -114,6 +120,7 @@ In this example, we demonstrate how to use agents to communicate and exchange st
         # > when starting the external loop from the bureau
         # bureau.run()
     ```
+</CodeGroup>
 
     This script shows how to run an agent with its own **internal event loop**. For this example to run correctly, remember to provide a `seed` phrase to the agent. The agent is initialized with the `loop`, and both the agent and its background coroutine (`coro()` function) run within the same loop. This setup simplifies the integration by keeping everything within a single event `loop`, which can be advantageous for applications where you want the agent's lifecycle tightly coupled with its event handling function.
 

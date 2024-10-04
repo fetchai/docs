@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup } from "../../../components/code"
 
 # On Query decorator example
 
@@ -22,7 +23,9 @@ This documentation outlines the steps to set up and enable communication between
 
 This agent handles queries related to job searches using SerpAPI. It provides information about available jobs for a job title specified by the user.
 
-```py copy filename="JobSearchAgent.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+```py copy filename="local-JobSearchAgent.py"
 # import required libraries
 import json
 
@@ -121,7 +124,7 @@ async def query_handler(ctx: Context, sender: str, msg: Request):
 if __name__ == "__main__":
     SearchAgent.run()
 ```
-
+</CodeGroup>
 Please update agent's secret phrase and serpapi API key. You can find serpapi API key on [SerpAPI API key ↗️](https://serpapi.com/)
 
 ### Flask App Script

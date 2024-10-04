@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code"
+
 # Utilize the PostgreSQL database with the Agent
     
 ## Introduction
@@ -222,8 +224,9 @@ This script sets up and runs two agents, `db_insert_agent` and `db_fetch_agent`,
 2. **Inserting Data**: `db_insert_agent` will insert received employee data into the database.
 3. **Fetching Data**: `db_fetch_agent` will fetch and log all employee details upon request.
 
+<CodeGroup hasCopy isLocalHostedFile>
 
-```py copy filename="main.py"
+```py copy filename="local-main.py"
 from db.db_connection import create_connection
 from uagents import Agent, Context, Bureau
 from db.models.models import Employees, GetEmployees
@@ -359,7 +362,7 @@ if __name__ == "__main__":
     bureau.run()
 
 ```
-
+</CodeGroup>
 
 This constant file initializes a dictionary for storing employee data and configures the database connection parameters using environment variables. It also defines a constant for the address of the database fetch agent.
 

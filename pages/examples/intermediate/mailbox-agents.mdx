@@ -1,3 +1,5 @@
+import { CodeGroup } from "../../../components/code"
+
 # Agents communication using Agentverse Mailbox feature
 
 ## Introduction
@@ -17,7 +19,9 @@ A **Mailbox** allows your agent to receive messages sent to its address even whe
 
 ### Agent 1: Local Agent
 
-    ```py copy filename="agent_1.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+    ```py copy filename="local-agent_1.py"
     from uagents import Agent, Context, Model
     from uagents.setup import fund_agent_if_low
 
@@ -52,11 +56,13 @@ A **Mailbox** allows your agent to receive messages sent to its address even whe
     if __name__ == "__main__":
         agent.run()
    ```
-
+</CodeGroup>
 
 ### Agent 2: Agentverse Agent
 
-    ```py copy filename="agent_2.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+    ```py copy filename="hosted-agent_2.py"
     from uagents import Agent, Context, Model
 
     class Message(Model):
@@ -74,7 +80,7 @@ A **Mailbox** allows your agent to receive messages sent to its address even whe
     async def on_message(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
    ```
-
+</CodeGroup>
 ### Output
 
 1. Agentverse Agent output:
