@@ -4,15 +4,15 @@ import { Callout } from 'nextra/components'
 
 ## Overview
 
-To transact with fet on the Fetch.ai ledger, you will need to manage your wallet with you agent. We use the Cosmpy library for ledger actions, coupled with in library support for Cosmpy in uAgents.
+To transact with FET on the Fetch.ai Ledger, you will need to manage your wallet with your uAgent. We use the Cosmpy library for ledger actions, coupled with in-library support for `cosmpy` in `uagents`.
 
 ## Prerequisites
 
 Make sure you have read the following resources before going on with this guide:
 
-    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
-    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first uAgent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [uAgents address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
     - [CosmPy installation ↗️](/guides/fetch-network/cosmpy/install)
@@ -20,8 +20,8 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Imports needed
 
-    - [CosmPy ↗️](https://pypi.org/project/cosmpy/)
-    - [uAgents ↗️](https://pypi.org/project/uagents/)
+    - [`cosmpy` ↗️](https://pypi.org/project/cosmpy/)
+    - [`uagents` ↗️](https://pypi.org/project/uagents/)
 
 ## Understanding your wallet
 
@@ -89,9 +89,9 @@ You can also use an account's mnemonic phrase to get the associated private key.
     ```
 
 
-## An Agent that checks for a transaction, and sends funds
+## An uAgent that checks for a transaction, and sends funds
 
-A simple agent that creates, or loads in a wallet, then validates a transaction has been received.
+A simple uAgent that creates, or loads in a wallet, then validates a transaction has been received.
 
 ```python copy
 
@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
 ```
 
-Validating a transaction with Cosmpy and uAgents is really easy, and to test the above agent you just need to replicate the `Models` and send a `RequestWithTX` in any function in another agent:
+Validating a transaction with Cosmpy and uAgents is really easy, and to test the above uAgent you just need to replicate the `Models` and send a `RequestWithTX` in any function in another uAgent:
 
 ```
 @DataBuyingAgent.on_event("startup")

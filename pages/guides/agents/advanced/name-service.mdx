@@ -4,9 +4,9 @@ import { CodeGroup } from "../../../../components/code";
 
 ## Introduction
 
-This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to set up the Agents Name Service contract using the `uagents` and `cosmpy` Python libraries. The **Fetch.ai Name Service Smart Contract** aims at enhancing the usability and accessibility of the Fetch.ai blockchain by providing a decentralized, secure, and user-friendly way to manage names for various digital entities. Indeed, the Name Service Smart Contract acts similarly to a phonebook for the Fetch.ai blockchain; It assigns memorable names (i.e., domains) to blockchain addresses, making it easier to find and interact with other agents and resources on the network. Imagine it as a way to give user-friendly names to complex wallet addresses.
+This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to set up the uAgent Name Service contract using the `uagents` and `cosmpy` Python libraries. The **Fetch.ai Name Service Smart Contract** aims at enhancing the usability and accessibility of the Fetch.ai blockchain by providing a decentralized, secure, and user-friendly way to manage names for various digital entities. Indeed, the Name Service Smart Contract acts similarly to a phonebook for the Fetch.ai blockchain; It assigns memorable names (i.e., domains) to blockchain addresses, making it easier to find and interact with other agents and resources on the network. Imagine it as a way to give user-friendly names to complex wallet addresses.
 
-In this guide we set up a communication line between two agents, Alice and Bob, where Alice sends a message to Bob every 5 seconds by first constructing Bob's address using a predefined domain (example.agent) and Bob's name (bob-0).
+In this guide we set up a communication line between two uAgents, Alice and Bob, where Alice sends a message to Bob every 5 seconds by first constructing Bob's address using a predefined domain (`example.agent`) and Bob's name (`bob-0`).
 
 In turn, Bob is coded to listen for incoming messages and log them. On startup, Bob registers its name on a blockchain network using a name service contract. This ensures that Alice can address messages to Bob correctly.
 
@@ -14,7 +14,7 @@ In turn, Bob is coded to listen for incoming messages and log them. On startup, 
 
 ## Walk-through
 
-First of all, we need to create 2 Python scripts for our two agents using the following commands within your terminal:
+First of all, we need to create 2 Python scripts for our two uAgents using the following commands within your terminal:
 
     Bob:
 
@@ -54,7 +54,7 @@ First of all, we need to create 2 Python scripts for our two agents using the fo
 
 ### Bob
 
-Let's start with the first agent of this example, Bob.
+Let's start with the first uAgent of this example, Bob.
 
 1. First of all, we import the required libraries and modules:
 
@@ -65,9 +65,9 @@ Let's start with the first agent of this example, Bob.
     ```
 
     - `LocalWallet`: From the `cosmpy.aerial.wallet` module, this is used to create and manage wallets for blockchain interactions.
-    - `Agent`, `Context`, `Model`: From the `uagents` module, these are used to define the agent, its context, and the message model.
+    - `Agent`, `Context`, `Model`: From the `uagents` module, these are used to define the uAgent, its context, and the message model.
     - `get_faucet`: From the `uagents.network` module, this function is used to get a faucet for funding wallets.
-    - `get_name_service_contract`: From the `uagents.network` module, this function is used to get the contract for registering agent names on the network.
+    - `get_name_service_contract`: From the `uagents.network` module, this function is used to get the contract for registering uAgent names on the network.
 
 2. We then define the Message model defining the structure of messages that Bob will be able to handle:
 
@@ -78,7 +78,7 @@ Let's start with the first agent of this example, Bob.
 
     We have defined a `Message` data model which contains a single attribute `message` of type string.
 
-3. We then need to initialize the agent:
+3. We then need to initialize the uAgent:
 
     ```python copy
     bob = Agent(
@@ -89,7 +89,7 @@ Let's start with the first agent of this example, Bob.
     )
     ```
 
-    We have created an agent named `bob-0` with a specified `seed`. The agent listens on port `8001` and has an `endpoint` for receiving messages.
+    We have created an uAgent named `bob-0` with a specified `seed`. The uAgent listens on port `8001` and has an `endpoint` for receiving messages.
 
 4. We are now ready to set up the **Wallet**, **Name Service Contract**, and **Faucet**:
 
@@ -103,9 +103,9 @@ Let's start with the first agent of this example, Bob.
     faucet.get_wealth(my_wallet.address())
     ```
 
-    We first create a wallet from a seed phrase and this wallet is used for interacting with the Fetch.ai blockchain. We then proceed and define the Name Service Contract. It retrieves the name service contract to register the agent's name on the blockchain. The `test=True` parameter indicates this is a `test` setup. Then, we define the faucet used to fund the wallet with test tokens. We then define the domain for the agent's name registration and finally proceed to request funds from the faucet to ensure the agent's wallet has sufficient funds to operate. Remember that you need to provide the `name`, `seed`, `port`, `endpoint` and `DOMAIN` parameters to correctly run this code! 
+    We first create a wallet from a seed phrase and this wallet is used for interacting with the Fetch.ai blockchain. We then proceed and define the Name Service Contract. It retrieves the name service contract to register the uAgent's name on the blockchain. The `test=True` parameter indicates this is a `test` setup. Then, we define the faucet used to fund the wallet with test tokens. We then define the domain for the uAgent's name registration and finally proceed to request funds from the faucet to ensure the agent's wallet has sufficient funds to operate. Remember that you need to provide the `name`, `seed`, `port`, `endpoint` and `DOMAIN` parameters to correctly run this code! 
 
-5. We continue and define Bob's functions. We start with a register_agent_name function which registers Bob's name within the blockchain using the agent's wallet, address, name and domain parameters:
+5. We continue and define Bob's functions. We start with a `register_agent_name()` function which registers Bob's name within the blockchain using the uAgent's wallet, address, name and domain parameters:
 
     ```python copy
     @bob.on_event("startup")
@@ -115,7 +115,7 @@ Let's start with the first agent of this example, Bob.
         )
     ```
 
-    Here, we defined the `register_agent_name` function. It registers the agent's name on the blockchain when the agent is initialized. The function uses the name service contract to register `bob-0.example.agent` agent using the `my_wallet` wallet. **It is important that you provide only lower case letters for your agent's `name` and `DOMAIN` parameters as otherwise you will face issues the moment you run your agent**.
+    Here, we defined the `register_agent_name()` function. It registers the uAgent's name on the blockchain when the uAgent is initialized. The function uses the name service contract to register `bob-0.example.agent` uAgent using the `my_wallet` wallet. **It is important that you provide only lower case letters for your agent's `name` and `DOMAIN` parameters as otherwise you will face issues the moment you run your uAgent**.
 
 6. We now define a `message_handler` function for Bob to handle incoming messages:
 
@@ -181,7 +181,7 @@ if __name__ == "__main__":
 
 ### Alice
 
-Let's now define the code for our second agent, Alice.
+Let's now define the code for our second uAgent, Alice.
 
 1. First of all, we import the required libraries and modules:
 
@@ -196,7 +196,7 @@ Let's now define the code for our second agent, Alice.
         message: str
     ```
 
-3. We proceed and initialize the agent:
+3. We proceed and initialize the uAgent:
 
     ```python copy
     alice = Agent(
@@ -207,9 +207,9 @@ Let's now define the code for our second agent, Alice.
     )
     ```
 
-    We initialize an agent named `alice-0` with a specified `seed`. The agent listens on port `8000` and has an `endpoint` for submitting messages.
+    We initialize an uAgent named `alice-0` with a specified `seed`. The uAgent listens on port `8000` and has an `endpoint` for submitting messages.
 
-4. We then need to define the domain of the agent. The `DOMAIN` specifies the domain for the agent communication. This domain is used to construct the full address of Bob:
+4. We then need to define the domain of the uAgent. The `DOMAIN` specifies the domain for the uAgent communication. This domain is used to construct the full address of Bob:
 
     ```python copy
     DOMAIN = "example.agent"
@@ -228,9 +228,9 @@ Let's now define the code for our second agent, Alice.
         alice.run()
     ```
 
-    This `alice_interval_handler()` function runs at regular intervals of 5 seconds to send messages. The handler constructs Bob's address using the domain and sends a message to Bob. It combines `bob-0` name with the `DOMAIN` to form `bob-0.example.agent`. The agent logs the action and sends a message with the content "Hello there bob." to Bob agent.
+    This `alice_interval_handler()` function runs at regular intervals of 5 seconds to send messages. The handler constructs Bob's address using the domain and sends a message to Bob. It combines `bob-0` name with the `DOMAIN` to form `bob-0.example.agent`. The uAgent logs the action and sends a message with the content "Hello there bob." to Bob uAgent.
 
-    Remember that you need to provide the `name`, `seed`, `port`, `endpoint` and `DOMAIN` parameters to correctly run this code! **Additionally, it is important that you provide only lower case letters for your agent's `name` and `DOMAIN` parameters as otherwise you will face issues the moment you run your agent**.
+    Remember that you need to provide the `name`, `seed`, `port`, `endpoint` and `DOMAIN` parameters to correctly run this code! **Additionally, it is important that you provide only lower case letters for your uAgent's `name` and `DOMAIN` parameters as otherwise you will face issues the moment you run your uAgent**.
 
 The overall script for this example should look as follows:
 

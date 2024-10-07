@@ -1,10 +1,10 @@
 import {Callout} from 'nextra/components'
 
-# How to add custom REST endpoints to your Agent
+# How to add custom REST endpoints to your uAgent
 
 
 ## Introduction
-uAgents now support custom REST endpoints using the `on_rest_get()` and `on_rest_post()` decorators, enabling them to handle HTTP GET and POST requests directly. With this addition, agents can define specific routes, create request and response models, and interact seamlessly with REST clients. This feature enhances the flexibility of agents, allowing them to communicate with external systems using standard web protocols while ensuring that all responses conform to predefined models.
+uAgents now support custom REST endpoints using the `on_rest_get()` and `on_rest_post()` decorators, enabling them to handle HTTP GET and POST requests directly. With this addition, uAgents can define specific routes, create request and response models, and interact seamlessly with REST clients. This feature enhances the flexibility of uAgents, allowing them to communicate with external systems using standard web protocols while ensuring that all responses conform to predefined models.
 
 Let's get started!
 
@@ -12,22 +12,22 @@ Let's get started!
 
 Make sure you have read the following resources before going on with this guide:
 
-    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
-    - [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
+    - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first uAgent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [uAgent Handlers ↗️](/guides/agents/intermediate/handlers)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [uAgents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
-    - [Options for running your Agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
+    - [Options for running your uAgents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
 
 <Callout type="warning" emoji="⚠️">
-   Please note that this feature is only available at the 'agent level', meaning that you cannot add REST endpoints to uAgents protocols.
+   Please note that this feature is only available at the 'uAgent level', meaning that you cannot add REST endpoints to uAgents protocols.
 </Callout>
 
 ## Usage
 
-To use the new REST API feature in your agent, follow these steps to define custom `GET` and `POST` routes, run the agent, and query the endpoints.
+To use the new REST API feature in your uAgent, follow these steps to define custom `GET` and `POST` routes, run the uAgent, and query the endpoints.
 
 ### Define Custom GET and POST Routes
 
@@ -56,10 +56,10 @@ Use the `@on_rest_post()` decorator to define a custom POST endpoint. You need t
     ```
 
     <Callout type="info" emoji="ℹ️">
-        For querying the agent you have to make sure that:
+        For querying the uAgent you have to make sure that:
 
          - You use the correct REST method ("GET" or "POST")
-         - You address the agent endpoint together with its route e.g `http://localhost:8000/custom_route`
+         - You address the uAgent endpoint together with its route e.g `http://localhost:8000/custom_route`
     </Callout>
 
 ### Example of custom GET and POST Routes
@@ -115,8 +115,8 @@ if __name__ == "__main__":
 
 ## Run the example
 
-1. Run the agent: `python agent.py`
-2. Query the agent directly through your predefined interfaces:
+1. Run the uAgent: `python agent.py`
+2. Query the uAgent directly through your predefined interfaces:
 
     ```bash
     curl -d '{"text": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/rest/post
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     {"timestamp": 1725610956, "text": "Received: test", "agent_address": "agent1q2qavahvzm2yw237g2cq40pe8p590ppysclaffp2dd0gtk9evtxag7c8djd"}
     ```
 
-- Agent Logs:
+- uAgent Logs:
 
     ```
     WARNING:  [Rest API]: No endpoints provided. Skipping registration: Agent won't be reachable.

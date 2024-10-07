@@ -1,27 +1,27 @@
 import { CodeGroup } from "../../../../components/code";
 
-# Creating your first agent
+# Creating your first uAgent
 
 ## Introduction
 
-Once you've [installed ↗️](/guides/agents/installing-uagent) the uAgents library, it's quite simple to get a minimal use case running.
+Once you've [installed ↗️](/guides/agents/installing-uagent) the `uagents` library, it's quite simple to get a minimal use case running.
 
-The uAgents Framework streamlines agent creation by offering tools for communication, discovery, and publication within the Fetch.ai network. It empowers users and developers with flexibility, allowing them to build agents using anything from cutting-edge Large Language Models (LLMs) to simple APIs.
+The `uagents` Framework streamlines agent creation by offering tools for communication, discovery, and publication within the Fetch.ai network. It empowers users and developers with flexibility, allowing them to build uAgents using anything from cutting-edge Large Language Models (LLMs) to simple APIs.
 
-Let our first agent be a simple initialization and printing out the agent's name and address.
+Let our first uAgent be a simple initialization and printing out the uAgent's name and address.
 
 ## Prerequisites
 
 Make sure you have read the following resources before going on with this guide:
 
-  - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-  - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+  - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
+  - [uAgents address ↗️](/guides/agents/getting-started/getting-uagent-address)
 
 ## Imports needed
 
-  - [uAgents ↗️](https://pypi.org/project/uagents/)
+  - [`uagents` ↗️](https://pypi.org/project/uagents/)
 
-### The agent
+### The uAgent
 
 1. Let's create a Python script for this task, and name it by running:
 
@@ -41,16 +41,16 @@ Make sure you have read the following resources before going on with this guide:
 
     </CodeGroup>
 
-2. We then need to import the `Agent` and `Context` classes from the `uagents` library, and then create an agent using the class `Agent`:
+2. We then need to import the `Agent` and `Context` classes from the `uagents` library, and then create an uAgent using the class `Agent`:
 
    ```py copy
    from uagents import Agent, Context
    agent = Agent(name="alice", seed="secret_seed_phrase")
    ```
 
-   It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the agent. Your address is kind of important, as this is how other agents will identify you.
+   It is optional but useful to include a `seed` parameter when creating an uAgent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the uAgent. Your address is kind of important, as this is how other uAgents will identify you.
 
-3. Let's define a `say_hello()` function for our agent to print a message periodically saying `hello, my name is ...`:
+3. Let's define a `say_hello()` function for our uAgent to print a message periodically saying `hello, my name is ...`:
 
    ```py copy
    @agent.on_event("startup")
@@ -61,7 +61,7 @@ Make sure you have read the following resources before going on with this guide:
        agent.run()
    ```
 
-   The `.on_event("startup")` decorator defines a behavior for this agent when it is run. In this case, the agent will execute the `say_hello()` function when the agent starts. The `Context` object is a collection of data and functions related to the agent. In this case, we just use the agent's `name`, `alice`. The agent executes the function and uses the `ctx.logger.info()` method to print the message.
+   The `.on_event("startup")` decorator defines a behavior for this uAgent when it is run. In this case, the uAgent will execute the `say_hello()` function when the uAgent starts. The `Context` object is a collection of data and functions related to the uAgent. In this case, we just use the uAgent's `name`, `alice`. The uAgent executes the function and uses the `ctx.logger.info()` method to print the message.
 
 4. Save the script.
 
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     agent.run()
 ```
 
-### Run your agent
+### Run your uAgent
 
 Make sure to have activated your virtual environment correctly.
 
@@ -93,4 +93,4 @@ The output would be:
     INFO:     [alice]: Hello, I'm agent alice and my address is <agent_address>
     ```
 
-**Congratulations, you have just created your first Agent!**
+**Congratulations, you have just created your first uAgent!**

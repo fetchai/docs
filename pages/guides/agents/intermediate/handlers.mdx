@@ -16,7 +16,7 @@ Below, we show how to use the following different event handlers:
 
 ## Creating an interval task with `on_interval()` handler
 
-Sometimes an agent will need to perform a task periodically. To do this we can use the `on_interval()` decorator which periodically repeats a given function for the agent. For instance, an agent could send a message every 2 seconds to another agent.
+Sometimes an uAgent will need to perform a task periodically. To do this we can use the `on_interval()` decorator which periodically repeats a given function for the uAgent. For instance, an uAgent could send a message every 2 seconds to another uAgent.
 
 **Let's get started and create our first interval task!**
 
@@ -24,14 +24,14 @@ Sometimes an agent will need to perform a task periodically. To do this we can u
 
 Make sure you have read the following resources before going on with this guide:
 
-    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
     - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
-    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
-    - [Communicating with other agents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
+    - [uAgents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Communicating with other uAgents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
 
 ## Imports needed
 
-    - [uAgents ↗️](https://pypi.org/project/uagents/)
+    - [`uagents` ↗️](https://pypi.org/project/uagents/)
     - [FastAPI ↗️](https://pypi.org/project/fastapi/)
 
 ### Walk-through
@@ -54,7 +54,7 @@ Make sure you have read the following resources before going on with this guide:
 
     </CodeGroup>
    
-2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
+2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our uAgent:
 
    ```py copy
    from uagents import Agent, Context
@@ -62,7 +62,7 @@ Make sure you have read the following resources before going on with this guide:
    agent = Agent(name="alice", seed="alice recovery phrase")
    ```
 
-3. Create a function to handle the startup event, which will introduce the agent:
+3. Create a function to handle the startup event, which will introduce the uAgent:
 
     ```py copy
     @agent.on_event("startup")
@@ -70,7 +70,7 @@ Make sure you have read the following resources before going on with this guide:
         ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
     ```
 
-4. We can now define our agent's interval behavior. We want our agent to log a message every 2 seconds using the `on_interval` decorator:
+4. We can now define our uAgent's interval behavior. We want our uAgent to log a message every 2 seconds using the `on_interval` decorator:
 
    ```py copy
    @agent.on_interval(period=2.0)
@@ -120,7 +120,7 @@ The output should be as follows:
 
 ## Handle messages using the `on_message()` handler
 
-We now showcase a scenario where three agents, named `alice`, `bob`, and `charles`, use a custom [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all agents using the protocol. Agents use the `on_message()` handler which allows them to handle messages matching specific data models.
+We now showcase a scenario where three uAgents, named `alice`, `bob`, and `charles`, use a custom [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all uAgents using the protocol. uAgents use the `on_message()` handler which allows them to handle messages matching specific data models.
 
 **Let's get started!**
 
@@ -144,7 +144,7 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
     </CodeGroup>
    
-2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library, and the `fund_agent_if_low` from `uagents.setup`. Then, let's create the 3 different agents using the class `Agent`. Each agent is initialized with a unique name and a seed phrase for wallet recovery. Additionally, if an agent's wallet balance is low, the `fund_agent_if_low()` function is called to add funds to their wallet:
+2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library, and the `fund_agent_if_low` from `uagents.setup`. Then, let's create the 3 different uAgents using the class `Agent`. Each uAgent is initialized with a unique name and a seed phrase for wallet recovery. Additionally, if an uAgent's wallet balance is low, the `fund_agent_if_low()` function is called to add funds to their wallet:
 
     ```py copy
     from uagents import Agent, Bureau, Context, Model, Protocol
@@ -159,9 +159,9 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
     fund_agent_if_low(charles.wallet.address())
     ```
 
-   It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the agent.
+   It is optional but useful to include a `seed` parameter when creating an uAgent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the uAgent.
 
-3. Let's then define the message data models to specify the type of messages being handled and exchanged by the agents. We define a `BroadcastExampleRequest` and a `BroadcastExampleResponse` data models. Finally, create a `protocol` named `proto` with version `1.0`:
+3. Let's then define the message data models to specify the type of messages being handled and exchanged by the uAgents. We define a `BroadcastExampleRequest` and a `BroadcastExampleResponse` data models. Finally, create a `protocol` named `proto` with version `1.0`:
 
     ```py copy
     class BroadcastExampleRequest(Model):
@@ -183,9 +183,9 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
         )
     ```
 
-    Here we defined a `handle_request()` function which is used whenever a request is received. This sends a response back to the sender. This function is decorated with the `.on_message()` decorator indicating that this function is triggered whenever a message of type `BroadcastExampleRequest` is received. The function sends a response containing a greeting message with the name of the agent that sent the request in the first place.
+    Here we defined a `handle_request()` function which is used whenever a request is received. This sends a response back to the sender. This function is decorated with the `.on_message()` decorator indicating that this function is triggered whenever a message of type `BroadcastExampleRequest` is received. The function sends a response containing a greeting message with the name of the uAgent that sent the request in the first place.
 
-5. Now, we need to include the `protocol` into the agents. Specifically, the protocol is included in both `alice` and `bob` agents. This means they will follow the rules defined in the protocol when communicating:
+5. Now, we need to include the `protocol` into the uAgents. Specifically, the protocol is included in both `alice` and `bob` uAgents. This means they will follow the rules defined in the protocol when communicating:
 
     ```py copy
     alice.include(proto)
@@ -193,10 +193,10 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
     ```
 
     <Callout type="info" emoji="ℹ️">
-      After the first registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) smart contract, it will take about 5 minutes before the agents can be found through the protocol.
+      After the first registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) smart contract, it will take about 5 minutes before the uAgents can be found through the protocol.
     </Callout>
 
-6. It is now time to define the behavior and function of `charles` agent:
+6. It is now time to define the behavior and function of `charles` uAgent:
 
     ```py copy
     @charles.on_interval(period=5)
@@ -209,11 +209,11 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
         ctx.logger.info(f"Received response from {sender}: {msg.text}")
     ```
 
-   In the first part, we use the `.on_interval()` decorator to define an interval behavior for this agent when the script is being run. In this case, the agent will execute the `say_hello()` function every 5 seconds. The `Context` object is a collection of data and functions related to the agent. Inside the `say_hello()` function, the agent uses the `ctx.broadcast()` method to send a broadcast message. The message is of type `BroadcastExampleRequest()` and it is being sent using the protocol's digest (`proto.digest`).
+   In the first part, we use the `.on_interval()` decorator to define an interval behavior for this uAgent when the script is being run. In this case, the uAgent will execute the `say_hello()` function every 5 seconds. The `Context` object is a collection of data and functions related to the uAgent. Inside the `say_hello()` function, the uAgent uses the `ctx.broadcast()` method to send a broadcast message. The message is of type `BroadcastExampleRequest()` and it is being sent using the protocol's digest (`proto.digest`).
 
-    Then, we defined a `.on_message()` decorator which decorates `handle_response()` function. This function handles all incoming messages of type `BroadcastExampleResponse` from other agents. When a response is received, it logs the information. Inside the `handle_response()` function, the agent logs an informational message using `ctx.logger.info()` method to print the sender and the content of the message. The message includes the sender's name and the text content of the response message.
+    Then, we defined a `.on_message()` decorator which decorates `handle_response()` function. This function handles all incoming messages of type `BroadcastExampleResponse` from other uAgents. When a response is received, it logs the information. Inside the `handle_response()` function, the uAgent logs an informational message using `ctx.logger.info()` method to print the sender and the content of the message. The message includes the sender's name and the text content of the response message.
 
-7. We are now ready to set up a `Bureau` object for agents to be run together at the same time, and we add `alice`, `bob`, and `charles` to it using the `bureau.add()` method:
+7. We are now ready to set up a `Bureau` object for uAgents to be run together at the same time, and we add `alice`, `bob`, and `charles` to it using the `bureau.add()` method:
 
     ```py copy
     bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
@@ -258,11 +258,11 @@ async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleReques
 
 # include protocol
 # Note: after the first registration on the almanac smart contract, it will
-# take about 5 minutes before the agents can be found through the protocol
+# take about 5 minutes before the uAgents can be found through the protocol
 alice.include(proto)
 bob.include(proto)
 
-# let charles send the message to all agents supporting the protocol
+# let charles send the message to all uAgents supporting the protocol
 @charles.on_interval(period=5)
 async def say_hello(ctx: Context):
     status_list = await ctx.broadcast(proto.digest, message=BroadcastExampleRequest())
@@ -297,13 +297,13 @@ The output would be:
 
 ## Answer queries with `on_query()` handler
 
-The `on_query()` handler is used to register a [Function ↗️](/guides/agents/intermediate/agent-functions) as a handler for incoming queries that match a specified `Model`. This decorator enables the agent to respond to queries in an event-driven manner.
+The `on_query()` handler is used to register a [Function ↗️](/guides/agents/intermediate/agent-functions) as a handler for incoming queries that match a specified `Model`. This decorator enables the uAgent to respond to queries in an event-driven manner.
 
 ### Walk-through
 
-#### Agent's script
+#### uAgent's script
 
-For the agent, the script sets up an agent to handle incoming queries. It defines two models: `TestRequest` and `Response`. Upon startup, it logs the agent's details. The core functionality lies in the `query_handler`, decorated with `@agent.on_query()`, which processes received queries and sends back a predefined response. This demonstrates creating responsive agents within the `uagents` Framework, showcasing how they can interact with other agents or functions in an asynchronous, event-driven architecture.
+For the uAgent, the script sets up an uAgent to handle incoming queries. It defines two models: `TestRequest` and `Response`. Upon startup, it logs the uAgent's details. The core functionality lies in the `query_handler`, decorated with `@agent.on_query()`, which processes received queries and sends back a predefined response. This demonstrates creating responsive uAgents within the `uagents` Framework, showcasing how they can interact with other uAgents or functions in an asynchronous, event-driven architecture.
 
     ```py copy filename="agent.py"
     from uagents import Agent, Context, Model
@@ -339,17 +339,17 @@ For the agent, the script sets up an agent to handle incoming queries. It define
             await ctx.send(sender, Response(text="fail"))
 
 
-    # Main execution block to run the agent.
+    # Main execution block to run the uAgent.
     if __name__ == "__main__":
         agent.run()
     ```
 
 
-The agent is created using the `Agent` class from `uagents` library. You can initialise it by providing it with a `name`, `seed`, `port`, and `endpoint`. It defines an `on_event()` handler for the `startup` event, where it logs information about the agent's initialisation. It defines an `on_query()` handler for handling queries of type `TestRequest`. Upon receiving a query, it processes it and sends back a `Response`. The agent is then set to run.
+The uAgent is created using the `Agent` class from `uagents` library. You can initialise it by providing it with a `name`, `seed`, `port`, and `endpoint`. It defines an `on_event()` handler for the `startup` event, where it logs information about the uAgent's initialisation. It defines an `on_query()` handler for handling queries of type `TestRequest`. Upon receiving a query, it processes it and sends back a `Response`. The uAgent is then set to run.
 
 #### Proxy
 
-The proxy is implemented using `FastAPI`. It sets up two routes: `"/"` for a simple root message and `"/endpoint"` for receiving requests. When a `POST` request is made to `"/endpoint"` with a JSON payload containing a `TestRequest`, it triggers the `make_agent_call` function. Inside `make_agent_call`, it calls `agent_query` to communicate with the agent. The agent receives the query, processes it, and sends back a response. The proxy receives the response from the agent and sends back a success message along with the response text.
+The proxy is implemented using `FastAPI`. It sets up two routes: `"/"` for a simple root message and `"/endpoint"` for receiving requests. When a `POST` request is made to `"/endpoint"` with a JSON payload containing a `TestRequest`, it triggers the `make_agent_call` function. Inside `make_agent_call`, it calls `agent_query` to communicate with the uAgent. The uAgent receives the query, processes it, and sends back a response. The proxy receives the response from the uAgent and sends back a success message along with the response text.
 
 Let's explore the Proxy code script step-by-step:
 
@@ -388,7 +388,7 @@ Let's explore the Proxy code script step-by-step:
         message: str
     ```
 
-4. Create `agent_query()` function to send query to agent and decode the response received.
+4. Create `agent_query()` function to send query to uAgent and decode the response received.
 
     ```py copy
     async def agent_query(req):
@@ -413,7 +413,7 @@ Let's explore the Proxy code script step-by-step:
         return "Hello from the Agent controller"
     ```
 
-7. Define an endpoint to make agent calls:
+7. Define an endpoint to make uAgent calls:
 
     ```py copy
     @app.post("/endpoint")
@@ -472,13 +472,13 @@ In separate terminals:
 
 1. Run the **FastAPI proxy**: `uvicorn proxy:app`
 
-2. Run the **agent**: `python agent.py`
+2. Run the **uAgent**: `python agent.py`
 
-3. Query the agent via the proxy: `curl -d '{"message": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/endpoint`
+3. Query the uAgent via the proxy: `curl -d '{"message": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/endpoint`
 
 ## Catching events with  `on_event()` handler
 
-During startup, and shutdown there are two events that are caught by the uAgents library, `startup` and `shutdown`. 
+During startup, and shutdown there are two events that are caught by the `uagents` library, `startup` and `shutdown`. 
 
 Here's an example: 
 
