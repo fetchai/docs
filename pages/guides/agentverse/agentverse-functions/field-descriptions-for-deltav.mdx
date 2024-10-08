@@ -12,11 +12,29 @@ For clarity, reinforcing key concepts could be done through repetition of keywor
 
 Consider the following Agent Function:
 
-![](src/images/guides/services/the-importance-of-descriptions/description_1.png)
+![](src/images/guides/agentverse/registering-agent-coin-toss/new-service-dialog.png)
 
-Providing a detailed field description for the `num_rolls` data `Model` is important to correctly execute the Function. A well written field description enhances the LLM understanding of the type of Function the user objective requires to be executed. This would help in the accurate interpretation and execution of users' requests.
+Providing a detailed field description for the `num_rolls` data `Model` is important to correctly execute the Function. A well written field description enhances the LLM understanding of the type of Function and the user objective requires to be executed. This would help in the accurate interpretation and execution of users' requests.
 
-**It is possible to call additional Secondary Functions from Primary or Secondary ones by specifying this within the field description itself**. For Primary and Secondary Functions network, please refer to the below examples.
+It is possible to call additional other **Sub-Services** from either **Objective or other Sub-Services** by specifying this within the field description itself. For additional information on Objective Service and Sub-Service, check the following [resource ↗️](/guides/services/services#primary-and-secondary-functions)
+
+For a network of Objective Services and Sub-Services, please refer to the below examples.
+
+## Auto-description functionality
+
+It is possible for you to generate **auto-descriptions** for your Functions when it comes to deploy them on Agentverse.
+
+You can make use of this functionality by opening your Agent's details by clicking on the Agent's box within the list of Agents available in **My Agents** tab in Agentverse. Then, head over to the **Deploy** tab as shown below:
+
+![](src/images/guides/agentverse/autodescriptions_initial.png)
+
+Here, you will need to either create a **New Function** or **edit an existing one**. This way, you will open your Agent's Function editor, and you will be able to provide/edit the description for what that Function does. It is here where you can make use of the auto-description functionality to fill in such field. At the moment, this functionality is available just for the **Function Description**, but it will be available for **Fields** description at a later stage.
+
+Check out the following screenshot to have a better idea:
+
+![](src/images/guides/agentverse/autodescriptions.png)
+
+By clicking the **Refine** button, the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) will automatically generate a description based on the Function details you have provided. You can either provide an initial prompt within the **Description** field to be then refined, or you can auto-generate a description from a nothing and the AI Engine will do this for you by itself.
 
 ### Example 1: News Reading System
 
@@ -30,7 +48,7 @@ This Function helps user to read news of a specific type. This Function calls a 
 
 ![](src/images/guides/services/the-importance-of-descriptions/description_2.png)
 
-The field description for the `news` data model describes the news that will be presented to the user. It should be mentioned that it should be always provided by triggering of Secondary Function. In our case, a good field description would be: **Describes the news which will be generate from the "Generate News" secondary function. Always go for "Generate News" secondary function only never ask this field from user. All the news articles generated are presented as strings**.
+The field description for the `news` data model describes the news that will be presented to the user. It should be mentioned that it should be always provided by triggering of Secondary Function. In our case, a good field description would be: **Describes the news which will be generated from the "Generate News" secondary function. Always go for "Generate News" secondary function only never ask this field from user. All the news articles generated are presented as strings**.
 
 #### Secondary Function Field Description
 
@@ -38,7 +56,7 @@ This Function helps task to generate news and send it to task or another Seconda
 
 ![](src/images/guides/services/the-importance-of-descriptions/description_3.png)
 
-The field description for the `category` data model describes the category for which the user wants to read the news. It should be mentioned that it should be always provided by user. In our case, a good field description would be: **Describes the category provided by user about which he want to get news for. This should always be provided by user in all cases. This primary function responds to "Generate News" secondary function. This should be from options business, entertainment, general, health, science, sports, technology**.
+The field description for the `category` data model describes the category for which the user wants to read the news. It should be mentioned that it should be always provided by user. In our case, a good field description would be: **Describes the category provided by user about which he wants to get news for. This should always be provided by user in all cases. This primary function responds to "Generate News" secondary function. This should be from options business, entertainment, general, health, science, sports, technology**.
 
     <Callout type="info" emoji="ℹ️">
       _Remember to always include the secondary function trigger in the field description_. This is very important to ensure that the secondary function is being called. When selecting one of multiple secondary functions, you need to use different names for each one of the functions. This way, we avoid confusion for the LLM.
@@ -65,7 +83,7 @@ The field description for the `response` describes the response to be provided t
 Ideal field description for this example will be like:
 
 **model_id:** Always go for model list secondary function. Never ask this field to user.
-**query:** Describes the query user wants to ask to the model. Always ask this to user after model_id is given by model list secondary function.
+**query:** Describes the query user wants to ask the model. Always ask this to user after model_id is given by model list secondary function.
 
     <Callout type="info" emoji="ℹ️">
       Remember to always provide a comprehensive description in `query` field that first we should fetch `model_id` using secondary function before asking `query` to user.
@@ -103,14 +121,15 @@ Ideal field descriptions for this example will be like:
 
     **location:** This describes the coordinates of the city given in str(lat,long) format.
 
-![](src/images/guides/services/service-guide/business_finder_2.png)
+   ![](src/images/guides/services/service-guide/business_finder_2.png)
 
 2. **Business Finder**: This secondary function takes category and city from the primary function and looks around for 10 business name in that area. Asks user to select one and then sends back to task as name field.
 
-**category:** This is the category provided by the user for which they want to get businesses in primary function business details service, Use this category for task as well.
-**city:** This is the city responded by city finder or one given by user.
+   **category:** This is the category provided by the user for which they want to get businesses in primary function business details service, Use this category for task as well.
 
-![](src/images/guides/services/service-guide/business_finder_3.png)
+   **city:** This is the city responded by city finder or one given by user.
+
+   ![](src/images/guides/services/service-guide/business_finder_3.png)
 
 ## Agent Function registration examples
 
