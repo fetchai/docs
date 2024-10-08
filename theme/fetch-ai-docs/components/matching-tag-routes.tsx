@@ -1,10 +1,15 @@
 /* eslint-disable unicorn/consistent-function-scoping */
-import { GuideBox } from "components/feature-guide-tabs";
-import { Button } from "nextra/components";
 import React, { ReactElement, useEffect, useState } from "react";
-import { FaBars, FaThLarge, FaAngleUp, FaAngleDown } from "react-icons/fa";
 import { useRouter } from "next/router";
 import fetchJson from "src/lib/fetch-json";
+import { GridView } from "components/grid-view";
+import { Input } from "./input";
+import {
+  GridViewIcon,
+  LeftIcon,
+  ListViewIcon,
+  SearchIcon,
+} from "src/icons/shared-icons";
 
 interface RouteInfo {
   route: string;
@@ -13,21 +18,29 @@ interface RouteInfo {
 
 interface RoutesComponentProps {
   routes: RouteInfo[];
+  setMatchingTagRoute: React.Dispatch<React.SetStateAction<RouteInfo[]>>;
 }
 
 export function MatchingRoutesComponent({
   routes,
+  setMatchingTagRoute,
 }: RoutesComponentProps): ReactElement {
   const [viewType, setViewType] = useState<"list" | "grid">("list");
   const [content, setContent] = useState([]);
-  const [isListViewCollapsed, setListViewCollapsed] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [matchedRoutes, setMatchedRoutes] = useState<RouteInfo[]>(routes);
   const router = useRouter();
   const toggleView = (type) => {
     setViewType(type);
   };
 
-  const toggleListView = () => {
-    setListViewCollapsed((prevCollapsed) => !prevCollapsed);
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value.toLowerCase());
+    const filteredRoutes = routes.filter((routeInfo) => {
+      const guideInfo = findGuideByPath(content, routeInfo.route);
+      return guideInfo.title.toLowerCase().includes(searchQuery);
+    });
+    setMatchedRoutes(filteredRoutes);
   };
 
   const fetchGuide = async () => {
@@ -90,116 +103,121 @@ export function MatchingRoutesComponent({
     return { title, description };
   };
 
+  const routeTitle = () => {
+    const pathname = window.location.pathname;
+    return (
+      pathname.split("/").pop().split("-").join(" ").charAt(0).toUpperCase() +
+      pathname.split("/").pop().split("-").join(" ").slice(1)
+    );
+  };
+
   return (
     <div>
-      <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+      <button
+        style={{ padding: "4px 12px 4px 12px" }}
+        onClick={() => setMatchingTagRoute(null)}
+        className="tags first-letter:flex min-h-[32px] nx-rounded justify-center items-center gap-[6px]"
       >
-        <h3 style={{ marginRight: "10px" }}>Topics with matching tag:</h3>
-        <Button
-          title="Switch to List View"
-          style={{
-            marginRight: "10px",
-            padding: "8px",
-            borderRadius: "4px",
-            background: `${
-              viewType === "list" ? "rgba(144, 238, 144, 0.5)" : ""
-            }`,
-          }}
-          onClick={() => toggleView("list")}
-        >
-          <FaBars
-            style={{
-              fontSize: "20px",
-            }}
-          />
-        </Button>
-        <Button
-          title="Switch to Grid View"
-          style={{
-            padding: "8px",
-            borderRadius: "4px",
-            background: `${
-              viewType === "grid" ? "rgba(144, 238, 144, 0.5)" : ""
-            }`,
-          }}
-          onClick={() => toggleView("grid")}
-        >
-          <FaThLarge style={{ fontSize: "20px" }} />
-        </Button>
+        <div className="nx-flex nx-justify-between nx-items-center nx-gap-2">
+          <LeftIcon />
+          <span className="nx-text-[#000D3D] nx-text-sm nx-font-normal">
+            Back to {routeTitle()}
+          </span>
+        </div>
+      </button>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "10px",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <h3 className="nx-text-xl nx-mt-8 nx-font-normal nx-text-[#0B1742]">
+            {matchedRoutes?.length} topics matching with the tag
+          </h3>
+        </div>
 
-        {isListViewCollapsed ? (
-          <FaAngleDown
-            title="expand"
-            onClick={toggleListView}
-            style={{ marginLeft: "20px" }}
-            className="nx-cursor-pointer"
-          />
-        ) : (
-          <FaAngleUp
-            title="collapse"
-            onClick={toggleListView}
-            style={{ marginLeft: "20px" }}
-            className="nx-cursor-pointer"
-          />
-        )}
+        <div
+          className={`nx-flex nx-w-[60px] nx-h-[32px] nx-p-[2px] nx-items-start nx-gap-[0px] toggle-view`}
+        >
+          <button
+            onClick={() => toggleView("list")}
+            className={
+              viewType === "list" ? "toggle-list-grid-bg" : "nx-bg-white"
+            }
+          >
+            <ListViewIcon viewType={viewType} />
+          </button>
+          <button
+            onClick={() => toggleView("grid")}
+            className={
+              viewType === "grid" ? "toggle-list-grid-bg" : "nx-bg-white"
+            }
+          >
+            <GridViewIcon viewType={viewType} />
+          </button>
+        </div>
+      </div>
+      <div className="tags-input">
+        <Input
+          type="search"
+          className="nx-bg-white input-inner-nav"
+          placeholder="Search in results"
+          onChange={handleSearch}
+        />
+        <div className="nx-p-1">
+          <SearchIcon />
+        </div>
       </div>
 
-      {viewType === "list"
-        ? !isListViewCollapsed && (
-            <ul>
-              {routes.map((routeInfo, index) => {
-                const guideInfo = findGuideByPath(content, routeInfo.route);
-                return (
-                  <li
-                    className="list-view nx-mt-4"
-                    key={index}
-                    onClick={() => {
-                      router.push(routeInfo.route);
-                    }}
-                  >
-                    <p
-                      style={{
-                        color: "rgba(11, 23, 66, 0.8)",
-                        fontSize: "24px",
-                        fontWeight: "400",
-                      }}
-                    >
-                      {guideInfo.title}
-                    </p>
-                    <p
-                      style={{
-                        color: "rgba(11, 23, 66, 0.8)",
-                        fontSize: "18px",
-                        fontWeight: "300",
-                      }}
-                    >
-                      {guideInfo.description}
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
-          )
-        : !isListViewCollapsed && (
-            <div className="nx-mt-4">
-              <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
-                {routes.map((routeInfo, index) => {
-                  const guideInfo = findGuideByPath(content, routeInfo.route);
-                  return (
-                    <GuideBox
-                      key={index}
-                      content={{
-                        title: guideInfo.title,
-                        description: guideInfo.description,
-                        path: routeInfo.route,
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          )}
+      {viewType === "list" ? (
+        <ul className="nx-mt-8">
+          {matchedRoutes.map((routeInfo, index) => {
+            const guideInfo = findGuideByPath(content, routeInfo.route);
+            return (
+              <li
+                className="list-view list-view-title nx-mt-4"
+                key={index}
+                onClick={() => {
+                  router.push(routeInfo.route);
+                }}
+              >
+                <p>{guideInfo.title}</p>
+                <p
+                  style={{
+                    color: "#0B1742",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    opacity: 0.6,
+                  }}
+                >
+                  {guideInfo.description}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <div className="nx-mt-4">
+          <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
+            {matchedRoutes.map((routeInfo, index) => {
+              const guideInfo = findGuideByPath(content, routeInfo.route);
+              return (
+                <GridView
+                  key={index}
+                  content={{
+                    title: guideInfo.title,
+                    description: guideInfo.description,
+                    path: routeInfo.route,
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
