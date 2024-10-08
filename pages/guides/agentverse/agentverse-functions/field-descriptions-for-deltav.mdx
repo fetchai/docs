@@ -2,15 +2,15 @@ import { Callout } from 'nextra/components'
 
 # Field descriptions for DeltaV
 
-## The importance of describing your fields in Agent Functions
+## The importance of describing your fields in uAgent Functions
 
-At registration of an Agent Function on the [Agentverse ↗️](https://agentverse.ai/), providing comprehensive information, especially in the description section, is paramount. A detailed Function **description** not only elucidates the functionality of the Agent Function but also aids users in grasping its essence. This clarity fosters effective interactions, empowering users to navigate the system with confidence, knowing precisely what to anticipate.
+At registration of an uAgent Function on the [Agentverse ↗️](https://agentverse.ai/), providing comprehensive information, especially in the description section, is paramount. A detailed Function **description** not only elucidates the functionality of the Agent Function but also aids users in grasping its essence. This clarity fosters effective interactions, empowering users to navigate the system with confidence, knowing precisely what to anticipate.
 
-Similarly, the **field description** of the Agent Function needs to be detailed enough so to provide a clear picture of each data `Model` the Function requires for it to be executable for Objective execution. Hence, these descriptions serve as a guiding beacon for users, developers, and LLM alike. Each field explanation elucidates the purpose, usage, and expected inputs required by each `Model` class, streamlining interactions and facilitating execution. Enhanced understanding of field descriptions enables the AI Engine to interpret user requests accurately, thereby ensuring accurate Agent Functions execution.
+Similarly, the **field description** of the uAgent Function needs to be detailed enough so to provide a clear picture of each data `Model` the Function requires for it to be executable for Objective execution. Hence, these descriptions serve as a guiding beacon for users, developers, and LLM alike. Each field explanation elucidates the purpose, usage, and expected inputs required by each `Model` class, streamlining interactions and facilitating execution. Enhanced understanding of field descriptions enables the AI Engine to interpret user requests accurately, thereby ensuring accurate uAgent Functions execution.
 
-For clarity, reinforcing key concepts could be done through repetition of keywords within the description. Such an approach minimizes ambiguity and mitigates the risk of misunderstandings. Whether for users or LLM, a clear and descriptive field description lay the foundation for smooth interactions and reliable Agent Function delivery and execution.
+For clarity, reinforcing key concepts could be done through repetition of keywords within the description. Such an approach minimizes ambiguity and mitigates the risk of misunderstandings. Whether for users or LLM, a clear and descriptive field description lay the foundation for smooth interactions and reliable uAgent Function delivery and execution.
 
-Consider the following Agent Function:
+Consider the following uAgent Function:
 
 ![](src/images/guides/services/the-importance-of-descriptions/description_1.png)
 
@@ -30,7 +30,7 @@ This Function helps user to read news of a specific type. This Function calls a 
 
 ![](src/images/guides/services/the-importance-of-descriptions/description_2.png)
 
-The field description for the `news` data model describes the news that will be presented to the user. It should be mentioned that it should be always provided by triggering of Secondary Function. In our case, a good field description would be: **Describes the news which will be generate from the "Generate News" secondary function. Always go for "Generate News" secondary function only never ask this field from user. All the news articles generated are presented as strings**.
+The field description for the `news` data model describes the news that will be presented to the user. It should be mentioned that it should be always provided by triggering of Secondary Function. In our case, a good field description would be: **Describes the news which will be generated from the "Generate News" secondary function. Always go for "Generate News" secondary function only never ask this field from user. All the news articles generated are presented as strings**.
 
 #### Secondary Function Field Description
 
@@ -38,7 +38,7 @@ This Function helps task to generate news and send it to task or another Seconda
 
 ![](src/images/guides/services/the-importance-of-descriptions/description_3.png)
 
-The field description for the `category` data model describes the category for which the user wants to read the news. It should be mentioned that it should be always provided by user. In our case, a good field description would be: **Describes the category provided by user about which he want to get news for. This should always be provided by user in all cases. This primary function responds to "Generate News" secondary function. This should be from options business, entertainment, general, health, science, sports, technology**.
+The field description for the `category` data model describes the category for which the user wants to read the news. It should be mentioned that it should be always provided by user. In our case, a good field description would be: **Describes the category provided by user about which he wants to get news for. This should always be provided by user in all cases. This primary function responds to "Generate News" secondary function. This should be from options business, entertainment, general, health, science, sports, technology**.
 
     <Callout type="info" emoji="ℹ️">
       _Remember to always include the secondary function trigger in the field description_. This is very important to ensure that the secondary function is being called. When selecting one of multiple secondary functions, you need to use different names for each one of the functions. This way, we avoid confusion for the LLM.
@@ -83,7 +83,7 @@ Ideal field description for this example will be like:
 
 ### Example 3: Local Business Finder
 
-This Function helps user to find local businesses in any locality and specified category. This Agent Function returns list of 10 businesses to user and gives information about selected business by the user.
+This Function helps user to find local businesses in any locality and specified category. This uAgent Function returns list of 10 businesses to user and gives information about selected business by the user.
 
 #### Primary Function Field Description
 
@@ -112,10 +112,10 @@ Ideal field descriptions for this example will be like:
 
 ![](src/images/guides/services/service-guide/business_finder_3.png)
 
-## Agent Function registration examples
+## uAgent Functions registration examples
 
-For additional information and guidelines on how to register an Agent Function on the Agentverse and examples of descriptions, head over to our dedicated resources:
+For additional information and guidelines on how to register an uAgent Function on the Agentverse and examples of descriptions, head over to our dedicated resources:
 
-   - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
+   - [uAgent Functions ↗️](/guides/agents/intermediate/agent-functions)
    - [Register Agentverse Functions ↗️](/guides/agentverse/registering-agent-services).
-   - [Register a coin toss agent as a Function ↗️](/guides/agentverse/registering-agent-coin-toss).
+   - [Register a coin toss uAgent as a Function ↗️](/guides/agentverse/registering-agent-coin-toss).

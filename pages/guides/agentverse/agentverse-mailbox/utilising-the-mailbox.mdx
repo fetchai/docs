@@ -2,13 +2,13 @@
 
 ## Introduction
 
-The **Agentverse** assists you in setting up mailboxes for local and Agentverse agents, allowing them to have a two-way communication with each other without the need to be constantly online and without requiring your constant presence to operate.
+The **Agentverse** assists you in setting up mailboxes for local and Agentverse Agents, allowing them to have a two-way communication with each other without the need to be constantly online and without requiring your constant presence to operate.
 
-To create a Mailbox, retrieve your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**.
+To create a Mailbox, retrieve your local uAgent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**.
 
 ![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1.png)
 
-You will need to provide the address of the local agent you wish to retrieve and wait for confirmation. You will then need to provide a **name** for the agent.
+You will need to provide the address of the local uAgent you wish to retrieve and wait for confirmation. You will then need to provide a **name** for the uAgent.
 
 ![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2.png)
 
@@ -16,27 +16,27 @@ Once you do so and confirm, you will see a **Mailbox API Key** showing up.
 
 ![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3.png)
 
-Copy and paste it within your local agent code by filling up the `AGENT_MAILBOX_KEY` field inline. Remember, each agent needs a dedicated separate mailbox!
+Copy and paste it within your local uAgent code by filling up the `AGENT_MAILBOX_KEY` field inline. Remember, each uAgent needs a dedicated separate mailbox!
 
-You can then restart your local agent.
+You can then restart your local uAgent.
 
 ## Prerequisites
 
 Make sure you have read the following resources before going on with this guide:
 
-    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
-    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first uAgent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [uAgents address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-    - [Communicating with other agents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
-    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Communicating with other uAgents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
+    - [uAgents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
-    - [Agent Mailboxes ↗️](/guides/agents/intermediate/mailbox)
+    - [uAgent Mailboxes ↗️](/guides/agents/intermediate/mailbox)
 
 ### Local agent setup
 
-Let's now start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
+Let's now start by creating a local uAgent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other uAgent and matching the `Message` class:
 
     ```py copy filename="agent_1.py"
     from uagents import Agent, Context, Model
@@ -50,11 +50,11 @@ Let's now start by creating a local agent named `alice` with a `handle_message()
     # Copy the address shown below
     print(f"Your agent's address is: {agent.address}")
 
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
+    # Now go to https://agentverse.ai, register your uAgent in the Mailroom by providing the address you just copied.
+    # Then, copy the uAgent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 
-    # Now your agent is ready to join the agentverse!
+    # Now your uAgent is ready to join the agentverse!
     agent = Agent(
         name="alice",
         seed=SEED_PHRASE,
@@ -69,11 +69,11 @@ Let's now start by creating a local agent named `alice` with a `handle_message()
         agent.run()
    ```
 
-You can then restart your agent; now your agent doesn't need to run all the time as their messages will be waiting for them for when they come back online.
+You can then restart your uAgent; now your uAgent doesn't need to run all the time as their messages will be waiting for them for when they come back online.
 
-### Agentverse agent setup
+### Agentverse uAgent setup
 
-Now create an Agentverse agent `bob` by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, select a blank script and add the following code into it:
+Now create an Agentverse uAgent `bob` by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, select a blank script and add the following code into it:
 
     ```py copy filename="agent_2.py"
     from uagents import Agent, Context, Model
@@ -87,7 +87,7 @@ Now create an Agentverse agent `bob` by selecting **+ New Agent** in the **My Ag
     # Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
 
-    # Now let's create the Agentverse agent
+    # Now let's create the Agentverse uAgent
     agent = Agent(
         name="bob",
         seed=SEED_PHRASE,
@@ -111,9 +111,9 @@ Next, run **bob** on the Agentverse.
 
 ### Expected output
 
-You will see something like the following depending on the agent considered:
+You will see something like the following depending on the uAgent considered:
 
-1. Agentverse Agent output:
+1. Agentverse uAgent output:
 
     ```
     2024-06-27 11:20:19	Info	Agent	[INFO]: Sending message to alice

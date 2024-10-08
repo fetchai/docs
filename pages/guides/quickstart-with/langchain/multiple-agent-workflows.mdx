@@ -1,18 +1,18 @@
 # Multi-agent workflows with Fetch.ai x Langchain
 
-Multi-agent workflows are at the forefront of modern agent development; the idea that individual [Agents ↗️](/guides/agents/getting-started/whats-an-agent) can be utilized to create larger more complex services for people has created lots of excitement in the AI space. At Fetch.ai, we're building the agent communication layer which perfectly compliments Langchain libraries.
+Multi-agent workflows are at the forefront of modern uAgent development; the idea that individual [uAgents ↗️](/guides/agents/getting-started/whats-an-agent) can be utilized to create larger more complex services for people has created lots of excitement in the AI space. At Fetch.ai, we're building the uAgent communication layer which perfectly compliments Langchain libraries.
 
-Agents representing smaller parts of a service, allow for many agents to represent a whole. Agents reduce technical requirements in projects, for example you wouldn't need to write a function to calculate the historical index of a stock price, an agent will already return that data for you.
+uAgents representing smaller parts of a service, allow for many uAgents to represent a whole. uAgents reduce technical requirements in projects, for example you wouldn't need to write a function to calculate the historical index of a stock price, an uAgent will already return that data for you.
 
-Before we go any further please read over our introduction guide to [Agents and Langchain](/guides/quickstart-with/langchain/creating-an-agent-with-langchain)
+Before we go any further please read over our introduction guide to [uAgents and Langchain](/guides/quickstart-with/langchain/creating-an-agent-with-langchain)
 
 ## The system
 
-Three agents make up a simple agent workflow: **RequestAgent**, **PDFQuestionAgent** and **PDFSplitAgent**.
+Three uAgents make up a simple uAgent workflow: **RequestAgent**, **PDFQuestionAgent** and **PDFSplitAgent**.
 
 ![](src/images/guides/quickstart-with/langchain/multi-agent-workflow-simple.drawio.svg)
 
-A variation of the following `Model` class is passed between each agent:
+A variation of the following `Model` class is passed between each uAgent:
 
 ```
 class DocumentUnderstanding(Model):
@@ -24,11 +24,11 @@ class DocumentUnderstanding(Model):
 The flow is the following:
 
     - **RequestAgent** provides the `DocumentUnderstanding` object.
-    - **PDFQuestionAgent** upon receiving `DocumentUnderstanding` sends a request to the third agent to validate and split the document.
+    - **PDFQuestionAgent** upon receiving `DocumentUnderstanding` sends a request to the third uAgent to validate and split the document.
     - **PDFSplitAgent** upon receiving the request from PDFQuestionAgent, returns a list of pages to it.
     - **PDFQuestionAgent** upto receiving the message from PDFSplitAgent processes the pages to answer the question from RequestAgent, then returns that answer to this latter one.
 
-In this example, we are hard coding the agents addresses, meaning we know them. To search for agents dynamically, take a look at the [Almanac ↗️](/concepts/fetch-network/almanac).
+In this example, we are hard coding the uAgents addresses, meaning we know them. To search for uAgents dynamically, take a look at the [Almanac ↗️](/concepts/fetch-network/almanac).
 
 ## Installation
 
@@ -58,10 +58,10 @@ Versions used for this example are:
     export OPENAI_API_KEY="YOUR_OPENAI_API_KEY"
     ```
 
-### Agent 1 - RequestAgent: provides a question and a source
+### uAgent 1 - RequestAgent: provides a question and a source
 
 
-This is our simplest agent; this agent provides a link to a PDF and question to be answered from the document.
+This is our simplest uAgent; this uAgent provides a link to a PDF and question to be answered from the document.
 
 ```python copy filename="request_agent.py"
 from uagents import Agent, Context, Protocol, Model
@@ -103,9 +103,9 @@ agent.run()
 
 ```
 
-### Agent 2 - PDFQuestionAgent: takes a request and returns a result
+### uAgent 2 - PDFQuestionAgent: takes a request and returns a result
 
-The PDFQuestionAgent gets the PDF and the request from the first agent, but is unable to split the PDF. This second agent sends a request to the third agent to split the PDF. Once the pages from the PDF are returned, a FAISS similarity search is ran on the pages by the second agent.
+The PDFQuestionAgent gets the PDF and the request from the first uAgent, but is unable to split the PDF. This second uAgent sends a request to the third uAgent to split the PDF. Once the pages from the PDF are returned, a FAISS similarity search is ran on the pages by the second uAgent.
 
 ```python copy filename="pdf_question_agent.py"
 from langchain_community.vectorstores import FAISS
@@ -193,13 +193,13 @@ faiss_pdf_agent.run()
 
 ```
 
-The core difference with agent two compared to other agents you have seen so far is that there are multiple `on_message` decorators. Your agent can have as many any number of message handlers as you want.
+The core difference with uAgent two compared to other uAgents you have seen so far is that there are multiple `on_message` decorators. Your uAgent can have as many any number of message handlers as you want.
 
 **PDFQuestionAgent** also has every request/response model to communicate with **RequestAgent** and **PDFSplitAgent**.
 
-### Agent 3 - PDFSplitAgent: validates the PDF, loads and returns the split
+### uAgent 3 - PDFSplitAgent: validates the PDF, loads and returns the split
 
-The PDFSplitAgent receives the PDF, and splits the document using the `langchain_community` document loader `PyPDFLoader`. It then returns an array of pages to the second agent.
+The PDFSplitAgent receives the PDF, and splits the document using the `langchain_community` document loader `PyPDFLoader`. It then returns an array of pages to the second uAgent.
 
 ```python copy filename="pdf_split_agent.py"
 from langchain_community.document_loaders import PyPDFLoader
@@ -233,23 +233,23 @@ pdf_loader_agent.run()
 
 ```
 
-## Run the agents
+## Run the uAgents
 
-We need to run the agents backwards so that we can generate their addresses and the update the other agents with their addresses respectively.
+We need to run the uAgents backwards so that we can generate their addresses and the update the other uAgents with their addresses respectively.
 
 Let's run **PDFSplitAgent**, and update **PDFQuestionAgent** with its address:
 
 Run: `poetry run python pdf_split_agent.py`
 
-Update `pdf_question_agent.py` script by filling the `PDF_splitter_address` field with the address of the third agent.
+Update `pdf_question_agent.py` script by filling the `PDF_splitter_address` field with the address of the third uAgent.
 
 Run `poetry run python pdf_question_agent.py`
 
-Update `request_agent.py` script by filling the `AGENT_2_FAISS` field with the address of the second agent.
+Update `request_agent.py` script by filling the `AGENT_2_FAISS` field with the address of the second uAgent.
 
 Run `poetry run python request_agent.py`
 
-Add the address of the first agent in the dedicated field `RequestAgent` within the script for the second agent, `pdf_question_agent.py`.
+Add the address of the first uAgent in the dedicated field `RequestAgent` within the script for the second uAgent, `pdf_question_agent.py`.
 
 ### Expected Output
 
