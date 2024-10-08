@@ -92,22 +92,13 @@ const Body = ({
     setMatchingTagRoute(filteredRoutes);
   };
 
-  const tagColors = [
-    "bg-indigo",
-    "bg-orange",
-    "bg-light-green",
-    "bg-blue-150",
-    "bg-yellow-150",
-    "bg-red-150",
-  ];
-  const tagsComponent = tags && (
+  const tagsComponent = tags && !matchingTagRoute && (
     <div className="nx-mt-4 nx-mb-4 nx-flex nx-flex-wrap nx-gap-2 nx-max-w-50rem">
       {tags.map((tag, index) => (
         <span
           key={index}
-          className={`nx-text-fetch-main nx-text-sm nx-font-normal nx-rounded nx-px-4 nx-py-2 nx-${
-            tagColors[index % tagColors.length]
-          }`}
+          className={`nx-text-fetch-main tags
+          nx-rounded nx-text-sm nx-font-normal nx-px-4 nx-py-2`}
         >
           <button onClick={() => handleTagClick(tag)}>{tag}</button>
         </span>
@@ -129,7 +120,10 @@ const Body = ({
     <>
       {tagsComponent}
       {matchingTagRoute ? (
-        <MatchingRoutesComponent routes={matchingTagRoute} />
+        <MatchingRoutesComponent
+          setMatchingTagRoute={setMatchingTagRoute}
+          routes={matchingTagRoute}
+        />
       ) : (
         ""
       )}
@@ -171,7 +165,7 @@ const Body = ({
         )}
       >
         <main className="nextra-body-full-container nx-flex-col">
-          {breadcrumb}
+          {!matchingTagRoute && breadcrumb}
           {body}
         </main>
 
