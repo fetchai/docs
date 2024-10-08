@@ -64,11 +64,11 @@ Wait for a transaction to complete on the Ledger.
 class AlmanacContract(LedgerContract)
 ```
 
-A class representing the Almanac contract for agent registration.
+A class representing the Almanac contract for uAgent registration.
 
 This class provides methods to interact with the Almanac contract, including
-checking if an agent is registered, retrieving the expiry height of an agent's
-registration, and getting the endpoints associated with an agent's registration.
+checking if an uAgent is registered, retrieving the expiry height of an uAgent's
+registration, and getting the endpoints associated with an uAgent's registration.
 
 
 
@@ -78,16 +78,16 @@ registration, and getting the endpoints associated with an agent's registration.
 def is_registered(address: str) -> bool
 ```
 
-Check if an agent is registered in the Almanac contract.
+Check if an uAgent is registered in the Almanac contract.
 
 **Arguments**:
 
-- `address` _str_ - The agent's address.
+- `address` _str_ - The uAgent's address.
   
 
 **Returns**:
 
-- `bool` - True if the agent is registered, False otherwise.
+- `bool` - True if the uAgent is registered, False otherwise.
 
 
 
@@ -97,16 +97,16 @@ Check if an agent is registered in the Almanac contract.
 def get_expiry(address: str) -> int
 ```
 
-Get the expiry height of an agent's registration.
+Get the expiry height of an uAgent's registration.
 
 **Arguments**:
 
-- `address` _str_ - The agent's address.
+- `address` _str_ - The uAgent's address.
   
 
 **Returns**:
 
-- `int` - The expiry height of the agent's registration.
+- `int` - The expiry height of the uAgent's registration.
 
 
 
@@ -116,16 +116,16 @@ Get the expiry height of an agent's registration.
 def get_endpoints(address: str)
 ```
 
-Get the endpoints associated with an agent's registration.
+Get the endpoints associated with an uAgent's registration.
 
 **Arguments**:
 
-- `address` _str_ - The agent's address.
+- `address` _str_ - The uAgent's address.
   
 
 **Returns**:
 
-- `Any` - The endpoints associated with the agent's registration.
+- `Any` - The endpoints associated with the uAgent's registration.
 
 
 
@@ -135,16 +135,16 @@ Get the endpoints associated with an agent's registration.
 def get_protocols(address: str)
 ```
 
-Get the protocols associated with an agent's registration.
+Get the protocols associated with an uAgent's registration.
 
 **Arguments**:
 
-- `address` _str_ - The agent's address.
+- `address` _str_ - The uAgent's address.
   
 
 **Returns**:
 
-- `Any` - The protocols associated with the agent's registration.
+- `Any` - The protocols associated with the uAgent's registration.
 
 
 
@@ -156,16 +156,16 @@ async def register(ledger: LedgerClient, wallet: LocalWallet,
                    endpoints: List[Dict[str, Any]], signature: str)
 ```
 
-Register an agent with the Almanac contract.
+Register an uAgent with the Almanac contract.
 
 **Arguments**:
 
 - `ledger` _LedgerClient_ - The Ledger client.
-- `wallet` _LocalWallet_ - The agent's wallet.
-- `agent_address` _str_ - The agent's address.
+- `wallet` _LocalWallet_ - The uAgent's wallet.
+- `agent_address` _str_ - The uAgent's address.
 - `protocols` _List[str]_ - List of protocols.
 - `endpoints` _List[Dict[str, Any]]_ - List of endpoint dictionaries.
-- `signature` _str_ - The agent's signature.
+- `signature` _str_ - The uAgent's signature.
 
 
 
@@ -175,16 +175,16 @@ Register an agent with the Almanac contract.
 def get_sequence(address: str) -> int
 ```
 
-Get the agent's sequence number for Almanac registration.
+Get the uAgent's sequence number for Almanac registration.
 
 **Arguments**:
 
-- `address` _str_ - The agent's address.
+- `address` _str_ - The uAgent's address.
   
 
 **Returns**:
 
-- `int` - The agent's sequence number.
+- `int` - The uAgent's sequence number.
 
 
 
@@ -289,7 +289,7 @@ Get the registration transaction for registering a name within a domain.
 
 - `name` _str_ - The name to be registered.
 - `wallet_address` _str_ - The wallet address initiating the registration.
-- `agent_address` _str_ - The address of the agent.
+- `agent_address` _str_ - The address of the uAgent.
 - `domain` _str_ - The domain in which the name is registered.
   
 
@@ -312,8 +312,8 @@ Register a name within a domain using the NameService contract.
 **Arguments**:
 
 - `ledger` _LedgerClient_ - The Ledger client.
-- `wallet` _LocalWallet_ - The wallet of the agent.
-- `agent_address` _str_ - The address of the agent.
+- `wallet` _LocalWallet_ - The wallet of the uAgent.
+- `agent_address` _str_ - The address of the uAgent.
 - `name` _str_ - The name to be registered.
 - `domain` _str_ - The domain in which the name is registered.
 

@@ -18,60 +18,60 @@ import {
 
 
 
-# Agent
+# uAgent
 
 
 
-## Agent Objects
+## uAgent Objects
 
     ```py
     class Agent(Sink)
     ```
 
-    An agent that interacts within a communication environment.
+    An uAgent that interacts within a communication environment.
 
 **Attributes**:
 
 <Row>
     <Properties>
         <Property name="_name" type="string">
-            The name of the agent.
+            The name of the uAgent.
         </Property>
         <Property name="_port" type="_int_">
-            The port on which the agent's server runs.
+            The port on which the uAgent's server runs.
         </Property>
         <Property name="_background_tasks" type="_Set[asyncio.Task]_">
-            Set of background tasks associated with the agent.
+            Set of background tasks associated with the uAgent.
         </Property>
         <Property name="_resolver" type="_Resolver_">
-            The resolver for agent communication.
+            The resolver for uAgent communication.
         </Property>
         <Property name="_loop" type="_asyncio.AbstractEventLoop_">
-            The asyncio event loop used by the agent.
+            The asyncio event loop used by the uAgent.
         </Property>
         <Property name="_logger">
-            The logger instance for logging agent activities
+            The logger instance for logging uAgent activities
         </Property>
         <Property name="_endpoints" type="_List[dict]_">
-            List of endpoints at which the agent is reachable.
+            List of endpoints at which the uAgent is reachable.
         </Property>
         <Property name="_use_mailbox" type="_bool_">
-            Indicates if the agent uses a mailbox for communication.
+            Indicates if the uAgent uses a mailbox for communication.
         </Property>
         <Property name="_agentverse" type="_dict_">
             Agentverse configuration settings.
         </Property>
         <Property name="_mailbox_client" type="_MailboxClient_">
-            The client for interacting with the agentverse mailbox.
+            The client for interacting with the Agentverse mailbox.
         </Property>
         <Property name="_ledger">
             The client for interacting with the blockchain ledger.
         </Property>
         <Property name="_almanac_contract">
-            The almanac contract for registering agent addresses to endpoints.
+            The almanac contract for registering uAgent addresses to endpoints.
         </Property>
         <Property name="_storage">
-            Key-value store for agent data storage.
+            Key-value store for uAgent data storage.
         </Property>
         <Property name="_interval_handlers" type="_List[Tuple[IntervalCallback, float]]_">
             List of interval handlers and their periods.
@@ -101,22 +101,22 @@ import {
             Asynchronous queue for incoming messages.
         </Property>
         <Property name="_on_startup" type="_List[Callable]_">
-            List of functions to run on agent startup.
+            List of functions to run on uAgent startup.
         </Property>
         <Property name="_on_shutdown" type="_List[Callable]_">
             List of functions to run on agent shutdown.
         </Property>
         <Property name="_version" type="_str_">
-            The version of the agent.
+            The version of the uAgent.
         </Property>
         <Property name="_protocol" type="_Protocol_">
-            The internal agent protocol consisting of all interval and message handlers assigned with agent decorators.
+            The internal uAgent protocol consisting of all interval and message handlers assigned with uAgent decorators.
         </Property>
         <Property name="protocols" type="_Dict[str, Protocol]_">
             Dictionary mapping all supported protocol digests to their corresponding protocols.
         </Property>
         <Property name="_ctx" type="_Context_">
-            The context for agent interactions.
+            The context for uAgent interactions.
         </Property>
     </Properties>
 </Row>
@@ -126,25 +126,25 @@ import {
 <Row>
     <Properties>
         <Property name="name" type="string">
-            The name of the agent.
+            The name of the uAgent.
         </Property>
         <Property name="address" type="string">
-            The address of the agent used for communication.
+            The address of the uAgent used for communication.
         </Property>
         <Property name="wallet" type="_LocalWallet_">
-            The agent's wallet for transacting on the ledger.
+            The uAgent's wallet for transacting on the ledger.
         </Property>
         <Property name="storage" type="_KeyValueStore_">
             The key-value store for storage operations.
         </Property>
         <Property name="mailbox" type="_Dict[str, str]_">
-            The mailbox configuration for the agent (deprecated and replaced by agentverse).
+            The mailbox configuration for the uAgent (deprecated and replaced by Agentverse).
         </Property>
         <Property name="agentverse" type="_Dict[str, str]_">
-            The agentverse configuration for the agent.
+            The Agentverse configuration for the uAgent.
         </Property>
         <Property name="mailbox_client" type="_MailboxClient_">
-            The client for interacting with the agentverse mailbox.
+            The client for interacting with the Agentverse mailbox.
         </Property>
         <Property name="protocols" type="_Dict[str, Protocol]_">
             Dictionary mapping all supported protocol digests to their corresponding protocols.
@@ -167,18 +167,18 @@ import {
                  version: Optional[str] = None)
     ```
 
-Initialize an Agent instance.
+Initialize an uAgent instance.
 
 **Arguments**:
 
-    - `name` _Optional[str]_ - The name of the agent.
-    - `port` _Optional[int]_ - The port on which the agent's server will run.
+    - `name` _Optional[str]_ - The name of the uAgent.
+    - `port` _Optional[int]_ - The port on which the uAgent's server will run.
     - `seed` _Optional[str]_ - The seed for generating keys.
     - `endpoint` _Optional[Union[str, List[str], Dict[str, dict]]]_ - The endpoint configuration.
-    - `agentverse` _Optional[Union[str, Dict[str, str]]]_ - The agentverse configuration.
+    - `agentverse` _Optional[Union[str, Dict[str, str]]]_ - The Agentverse configuration.
     - `mailbox` _Optional[Union[str, Dict[str, str]]]_ - The mailbox configuration.
-    - `resolve` _Optional[Resolver]_ - The resolver to use for agent communication.
-    - `version` _Optional[str]_ - The version of the agent.
+    - `resolve` _Optional[Resolver]_ - The resolver to use for uAgent communication.
+    - `version` _Optional[str]_ - The version of the uAgent.
 
 
 
@@ -189,11 +189,11 @@ Initialize an Agent instance.
     def name() -> str
     ```
 
-Get the name of the agent.
+Get the name of the uAgent.
 
 **Returns**:
 
-    - `str` - The name of the agent.
+    - `str` - The name of the uAgent.
 
 
 
@@ -204,11 +204,11 @@ Get the name of the agent.
     def address() -> str
     ```
 
-Get the address of the agent used for communication.
+Get the address of the uAgent used for communication.
 
 **Returns**:
 
-    - `str` - The agent's address.
+    - `str` - The uAgent's address.
 
 
 
@@ -219,11 +219,11 @@ Get the address of the agent used for communication.
     def wallet() -> LocalWallet
     ```
 
-Get the wallet of the agent.
+Get the wallet of the uAgent.
 
 **Returns**:
 
-    - `LocalWallet` - The agent's wallet.
+    - `LocalWallet` - The uAgent's wallet.
 
 
 
@@ -234,7 +234,7 @@ Get the wallet of the agent.
     def storage() -> KeyValueStore
     ```
 
-Get the key-value store used by the agent for data storage.
+Get the key-value store used by the uAgent for data storage.
 
 **Returns**:
 
@@ -249,7 +249,7 @@ Get the key-value store used by the agent for data storage.
     def mailbox() -> Dict[str, str]
     ```
 
-Get the mailbox configuration of the agent (deprecated and replaced by agentverse).
+Get the mailbox configuration of the uAgent (deprecated and replaced by Agentverse).
 
 **Returns**:
 
@@ -264,11 +264,11 @@ Get the mailbox configuration of the agent (deprecated and replaced by agentvers
     def agentverse() -> Dict[str, str]
     ```
 
-Get the agentverse configuration of the agent.
+Get the Agentverse configuration of the uAgent.
 
 **Returns**:
 
-    Dict[str, str]: The agentverse configuration.
+    Dict[str, str]: The Agentverse configuration.
 
 
 
@@ -279,7 +279,7 @@ Get the agentverse configuration of the agent.
     def mailbox_client() -> MailboxClient
     ```
 
-Get the mailbox client used by the agent for mailbox communication.
+Get the mailbox client used by the uAgent for mailbox communication.
 
 **Returns**:
 
@@ -294,7 +294,7 @@ Get the mailbox client used by the agent for mailbox communication.
     def mailbox(config: Union[str, Dict[str, str]])
     ```
 
-Set the mailbox configuration for the agent (deprecated and replaced by agentverse).
+Set the mailbox configuration for the uAgent (deprecated and replaced by Agentverse).
 
 **Arguments**:
 
@@ -309,11 +309,11 @@ Set the mailbox configuration for the agent (deprecated and replaced by agentver
     def agentverse(config: Union[str, Dict[str, str]])
     ```
 
-Set the agentverse configuration for the agent.
+Set the Agentverse configuration for the uAgent.
 
 **Arguments**:
 
-    - `config` _Union[str, Dict[str, str]]_ - The new agentverse configuration.
+    - `config` _Union[str, Dict[str, str]]_ - The new Agentverse configuration.
 
 
 
@@ -514,7 +514,7 @@ Decorator to register an event handler for a specific event type.
     def include(protocol: Protocol, publish_manifest: Optional[bool] = False)
     ```
 
-Include a protocol into the agent's capabilities.
+Include a protocol into the uAgent's capabilities.
 
 **Arguments**:
 
@@ -565,7 +565,7 @@ Handle an incoming message.
     def setup()
     ```
 
-Include the internal agent protocol, run startup tasks, and start background tasks.
+Include the internal uAgent protocol, run startup tasks, and start background tasks.
 
 
 
@@ -575,7 +575,7 @@ Include the internal agent protocol, run startup tasks, and start background tas
     def start_background_tasks()
     ```
 
-Start background tasks for the agent.
+Start background tasks for the uAgent.
 
 
 
@@ -585,7 +585,7 @@ Start background tasks for the agent.
     def run()
     ```
 
-Run the agent.
+Run the uAgent.
 
 
 
@@ -595,20 +595,20 @@ Run the agent.
     class Bureau()
     ```
 
-A class representing a Bureau of agents.
+A class representing a Bureau of uAgents.
 
-This class manages a collection of agents and orchestrates their execution.
+This class manages a collection of uAgents and orchestrates their execution.
 
 **Arguments**:
 
     - `port` _Optional[int]_ - The port number for the server.
     - `endpoint` _Optional[Union[str, List[str], Dict[str, dict]]]_ - Configuration
-      for agent endpoints.
+      for uAgent endpoints.
 
 **Attributes**:
 
     - `_loop` _asyncio.AbstractEventLoop_ - The event loop.
-    - `_agents` _List[Agent]_ - The list of agents contained in the bureau.
+    - `_agents` _List[Agent]_ - The list of uAgents contained in the bureau.
     - `_endpoints` _List[Dict[str, Any]]_ - The endpoint configuration for the bureau.
     - `_port` _int_ - The port on which the bureau's server runs.
     - `_queries` _Dict[str, asyncio.Future]_ - Dictionary mapping query senders to their
@@ -616,7 +616,7 @@ This class manages a collection of agents and orchestrates their execution.
     - `_logger` _Logger_ - The logger instance.
     - `_server` _ASGIServer_ - The ASGI server instance for handling requests.
     - `_use_mailbox` _bool_ - A flag indicating whether mailbox functionality is enabled for any
-      of the agents.
+      of the uAgents.
 
 
 
@@ -644,11 +644,11 @@ for the bureau.
     def add(agent: Agent)
     ```
 
-Add an agent to the bureau.
+Add an uAgent to the bureau.
 
 **Arguments**:
 
-    - `agent` _Agent_ - The agent to be added.
+    - `agent` _Agent_ - The uAgent to be added.
 
 
 
@@ -658,4 +658,4 @@ Add an agent to the bureau.
     def run()
     ```
 
-Run the agents managed by the bureau.
+Run the uAgents managed by the bureau.
