@@ -1,0 +1,118 @@
+import { Callout } from 'nextra/components'
+
+# Agentverse Workflows
+
+## Introduction
+
+The [Agentverse ↗️](/concepts/agent-services/agentverse-intro) allows users to interact with Agents to purse specific objectives, such as planning a vacation or booking a hotel. These interactions are powered by the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), which serves as the core component connecting users to Agents. The AI Engine translates requests in natural language made by the user into actionable tasks by selecting the best-suited Agents registered on the Agentverse and coordinating their [functions ↗️](/guides/agents/intermediate/agent-functions) to achieve the specified user's objectives.
+
+## AI Engine and Dynamic Graphs
+
+At the heart of the AI Engine, its ability to construct dynamic graphs of Agents and functions to pursue the predefined objective plays an important role.
+
+Based on users' inputs provided via [DeltaV ↗️](/concepts/ai-engine/deltav), the AI Engine builds dynamic graphs in real-time using Large Language Models (LLMs) without any predefined structure, prioritizing Primary Functions, which directly address the user's request, and Secondary Functions, which gather additional data or context as needed by Primary functions to pursue the specified final objective. Agents are selected based on their suitability thanks to a process called **smart routing**, which ensures that the most relevant Agents are selected based on their expertise and performance history, as tracked in the [Almanac contract ↗️](/concepts/fetch-network/almanac). 
+
+While this dynamic and LLM-based approach provides significant flexibility, it also introduces multiple challenges. Considering that these graphs of Agents and functions are built in real-time by the AI Engine, they adapt dynamically depending on the user's interactions; such a degree of adaptability allows the system to manage diverse scenarios but complicates efforts when a fixed sequence of actions is needed. In such cases, the dynamic nature of the graph can hinder consistency, making it difficult to maintain a stable flow of actions for repeated objectives. To tackle this, developers may use **prompt engineering** and **fine-tuning** operations to stabilize each graph for specific objectives, but achieving 100% accuracy can be challenging.
+
+This is where **Workflows** come into play. Workflows allow users to "freeze" a dynamic graph of Agents and functions, ensuring that a specific sequence of actions is consistently executed without relying solely on LLMs-generated structures of functions. This concept addresses the challenge of ensuring that a set of Agent functions, once created, can be reused reliably in scenarios where precision and repeatability are required.
+
+Workflows essentially convert the AI Engine from a fully dynamic system into one that can execute a predefined set of actions where users need guaranteed and predictable outcomes. By locking these graphs, Workflows allow the AI Engine to operate beyond real-time changes and deliver results based on a stable and reusable structure. This enhances the flexibility of the system, while also providing control over complex operations that require high accuracy and consistency.
+
+## Create Workflows on Agentverse
+
+Workflows can be created on Agentverse by clicking on the dedicated **Workflows** tab and then on the **+ New Workflow** button.
+
+![](/../src/images/guides/workflows/workflows_1.png)
+
+Once you provide all needed information about your Workflow, including the name, you will be able to see a box specifically for the Workflow you have just created. By clicking on this box, you will enter the **Workflow Editor**.  
+
+### Managing Workflows
+
+Once you have multiple workflows created, you will be able to see them listed in this Workflows page on Agentverse. 
+
+![](/../src/images/guides/workflows/workflows_2.png)
+
+Here, you can perform multiple operations including Deleting, Sorting, Editing and Filtering your workflows depending on your needs. Indeed, within the **Workflow Editor**, you can:
+
+- **Evaluate** and **edit** the graph of interactions according to the system you have in mind;
+
+- **Create** and **Test** the interactions in a DeltaV session. You can do this by wrapping up the workflow graph and clicking on **Create Workflow** button. You will then be able to see a **Test workflow** button. THis will let you check the workflow execution in DeltaV.
+
+### Workflow Editor Elements
+
+Let's now talk about the different elements available in the above UI.
+
+![](/../src/images/guides/workflows/workflows_3.png)
+
+
+1. **Workflow title and testing area**: At the top of the page we find the Workflow title (which can be edited by clicking on the dedicated button) and the **Create Workflow** button which allows you to fix the workflow defined in the Workflow Editing area. Once you click on this button a **Test Workflow** button will appear and it will let you test the workflow via DeltaV. Importantly, workflows are saved automatically after every change you may provide to them so there is no need for you to worry about saving it at every step, but once you fix the workflow before testing step, you won’t be able to modify it anymore but will only be able to view it.
+
+2. **Left-side panel (search & filter)**: The left side panel is for users to search for different functions, workflows or dialogues. Initially, only functions are supported. In this panel, users type in the search bar the function they are looking for, and results will show up as boxes that can be dragged over to the workflow graph viewer area below the objective box. Users can filter by category or by type depending on their preferences. By filtering _by category_, the user should be able to switch between:
+
+    - My functions only (private).
+    - Public functions only.
+    - All functions (private & public)
+
+    Whereas, if users filter _by type_, then they will be able to select which types of component they want to filter by:
+
+    - Workflow.
+    - Dialogue.
+    - Function (default)
+
+3. **Workflow graph viewer (central workspace)**: the **Workflow graph viewer** is the part of the UI having a white background. Here, you can build up your workflows by dragging the dedicated boxes from the left panel. Each box represents a **Node** and multiple types of nodes can be distinguished: _Functions_, _Workflows_ and _Dialogues_. Below the Objective, only Primary functions can be dropped. Also, you can not place boxes where you wish, but instead, some points will indicate where exactly the box can be positioned. You will see a **+** to indicate where nodes can be placed. The same is for Secondary functions which instead will locate below each Primary function of reference. These secondary functions will provide additional context in the case additional data is needed to guarantee the execution of the primary function and workflow itself.  Functions are connected by arrows, and each arrow type has a specific use.  By adding functions over functions, you will be able to build increasingly complex systems of functions to be called by the AI Engine. 
+
+4. **Right-side panel (node editor)**: An additional element is the panel located on the right side of the UI and which opens up whenever the user clicks on an item box within the Workflow graph viewer. Within this panel, the user is able to modify the information related to the item (e.g., Function), such as the title, the description for the AI Engine or the Field descriptions.
+
+    <Callout type="warning" emoji="⚠️">
+      Be careful as **Workflows are executed depth first, thus functions are called from left to right starting from the bottom up to the top**!
+    </Callout>
+
+### Example: Reading a Workflow Graph
+
+Let's now consider an example for a better understanding of these concepts. 
+
+First of all, head over to the Agentverse and sign in. Once you do so, you will need to click on the **Workflows** tab and then click on the **Create Workflow** button. 
+
+![](/../src/images/guides/workflows/workflows_4.png)
+
+By doing so, you will enter the Workflow Editor UI and start building workflows in a few steps.
+
+![](/../src/images/guides/workflows/workflows_3.png)
+
+To begin with, you need to choose a Primary function from the Left side panel and drag it below the Objective. **Be aware that only Primary functions can be dropped below the Objective!** 
+
+You can place functions only where the **+** sign appears. 
+
+Let's suppose that you are interested in creating a Workflow specifically to achieve the objective of planning a trip somewhere, by retrieving airport and flight information as well as airport transfer and attractions in the area you would like to visit.
+
+![](/../src/images/guides/workflows/workflows_5.png)
+
+In the above example, we have three Primary functions with the first one having multiple Secondary functions beneath it, specifically helping the former to get airport information.
+
+Primary functions are defined in dark blue and each one of them is denoted by a number in the top-left corner denoting the execution order. Conversely, Secondary functions are in light-blue and are denoted by a dotted number indicating the Primary function of reference, the layer and execution order respectively.
+
+In particular, within the above example, the functions execution order would be the following: 	
+
+
+   - 1.2.1: Get Airport IATA Code 
+   - 1.2.2: Get Local Time
+   - 1.1: Get Flight Duration
+   - 1: Get Airport Information
+   - 2: Get Airport Transfer
+   - 3: Get Attractions in Area
+
+Secondary functions located at the bottom of each set of functions are the first to be called and are called from left to right until the Primary function at the top is triggered. Once this latter function is executed, the other Primary functions, **Get Airport Transfer** and **Get Attractions in Area** are called subsequently. In case of any other Secondary function below them, these would be called first until the above process is repeated.
+
+As you can see, functions are connected by arrows, and each arrow has a type and has a specific use:
+
+  - **Blue continuous line arrow**: This type is for a _strict dependency_. It is used between Primary and Secondary functions to indicate that the output of the Secondary function should be explicitly used by the Primary function. Within the example workflow, there is a strict dependency between the Get Airport IATA Code, Get Local Time and the Get Flight Duration secondary functions. The Get Flight Duration function requires the correct IATA code and flight duration data provided by the below secondary functions to calculate the flight duration from the correct airports. Therefore, the blue continuous line arrow connecting these functions ensures the output of the secondary functions is passed directly to the one located at the above layer and then to the Primary one.
+  - **Grey continuous line arrow**: This type is for a _weak dependency_. It is the default link between Primary functions, and indicates a contextual relationship that can be used between these functions if needed. In the example above, it would indicate to use the information about the selected airport in the airport transfer request. After retrieving the airport information via the Get Airport Information Primary function, the system can pass this context on to the Get Airport Transfer function. The grey continuous line arrow shows that the airport location (from the previous function) can be reused when requesting airport transfer options, but it is not strictly required for the next step in the sequence to be executed.
+  - **Orange dashed line arrow**: This type is for _sequence only links_. It is the opposite of the weak dependency as it instructs the AI engine to not use information from the previous stage in the context building, and simply indicates that this stage will be processed after another stage. In general, this arrow type indicates no contextual relationship between the linked functions, and these are executed sequentially just to maintain order. From the above example, once the Get Airport Transfer function is successfully run, then the Get Attractions in Area function might be executed next in the workflow. However, the information gathered during the airport transfer step does not impact or need to be shared with the attractions step. The orange dashed line arrow between these functions indicates that they are part of a sequence, but no information from the airport transfer step is required to proceed with listing local attractions.
+
+Once you define the Workflow structure you have in mind you will need to click the **Create Workflow** button on the top right side of the Workflow Editor. This way, your workflow can only be read and not updated. You can then go on and move to testing phase by clicking on the **Test Workflow** button which will show up.
+
+_**You are now ready to test the Workflow!**_
+
+![](/../src/images/guides/workflows/workflows_6.png)
+
+You will be redirected towards [DeltaV ↗️](https://deltav.agentverse.ai/login) at this point. Here, type in the query related to holiday planning objective and check if the AI Engine behaves as expected following the order provided within the workflow you have defined to achieve the objective provided.
