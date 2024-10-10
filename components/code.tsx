@@ -387,7 +387,6 @@ export const ModifiedPre = ({
   hasCopyCode?: boolean;
 }) => {
   const osMenu = ["windows", "mac", "ubuntu"];
-
   const [isCopied, setIsCopied] = useState(false);
   const codeRef = useRef<HTMLDivElement>(null);
 
@@ -487,4 +486,22 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
       </CustomPre>
     </div>
   );
+};
+
+interface CodeSegment {
+  path: string;
+  lineStart: number;
+  lineEnd: number;
+  last_updated: string;
+  hosted: boolean;
+}
+
+interface GithubCodeSegment {}
+
+export const GithubCodeSegment: React.FC<GithubCodeSegment> = () => {
+  return <div hidden />;
+};
+
+export const CodeSegment: React.FC<CodeSegment> = () => {
+  return <div hidden />;
 };
