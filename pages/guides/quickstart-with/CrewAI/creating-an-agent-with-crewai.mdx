@@ -1,14 +1,14 @@
 # Getting started with Fetch.ai x CrewAI
 
-Fetch.ai provides a dynamic communication layer that allows you to modularize components into distinct [uAgents ↗️](/guides/agents/getting-started/whats-an-agent)️. In this ecosystem, uAgents act as microservices, programmed to communicate either with other uAgents or with humans. While other frameworks also create Agents, here we'll explore how Fetch.ai’s unique uAgents architecture can complement and extend CrewAI's functionality.
+Fetch.ai provides a dynamic communication layer that allows you to modularize components into distinct [Agents ↗️](/guides/agents/getting-started/whats-an-agent)️. In this ecosystem, Agents act as microservices, programmed to communicate either with other Agents or with humans. While other frameworks also create Agents, here we'll explore how Fetch.ai's unique Agents architecture can complement and extend CrewAI's functionality.
 
-By using Fetch.ai’s uAgents to represent various elements of your Crew, your project can be designed to interact with [third parties ↗️](/guides/agents/intermediate/communicating-with-other-agents)️ to enhance both flexibility and scalability and increase potential economic benefits.
+By using Fetch.ai's Agents to represent various elements of your Crew, your project can be designed to interact with [third parties ↗️](/guides/agents/intermediate/communicating-with-other-agents)️ to enhance both flexibility and scalability and increase potential economic benefits.
 
-In this guide, we'll walk you through a simple CrewAI example to understand its fundamentals and then demonstrate how we can enhance this model by integrating Fetch.ai uAgents for advanced communication and workflow management.
+In this guide, we'll walk you through a simple CrewAI example to understand its fundamentals and then demonstrate how we can enhance this model by integrating Fetch.ai Agents for advanced communication and workflow management.
 
 ## A simple CrewAI example
 
-Let's use a shortened example that CrewAI provides; in this example we define an uAgent and a Task. At a high level here, uAgent is defining the LLMs "personality" and the Task is what that LLM is to solve.
+Let's use a shortened example that CrewAI provides; in this example we define an Agent and a Task. At a high level here, Agent is defining the LLMs "personality" and the Task is what that LLM is to solve.
 
     ```python copy filename="crew.py"
     fimport os
@@ -20,7 +20,7 @@ Let's use a shortened example that CrewAI provides; in this example we define an
     
     search_tool = SerperDevTool()
     
-    # Define your uAgents with roles and goals
+    # Define your Agent with roles and goals
     researcher = Agent(
       role='Senior Research Analyst',
       goal='Uncover cutting-edge developments in AI and data science',
@@ -32,7 +32,7 @@ Let's use a shortened example that CrewAI provides; in this example we define an
       tools=[search_tool]
     )
     
-    # Create tasks for your uAgents
+    # Create tasks for your Agent
     task1 = Task(
       description="""Conduct a comprehensive analysis of the latest advancements in AI in 2024.
       Identify key trends, breakthrough technologies, and potential industry impacts.""",
@@ -55,16 +55,16 @@ Let's use a shortened example that CrewAI provides; in this example we define an
     print(result)
     ```
 
-This is a nice feature; we love the idea of having many tasks and then orchestrating to uAgents which can execute them.
+This is a nice feature; we love the idea of having many tasks and then orchestrating to Agents which can execute them.
 But what if we want to create a workflow, perhaps one where information is passed back and forwards?
 
-Next, let us show you two uAgents, which communicate, just like that.
+Next, let us show you two Agents, which communicate, just like that.
 
-## A simple communication with uAgents
+## A simple communication with Agents
 
-Fetch.ai has the concept of an uAgent where this is an uAgent that is the component that links uAgents together. 
+Fetch.ai has the concept of an Agent where this is an Agent that is the component that links Agents together. 
 
-You can read more about uAgents communication in our [guides ↗️](/guides/agents/intermediate/communicating-with-other-agents)
+You can read more about Agents communication in our [guides ↗️](/guides/agents/intermediate/communicating-with-other-agents)
 
 Let's install what we need:
   
@@ -75,9 +75,9 @@ Let's install what we need:
 
 Check out more detailed instructions for [installation ↗️](/guides/agents/getting-started/installing-uagent) of `uagents` library on your end.
 
-### First uAgent
+### First Agent
 
-Our first uAgent is simple; it sends a message every two seconds to a static address. When this uAgent receives a message, it prints that to log:
+Our first Agent is simple; it sends a message every two seconds to a static address. When this Agent receives a message, it prints that to log:
 
     ```python copy filename="agent1.py"
     from uagents import Agent, Context, Model
@@ -110,9 +110,9 @@ Our first uAgent is simple; it sends a message every two seconds to a static add
     
     ```
 
-This first uAgent introduces a few core concepts you will need to be aware of when creating any uAgent.
+This first Agent introduces a few core concepts you will need to be aware of when creating any uAgentAgent.
 
-uAgents are defined with the `Agent` class:
+Agents are defined with the `Agent` class:
 
     ```python copy
         agent = Agent(
@@ -123,7 +123,7 @@ uAgents are defined with the `Agent` class:
     )
     ```
 
-A `seed` is a unique phrase which `uagents` library uses to create a unique private key pair for your uAgent. If you change your `seed` you may lose access to previous messages, and also, the uAgent's address registered to the Almanac will change subsequently. The `port` allows us to define a local port for messages to be received. The `endpoint` defines the path to the in-built Rest API. The `name` defines the name of the uAgent.
+A `seed` is a unique phrase which `uagents` library uses to create a unique private key pair for your Agent. If you change your `seed` you may lose access to previous messages, and also, the Agent's address registered to the Almanac will change subsequently. The `port` allows us to define a local port for messages to be received. The `endpoint` defines the path to the in-built Rest API. The `name` defines the name of the Agent.
 
 There are more options for the `Agent` class; see [`Agent` Class ↗️](/references/uagents/uagents-api/agent) for further reference.
 
@@ -134,11 +134,11 @@ We then need to define our **communication model**:
             message: str
     ```
 
-The `Model` defines the object sent from uAgent to uAgent and represents the type of messages the uAgent is able to handle. For explicit communication, both uAgents must handle the same `Model` class. `Model` is the base class that inherits from Pydantic BaseModel.
+The `Model` defines the object sent from Agent to Agent and represents the type of messages the Agent is able to handle. For explicit communication, both Agents must handle the same `Model` class. `Model` is the base class that inherits from Pydantic BaseModel.
 
-With the `fund_agent_if_low(agent.wallet.address())` function, uAgents will ultimately pay for discoverability as the economy of uAgents matures. There is a placeholder for registration here.
+With the `fund_agent_if_low(agent.wallet.address())` function, Agents will ultimately pay for discoverability as the economy of Agents matures. There is a placeholder for registration here.
 
-Finally, uAgents have two decorated functions. 
+Finally, Agents have two decorated functions. 
 
 The first one is the `agent.on_interval()` function. This one sends a message every 2 seconds. `ctx.send()` has the args of `destination_address` and `Message` which we defined earlier.
 
@@ -148,7 +148,7 @@ The first one is the `agent.on_interval()` function. This one sends a message ev
         await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
     ```
 
-The second one is `agent.on_message()` which is a little different; when the uAgent receives a message at the `endpoint` we defined earlier, the `uagent` library unpacks the message and triggers any function which handles that message; in our case, the `agent.on_message()` function:
+The second one is `agent.on_message()` which is a little different; when the Agent receives a message at the `endpoint` we defined earlier, the `uagent` library unpacks the message and triggers any function which handles that message; in our case, the `agent.on_message()` function:
 
     ```python copy
     @agent.on_message(model=Message)
@@ -156,9 +156,9 @@ The second one is `agent.on_message()` which is a little different; when the uAg
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
     ```
 
-### Second uAgent
+### Second Agent
 
-uAgent two doesn't do anything different to uAgent one; it has different args for the uAgent instantiation, and instead of sending a message `on_event("startup")`, agent two just logs its address to screen. Whenever uAgent two receives a message matching `Message` data model, it will send a response to the sender.
+Agent two doesn't do anything different to Agent one; it has different args for the Agent instantiation, and instead of sending a message `on_event("startup")`, Agent two just logs its address to screen. Whenever Agent two receives a message matching `Message` data model, it will send a response to the sender.
 
     ```python copy filename="agent2.py"
     from uagents.setup import fund_agent_if_low
@@ -192,13 +192,13 @@ uAgent two doesn't do anything different to uAgent one; it has different args fo
     
     ```
 
-Okay, let's now run these uAgents.
+Okay, let's now run these Agents.
 
-### Running the uAgents
+### Running the Agents
 
-Let's run the second uAgent's script first using this command: `poetry run python agent2.py`
+Let's run the second Agent's script first using this command: `poetry run python agent2.py`
 
-**We must run the second uAgent first to get its unique address**. This is shown in output in the log. Let's update `agent1.py` script by filling the `RECIPIENT_ADDRESS` field with the address of the second uAgent from of the output we previously got by running `agent2.py` script.
+**We must run the second Agent first to get its unique address**. This is shown in output in the log. Let's update `agent1.py` script by filling the `RECIPIENT_ADDRESS` field with the address of the second Agent from of the output we previously got by running `agent2.py` script.
 
 Updated `agent1.py` script sample:
 
@@ -215,13 +215,13 @@ Updated `agent1.py` script sample:
             ...
     ```
 
-Then, let's run the script for the first uAgent using this command: `poetry run python agent1.py`
+Then, let's run the script for the first Agent using this command: `poetry run python agent1.py`
 
 Great! You should now be seeing some log out output with our messages being displayed.
 
 ### Output
 
-- **uAgent 1**:
+- **Agent 1**:
 
     ```
     INFO:     [agent]: Registering on almanac contract...
@@ -232,7 +232,6 @@ Great! You should now be seeing some log out output with our messages being disp
     INFO:     [agent]: Received message from agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp: hello there
     ```
 
-  - **uAgent 2**:
 
       ```
       INFO:     [agent 2]: Registering on almanac contract...
@@ -241,23 +240,21 @@ Great! You should now be seeing some log out output with our messages being disp
       INFO:     [agent 2]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
       ```
 
-# happy to here
+## Wrapping them together - Building a Function
 
-## Wrapping them together - Building a service
+Let's go further now and change our Agents scripts by splitting the logic of the CrewAI example above. Let's have one Agent that creates a task and another Agent which fulfills it.  
 
-Let's go further now and change our uAgents scripts by splitting the logic of the CrewAI example above. Let's have one uAgent that creates a task and another uAgent which fulfills it.  
-
-### uAgent one: Senior Research Analyst uAgent
+### Agent one: Senior Research Analyst Agent
 
 The `senior_research_analyst_agent`, is designed to handle requests for city-specific information by researching advancements in artificial intelligence (AI) and providing current weather updates. It utilizes the `SerperDevTool` for web searches and employs models for managing input and output.
 
 - `create_task(city: str) -> Task`: This method formulates a task description that outlines the specific research and weather update needed for the given city, returning a Task object.
 
-- `run_process(city: str)`: This method coordinates the execution of the created task. It initializes a Crew process that includes the research uAgent and the task, allowing it to gather results efficiently.
+- `run_process(city: str)`: This method coordinates the execution of the created task. It initializes a Crew process that includes the research Agent and the task, allowing it to gather results efficiently.
 
 - `handle_city_request(ctx: Context, sender: str, msg: CityRequestModel)`: This function listens for incoming messages containing city names. Upon receiving a request, it logs the city name, initiates the research process, and sends back a report that includes both AI advancements and weather data.
 
-When a request is received with a city name, the uAgent logs the request, conducts a comprehensive analysis, and returns a report that combines AI insights with real-time weather data. This functionality makes it a valuable tool for research organizations and tech consultancies seeking relevant information.
+When a request is received with a city name, the Agent logs the request, conducts a comprehensive analysis, and returns a report that combines AI insights with real-time weather data. This functionality makes it a valuable tool for research organizations and tech consultancies seeking relevant information.
 
     ```python copy filename="crewai_agent_1.py"
     from uagents import Agent, Context, Model
@@ -381,17 +378,17 @@ When a request is received with a city name, the uAgent logs the request, conduc
     
     ```
 
-### uAgent two: Research Asking uAgent
+### Agent two: Research Asking Agent
 
 The `research_asking_agent` uAgent is designed to initiate requests for city-specific research information and manage responses related to research reports.
 
 - Models: `CityRequestModel` for storing the city name and `ResearchReportModel` for the research findings.
 
-- Startup Event: The `on_startup` function logs the uAgent's name and address, then sends a message to a target uAgent with the default city (London).
+- Startup Event: The `on_startup` function logs the Agent's name and address, then sends a message to a target Agent with the default city (London).
 
 - Message Handling: The `handle_research_report` function processes incoming reports, logging the sender's address and the content of the research report.
 
-This uAgent operates continuously, enabling effective communication and retrieval of city-related research insights.
+This Agent operates continuously, enabling effective communication and retrieval of city-related research insights.
 
     ```python copy filename="crewai_agent_2.py"
     from uagents import Agent, Context, Model
@@ -477,9 +474,9 @@ This uAgent operates continuously, enabling effective communication and retrieva
 
 Run `poetry run python crewai_agent_1.py` first and then `poetry run python crewai_agent_2.py`.
 
-You should get something similar to the following for each uAgent:
+You should get something similar to the following for each Agent:
 
-- **uAgent 2**:
+- **Agent 2**:
 
     ```
     INFO:     [research_asking_agent]: Registration on Almanac API successful

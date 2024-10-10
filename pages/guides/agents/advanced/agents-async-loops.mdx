@@ -1,27 +1,27 @@
 import { CodeGroup } from "../../../../components/code";
 
-# uAgents Asynchronous Loops
+# Agents Asynchronous Loops
 
 ## Introduction
 
-uAgents need to communicate, perform tasks, and respond to events simultaneously and independently within any decentralized system. This guide shows how to create asynchronous uAgents that operate in parallel, enabling them to handle their own workflows while still interacting with other uAgents or external processes.
+Agents need to communicate, perform tasks, and respond to events simultaneously and independently within any decentralized system. This guide shows how to create asynchronous Agents that operate in parallel, enabling them to handle their own workflows while still interacting with other Agents or external processes.
 
-By using **asynchronous loops** and attaching uAgents to **external event loops**, you can build uAgents that manage tasks simultaneously, send periodic updates, and process incoming messages in real-time. This approach is particularly useful when working with distributed systems, where uAgents must collaborate or handle multiple simultaneous operations without interruptions.
+By using **asynchronous loops** and attaching Agents to **external event loops**, you can build Agents that manage tasks simultaneously, send periodic updates, and process incoming messages in real-time. This approach is particularly useful when working with distributed systems, where Agents must collaborate or handle multiple simultaneous operations without interruptions.
 
 ## Supporting documentation
 
-    - [Creating an uAgent ↗️](/guides/agents/create-a-uagent)
+    - [Creating an Agents ↗️](/guides/agents/create-a-uagent)
     - [Creating an interval task ↗️](/guides/agents/interval-task)
-    - [Communicating with other uAgents ↗️](/guides/agents/communicating-with-other-agents)
-    - [uAgent Handlers ↗️](/guides/agents/intermediate/handlers)
+    - [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
+    - [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
 
 ## Walk-through
 
-The following scripts show how to define agents, manage their life-cycle and attach them to external asynchronous loops.
+The following scripts show how to define Agents, manage their life-cycle and attach them to external asynchronous loops.
 
 ### Script 1
 
-The first script depicts how to **attach an uAgent to an external event loop** and allow it to run _simultaneously_ with other asynchronous tasks.
+The first script depicts how to **attach an Agent to an external event loop** and allow it to run _simultaneously_ with other asynchronous tasks.
 
 First of all, let's create a Python script:
 
@@ -82,7 +82,7 @@ Now, paste the below code into it:
         print("Attaching the agent or bureau to the external loop...")
         loop.create_task(coro())
 
-        # > when attaching the agent to the external loop
+        # > when attaching the Agent to the external loop
         loop.create_task(agent.run_async())
 
         # > when attaching a bureau to the external loop
@@ -92,21 +92,21 @@ Now, paste the below code into it:
             loop.run_forever()
     ```
 
-    This script is for an uAgent using an external event loop. We first import the required libraries for this script to be run correctly. We then proceed and instantiate an uAgent called `looper` using a `seed`. Remember that you need to provide a seed within the `<YOUR_SEED>` field parameter. We then need to create a `bureau` to manage the uAgents. We can now add the `looper` uAgent into the `bureau`.
+    This script is for an uAgent using an external event loop. We first import the required libraries for this script to be run correctly. We then proceed and instantiate an Agent called `looper` using a `seed`. Remember that you need to provide a seed within the `<YOUR_SEED>` field parameter. We then need to create a `bureau` to manage the Agents. We can now add the `looper` Agent into the `bureau`.
 
-    We can proceed and define a `startup()` function decorated using the `.on_event("startup")` decorator. The function is triggered when the uAgent is started and it logs a message indicating the uAgent has started. Similarly, the `shutdown()` function is triggered when the uAgent shuts down, logging an appropriate message.
+    We can proceed and define a `startup()` function decorated using the `.on_event("startup")` decorator. The function is triggered when the Agent is started and it logs a message indicating the Agent has started. Similarly, the `shutdown()` function is triggered when the Agent shuts down, logging an appropriate message.
 
-    We go on and define a function `coro()` which simulates a separate, long-running task that will print `"Doing hard work..."` every second. This task runs independently of the uAgent and showcases the uAgents' ability to handle multiple simultaneous tasks. We now need to attach both the uAgent and the external task (`coro`) to the same event loop using `loop.create_task()`. This allows both the uAgent and other tasks to execute simultaneously in an asynchronous way.
+    We go on and define a function `coro()` which simulates a separate, long-running task that will print `"Doing hard work..."` every second. This task runs independently of the Agent and showcases the Agents' ability to handle multiple simultaneous tasks. We now need to attach both the Agent and the external task (`coro`) to the same event loop using `loop.create_task()`. This allows both the Agent and other tasks to execute simultaneously in an asynchronous way.
 
-    In the `__main__` block, we define a message to be printed indicating that the process of attaching the uAgent or bureau to the asynchronous event loop has started. The `loop.create_task(coro())` adds a coroutine (`coro`) to the event loop. `coro` is the task performing `"doing hard work..."` asynchronously. This allows the task to run simultaneously with other tasks managed by the event loop without blocking the rest of the program.
+    In the `__main__` block, we define a message to be printed indicating that the process of attaching the Agent or bureau to the asynchronous event loop has started. The `loop.create_task(coro())` adds a coroutine (`coro`) to the event loop. `coro` is the task performing `"doing hard work..."` asynchronously. This allows the task to run simultaneously with other tasks managed by the event loop without blocking the rest of the program.
 
-    The uAgent is attached to the external event loop by using `loop.create_task()` to schedule the uAgent's asynchronous operation. The method `agent.run_async()` is a non-blocking function that runs the uAgent within the event loop, allowing the uAgent to perform its tasks and handle events simultaneously.
+    The Agent is attached to the external event loop by using `loop.create_task()` to schedule the Agent's asynchronous operation. The method `agent.run_async()` is a non-blocking function that runs the Agent within the event loop, allowing the Agent to perform its tasks and handle events simultaneously.
 
     Finally, in the last line we create a context manager that suppresses `KeyboardInterrupt` exceptions, which are typically raised when the user presses `Ctrl+C` to stop the program. This ensures that the program can shut down without printing a traceback or throwing an error when the user stops it manually.
 
 ### Script 2
 
-The goal of the second script is to create an uAgent that runs tasks inside an external event loop. The uAgent can execute certain actions (e.g., print messages or respond to events) while simultaneously performing a separate background task.
+The goal of the second script is to create an Agent that runs tasks inside an external event loop. The Agents can execute certain actions (e.g., print messages or respond to events) while simultaneously performing a separate background task.
 
 Let's start by creating a Python script:
 
@@ -163,25 +163,25 @@ Then, let's paste the below code into it:
         print("Starting the external loop from the agent or bureau...")
         loop.create_task(coro())
 
-        # > when starting the external loop from the agent
+        # > when starting the external loop from the Agent
         agent.run()
 
         # > when starting the external loop from the bureau
         # bureau.run()
     ```
 
-    We start by importing the required libraries to correctly run this script. We then create an asynchronous event loop using `asyncio.get_event_loop()`. This loop is used to handle all asynchronous operations, such as the uAgent's actions and background tasks.
+    We start by importing the required libraries to correctly run this script. We then create an asynchronous event loop using `asyncio.get_event_loop()`. This loop is used to handle all asynchronous operations, such as the Agent's actions and background tasks.
 
-    We proceed and create an uAgent called `looper` using the `Agent` class. The uAgent takes three parameters: `name`, `seed`, and `loop`. Remember to provide a `seed` for your uAgent otherwise a random address will be generated every time you run the uAgent. We then create a `bureau` object using the `Bureau` class. The `bureau` is created with a single uAgent, `looper`.
+    We proceed and create an Agent called `looper` using the `Agent` class. The Agent takes three parameters: `name`, `seed`, and `loop`. Remember to provide a `seed` for your Agent otherwise a random address will be generated every time you run the Agent. We then create a `bureau` object using the `Bureau` class. The `bureau` is created with a single Agent, `looper`.
 
-    We can then define our uAgent functions to handle the uAgent's lifecycle events:
+    We can then define our uAgent functions to handle the Agent's lifecycle events:
 
-        1. `startup()`: This function runs when the uAgent is started. It logs a message to indicate that the uAgent has been started up.
-        2. `shutdown()`: This function runs when the uAgent is shut down. It logs a message to indicate that the uAgent has been stopped.
+        1. `startup()`: This function runs when the Agent is started. It logs a message to indicate that the Agent has been started up.
+        2. `shutdown()`: This function runs when the Agent is shut down. It logs a message to indicate that the Agent has been stopped.
 
-    In the next step, we define the `coro()` function; As before, this function defines an infinite loop where the uAgent performs a task (`"doing hard work..."`) every second. This simulates a long-running background task. The `await asyncio.sleep(1)` pauses execution for one second between each iteration, allowing other tasks to run during that time.
+    In the next step, we define the `coro()` function; As before, this function defines an infinite loop where the Agent performs a task (`"doing hard work..."`) every second. This simulates a long-running background task. The `await asyncio.sleep(1)` pauses execution for one second between each iteration, allowing other tasks to run during that time.
 
-    Finally, in the `__main__` block, we define a message to be printed indicating that the external event loop is being started. The `loop.create_task(coro())` schedules the `coro()` coroutine to run in the background, simultaneously with the uAgent's operations.
+    Finally, in the `__main__` block, we define a message to be printed indicating that the external event loop is being started. The `loop.create_task(coro())` schedules the `coro()` coroutine to run in the background, simultaneously with the Agent's operations.
 
 ## Expected Output
 

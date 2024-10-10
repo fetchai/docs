@@ -1,17 +1,17 @@
 import { Callout } from 'nextra/components'
 import { CodeGroup } from "../../../../components/code";
 
-# uAgents protocols
+# Agent protocols
 
 Within the `uagents` Framework, `protocols` support capturing related message types and handlers.
 
-Protocols are used to facilitate communication and interaction between uAgents in the Framework.
+Protocols are used to facilitate communication and interaction between Agents in the Framework.
 
     <Callout type="info" emoji="ℹ️">
-      Indeed, any uAgent including the same protocol will be able to communicate with each other.
+      Indeed, any Agent including the same protocol will be able to communicate with each other.
     </Callout>
 
-A `protocol` is built similar to an uAgent, but it has no identity and cannot be run. Protocols only contains the message types and handlers that define some components of an uAgent's functionality.
+A `protocol` is built similar to an Agent, but it has no identity and cannot be run. Protocols only contains the message types and handlers that define some components of an Agent's functionality.
 
 Let's use a _simple restaurant table booking request_ as an example to better understand what a protocol means and how to build one:
 
@@ -49,7 +49,7 @@ Let's use a _simple restaurant table booking request_ as an example to better un
        success: bool
    ```
 
-   We use the `Model` class from `uagents` library to define `BookTableRequest` and `BookTableResponse` classes for setting up the structure of messages to be exchanged between your uAgents. The `BookTableRequest` class represents a request to book a table, containing the desired table number, while the `BookTableResponse` class represents the response to that request, indicating whether the booking was successful.
+   We use the `Model` class from `uagents` library to define `BookTableRequest` and `BookTableResponse` classes for setting up the structure of messages to be exchanged between your Agents. The `BookTableRequest` class represents a request to book a table, containing the desired table number, while the `BookTableResponse` class represents the response to that request, indicating whether the booking was successful.
 
 3. Now, we would need to define the booking protocol as `book_proto` and also define the desired logic to determine if the `BookTableResponse` will be successful or not:
 
@@ -68,16 +68,16 @@ Let's use a _simple restaurant table booking request_ as an example to better un
        await ctx.send(sender, BookTableResponse(success=success))
    ```
 
-4. We can then import our booking protocol from into the script we create for our uAgent, in the following way:
+4. We can then import our booking protocol from into the script we create for our Agent, in the following way:
 
    ```py copy
    from protocols.book import book_proto
    ```
 
-5. If your uAgent is called `restaurant` you can include the protocol in this way:
+5. If your Agent is called `restaurant` you can include the protocol in this way:
 
    ```py copy
    restaurant.include(book_proto)
    ```
 
-For a better understanding of these concepts, consider having a look at the [uAgents storage ↗️](/references/uagents/uagents-protocols/storage) and [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) resources and consider going through the extensive [How to book a table at a restaurant using uAgents ↗️](/examples/table-booking-demo) guide in the [uAgents guides ↗️](/guides#ai-agents) section. Also, checkout the [uAgents: broadcast ↗️](/examples/broadcast) for an additional implementation of protocols in uAgents communication.
+For a better understanding of these concepts, consider having a look at the [Agents storage ↗️](/references/uagents/uagents-protocols/storage) and [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) resources and consider going through the extensive [How to book a table at a restaurant using Agents ↗️](/examples/table-booking-demo) guide in the [Agents guides ↗️](/guides#ai-agents) section. Also, checkout the [Agents: broadcast ↗️](/examples/broadcast) for an additional implementation of protocols in Agents communication.

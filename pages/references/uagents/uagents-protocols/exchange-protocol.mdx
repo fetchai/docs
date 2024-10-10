@@ -4,18 +4,18 @@ import { Callout } from 'nextra/components'
 
 ## Overview
 
-The **Exchange protocol** is a protocol designed as part of the Fetch.ai `uagents` Framework. It defines a standardized method for communication between uAgents within the uAgents ecosystem.
+The **Exchange protocol** is a protocol designed as part of the Fetch.ai `uagents` Framework. It defines a standardized method for communication between Agents within the Agents ecosystem.
 
-The Exchange protocol enables uAgents to exchange **messages** using a **JSON-based format**, which are structured as key-value pairs following the JSON standard. Messages can contain various types of information and are used to convey data and instructions between uAgents.
+The Exchange protocol enables Agents to exchange **messages** using a **JSON-based format**, which are structured as key-value pairs following the JSON standard. Messages can contain various types of information and are used to convey data and instructions between Agents.
 
 Within the protocol, **envelopes** facilitate communication by encapsulating messages. Envelopes serve as containers for the messages and include additional metadata.
 
-In this protocol, uAgents can send **messages** enclosed in **envelopes**, which are then encoded and sent via HTTP to the [endpoints ↗️](/references/contracts/uagents-almanac/endpoints) of other uAgents.
+In this protocol, Agents can send **messages** enclosed in **envelopes**, which are then encoded and sent via HTTP to the [endpoints ↗️](/references/contracts/uagents-almanac/endpoints) of other Agents.
 
-By adhering to the uAgents Exchange Protocol, uAgents within the Fetch.ai uAgents ecosystem can communicate with each other using a standardized and interoperable method.
+By adhering to the Agents Exchange Protocol, Agents within the Fetch.ai Agents ecosystem can communicate with each other using a standardized and interoperable method.
 
     <Callout type="info" emoji="ℹ️">
-      The protocol establishes a common format and structure for messages, enabling seamless interaction and integration between different uAgents and services.
+      The protocol establishes a common format and structure for messages, enabling seamless interaction and integration between different Agents and Functions.
     </Callout>
 
 We break down each of these concepts in more detail below.
@@ -68,9 +68,9 @@ Envelopes have the following form and are quite similar to blockchain transactio
     - The `protocol` contains the unique schema digest string for the message.
     - The `payload` field exposes the payload of the protocol. Its JSON representation should be a base64 encoded string.
     - The `expires` field contains the Unix timestamp in seconds at which the message is no longer valid.
-    - The `signature` field contains the signature that is used to authenticate that the message has been sent from the `sender` uAgent.
+    - The `signature` field contains the signature that is used to authenticate that the message has been sent from the `sender` Agent.
 
-Envelopes are then JSON encoded and sent to endpoints of other uAgents or Functions.
+Envelopes are then JSON encoded and sent to endpoints of other Agents or Functions.
 
 ### Endpoints
 

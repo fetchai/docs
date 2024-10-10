@@ -1,13 +1,13 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
 
-# Make your uAgents AI Engine compatible
+# Make your Agents AI Engine compatible
 
- In the previous resource, ([uAgent functions ↗️](/guides/agents/intermediate/agent-functions)) we created a simple uAgent that
- returned a dice roll, however this uAgent was already ready to be callable by [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro). Let's get into how.
+ In the previous resource, ([Agent functions ↗️](/guides/agents/intermediate/agent-functions)) we created a simple Agent that
+ returned a dice roll, however this Agent was already ready to be callable by [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro). Let's get into how.
 
     <Callout type="info" emoji="ℹ️">
-      Check out the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) to download it and start integrating your uAgents with this tool!
+      Check out the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) to download it and start integrating your Agents with this tool!
 
       Current version of the package is <PackageVersion packageName="uagents-ai-engine" packageType="pypi" />.
     </Callout>
@@ -16,11 +16,11 @@ import PackageVersion from 'components/package-version'
 
 Make sure you have read the following resource before going on with this guide:
 
-    - [uAgent Functions ↗️](/guides/agents/intermediate/agent-functions)
+    - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
 
 ## from ai_engine
 
-To enable communication from uAgents to the AI Engine, we import **3 objects** that define the allowed responses:
+To enable communication from Agents to the AI Engine, we import **3 objects** that define the allowed responses:
 
 1. `UAgentResponseType()`:
 
@@ -44,7 +44,7 @@ To enable communication from uAgents to the AI Engine, we import **3 objects** t
         `UAgentResponseType.FINAL` tells us that the message has no other responses.
 
 
-   - We can use `ERROR` to signify the uAgent has encountered an error:
+   - We can use `ERROR` to signify the Agent has encountered an error:
 
         ```python
             await ctx.send(sender, UAgentResponse(message="Unexpected Error", type=UAgentResponseType.ERROR))

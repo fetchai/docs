@@ -1,30 +1,30 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
 
-# Multi-file uAgent pipeline for AI Engine: Hugging face API to create a multi uAgent pipeline
+# Multi-file Agents pipeline for AI Engine: Hugging face API to create a multi Agents pipeline
 
 ## Introduction
 
 It's time to build an example of secondary functions in use.
 
 The **Hugging Face Inference API** allows access to thousands of models for specific tasks. In this tutorial, we will integrate the
-Hugging Face API with the Agentverse uAgent, enabling users to select their preferred **text-classification** model. Users can choose 
+Hugging Face API with the Agentverse Agent, enabling users to select their preferred **text-classification** model. Users can choose 
 from the top downloaded models and make queries to them. This system consists of multiple layers of primary and secondary functions, with the  Hugging Face system as the main objective and Hugging Face request and model list as secondary functions. For a better understanding of the workflow, please refer to the documentation below.
 
 ## Prerequisites
 
 Make sure you have read the following resources before going on with this guide:
 
-    - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first uAgent ↗️](/guides/agents/getting-started/create-a-uagent)
-    - [uAgents address ↗️](/guides/agents/getting-started/getting-uagent-address)
-    - [Using uAgents storage function ↗️](/guides/agents/intermediate/storage-function)
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Using Agents storage function ↗️](/guides/agents/intermediate/storage-function)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-    - [uAgents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
-    - [AgeuAgentnt Functions ↗️](/guides/agents/intermediate/agent-functions)
-    - [Make your uAgents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+    - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
+    - [Make your Agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
     - [Field descriptions for DeltaV ↗️](/guides/agentverse/agentverse-functions/field-descriptions-for-deltav)
 
 ## Imports needed
@@ -36,30 +36,30 @@ Make sure you have read the following resources before going on with this guide:
 
 Login to [Hugging face ↗️](https://huggingface.co/settings/profile) and get your API key by logging in and going to account settings. 
 
-Create news [access token ↗️](https://huggingface.co/settings/tokens) in settings for reading access type. This API key will be used in uAgent scripts to fetch model lists and make query to respective models.
+Create news [access token ↗️](https://huggingface.co/settings/tokens) in settings for reading access type. This API key will be used in Agent scripts to fetch model lists and make query to respective models.
 
-## Setting up the uAgents
+## Setting up the Agents
 
-For setting up Hugging face function we need to create different uAgents as listed below.
+For setting up Hugging face function we need to create different Agents as listed below.
 
-### Hugging Face System uAgent
+### Hugging Face System Agent
 
-This uAgent helps users with their queries for a text-classification model of their choosing. The uAgent always prioritizes Hugging Face request secondary function. Below is the script for creating our uAgent on [Agentverse ↗️](https://agentverse.ai/agents) using the **+ New Agent** button.
+This Agent helps users with their queries for a text-classification model of their choosing. The Agent always prioritizes Hugging Face request secondary function. Below is the script for creating our Agent on [Agentverse ↗️](https://agentverse.ai/agents) using the **+ New Agent** button.
 
         ```python copy filename="agent.py"
-        # Here we demonstrate how we can create a hugging face system uAgent that is compatible with DeltaV.
+        # Here we demonstrate how we can create a hugging face system Agent that is compatible with DeltaV.
 
-        # After running this uAgent, it can be registered to DeltaV on Agentverse. For registration you will have to use the uAgent's address.
+        # After running this Agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the Agent's address.
 
         # Importing required libraries
         import requests
         from ai_engine import UAgentResponse, UAgentResponseType
 
-        # Define a model class for the Hugging Face uAgent's expected message format
+        # Define a model class for the Hugging Face Agent's expected message format
         class HF(Model):
             response : str # This class has a single attribute 'response' that holds the string response from the subtask.
 
-        # Create a protocol for the Hugging Face (HF) uAgent, specifying its communication protocol
+        # Create a protocol for the Hugging Face (HF) Agent, specifying its communication protocol
         hf_protocol = Protocol("Hugging Face")
 
         # Define a handler for the Hugging face protocol
@@ -74,25 +74,25 @@ This uAgent helps users with their queries for a text-classification model of th
             # Asynchronously send a response back to the sender with the processed message
             await ctx.send(sender, UAgentResponse(message = message, type = UAgentResponseType.FINAL))
         
-        # Include the Hugging Face protocol in your uAgent
+        # Include the Hugging Face protocol in your Agent
         agent.include(hf_protocol)
         ```
 
-### Hugging Face Request uAgent
+### Hugging Face Request Agent
 
-This uAgent helps hugging face system to handle hugging face request to user and calculates the response. The uAgent has two fields i.e. `model_id` (to which query has to be made) and `query` (Question needed to be asked to the model). For `model_id` this task always prioritizes `Model List` secondary function to get list of available model of a specific type.
+This Agent helps hugging face system to handle hugging face request to user and calculates the response. The Agent has two fields i.e. `model_id` (to which query has to be made) and `query` (Question needed to be asked to the model). For `model_id` this task always prioritizes `Model List` secondary function to get list of available model of a specific type.
 
         ```python copy filename="agent.py"
-        # Here we demonstrate how we can create a hugging face request uAgent that is compatible with DeltaV.
+        # Here we demonstrate how we can create a hugging face request Agent that is compatible with DeltaV.
 
-        # After running this uAgent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the uAgent's address.
+        # After running this Agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the Agent's address.
 
         # Importing required libraries.
         import requests
         import json
         from ai_engine import UAgentResponse, UAgentResponseType
 
-        # Define a model class for the Hugging Face Request uAgent's expected message format.
+        # Define a model class for the Hugging Face Request Agent's expected message format.
         class Search(Model):
             model_id : str
             query : str
@@ -109,7 +109,7 @@ This uAgent helps hugging face system to handle hugging face request to user and
             response = requests.post(API_URL, headers=headers, json=query).json()
             return response
 
-        # Create a protocol for the Hugging Face Request(HF) uAgent, specifying its communication protocol.
+        # Create a protocol for the Hugging Face Request(HF) Agent, specifying its communication protocol.
         hfprotocol = Protocol(name = 'Hugging Face protocol')
 
         # Define a handler for the Hugging face request protocol.
@@ -122,7 +122,7 @@ This uAgent helps hugging face system to handle hugging face request to user and
 
             # Calling handle_query function to get response from API.
             response = await handle_query(msg.model_id, msg.query)
-            # sending response to hugging face uAgent
+            # sending response to hugging face Agent
             await ctx.send(sender, UAgentResponse(message = str(response), type = UAgentResponseType.FINAL))
 
         # Include the Hugging Face protocol in your uAgent.
@@ -131,25 +131,25 @@ This uAgent helps hugging face system to handle hugging face request to user and
 
 To correctly run this code, you need to provide the `API_URL` and `API_TOKEN` parameters.
 
-### Model List uAgent
+### Model List Agent
 
-This uAgent helps user to look for specific model with search keyword. The uAgent queries hugging face url to get top 5 downloaded model related to search keyword. The uAgent returns list of models and user can select one they need.
+This Agent helps user to look for specific model with search keyword. The Agent queries hugging face url to get top 5 downloaded model related to search keyword. The Agent returns list of models and user can select one they need.
 
         ```python copy filename="agent.py"
-        # Here we demonstrate how we can create a model list uAgent that is compatible with DeltaV
+        # Here we demonstrate how we can create a model list Agent that is compatible with DeltaV
 
-        # After running this uAgent, it can be registered to DeltaV on Agentverse. For registration you will have to use the uAgent's address
+        # After running this Agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the Agent's address
 
         # Importing required libraries
         import requests
         from ai_engine import UAgentResponse, UAgentResponseType
         import json
 
-        # Define a model class for the Model List uAgent's expected message format
+        # Define a model class for the Model List Agent's expected message format
         class Search(Model):
             search : str # This is a keyword for which user wants to search model
 
-        # Create a protocol for the Model List uAgent, specifying its communication protocol
+        # Create a protocol for the Model List Agent, specifying its communication protocol
         model_list_protocol = Protocol(name = 'Model List protocol')
 
         # Define a function to handle query from user using search keyword provided by user
@@ -192,15 +192,15 @@ This uAgent helps user to look for specific model with search keyword. The uAgen
             # Send message to the user
             await ctx.send(sender, UAgentResponse(message = str(formatted_options), type=UAgentResponseType.FINAL))
 
-        # Include model_list protocol in uAgent
+        # Include model_list protocol in Agent
         agent.include(model_list_protocol, publish_manifest = True)
         ```
 
 ## Setting up functions
 
-Go to [Agentverse ↗️](https://agentverse.ai/) and create new function for all three uAgents created [above ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
+Go to [Agentverse ↗️](https://agentverse.ai/) and create new function for all three Agents created [above ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
 
-The properties of function for each uAgent are listed below.
+The properties of function for each Agent are listed below.
 
 ### Hugging Face System
 
@@ -212,7 +212,7 @@ The properties of function for each uAgent are listed below.
                         **Secondary function chronology**
                         **Hugging face system -> Hugging face request -> Model List**
     - **Application**: Primary function.
-    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system uAgent ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
+    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system Agent ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
     - **Field descriptions**: This field is super important to be detailed and is responsible for triggering secondary function. - in this example we can specify something like: _**Describes the response to the user query. Always go for Hugging face request secondary function to get this field. Never ask this from user**_.
 
 ### Hugging Face Request
@@ -223,7 +223,7 @@ The properties of function for each uAgent are listed below.
     - **Function title**: just the name of your function - in this example let's call it **Hugging Face Request**.
     - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists secondary function**.
     - **Application**: Secondary function.
-    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system uAgent ↗️](/guides/agents/intermediate/primary-secondary-functions#hugging-face-request-agent).
+    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system Agent ↗️](/guides/agents/intermediate/primary-secondary-functions#hugging-face-request-agent).
     - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like:
         - **Model_id**: **_Always go for model list secondary function. Never ask this field to user._**
         - **query**: **_Describes the query user wants to ask to the model Always ask this to user after model_id is given by model list secondary function._**
@@ -236,7 +236,7 @@ The properties of function for each uAgent are listed below.
     - **Function title**: just the name of your function - in this example let's call it **Model List**.
     - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option.**
     - **Application**: Secondary function.
-    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system uAgent ↗️](/guides/agents/intermediate/primary-secondary-functions#model-list-agent)
+    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system Agent ↗️](/guides/agents/intermediate/primary-secondary-functions#model-list-agent)
     - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary function. In this example we can specify something like: _**This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options.**_
 
 ## Let's find our service on DeltaV
@@ -251,7 +251,7 @@ Type in **Hugging Face System** and click on `Advanced options`. Select `All Fun
 
 ![](../../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-1.png)
 
-Select **Hugging Face System** from options provided by DeltaV and it will initiate Hugging Face Request secondary function.
+Select **Hugging Face System** from options provided by DeltaV, and it will initiate Hugging Face Request secondary function.
 Hugging Face secondary function will initiate Model Lists secondary function and ask for **Search keyword** for which you want to search the models for.
 
 ![](../../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-2.png)

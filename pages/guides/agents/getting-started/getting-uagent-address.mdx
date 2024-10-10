@@ -1,18 +1,18 @@
 import { CodeGroup } from "../../../../components/code";
 
-# uAgents address
+# Agents address
 
 ## Introduction
 
-uAgents within the Fetch Ecosystem are characterized by different addresses. These can allow the uAgent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
+Agents within the Fetch Ecosystem are characterized by different addresses. These can allow the Agent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
 
 It is possible to distinguish between two different types of addresses:
 
-    - `uAgent address`: this address identifies the uAgent within the Fetch Network. It's similar to a username within a chat platform, allowing other uAgents to discover and communicate with that specific uAgent by querying that uAgent's information from the Almanac contract.
+    - `uAgent address`: this address identifies the Agent within the Fetch Network. It's similar to a username within a chat platform, allowing other Agents to discover and communicate with that specific Agent by querying that Agent's information from the Almanac contract.
 
-    - `Fetch network address`: this address is linked to the uAgent's wallet on the Fetch.ai network. It is essential to perform multiple functionalities like holding cryptocurrency, interacting with the [Fetch Ledger ↗️](/concepts/fetch-network/ledger/intro) and performing secure transactions. This address is needed to register an uAgent to the [Almanac ↗️](/concepts/fetch-network/almanac) contract. Note, you must ensure the uAgents has enough funds available to perform operations in the Fetch Network, however this is all done automatically and no funds are currently required. 
+    - `Fetch network address`: this address is linked to the Agent's wallet on the Fetch.ai network. It is essential to perform multiple functionalities like holding cryptocurrency, interacting with the [Fetch Ledger ↗️](/concepts/fetch-network/ledger/intro) and performing secure transactions. This address is needed to register an Agent to the [Almanac ↗️](/concepts/fetch-network/almanac) contract. Note, you must ensure the Agents has enough funds available to perform operations in the Fetch Network, however this is all done automatically and no funds are currently required. 
 
-If you want to retrieve the address of an uAgent, you can either use the `print()` function and specify which of the above addresses you wish to print out, or by calling the `.address()` or `.wallet.address()` methods using the `agent` object to retrieve specific information.
+If you want to retrieve the address of an Agent, you can either use the `print()` function and specify which of the above addresses you wish to print out, or by calling the `.address()` or `.wallet.address()` methods using the `agent` object to retrieve specific information.
 
 **Let's now check how these ways of retrieving addresses look like!**
 
@@ -20,16 +20,16 @@ If you want to retrieve the address of an uAgent, you can either use the `print(
 
 Make sure you have read the following resources before going on with this guide:
 
-    - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first uAgent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
 
 ## Imports needed
 
-    - [uAgents ↗️](https://pypi.org/project/uagents/)
+    - [`uagents` ↗️](https://pypi.org/project/uagents/)
 
-## Print uAgent address
+## Print Agent address
 
-You can print the `uAgent address` related to your uAgent in the following way:
+You can print the `uAgent address` related to your Agent in the following way:
 
 1. First of all, create a Python script and name it:
 
@@ -49,7 +49,7 @@ You can print the `uAgent address` related to your uAgent in the following way:
 
     </CodeGroup>
    
-2. We then need to import the `Agent` class from the `uagents` library to create an uAgent, `alice`. Then, using the `print()` function, we will print the related `uAgent address`. Importantly, remember that the `seed` parameter is used, when creating an uAgent, to set fixed addresses, otherwise a random address will be generated every time you run the uAgent:
+2. We then need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `uAgent address`. Importantly, remember that the `seed` parameter is used, when creating an Agent, to set fixed addresses, otherwise a random address will be generated every time you run the Agent:
 
    ```py copy filename="uagent-address.py"
    from uagents import Agent
@@ -73,7 +73,7 @@ The output would be as follows:
 
 ## Print Fetch network address
 
-You can print the `Fetch network address` related to your uAgent in the following way:
+You can print the `Fetch network address` related to your Agent in the following way:
 
 1. Let's create a Python script, and name it:
 
@@ -93,7 +93,7 @@ You can print the `Fetch network address` related to your uAgent in the followin
 
     </CodeGroup>
    
-2. As before, we first need to import the `Agent` class from the `uagents` library to create an uAgent, `alice`. Then, using the `print()` function, we will print the related `Fetch Network address`:
+2. As before, we first need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `Fetch Network address`:
 
    ```py copy filename="fetch-address.py"
    from uagents import Agent
@@ -115,15 +115,15 @@ The output would be as follows:
     INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
     ```
 
-## Print uAgent name and address using `name` and `address` methods
+## Print Agent name and address using `name` and `address` methods
 
-In this guide, we aim at showing how to create an uAgent being able to say hello and printing its `name` and `address` using the `uagents` library tools. Indeed, it is possible to retrieve the `name` and `address` of any uAgent directly from the `agent` object representing the uAgent you create and initialize. More specifically, we refer to the following methods:
+In this guide, we aim at showing how to create an Agent being able to say hello and printing its `name` and `address` using the `uagents` library tools. Indeed, it is possible to retrieve the `name` and `address` of any Agent directly from the `agent` object representing the Agent you create and initialize. More specifically, we refer to the following methods:
 
-    - `.name()`: this returns the provided name of the uAgent, if specified, otherwise, if the uAgent's name is not explicitly set, then it will use the first ten characters of the uAgent's address as its name.
+    - `.name()`: this returns the provided name of the Agent, if specified, otherwise, if the Agent's name is not explicitly set, then it will use the first ten characters of the Agent's address as its name.
 
-    - `.address()`: this returns the unique address of the uAgent in the form `agent1...`. This address is essential for other uAgents to interact with your uAgent.
+    - `.address()`: this returns the unique address of the Agent in the form `agent1...`. This address is essential for other Agents to interact with your Agent.
 
-**Let's get started and use the `agent` object to make our uAgent print its name and address!**
+**Let's get started and use the `agent` object to make our Agent print its name and address!**
 
 ### Walk-through
 
@@ -153,7 +153,7 @@ In this guide, we aim at showing how to create an uAgent being able to say hello
    agent = Agent(name="alice", seed="alice recovery phrase")
    ```
 
-3. We would then need to assign the uAgent the behavior to be executed. In this case, `agent` could send a message when it is being run saying hello and printing its `name` and `address` using the `agent` object:
+3. We would then need to assign the Agent the behavior to be executed. In this case, `agent` could send a message when it is being run saying hello and printing its `name` and `address` using the `agent` object:
 
    ```py copy
    @agent.on_event("startup")
@@ -164,7 +164,7 @@ In this guide, we aim at showing how to create an uAgent being able to say hello
         agent.run()
    ```
 
-   This `introduce_agent()` function takes a single argument `ctx` of type `Context`. The message is printed out using the `ctx.logger.info()` method, and includes the uAgent's name obtained from attribute `name` and retrieved using `agent.name()` method. The same for the uAgent's address, which is obtained from attribute `address` and retrieved using `agent.address()` method.
+   This `introduce_agent()` function takes a single argument `ctx` of type `Context`. The message is printed out using the `ctx.logger.info()` method, and includes the Agent's name obtained from attribute `name` and retrieved using `agent.name()` method. The same for the Agent's address, which is obtained from attribute `address` and retrieved using `agent.address()` method.
 
 4. Save the script.
 

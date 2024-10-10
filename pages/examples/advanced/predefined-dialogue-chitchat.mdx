@@ -5,7 +5,7 @@ import { CodeGroup } from "../../../components/code";
 
 ## Overview
 
-This example illustrates an automated dialogue scenario using a hardcoded dialogue management system between two agents. The dialogue flow is predefined, minimizing the need for manual intervention or dynamic decision-making during the dialogue process.
+This example illustrates an automated dialogue scenario using a hardcoded dialogue management system between two Agents. The dialogue flow is predefined, minimizing the need for manual intervention or dynamic decision-making during the dialogue process.
 
 ### Guide
 
@@ -13,8 +13,8 @@ This example illustrates an automated dialogue scenario using a hardcoded dialog
 
 ### Supporting documentation
 
-- [Creating an agent ↗️](/guides/agents/create-a-uagent)
-- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Creating an Agent ↗️](/guides/agents/create-a-uagent)
+- [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 
@@ -232,7 +232,7 @@ Include all the above mentioned script sections into a single script and save it
 
 ## Step 2: setting up the agents
 
-These two agents use the `hardcoded_chitchat` dialogue system to automate the interaction with minimal intervention. The dialogue is mostly automated, with `agent3` configured to respond to initiation and continue based on predefined rules, and `agent4` automatically initiating the conversation.
+These two Agents use the `hardcoded_chitchat` dialogue system to automate the interaction with minimal intervention. The dialogue is mostly automated, with `agent3` configured to respond to initiation and continue based on predefined rules, and `agent4` automatically initiating the conversation.
     
 ### Setting up `agent1`
 
@@ -274,7 +274,7 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
         print(json.dumps(chitchat_dialogue.get_overview(), indent=4))
         print("---")
 
-        # This is the only decorator that is needed to add to your agent with the
+        # This is the only decorator that is needed to add to your Agent with the
         # hardcoded dialogue example. If you omit this decorator, the dialogue will
         # emit a warning.
         @chitchat_dialogue.on_continue_dialogue()
@@ -292,7 +292,7 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
                 await ctx.send(sender, ConcludeChitChatDialogue())
 
 
-        agent.include(chitchat_dialogue)  # Including dialogue in agent
+        agent.include(chitchat_dialogue)  # Including dialogue in Agent
 
         if __name__ == "__main__":
             print(f"Agent address: {agent.address}")
@@ -363,7 +363,7 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
         ```
 
     <Callout type="info" emoji="ℹ️">
-      Remember to update the agent's address to communicate to each other and seed phrase of own choice. 
+      Remember to update the Agent's address to communicate to each other and seed phrase of own choice. 
     </Callout>
 
 </CodeGroup>
@@ -389,7 +389,7 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
         "nodes": [
             {
                 "name": "Initiated",
-                "description": "This is the initial state of the dialogue that is only available at the receiving agent.",
+                "description": "This is the initial state of the dialogue that is only available at the receiving Agent.",
                 "initial": false,
                 "final": false
             },

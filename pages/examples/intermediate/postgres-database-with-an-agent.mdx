@@ -4,15 +4,15 @@ import { CodeGroup } from "../../../components/code"
     
 ## Introduction
 
-In this documentation example, we demonstrate how to use the uAgent library to create agents that interact with PostgreSQL data within a Docker Compose setup. In this scenario, one agent handles the insertion of employee data into the PostgreSQL database, while another agent retrieves this data. This example illustrates the seamless integration between agents, PostgreSQL, and Docker, showcasing how to manage data flow and communication in a distributed system.
+In this documentation example, we demonstrate how to use the uAgents library to create Agents that interact with PostgreSQL data within a Docker Compose setup. In this scenario, one Agent handles the insertion of employee data into the PostgreSQL database, while another Agent retrieves this data. This example illustrates the seamless integration between Agents, PostgreSQL, and Docker, showcasing how to manage data flow and communication in a distributed system.
 
 ### Supporting Documents
    
     - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
-    - [How to create an agent ↗️](../../guides/agents/create-a-uagent).
+    - [How to create an Agent ↗️](../../guides/agents/create-a-uagent).
     - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
     - [Creating an interval task ↗️](/guides/agents/interval-task)
-    - [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+    - [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
 
 ## Pre-requisites
 
@@ -24,7 +24,7 @@ In this documentation example, we demonstrate how to use the uAgent library to c
 ## Project Structure
 
 ```
-.postgres-database-with-an-agent 
+.postgres-database-with-an-agent
 ├── docker-compose.yml
 ├── Dockerfile
 ├── README.md
@@ -178,9 +178,9 @@ CREATE TABLE IF NOT EXISTS Employees (
 );
 ```
 
-### Postgres data with agent
+### Postgres data with Agents
 
-This script sets up and runs two agents, `db_insert_agent` and `db_fetch_agent`, which interact with a PostgreSQL database to manage employee data. The agents use asynchronous event handling to fetch and insert employee information into the database.
+This script sets up and runs two Agents, `db_insert_agent` and `db_fetch_agent`, which interact with a PostgreSQL database to manage employee data. The Agents use asynchronous event handling to fetch and insert employee information into the database.
 
 #### Database Connection
 
@@ -215,8 +215,8 @@ This script sets up and runs two agents, `db_insert_agent` and `db_fetch_agent`,
 #### Execution
 
 - Initializes a `Bureau` instance.
-- Adds both agents (`db_insert_agent` and `db_fetch_agent`) to the bureau.
-- Runs the bureau, which starts the agents and their event handlers.
+- Adds both Agents (`db_insert_agent` and `db_fetch_agent`) to the bureau.
+- Runs the bureau, which starts the Agents and their event handlers.
 
 #### Usage
 
@@ -364,7 +364,7 @@ if __name__ == "__main__":
 ```
 </CodeGroup>
 
-This constant file initializes a dictionary for storing employee data and configures the database connection parameters using environment variables. It also defines a constant for the address of the database fetch agent.
+This constant file initializes a dictionary for storing employee data and configures the database connection parameters using environment variables. It also defines a constant for the address of the database fetch Agent.
 
 ```py copy filename="constants.py"
 import os

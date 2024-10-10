@@ -1,16 +1,16 @@
 import { Callout } from 'nextra/components' 
 import { CodeGroup } from "../../../components/code"
 
-# React app with agents 'on_query' decorator
+# React app with Agents 'on_query' decorator
 
 ## Introduction
 
-This example shows how to build a react application integrated with a flask backend, using various agents to perform tasks such as fetching news, scrapping webpage data and also getting the sentiment of news using hugging face finbert model of [HF inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
+This example shows how to build a react application integrated with a flask backend, using various Agents to perform tasks such as fetching news, scrapping webpage data and also getting the sentiment of news using hugging face finbert model of [HF inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
 
 ### Supporting Documents
 
     - [How to use on_query decorator ↗️](../../guides/agents/intermediate/handlers).
-    - [How to create an agent ↗️](../../guides/agents/create-a-uagent).
+    - [How to create an Agent ↗️](../../guides/agents/create-a-uagent).
     - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
     - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
 
@@ -65,12 +65,12 @@ FinBERT-News-Sentiment-Analysis/
 
 ## Backend Setup
 
-In this section we will setup agents and as well as flask app which will respond to different endpoints.
+In this section we will set up Agents and as well as flask app which will respond to different endpoints.
 
 1. Flask Application ('app.py'):
 
    - Define routes for fetching news_urls, scrapping news content and get finbert sentiments.
-   - Utilise agents to handle specific tasks.
+   - Utilize Agents to handle specific tasks.
 
    ```python copy filename="app.py"
    from flask import Flask
@@ -79,7 +79,7 @@ In this section we will setup agents and as well as flask app which will respond
    from uagents import Model
    import json
    
-   # Define Request Data Model classes for interacting with different agents
+   # Define Request Data Model classes for interacting with different Agents
    class NewsRequest(Model):
        company_name: str
    
@@ -96,7 +96,7 @@ In this section we will setup agents and as well as flask app which will respond
    app = Flask(__name__)
    CORS(app)  # Enables CORS for all domains on all routes
    
-   # Define agent addresses
+   # Define Agent addresses
    news_agent_address = "agent1q2e9kfdrxfa5dxn6zeyw47287ca36cdur9xevhmdzzfmf4cwlmahv73mpev"
    news_content_agent_address = "agent1qvumqq9xju7musr82l6ulqsvgka7d7z77jvvdrkyyr7n5s0u0lfdvse6k4t"
    sentiment_agent_address = "agent1q2pm392d2uux3wjsydatd4zhagrtq0lrwfgw4s8pv4x0090sfzk9qpgztaz"
@@ -162,7 +162,7 @@ In this section we will setup agents and as well as flask app which will respond
    
 2. Agents:
 
-    - **News and URL agent:** Fetches news articles titles and url for them as well.
+    - **News and URL Agent:** Fetches news articles titles and url for them as well.
 
 <CodeGroup hasCopy isLocalHostedFile>
  
@@ -241,7 +241,7 @@ In this section we will setup agents and as well as flask app which will respond
        endpoint=["http://127.0.0.1:8000/submit"],
    )
     
-   # Registering agent on Almanac and funding it.
+   # Registering Agent on Almanac and funding it.
    fund_agent_if_low(NewsAgent.wallet.address())
     
    # On agent startup printing address
@@ -358,7 +358,7 @@ In this section we will setup agents and as well as flask app which will respond
            url_list.append(article_url)
        return url_list
     
-   # On agent startup printing address
+   # On Agent startup printing address
    @agent.on_event('startup')
    async def agent_details(ctx: Context):
        ctx.logger.info(f'Search Agent Address is {NewsAgent.address}')
@@ -407,7 +407,7 @@ In this section we will setup agents and as well as flask app which will respond
        Get your [Alphavantage ↗️](https://www.alphavantage.co/) and [Gnews ↗️](https://gnews.io/) API keys and update it in the virtual environment.
    </Callout>
 
-   - **WebScraper agent:** Scraps the webpage content for the given url.
+   - **WebScraper Agent:** Scraps the webpage content for the given url.
 
 <CodeGroup hasCopy isLocalHostedFile>
 
@@ -457,7 +457,7 @@ In this section we will setup agents and as well as flask app which will respond
                           text_content = ' '.join(block.get_text(strip=True) for block in text_blocks if block.get_text(strip=True))
       
                           words = text_content.split()
-                          limited_text = ' '.join(words[:500])  # Limit to first 500 words for faster response of sentiment agent.
+                          limited_text = ' '.join(words[:500])  # Limit to first 500 words for faster response of sentiment Agent.
                           return limited_text
                       else:
                           return "Error: Unable to fetch content."
@@ -465,7 +465,7 @@ In this section we will setup agents and as well as flask app which will respond
               return f"Error encountered: {str(e)}"
       
        
-      # On agent startup printing address
+      # On Agent startup printing address
       @webScraperAgent.on_event('startup')
       async def agent_details(ctx: Context):
           ctx.logger.info(f'Search Agent Address is {webScraperAgent.address}')
@@ -492,7 +492,7 @@ In this section we will setup agents and as well as flask app which will respond
       ```
 </CodeGroup>
 
-   - **Sentiment agent:** Provides sentiment of news content provided using HF API and finBERT model.
+   - **Sentiment Agent:** Provides sentiment of news content provided using HF API and finBERT model.
 
 <CodeGroup hasCopy isLocalHostedFile>
 
@@ -524,7 +524,7 @@ In this section we will setup agents and as well as flask app which will respond
           endpoint=["http://127.0.0.1:8002/submit"],
       )
       
-      # Registering agent on Almanac and funding it.
+      # Registering Agent on Almanac and funding it.
       fund_agent_if_low(SentimentAgent.wallet.address())
        
       # Define function to provide sentiment for given content
@@ -548,7 +548,7 @@ In this section we will setup agents and as well as flask app which will respond
                   else:
                       return "Error: Failed to fetch data from API"
       
-      # On agent startup printing address
+      # On Agent startup printing address
       @SentimentAgent.on_event('startup')
       async def agent_details(ctx: Context):
           ctx.logger.info(f'Search Agent Address is {SentimentAgent.address}')
@@ -882,7 +882,7 @@ In this section we will setup agents and as well as flask app which will respond
 
 3. Start the Flask Application:
 
-    - Make sure the Flask app (app.py) is configured correctly with routes and agent interactions.
+    - Make sure the Flask app (app.py) is configured correctly with routes and Agent interactions.
     - Run the Flask app:
 
     ```
@@ -891,7 +891,7 @@ In this section we will setup agents and as well as flask app which will respond
 
 4. Run the Agents:
     - Ensure each agent script (e.g., `news_agent.py`, `scraper_agent.py`, `sentiment_agent.py`) is ready and configured.
-    - Start each agent in a separate terminal or command prompt to handle specific tasks:
+    - Start each Agent in a separate terminal or command prompt to handle specific tasks:
 
     ```
     python news_agent.py

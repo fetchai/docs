@@ -18,7 +18,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
 <Row>
     <Col>
-        The AI Engine Chat API allows you to interact with the DeltaV backend, allowing you to interact with your agents and more.
+        The AI Engine Chat API allows you to interact with the DeltaV backend, allowing you to interact with your Agents and more.
     </Col>
     <Col>
         ```bash filename="Endpoints"
@@ -132,7 +132,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
 There are 4 types of messages that can be sent to the backend:
 
-- `start`: This is the first message that should be sent to the AI Engine for full session (search + execution). It contains the objective and context of the conversation. The objective and context are used to determine which agent to use for the conversation.
+- `start`: This is the first message that should be sent to the AI Engine for full session (search + execution). It contains the objective and context of the conversation. The objective and context are used to determine which Agent to use for the conversation.
 - `execute_functions`: This is the first message that should be sent to the AI Engine for execution only (no search). It contains the list of function-ids you want to execute and a function group (for secondary function picks).
 - `user_message`: This is a message sent by the user.
 - `user_json`: This is a JSON message sent by the user.
@@ -162,19 +162,19 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
       name: "objective",
       type: "string",
       description:
-        "The objective of the conversation. This is used to determine which agent to use for the conversation.",
+        "The objective of the conversation. This is used to determine which Agent to use for the conversation.",
     },
     {
       name: "context",
       type: "string",
       description:
-        "The context of the conversation. This is used to give information about the user to the agent.",
+        "The context of the conversation. This is used to give information about the user to the Agent.",
     },
     {
       name: "recommend_only",
       type: "boolean",
       description: 
-        "Optional flag, if is set to true, AI Engine will only do search, it will match your objective to functions/agents and then stops. False by default. Only supported by Next Generation personality."
+        "Optional flag, if is set to true, AI Engine will only do search, it will match your objective to functions/Agents and then stops. False by default. Only supported by Next Generation personality."
     },
     {
       name: "session_id",
@@ -232,7 +232,7 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
       name: "context",
       type: "string",
       description:
-        "The context of the conversation. This is used to give information about the user to the agent.",
+        "The context of the conversation. This is used to give information about the user to the Agent.",
     },
     {
       name: "session_id",
@@ -262,7 +262,7 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1beta1/engine/chat/sessions/{session_id}/submit"
-  description="Send an answer to a question asked by the agent"
+  description="Send an answer to a question asked by the Agent"
   properties={[
     {
       name: "payload",
@@ -278,7 +278,7 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
       name: "user_message",
       type: "string",
       description:
-        "The user response to a question asked by the agent or to confirm the context",
+        "The user response to a question asked by the Agent or to confirm the context",
     },
     {
       name: "session_id",
@@ -306,7 +306,7 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1beta1/engine/chat/sessions/{session_id}/submit"
-  description="Sending an option in a task list requested by an agent"
+  description="Sending an option in a task list requested by an Agent"
   properties={[
     {
       name: "payload",
@@ -323,13 +323,13 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
       name: "user_json",
       type: "JSON",
       description:
-        "The objective of the conversation. This is used to determine which agent to use for the conversation.",
+        "The objective of the conversation. This is used to determine which Agent to use for the conversation.",
     },
     {
       name: "user_json-type",
       type: "string",
       description:
-        "The context of the conversation. type: `task_list`, `options`. `task_list` is used to select a task pertaining to a specific agent. `options` is used to select a subtask pertaining to a specific agent or select an option from a list of suggestions given by the agent.",
+        "The context of the conversation. type: `task_list`, `options`. `task_list` is used to select a task pertaining to a specific Agent. `options` is used to select a subtask pertaining to a specific Agent or select an option from a list of suggestions given by the Agent.",
     },
     {
       name: "user_json-selection",
@@ -367,7 +367,7 @@ responseDescription="On a successful request, there is no response"
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1beta1/engine/chat/sessions/{session_id}/submit"
-  description="Sending a stop message to an agent"
+  description="Sending a stop message to an Agent"
   properties={[
     {
       name: "payload",
@@ -429,7 +429,7 @@ responseDescription="On a successful request, there is no response"
     session_id:
       "your_session_id",
   }}
-  responseDescription="Return an agent_response object containing the agent response in JSON format, which can be parsed to retrieve the agent message. It can be an AgentMessage or an AgentJsonMessage. They are almost similar to user_message and user_json_message, but they are sent by the agent."
+  responseDescription="Return an agent_response object containing the Agent response in JSON format, which can be parsed to retrieve the Agent message. It can be an AgentMessage or an AgentJsonMessage. They are almost similar to user_message and user_json_message, but they are sent by the agent."
 />
 
 ## ~~Fetch recent messages given a timestamp~~ **Deprecated**
@@ -438,13 +438,13 @@ responseDescription="On a successful request, there is no response"
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1beta1/engine/chat/sessions/{session_id}/messages?from_timestamp=2023-08-31T13:26:30.941865"
-  description="Fetches agent messages filtered by timestamps for a specific session identified by the session_id"
+  description="Fetches Agent messages filtered by timestamps for a specific session identified by the session_id"
   properties={[
     {
       name: "from_timestamp",
       type: "datetime",
       description:
-        "The timestamp from which to fetch the agent messages. The timestamp is in ISO 8601 format.",
+        "The timestamp from which to fetch the Agent messages. The timestamp is in ISO 8601 format.",
     },
     {
       name: "session_id",
@@ -492,15 +492,15 @@ responseDescription="On a successful request, there is no response"
       ],
     },
   ]}
-  responseDescription="Return the most recent list of agent messages given a timestamp. The timestamp is in ISO 8601 format."
+  responseDescription="Return the most recent list of Agent messages given a timestamp. The timestamp is in ISO 8601 format."
 />
-## Fetch all messages sent by agent in a session
+## Fetch all messages sent by Agent in a session
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1beta1/engine/chat/sessions/{session_id}/messages/all"
-  description="Fetches agent messages filtered by timestamps for a specific session identified by the session_id"
+  description="Fetches Agent messages filtered by timestamps for a specific session identified by the session_id"
       pathParameters={{
     session_id:
       "your_session_id",
@@ -565,10 +565,10 @@ responseDescription="On a successful request, there is no response"
       ],
     },
   ]}
-  responseDescription="Return all the messages sent by the agent for a specific session."
+  responseDescription="Return all the messages sent by the Agent for a specific session."
 />
 
-## Retrieve new messages sent by agent (with possible duplicate or missed messages)
+## Retrieve new messages sent by Agent (with possible duplicate or missed messages)
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"

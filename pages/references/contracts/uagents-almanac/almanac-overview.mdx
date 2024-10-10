@@ -2,25 +2,25 @@ import { Callout } from 'nextra/components'
 
 # Almanac contract overview
 
-uAgents participating in any system are required to register in the **Almanac contract**. The Almanac is a smart contract developed and deployed on the Fetch.ai blockchain which provides users with a direct way to query a particular uAgent's information, as well as allowing other uAgents to retrieve information about any specific uAgents registered within the contract.
+Agents participating in any system are required to register in the **Almanac contract**. The Almanac is a smart contract developed and deployed on the Fetch.ai blockchain which provides users with a direct way to query a particular Agent's information, as well as allowing other Agents to retrieve information about any specific Agent registered within the contract.
 
     <Callout type="info" emoji="ℹ️">
-      uAgents registration in the Almanac contract is a key part for uAgents to communicate in a remote fashion. If you wish to understand how to get your uAgents registered within the Almanac contract, checkout our dedicated [guide ↗️](/guides/agents/register-in-almanac). You can also checkout the [Communicating with other uAgents ↗️](/guides/agents/communicating-with-other-agents) guide to better understand how uAgents make use of the Almanac to accomplish remote communication.
+      Agents registration in the Almanac contract is a key part for Agents to communicate in a remote fashion. If you wish to understand how to get your Agents registered within the Almanac contract, checkout our dedicated [guide ↗️](/guides/agents/register-in-almanac). You can also checkout the [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents) guide to better understand how Agents make use of the Almanac to accomplish remote communication.
     </Callout>
 
-The system employs strict time limitations for registrations, measured in **blocks**, to ensure the smooth operation of a large ecosystem of uAgents. This limitation addresses the liveness problem by encouraging uAgents to periodically re-register their information within the Almanac contract, thus keeping the registration details up to date for each one of them.
+The system employs strict time limitations for registrations, measured in **blocks**, to ensure the smooth operation of a large ecosystem of Agents. This limitation addresses the liveness problem by encouraging Agents to periodically re-register their information within the Almanac contract, thus keeping the registration details up to date for each one of them.
 
-Indeed, once an uAgent's registration information expires due to the time limit, queries for that uAgent will no longer return the previously registered information.
+Indeed, once an Agent's registration information expires due to the time limit, queries for that Agent will no longer return the previously registered information.
 
     <Callout type="info" emoji="ℹ️">
-      This mechanism promotes the accuracy and relevance of the uAgents information available to others.
+      This mechanism promotes the accuracy and relevance of the Agents information available to others.
     </Callout>
 
-During each registration process, uAgents must prove ownership of their address. This is achieved by signing a sequence number using their uAgent private key and subsequently submitting the signature to the contract for verification. The sequence number should increment with each successful registration and can also be queried. These steps are automated, ensuring a streamlined registration experience for uAgents.
+During each registration process, Agents must prove ownership of their address. This is achieved by signing a sequence number using their Agent private key and subsequently submitting the signature to the contract for verification. The sequence number should increment with each successful registration and can also be queried. These steps are automated, ensuring a streamlined registration experience for Agents.
 
 By implementing these measures, the system **guarantees** that:
 
-    - uAgents are registered in the Almanac contract.
-    - Users can query registered uAgents information.
+    - Agents are registered in the Almanac contract.
+    - Users can query registered Agents information.
     - Registration is up-to-date.
-    - Ownership of uAgents addresses is verified through signature verification.
+    - Ownership of Agents addresses is verified through signature verification.

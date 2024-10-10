@@ -1,18 +1,18 @@
 import { Callout } from 'nextra/components'
 
-# uAgent Mailboxes
+# Agent Mailboxes
 
 ## Introduction
-uAgents can't always be online; internet loss will cut your uAgent off from the network, or perhaps your uAgent is
+Agents can't always be online; internet loss will cut your Agent off from the network, or perhaps your Agent is
 behind a firewall meaning you cannot accept inbound requests. To get around online requirements we created
 the
 **Mailbox** feature on [Agentverse ↗️](https://agentverse.ai). A Mailbox is a
-middleman that acts as a mailbox for all communication to your uAgent. Messages are stored within the mailbox and your
-uAgents will collect them (calls for these in [`uagents` library ↗️](https://github.com/fetchai/uAgents/blob/55fd0f1bd14d4d5fdaaa3dae82e4d6c6c5b9a3cd/python/src/uagents/mailbox.py#L65)) when they're online
+middleman that acts as a mailbox for all communication to your Agent. Messages are stored within the mailbox and your
+Agents will collect them (calls for these in [`uagents` library ↗️](https://github.com/fetchai/uAgents/blob/55fd0f1bd14d4d5fdaaa3dae82e4d6c6c5b9a3cd/python/src/uagents/mailbox.py#L65)) when they're online
 again.
 
-Let's get an agent using mailbox, and testing this logic. To begin we need our agents address, we use this to
-register the agent on the Mailbox.
+Let's get an Agent using mailbox, and testing this logic. To begin we need our Agents address, we use this to
+register the Agent on the Mailbox.
 
 ## Get your agents address
 
@@ -20,10 +20,10 @@ register the agent on the Mailbox.
 
 Make sure you have read the following resources before going on with this guide:
 
-    - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first uAgent ↗️](/guides/agents/getting-started/create-a-uagent)
-    - [uAgents address ↗️](/guides/agents/getting-started/getting-uagent-address)
-    - [uAgent Handlers ↗️](/guides/agents/intermediate/handlers)
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 
@@ -31,7 +31,7 @@ Make sure you have read the following resources before going on with this guide:
 
     - [`uagents` ↗️](https://pypi.org/project/uagents/)
 
-## Local uAgent setup
+## Local Agent setup
 
         ```py copy filename="agent_1.py"
         from uagents import Agent, Context, Model
@@ -68,23 +68,23 @@ You should get something similar within your terminal output:
         INFO:     [alice]: Mailbox access token acquired
         ```
 
-Now that you have correctly retrieved your uAgent's address, let's head over to the [Agentverse ↗️](https://agentverse.ai)!
+Now that you have correctly retrieved your Agent's address, let's head over to the [Agentverse ↗️](https://agentverse.ai)!
 
 ## Create a Mailbox in Agentverse
 
-Make sure that you are signed in to the [Agentverse ↗️](https://agentverse.ai) platform. We will now create a Mailbox for our local agent above. To do so, copy the [local uAgent address ↗️](/guides/agents/getting-started/getting-uagent-address#print-uagent-address) available within your terminal and head over to the **Agentverse: My Agents** tab. Once there, click on the **Local Agents** tab and click on **Connect Local Agent** button.
+Make sure that you are signed in to the [Agentverse ↗️](https://agentverse.ai) platform. We will now create a Mailbox for our local Agent above. To do so, copy the [local Agent address ↗️](/guides/agents/getting-started/getting-uagent-address#print-uagent-address) available within your terminal and head over to the **Agentverse: My Agents** tab. Once there, click on the **Local Agents** tab and click on **Connect Local Agent** button.
 
 ![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1.png)
 
-You will need to paste the **address of the local uAgent** you wish to retrieve and wait for confirmation. _Note that it may take some time in order for your uAgent to be retrieved correctly_. Make sure your uAgent is running on your end otherwise the uAgent won't be retrievable!
+You will need to paste the **address of the local Agent** you wish to retrieve and wait for confirmation. _Note that it may take some time in order for your Agent to be retrieved correctly_. Make sure your Agent is running on your end otherwise the Agent won't be retrievable!
 
 ![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2.png)
 
-Once the uAgent is correctly retrieved, you will have to give it a **name**. When you do so and confirm, you will see a **Mailbox API Key** showing up. Copy and paste it within your local uAgent code by filling up the `AGENT_MAILBOX_KEY` field inline.
+Once the Agent is correctly retrieved, you will have to give it a **name**. When you do so and confirm, you will see a **Mailbox API Key** showing up. Copy and paste it within your local Agent code by filling up the `AGENT_MAILBOX_KEY` field inline.
 
 ![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3.png)
 
-## Updating your uAgent
+## Updating your Agent
 
 Let's update `alice`, alice will now print to console any message it receives, provided the message is of type `Message`. Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`,  `name`, `seed`  and `mailbox` parameters to correctly run this code:
 
@@ -112,9 +112,9 @@ Let's update `alice`, alice will now print to console any message it receives, p
             agent.run()
        ```
 
-## Creating a second uAgent
+## Creating a second Agent
 
-Let's create and run a second uAgent to message Alice every 3 seconds. You need to provide the `ALICE_ADDRESS`, `name` and `seed` parameters to correctly run this code:
+Let's create and run a second Agent to message Alice every 3 seconds. You need to provide the `ALICE_ADDRESS`, `name` and `seed` parameters to correctly run this code:
 
         ```py copy filename="agent_2.py"
     
@@ -148,12 +148,12 @@ that period of time, restart `alice` and she should print out a bunch of message
             INFO:     [alice]: Mailbox access token acquired
         ```
 
- **You can now restart your uAgent!**
+ **You can now restart your Agent!**
 
     <Callout type="warning" emoji="⚠️">
       Remember, each uAgent needs a different dedicated Mailbox!
     </Callout>
 
-Now your uAgent doesn't need to be running all the time as messages will be waiting when it comes back online.
+Now your Agent doesn't need to be running all the time as messages will be waiting when it comes back online.
 
-**Great! You correctly enrolled your local uAgent on the Agentverse using the Mailbox feature!**
+**Great! You correctly enrolled your local Agent on the Agentverse using the Mailbox feature!**

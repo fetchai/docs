@@ -1,12 +1,12 @@
 import { Callout } from 'nextra/components'
 
-# Envelopes in the Fetch.ai `uagents` Framework
+# Envelopes in the Fetch.ai uAgents Framework
 
 ## Introduction
 
-Within the Fetch.ai `uagents` Framework, effective communication between [uAgents ↗️](/guides/agents/getting-started/whats-an-agent) is crucial for the execution of complex tasks and exchange of information. To this aim, the **Exchange protocol** is a standardized communication protocol within the Framework that facilitates such interactions. A key component of this protocol are **Envelopes**; these serve as structured containers for messages exchanged between uAgents.
+Within the Fetch.ai uAgents Framework, effective communication between [Agents ↗️](/guides/agents/getting-started/whats-an-agent) is crucial for the execution of complex tasks and exchange of information. To this aim, the **Exchange protocol** is a standardized communication protocol within the Framework that facilitates such interactions. A key component of this protocol are **Envelopes**; these serve as structured containers for messages exchanged between Agents.
 
-In particular, envelopes provide a secure and reliable way to exchange messages by encapsulating them along with essential metadata. This metadata includes details about the sender and recipient, the session in which the communication occurs, and other information needed to ensure the integrity and authenticity of the messages. By using envelopes, we ensure that messages are correctly routed, verified, and processed, thereby enabling straightforward interoperability among multiple uAgents and related functions.
+In particular, envelopes provide a secure and reliable way to exchange messages by encapsulating them along with essential metadata. This metadata includes details about the sender and recipient, the session in which the communication occurs, and other information needed to ensure the integrity and authenticity of the messages. By using envelopes, we ensure that messages are correctly routed, verified, and processed, thereby enabling straightforward interoperability among multiple Agents and related functions.
 
     <Callout type="info" emoji="ℹ️">
       Check out the [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol) resource for a better comprehension on this topic.
@@ -47,10 +47,10 @@ The `Envelope` class can be defined as follows:
 
 ## Sending Envelopes
 
-Envelopes are encoded in JSON format and sent via `HTTP 1.1 POST` requests to specific endpoints of receiving uAgents or Functions. Currently, the protocol supports only one standardized endpoint:
+Envelopes are encoded in JSON format and sent via `HTTP 1.1 POST` requests to specific endpoints of receiving Agents or Functions. Currently, the protocol supports only one standardized endpoint:
 
 `HTTP 1.1 POST /submit`
 
 This endpoint expects data that adheres to a JSON-compatible format, typically using the MIME content type `application/json`.
 
-**In essence, Envelopes in the `uagents` Framework act as secure wrappers for messages, providing essential information for their secure and reliable transmission between uAgents within the Framework itself.**
+**In essence, Envelopes in the uAgents Framework act as secure wrappers for messages, providing essential information for their secure and reliable transmission between Agents within the Framework itself.**

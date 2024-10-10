@@ -8,7 +8,7 @@ This file can be run on any platform supporting Python, with the necessary insta
 
 #### Supporting documentation
 
-- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+- [Creating an Agent ↗️](/guides/agents/create-a-uagent)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
@@ -23,7 +23,7 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     ```python copy filename="local-agent.py"
 
-    # Here we demonstrate how we can create a news reading system agent that is compatible with DeltaV
+    # Here we demonstrate how we can create a news reading system Agent that is compatible with DeltaV
 
     # Import required libraries
     import requests
@@ -39,11 +39,11 @@ This file can be run on any platform supporting Python, with the necessary insta
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
     
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
+    # Now go to https://agentverse.ai, register your Agent in the Mailroom by providing the address you just copied.
+    # Then, copy the Agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
     
-    # Now your agent is ready to join the agentverse!
+    # Now your Agent is ready to join the Agentverse!
     news_agent = Agent(
         name="news_agent",
         seed=SEED_PHRASE,
@@ -70,7 +70,7 @@ This file can be run on any platform supporting Python, with the necessary insta
         await ctx.send(sender, UAgentResponse(message = final_news, type = UAgentResponseType.FINAL))
 
 
-    # Include the Generate News protocol in your agent
+    # Include the Generate News protocol in your Agent
     news_agent.include(news_protocol)
 
     news_agent.run()
@@ -78,9 +78,9 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     ```python copy filename="hosted-agent.py"
 
-    # Here we demonstrate how we can create a news reading system agent that is compatible with DeltaV
+    # Here we demonstrate how we can create a news reading system Agent that is compatible with DeltaV
 
-    # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address
+    # After running this Agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address
 
     # Import required libraries
     import requests
@@ -106,7 +106,7 @@ This file can be run on any platform supporting Python, with the necessary insta
         await ctx.send(sender, UAgentResponse(message = final_news, type = UAgentResponseType.FINAL))
 
 
-    # Include the Generate News protocol in your agent
+    # Include the Generate News protocol in your Agent
     agent.include(news_protocol)
     ```
 </CodeGroup>
@@ -115,7 +115,7 @@ This file can be run on any platform supporting Python, with the necessary insta
 <CodeGroup hasCopy isLocalHostedFile>
 
     ```python copy filename="local-agent.py"
-    # Here we demonstrate how we can create a news generating agent that is compatible with DeltaV.
+    # Here we demonstrate how we can create a news generating Agent that is compatible with DeltaV.
 
     # Import required libraries
     import requests
@@ -132,11 +132,11 @@ This file can be run on any platform supporting Python, with the necessary insta
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
     
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
+    # Now go to https://agentverse.ai, register your Agent in the Mailroom by providing the address you just copied.
+    # Then, copy the Agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
     
-    # Now your agent is ready to join the agentverse!
+    # Now your Agent is ready to join the Agentverse!
     generate_news_agent = Agent(
         name="generate_news_agent",
         seed=SEED_PHRASE,
@@ -185,15 +185,15 @@ This file can be run on any platform supporting Python, with the necessary insta
                     )
                     )
 
-    # Include the Generate News protocol in your agent.
+    # Include the Generate News protocol in your Agent.
     generate_news_agent.include(generate_news_protocol)
 
     generate_news_agent.run()
     ```
 
     ```python copy filename="hosted-agent.py"
-    # Here we demonstrate how we can create a news generating agent that is compatible with DeltaV.
-    # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
+    # Here we demonstrate how we can create a news generating Agent that is compatible with DeltaV.
+    # After running this Agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
     # Import required libraries
     import requests
@@ -242,7 +242,7 @@ This file can be run on any platform supporting Python, with the necessary insta
                     )
                     )
 
-    # Include the Generate News protocol in your agent.
+    # Include the Generate News protocol in your Agent.
     agent.include(generate_news_protocol)
     ```
 </CodeGroup>
@@ -252,7 +252,7 @@ This file can be run on any platform supporting Python, with the necessary insta
 <CodeGroup hasCopy isLocalHostedFile>
 
     ```python copy filename="local-agent.py"
-    # Here we demonstrate how we can create a categorical news generating agent that is compatible with DeltaV.
+    # Here we demonstrate how we can create a categorical news generating Agent that is compatible with DeltaV.
 
     # Importing libraries
     import requests
@@ -268,11 +268,11 @@ This file can be run on any platform supporting Python, with the necessary insta
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
     
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
+    # Now go to https://agentverse.ai, register your Agent in the Mailroom by providing the address you just copied.
+    # Then, copy the Agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
     
-    # Now your agent is ready to join the agentverse!
+    # Now your Agent is ready to join the Agentverse!
     generate_cat_news_agent = Agent(
         name="generate_cat_news_agent",
         seed=SEED_PHRASE,
@@ -326,15 +326,15 @@ This file can be run on any platform supporting Python, with the necessary insta
             )
 
 
-    # Include the Generate News protocol in your agent.
+    # Include the Generate News protocol in your Agent.
     generate_cat_news_agent.include(generate_cat_news_protocol)
 
     generate_cat_news_agent.run()
     ```
 
     ```python copy filename="hosted-agent.py"
-    # Here we demonstrate how we can create a categorical news generating agent that is compatible with DeltaV.
-    # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
+    # Here we demonstrate how we can create a categorical news generating Agent that is compatible with DeltaV.
+    # After running this Agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
     # Importing libraries
     import requests
@@ -387,7 +387,7 @@ This file can be run on any platform supporting Python, with the necessary insta
             )
 
 
-    # Include the Generate News protocol in your agent.
+    # Include the Generate News protocol in your Agent.
     agent.include(generate_cat_news_protocol)
     ```
 </CodeGroup>
@@ -427,11 +427,11 @@ This file can be run on any platform supporting Python, with the necessary insta
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
     
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
+    # Now go to https://agentverse.ai, register your Agent in the Mailroom by providing the address you just copied.
+    # Then, copy the Agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
     
-    # Now your agent is ready to join the agentverse!
+    # Now your Agent is ready to join the Agentverse!
     generate_news_reg_agent = Agent(
         name="generate_news_reg_agent",
         seed=SEED_PHRASE,
@@ -484,7 +484,7 @@ This file can be run on any platform supporting Python, with the necessary insta
             )
 
 
-    # Include the Generate Regional News protocol in your agent
+    # Include the Generate Regional News protocol in your Agent
     generate_news_reg_agent.include(generate_news_protocol)
 
     generate_news_reg_agent.run()
@@ -540,7 +540,7 @@ This file can be run on any platform supporting Python, with the necessary insta
         try:
             # Get the country code from the country_code dictionary
             country_code = country_codes.get(msg.country.lower())
-            # Generate news based on the requested country and log it on agentverse
+            # Generate news based on the requested country and log it on Agentverse
             message = await get_regional_news(msg.country)
             ctx.logger.info(f"Message from endpoint: {message}")
             # Send a successful response with the generated news
@@ -558,7 +558,7 @@ This file can be run on any platform supporting Python, with the necessary insta
             )
 
 
-    # Include the Generate Regional News protocol in your agent
+    # Include the Generate Regional News protocol in your Agent
     agent.include(generate_news_protocol)
     ```
 </CodeGroup>
@@ -582,11 +582,11 @@ This file can be run on any platform supporting Python, with the necessary insta
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
     
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
+    # Now go to https://agentverse.ai, register your Agent in the Mailroom by providing the address you just copied.
+    # Then, copy the Agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
     
-    # Now your agent is ready to join the agentverse!
+    # Now your Agent is ready to join the Agentverse!
     generate_news_keyw_agent = Agent(
         name="generate_news_keyw_agent",
         seed=SEED_PHRASE,
@@ -641,7 +641,7 @@ This file can be run on any platform supporting Python, with the necessary insta
                 )
             )
 
-    # Include the Generate Keyword News protocol in your agent
+    # Include the Generate Keyword News protocol in your Agent
     generate_news_keyw_agent.include(generate_news_keyw_protocol)
 
     generate_news_keyw_agent.run()
@@ -700,7 +700,7 @@ This file can be run on any platform supporting Python, with the necessary insta
                 )
             )
 
-    # Include the Generate Keyword News protocol in your agent
+    # Include the Generate Keyword News protocol in your Agent
     agent.include(generate_news_keyw_protocol)
     ```
 </CodeGroup>

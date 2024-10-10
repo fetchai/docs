@@ -1,13 +1,13 @@
 import {Callout} from 'nextra/components'
 import { CodeGroup } from "../../../../components/code";
 
-# Communicating with other uAgents
+# Communicating with other Agents
 
 ## Introduction
 
-Communication is an essential feature within any agents network. Communication allows uAgents to work together, exchange information, and forms an organic marketplace.
+Communication is an essential feature within any Agents network. Communication allows Agents to work together, exchange information, and forms an organic marketplace.
 
-In this guide, we will explore two methods of communication between uAgents:
+In this guide, we will explore two methods of communication between Agents:
 
     - **Local communication**.
     - **Remote communication** via the [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
@@ -22,9 +22,9 @@ Let's start with **local communication**. This is the first step you would need 
 
 Make sure you have read the following resources before going on with this guide:
 
-    - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first uAgent ↗️](/guides/agents/getting-started/create-a-uagent)
-    - [uAgents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 
@@ -32,11 +32,11 @@ Make sure you have read the following resources before going on with this guide:
 
     - [`uagents` ↗️](https://pypi.org/project/uagents/)
 
-## uAgents: Local Communication
+## Agents: Local Communication
 
 ### Walk-through
 
-The first step to better understand how uAgents communicate is to introduce how 2 uAgents perform a local communication. Let's consider a basic example in which two uAgents say hello to each other.
+The first step to better understand how Agents communicate is to introduce how 2 Agents perform a local communication. Let's consider a basic example in which two Agents say hello to each other.
 
 1. First of all, let's create a Python script for this task:
 
@@ -56,7 +56,7 @@ The first step to better understand how uAgents communicate is to introduce how 
 
     </CodeGroup>
    
-2. Then, we import  `Agent`, `Context`, `Bureau`, and `Model` from the `uagents` library, and we then define the message structure for messages to be exchanged between the uAgents using the class `Model`:
+2. Then, we import  `Agent`, `Context`, `Bureau`, and `Model` from the `uagents` library, and we then define the message structure for messages to be exchanged between the Agents using the class `Model`:
 
     ```py copy
     from uagents import Agent, Bureau, Context, Model
@@ -67,14 +67,14 @@ The first step to better understand how uAgents communicate is to introduce how 
 
     The `Message` class defines the structure of message we can receive. In this example it's just a string, but it could be a simple integer, or a complex object too.
 
-3. Now we create two uAgent instances, `sigmar` and `slaanesh`, with `name` and `seed` parameters:
+3. Now we create two Agent instances, `sigmar` and `slaanesh`, with `name` and `seed` parameters:
 
     ```py copy
     sigmar = Agent(name="sigmar", seed="sigmar recovery phrase")
     slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase")
     ```
 
-    In this example we're running multiple uAgents from one file.
+    In this example we're running multiple Agents from one file.
 
 4. Let's now define `sigmar`'s behaviors. We need to define a function for `sigmar` to send messages to `slaanesh` periodically:
 
@@ -96,7 +96,7 @@ The first step to better understand how uAgents communicate is to introduce how 
 
     This defines the coroutine function `sigmar_message_handler()` that serves as a message handler for `sigmar`. It is triggered whenever `sigmar` receives a message of type `Message`.
 
-6. Let's now define the behavior of our second uAgent, `slaanesh`:
+6. Let's now define the behavior of our second Agent, `slaanesh`:
 
     ```py copy
     @slaanesh.on_message(model=Message)
@@ -113,7 +113,7 @@ The first step to better understand how uAgents communicate is to introduce how 
      await ctx.send(sender.address, Message(message="hello there sigmar"))
      ```
 
-7. Let's then use the `Bureau` class to create a `Bureau` object. This will allow us to run uAgents together in the same script:
+7. Let's then use the `Bureau` class to create a `Bureau` object. This will allow us to run Agents together in the same script:
 
     ```py copy
     bureau = Bureau()
@@ -171,17 +171,17 @@ The output would be:
     INFO:     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
     ```
 
-## uAgents Remote Communication: the Almanac Contract
+## Agents Remote Communication: the Almanac Contract
 
-An uAgent must register to the  [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) to communicate, to search for other uAgents or be found. uAgents can query this contract to retrieve an HTTP endpoint for a recipient uAgent. [Registration in the Almanac ↗️](/guides/agents/register-in-almanac) requires paying a small fee, so make sure to have enough funds to allow for this. You can query the Almanac now, by using the search feature on [Agentverse ↗️](https://agentverse.ai/).
+An Agent must register to the  [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) to communicate, to search for other Agents or be found. Agents can query this contract to retrieve an HTTP endpoint for a recipient Agent. [Registration in the Almanac ↗️](/guides/agents/register-in-almanac) requires paying a small fee, so make sure to have enough funds to allow for this. You can query the Almanac now, by using the search feature on [Agentverse ↗️](https://agentverse.ai/).
 
-Whenever an uAgent registers in the Almanac, it must specify the service [endpoints ↗️](/references/contracts/uagents-almanac/endpoints) alongside a weight parameter for each endpoint provided. uAgents trying to communicate with your uAgent will choose the service endpoints using a weighted random selection.
+Whenever an Agent registers in the Almanac, it must specify the service [endpoints ↗️](/references/contracts/uagents-almanac/endpoints) alongside a weight parameter for each endpoint provided. Agents trying to communicate with your Agent will choose the service endpoints using a weighted random selection.
 
-Here, we show you how to create two uAgents and make them remotely communicate by registering and using the Almanac Contract.
+Here, we show you how to create two Agent and make them remotely communicate by registering and using the Almanac Contract.
 
 ### Walk-through
 
-The first step would be to create two different Python scripts for this task, each one representing a remote uAgent:
+The first step would be to create two different Python scripts for this task, each one representing a remote Agent:
 
     Slaanesh:
 
@@ -222,7 +222,7 @@ Let's start by defining the script for **sigmar**.
 
 #### Sigmar
 
-1. In `remote_agents_sigmar.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between uAgents using the class `Model`, as well as the `RECIPIENT_ADDRESS` (slaanesh's address). Note that if you don't know slaanesh's address yet, you can use `print(slaanesh.address)` after defining uAgent `slaanesh` to get this information. This is the address towards which `sigmar` will send messages:
+1. In `remote_agents_sigmar.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between Agents using the class `Model`, as well as the `RECIPIENT_ADDRESS` (slaanesh's address). Note that if you don't know slaanesh's address yet, you can use `print(slaanesh.address)` after defining Agent `slaanesh` to get this information. This is the address towards which `sigmar` will send messages:
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -234,7 +234,7 @@ Let's start by defining the script for **sigmar**.
     RECIPIENT_ADDRESS="agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum"
    ```
 
-2. Let's now create our uAgent, `sigmar`, by providing `name`, `seed`, `port`, and `endpoint`. Also, make sure it has enough funds to register in the Almanac contract:
+2. Let's now create our Agent, `sigmar`, by providing `name`, `seed`, `port`, and `endpoint`. Also, make sure it has enough funds to register in the Almanac contract:
 
     ```py copy
     sigmar = Agent(
@@ -247,7 +247,7 @@ Let's start by defining the script for **sigmar**.
     fund_agent_if_low(sigmar.wallet.address())
    ```
 
-    On the Fetch.ai testnet, you can use the `fund_agent_if_low` function. This checks if the balance of the uAgent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency. In this case, it checks if the balance of `sigmar`'s wallet is low and funds it if necessary.
+    On the Fetch.ai testnet, you can use the `fund_agent_if_low` function. This checks if the balance of the Agent's wallet is below a certain threshold, and if so, sends a transaction to fund the wallet with a specified amount of cryptocurrency. In this case, it checks if the balance of `sigmar`'s wallet is low and funds it if necessary.
 
 3. We are ready to define `sigmar`'s behaviors. Let's start with a function for `sigmar` to send messages:
 
@@ -259,7 +259,7 @@ Let's start by defining the script for **sigmar**.
 
     Here, the `.on_interval()` decorator schedules the `send_message()` function to be run every 2 seconds. Inside the function, there is an asynchronous call indicated by the `ctx.send()` method. This call sends a message with the content `"hello there slaanesh"` to the `RECIPIENT_ADDRESS`.
 
-4. We then need to define a function for `sigmar` to handle incoming messages from other uAgents:
+4. We then need to define a function for `sigmar` to handle incoming messages from other Agents:
 
     ```py copy
     @sigmar.on_message(model=Message)
@@ -276,7 +276,7 @@ Let's start by defining the script for **sigmar**.
 
 5. We can now save the script.
 
-The overall script for sigmar uAgent should be looking as follows:
+The overall script for sigmar Agent should be looking as follows:
 
 ```py copy filename="remote_agents_sigmar.py"
 from uagents import Agent, Context, Model
@@ -310,11 +310,11 @@ if __name__ == "__main__":
 
 Remember that you need to provide the `name`, `seed`, `port`, `endpoint` and `RECIPIENT_ADDRESS` parameters to correctly run this code.
 
-We can now proceed by writing the script for uAgent `slaanesh`.
+We can now proceed by writing the script for Agent `slaanesh`.
 
 #### Slaanesh
 
-1. In `remote_agents_slaanesh.py` script, import the necessary classes from the `uagents` and `uagents.setup`. Then, define the message structure for messages to be exchanged between the uAgents using the `Model` class, as well as our second uAgent, `slaanesh`, by providing `name`, `seed`, `port`, and `endpoint`. Make sure it has enough funds to register in the Almanac contract:
+1. In `remote_agents_slaanesh.py` script, import the necessary classes from the `uagents` and `uagents.setup`. Then, define the message structure for messages to be exchanged between the Agents using the `Model` class, as well as our second Agent, `slaanesh`, by providing `name`, `seed`, `port`, and `endpoint`. Make sure it has enough funds to register in the Almanac contract:
 
     ```py copy
     from uagents import Agent, Context, Model
@@ -346,7 +346,7 @@ We can now proceed by writing the script for uAgent `slaanesh`.
         slaanesh.run()
    ```
 
-    Here, we have defined an asynchronous `message_handler()` function for slaanesh to handle incoming messages from other uAgents. The function is decorated with `.on_message()`, and it is triggered whenever a message of type `Message` is received by `slaanesh`. When a message is received, the handler function logs the sender's address and the content of the message. It then sends a response back to the sender using the `ctx.send()` with a new message. The response message contains the `Message` data model with a `"hello there sigmar"` message.
+    Here, we have defined an asynchronous `message_handler()` function for slaanesh to handle incoming messages from other Agents. The function is decorated with `.on_message()`, and it is triggered whenever a message of type `Message` is received by `slaanesh`. When a message is received, the handler function logs the sender's address and the content of the message. It then sends a response back to the sender using the `ctx.send()` with a new message. The response message contains the `Message` data model with a `"hello there sigmar"` message.
 
 3. Save the script.
 
@@ -413,7 +413,7 @@ The output will depend on the terminal:
 
 ### Before we go on...
 
-As we touched on before in [Register in Almanac ↗️](/guides/agents/register-in-almanac), when the uAgent uses `.run()` function this tells the `uagents` library to register the uAgent to the Almanac. It's simple, uAgents initialize themselves, and register to a service which acts as a search engine for uAgents (the Almanac) then, when uAgents receive messages they can respond.
+As we touched on before in [Register in Almanac ↗️](/guides/agents/register-in-almanac), when the Agent uses `.run()` function this tells the `uagents` library to register the Agent to the Almanac. It's simple, uAgents initialize themselves, and register to a service which acts as a search engine for Agents (the Almanac) then, when Agents receive messages they can respond.
 
 ## Conclusion
 
@@ -422,8 +422,8 @@ In this guide, we explored two different methods of communication for v using th
     - **Local communication**.
     - **Remote communication** via the Almanac Contract.
 
-For _local communication_, we learned how to use the `uagents` library to create two uAgents, `sigmar` and `slaanesh`, and enable them to exchange messages with one another. We defined the message structure using the `Model` class and implemented message handlers for both uAgents. By running the script we observed their real-time message exchange.
+For _local communication_, we learned how to use the `uagents` library to create two Agents, `sigmar` and `slaanesh`, and enable them to exchange messages with one another. We defined the message structure using the `Model` class and implemented message handlers for both Agents. By running the script we observed their real-time message exchange.
 
-Next, we delved into _remote communication_, which facilitates interaction between uAgents through the Almanac Contract. This method requires registering the uAgents in the Almanac Contract and querying for **HTTP endpoints** for communication. By running the scripts separately, we could observe the real-time messages exchange, fostering a decentralized network of interacting uAgents.
+Next, we delved into _remote communication_, which facilitates interaction between Agents through the Almanac Contract. This method requires registering the Agents in the Almanac Contract and querying for **HTTP endpoints** for communication. By running the scripts separately, we could observe the real-time messages exchange, fostering a decentralized network of interacting Agents.
 
-With this, we suspect you're ready to start building uAgents, as part of multi-agent system the Almanac allows; awesome. If you want to go further though, take a look at the [message verification ↗️](/guides/agents/message-verification) and [sending tokens ↗️](/guides/agents/send-tokens), after-all you do want to be sure you are speaking to who you think you are, and uAgents getting paid is awesome.
+With this, we suspect you're ready to start building Agents, as part of multi-agent system the Almanac allows; awesome. If you want to go further though, take a look at the [message verification ↗️](/guides/agents/message-verification) and [sending tokens ↗️](/guides/agents/send-tokens), after-all you do want to be sure you are speaking to who you think you are, and Agents getting paid is awesome.

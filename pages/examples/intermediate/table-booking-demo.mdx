@@ -9,9 +9,9 @@ This example shows how to use Agents to create a table booking service at a rest
 
 ### Supporting documentation
 
-- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+- [Creating an Agent ↗️](/guides/agents/create-a-uagent)
 - [Creating an interval task ↗️](/guides/agents/interval-task)
-- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
@@ -230,7 +230,7 @@ This example shows how to use Agents to create a table booking service at a rest
 
     fund_agent_if_low(restaurant.wallet.address())
 
-    # build the restaurant agent from stock protocols
+    # build the restaurant Agent from stock protocols
     restaurant.include(query_proto)
     restaurant.include(book_proto)
     TABLES = {
@@ -252,7 +252,7 @@ This example shows how to use Agents to create a table booking service at a rest
     from book import book_proto
     from query import query_proto, TableStatus
 
-    # build the restaurant agent from stock protocols
+    # build the restaurant Agent from stock protocols
     agent.include(query_proto)
     agent.include(book_proto)
 
@@ -298,7 +298,7 @@ This example shows how to use Agents to create a table booking service at a rest
         duration=2,
     )
 
-    # This on_interval agent function performs a request on a defined period
+    # This on_interval Agent function performs a request on a defined period
     @user.on_interval(period=3.0, messages=QueryTableRequest)
     async def interval(ctx: Context):
         completed = ctx.storage.get("completed")
@@ -356,7 +356,7 @@ This example shows how to use Agents to create a table booking service at a rest
         duration=2,
     )
 
-    # This on_interval agent function performs a request on a defined period
+    # This on_interval Agent function performs a request on a defined period
     @agent.on_interval(period=3.0, messages=QueryTableRequest)
     async def interval(ctx: Context):
         completed = ctx.storage.get("completed")

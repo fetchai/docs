@@ -23,7 +23,7 @@ This example provides details on how to create Agents and respective Agent Funct
 
 ![](src/images/APIs/APIKey.png)
 
-## Steps to create agent and respective function
+## Steps to create Agent and respective function
 
     - Open terminal and create a directory `agents` using `mkdir agents`.
     - Create a python file `agent.py` in this directory and include the following sample script in the Python file.
@@ -41,8 +41,8 @@ This example provides details on how to create Agents and respective Agent Funct
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
 
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
+    # Now go to https://agentverse.ai, register your Agent in the Mailroom by providing the address you just copied.
+    # Then, copy the Agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 
     # Now your agent is ready to join the agentverse!
@@ -154,11 +154,11 @@ token = 'Bearer <Your_access_token>'
 - Taking agent Name from user and storing agent address:
 
 ```python
-# Take name of agent from user
+# Take name of Agent from user
 name = input("Please give name of your agent? ")
-# Create payload for agent creation request
+# Create payload for Agent creation request
 agent_creation_data = {"name": name}
-# Post request to create an agent and store address
+# Post request to create an Agent and store address
 response_agent = requests.post(
     "https://agentverse.ai/v1/hosting/agents",
     json=agent_creation_data,
@@ -169,33 +169,33 @@ address = response_agent["address"]
 print(f"Agent Address : {address}")
 ```
 
-- Taking code from `agent.py` file and storing it as created agent script:
+- Taking code from `agent.py` file and storing it as created Agent script:
 
 ```python
-# Reading code to be placed in agent
+# Reading code to be placed in Agent
 with open("agent.py", "r") as file:
     code = file.read()
 agent_code_data = {"code": code}
 
-# Creating agent.py script for created agent
+# Creating agent.py script for created Agent
 response_code_update = requests.put(
     f"https://agentverse.ai/v1/hosting/agents/{address}/code",
     json=agent_code_data,
     headers={"Authorization": token},
 )
 
-# Starting the agent
+# Starting the Agent
 requests.post(
     f"https://agentverse.ai/v1/hosting/agents/{address}/start",
     headers={"Authorization": token},
 )
-time.sleep(10)  # waiting before getting agent's protocol
+time.sleep(10)  # waiting before getting Agent's protocol
 ```
 
 - Requesting protocol digest for the created Agent:
 
 ```python
-# Request to get agent protocol digest
+# Request to get Agent protocol digest
 response_protcol = requests.get(
     f"https://agentverse.ai/v1/almanac/agents/{address}",
     headers={"Authorization": token},
@@ -204,7 +204,7 @@ protocol_digest = response_protcol.json()["protocols"][1]
 print(f"Protocol Digest : {protocol_digest}")
 time.sleep(10)  # Waiting before getting model_digest
 
-# Request to get agent's model details
+# Request to get Agent's model details
 response_model = requests.get(
     f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}",
     headers={"Authorization": token},
@@ -280,11 +280,11 @@ import requests
 # Decode the refresh token
 token = f'Bearer <Your_access_token>'
 
-# Take name of agent from user
+# Take name of Agent from user
 name = input("Please give name of your agent? ")
-# Create payload for agent creation request
+# Create payload for Agent creation request
 agent_creation_data = {"name": name}
-# Post request to create an agent and store address
+# Post request to create an Agent and store address
 response_agent = requests.post(
     "https://agentverse.ai/v1/hosting/agents",
     json=agent_creation_data,
@@ -294,26 +294,26 @@ response_agent = requests.post(
 address = response_agent["address"]
 print(f"Agent Address : {address}")
 
-# Reading code to be placed in agent
+# Reading code to be placed in Agent
 with open("agent.py", "r") as file:
     code = file.read()
 agent_code_data = {"code": code}
 
-# Creating agent.py script for created agent
+# Creating agent.py script for created Agent
 response_code_update = requests.put(
     f"https://agentverse.ai/v1/hosting/agents/{address}/code",
     json=agent_code_data,
     headers={"Authorization": token},
 )
 
-# Starting the agent
+# Starting the Agent
 requests.post(
     f"https://agentverse.ai/v1/hosting/agents/{address}/start",
     headers={"Authorization": token},
 )
-time.sleep(10)  # waiting before getting agent's protocol
+time.sleep(10)  # waiting before getting Agent's protocol
 
-# Request to get agent protocol digest
+# Request to get Agent protocol digest
 response_protcol = requests.get(
     f"https://agentverse.ai/v1/almanac/agents/{address}",
     headers={"Authorization": token},
@@ -322,7 +322,7 @@ protocol_digest = response_protcol.json()["protocols"][1]
 print(f"Protocol Digest : {protocol_digest}")
 time.sleep(10)  # Waiting before getting model_digest
 
-# Request to get agent's model details
+# Request to get Agent's model details
 response_model = requests.get(
     f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}",
     headers={"Authorization": token},
@@ -391,7 +391,7 @@ print(f"Function Created with name: {name}")
 3. Open [Agentverse ↗️](https://agentverse.ai/profile/api-keys) and [generate API keys ↗️](../../guides/apis/agent-function-creation-apis#how-to-get-agentverse-api-tokens).
 4. Open script in editor and replace `token`.
 5. Run command `python agent_create.py` and enter the required details.
-6. Provide Agent and Function Details as asked and check agent and function on Agentverse.
+6. Provide Agent and Function Details as asked and check Agent and function on Agentverse.
 
 ## Expected Output
 

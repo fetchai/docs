@@ -5,7 +5,7 @@ import { CodeGroup } from "../../../components/code";
 
 ## Overview
 
-This example demonstrates how to set up and execute a simple agent-based dialogue using the ChitChat Dialogue system. Agent 2 will initiate a conversation with Agent 1, which will respond and continue the interaction. This interaction showcases basic dialogue initiation, message exchange, and dialogue conclusion. Each step and state transition within the ChitChat Dialogue is visible and interactive
+This example demonstrates how to set up and execute a simple Agent-based dialogue using the ChitChat Dialogue system. Agent 2 will initiate a conversation with Agent 1, which will respond and continue the interaction. This interaction showcases basic dialogue initiation, message exchange, and dialogue conclusion. Each step and state transition within the ChitChat Dialogue is visible and interactive
 
 ### Guide
 
@@ -13,8 +13,8 @@ This example demonstrates how to set up and execute a simple agent-based dialogu
 
 ### Supporting documentation
 
-- [Creating an agent ↗️](/guides/agents/create-a-uagent)
-- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Creating an Agent ↗️](/guides/agents/create-a-uagent)
+- [Communicating with other Agent ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 
@@ -195,13 +195,13 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
             return super()._on_state_transition(end_session.name, model)
     ```
 
-The contents of this script are to be shared between the agents that want to use this dialogue. This defines the structure of the specific dialogue and the messages that are expected to be exchanged.
+The contents of this script are to be shared between the Agents that want to use this dialogue. This defines the structure of the specific dialogue and the messages that are expected to be exchanged.
 
 ## Step 2: Setting up Agents
 
 - Setup `agent1` which receives initiate session from `agent2` and accepts the state.
-- `agent2` sends continues chit chat dialogue message to agent 1 and continues the chat.
-- if any of the agent sends `exit` message the dialogue is concluded.
+- `agent2` sends continues chit-chat dialogue message to Agent 1 and continues the chat.
+- if any of the Agent sends `exit` message the dialogue is concluded.
 - Run `cd ..` to go out of `Dialogues` directory and create `agent1.py` Python script
 
 
@@ -480,7 +480,7 @@ The contents of this script are to be shared between the agents that want to use
     ```
 </CodeGroup>
     <Callout type="info" emoji="ℹ️">
-      Remember to update the agent's address to communicate to each other and seed phrase of own choice. 
+      Remember to update the Agent's address to communicate to each other and seed phrase of own choice. 
     </Callout>
 
 ## Step 3: run the dialogue
@@ -513,7 +513,7 @@ The contents of this script are to be shared between the agents that want to use
             },
             {
                 "name": "Initiated",
-                "description": "This is the initial state of the dialogue that is only available at the receiving agent.",
+                "description": "This is the initial state of the dialogue that is only available at the receiving Agent.",
                 "initial": false,
                 "final": false
             },

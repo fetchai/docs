@@ -27,10 +27,10 @@ pip install ai-engine-sdk
 ```
 
 <Callout type="info" emoji="ℹ️">
-      Explore the additional resources we have on AI Engine compatible uAgents:
-        - [Make your uAgents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
-        - [uAgent Functions ↗️](/guides/agents/intermediate/agent-functions)
-        - [Register uAgent Functions ↗️](/guides/agentverse/agentverse-functions/registering-agent-services)
+      Explore the additional resources we have on AI Engine compatible Agents:
+        - [Make your Agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+        - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
+        - [Register Agent Functions ↗️](/guides/agentverse/agentverse-functions/registering-agent-services)
         - [DeltaV ↗️](/concepts/ai-engine/deltav)
 </Callout>
 
@@ -122,7 +122,7 @@ await session.start(objective)
 
 ### Querying new messages
 
-This line asynchronously queries the AI engine to retrieve a list of messages related to the current session. The messages are returned as a list of `ApiBaseMessage` objects, which can include various types of messages such as agent messages, AI engine messages, task selections, confirmations, and session stop messages. These messages are then processed to determine the next actions in the session workflow.
+This line asynchronously queries the AI engine to retrieve a list of messages related to the current session. The messages are returned as a list of `ApiBaseMessage` objects, which can include various types of messages such as Agent messages, AI engine messages, task selections, confirmations, and session stop messages. These messages are then processed to determine the next actions in the session workflow.
 
 ```py copy
 while True:
@@ -138,7 +138,7 @@ while True:
 This message is generated when the AI engine suggests functions based on the initial objective or provides multiple options for a function.
 
 
-#### uAgent Message (`is_agent_message`)
+#### Agent Message (`is_agent_message`)
 
 This is a regular question from the AI Engine that the user needs to reply to with a string.
 
@@ -148,7 +148,7 @@ This message type doesn't require a user response; it simply notifies the user a
 
 #### Confirmation Message (`is_confirmation_message`)
 
-This message is sent when the AI Engine has gathered all necessary inputs for the uAgent's function, indicating that the context is complete.
+This message is sent when the AI Engine has gathered all necessary inputs for the Agent's function, indicating that the context is complete.
 
 #### Stop Message (`is_stop_message`)
 

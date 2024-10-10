@@ -2,11 +2,11 @@ import { Callout } from 'nextra/components'
 import { CodeGroup } from "../../../../components/code";
 
 
-# How to use uAgents to send tokens
+# How to use Agents to send tokens
 
 ## Introduction
 
-Within agent-based decentralized systems, efficient communication and secure data exchange are essential. In this guide, we will walk you through the process of setting up two uAgents utilizing the `uagents` library to establish a dynamic workflow where one uAgent periodically sends payment requests to another, which in turn processes these requests, executes transactions, and provides transaction information back to sending uAgent.
+Within agent-based decentralized systems, efficient communication and secure data exchange are essential. In this guide, we will walk you through the process of setting up two Agents utilizing the `uagents` library to establish a dynamic workflow where one Agent periodically sends payment requests to another, which in turn processes these requests, executes transactions, and provides transaction information back to sending Agent.
 
 Let's get started!
 
@@ -14,11 +14,11 @@ Let's get started!
 
 Make sure you have read the following resources before going on with this guide:
 
-    - [Quick Start Guide for `uagents` Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first uAgent ↗️](/guides/agents/getting-started/create-a-uagent)
-    - [uAgents address ↗️](/guides/agents/getting-started/getting-uagent-address)
-    - [Using uAgents storage function ↗️](/guides/agents/intermediate/storage-function)
-    - [Communicating with other uAgents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Using Agents storage function ↗️](/guides/agents/intermediate/storage-function)
+    - [Communicating with other Agents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
 
 ## Imports needed
 
@@ -67,7 +67,7 @@ Make sure you have read the following resources before going on with this guide:
 
    - The `TransactionInfo` model represents information about a transaction and contains a single attribute, `tx_hash`.
 
-3. Let's now define our uAgents, `alice` and `bob`. Ensure they have enough funds in their wallets to carry out transactions:
+3. Let's now define our Agents, `alice` and `bob`. Ensure they have enough funds in their wallets to carry out transactions:
 
     ```py copy
     alice = Agent(name="alice", seed="alice secret phrase")
@@ -76,7 +76,7 @@ Make sure you have read the following resources before going on with this guide:
     fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
     ```
 
-4. We can now define our uAgents behaviour and functions:
+4. We can now define our Agents behaviour and functions:
 
     ```py copy
     @alice.on_interval(period=10.0)
@@ -107,7 +107,7 @@ Make sure you have read the following resources before going on with this guide:
             ctx.logger.info(f"Transaction was successful: {coin_received}")
     ```
 
-   The event handler function is named `confirm_transaction()` and takes three parameters: `ctx`, `sender`, and `msg`. Within the function, `alice` logs an informational message using the `ctx.logger.info()` method, indicating the receipt of transaction information from the sender uAgent, `bob`, and displaying the `msg` object. The `wait_for_tx_to_complete()` function is used to await the completion of the transaction specified by the `tx_hash` received in the message.
+   The event handler function is named `confirm_transaction()` and takes three parameters: `ctx`, `sender`, and `msg`. Within the function, `alice` logs an informational message using the `ctx.logger.info()` method, indicating the receipt of transaction information from the sender Agent, `bob`, and displaying the `msg` object. The `wait_for_tx_to_complete()` function is used to await the completion of the transaction specified by the `tx_hash` received in the message.
 
    Once the transaction is completed, the code accesses the `coin_received` event from the transaction response using `tx_resp.events[\"coin_received\"]`. It checks if the receiver address matches `alice`'s wallet address (`alice.wallet.address()`) and if the amount received matches the expected amount (`AMOUNT + DENOM`).
 
@@ -129,13 +129,13 @@ Make sure you have read the following resources before going on with this guide:
         await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
     ```
 
-   The event handler function is named `send_payment()` and takes three parameters: `ctx`, `sender`, and `msg`. Within the function, `bob` logs an informational message using the `ctx.logger.info()` method, indicating the receipt of a payment request from the sender uAgent, `bob`, and displaying the `msg` object.
+   The event handler function is named `send_payment()` and takes three parameters: `ctx`, `sender`, and `msg`. Within the function, `bob` logs an informational message using the `ctx.logger.info()` method, indicating the receipt of a payment request from the sender Agent, `bob`, and displaying the `msg` object.
 
    Next, the code performs a payment transaction using the `ctx.ledger.send_tokens()` method. It takes the wallet address (`msg.wallet_address`), amount (`msg.amount`), denomination (`msg.denom`), and `bob.wallet()` as parameters. This method is responsible for sending the requested payment.
 
    Once the transaction is completed, `bob` sends a message back to `alice` to inform her about the transaction, using `ctx.send()`. The message is created using the `TransactionInfo` model with the `tx_hash` obtained from the transaction response. The `ctx.send()` method is used to send this message to alice using her address (`alice.address`).
 
-7. We are now ready to use the Bureau class to create a `bureau` object and add both uAgents to it so for them to be run together:
+7. We are now ready to use the Bureau class to create a `bureau` object and add both Agents to it so for them to be run together:
 
     ```py copy
     bureau = Bureau()
