@@ -1,21 +1,21 @@
 import { CodeGroup } from "../../../components/code"
 
-# Query an agent using a proxy API
+# Query an Agent using a proxy API
 
 ## Introduction
 
 This file can be run on any platform supporting Python, with the necessary install permissions.
-This example shows how to query an agent using a proxy API.
+This example shows how to query an Agent using a proxy API.
 
 #### Supporting documentation
 
-- [Creating an agent ↗️](/guides/agents/create-a-uagent)
-- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Creating an Agent ↗️](/guides/agents/create-a-uagent)
+- [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
 
-#### The agent
+#### The Agent
 
 <CodeGroup hasCopy isLocalHostedFile>
 
@@ -80,10 +80,10 @@ async def query_handler(ctx: Context, sender: str, _query: TestRequest):
 ```
 </CodeGroup>
 
-The agent is created using the `Agent` class from `uagents` library. It is initialized with a `name`, `seed`, `port`, and `endpoint`.
-It defines an `on_event` handler for the "startup" event, where it logs information about the agent's initialization.
+The Agent is created using the `Agent` class from `uagents` library. It is initialized with a `name`, `seed`, `port`, and `endpoint`.
+It defines an `on_event` handler for the "startup" event, where it logs information about the Agent's initialization.
 It defines an `on_query` handler for handling queries of type `TestRequest`. Upon receiving a query, it processes it and sends back a `Response`.
-The agent is then set to run.
+The Agent is then set to run.
 
 #### Proxy
 
@@ -121,8 +121,8 @@ async def make_agent_call(req: TestRequest):
 
 The proxy is implemented using `FastAPI`. It sets up two routes: `"/"` for a simple root message and `"/endpoint"` for receiving requests.
 When a `POST` request is made to `"/endpoint"` with a JSON payload containing a `TestRequest`, it triggers the `make_agent_call` function.
-Inside make_agent_call, it calls `agent_query` to communicate with the agent. The `agent` receives the query, processes it, and sends back a response.
-The proxy receives the response from the agent and sends back a success message along with the response text.
+Inside make_agent_call, it calls `agent_query` to communicate with the Agent. The `agent` receives the query, processes it, and sends back a response.
+The proxy receives the response from the Agent and sends back a success message along with the response text.
 
 #### Run the example
 
@@ -130,6 +130,6 @@ In separate terminals:
 
 1. Run the FastAPI proxy: `uvicorn proxy:app`
 
-2. Run the agent: `python agent.py`
+2. Run the Agent: `python agent.py`
 
-3. Query the agent via the proxy: `curl -d '{"message": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/endpoint`
+3. Query the Agent via the proxy: `curl -d '{"message": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/endpoint`

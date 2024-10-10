@@ -26,8 +26,8 @@ import {
 
 <Row>
     <Col>
-        The hosting API allows you to manage your agents that are hosted by Agentverse. This involves creating new
-        agents, updating the code of existing agents, starting and stopping agents, and getting logs of agents.
+        The hosting API allows you to manage your Agents that are hosted by Agentverse. This involves creating new
+        Agents, updating the code of existing Agents, starting and stopping Agents, and getting logs of Agents.
     </Col>
     <Col>
         ```bash filename="Endpoints"
@@ -64,38 +64,37 @@ import {
     <Col>
         <Properties>
             <Property name="name" type="string">
-                The given name of the agent. This is only a label that is used internally so users can keep track of
-                their agents.
+                The given name of the Agent. This is only a label that is used internally so users can keep track of
+                their Agents.
             </Property>
             <Property name="address" type="string">
-                The address of the agent. This is also the current public key of the agent.
+                The address of the Agent. This is also the current public key of the Agent.
             </Property>
             <Property name="running" type="boolean">
-                The current state of the agent. `true` if the agent is currently running, `false` otherwise.
+                The current state of the Agent. `true` if the Agent is currently running, `false` otherwise.
             </Property>
             <Property name="compiled" type="boolean | null">
-                The current code compilation status for the agent. `true` if the agent is compiled, `false` if the
-                compilation failed, `null` if the agent has not been compiled yet.
+                The current code compilation status for the Agent. `true` if the Agent is compiled, `false` if the
+                compilation failed, `null` if the Agent has not been compiled yet.
             </Property>
             <Property name="revision" type="integer">
-                The current revision of the agent. Everytime an update is made to the agent, the revision is incremented.
+                The current revision of the Agent. Everytime an update is made to the Agent, the revision is incremented.
             </Property>
             <Property name="code_digest" type="string | null">
-                The current digest of the code of the agent. Useful for determining if there have been code changes that
-                need to be applied to the agent.
-
-                This value can be `null` if the agent has not been compiled yet.
+                The current digest of the code of the Agent. Useful for determining if there have been code changes that
+                need to be applied to the Agent.
+                This value can be `null` if the Agent has not been compiled yet.
             </Property>
             <Property name="wallet_address" type="string | null">
-                The wallet address that is associated with the agent. If a wallet address is not associated with the
-                agent, this value will be `null`.
+                The wallet address that is associated with the Agent. If a wallet address is not associated with the
+                Agent, this value will be `null`.
             </Property>
         </Properties>
     </Col>
     <Col>
         ```json filename="Sample Agent Object"
         {
-            "name": "My first agent",
+            "name": "My first Agent",
             "address": "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
             "running": false,
             "compiled": true,
@@ -190,7 +189,7 @@ import {
     <Col>
         ```json filename="Sample NewAgent Object"
         {
-            "name": "My first agent"
+            "name": "My first Agent"
         }
         ```
     </Col>
@@ -217,16 +216,16 @@ import {
 
 ## Request and response library
 
-### Getting a list of your agents
+### Getting a list of your Agents
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents"
-  description="Request for listing all of your agents at once"
+  description="Request for listing all of your Agents at once"
   responses={[
     {
-      name: "My first agent",
+      name: "My first Agent",
       address:
         "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
       running: false,
@@ -240,26 +239,26 @@ import {
   responseDescription="On a success the response will be an array of Agent Object properties."
 />
 
-### Creating a new agent
+### Creating a new Agent
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/hosting/agents"
-  description="Request for creating a new agent"
+  description="Request for creating a new Agent"
   properties={[
     {
       name: "name",
       type: "string",
       description:
-        "The given name of the agent. This is only a label that is used internally so users can keep track of their agents.",
+        "The given name of the Agent. This is only a label that is used internally so users can keep track of their Agents.",
     },
   ]}
   samplePayload={{
-    name: "My newest agent",
+    name: "My newest Agent",
   }}
   responses={{
-    name: "My newest agent",
+    name: "My newest Agent",
     address:
       "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
     running: false,
@@ -278,13 +277,13 @@ import {
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents/{agentAddress}"
-  description="Looks up a specific agent by address on the hosting platform"
+  description="Looks up a specific Agent by address on the hosting platform"
   properties={[
     {
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent",
+        "The address of the Agent. This is also the current public key of the Agent",
     },
   ]}
   pathParameters={{
@@ -313,13 +312,13 @@ import {
   apiUrl="https://agentverse.ai"
   method="DELETE"
   path="/v1/hosting/agents/{agentAddress}"
-  description="Delete a specific agent, identified by address"
+  description="Delete a specific Agent, identified by address"
   properties={[
     {
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent",
+        "The address of the Agent. This is also the current public key of the Agent",
     },
   ]}
   pathParameters={{
@@ -336,13 +335,13 @@ import {
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents/{agentAddress}/code"
-  description="Looks up the code for an agent, specified by address."
+  description="Looks up the code for an Agent, specified by address."
   properties={[
     {
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent.",
+        "The address of the Agent. This is also the current public key of the Agent.",
     },
   ]}
   pathParameters={{
@@ -366,19 +365,19 @@ import {
   apiUrl="https://agentverse.ai"
   method="PUT"
   path="/v1/hosting/agents/{agentAddress}/code"
-  description="Updates the code for a specific agent, identified by address."
+  description="Updates the code for a specific Agent, identified by address."
   properties={[
     {
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent.",
+        "The address of the Agent. This is also the current public key of the Agent.",
     },
     {
       name: "code",
       type: "string",
       description:
-        "The code for a specific agent on the Agentverse, provided as a collection of files. Each file includes an id, name, value (the code content), and language.",
+        "The code for a specific Agent on the Agentverse, provided as a collection of files. Each file includes an id, name, value (the code content), and language.",
     },
   ]}
   samplePayload={{
@@ -386,7 +385,7 @@ import {
         {
             "id": 0,
             "name": "agent.py",
-            "value": "\n# Congratulations on creating your first agent!\n#\n# This agent simply writes a greeting in the logs on a scheduled time interval.\n#\n# In this example we will use:\n# - 'agent': this is your instance of the 'Agent' class that we will give an 'on_interval' task\n# - 'ctx': this is the agent's 'Context', which gives you access to all the agent's important functions\n\n# A decorator (marked by the '@' symbol) just wraps the function defined under it in another function.\n# This decorator tells your agent to run the function on a time interval with the specified 'period' in seconds.\n# These functions must be 'async' because agents need to be able to perform many tasks concurrently.\n@agent.on_interval(period=3.0)\nasync def say_hello(ctx: Context):\n    # ctx.logger is a standard Python logger that can log text with various levels of urgency\n    # (exception, warning, info, debug). Here we will just use the 'info' level to write a greeting\n    ctx.logger.info(f\"Hello, I'm an agent and my address is {agent.address}.\")\n",
+            "value": "\n# Congratulations on creating your first Agent!\n#\n# This Agent simply writes a greeting in the logs on a scheduled time interval.\n#\n# In this example we will use:\n# - 'agent': this is your instance of the 'Agent' class that we will give an 'on_interval' task\n# - 'ctx': this is the agent's 'Context', which gives you access to all the agent's important functions\n\n# A decorator (marked by the '@' symbol) just wraps the function defined under it in another function.\n# This decorator tells your agent to run the function on a time interval with the specified 'period' in seconds.\n# These functions must be 'async' because agents need to be able to perform many tasks concurrently.\n@agent.on_interval(period=3.0)\nasync def say_hello(ctx: Context):\n    # ctx.logger is a standard Python logger that can log text with various levels of urgency\n    # (exception, warning, info, debug). Here we will just use the 'info' level to write a greeting\n    ctx.logger.info(f\"Hello, I'm an agent and my address is {agent.address}.\")\n",
             "language": "python",
         },
         {
@@ -411,19 +410,19 @@ import {
   responseDescription="On success, the response will be a JSON object with the updated digest."
 />
 
-### Start a specific agent, identified by address.
+### Start a specific Agent, identified by address.
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/hosting/agents/{address}/start"
-  description="Starts a specific agent, identified by address"
+  description="Starts a specific Agent, identified by address"
   properties={[
     {
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent.",
+        "The address of the Agent. This is also the current public key of the Agent.",
     },
   ]}
   pathParameters={{
@@ -444,7 +443,7 @@ import {
       wallet_address: "None",
     },
   ]}
-  responseDescription="On success, the agent selected by address will start, and the API will return an array with the Agent's properties."
+  responseDescription="On success, the Agent selected by address will start, and the API will return an array with the Agent's properties."
 />
 
 ### Stop a specific agent, identified by address.
@@ -453,13 +452,13 @@ import {
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/hosting/agents/{address}/stop"
-  description="Stops a specific agent, identified by address"
+  description="Stops a specific Agent, identified by address"
   properties={[
     {
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent.",
+        "The address of the Agent. This is also the current public key of the Agent.",
     },
   ]}
   pathParameters={{
@@ -480,10 +479,10 @@ import {
       wallet_address: "None",
     },
   ]}
-  responseDescription="On success, the agent selected by address will stop, and the API will return an array with the Agent's properties."
+  responseDescription="On success, the Agent selected by address will stop, and the API will return an array with the Agent's properties."
 />
 
-### Get Latest Logs For Agent
+### Get The Latest Logs For Agent
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -495,7 +494,7 @@ import {
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent.",
+        "The address of the Agent. This is also the current public key of the Agent.",
     },
   ]}
   pathParameters={{
@@ -508,7 +507,7 @@ import {
       log_entry: "[INFO]: My count is: 0",
     },
   ]}
-  responseDescription="On successful retrieval of the specified agent logs, the response will be an array of json objects containing the timestamp and log entry."
+  responseDescription="On successful retrieval of the specified Agent logs, the response will be an array of json objects containing the timestamp and log entry."
 />
 
 ### Delete the latest logs for an Agent
@@ -523,7 +522,7 @@ import {
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent.",
+        "The address of the Agent. This is also the current public key of the Agent.",
     },
   ]}
   pathParameters={{
@@ -533,7 +532,7 @@ import {
   responses={{
 
 }}
-responseDescription="On success, the response will be the deletion of the specified agent logs. "
+responseDescription="On success, the response will be the deletion of the specified Agent logs. "
 />
 
 ### Get current Agent usage
@@ -548,7 +547,7 @@ responseDescription="On success, the response will be the deletion of the specif
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent.",
+        "The address of the Agent. This is also the current public key of the Agent.",
     },
   ]}
   samplePayload={{
@@ -569,7 +568,7 @@ responseDescription="On success, the response will be the deletion of the specif
       quota_agents: "1000",
     },
   ]}
-  responseDescription="On success, the response will be a json array with properties containing data about the usage of the currently selected agent."
+  responseDescription="On success, the response will be a json array with properties containing data about the usage of the currently selected Agent."
 />
 
 ### Get Agent Usage for a specific year and month
@@ -623,7 +622,7 @@ responseDescription="On success, the response will be the deletion of the specif
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent.",
+        "The address of the Agent. This is also the current public key of the Agent.",
     },
   ]}
   pathParameters={{
@@ -654,7 +653,7 @@ responseDescription="On success, the response will be the deletion of the specif
       name: "address",
       type: "string",
       description:
-        "The address of the agent. This is also the current public key of the agent.",
+        "The address of the Agent. This is also the current public key of the Agent.",
     },
   ]}
   pathParameters={{

@@ -1,20 +1,20 @@
 import { CodeGroup } from "../../../components/code"
 
-# Communicating with other agents wallet
+# Communicating with other Agents wallet
 
 ## Introduction
 
-Communication is an essential feature agent network. It allows agents to work together, exchange information, and forms an organic 
-marketplace. Wallet messaging is feature of agents which makes them able to communicate with other agent's wallet information. This
+Communication is an essential feature in any Agents network. It allows Agents to work together, exchange information, and forms an organic 
+marketplace. Wallet messaging is feature of agents which makes them able to communicate with other Agent's wallet information. This
 can include sending and receiving payments, querying account balances, and handling other wallet-related tasks.
 
-In this example we will create two agents locally using `uagents` library and make them share wallet information with each other.
+In this example we will create two Agents locally using `uagents` library and make them share wallet information with each other.
 
 ### Supporting documentation
 
-- [Creating an agent↗️](/guides/agents/create-a-uagent)
+- [Creating an Agent ↗️](/guides/agents/create-a-uagent)
 - [Creating an interval task ↗️](/guides/agents/interval-task)
-- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
@@ -28,9 +28,9 @@ In this example we will create two agents locally using `uagents` library and ma
     from uagents.wallet_messaging import WalletMessage
     ```
 
-    This step imports necessary libraries for creating agents and handling wallet messaging.
+    This step imports necessary libraries for creating Agents and handling wallet messaging.
 
-    - Defining two agents that can communicate with each other.
+    - Defining two Agents that can communicate with each other.
 
     ```python
     # Defining agent's seeds
@@ -42,7 +42,7 @@ In this example we will create two agents locally using `uagents` library and ma
     bob = Agent(name="bob", seed=BOB_SEED, enable_wallet_messaging=True)
     ```
 
-    This step defines two agents, Alice and Bob, using predefined seed phrases. These agents will communicate with each other's wallets.
+    This step defines two Agents, Alice and Bob, using predefined seed phrases. These Agents will communicate with each other's wallets.
 
     - Agent 1 wallet message handler:
 
@@ -72,17 +72,17 @@ In this example we will create two agents locally using `uagents` library and ma
     ```
     This step defines a message handler for Bob, which logs incoming wallet messages. Additionally, it sets up an interval function for Bob to send a message to Alice every 5 seconds.
 
-    - Defining `Bureau` and adding agents:
+    - Defining `Bureau` and adding Agents:
 
     ```python
-    # Define bureau and adding agents
+    # Define bureau and adding Agents
     bureau = Bureau()
     bureau.add(alice)
     bureau.add(bob)
     bureau.run()
     ```
 
-    This step creates a Bureau, which manages the agents, and adds both Alice and Bob to it. Then, it starts the bureau to begin agent interactions.
+    This step creates a Bureau, which manages the Agents, and adds both Alice and Bob to it. Then, it starts the bureau to begin Agent interactions.
 
 ### Whole Script
 
@@ -120,6 +120,7 @@ This section presents the entire script in one block, allowing users to easily c
     bureau.run()
     ```
 </CodeGroup>
+
 ### Script Execution
 
     - Open terminal and navigate to the folder where `wallet_messaging.py` is stored.
