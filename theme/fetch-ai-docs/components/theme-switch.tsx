@@ -1,16 +1,20 @@
+"use client";
+import React, { useState, useEffect } from "react";
+import { FiSun, FiMoon } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import { useMounted } from "nextra/hooks";
-import { MoonIcon, SunIcon } from "nextra/icons";
-import type { ReactElement } from "react";
+import Image from "next/image";
 import { z } from "zod";
-import { useConfig } from "../contexts";
-import { Select } from "./select";
-import React from "react";
 
-type ThemeSwitchProps = {
-  lite?: boolean;
-  className?: string;
-};
+const osmenu = [
+  {
+    name: "light",
+    icon: <FiSun />,
+  },
+  {
+    name: "dark",
+    icon: <FiMoon />,
+  },
+];
 
 export const themeOptionsSchema = z.strictObject({
   light: z.string(),
@@ -18,45 +22,32 @@ export const themeOptionsSchema = z.strictObject({
   system: z.string(),
 });
 
-type ThemeOptions = z.infer<typeof themeOptionsSchema>;
-
-export function ThemeSwitch({
-  lite,
-  className,
-}: ThemeSwitchProps): ReactElement {
-  const { setTheme, resolvedTheme, theme = "" } = useTheme();
-  const mounted = useMounted();
-  const config = useConfig().themeSwitch;
-
-  const IconToUse = mounted && resolvedTheme === "dark" ? MoonIcon : SunIcon;
-  const options: ThemeOptions =
-    typeof config.useOptions === "function"
-      ? config.useOptions()
-      : config.useOptions;
-
+const ThemeSwitcher = () => {
+  const [mounted, setMounted] = useState(false);
+  const { setTheme } = useTheme();
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) {
+    return null
+  }
   return (
-    <Select
-      className={className}
-      title="Change theme"
-      options={[
-        { key: "light", name: options.light },
-        { key: "dark", name: options.dark },
-        { key: "system", name: options.system },
-      ]}
-      onChange={(option) => {
-        setTheme(option.key);
-      }}
-      selected={{
-        key: theme,
-        name: (
-          <div className="nx-flex nx-items-center nx-gap-2 nx-capitalize">
-            <IconToUse />
-            <span className={lite ? "md:nx-hidden" : ""}>
-              {mounted ? options[theme as keyof typeof options] : options.light}
-            </span>
-          </div>
-        ),
-      }}
-    />
+    <div className="nav-dropdown-container nx-z-50 nx-w-full nx-right-0 nx-absolute">
+      <div className="nav-tab nx-w-full nx-justify-between">
+        <span className="nav-icon-txt">Theme</span>
+        <div className="osmenu-container-nav">
+          {osmenu.map((item, index) => (
+            <div
+              key={index}
+              onClick={() => setTheme(item.name)}
+              className={`osmenu-tab-container nx-justify-center nx-cursor-pointer nx-items-center`}
+            >
+              <span>{item.icon}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
-}
+};
+export default ThemeSwitcher;

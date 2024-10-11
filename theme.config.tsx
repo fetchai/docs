@@ -3,9 +3,11 @@ import React from "react";
 import { DocsThemeConfig } from "./theme/fetch-ai-docs";
 import Footer from "./components/footer";
 import Logo from "./components/logo";
+import DarkLogo from "components/dark-logo";
 
 const config: DocsThemeConfig = {
   logo: <Logo />,
+  darkLogo: <DarkLogo />,
   project: {
     link: "https://github.com/fetchai",
   },

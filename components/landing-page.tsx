@@ -3,50 +3,59 @@ import styles from "./landing.module.css";
 import buildYourAgent from "../src/svgs/build-your-agent.svg";
 import executable from "../src/svgs/executable.svg";
 import techStack from "../src/svgs/tech-stack.svg";
+import darkbuildYourAgent from "../src/svgs/dark-build-agent.svg";
+import darkexecutable from "../src/svgs/dark-executable.svg";
+import darktechStack from "../src/svgs/dark-tech-stack.svg";
 import Products from "./products";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import systemDiagram from "../src/svgs/system-diagram.svg";
 import coursesStack from "../src/svgs/courses-stack.svg";
+import darkCoursesStack from "../src/svgs/dark-course-stack.svg";
 import coursesStackSecond from "../src/svgs/courses-stack-second.svg";
 import langchain from "../src/svgs/langchain.svg";
 import crewai from "../src/svgs/crewai.svg";
 import fastapi from "../src/svgs/fastapi.svg";
+import darkLangchain from "../src/svgs/dark-langchain.svg";
+import darkCrewai from "../src/svgs/dark-crew-ai.svg";
+import darkFastapi from "../src/svgs/dark-fast-api.svg";
 import { Arrow, vectorPointer, vectorSquare } from "src/icons/shared-icons";
+import { useTheme } from "next-themes";
 
 function LandingPage() {
+  const {theme} = useTheme()
   const comingFromSomewhere = [
     {
       name: "Langchain",
-      icon: langchain,
+      icon: theme === "light" ? langchain: darkLangchain,
       link: "/guides/quickstart-with/langchain/creating-an-agent-with-langchain",
     },
     {
       name: "FastAPI",
-      icon: fastapi,
+      icon: theme === "light" ? fastapi : darkFastapi,
       link: "/guides/agents/intermediate/rest-endpoints",
     },
     {
       name: "CrewAI",
-      icon: crewai,
+      icon: theme === "light" ? crewai : darkCrewai,
       link: "/guides/quickstart-with/CrewAI/startup-idea-analyser",
     },
   ];
-  const startingGuides = [
+  const startingGuides = (theme) =>  [
     {
       label: "Building your first agent",
       path: "/guides/agents/quickstart",
-      image: buildYourAgent,
+      image: theme === "dark" ? darkbuildYourAgent: buildYourAgent,
     },
     {
       label: "Creating an executable function for AI",
       path: "/guides/agents/intermediate/agent-functions",
-      image: executable,
+      image: theme === "dark" ? darkexecutable : executable,
     },
     {
       label: "The Fetch.ai technology stack",
       path: "/concepts/introducing-fetchai",
-      image: techStack,
+      image: theme === "dark" ? darktechStack : techStack,
     },
   ];
 
@@ -56,7 +65,7 @@ function LandingPage() {
       description:
         "This course is designed to introduce you to the development of Agents, providing a comprehensive guide.",
       path: "/guides/agent-courses/introductory-course",
-      image: coursesStack,
+      image: theme === "dark" ? darkCoursesStack : coursesStack,
       keywords: ["Beginner", "Python", "Courses"],
       vectors: vectorSquare,
     },
@@ -65,7 +74,7 @@ function LandingPage() {
       description:
         "This course is designed to introduce you to building Agents that are accessible to the AI Engine.",
       path: "/guides/agent-courses/agents-for-ai",
-      image: coursesStackSecond,
+      image: theme === "dark" ? darkCoursesStack : coursesStackSecond,
       keywords: ["Beginner", "Python", "AI-Engine", "GPT-3.5", "Courses"],
       vectors: vectorPointer,
     },
@@ -220,7 +229,7 @@ function LandingPage() {
         </p>
         <div className={styles.startGuides}>
           <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-3 nx-gap-8">
-            {startingGuides.map((guide, index) => (
+            {startingGuides(theme).map((guide, index) => (
               <GuideBox key={index} guide={guide} />
             ))}
           </div>
@@ -248,7 +257,7 @@ function LandingPage() {
           make choices on their own for individuals, companies, and devices.
           Agents are the actors, and the heart of Fetch.ai ecosystem.
         </p>
-        <Image className="nx-py-6" src={systemDiagram} alt="system-diagram" />
+        <Image className="nx-py-6 md:dark:nx-h-[586px] nx-h-auto dark:nx-bg-[#2C2E38] dark:nx-rounded-lg" src={systemDiagram} alt="system-diagram" />
         <p className={styles.systemDescripton}>
           Agents are flexible problem solvers, capable of not just completing
           tasks but also tackling difficult issues across several domains.

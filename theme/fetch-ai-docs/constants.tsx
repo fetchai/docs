@@ -9,7 +9,8 @@ import { z } from "zod";
 import { Anchor, Footer, Navbar, TOC } from "./components";
 import { InstantAlgoliaSearch } from "./components/instant-algolia-search";
 import type { NavBarProps } from "./components/navbar";
-import { themeOptionsSchema, ThemeSwitch } from "./components/theme-switch";
+import ThemeSwitcher from "./components/theme-switch";
+import { themeOptionsSchema } from "./components/theme-switch";
 import type { TOCProps } from "./components/toc";
 import { getGitIssueUrl, useGitEditUrl } from "./utils";
 import React from "react";
@@ -84,6 +85,7 @@ export const themeSchema = z.strictObject({
   head: z.custom<ReactNode | FC>(...reactNode),
   i18n: i18nSchema,
   logo: z.custom<ReactNode | FC>(...reactNode),
+  darkLogo: z.custom<ReactNode | FC>(...reactNode),
   logoLink: z.boolean().or(z.string()),
   main: z.custom<FC<{ children: ReactNode }>>(...fc).optional(),
   navbar: z.strictObject({
@@ -308,7 +310,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     toggleButton: false,
   },
   themeSwitch: {
-    component: ThemeSwitch,
+    component: ThemeSwitcher,
     useOptions() {
       const { locale } = useRouter();
 

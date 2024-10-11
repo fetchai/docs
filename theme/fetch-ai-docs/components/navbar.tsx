@@ -9,6 +9,11 @@ import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { useState } from "react";
 import React from "react";
+import { useEffect } from "react";
+import { Gear } from "src/icons/shared-icons";
+import { useRef } from "react";
+import ThemeSwitcher from "./theme-switch";
+import { useTheme } from "next-themes";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -83,6 +88,26 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const activeRoute = useFSRoute();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { menu, setMenu } = useMenu();
+
+  const [openOs, setOpenOs] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const {theme}= useTheme()
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpenOs(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
@@ -188,6 +213,14 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               {renderComponent(config.search.component, {
                 directories: flatDirectories,
               })}
+            </div>
+            <div className="nx-relative">
+              <Gear onClickHandler={() => setOpenOs((prev) => !prev)} />
+              {openOs && (
+                <div ref={dropdownRef}>
+                  <ThemeSwitcher />
+                </div>
+              )}
             </div>
             {config.project.link ? (
               <Anchor
