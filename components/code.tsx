@@ -506,7 +506,7 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
   isOSFile,
   isLocalHostedFile,
   hasCopy,
-}) => {
+}: CodeGroupProps): React.ReactElement | null => {
   const codeBlocks = React.Children.toArray(children).filter(
     (child): child is React.ReactElement<CodeBlockProps> => {
       return React.isValidElement(child) && "local" in child.props;
@@ -538,7 +538,7 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
     return modifiedFirstChild;
   }
 
-  return children;
+  return <>{children}</> || null;
 };
 
 export const DocsCode: React.FC<CodeGroupProps> = ({
