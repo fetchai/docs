@@ -2,11 +2,11 @@ import { Callout } from 'nextra/components'
 
 # AVCTL Hosting
 
-AVCTL `hosting` commands are used for perform agent related actions using Command Line Interface.
+AVCTL `hosting` commands are used for perform Agent related actions using Command Line Interface.
 
 ## Hosting commands
 
-Before starting actions related to agents make a directory using `mkdir myagent`.
+Before starting actions related to Agents make a directory using `mkdir myagent`.
 
     - `avctl hosting init` - Initialize agent template.
 
@@ -18,7 +18,7 @@ Initialized empty Git repository in the current directory
 Poetry setup created successfully
 ```
 
-    - `avctl hosting get agents` - Get all agents for the user.
+    - `avctl hosting get agents` - Get all Agents for the user.
 
 ```
 abc@xyz-MacBook-Pro myagents % avctl hosting get agents
@@ -26,13 +26,13 @@ NAME                                 ADDRESS                                    
 name                                 <agent_address>                                                      true/false        5         true/false   <wallet_address>
 ```
 
-    - `avctl hosting get agent` - Prints the selected deployed agent.
+    - `avctl hosting get agent` - Prints the selected deployed Agent.
 
 ```
 abc@xyz-MacBook-Pro myagents % avctl hosting get agent -a '<agent_address>'
 ```
 
-    - `avctl hosting pull` - Pull agent files from Agentverse.
+    - `avctl hosting pull` - Pull Agent files from Agentverse.
 
 ```
 abc@xyz-MacBook-Pro myagents % avctl hosting pull -a '<agent_address>'
@@ -40,7 +40,7 @@ abc@xyz-MacBook-Pro myagents % avctl hosting pull -a '<agent_address>'
 * File '.env' successfully downloaded
 ```
 
-    - `avctl hosting run -l` - Run Agent (optional `-l` flag for logs) if `a` not provided it returns latest pulled agent.
+    - `avctl hosting run -l` - Run Agent (optional `-l` flag for logs) if `a` not provided it returns latest pulled Agent.
 
 ```
 abc@xyz-MacBook-Pro myagents % avctl hosting run -l                                                                   
@@ -50,7 +50,7 @@ TIMESTAMP                   LOG ENTRY
 2024-01-23T16:10:51.459000  [INFO]: Received message from <agent_address>, session: <session_id>
 ```
 
-    - `avctl hosting stop` - Stop agent
+    - `avctl hosting stop` - Stop Agent
 
 ```
 abc@xyz-MacBook-Pro myagents % avctl hosting stop -a <agent_address>
@@ -74,7 +74,7 @@ abc@xyz-MacBook-Pro myagents % avctl hosting sync -a <agent_address>
 Local and remote files are in sync. Everything is up to date.
 ```
 
-    - `avctl hosting logs -f` - Print agent logs (optional `-f` option to follow logs).
+    - `avctl hosting logs -f` - Print Agent logs (optional `-f` option to follow logs).
 
 ```
 abc@xyz-MacBook-Pro myagents % avctl hosting logs -f -a <agent_address>
@@ -83,7 +83,7 @@ TIMESTAMP                   LOG ENTRY
 2024-01-23T16:10:51.459000  [INFO]: Received message from <agent_address>, session: <session_id>
 ```
 
-    - `avctl hosting deploy -n <name>` - Deploy an agent to Agentverse. This command also updates and restarts the agent if it's already deployed.
+    - `avctl hosting deploy -n <name>` - Deploy an Agent to Agentverse. This command also updates and restarts the Agent if it's already deployed.
 
 ```
 abc@xyz-MacBook-Pro myagents % avctl hosting deploy -n Generate Keyword news
@@ -133,7 +133,7 @@ Supported Packages:
 abc@xyz-MacBook-Pro myagents % 
 ```
 
-    - `avctl hosting delete` - Deletes an agent from agentverse.
+    - `avctl hosting delete` - Deletes an Agent from agentverse.
 
 ```
 abc@xyz-MacBook-Pro myagents % avctl hosting delete -a <agent_address>
@@ -144,5 +144,5 @@ Agent <agent_address> successfully deleted
 ```
  
 <Callout type="info" emoji="ℹ️">
-    Note: for hosting **push** and **sync** commands the agent should be always in stopped state.
+    Note: for hosting **push** and **sync** commands the Agent should be always in stopped state.
 </Callout>
