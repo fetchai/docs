@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Agents and Functions Creation using APIs
 
@@ -29,7 +29,10 @@ This example provides details on how to create Agents and respective Agent Funct
     - Create a python file `agent.py` in this directory and include the following sample script in the Python file.
 
 <CodeGroup hasCopy isLocalHostedFile>
-    ```python copy filename="local-agent.py"
+      <DocsCode local={true}>
+    ```python copy filename="agent.py"
+    from uagents import Agent, Bureau, Context, Model
+    from uagents.setup import fund_agent_if_low
     import requests
     from ai_engine import UAgentResponse, UAgentResponseType
 
@@ -92,8 +95,10 @@ This example provides details on how to create Agents and respective Agent Funct
 
     location_agent.run()
     ```
+    </DocsCode>
 
-    ```python copy filename="hosted-agent.py"
+<DocsCode local={false}>
+    ```python copy filename="agent.py"
     import requests
     from ai_engine import UAgentResponse, UAgentResponseType
 
@@ -134,6 +139,7 @@ This example provides details on how to create Agents and respective Agent Funct
 
     agent.include(location_protocol)
     ```
+    </DocsCode>
 </CodeGroup>
 
 - Create a python file with name `agent_create.py`.

@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Multiple agents communication
 
@@ -13,10 +13,9 @@ This file can be run on any platform supporting Python, with the necessary insta
 - [Creating an interval task ↗️](/guides/agents/interval-task)
 
 #### The agent
-
 <CodeGroup hasCopy isLocalHostedFile>
-
-```py copy filename="local-agents.py"
+ <DocsCode local={true}>
+```py copy filename="agents.py"
 from uagents import Agent, Bureau, Context
 
 alice = Agent(name="alice")
@@ -37,4 +36,5 @@ bureau.add(bob)
 if __name__ == "__main__":
     bureau.run()
 ```
+</DocsCode>
 </CodeGroup>
