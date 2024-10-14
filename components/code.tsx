@@ -4,6 +4,13 @@ import { CopyIcon, DropDownArrow } from "src/icons/shared-icons";
 import { Windows, Mac, Ubuntu, OSProps } from "src/icons/os-icons";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+
+interface CodeOptionProps {
+  children: ReactNode;
+  filename : string;
+  local : boolean;
+}
+
 interface CodeGroupProps {
   children: ReactNode;
   isOSFile?: boolean;
@@ -273,6 +280,7 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
   const renderChild = () => {
     return React.Children.map(children, (child) => {
       if (React.isValidElement<CodeBlockProps>(child)) {
+        console.log(child.props)
         return matchFilename(child.props.filename) ? child : null;
       }
       return null;
@@ -474,6 +482,7 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
   isOSFile,
   isLocalHostedFile,
   hasCopy,
+
 }) => {
   return (
     <div className="nx-mt-3">
@@ -487,6 +496,27 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
     </div>
   );
 };
+
+
+export const CodeOption: React.FC<CodeOptionProps> = ({
+  children,
+  filename,
+  local,
+
+}) => {
+  return (
+    <div className="nx-mt-3">
+      <CustomPre
+        isLocalHostedFile={local}
+        hasCopyCode={true}
+      >
+        {children}
+      </CustomPre>
+    </div>
+  );
+};
+
+
 
 interface CodeSegment {
   path: string;

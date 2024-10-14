@@ -96,10 +96,11 @@ Open `interval_task.py` in your text editor and add the following code:
         hosted={false}
     />
 </GithubCodeSegment>
-<CodeGroup hasCopy isLocalHostedFile>
+<CodeGroup dynamic hasCopy isLocalHostedFile>
 
 
 	```py copy filename="main.py"
+
 		from uagents import Agent, Context
 		
 		agent = Agent(name="alice")
@@ -108,14 +109,50 @@ Open `interval_task.py` in your text editor and add the following code:
 		@agent.on_event("startup")
 		async def introduce_agent(ctx: Context):
 		    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
-        ```
+		
+
+```
 
 	```py copy filename="main.py"
+
 		from uagents import Agent, Context
 		
 		agent = Agent(name="alice")
 		
 		
+		@agent.on_event("startup")
+		async def introduce_agent(ctx: Context):
+		    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+		
+
+```
+</CodeGroup>
+
+
+
+<CodeGroup hasCopy isLocalHostedFile>
+
+    <CodeOption filename="" local =true>
+
+
+	```py copy filename="main.py"
+		from uagents import Agent, Context
+
+		agent = Agent(name="alice")
+
+
+		@agent.on_event("startup")
+		async def introduce_agent(ctx: Context):
+		    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+        ```
+    </CodeOption>
+
+	```py copy filename="main.py"
+		from uagents import Agent, Context
+
+		agent = Agent(name="alice")
+
+
 		@agent.on_event("startup")
 		async def introduce_agent(ctx: Context):
 		    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
