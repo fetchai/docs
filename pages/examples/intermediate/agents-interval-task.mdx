@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Interval task with Agents
 
@@ -17,8 +17,9 @@ This example shows how to use the uAgents Framework library to set up an interva
 
 ### The Agent
 
- <CodeGroup hasCopy isLocalHostedFile>
-    ```py copy filename="local-interval-task.py"
+<CodeGroup hasCopy isLocalHostedFile>
+ <DocsCode local={true}>
+    ```py copy filename="interval-task.py"
     from uagents import Agent, Context
 
     alice = Agent(name="alice", seed="alice recovery phrase")
@@ -30,12 +31,14 @@ This example shows how to use the uAgents Framework library to set up an interva
     if __name__ == "__main__":
         alice.run()
     ```
-    
-    ```py copy filename="hosted-interval-task.py"
+    </DocsCode>
+     <DocsCode local={false}>
+    ```py copy filename="interval-task.py"
     from uagents import Agent, Context
 
     @agent.on_interval(period=2.0)
     async def say_hello(ctx: Context):
         ctx.logger.info(f'hello, my name is {ctx.name}')
     ```
+    </DocsCode>
 </CodeGroup>

@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Agents storage
 
@@ -14,8 +14,8 @@ This file can be run on any platform supporting Python, with the necessary insta
 
 ### The agent
 <CodeGroup hasCopy isLocalHostedFile>
-
-    ```py copy filename="local-storage.py"
+<DocsCode local={true}>
+    ```py copy filename="storage.py"
     from uagents import Agent, Context
 
     agent = Agent(name="bob")
@@ -33,8 +33,10 @@ This file can be run on any platform supporting Python, with the necessary insta
     if __name__ == "__main__":
         agent.run()
     ```
+</DocsCode>
 
-    ```py copy filename="hosted-storage.py"
+<DocsCode local={false}>
+    ```py copy filename="storage.py"
     from uagents import Agent, Context
 
     @agent.on_event("startup")
@@ -47,4 +49,5 @@ This file can be run on any platform supporting Python, with the necessary insta
         ctx.logger.info(f"My count is: {current_count}")
         ctx.storage.set("count", current_count + 1)
     ```
+    </DocsCode>
 </CodeGroup>

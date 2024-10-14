@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components'
-import { CodeGroup } from "../../../components/code";
+import { CodeGroup, DocsCode } from "../../../components/code";
 
 # Predefined Dialogue Chit-Chat
 
@@ -25,21 +25,25 @@ This example illustrates an automated dialogue scenario using a hardcoded dialog
 - Open a terminal and create a directory using `mkdir Dialogues` and navigate into it with `cd Dialogues`.
 - Create a python file `hardcoded_chitchat.py` in `Dialogues` directory:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch chitchat.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > chitchat.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch chitchat.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch chitchat.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > chitchat.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch chitchat.py
-        ```
-
-    </CodeGroup>
+</CodeGroup>
   
 - Import required libraries.
 
@@ -242,8 +246,9 @@ These two Agents use the `hardcoded_chitchat` dialogue system to automate the in
     - Copy the following script into `agent1.py`:
     
 <CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
 
-        ```python copy filename="local-agent1.py"
+        ```python copy filename="agent1.py"
         # Import required libraries
         import json
 
@@ -299,6 +304,7 @@ These two Agents use the `hardcoded_chitchat` dialogue system to automate the in
             agent.run()  # Running agent
 
         ```
+        </DocsCode>
 </CodeGroup>
 ### Setting up `agent2`
 
@@ -308,8 +314,8 @@ These two Agents use the `hardcoded_chitchat` dialogue system to automate the in
     - Paste the following code into `agent2.py`:
 
 <CodeGroup hasCopy isLocalHostedFile>
-
-        ```python copy filename="local-agent2.py"
+    <DocsCode local={true}>
+        ```python copy filename="agent2.py"
         """Chit chat dialogue example"""
 
         from asyncio import sleep
@@ -361,6 +367,7 @@ These two Agents use the `hardcoded_chitchat` dialogue system to automate the in
             print(f"Agent address: {agent.address}")
             agent.run()
         ```
+        </DocsCode>
 
     <Callout type="info" emoji="ℹ️">
       Remember to update the Agent's address to communicate to each other and seed phrase of own choice. 

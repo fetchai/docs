@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Register a local Agent as a Function
 
@@ -27,7 +27,8 @@ This file can be run on any platform supporting Python, with the necessary insta
 ### The script
 
 <CodeGroup hasCopy isLocalHostedFile>
-```py copy filename="local-agent.py"
+     <DocsCode local={true}>
+```py copy filename="agent.py"
 from uagents.setup import fund_agent_if_low
 from uagents import Agent, Context, Protocol, Model
 import random
@@ -65,8 +66,10 @@ dungeons.include(dice_roll_protocol, publish_manifest=True)
 
 dungeons.run()
 ```
+</DocsCode>
 
-```py copy filename="hosted-agent.py"
+ <DocsCode local={false}>
+```py copy filename="agent.py"
 from uagents import Agent, Context, Protocol, Model
 import random
 from uagents import Field
@@ -91,6 +94,7 @@ async def roll_dice(ctx: Context, sender: str, msg: Request):
 
 agent.include(dice_roll_protocol, publish_manifest=True)
 ```
+</DocsCode>
 </CodeGroup>
 
 ### Register Agent Function

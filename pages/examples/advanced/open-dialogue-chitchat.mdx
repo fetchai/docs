@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components'
-import { CodeGroup } from "../../../components/code";
+import { CodeGroup, DocsCode } from "../../../components/code";
 
 # Open Dialogue Chit-Chat
 
@@ -26,21 +26,25 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
 - Create a python file `chitchat.py` in `Dialogues` directory.
 
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch chitchat.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > chitchat.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch chitchat.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch chitchat.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > chitchat.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch chitchat.py
-        ```
-
-    </CodeGroup>
+</CodeGroup>
 
 - Import required libraries.
 
@@ -206,24 +210,29 @@ The contents of this script are to be shared between the Agents that want to use
 
 
 <CodeGroup hasCopy isOSFile>
-
+<DocsCode mac={true}>
     ```py copy filename="mac"
     touch agent1.py
     ```
-
+</DocsCode>
+<DocsCode windows={true}>
     ```py copy filename="windows"
     echo. > agent1.py
     ```
+</DocsCode>
 
+<DocsCode ubuntu={true}>
     ```py copy filename="ubuntu"
     touch agent1.py
     ```
+    </DocsCode>
 
 </CodeGroup>
 
 <CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
 
-    ```python copy filename="local-agent1.py"
+    ```python copy filename="agent1.py"
     # Import required libraries
     import json
 
@@ -337,30 +346,35 @@ The contents of this script are to be shared between the Agents that want to use
         print(f"Agent address: {agent.address}")
         agent.run()
     ```
+    </DocsCode>
 </CodeGroup>
 
 - Create Python `agent2.py` script:
 
 <CodeGroup hasCopy isOSFile>
-
+<DocsCode mac={true}>
     ```py copy filename="mac"
     touch agent2.py
     ```
-
+</DocsCode>
+<DocsCode windows={true}>
     ```py copy filename="windows"
     echo. > agent2.py
     ```
-    
+</DocsCode>
+
+<DocsCode ubuntu={true}>
     ```py copy filename="ubuntu"
     touch agent2.py
     ```
-    
+    </DocsCode>
 
 </CodeGroup>
 
 <CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
 
-    ```python copy filename="local-agent2.py"
+    ```python copy filename="agent2.py"
     """Chit chat dialogue example"""
 
     from asyncio import sleep
@@ -478,6 +492,7 @@ The contents of this script are to be shared between the Agents that want to use
         print(f"Agent address: {agent.address}")
         agent.run()
     ```
+    </DocsCode>
 </CodeGroup>
     <Callout type="info" emoji="ℹ️">
       Remember to update the Agent's address to communicate to each other and seed phrase of own choice. 

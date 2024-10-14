@@ -1,5 +1,5 @@
 import {Callout} from 'nextra/components'
-import { CodeGroup } from "../../../../components/code";
+import { CodeGroup, DocsCode } from "../../../../components/code";
 
 # Communicating with other Agents
 
@@ -40,21 +40,25 @@ The first step to better understand how Agents communicate is to introduce how 2
 
 1. First of all, let's create a Python script for this task:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+```py copy filename="mac"
+touch agents_communication.py
+```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch agents_communication.py
-        ```
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > agents_communication.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > agents_communication.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch agents_communication.py
-        ```
-
-    </CodeGroup>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch agents_communication.py
+    ```
+    </DocsCode>
+</CodeGroup>
    
 2. Then, we import  `Agent`, `Context`, `Bureau`, and `Model` from the `uagents` library, and we then define the message structure for messages to be exchanged between the Agents using the class `Model`:
 
@@ -185,39 +189,47 @@ The first step would be to create two different Python scripts for this task, ea
 
     Slaanesh:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+```py copy filename="mac"
+touch remote_agents_slaanesh.py
+```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch remote_agents_slaanesh.py
-        ```
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > remote_agents_slaanesh.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > remote_agents_slaanesh.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch remote_agents_slaanesh.py
-        ```
-
-    </CodeGroup>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch remote_agents_slaanesh.py
+    ```
+    </DocsCode>
+</CodeGroup>
 
     Sigmar:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+```py copy filename="mac"
+touch remote_agents_sigmar.py
+```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch remote_agents_sigmar.py
-        ```
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > remote_agents_sigmar.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > remote_agents_sigmar.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch remote_agents_sigmar.py
-        ```
-
-    </CodeGroup>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch remote_agents_sigmar.py
+    ```
+    </DocsCode>
+</CodeGroup>
 Let's start by defining the script for **sigmar**.
 
 #### Sigmar

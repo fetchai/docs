@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Query an Agent using a proxy API
 
@@ -18,8 +18,8 @@ This example shows how to query an Agent using a proxy API.
 #### The Agent
 
 <CodeGroup hasCopy isLocalHostedFile>
-
-```py copy filename="local-agent.py"
+ <DocsCode local={true}>
+```py copy filename="agent.py"
 from uagents import Agent, Context, Model
 
 class TestRequest(Model):
@@ -53,8 +53,11 @@ async def query_handler(ctx: Context, sender: str, _query: TestRequest):
 if __name__ == "__main__":
     agent.run()
 ```
+</DocsCode>
 
-```py copy filename="hosted-agent.py"
+ <DocsCode local={false}>
+
+```py copy filename="agent.py"
 from uagents import Agent, Context, Model
 
 class TestRequest(Model):
@@ -78,6 +81,7 @@ async def query_handler(ctx: Context, sender: str, _query: TestRequest):
     except Exception:
         await ctx.send(sender, Response(text="fail"))
 ```
+</DocsCode>
 </CodeGroup>
 
 The Agent is created using the `Agent` class from `uagents` library. It is initialized with a `name`, `seed`, `port`, and `endpoint`.

@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components' 
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 ##  Shopping Assistance Agent using `on_query`
 
@@ -41,7 +41,8 @@ class ShoppingAssistResponse(Model):
  - **Shopping Assistance Agent:** This code defines a shopping assistant Agent using the uAgents Framework. The Agent listens for incoming `ShoppingRequest` messages, processes them by sending the user's question to OpenAI's GPT-4 API for a response, and then sends the generated response back to the sender as a `ShoppingAssistResponse`.
 
 <CodeGroup hasCopy isLocalHostedFile>
-```py copy filename="local-agent.py"
+    <DocsCode local={true}>
+```py copy filename="agent.py"
 from uagents import Agent, Context
 from uagents.setup import fund_agent_if_low
 from models import ShoppingAssistResponse, ShoppingRequest
@@ -133,8 +134,11 @@ if __name__ == "__main__":
     agent.run()
 
 ```
+</DocsCode>
 
-```py copy filename="hosted-agent.py"
+<DocsCode local={false}>
+
+```py copy filename="agent.py"
 from uagents import Agent, Context
 import requests
 import json
@@ -216,6 +220,7 @@ async def handler(ctx: Context, sender: str, msg: ShoppingRequest):
     await ctx.send(sender, ShoppingAssistResponse(answer=response))
 
 ```
+</DocsCode>
 </CodeGroup>
 <Callout type="info" emoji="ℹ️">
    You need to have an OpenAI API key to run this example. You can get it from [OpenAI ↗️](https://openai.com/) .

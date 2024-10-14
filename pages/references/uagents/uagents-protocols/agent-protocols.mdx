@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components'
-import { CodeGroup } from "../../../../components/code";
+import { CodeGroup, DocsCode } from "../../../../components/code";
 
 # Agent protocols
 
@@ -21,21 +21,25 @@ Let's use a _simple restaurant table booking request_ as an example to better un
 
    and 
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+```py copy filename="mac"
+touch book.py
+```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch book.py
-        ```
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > book.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > book.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch book.py
-        ```
-
-    </CodeGroup>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch book.py
+    ```
+    </DocsCode>
+</CodeGroup>
 
 2. We import from `uagents` library the necessary classes `Context`, `Model`, and `Protocol`. Then, need to define the type of messages that the handler will receive and send:
 

@@ -1,6 +1,6 @@
 import {Callout} from 'nextra/components'
 import PackageVersion from 'components/package-version'
-import { CodeGroup } from "../../../../components/code";
+import { CodeGroup, DocsCode } from "../../../../components/code";
 
 # Build a LangChain RAG Agent
 
@@ -121,21 +121,25 @@ You'll need several Python packages for the project. These can be managed effici
 
 We now need to define the `requests.py` file under the `messages` folder in the project. 
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+```py copy filename="mac"
+touch requests.py
+```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch requests.py
-        ```
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > requests.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > requests.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch requests.py
-        ```
-
-    </CodeGroup>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch requests.py
+    ```
+    </DocsCode>
+</CodeGroup>
 
 
 Here, the `RagRequest` message data model represents the request to retrieve an answer to an user's question from a specified document URL. The script includes an optional parameter, `deep_read`, to determine if nested pages should also be read to retrieve the answer. This parameter is set to `no` as `default`.
@@ -170,21 +174,25 @@ The script look like the following:
 
 This step involves setting up the **LangChain Retrieval-Augmented Generation (RAG) Agent** which is able to scrape web content, retrieve relevant documents, and generate answers to user queries based on that content. Let's create the file within the `agents` directory we created under `src` directory of our project and name it `langchain_rag_agent.py` by using the following command:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+```py copy filename="mac"
+touch langchain_rag_agent.py
+```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch langchain_rag_agent.py
-        ```
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > langchain_rag_agent.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > langchain_rag_agent.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch langchain_rag_agent.py
-        ```
-
-    </CodeGroup>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch langchain_rag_agent.py
+    ```
+    </DocsCode>
+</CodeGroup>
 
 The Agent is defined as a [local agent with a Mailbox ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) and it is able to answer questions by fetching and summarizing information from a given website URL.
 
@@ -352,21 +360,25 @@ We are now ready to define the **LangChain User Agent** which interacts with the
 
 Create a file for this Agent:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+```py copy filename="mac"
+touch langchain_rag_user.py
+```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch langchain_rag_user.py
-        ```
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > langchain_rag_user.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > langchain_rag_user.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch langchain_rag_user.py
-        ```
-
-    </CodeGroup>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch langchain_rag_user.py
+    ```
+    </DocsCode>
+</CodeGroup>
 
 The script looks as follows:
 
@@ -432,21 +444,25 @@ Finally, the LangChain RAG user protocol is then included using the `.include()`
 
 We are now ready to define the main script for our project. In the `src` folder of our project we create a Python script named `main.py` using the following command:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+```py copy filename="mac"
+touch main.py
+```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch main.py
-        ```
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > main.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > main.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch main.py
-        ```
-
-    </CodeGroup>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch main.py
+    ```
+    </DocsCode>
+</CodeGroup>
 
 We then define the code within this one which looks like the one provided here below:
 

@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../../../components/code";
+import { CodeGroup, DocsCode } from "../../../../../components/code";
 
 # Stake auto-compounder
 
@@ -79,21 +79,25 @@ Below we provide a step-by-step guide to create an auto compounder using the `co
 
 1. First of all, create a Python script and name it:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+```py copy filename="mac"
+touch aerial_compounder.py
+```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch aerial_compounder.py
-        ```
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > aerial_compounder.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > aerial_compounder.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch aerial_compounder.py
-        ```
-
-    </CodeGroup>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch aerial_compounder.py
+    ```
+    </DocsCode>
+</CodeGroup>
 
 2. We need to import the necessary modules, including `argparse`, `time`, and various modules from the `cosmpy.aerial` package:
 

@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Create your first Agent
 
@@ -22,8 +22,8 @@ Let's get started and explore the basic concepts you need to develop your first 
 ## The agent
 
 <CodeGroup hasCopy isLocalHostedFile>
-
-        ```py copy filename="local-agent.py"
+    <DocsCode local={true}>
+        ```py copy filename="agent.py"
         # Import necessary classes from the uAgents library
         from uagents import Agent, Context
 
@@ -40,8 +40,10 @@ Let's get started and explore the basic concepts you need to develop your first 
         if __name__ == "__main__":
             agent.run()
         ```
+        </DocsCode>
 
-        ```py copy filename="hosted-agent.py"
+        <DocsCode local={false}>
+        ```py copy filename="agent.py"
         # Import necessary classes from the uAgents library
         from uagents import Agent, Context
         # Function to be called when the agent is started
@@ -50,6 +52,7 @@ Let's get started and explore the basic concepts you need to develop your first 
             # Print a greeting message with the agent's name and its address
             print(f"Hello, I'm agent {ctx.name} and my address is {agent.address}.")
         ```
+        </DocsCode>
 </CodeGroup>
 
 ## Expected Output

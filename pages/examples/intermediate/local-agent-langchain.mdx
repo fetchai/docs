@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Locally Hosted Agent with LangChain Integration
 
@@ -26,7 +26,9 @@ This guide demonstrates how to run an Agent on your own hardware or infrastructu
 
 <CodeGroup hasCopy isLocalHostedFile>
 
-```py copy filename="local-agent.py"
+    <DocsCode local={true}>
+
+```py copy filename="agent.py"
 from langchain_community.tools import WikipediaQueryRun
 from langchain_community.utilities import WikipediaAPIWrapper
 from uagents.setup import fund_agent_if_low
@@ -70,6 +72,7 @@ async def load_dalle(ctx: Context, sender: str, msg: WikiReq):
 WikiAgent.include(wiki_protocol, publish_manifest=True)
 WikiAgent.run()
 ```
+</DocsCode>
 </CodeGroup>
 ### Register Agent Function
 
