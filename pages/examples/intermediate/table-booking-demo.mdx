@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Table booking service with Agents
 
@@ -22,7 +22,8 @@ This example shows how to use Agents to create a table booking service at a rest
 #### Query table
 
 <CodeGroup hasCopy isLocalHostedFile>
-    ```py copy filename="local-query.py"
+    <DocsCode local={true}>
+    ```py copy filename="query.py"
     from typing import List
 
     from uagents import Context, Model, Protocol
@@ -75,8 +76,10 @@ This example shows how to use Agents to create a table booking service at a rest
         total_queries = int(ctx.storage.get("total_queries") or 0)
         await ctx.send(sender, TotalQueries(total_queries=total_queries))
     ```
+</DocsCode>
 
-    ```py copy filename="hosted-query.py"
+<DocsCode local={false}>
+    ```py copy filename="query.py"
     from typing import List
 
     from uagents import Context, Model, Protocol
@@ -129,13 +132,15 @@ This example shows how to use Agents to create a table booking service at a rest
         total_queries = int(ctx.storage.get("total_queries") or 0)
         await ctx.send(sender, TotalQueries(total_queries=total_queries))
     ```
+    </DocsCode>
 </CodeGroup>
 
 #### Book table
 
 <CodeGroup hasCopy isLocalHostedFile>
 
-    ```py copy filename="local-book.py"
+<DocsCode local={true}>
+    ```py copy filename="book.py"
     from uagents import Context, Model, Protocol
     from .query import TableStatus
 
@@ -171,8 +176,10 @@ This example shows how to use Agents to create a table booking service at a rest
         # send the response
         await ctx.send(sender, BookTableResponse(success=success))
     ```
+    </DocsCode>
 
-    ```py copy filename="hosted-book.py"
+<DocsCode local={false}>
+    ```py copy filename="book.py"
     from uagents import Context, Model, Protocol
     from query import TableStatus
 
@@ -208,6 +215,7 @@ This example shows how to use Agents to create a table booking service at a rest
         # send the response
         await ctx.send(sender, BookTableResponse(success=success))
     ```
+    </DocsCode>
 </CodeGroup>
 
 ### The Agents
@@ -215,7 +223,8 @@ This example shows how to use Agents to create a table booking service at a rest
 #### Restaurant
 
 <CodeGroup hasCopy isLocalHostedFile>
-    ```py copy filename="local-restaurant.py"
+    <DocsCode local={true}>
+    ```py copy filename="restaurant.py"
     from uagents import Agent, Context
     from uagents.setup import fund_agent_if_low
     from protocols.book import book_proto
@@ -246,8 +255,10 @@ This example shows how to use Agents to create a table booking service at a rest
     if __name__ == "__main__":
         restaurant.run()
     ```
+</DocsCode>
 
-    ```py copy filename="hosted-restaurant.py"
+<DocsCode local={false}>
+    ```py copy filename="restaurant.py"
     from uagents import Agent, Context
     from book import book_proto
     from query import query_proto, TableStatus
@@ -266,13 +277,15 @@ This example shows how to use Agents to create a table booking service at a rest
     for (number, status) in TABLES.items():
         agent._storage.set(number, status.dict())
     ```
+    </DocsCode>
 </CodeGroup>
 
 #### Customer/user
 
 <CodeGroup hasCopy isLocalHostedFile>
 
-    ```py copy filename="local-user.py"
+<DocsCode local={true}>
+    ```py copy filename="user.py"
     from protocols.book import BookTableRequest, BookTableResponse
     from protocols.query import (
         QueryTableRequest,
@@ -339,8 +352,10 @@ This example shows how to use Agents to create a table booking service at a rest
     if __name__ == "__main__":
         user.run()
     ```
+</DocsCode>
 
-    ```py copy filename="hosted-user.py"
+<DocsCode local={false}>
+    ```py copy filename="user.py"
     from book import BookTableRequest, BookTableResponse
     from query import (
         QueryTableRequest,
@@ -394,6 +409,7 @@ This example shows how to use Agents to create a table booking service at a rest
 
         ctx.storage.set("completed", True)
     ```
+    </DocsCode>
 </CodeGroup>
 ### Expected output
 
