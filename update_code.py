@@ -5,11 +5,22 @@ import re
 
 access_token = os.getenv("ACCESS_TOKEN")
 
+def delete_code_sample(filePath):
+    with open(filePath, "r+") as f:
+        data = f.read()
 
-def delete_code_sample(file):
-    ...
+        base_regex = r"<CodeGroup[\s]dynamic.*?>[\s\S]*?</CodeGroup>"
 
-def getGitHubData(owner, repo, filePath, startLine, endLine):
+        jsx_codegroup_regex = re.compile(base_regex, re.DOTALL)
+
+        result_string = re.sub(jsx_codegroup_regex, "", data)
+        f.seek(0)
+        f.truncate()
+        f.write(result_string)
+
+
+
+def getGitHubData(owner, repo, filePath):
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{filePath}?ref=main"
     headers = {'Accept': 'application/vnd.github.v3.star+json', 'Authorization': f"Bearer {access_token}"}
 
@@ -26,10 +37,8 @@ def getGitHubData(owner, repo, filePath, startLine, endLine):
 
 
 def insert_Html_after_jsx(filePath):
-    # iterate over every .mdx / .md file, and find jsxObjRegex
-    # for each match, replace.
 
-    print(filePath)
+    offset =0
 
     with open(filePath, "r+") as f:
         data = f.read()
@@ -38,66 +47,74 @@ def insert_Html_after_jsx(filePath):
         jsx_obj_regex = re.compile(base_regex, re.DOTALL)
 
         def insert_tag(match):
-            print(match.group(0))
 
             key_value_pairs = []
 
             code_groups_base_regex = r"<CodeSegment(.*?)/>"
             code_groups_regex = re.compile(code_groups_base_regex, re.DOTALL)
+            regex = r'(\w+)=["{]?([^"}]+)["}]?'
 
             code_groups = re.findall(code_groups_regex, match.group(0))
 
-            regex = r'(\w+)=["{]?([^"}]+)["}]?'
-            # Use re.finditer to find all matches and loop through them
             for code_group in code_groups:
-                print(code_group)
                 l = {}
 
                 for internal_match in re.finditer(regex, code_group):
-                    # print (internal_match)
                     key = internal_match.group(1)
                     value = internal_match.group(2)
                     l[key] = value
 
                 key_value_pairs.append(l)
 
-            print(key_value_pairs)
-
             code_block = ""
 
             for code_group in key_value_pairs:
-                # // Split the URL by '/'
                 parts = code_group["path"].split("/");
 
                 username = parts[3];
                 repository = parts[4];
                 filePath = "/".join(parts[7:])
                 filename = parts[len(parts) - 1]
-                print(filename)
 
-                # print(username, repository, filePath)
-
-                lines = getGitHubData(username, repository, filePath, code_group["lineStart"],
-                                      code_group["lineEnd"])
+                lines = getGitHubData(username, repository, filePath)
 
                 selection = lines.split("\n")[int(code_group["lineStart"]) - 1:int(code_group["lineEnd"])]
-                print(selection)
                 selection = ["\t\t" + s for s in selection]
                 s = '\n'.join(selection)
 
                 code_block = code_block + f"""\n\n\t```py copy filename="{filename}"\n\n{s}\n\n```"""
 
-            new_jsx_object = f"<CodeGroup hasCopy isLocalHostedFile>\n{code_block}\n</CodeGroup>"
+            new_jsx_object = f"<CodeGroup dynamic hasCopy isLocalHostedFile>\n{code_block}\n</CodeGroup>"
 
-            return f"{match.group(0)}\n{new_jsx_object}"
+            return f"\n{new_jsx_object}"
 
-        result_string = re.sub(jsx_obj_regex, insert_tag, data)
+        for match in re.finditer(jsx_obj_regex, data):
+
+            # Calculate the new position considering the offset from previous inserts
+            insert_pos = match.end() + offset
+            # Insert the string after the match
+            result = insert_tag(match)
+            data = data[:insert_pos] + result + data[insert_pos:]
+            # Update offset to account for the inserted string length
+            offset += len(result)
+
         f.seek(0)
-        f.write(result_string)
+        f.write(data)
 
 
 # Specify the path of the file you want to modify
 filePath = './pages/guides/agents/quickstart.mdx';
 
-# Call the function to insert <html/> after each comment
+
+def directory_loop(directory, removal):
+   for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".md") or file.endswith(".mdx"):
+                if not removal:
+                    insert_Html_after_jsx(os.path.join(root, file))
+                else:
+                    delete_code_sample(os.path.join(root, file))
+
+filePath = './pages/guides/agents/quickstart.mdx';
+delete_code_sample(filePath)
 insert_Html_after_jsx(filePath)
