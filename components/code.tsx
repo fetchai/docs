@@ -569,7 +569,6 @@ export const DocsCode: React.FC<CodeGroupProps> = ({
   );
 };
 
-
 interface CodeSegment {
   path: string;
   lineStart: number;
