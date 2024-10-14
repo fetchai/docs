@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Hugging face API agent as a Function
 
@@ -24,8 +24,9 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
 #### Hugging Face System Agent
 
 <CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
 
-        ```python copy filename="local-agent.py"
+        ```python copy filename="agent.py"
         # Here we demonstrate how we can create a hugging face system agent that is compatible with DeltaV.
 
         # Importing required libraries.
@@ -78,7 +79,11 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
         hf_agent.run()
     ```
 
-    ```python copy filename="hosted-agent.py"
+    </DocsCode>
+
+    <DocsCode local={false}>
+
+    ```python copy filename="agent.py"
         # Here we demonstrate how we can create a hugging face system agent that is compatible with DeltaV.
 
         # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
@@ -109,13 +114,16 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
         # Include the Hugging Face protocol in your agent.
         agent.include(hf_protocol)
     ```
+    </DocsCode>
 </CodeGroup>
 
 #### Hugging Face Request Agent
 
 <CodeGroup hasCopy isLocalHostedFile>
 
-        ```python copy filename="local-agent.py"
+    <DocsCode local={true}>
+
+        ```python copy filename="agent.py"
         # Here we demonstrate how we can create a hugging face request agent that is compatible with DeltaV.
 
         # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
@@ -184,8 +192,11 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
 
         hf_request_agent.run()
     ```
+    </DocsCode>
 
-    ```python copy filename="hosted-agent.py"
+    <DocsCode local={false}>
+
+    ```python copy filename="agent.py"
         # Here we demonstrate how we can create a hugging face request agent that is compatible with DeltaV.
 
         # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
@@ -231,12 +242,15 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
         # Include the Hugging Face protocol in your agent.
         agent.include(hfprotocol, publish_manifest = True)
     ```
+    </DocsCode>
 </CodeGroup>
 #### Model List Agent
 
 <CodeGroup hasCopy isLocalHostedFile>
 
-        ```python copy filename="local-agent.py"
+    <DocsCode local={true}>
+
+        ```python copy filename="agent.py"
         # Here we demonstrate how we can create a model list agent that is compatible with DeltaV.
 
         # Importing required libraries.
@@ -315,8 +329,11 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
 
         model_list_agent.run()
     ```
+    </DocsCode>
 
-    ```python copy filename="hosted-agent.py"
+    <DocsCode local={true}>
+
+    ```python copy filename="agent.py"
         # Here we demonstrate how we can create a model list agent that is compatible with DeltaV.
 
         # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
@@ -376,4 +393,5 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
         # Include model_list protocol in agent.
         agent.include(model_list_protocol, publish_manifest = True)
     ```
+    </DocsCode>
 </CodeGroup>
