@@ -5,12 +5,6 @@ import { Windows, Mac, Ubuntu, OSProps } from "src/icons/os-icons";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 
-interface CodeOptionProps {
-  children: ReactNode;
-  filename: string;
-  local: boolean;
-}
-
 interface CodeGroupProps {
   children: ReactNode;
   isOSFile?: boolean;

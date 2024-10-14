@@ -19,7 +19,6 @@ def delete_code_sample(filePath):
         f.write(result_string)
 
 
-
 def getGitHubData(owner, repo, filePath):
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{filePath}?ref=main"
     headers = {'Accept': 'application/vnd.github.v3.star+json', 'Authorization': f"Bearer {access_token}"}
@@ -81,18 +80,13 @@ def insert_Html_after_jsx(filePath):
                 lines = getGitHubData(username, repository, filePath)
 
                 selection = lines.split("\n")[int(code_group["lineStart"]) - 1:int(code_group["lineEnd"])]
-                selection = [s for s in selection]
+                selection = ["\t\t" + s for s in selection]
                 s = '\n'.join(selection)
-
-                print (hosted)
 
                 code_block = code_block + f"""\n\n<DocsCode local={{{hosted}}}>\n\t```py copy filename="{filename}"\n\n{s}\n\n```\n</DocsCode>\n"""
 
-
-
             new_jsx_object = f"<CodeGroup dynamic hasCopy isLocalHostedFile>\n{code_block}\n</CodeGroup>"
 
-            print (new_jsx_object)
 
             return f"\n{new_jsx_object}"
 
@@ -128,5 +122,4 @@ delete_code_sample(filePath)
 insert_Html_after_jsx(filePath)
 
 import subprocess
-
 subprocess.run(["pnpm", "run", "fmt"])
