@@ -1,3 +1,5 @@
+import { CodeGroup, DocsCode } from "../../../components/code"
+
 # Sending and verifying token transactions with Agent
 
 ## Introduction
@@ -82,6 +84,8 @@ This example demonstrates how to build a simple agent-based system for transferr
 #### 3. Transaction Verification:
    - Upon receiving the transaction receipt, `transaction_initiator` sends a `VerificationRequest` to the `verification_agent`. The `verification_agent` checks the transaction status on the blockchain and logs the result.
 
+<CodeGroup hasCopy isLocalHostedFile>
+<DocsCode local={true}>
 
 ```py copy filename="transaction.py"
 from uagents import Agent, Bureau, Context, Model
@@ -276,6 +280,8 @@ if __name__ == "__main__":
     bureau.run()
 
 ```
+</DocsCode>
+</CodeGroup>
 
 ### Poetry Dependencies
 

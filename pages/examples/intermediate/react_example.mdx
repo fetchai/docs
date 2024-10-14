@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components' 
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # React app with agents 'on_query' decorator
 
@@ -165,8 +165,10 @@ In this section we will setup agents and as well as flask app which will respond
     - **News and URL agent:** Fetches news articles titles and url for them as well.
 
 <CodeGroup hasCopy isLocalHostedFile>
+
+    <DocsCode local={true}>
  
-   ```python copy filename="local-news_agent.py"
+   ```python copy filename="news_agent.py"
    # Import Required libraries
    import requests
    import os
@@ -292,8 +294,10 @@ In this section we will setup agents and as well as flask app which will respond
    if __name__ == "__main__":
        NewsAgent.run() 
    ```
+   </DocsCode>
 
-    ```python copy filename="hosted-news_agent.py"
+<DocsCode local={false}>
+    ```python copy filename="news_agent.py"
    # Import Required libraries
    import requests
    from uagents import Agent, Context, Model
@@ -402,6 +406,7 @@ In this section we will setup agents and as well as flask app which will respond
            # Ensure the error message is sent as a string
            await ctx.send(sender, ErrorResponse(error=str(error_message)))
    ```
+   </DocsCode>
 </CodeGroup>
    <Callout type="info" emoji="ℹ️">
        Get your [Alphavantage ↗️](https://www.alphavantage.co/) and [Gnews ↗️](https://gnews.io/) API keys and update it in the virtual environment.
@@ -409,6 +414,8 @@ In this section we will setup agents and as well as flask app which will respond
 
    - **WebScraper agent:** Scraps the webpage content for the given url.
 
+<CodeGroup hasCopy isLocalHostedFile>
+<DocsCode local={true}>
       ```python copy filename="webscraper_agent.py"
       # Import Required libraries
       import requests
@@ -488,9 +495,13 @@ In this section we will setup agents and as well as flask app which will respond
       if __name__ == "__main__":
           webScraperAgent.run()
       ```
+      </DocsCode>
+</CodeGroup>
 
    - **Sentiment agent:** Provides sentiment of news content provided using HF API and finBERT model.
 
+<CodeGroup hasCopy isLocalHostedFile>
+<DocsCode local={true}>
       ```python copy filename="sentiment_agent.py"
       # Import Required libraries
       import requests
@@ -567,10 +578,12 @@ In this section we will setup agents and as well as flask app which will respond
       if __name__ == "__main__":
           SentimentAgent.run()
       ```
+      </DocsCode>
+</CodeGroup>
 
-       <Callout type="info" emoji="ℹ️">
-           Get your [Hugging Face Inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
-       </Callout>
+    <Callout type="info" emoji="ℹ️">
+        Get your [Hugging Face Inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
+    </Callout>
 
 3. Requirement.txt:
 

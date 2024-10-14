@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Agents Name Service
 
@@ -19,7 +19,9 @@ This file can be run on any platform supporting Python, with the necessary insta
 
 ### Agent 1
 
-```py copy filename="agent_1.py"
+<CodeGroup hasCopy isLocalHostedFile>
+
+```py copy filename="local-agent_1.py"
 from cosmpy.aerial.wallet import LocalWallet
 
 from uagents.network import get_name_service_contract
@@ -56,12 +58,13 @@ async def message_handler(ctx: Context, sender: str, msg: Message):
 if __name__ == "__main__":
     bob.run()
 ```
+</CodeGroup>
 
 ### Agent 2
 
 <CodeGroup hasCopy isLocalHostedFile>
-
-```py copy filename="local-agent_2.py"
+ <DocsCode local={true}>
+```py copy filename="agent_2.py"
 from uagents.setup import fund_agent_if_low
 from uagents import Agent, Context, Model
 
@@ -99,6 +102,7 @@ async def alice_interval_handler(ctx: Context):
     ctx.logger.info(f"Sending message to {bob_name}...")
     await ctx.send(bob_name, Message(message="Hello there bob."))
 ```
+</DocsCode>
 </CodeGroup>
 
 ## Expected output

@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Register a coin toss agent as a Function
 
@@ -28,8 +28,9 @@ To enable this on [DeltaV ↗️](/concepts/ai-engine/deltav) you will need to c
 ### The agent
 
 <CodeGroup hasCopy isLocalHostedFile>
-
-```python copy filename="local-agent.py"
+    
+<DocsCode local={true}>
+```python copy filename="agent.py"
 import random
 from uagents import Agent, Context, Model, Field, Protocol
 from uagents.setup import fund_agent_if_low
@@ -81,6 +82,9 @@ coin_toss_agent.include(coin_toss_protocol, publish_manifest=True)
 if __name__ == "__main__":
     coin_toss_agent.run()
 ```
+</DocsCode>
+
+<DocsCode local={false}>
 
 ```python copy filename="hosted-agent.py"
 import random
@@ -112,4 +116,5 @@ async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
 
 agent.include(coin_toss_protocol, publish_manifest=True)
 ```
+</DocsCode>
 </CodeGroup>

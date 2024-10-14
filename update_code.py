@@ -76,15 +76,23 @@ def insert_Html_after_jsx(filePath):
                 filePath = "/".join(parts[7:])
                 filename = parts[len(parts) - 1]
 
+                hosted = code_group["hosted"]
+
                 lines = getGitHubData(username, repository, filePath)
 
                 selection = lines.split("\n")[int(code_group["lineStart"]) - 1:int(code_group["lineEnd"])]
-                selection = ["\t\t" + s for s in selection]
+                selection = [s for s in selection]
                 s = '\n'.join(selection)
 
-                code_block = code_block + f"""\n\n\t```py copy filename="{filename}"\n\n{s}\n\n```"""
+                print (hosted)
+
+                code_block = code_block + f"""\n\n<DocsCode local={{{hosted}}}>\n\t```py copy filename="{filename}"\n\n{s}\n\n```\n</DocsCode>\n"""
+
+
 
             new_jsx_object = f"<CodeGroup dynamic hasCopy isLocalHostedFile>\n{code_block}\n</CodeGroup>"
+
+            print (new_jsx_object)
 
             return f"\n{new_jsx_object}"
 
@@ -118,3 +126,7 @@ def directory_loop(directory, removal):
 filePath = './pages/guides/agents/quickstart.mdx';
 delete_code_sample(filePath)
 insert_Html_after_jsx(filePath)
+
+import subprocess
+
+subprocess.run(["pnpm", "run", "fmt"])

@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Langchain RAG Agent
 
@@ -130,6 +130,10 @@ class RagRequest(Model):
 ### Langchain RAG agent
 
 This agent answers questions by fetching and summarizing information from a given website. It checks and scrapes URLs, uses LangChain to find important documents, and generates answers with OpenAI's GPT-4o-mini model.
+
+<CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
+
 ```python copy filename="langchain_rag_agent.py"
 import traceback
 from uagents import Agent, Context, Protocol
@@ -269,14 +273,16 @@ if __name__ == "__main__":
     agent.run()
 
 ```
+</DocsCode>
+</CodeGroup>
 
 ### Langchain user agent
 
 The agent is designed to ask a predefined question to a RAG agent at regular intervals and handle the responses.
 
 <CodeGroup hasCopy isLocalHostedFile>
-
-```python copy filename="local-langchain_rag_user.py"
+<DocsCode local={true}>
+```python copy filename="langchain_rag_user.py"
 from uagents import Agent, Context, Protocol
 from messages.requests import RagRequest
 from ai_engine import UAgentResponse
@@ -321,8 +327,11 @@ if __name__ == "__main__":
     rag_user.run()
 
 ```
+</DocsCode>
 
-```python copy filename="hosted-langchain_rag_user.py"
+<DocsCode local={false}>
+
+```python copy filename="langchain_rag_user.py"
 from uagents import Agent, Context, Protocol, Field
 from ai_engine import UAgentResponse
 
@@ -365,6 +374,7 @@ async def handle_data(ctx: Context, sender: str, data: UAgentResponse):
 agent.include(rag_user)
 
 ```
+</DocsCode>
 </CodeGroup>
 
 ```python copy filename="main.py"

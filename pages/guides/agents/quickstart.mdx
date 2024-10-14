@@ -1,6 +1,4 @@
-import {CodeGroup, CodeSegment} from "../../../components/code";
- import { GithubCodeSegment } from "../../../components/code";
-
+import {CodeGroup, CodeSegment, DocsCode, GithubCodeSegment} from "../../../components/code";
 
 # Quick Start Guide for uAgents Framework
 
@@ -62,22 +60,25 @@ We should create something simple to get started, below the most basic of agents
 
 Create a new Python script:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch interval_task.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > interval_task.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch interval_task.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch interval_task.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > interval_task.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch interval_task.py
-        ```
-
-    </CodeGroup>
-
+</CodeGroup>
 Open `interval_task.py` in your text editor and add the following code:
 
 <GithubCodeSegment>
@@ -99,67 +100,40 @@ Open `interval_task.py` in your text editor and add the following code:
 <CodeGroup dynamic hasCopy isLocalHostedFile>
 
 
+<DocsCode local={true}>
 	```py copy filename="main.py"
 
-		from uagents import Agent, Context
-		
-		agent = Agent(name="alice")
-		
-		
-		@agent.on_event("startup")
-		async def introduce_agent(ctx: Context):
-		    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
-		
+from uagents import Agent, Context
+
+agent = Agent(name="alice")
+
+
+@agent.on_event("startup")
+async def introduce_agent(ctx: Context):
+    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+
 
 ```
+</DocsCode>
 
+
+<DocsCode local={false}>
 	```py copy filename="main.py"
 
-		from uagents import Agent, Context
-		
-		agent = Agent(name="alice")
-		
-		
-		@agent.on_event("startup")
-		async def introduce_agent(ctx: Context):
-		    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
-		
+from uagents import Agent, Context
+
+agent = Agent(name="alice")
+
+
+@agent.on_event("startup")
+async def introduce_agent(ctx: Context):
+    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+
 
 ```
+</DocsCode>
+
 </CodeGroup>
-
-
-
-<CodeGroup hasCopy isLocalHostedFile>
-
-    <CodeOption filename="" local =true>
-
-
-	```py copy filename="main.py"
-		from uagents import Agent, Context
-
-		agent = Agent(name="alice")
-
-
-		@agent.on_event("startup")
-		async def introduce_agent(ctx: Context):
-		    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
-        ```
-    </CodeOption>
-
-	```py copy filename="main.py"
-		from uagents import Agent, Context
-
-		agent = Agent(name="alice")
-
-
-		@agent.on_event("startup")
-		async def introduce_agent(ctx: Context):
-		    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
-        ```
-</CodeGroup>
-
-
 
 Be sure to update `seed` with a unique phrase, your seed will need to be wrapped in `"`.
 
@@ -186,71 +160,80 @@ This guide will walk you through creating a simple interaction between two agent
 
 Create 2 new Python scripts:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch SenderAgent.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > SenderAgent.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch SenderAgent.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch SenderAgent.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > SenderAgent.py
-        ```
+</CodeGroup>
 
-        ```py copy filename="ubuntu"
-        touch SenderAgent.py
-        ```
 
-    </CodeGroup>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch ReceiverAgent.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > ReceiverAgent.py
+    ```
+</DocsCode>
 
-    <CodeGroup hasCopy isOSFile>
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch ReceiverAgent.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="mac"
-        touch ReceiverAgent.py
-        ```
-
-        ```py copy filename="windows"
-        echo. > ReceiverAgent.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch ReceiverAgent.py
-        ```
-
-    </CodeGroup>
+</CodeGroup>
 
 Open `SenderAgent.py` in your text editor and add the following code:
 
       ```py copy filename="SenderAgent.py"
       from uagents import Agent, Context, Model
-
-
+      
+      
       class Message(Model):
           message: str
-
-
+      
+      
       RECIPIENT_ADDRESS = (
           "test-agent://agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859"
       )
-
+      
       SenderAgent = Agent(
           name="SenderAgent",
           port=8000,
           seed="SenderAgent secret phrase",
           endpoint=["http://127.0.0.1:8000/submit"],
       )
-
+      
       print(SenderAgent.address)
 
       @SenderAgent.on_interval(period=2.0)
       async def send_message(ctx: Context):
           await ctx.send(RECIPIENT_ADDRESS, Message(message="Hi there. Let's start our conversation!"))
-
-
+      
+      
       @SenderAgent.on_message(model=Message)
       async def message_handler(ctx: Context, sender: str, msg: Message):
           ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-
+      
+      
       if __name__ == "__main__":
           SenderAgent.run()
       ```
@@ -259,31 +242,31 @@ Then, open `ReceiverAgent.py` in your text editor and add the following code int
 
        ```py copy filename="ReceiverAgent.py"
       from uagents import Agent, Context, Model
-
+      
       # NOTE: Run ReceiverAgent.py before running SenderAgent.py
-
-
+      
+      
       class Message(Model):
           message: str
-
-
+      
+      
       ReceiverAgent = Agent(
           name="ReceiverAgent",
           port=8001,
           seed="ReceiverAgent secret phrase",
           endpoint=["http://127.0.0.1:8001/submit"],
       )
-
+      
       print(ReceiverAgent.address)
-
+      
       @ReceiverAgent.on_message(model=Message)
       async def message_handler(ctx: Context, sender: str, msg: Message):
           ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
+      
           # send the response
           await ctx.send(sender, Message(message="Cool! Let's get started!"))
-
-
+      
+      
       if __name__ == "__main__":
           ReceiverAgent.run()
        ```
@@ -326,7 +309,7 @@ Run the scripts to see the agents communicating:
    INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
    INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
    ```
-
+  
 ## Reach out to the Team!
 
 Excellent! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network! if you're keen to skip the more code focused guides, your best next steps would be [Communicating with agents](intermediate/communicating-with-other-agents).
