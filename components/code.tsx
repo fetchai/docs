@@ -569,6 +569,7 @@ interface CodeSegment {
   lineEnd: number;
   last_updated: string;
   hosted: boolean;
+  filename?: string;
 }
 
 interface GithubCodeSegment {}
