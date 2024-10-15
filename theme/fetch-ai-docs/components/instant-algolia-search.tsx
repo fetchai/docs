@@ -15,7 +15,9 @@ import remarkHTML from "remark-html";
 import type { Item as NormalItem } from "nextra/normalize-pages";
 import { Input } from "./input";
 import Modal from "./search-model";
-import { Shortcut } from "src/icons/shared-icons";
+import { DarkShortcut, Shortcut } from "src/icons/shared-icons";
+import { useTheme } from "next-themes";
+import { ThemeMode } from "../helpers";
 
 type MyItem = NormalItem & {
   tags?: string[];
@@ -41,7 +43,7 @@ export const InstantAlgoliaSearch = ({
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const inputRef = useRef(null);
   const modalInputRef = useRef(null);
-
+  const { resolvedTheme } = useTheme();
   const onClickSearchResult = async (path) => {
     const searchInput =
       document.querySelector<HTMLInputElement>("#search-input");
@@ -83,7 +85,7 @@ export const InstantAlgoliaSearch = ({
           value={currentRefinement}
           onChange={(event) => refine(event.currentTarget.value)}
           placeholder="Search in documentation"
-          className="nx-bg-white main-search-bar"
+          className="main-search-bar"
           autoComplete="off"
           ref={modalInputRef}
         />
@@ -265,13 +267,17 @@ export const InstantAlgoliaSearch = ({
             id={inputId}
             type="search"
             placeholder="Search in documentation"
-            className="nx-bg-white nx-w-full dark:nx-border-none input-inner-nav"
+            className="nx-bg-white dark:fetch-dark-input-bg nx-w-full input-inner-nav"
             onClick={handleInputClick}
             autoComplete="off"
             ref={inputRef}
           />
           <div className="nx-p-1">
-            <Shortcut />
+            {resolvedTheme === ThemeMode.Light ? (
+              <Shortcut />
+            ) : (
+              <DarkShortcut />
+            )}
           </div>
         </div>
       </div>

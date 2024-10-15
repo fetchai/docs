@@ -21,41 +21,43 @@ import darkCrewai from "../src/svgs/dark-crew-ai.svg";
 import darkFastapi from "../src/svgs/dark-fast-api.svg";
 import { Arrow, vectorPointer, vectorSquare } from "src/icons/shared-icons";
 import { useTheme } from "next-themes";
+import { ThemeMode } from "theme/fetch-ai-docs/helpers";
+
+const startingGuides = (theme) => [
+  {
+    label: "Building your first agent",
+    path: "/guides/agents/quickstart",
+    image: theme === ThemeMode.Dark ? darkbuildYourAgent : buildYourAgent,
+  },
+  {
+    label: "Creating an executable function for AI",
+    path: "/guides/agents/intermediate/agent-functions",
+    image: theme === ThemeMode.Dark ? darkexecutable : executable,
+  },
+  {
+    label: "The Fetch.ai technology stack",
+    path: "/concepts/introducing-fetchai",
+    image: theme === ThemeMode.Dark ? darktechStack : techStack,
+  },
+];
 
 function LandingPage() {
-  const {theme} = useTheme()
+  const { theme } = useTheme();
   const comingFromSomewhere = [
     {
       name: "Langchain",
-      icon: theme === "light" ? langchain: darkLangchain,
+      icon: theme === ThemeMode.Light ? langchain : darkLangchain,
       link: "/guides/quickstart-with/langchain/creating-an-agent-with-langchain",
     },
     {
       name: "FastAPI",
-      icon: theme === "light" ? fastapi : darkFastapi,
+      icon: theme === ThemeMode.Light ? fastapi : darkFastapi,
       link: "/guides/agents/intermediate/rest-endpoints",
     },
     {
       name: "CrewAI",
-      icon: theme === "light" ? crewai : darkCrewai,
+      icon: theme === ThemeMode.Light ? crewai : darkCrewai,
       link: "/guides/quickstart-with/CrewAI/startup-idea-analyser",
-    },
-  ];
-  const startingGuides = (theme) =>  [
-    {
-      label: "Building your first agent",
-      path: "/guides/agents/quickstart",
-      image: theme === "dark" ? darkbuildYourAgent: buildYourAgent,
-    },
-    {
-      label: "Creating an executable function for AI",
-      path: "/guides/agents/intermediate/agent-functions",
-      image: theme === "dark" ? darkexecutable : executable,
-    },
-    {
-      label: "The Fetch.ai technology stack",
-      path: "/concepts/introducing-fetchai",
-      image: theme === "dark" ? darktechStack : techStack,
     },
   ];
 
@@ -65,7 +67,7 @@ function LandingPage() {
       description:
         "This course is designed to introduce you to the development of Agents, providing a comprehensive guide.",
       path: "/guides/agent-courses/introductory-course",
-      image: theme === "dark" ? darkCoursesStack : coursesStack,
+      image: theme === ThemeMode.Dark ? darkCoursesStack : coursesStack,
       keywords: ["Beginner", "Python", "Courses"],
       vectors: vectorSquare,
     },
@@ -74,7 +76,7 @@ function LandingPage() {
       description:
         "This course is designed to introduce you to building Agents that are accessible to the AI Engine.",
       path: "/guides/agent-courses/agents-for-ai",
-      image: theme === "dark" ? darkCoursesStack : coursesStackSecond,
+      image: theme === ThemeMode.Dark ? darkCoursesStack : coursesStackSecond,
       keywords: ["Beginner", "Python", "AI-Engine", "GPT-3.5", "Courses"],
       vectors: vectorPointer,
     },
@@ -257,7 +259,11 @@ function LandingPage() {
           make choices on their own for individuals, companies, and devices.
           Agents are the actors, and the heart of Fetch.ai ecosystem.
         </p>
-        <Image className="nx-py-6 md:dark:nx-h-[586px] nx-h-auto dark:nx-bg-[#2C2E38] dark:nx-rounded-lg" src={systemDiagram} alt="system-diagram" />
+        <Image
+          className="nx-py-6 md:dark:nx-h-[586px] nx-h-auto dark:nx-bg-[#2C2E38] dark:nx-rounded-lg"
+          src={systemDiagram}
+          alt="system-diagram"
+        />
         <p className={styles.systemDescripton}>
           Agents are flexible problem solvers, capable of not just completing
           tasks but also tackling difficult issues across several domains.

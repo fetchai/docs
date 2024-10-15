@@ -12,8 +12,7 @@ import React from "react";
 import { useEffect } from "react";
 import { Gear } from "src/icons/shared-icons";
 import { useRef } from "react";
-import ThemeSwitcher from "./theme-switch";
-import { useTheme } from "next-themes";
+import { ThemeSwitcher } from "..";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -88,11 +87,8 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
   const activeRoute = useFSRoute();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { menu, setMenu } = useMenu();
-
   const [openOs, setOpenOs] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const {theme}= useTheme()
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

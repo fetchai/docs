@@ -390,11 +390,13 @@ export const ApiEndpointRequestResponse: React.FC<{
     <>
       <Row>
         <p className="nx-endpoint nx-text-base">
-          <span className="nextra-content nx-font-medium">Endpoint: </span>
+          <span className="nextra-content nx-font-medium dark:nx-text-white-60">
+            Endpoint:
+          </span>
           <span className="nx-endpoint-method nx-text-fetch-main">
             {properties.method}
-          </span>{" "}
-          <span className="nx-text-purple nx-font-normal">
+          </span>
+          <span className="nx-text-purple nx-font-normal dark:nx-text-indigo-250">
             {properties.path}
           </span>
           {isModalOpen ? (

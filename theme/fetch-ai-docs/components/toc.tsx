@@ -88,7 +88,7 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
                     "nx-inline-block",
                     activeAnchor[id]?.isActive
                       ? "active-toc nx-subpixel-antialiased contrast-more:!nx-text-primary-600"
-                      : "fetch-navy-toc hover:nx-text-primary-600 dark:nx-text-gray-400 dark:hover:nx-text-gray-300",
+                      : "fetch-navy-toc hover:nx-text-primary-600 dark:nx-text-white-60 dark:hover:nx-text-gray-300",
                     "contrast-more:nx-text-gray-900 contrast-more:nx-underline contrast-more:dark:nx-text-gray-50 nx-w-full nx-break-words",
                   )}
                 >
@@ -102,8 +102,7 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
             {hasMetaInfo && (
               <div
                 className={cn(
-                  hasHeadings &&
-                    "nx-border-t nx-bg-white nx-pt-4 nx-shadow-[0_-12px_16px_white] dark:nx-bg-dark dark:nx-shadow-[0_-12px_16px_#111]",
+                  hasHeadings && "nx-border-t nx-pt-4",
                   "nx-sticky nx-bottom-0 nx-flex nx-flex-col nx-items-start nx-gap-2 nx-pb-8 dark:nx-border-neutral-800",
                   "contrast-more:nx-border-t contrast-more:nx-border-neutral-400 contrast-more:nx-shadow-none contrast-more:dark:nx-border-neutral-400",
                 )}

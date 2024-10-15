@@ -1,4 +1,3 @@
-/* eslint sort-keys: error */
 import type { NextSeoProps } from "next-seo";
 import { useRouter } from "next/router";
 import { DiscordIcon } from "nextra/icons";
@@ -9,12 +8,13 @@ import { z } from "zod";
 import { Anchor, Footer, Navbar, TOC } from "./components";
 import { InstantAlgoliaSearch } from "./components/instant-algolia-search";
 import type { NavBarProps } from "./components/navbar";
-import ThemeSwitcher from "./components/theme-switch";
-import { themeOptionsSchema } from "./components/theme-switch";
+import { ThemeSwitcher } from "./components/theme-switcher";
+import { themeOptionsSchema } from "./components/theme-switcher";
 import type { TOCProps } from "./components/toc";
 import { getGitIssueUrl, useGitEditUrl } from "./utils";
 import React from "react";
 import { GitHubMenu } from "src/icons/shared-icons";
+import Logo from "components/logo";
 
 export const DEFAULT_LOCALE = "en-US";
 
@@ -85,7 +85,6 @@ export const themeSchema = z.strictObject({
   head: z.custom<ReactNode | FC>(...reactNode),
   i18n: i18nSchema,
   logo: z.custom<ReactNode | FC>(...reactNode),
-  darkLogo: z.custom<ReactNode | FC>(...reactNode),
   logoLink: z.boolean().or(z.string()),
   main: z.custom<FC<{ children: ReactNode }>>(...fc).optional(),
   navbar: z.strictObject({
@@ -241,14 +240,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
   },
   head: <></>,
   i18n: [],
-  logo: (
-    <>
-      <span className="nx-font-extrabold">Nextra</span>
-      <span className="nx-ml-2 nx-hidden nx-font-normal nx-text-gray-600 md:nx-inline">
-        The Next Docs Builder
-      </span>
-    </>
-  ),
+  logo: <Logo />,
   logoLink: true,
   navbar: {
     component: Navbar,

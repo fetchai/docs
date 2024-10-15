@@ -249,7 +249,11 @@ export const CodeBlock: React.FC<{
         )}
       </header>
       <span className="filename">{selectedLabel}</span>
-      <div ref={codeRef} style={{ overflowX: "scroll", width: "100%" }}>
+      <div
+        id="inner"
+        ref={codeRef}
+        style={{ overflowX: "scroll", width: "100%" }}
+      >
         {selectedCodeBlock?.component ?? "No code block selected"}
       </div>
     </div>

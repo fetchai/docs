@@ -1,6 +1,4 @@
 import React, { ChangeEvent, useState } from "react";
-import Image from "next/image";
-import logo from "src/svgs/logo.svg";
 import styles from "./footer.module.css";
 import { Anchor } from "theme/fetch-ai-docs/components";
 import { renderComponent } from "theme/fetch-ai-docs/utils";

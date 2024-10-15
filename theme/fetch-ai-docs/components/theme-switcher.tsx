@@ -1,8 +1,6 @@
-"use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { useTheme } from "next-themes";
-import Image from "next/image";
 import { z } from "zod";
 
 const osmenu = [
@@ -22,15 +20,8 @@ export const themeOptionsSchema = z.strictObject({
   system: z.string(),
 });
 
-const ThemeSwitcher = () => {
-  const [mounted, setMounted] = useState(false);
+export const ThemeSwitcher = () => {
   const { setTheme } = useTheme();
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  if (!mounted) {
-    return null
-  }
   return (
     <div className="nav-dropdown-container nx-z-50 nx-w-full nx-right-0 nx-absolute">
       <div className="nav-tab nx-w-full nx-justify-between">
@@ -50,4 +41,3 @@ const ThemeSwitcher = () => {
     </div>
   );
 };
-export default ThemeSwitcher;

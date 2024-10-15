@@ -49,7 +49,7 @@ function HeadingLink({
   return (
     <Tag
       className={cn(
-        "nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100",
+        "nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90",
         {
           h2: "nx-mt-10 nx-border-b nx-pb-1 nx-text-3xl nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400",
           h3: "nx-mt-8 nx-text-2xl",
@@ -204,7 +204,7 @@ export const getComponents = ({
   return {
     h1: (props) => (
       <h1
-        className="nx-mt-2 nx-text-4xl nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100"
+        className="nx-mt-2 nx-text-4xl nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90"
         {...props}
       />
     ),
@@ -215,7 +215,7 @@ export const getComponents = ({
     h6: (props) => <HeadingLink tag="h6" context={context} {...props} />,
     ul: (props) => (
       <ul
-        className="nx-mt-6 nx-list-disc first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
+        className="nx-mt-6 nx-list-disc first:nx-mt-0 dark:nx-text-white-60 ltr:nx-ml-6 rtl:nx-mr-6"
         {...props}
       />
     ),
@@ -249,7 +249,10 @@ export const getComponents = ({
       />
     ),
     p: (props) => (
-      <p className="nx-mt-6 nx-leading-7 first:nx-mt-0" {...props} />
+      <p
+        className="nx-mt-6 nx-leading-7 first:nx-mt-0 dark:nx-text-white-60"
+        {...props}
+      />
     ),
     tr: Tr,
     th: Th,

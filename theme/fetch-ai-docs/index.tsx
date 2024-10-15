@@ -337,14 +337,22 @@ export default function Layout({
   children,
   ...context
 }: NextraThemeLayoutProps): ReactElement {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
   return (
-    <ErrorBoundary FallbackComponent={Error404}>
-      <ThemeDocProvider>
+    <ThemeDocProvider>
+      <ErrorBoundary FallbackComponent={Error404}>
         <ConfigProvider value={context}>
           <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
         </ConfigProvider>
-      </ThemeDocProvider>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </ThemeDocProvider>
   );
 }
 
@@ -366,7 +374,7 @@ export {
   ServerSideErrorPage,
   SkipNavContent,
   SkipNavLink,
-  ThemeSwitch,
+  ThemeSwitcher,
 } from "./components";
 
 export { useConfig } from "./contexts";
