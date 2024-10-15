@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Register a dice roll agent as a Function
 
@@ -28,7 +28,8 @@ To enable this on [DeltaV ↗️](/concepts/ai-engine/deltav) you will need to c
 ### The agent
 
 <CodeGroup hasCopy isLocalHostedFile>
-```py copy filename="local-agent.py"
+<DocsCode local={true}>
+```py copy filename="agent.py"
 import random
 from uagents import Agent, Context, Model, Field, Protocol
 from uagents.setup import fund_agent_if_low
@@ -73,8 +74,10 @@ dice_roll_agent.include(dice_roll_protocol, publish_manifest=True)
 if __name__ == "__main__":
     dice_roll_agent.run()
 ```
+</DocsCode>
 
-```py copy filename="hosted-agent.py"
+ <DocsCode local={false}>
+```py copy filename="agent.py"
 import random
 # third party modules used in this example
 from uagents import Field
@@ -97,4 +100,5 @@ async def roll_dice(ctx: Context, sender: str, msg: DiceRoll):
 
 agent.include(dice_roll_protocol, publish_manifest=True)
 ```
+</DocsCode>
 </CodeGroup>

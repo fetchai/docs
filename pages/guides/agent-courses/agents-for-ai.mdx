@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
-import { CodeGroup } from "../../../components/code";
+import { CodeGroup, DocsCode } from "../../../components/code";
 
 # Agents 101 for AI Engine
 
@@ -107,21 +107,25 @@ In this guide, our first agent takes any text and returns a sentiment of content
 We need to create a Python file for this example.
 We can do this by running:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch sentiment_agent.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > sentiment_agent.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch sentiment_agent.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch sentiment_agent.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > sentiment_agent.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch sentiment_agent.py
-        ```
-
-    </CodeGroup>
+</CodeGroup>
 
     ```py copy filename="sentiment_agent.py"
     from uagents import Agent, Context, Protocol, Model
@@ -323,21 +327,25 @@ Okay, take a quick break then let's create the second Agent; it's time to introd
 
 The next agent in the chain is the **Summary agent**. Let's name the script `web_summary_agent.py`. To do so run:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch web_summary_agent.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > web_summary_agent.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch web_summary_agent.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch web_summary_agent.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > web_summary_agent.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch web_summary_agent.py
-        ```
-
-    </CodeGroup>
+</CodeGroup>
 
 This Agent has the same structure as the sentiment Agent we previously defined.
 

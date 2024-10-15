@@ -9,11 +9,18 @@ interface CodeGroupProps {
   isOSFile?: boolean;
   isLocalHostedFile?: boolean;
   hasCopy?: boolean;
+  osBlocks: ReactNode;
+  codeBlocks: ReactNode;
 }
 
 interface CodeBlockProps {
   filename: string;
   dataLanguage?: string;
+  local?: boolean;
+  children: React.ReactNode;
+  windows?: boolean;
+  mac?: boolean;
+  ubuntu?: boolean;
 }
 
 type CodeBoxProps = {
@@ -23,6 +30,8 @@ type CodeBoxProps = {
   children?: React.ReactNode;
   isOSFile?: boolean;
   isLocalHostedFile?: boolean;
+  osBlocks: ReactNode;
+  codeBlocks: ReactNode;
 };
 
 type CodeBlock = {
@@ -260,51 +269,83 @@ const agentType = [
 
 export const CustomPre: React.FC<CodeBoxProps> = ({
   hasCopyCode,
-  children,
   isLocalHostedFile,
   isOSFile,
-  filename,
+  codeBlocks,
+  osBlocks,
 }) => {
   const [isCopied, setIsCopied] = useState(false);
   const codeRef = useRef<HTMLDivElement>(null);
 
-  const [selectedType, setSelectedType] = useState(
-    filename[0].includes("local") ? agentType[0].name : agentType[1].name,
-  );
-  const [selectedOS, setSelectedOS] = useState("windows");
-
-  const renderChild = () => {
-    return React.Children.map(children, (child) => {
+  const renderCodeChild = () => {
+    return React.Children.map(codeBlocks, (child) => {
       if (React.isValidElement<CodeBlockProps>(child)) {
-        return matchFilename(child.props.filename) ? child : null;
+        return child;
       }
       return null;
     });
   };
 
+  const child = renderCodeChild();
+  const localHostdType =
+    child?.length === 1 && !child[0]?.props?.local
+      ? agentType[1].name
+      : agentType[0].name;
+  const [selectedType, setSelectedType] = useState(localHostdType);
+  const [selectedOS, setSelectedOS] = useState("windows");
+
   const filteredAgentType =
-    isLocalHostedFile && filename.length == 2
+    child?.length === 2
       ? agentType
-      : agentType.filter(
-          (type) =>
-            type.label === (filename[0].includes("local") ? "local" : "hosted"),
+      : agentType.filter((agent) =>
+          child?.length === 1 && child[0]?.props?.local
+            ? agent.label === "local"
+            : agent.label === "hosted",
         );
 
-  const matchFilename = (filename: string): boolean => {
-    const regexMap = {
-      self_hosted: /local/i,
-      agentverse: /hosted/i,
-      windows: /windows/i,
-      mac: /mac/i,
-      ubuntu: /ubuntu/i,
-    };
-
-    return (
-      regexMap[selectedType.split(" ").join("_").toLowerCase()]?.test(
-        filename,
-      ) || regexMap[selectedOS.toLowerCase()]?.test(filename)
-    );
+  const renderCodeBlock = () => {
+    return React.Children.map(codeBlocks, (child) => {
+      if (React.isValidElement<CodeBlockProps>(child)) {
+        if (selectedType === "Self hosted" && child?.props?.local) {
+          return codeBlocks && child?.props?.children;
+        } else if (selectedType === "Agentverse" && !child?.props?.local) {
+          return codeBlocks && child?.props?.children;
+        }
+      }
+      return null;
+    });
   };
+
+  const renderOsBlock = () => {
+    return React.Children.map(osBlocks, (child) => {
+      if (React.isValidElement<CodeBlockProps>(child)) {
+        if (selectedOS === "windows" && child?.props?.windows) {
+          return codeBlocks && child?.props?.children;
+        } else if (selectedOS === "mac" && child?.props?.mac) {
+          return codeBlocks && child?.props?.children;
+        } else if (selectedOS === "ubuntu" && child?.props?.ubuntu) {
+          return codeBlocks && child?.props?.children;
+        }
+      }
+      return null;
+    });
+  };
+
+  useEffect(() => {
+    if (codeRef.current) {
+      const preTags = codeRef.current.querySelectorAll("pre");
+
+      for (const preTag of preTags) {
+        if (isLocalHostedFile) {
+          preTag.style.paddingTop = "80px";
+        } else if (isOSFile) {
+          preTag.style.paddingTop = "45px";
+        } else {
+          preTag.style.paddingTop = "0px";
+        }
+      }
+    }
+  }, [isLocalHostedFile, selectedType, codeBlocks, isOSFile, selectedOS]);
 
   const handleCopy = () => {
     const codeElements = codeRef.current?.querySelectorAll("code");
@@ -322,8 +363,16 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
 
   return (
     <div className="nx-flex nx-flex-col">
-      <div className="custom-pre">
-        <div className="nx-w-full nx-flex nx-justify-between">
+      <div
+        className={isOSFile || isLocalHostedFile ? "nx-relative" : "custom-pre"}
+      >
+        <div
+          className={`nx-w-full ${
+            isLocalHostedFile
+              ? "nx-absolute nx-top-6 nx- nx-px-6 nx-z-[10]"
+              : "nx-absolute nx-top-3 nx-px-12 nx-right-6 nx-z-[10]"
+          } nx-flex nx-justify-between`}
+        >
           <div className="nx-flex nx-gap-3">
             {isLocalHostedFile && (
               <Dropdown
@@ -377,16 +426,13 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
             style={{ overflowX: "scroll", width: "100%" }}
             ref={codeRef}
           >
-            {renderChild()}
+            {isOSFile ? renderOsBlock() : renderCodeBlock()}
           </div>
         </div>
       </div>
     </div>
   );
 };
-
-const isLocalOrHosted = (name?: string) =>
-  name?.startsWith("local-") || name?.startsWith("hosted-");
 
 export const ModifiedPre = ({
   children,
@@ -397,8 +443,6 @@ export const ModifiedPre = ({
   filename?: string;
   hasCopyCode?: boolean;
 }) => {
-  const osMenu = ["windows", "mac", "ubuntu"];
-
   const [isCopied, setIsCopied] = useState(false);
   const codeRef = useRef<HTMLDivElement>(null);
 
@@ -416,66 +460,42 @@ export const ModifiedPre = ({
     }
   };
 
-  const shouldApplyPreNormal = Boolean(filename && isLocalOrHosted(filename));
-
-  if (osMenu.includes(filename || "")) {
-    return (
-      <div>
-        <span className="filename">
-          {filename?.replace(/^(local-|hosted-)/, "")}
-        </span>
-        <div>{children}</div>
-      </div>
-    );
-  }
-
   return (
-    <Pre className={shouldApplyPreNormal ? "" : "pre-normal"}>
-      {isLocalOrHosted(filename) ? (
-        filename && (
-          <span className="filename">
-            {filename.replace(/^(local-|hosted-)/, "")}
-          </span>
-        )
-      ) : (
-        <div
-          className={`nx-p-2 nx-flex ${
-            filename ? "nx-justify-between nx-items-center" : "nx-justify-end"
-          } nx-w-full`}
-        >
-          {filename && (
-            <span className="filename">
-              {filename.replace(/^(local-|hosted-)/, "")}
-            </span>
-          )}
-          {hasCopyCode && (
-            <div
-              onClick={handleCopy}
-              className="nx-cursor-pointer nx-ml-auto nx-flex nx-gap-2 nx-items-center"
-            >
-              {isCopied ? (
-                <>
-                  <svg
-                    width="12"
-                    height="8"
-                    viewBox="0 0 12 8"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
-                      fill="#0B1742"
-                    />
-                  </svg>
-                  <span className="nx-copy-text">Copied</span>
-                </>
-              ) : (
-                <CopyIcon />
-              )}
-            </div>
-          )}
-        </div>
-      )}
+    <Pre className={`pre-normal`}>
+      <div
+        className={`nx-p-2 nx-flex ${
+          filename ? "nx-justify-between nx-items-center" : "nx-justify-end"
+        } nx-w-full`}
+      >
+        {filename && <span className="filename">{filename}</span>}
+        {hasCopyCode && (
+          <div
+            onClick={handleCopy}
+            className="nx-cursor-pointer nx-ml-auto nx-flex nx-gap-2 nx-items-center"
+          >
+            {isCopied ? (
+              <>
+                <svg
+                  width="12"
+                  height="8"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
+                    fill="#0B1742"
+                  />
+                </svg>
+                <span className="nx-copy-text">Copied</span>
+              </>
+            ) : (
+              // <CopyIcon />
+              <></>
+            )}
+          </div>
+        )}
+      </div>
       <div ref={codeRef}>{children}</div>
     </Pre>
   );
@@ -486,26 +506,57 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
   isOSFile,
   isLocalHostedFile,
   hasCopy,
+}: CodeGroupProps): React.ReactElement | null => {
+  const codeBlocks = React.Children.toArray(children).filter(
+    (child): child is React.ReactElement<CodeBlockProps> => {
+      return React.isValidElement(child) && "local" in child.props;
+    },
+  );
+
+  const osBlocks = React.Children.toArray(children).filter(
+    (child): child is React.ReactElement<CodeBlockProps> => {
+      if (!React.isValidElement(child)) return false;
+
+      const { props } = child;
+      return "windows" in props || "mac" in props || "ubuntu" in props;
+    },
+  );
+
+  const [firstChild] = React.Children.toArray(children);
+  if (React.isValidElement(firstChild)) {
+    const modifiedFirstChild = React.cloneElement(
+      firstChild as React.ReactElement<CodeGroupProps>,
+      {
+        isLocalHostedFile,
+        isOSFile,
+        hasCopy,
+        codeBlocks,
+        osBlocks,
+      },
+    );
+
+    return modifiedFirstChild;
+  }
+
+  return <>{children}</> || null;
+};
+
+export const DocsCode: React.FC<CodeGroupProps> = ({
+  codeBlocks,
+  isLocalHostedFile,
+  isOSFile,
+  hasCopy,
+  osBlocks,
 }) => {
-  const renderFileName = () => {
-    return React.Children.map(children, (child) => {
-      if (React.isValidElement<CodeBlockProps>(child)) {
-        return child.props.filename;
-      }
-      return null;
-    });
-  };
-  const filename = renderFileName();
   return (
     <div className="nx-mt-3">
       <CustomPre
         isLocalHostedFile={isLocalHostedFile}
         isOSFile={isOSFile}
         hasCopyCode={hasCopy}
-        filename={filename}
-      >
-        {children}
-      </CustomPre>
+        codeBlocks={codeBlocks}
+        osBlocks={osBlocks}
+      />
     </div>
   );
 };
