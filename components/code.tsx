@@ -567,7 +567,7 @@ interface CodeSegment {
   path: string;
   lineStart: number;
   lineEnd: number;
-  last_updated: string;
+  last_updated?: string;
   hosted: boolean;
   filename?: string;
 }
