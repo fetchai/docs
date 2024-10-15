@@ -99,12 +99,9 @@ def insert_Html_after_jsx(filePath):
             return f"\n{new_jsx_object}"
 
         for match in re.finditer(jsx_obj_regex, data):
-            # Calculate the new position considering the offset from previous inserts
             insert_pos = match.end() + offset
-            # Insert the string after the match
             result = insert_tag(match)
             data = data[:insert_pos] + result + data[insert_pos:]
-            # Update offset to account for the inserted string length
             offset += len(result)
 
         f.seek(0)
@@ -123,6 +120,3 @@ def directory_loop(directory, removal):
 
 directory_loop('./pages/guides', True)
 directory_loop('./pages/guides', False)
-
-# import subprocess
-# subprocess.run(["pnpm", "run", "fmt"])
