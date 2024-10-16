@@ -33,7 +33,7 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Local agent setup
 
-        ```py copy filename="agent_1.py"
+        ```py copy filename="mailbox_agent.py"
         from uagents import Agent, Context, Model
     
         class Message(Model):
@@ -86,9 +86,9 @@ Once the agent is correctly retrieved, you will have to give it a **name**. When
 
 ## Updating your agent
 
-Let's update `alice`, alice will now print to console any message it receives, provided the message is of type `Message`. Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`,  `name`, `seed`  and `mailbox` parameters to correctly run this code:
+Let's update `alice` agent; `alice` will now print to console any message it receives, provided the message is of type `Message`. Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`,  `name`, `seed`  and `mailbox` parameters to correctly run this code:
 
-        ```py copy filename="alice.py"
+        ```py copy filename="mailbox_agent_updated.py"
         from uagents import Agent, Context, Model
     
         class Message(Model):
@@ -116,7 +116,7 @@ Let's update `alice`, alice will now print to console any message it receives, p
 
 Let's create and run a second agent to message Alice every 3 seconds. You need to provide the `ALICE_ADDRESS`, `name` and `seed` parameters to correctly run this code:
 
-        ```py copy filename="agent_2.py"
+        ```py copy filename="test_agent.py"
     
         from uagents import Agent, Bureau, Context, Model
         from datetime import datetime

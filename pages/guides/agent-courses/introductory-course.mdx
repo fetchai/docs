@@ -246,7 +246,7 @@ Let's get Alice to do something! We're going to get Alice, on start up, to intro
 
 Let's update `alice_agent.py` with the code snippet below:
 
-    ```py copy
+    ```py copy filename="alice_agent.py"
     # Import the required classes
     from uagents import Agent, Context
 
@@ -282,7 +282,7 @@ This time, the output will be:
 
 Sometimes, we just need to see what a value looks like. We can quickly do so in Python by using the `print()` in-built function. As we have mentioned earlier, every AI Agent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses. We have showed above how to check for an uAgent address using the `agent.address` method of the `Context` class. Let's now print them in the console to see their differences using the `print()` function:
 
-    ```py copy
+    ```py copy filename="address.py"
     from uagents import Agent
 
     agent = Agent(name="alice")
@@ -308,7 +308,7 @@ The output of the above would look similar to:
 
 If you want to create an interval task, you need to use an `on_interval()` decorator to set up an interval with a timer that triggers the task repetition. As an introductory example, we can consider an agent periodically printing hello and its name on the console. In this case, we apply the decorator to a `say_hello()` function which will be repeated at the specified time interval:
 
-    ```py copy
+    ```py copy filename="interval_task.py"
     from uagents import Agent, Context
 
     agent = Agent(name="agent", seed="alice recovery phrase")
@@ -363,7 +363,7 @@ Let's create a new Python file for these agents:
 
 The script will look as follows:
 
-    ```py copy
+    ```py copy filename="duo_agent.py"
     from uagents import Agent, Context, Bureau
 
     alice = Agent(name="alice", seed="alice recovery phrase")
@@ -464,6 +464,38 @@ We then need to define a message handler function for `alice` to handle response
 Finally, we need to add both agents to the `Bureau` in order to run them from the same script:
 
     ```py copy
+    bureau = Bureau()
+    bureau.add(alice)
+    bureau.add(bob)
+
+    if __name__ == "__main__":
+        bureau.run()
+    ```
+
+The overall script would be:
+
+    ```py copy filename="agent_communication.py"
+    from uagents import Agent, Bureau, Context, Model
+
+    class Message(Model):
+        message: str
+
+    alice = Agent(name="alice", seed="alice recovery phrase")
+    bob = Agent(name="bob", seed="bob recovery phrase")
+
+    @alice.on_interval(period=3.0)
+    async def send_message(ctx: Context):
+        await ctx.send(bob.address, Message(message="hello there bob"))
+
+    @bob.on_message(model=Message)
+    async def bob_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        await ctx.send(alice.address, Message(message="hello there alice"))
+
+    @alice.on_message(model=Message)
+    async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
     bureau = Bureau()
     bureau.add(alice)
     bureau.add(bob)
@@ -1039,7 +1071,7 @@ Remember that you need to provide the `name`, `port`, `seed` and `endpoint` para
 
 The `restaurant` agent is now online and ready to receive messages.
 
-The overall script would be as follow:
+The overall script would be as follows:
 
     ```py copy filename="restaurant_agent.py"
     from protocols.book import book_proto

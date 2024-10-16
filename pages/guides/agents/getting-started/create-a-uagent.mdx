@@ -26,32 +26,32 @@ Make sure you have read the following resources before going on with this guide:
 
 1. Let's create a Python script for this task, and name it by running:
 
-<CodeGroup hasCopy isOSFile>
-     <DocsCode mac={true}>
-        ```py copy filename="mac"
-        touch agent.py
-        ```
-        </DocsCode>
-
-    <DocsCode windows={true}>
-        ```py copy filename="windows"
-        echo. > agent.py
-        ```
-        </DocsCode>
-
-    <DocsCode ubuntu={true}>
-        ```py copy filename="ubuntu"
-        touch agent.py
-        ```
-        </DocsCode>
-</CodeGroup>
+   <CodeGroup hasCopy isOSFile>
+        <DocsCode mac={true}>
+           ```py copy filename="mac"
+           touch first_agent.py
+           ```
+           </DocsCode>
+   
+       <DocsCode windows={true}>
+           ```py copy filename="windows"
+           echo. > first_agent.py
+           ```
+           </DocsCode>
+   
+       <DocsCode ubuntu={true}>
+           ```py copy filename="ubuntu"
+           touch first_agent.py
+           ```
+           </DocsCode>
+   </CodeGroup>
 
 2. We then need to import the `Agent` and `Context` classes from the `uagents` library, and then create an agent using the class `Agent`:
 
-```py copy
-from uagents import Agent, Context
-agent = Agent(name="alice", seed="secret_seed_phrase")
-```
+   ```py copy
+   from uagents import Agent, Context
+   agent = Agent(name="alice", seed="secret_seed_phrase")
+   ```
 
    It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the agent. Your address is kind of important, as this is how other agents will identify you.
 
@@ -72,7 +72,7 @@ agent = Agent(name="alice", seed="secret_seed_phrase")
 
 The overall script should look as follows:
 
-```py copy filename="agent.py"
+```py copy filename="first_agent.py"
 from uagents import Agent, Context
 
 agent = Agent(name="alice", seed="secret_seed_phrase")
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
 Make sure to have activated your virtual environment correctly.
 
-Run the script: `python agent.py`
+Run the script: `python first_agent.py`
 
 The output would be:
 

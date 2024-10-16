@@ -93,84 +93,83 @@ You can also use an account's mnemonic phrase to get the associated private key.
 
 A simple agent that creates, or loads in a wallet, then validates a transaction has been received.
 
-```python copy
-
-from cosmpy.aerial.wallet import LocalWallet
-from cosmpy.aerial.client import LedgerClient, NetworkConfig
-from cosmpy.crypto.keypairs import PrivateKey
-from uagents import Agent, Context, Model
-from uagents.network import get_faucet, wait_for_tx_to_complete
-
-mainnet_ledger = LedgerClient(NetworkConfig.fetchai_mainnet())
-
-
-class RequestWithTX(Model):
-    message: str
-    tx_hash: str
-
-
-class DataResponse(Model):
-    message: str
-
-
-class PaymentError(Model):
-    message: str
-    tx_hash: str
-
-
-DataSellingAgent = Agent(
-    name="DataSellingAgent",
-    seed="dwefwegferdwdwedgko4o430490349jf340-jffjweiopfnw",
-    port=8001,
-    endpoint=["http://localhost:8001/submit"],
-)
-
-print (DataSellingAgent.address)
-
-AMOUNT = 1
-DENOM = "afet"
-DATA_TO_SELL = "..."
-
-## at first you may want to generate a wallet
-my_wallet = LocalWallet.generate()
-## or open one from a seed you've set
-# my_wallet = LocalWallet.from_unsafe_seed("registration test wallet")
-# pk = my_wallet._private_key
-## or from a pk you already have
-# wallet = LocalWallet(PrivateKey("T7w1yHq1QIcQiSqV27YSwk+i1i+Y4JMKhkpawCQIh6s="))
-
-...
-
-
-@DataSellingAgent.on_message(model=RequestWithTX)
-async def message_handler(ctx: Context, sender: str, msg: RequestWithTX):
-    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    mainnet_ledger.query_tx(msg.tx_hash)
-    tx_resp = await wait_for_tx_to_complete(msg.tx_hash, mainnet_ledger)
-
-    coin_received = tx_resp.events["coin_received"]
-    if (
-            coin_received["receiver"] == str(my_wallet.address)
-            and coin_received["amount"] == f"{AMOUNT}{DENOM}"
-    ):
-        ctx.logger.info(f"Transaction was successful: {coin_received}")
-        await ctx.send(sender, DataResponse(message=DATA_TO_SELL))
-
-    else:
-        await ctx.send(sender, PaymentError(message="Incorrect tx", tx_hash=msg.tx_hash))
-
-if __name__ == "__main__":
-    DataSellingAgent.run()
-
-
-```
+    ```python copy filename="local_wallet_agent.py"
+    
+    from cosmpy.aerial.wallet import LocalWallet
+    from cosmpy.aerial.client import LedgerClient, NetworkConfig
+    from cosmpy.crypto.keypairs import PrivateKey
+    from uagents import Agent, Context, Model
+    from uagents.network import get_faucet, wait_for_tx_to_complete
+    
+    mainnet_ledger = LedgerClient(NetworkConfig.fetchai_mainnet())
+    
+    
+    class RequestWithTX(Model):
+        message: str
+        tx_hash: str
+    
+    
+    class DataResponse(Model):
+        message: str
+    
+    
+    class PaymentError(Model):
+        message: str
+        tx_hash: str
+    
+    
+    DataSellingAgent = Agent(
+        name="DataSellingAgent",
+        seed="dwefwegferdwdwedgko4o430490349jf340-jffjweiopfnw",
+        port=8001,
+        endpoint=["http://localhost:8001/submit"],
+    )
+    
+    print (DataSellingAgent.address)
+    
+    AMOUNT = 1
+    DENOM = "afet"
+    DATA_TO_SELL = "..."
+    
+    ## at first you may want to generate a wallet
+    my_wallet = LocalWallet.generate()
+    ## or open one from a seed you've set
+    # my_wallet = LocalWallet.from_unsafe_seed("registration test wallet")
+    # pk = my_wallet._private_key
+    ## or from a pk you already have
+    # wallet = LocalWallet(PrivateKey("T7w1yHq1QIcQiSqV27YSwk+i1i+Y4JMKhkpawCQIh6s="))
+    
+    ...
+    
+    @DataSellingAgent.on_message(model=RequestWithTX)
+    async def message_handler(ctx: Context, sender: str, msg: RequestWithTX):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    
+        mainnet_ledger.query_tx(msg.tx_hash)
+        tx_resp = await wait_for_tx_to_complete(msg.tx_hash, mainnet_ledger)
+    
+        coin_received = tx_resp.events["coin_received"]
+        if (
+                coin_received["receiver"] == str(my_wallet.address)
+                and coin_received["amount"] == f"{AMOUNT}{DENOM}"
+        ):
+            ctx.logger.info(f"Transaction was successful: {coin_received}")
+            await ctx.send(sender, DataResponse(message=DATA_TO_SELL))
+    
+        else:
+            await ctx.send(sender, PaymentError(message="Incorrect tx", tx_hash=msg.tx_hash))
+    
+    if __name__ == "__main__":
+        DataSellingAgent.run()
+    
+    
+    ```
 
 Validating a transaction with Cosmpy and uAgents is really easy, and to test the above agent you just need to replicate the `Models` and send a `RequestWithTX` in any function in another agent:
 
-```
-@DataBuyingAgent.on_event("startup")
-async def introduce_agent(ctx: Context):
-    ctx.logger.info("Starting DataBuyingAgent...")
-    await ctx.send(agent_address, RequestWithTX(message="buy",  tx_hash="D165966A6B9269EHHHHH7C8F659F1CDA871C8CD83F9102DD35A437211F3DE0CF"))
-```
+    ```
+    @DataBuyingAgent.on_event("startup")
+    async def introduce_agent(ctx: Context):
+        ctx.logger.info("Starting DataBuyingAgent...")
+        await ctx.send(agent_address, RequestWithTX(message="buy",  tx_hash="D165966A6B9269EHHHHH7C8F659F1CDA871C8CD83F9102DD35A437211F3DE0CF"))
+    ```
