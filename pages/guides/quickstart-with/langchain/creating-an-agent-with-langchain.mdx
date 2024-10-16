@@ -48,7 +48,7 @@ Check out more detailed instructions for [installation ↗️](/guides/agents/ge
 
 Our first agent is simple; it sends a message every two seconds to a static address. When this agent receives a message, it prints that to log:
 
-```python copy filename="agent1.py"
+```python copy filename="first_agent.py"
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
 
@@ -129,7 +129,7 @@ async def message_handler(ctx: Context, sender: str, msg: Message):
 
 Agent two doesn't do anything different to agent one; it has different args for the Agent instantiation, and instead of sending a message `on_event("startup")`, agent two just logs its address to screen. Whenever agent two receives a message matching `Message` data model, it will send a response to the sender.
 
-```python copy filename="agent2.py"
+```python copy filename="second_agent.py"
 from uagents.setup import fund_agent_if_low
 from uagents import Agent, Context, Model
 
@@ -165,13 +165,13 @@ Okay, let's now run these agents.
 
 ### Running the agents
 
-Let's run the second agent's script first using this command: `poetry run python agent2.py`
+Let's run the second agent's script first using this command: `poetry run python second_agent.py`
 
-**We must run the second agent first to get its unique address**. This is shown in output in the log. Let's update `agent1.py` script by filling the `RECIPIENT_ADDRESS` field with the address of the second agent from of the output we previously got by running `agent2.py` script.
+**We must run the second agent first to get its unique address**. This is shown in output in the log. Let's update `first_agent.py` script by filling the `RECIPIENT_ADDRESS` field with the address of the second agent from of the output we previously got by running `second_agent.py` script.
 
-Updated `agent1.py` script sample:
+Updated `first_agent.py` script sample:
 
-```python copy filename="agent1.py"
+```python copy filename="agent_one.py"
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
  
@@ -184,13 +184,13 @@ agent = Agent(
     	...
 ```
 
-Then, let's run the script for the first agent using this command: `poetry run python agent1.py`
+Then, let's run the script for the first agent using this command: `poetry run python first_agent.py`
 
 Great! You should now be seeing some log out output with our messages being displayed.
 
 ### Output
 
-- **Agent 1**:
+- **First Agent**:
 
     ```
     INFO:     [agent]: Registering on almanac contract...
@@ -201,7 +201,7 @@ Great! You should now be seeing some log out output with our messages being disp
     INFO:     [agent]: Received message from agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp: hello there
     ```
 
-- **Agent 2**:
+- **Second Agent**:
 
     ```
     INFO:     [agent 2]: Registering on almanac contract...
@@ -222,7 +222,7 @@ However now, `.on_message(model=DocumentsResponse)` expects a `DocumentsResponse
 
 To learn more about communication with other agents check out the following [Guide ↗️](/guides/agents/intermediate/communicating-with-other-agents)
 
-```python copy filename="agent1.py"
+```python copy filename="langchain_agent_one.py"
 from uagents import Agent, Context, Protocol, Model
 from ai_engine import UAgentResponse, UAgentResponseType
 from typing import List
@@ -263,7 +263,7 @@ agent.run()
 
 Agent two defines the same models as agent one, but this time, it wraps the logic for the Langchain PDF question in the `document_load()` function, which is decorated with `.on_message(model=DocumentUnderstanding, replies=DocumentsResponse)` . You can specify a `replies` argument in your `on_message` decorators; this is useful for being more explicit with communication.
 
-```python copy filename="agent2.py"
+```python copy filename="langchain_agent_two.py"
 from langchain_community.document_loaders import PyPDFLoader
 import os
 from langchain_community.vectorstores import FAISS
@@ -313,11 +313,11 @@ With these agents now being defined, it is time to run them. Let's run Agent two
 
 ### Expected Output
 
-Run `poetry run python langchain_agent_2.py` first and then `poetry run python langchain_agent_1.py`.
+Run `poetry run python langchain_agent_two.py` first and then `poetry run python langchain_agent_1.py`.
 
 You should get something similar to the following for each agent:
 
-- **Agent 1**:
+- **Langchain Agent 1**:
 
     ```
     uAgent address agent:  agent1qv9qmj3ug83vcrg774g2quz0urmlyqlmzh6a5t3r88q3neejlrffz405p7x
@@ -328,7 +328,7 @@ You should get something similar to the following for each agent:
     INFO:     [find_in_pdf]: ['0: This is a simple story about two ... ]
     ```
 
-- **Agent 2**:
+- **Langchain Agent 2**:
 
     ```
     uAgent address:  agent1qfwfpz6dpyzvz0f0tgxax58fpppaknnqm99fpggmm2wffjcxgqe8sn4cwx3
