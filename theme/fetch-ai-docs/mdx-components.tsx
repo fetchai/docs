@@ -221,7 +221,7 @@ export const getComponents = ({
     ),
     ol: (props) => (
       <ol
-        className="nx-mt-6 nx-list-decimal first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6"
+        className="nx-mt-6 nx-list-decimal first:nx-mt-0 ltr:nx-ml-6 rtl:nx-mr-6 dark:nx-text-white-60"
         {...props}
       />
     ),

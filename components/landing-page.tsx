@@ -10,6 +10,7 @@ import Products from "./products";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import systemDiagram from "../src/svgs/system-diagram.svg";
+import darkSystemDiagram from "../src/svgs/dark-system-diagram.svg";
 import coursesStack from "../src/svgs/courses-stack.svg";
 import darkCoursesStack from "../src/svgs/dark-course-stack.svg";
 import coursesStackSecond from "../src/svgs/courses-stack-second.svg";
@@ -250,7 +251,7 @@ function LandingPage() {
           </div>
         </div>
       </section>
-      <hr className={styles.horizontalLine} />
+      <div className={styles.horizontalLine} />
       <section>
         <p className={styles.subTitle}>Our technology loop</p>
         <p className={styles.systemDescripton}>
@@ -260,8 +261,8 @@ function LandingPage() {
           Agents are the actors, and the heart of Fetch.ai ecosystem.
         </p>
         <Image
-          className="nx-py-6 md:dark:nx-h-[586px] nx-h-auto dark:nx-bg-[#2C2E38] dark:nx-rounded-lg"
-          src={systemDiagram}
+          className="nx-py-6 nx-w-full md:dark:nx-h-[586px] nx-h-auto dark:nx-bg-[#2C2E38] nx-my-10 dark:nx-rounded-lg"
+          src={theme === ThemeMode.Dark ? darkSystemDiagram : systemDiagram}
           alt="system-diagram"
         />
         <p className={styles.systemDescripton}>
@@ -278,7 +279,7 @@ function LandingPage() {
           Agents are made possible with the Fetch.ai platform.
         </p>
       </section>
-      <hr className={styles.horizontalLine} />
+      <div className={styles.horizontalLine} />
       <section className={styles.courseSection}>
         <div>
           <p className={styles.coursesHeading}>Courses</p>

@@ -103,7 +103,7 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
               <div
                 className={cn(
                   hasHeadings && "nx-border-t nx-pt-4",
-                  "nx-sticky nx-bottom-0 nx-flex nx-flex-col nx-items-start nx-gap-2 nx-pb-8 dark:nx-border-neutral-800",
+                  "nx-bottom-0 nx-flex nx-flex-col nx-items-start nx-gap-2 nx-pb-8 dark:nx-border-neutral-800",
                   "contrast-more:nx-border-t contrast-more:nx-border-neutral-400 contrast-more:nx-shadow-none contrast-more:dark:nx-border-neutral-400",
                 )}
               >

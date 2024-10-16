@@ -28,10 +28,14 @@ export const GuideBox = ({
       }}
       id={content.title.toLowerCase().split(" ").join("-")}
     >
-      <h3 className="nx-text-black dark:nx-text-[#E9E9EA] nx-font-medium nx-mb-2 nx-text-lg">
+      <h3
+        className={`nx-text-black nx-font-medium nx-mb-2 nx-text-lg ${
+          hover ? "title-hover-dark" : " dark:nx-text-white-90"
+        }`}
+      >
         {content.title}
       </h3>
-      <p className="nx-text-gray-500 dark:nx-text-[#A6A7AB] nx-font-normal">
+      <p className="nx-text-gray-500 dark:nx-text-white-60 nx-font-normal">
         {content.description}
       </p>
     </section>
