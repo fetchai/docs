@@ -1,9 +1,15 @@
 import base64
+import sys
 import requests
 import os
 import re
+import hashlib
 
 access_token = os.getenv("ACCESS_TOKEN")
+
+
+def insert_updated_digest(match, digest):
+    return match.replace('digest=""', f"""digest=\"{digest}\"""")
 
 
 def delete_code_sample(filePath):
@@ -16,12 +22,13 @@ def delete_code_sample(filePath):
 
         result_string = re.sub(jsx_codegroup_regex, "", data)
         result_string = re.sub(r'\n\s*\n', '\n\n', result_string)
+        result_string = re.sub(r'digest="([^"]+)?"', 'digest=""', result_string)
         f.seek(0)
         f.truncate()
         f.write(result_string)
 
 
-def getGitHubData(owner, repo, filePath):
+def get_github_data(owner, repo, filePath):
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{filePath}?ref=main"
     headers = {'Accept': 'application/vnd.github.v3.star+json', 'Authorization': f"Bearer {access_token}"}
 
@@ -33,79 +40,92 @@ def getGitHubData(owner, repo, filePath):
             decoded_body = base64.b64decode(text_body).decode("utf-8")
             return decoded_body
         else:
-            print(response.status_code)
+            print(response.status_code, response.text)
 
     except Exception as e:
         print(f"Error fetching and updating data: {e}")
 
 
-def insert_Html_after_jsx(filePath):
-    offset = 0
-
-    with open(filePath, "r+") as f:
+def insert_html_after_jsx(filepath):
+    with open(filepath, "r+") as f:
         data = f.read()
 
-        base_regex = r"<GithubCodeSegment>(.*?)</GithubCodeSegment>"
+        base_regex = r"<GithubCodeSegment(.*?)>(.*?)</GithubCodeSegment>"
         jsx_obj_regex = re.compile(base_regex, re.DOTALL)
 
         def insert_tag(match):
-
-            key_value_pairs = []
 
             code_groups_base_regex = r"<CodeSegment(.*?)/>"
             code_groups_regex = re.compile(code_groups_base_regex, re.DOTALL)
             regex = r'(\w+)=["{]?([^"}]+)["}]?'
 
+            re_digest = r'digest="([^"]+)?"'
+            digest_match = re.search(re_digest, match.group(0))
+            og_digest = digest_match.group(1) if digest_match.group(1) else ""
+
             code_groups = re.findall(code_groups_regex, match.group(0))
-
-            for code_group in code_groups:
-                l = {}
-
-                for internal_match in re.finditer(regex, code_group):
-                    key = internal_match.group(1)
-                    value = internal_match.group(2).replace("{", "").replace("}", "")
-                    l[key] = value
-
-                key_value_pairs.append(l)
-
+            code_group = code_groups[0]
             code_block = ""
 
-            for meta_value in key_value_pairs:
-                parts = meta_value["path"].split("/");
+            pairs = {}
 
-                print (key_value_pairs)
+            for internal_match in re.finditer(regex, code_group):
+                key = internal_match.group(1)
+                value = internal_match.group(2).replace("{", "").replace("}", "")
+                pairs[key] = value
 
-                username = parts[3];
-                repository = parts[4];
-                filePath = "/".join(parts[7:]).replace("\"", "")
-                filename = parts[len(parts) - 1]
+            parts = pairs["path"].split("/");
+            username = parts[3];
+            repository = parts[4];
+            code_filepath = "/".join(parts[7:]).replace("\"", "")
+            filename = parts[len(parts) - 1]
 
-                if "filename" in meta_value:
-                    filename = meta_value["filename"]
+            if "filename" in pairs:
+                filename = pairs["filename"]
 
-                hosted = meta_value["hosted"]
+            hosted = pairs["hosted"]
 
+            lines = get_github_data(username, repository, code_filepath)
+            selection = lines.split("\n")[int(pairs["lineStart"]) - 1:int(pairs["lineEnd"])]
+            selection = ["\t" + s for s in selection]
+            reformed_code_block = '\n'.join(selection)
 
-                lines = getGitHubData(username, repository, filePath)
+            code_block = code_block + f"""\n\n<DocsCode local={{{hosted}}}>\n\t```py copy filename="{filename}"\n\n{reformed_code_block}\n\n```\n</DocsCode>\n"""
 
-                selection = lines.split("\n")[int(meta_value["lineStart"]) - 1:int(meta_value["lineEnd"])]
-                selection = ["\t" + s for s in selection]
-                s = '\n'.join(selection)
+            digest = hashlib.md5(code_block.encode('utf-8')).hexdigest()  # digest the entire jsx obj
 
-                code_block = code_block + f"""\n\n<DocsCode local={{{hosted}}}>\n\t```py copy filename="{filename}"\n\n{s}\n\n```\n</DocsCode>\n"""
+            if og_digest == "":
+                new_jsx_object = f"<CodeGroup dynamic hasCopy isLocalHostedFile digest='{digest}'>\n{code_block}\n</CodeGroup>\n\n"
+                match_with_new_digest = insert_updated_digest(match.group(0), digest)
+                return f"{match_with_new_digest}\n{new_jsx_object}", None
 
-            new_jsx_object = f"<CodeGroup dynamic hasCopy isLocalHostedFile>\n{code_block}\n</CodeGroup>"
+            if og_digest == digest:
+                return None, "No need to update code, digest matches"
 
-            return f"\n{new_jsx_object}"
+            if og_digest != digest:
+                return None, f"=== Mismatch at {filepath}, from {code_filepath} ==="
 
+        result = []
+        last_end = 0
+        i = 0
         for match in re.finditer(jsx_obj_regex, data):
-            insert_pos = match.end() + offset
-            result = insert_tag(match)
-            data = data[:insert_pos] + result + data[insert_pos:]
-            offset += len(result)
+            i+=1
+            start, end = match.span()
+            jsx, cl = insert_tag(match)
+            if cl:
+                print(cl)
+            else:
+                result.append(data[last_end:start])
+                result.append(jsx)
+                last_end = end
 
-        f.seek(0)
-        f.write(data)
+        result.append(data[last_end:])
+
+        if len(result) == 0:
+            f.close()
+        else:
+            f.seek(0)
+            f.write(''.join(result))
 
 
 def directory_loop(directory, removal):
@@ -113,10 +133,16 @@ def directory_loop(directory, removal):
         for file in files:
             if file.endswith(".md") or file.endswith(".mdx"):
                 if not removal:
-                    insert_Html_after_jsx(os.path.join(root, file))
+                    insert_html_after_jsx(os.path.join(root, file))
                 else:
                     delete_code_sample(os.path.join(root, file))
 
 
 directory_loop('./pages/guides', True)
 directory_loop('./pages/guides', False)
+
+"""
+todo: add in function to remove all CodeGroup and set all GithubCodeSegment digests to an empty string
+todo: add in args to force an update if digests don't match
+todo: force exit on a non-matching digest
+"""

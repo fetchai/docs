@@ -567,12 +567,14 @@ interface CodeSegment {
   path: string;
   lineStart: number;
   lineEnd: number;
-  last_updated?: string;
+  digest: string;
   hosted: boolean;
   filename?: string;
 }
 
-interface GithubCodeSegment {}
+interface GithubCodeSegment {
+  digest?: string
+}
 
 export const GithubCodeSegment: React.FC<GithubCodeSegment> = () => {
   return <div hidden />;
