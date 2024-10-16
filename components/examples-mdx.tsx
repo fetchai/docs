@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent } from "react";
 import { GuideBox } from "./feature-guide-tabs";
+import styles from "./footer.module.css";
 import { Grid2 } from "./mdx";
+import { SearchIcon } from "src/icons/shared-icons";
 
 interface Content {
   type: string;
@@ -33,12 +35,12 @@ const ExamplesMdx: React.FC<FilterMdxProps> = ({ content }) => {
   };
 
   return (
-    <div className="nx-flex nx-flex-col nx-w-full nx-items-end nx-justify-end">
+    <div className="nx-flex nx-flex-col nx-w-full nx-py-6">
       <div className="md:nx-flex nx-block nx-gap-5">
         <select
           name="select"
           onChange={onSelectChange}
-          className="nx-rounded-[10px] nx-outline-none nx-cursor-pointer nx-border nx-border-solid nx-px-3 nx-py-2"
+          className="nx-rounded-[10px] nx-outline-none nx-cursor-pointer nx-border nx-border-solid nx-bg-transparent nx-py-2 nx-px-4 dark:full-border-dark dark:nx-text-white-90"
         >
           <option value="">All Types</option>
           {content
@@ -50,13 +52,16 @@ const ExamplesMdx: React.FC<FilterMdxProps> = ({ content }) => {
               </option>
             ))}
         </select>
-        <input
-          name="input"
-          value={inputVal}
-          onChange={onInputChange}
-          placeholder="Search...."
-          className="nx-font-normal nx-mt-5 md:nx-mt-0 nx-bg-transparent nx-rounded-full nx-border nx-border-solid nx-border-purple nx-px-6 nx-py-2"
-        />
+        <div className={styles.inputBox}>
+          <input
+            name="input"
+            value={inputVal}
+            onChange={onInputChange}
+            placeholder="Search...."
+            className={styles.inputInner}
+          />
+          <SearchIcon />
+        </div>
       </div>
       <Grid2>
         {content

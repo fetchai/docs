@@ -31,7 +31,7 @@ export const GridView = ({
       <h3 className="nx-font-medium nx-capitalize nx-mb-2 nx-text-base">
         {content.title}
       </h3>
-      <p className="nx-text-[#0B1742] nx-opacity-60 nx-text-sm nx-font-normal">
+      <p className="nx-text-[#0B1742] nx-opacity-60 nx-text-sm nx-font-normal dark:nx-text-white-60">
         {content.description}
       </p>
     </section>

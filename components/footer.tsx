@@ -1,6 +1,4 @@
 import React, { ChangeEvent, useState } from "react";
-import Image from "next/image";
-import logo from "src/svgs/logo.svg";
 import styles from "./footer.module.css";
 import { Anchor } from "theme/fetch-ai-docs/components";
 import { renderComponent } from "theme/fetch-ai-docs/utils";
@@ -14,6 +12,7 @@ import {
   Twitter,
   Youtube,
 } from "src/icons/footer-icons";
+import Logo from "./logo";
 
 const FooterLink = ({
   content,
@@ -108,7 +107,7 @@ const Footer: React.FC = () => {
     >
       <section className={styles.page}>
         <div className={styles.footerUpper}>
-          <Image src={logo} alt="footer-logo" />
+          <Logo />
           <div className={styles.footerLinkSection}>
             {developers.map((content, index) => {
               return <FooterLink key={index} content={content} />;
@@ -224,7 +223,7 @@ const Footer: React.FC = () => {
                     }
                     onBlur={handleBlur}
                     className={styles.inputInner}
-                    placeholder="Enter your email"
+                    placeholder="Email address"
                   />
                 </div>
               </div>
