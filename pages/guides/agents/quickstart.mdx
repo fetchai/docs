@@ -81,7 +81,7 @@ Create a new Python script:
 </CodeGroup>
 Open `interval_task.py` in your text editor and add the following code:
 
-<GithubCodeSegment>
+<GithubCodeSegment digest="8124d02089b755b4ecfbfbbfeefb829b">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/quickstart/local/interval_task.py"
         lineStart={1}
@@ -90,36 +90,31 @@ Open `interval_task.py` in your text editor and add the following code:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='8124d02089b755b4ecfbfbbfeefb829b'>
 
 
 <DocsCode local={true}>
 	```py copy filename="interval_task.py"
 
-		from uagents import Agent, Context
-		
-		# Create an agent named Alice
-		alice = Agent(name="alice", seed="YOUR NEW PHRASE")
-		
-		# Define a periodic task for Alice
-		@alice.on_interval(period=2.0)
-		async def say_hello(ctx: Context):
-		    ctx.logger.info(f'hello, my name is {alice.name}')
-		
-		
-		# Run the agent
-		if __name__ == "__main__":
-		    alice.run()
+	from uagents import Agent, Context
+	
+	# Create an agent named Alice
+	alice = Agent(name="alice", seed="YOUR NEW PHRASE")
+	
+	# Define a periodic task for Alice
+	@alice.on_interval(period=2.0)
+	async def say_hello(ctx: Context):
+	    ctx.logger.info(f'hello, my name is {alice.name}')
+	
+	
+	# Run the agent
+	if __name__ == "__main__":
+	    alice.run()
 
 ```
 </DocsCode>
 
 </CodeGroup>
-
-
-
-
-
 
 
 
@@ -168,7 +163,6 @@ Create 2 new Python scripts:
 
 </CodeGroup>
 
-
 <CodeGroup hasCopy isOSFile>
 <DocsCode mac={true}>
     ```py copy filename="mac"
@@ -191,7 +185,7 @@ Create 2 new Python scripts:
 
 Open `SenderAgent.py` in your text editor and add the following code:
 
-<GithubCodeSegment>
+<GithubCodeSegment digest="50258d23280034cc685e1b7f06bc0c65">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/quickstart/local/SenderAgent.py"
         lineStart={1}
@@ -200,45 +194,45 @@ Open `SenderAgent.py` in your text editor and add the following code:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='50258d23280034cc685e1b7f06bc0c65'>
 
 
 <DocsCode local={true}>
 	```py copy filename="SenderAgent.py"
 
-		from uagents import Agent, Context, Model
-		
-		
-		class Message(Model):
-		    message: str
-		
-		
-		RECIPIENT_ADDRESS = (
-		    "test-agent://agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859"
-		)
-		
-		SenderAgent = Agent(
-		    name="SenderAgent",
-		    port=8000,
-		    seed="SenderAgent secret phrase",
-		    endpoint=["http://127.0.0.1:8000/submit"],
-		)
-		
-		print(SenderAgent.address)
-		
-		
-		@SenderAgent.on_interval(period=2.0)
-		async def send_message(ctx: Context):
-		    await ctx.send(RECIPIENT_ADDRESS, Message(message="Hi there. Let's start our conversation!"))
-		
-		
-		@SenderAgent.on_message(model=Message)
-		async def message_handler(ctx: Context, sender: str, msg: Message):
-		    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-		
-		
-		if __name__ == "__main__":
-		    SenderAgent.run()
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	RECIPIENT_ADDRESS = (
+	    "test-agent://agent1qd8ymq4najh5wycvhvhcw3l5lmkgkvkrqevrs6wpp5ll0khfdq6v2cq6859"
+	)
+	
+	SenderAgent = Agent(
+	    name="SenderAgent",
+	    port=8000,
+	    seed="SenderAgent secret phrase",
+	    endpoint=["http://127.0.0.1:8000/submit"],
+	)
+	
+	print(SenderAgent.address)
+	
+	
+	@SenderAgent.on_interval(period=2.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(RECIPIENT_ADDRESS, Message(message="Hi there. Let's start our conversation!"))
+	
+	
+	@SenderAgent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    SenderAgent.run()
 
 ```
 </DocsCode>
@@ -247,15 +241,9 @@ Open `SenderAgent.py` in your text editor and add the following code:
 
 
 
-
-
-
-
-
-
 Then, open `ReceiverAgent.py` in your text editor and add the following code into it:
 
-<GithubCodeSegment>
+<GithubCodeSegment digest="9abcc8ac977bfe803e43451debe9a560">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/quickstart/local/ReceiverAgent.py"
         lineStart={1}
@@ -264,43 +252,42 @@ Then, open `ReceiverAgent.py` in your text editor and add the following code int
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9abcc8ac977bfe803e43451debe9a560'>
 
 
 <DocsCode local={true}>
 	```py copy filename="ReceiverAgent.py"
 
-		from uagents import Agent, Context, Model
-		
-		
-		# NOTE: Run ReceiverAgent.py before running SenderAgent.py
-		
-		
-		class Message(Model):
-		    message: str
-		
-		
-		ReceiverAgent = Agent(
-		    name="ReceiverAgent",
-		    port=8001,
-		    seed="ReceiverAgent secret phrase",
-		    endpoint=["http://127.0.0.1:8001/submit"],
-		)
-		
-		print(ReceiverAgent.address)
-		
-		
-		@ReceiverAgent.on_message(model=Message)
-		async def message_handler(ctx: Context, sender: str, msg: Message):
-		    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-		
-		    # send the response
-		    await ctx.send(sender, Message(message="Cool! Let's get started!"))
-		
-		
-		if __name__ == "__main__":
-		    ReceiverAgent.run()
-		
+	from uagents import Agent, Context, Model
+	
+	
+	# NOTE: Run ReceiverAgent.py before running SenderAgent.py
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	ReceiverAgent = Agent(
+	    name="ReceiverAgent",
+	    port=8001,
+	    seed="ReceiverAgent secret phrase",
+	    endpoint=["http://127.0.0.1:8001/submit"],
+	)
+	
+	print(ReceiverAgent.address)
+	
+	
+	@ReceiverAgent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	    # send the response
+	    await ctx.send(sender, Message(message="Cool! Let's get started!"))
+	
+	
+	if __name__ == "__main__":
+	    ReceiverAgent.run()
 
 ```
 </DocsCode>
@@ -325,7 +312,6 @@ Run the scripts to see the agents communicating:
 
 **Expected Output**:
 
-
 - **SenderAgent**:
 
    ```
@@ -348,7 +334,7 @@ Run the scripts to see the agents communicating:
    INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
    INFO:     [ReceiverAgent]: Received message from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: Hello there bob.
    ```
-  
+
 ## Reach out to the Team!
 
 Excellent! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network! if you're keen to skip the more code focused guides, your best next steps would be [Communicating with agents](intermediate/communicating-with-other-agents).

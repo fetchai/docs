@@ -49,7 +49,6 @@ def get_github_data(owner, repo, filePath):
 def insert_html_after_jsx(filepath):
     with open(filepath, "r+") as f:
         data = f.read()
-
         base_regex = r"<GithubCodeSegment(.*?)>(.*?)</GithubCodeSegment>"
         jsx_obj_regex = re.compile(base_regex, re.DOTALL)
 
