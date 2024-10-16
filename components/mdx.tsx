@@ -74,27 +74,27 @@ export function Property({
   children: ReactNode;
 }) {
   return (
-    <li className="nx-m-0 nx-px-0 nx-py-4 nx-first:pt-0 nx-last:pb-0">
+    <li className="nx-m-0 nx-px-0 nx-py-4 nx-first:pt-0 nx-last:pb-0 dark-border">
       <dl className="nx-m-0 nx-flex nx-flex-wrap nx-items-center nx-gap-x-3 nx-gap-y-2">
         <dt className="nx-sr-only">Name</dt>
         <dd>
           <code>{name}</code>
         </dd>
         <dt className="nx-sr-only">Type</dt>
-        <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 nx-dark:text-zinc-500">
+        <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 dark:nx-text-white-40">
           {type}
         </dd>
         {required !== undefined && (
           <>
             <dt className="nx-sr-only">Required</dt>
-            <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 nx-dark:text-zinc-500">
+            <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 dark:nx-text-white-40">
               {required ? `required` : `optional`}
             </dd>
           </>
         )}
 
         <dt className="nx-sr-only">Description</dt>
-        <dd className="nx-w-full nx-flex-none [&gt;:first-child]:nx-mt-0 [&gt;:last-child]:nx-mb-0">
+        <dd className="nx-w-full nx-flex-none [&gt;:first-child]:nx-mt-0 [&gt;:last-child]:nx-mb-0 dark:nx-text-white-60">
           {children}
         </dd>
       </dl>
@@ -257,7 +257,9 @@ export function Section({ children }: { children: ReactNode }) {
 }
 
 export function ApiIntro({ children }: { children: ReactNode }) {
-  return <div className="nx-pb-4 nx-pr-4">{children}</div>;
+  return (
+    <div className="nx-pb-4 nx-pr-4 dark:nx-text-white-60">{children}</div>
+  );
 }
 
 export function Tag({ children }: { children: ReactNode }) {

@@ -11,3 +11,8 @@ export const addUnderscoreInText = (text) => {
   const snakecasedText = lowercasedText.replaceAll(/\s+/g, "_");
   return snakecasedText;
 };
+
+export enum ThemeMode {
+  Light = "light",
+  Dark = "dark",
+}

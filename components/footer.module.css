@@ -52,6 +52,10 @@
   cursor: pointer;
 }
 
+:is(html[class~="dark"] .footerTextHover) {
+  color: #bfaffd;
+}
+
 .footerHeading {
   color: #0b1742;
   font-family: Lexend;
@@ -76,7 +80,7 @@
   align-self: stretch;
   border-radius: 6px;
   border: 1px solid #b9c5d4;
-  background: #fff;
+  background: transparent;
   width: 330px;
 }
 
@@ -84,6 +88,7 @@
   outline: none;
   border: none;
   width: 100%;
+  background: transparent;
 }
 
 .inputInner:focus-visible {
@@ -180,4 +185,23 @@
   box-shadow:
     0px 2px 4px 0px rgba(66, 25, 229, 0.1),
     0px 4px 8px 0px rgba(66, 25, 229, 0.1);
+}
+
+:is(html[class~="dark"] .footer) {
+  border-top: 1px solid #4d4f57;
+  background-color: #20222c;
+}
+
+:is(html[class~="dark"] .footerText) {
+  color: #a6a7ab;
+}
+
+:is(html[class~="dark"] .inputBox) {
+  background: #363841;
+  border: none;
+}
+
+:is(html[class~="dark"] .inputdark) {
+  background: transparent;
+  border: 1px solid var(--Dark-Mode-White-20, #4d4f57);
 }

@@ -15,6 +15,6 @@ export { Select } from "./select";
 export { ServerSideErrorPage } from "./server-side-error";
 export { Sidebar } from "./sidebar";
 export { SkipNavContent, SkipNavLink } from "./skip-nav";
-export { ThemeSwitch } from "./theme-switch";
 export { TOC } from "./toc";
 export { Progressbar } from "./progress-bar";
+export { ThemeSwitcher } from "./theme-switcher";
