@@ -13,6 +13,7 @@ interface CodeGroupProps {
   osBlocks: ReactNode;
   codeBlocks: ReactNode;
   dynamic?: boolean;
+  digest?: string;
 }
 
 interface CodeBlockProps {
@@ -567,13 +568,12 @@ interface CodeSegment {
   path: string;
   lineStart: number;
   lineEnd: number;
-  digest: string;
   hosted: boolean;
   filename?: string;
 }
 
 interface GithubCodeSegment {
-  digest?: string
+  digest?: string;
 }
 
 export const GithubCodeSegment: React.FC<GithubCodeSegment> = () => {
