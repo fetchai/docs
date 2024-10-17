@@ -89,7 +89,7 @@ def insert_html_after_jsx(filepath):
             selection = ["\t" + s for s in selection]
             reformed_code_block = '\n'.join(selection)
 
-            code_block = code_block + f"""\n\n<DocsCode local={{{hosted}}}>\n\t```py copy filename="{filename}"\n\n{reformed_code_block}\n\n```\n</DocsCode>\n"""
+            code_block = code_block + f"""\n<DocsCode local={{{hosted}}}>\n\t```py copy filename="{filename}"\n\n{reformed_code_block}\n\n```\n</DocsCode>\n"""
 
             digest = hashlib.md5(code_block.encode('utf-8')).hexdigest()  # digest the entire jsx obj
 
@@ -106,9 +106,8 @@ def insert_html_after_jsx(filepath):
 
         result = []
         last_end = 0
-        i = 0
+
         for match in re.finditer(jsx_obj_regex, data):
-            i+=1
             start, end = match.span()
             jsx, cl = insert_tag(match)
             if cl:
