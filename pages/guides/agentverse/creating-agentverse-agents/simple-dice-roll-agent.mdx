@@ -46,7 +46,6 @@ After clicking on the row of your newly created agent, you should be able to see
 
     dice_roll_protocol = Protocol("DiceRoll")
 
-
     @dice_roll_protocol.on_message(model=DiceRoll, replies={UAgentResponse})
     async def roll_dice(ctx: Context, sender: str, msg: DiceRoll):
         result = ", ".join([str(random.randint(1, 6)) for _ in range(msg.num_rolls)])

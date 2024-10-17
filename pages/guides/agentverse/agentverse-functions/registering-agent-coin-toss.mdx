@@ -58,12 +58,10 @@ After clicking on the row of your newly created agent, you should be able to see
     from uagents import Field
     from ai_engine import UAgentResponse, UAgentResponseType
 
-
     class CoinToss(Model):
         choice: str = Field(description="The choice. Must be heads or tails.")
 
     coin_toss_protocol = Protocol("CoinToss")
-
 
     @coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
     async def toss_coin(ctx: Context, sender: str, msg: CoinToss):

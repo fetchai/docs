@@ -27,20 +27,20 @@ Make sure you have read the following resources before going on with this guide:
    touch storage.py
    ```
    </DocsCode>
-   
+
    <DocsCode windows={true}>
        ```py copy filename="windows"
        echo. > storage.py
        ```
        </DocsCode>
-   
+
    <DocsCode ubuntu={true}>
        ```py copy filename="ubuntu"
        touch storage.py
        ```
        </DocsCode>
    </CodeGroup>
-   
+
 2. Then, we need to open the script in the text editor of choice and import the necessary classes, `Agent` and `Context`, from the `uagents` library.
 
 3. Let's then create an agent named `alice` which logs a message every second using the `.on_interval()` decorator, indicating the current count. The `on_interval()` function takes a `Context` object as a parameter: the `Context` object contains a `storage` attribute, which is used to store and retrieve data between method calls:

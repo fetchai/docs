@@ -137,7 +137,6 @@ touch aerial_authz.py
         tx = prepare_and_broadcast_basic_transaction(ledger, tx, wallet)
         tx.wait_to_complete()
 
-
     if __name__ == "__main__":
         main()
     ```
@@ -168,7 +167,6 @@ from cosmpy.protos.cosmos.authz.v1beta1.tx_pb2 import MsgGrant
 from cosmpy.protos.cosmos.bank.v1beta1.authz_pb2 import SendAuthorization
 from cosmpy.protos.cosmos.base.v1beta1.coin_pb2 import Coin
 
-
 def _parse_commandline():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -191,7 +189,6 @@ def _parse_commandline():
     )
 
     return parser.parse_args()
-
 
 def main():
     """Run main."""
@@ -238,7 +235,6 @@ def main():
 
     tx = prepare_and_broadcast_basic_transaction(ledger, tx, wallet)
     tx.wait_to_complete()
-
 
 if __name__ == "__main__":
     main()
@@ -390,7 +386,6 @@ touch aerial_topup.py
                 tx.wait_to_complete()
 
             time.sleep(interval_time)
-
 
     if __name__ == "__main__":
         main()

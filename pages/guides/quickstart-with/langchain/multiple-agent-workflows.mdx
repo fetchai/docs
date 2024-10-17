@@ -60,7 +60,6 @@ Versions used for this example are:
 
 ### Agent 1 - RequestAgent: provides a question and a source
 
-
 This is our simplest agent; this agent provides a link to a PDF and question to be answered from the document.
 
 ```python copy filename="request_agent.py"
@@ -96,10 +95,8 @@ async def on_startup(ctx: Context):
 async def document_load(ctx: Context, sender: str, msg: DocumentsResponse):
     ctx.logger.info(msg.learnings)
 
-
 agent.include(summary_protocol, publish_manifest=True)
 agent.run()
-
 
 ```
 

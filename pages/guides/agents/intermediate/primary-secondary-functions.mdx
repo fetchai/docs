@@ -65,7 +65,7 @@ This Agent helps users with their queries for a text-classification model of the
         # Define a handler for the Hugging face protocol
         @hf_protocol.on_message(model=HF, replies = UAgentResponse)
         async def on_hf_request(ctx: Context, sender: str, msg: HF):
-            
+
             # Log the receipt of a response, including the sender and the message prompt
             ctx.logger.info(f"Received hugging face request from {sender} with prompt: {msg.response}")
 
@@ -73,7 +73,7 @@ This Agent helps users with their queries for a text-classification model of the
             message = f'Response to your query from model is \n {msg.response}'
             # Asynchronously send a response back to the sender with the processed message
             await ctx.send(sender, UAgentResponse(message = message, type = UAgentResponseType.FINAL))
-        
+
         # Include the Hugging Face protocol in your agent
         agent.include(hf_protocol)
         ```
@@ -168,11 +168,11 @@ This agent helps user to look for specific model with search keyword. The agent 
 
             # Make the GET request
             response = requests.get(url, params = params)
-            
+
             # Append models in list
             for model in response.json():
                 models.append(model['id'])
-    
+
             return models
 
         # Define a handler for the Model list protocol

@@ -29,17 +29,17 @@ First of all, we need to create 2 Python scripts for our two agents using the fo
        echo. > bob.py
        ```
    </DocsCode>
-   
+
    <DocsCode ubuntu={true}>
        ```py copy filename="ubuntu"
        touch bob.py
        ```
        </DocsCode>
-   
+
    </CodeGroup>
 
     Alice:
-    
+
 <CodeGroup hasCopy isOSFile>
 <DocsCode mac={true}>
     ```py copy filename="mac"
@@ -149,10 +149,8 @@ from uagents.network import get_faucet, get_name_service_contract
 
 # NOTE: Run agent1.py before running agent2.py
 
-
 class Message(Model):
     message: str
-
 
 bob = Agent(
     name="bob-0",
@@ -160,7 +158,6 @@ bob = Agent(
     port=8001,
     endpoint=["http://localhost:8001/submit"],
 )
-
 
 my_wallet = LocalWallet.from_unsafe_seed("registration test wallet")
 name_service_contract = get_name_service_contract(test=True)
@@ -170,18 +167,15 @@ DOMAIN = "example.agent"
 
 faucet.get_wealth(my_wallet.address())
 
-
 @bob.on_event("startup")
 async def register_agent_name(ctx: Context):
     await name_service_contract.register(
         bob.ledger, my_wallet, bob.address, bob.name, DOMAIN
     )
 
-
 @bob.on_message(model=Message)
 async def message_handler(ctx: Context, sender: str, msg: Message):
     ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
 
 if __name__ == "__main__":
     bob.run()
@@ -262,7 +256,6 @@ async def alice_interval_handler(ctx: Context):
     bob_name = "bob-0" + "." + DOMAIN
     ctx.logger.info(f"Sending message to {bob_name}...")
     await ctx.send(bob_name, Message(message="Hello there bob."))
-
 
 if __name__ == "__main__":
     alice.run()

@@ -127,20 +127,19 @@ We now need to define the `requests.py` file under the `messages` folder in the 
     touch requests.py
     ```
     </DocsCode>
-    
+
     <DocsCode windows={true}>
         ```py copy filename="windows"
         echo. > requests.py
         ```
         </DocsCode>
-    
+
     <DocsCode ubuntu={true}>
         ```py copy filename="ubuntu"
         touch requests.py
         ```
         </DocsCode>
     </CodeGroup>
-
 
 Here, the `RagRequest` message data model represents the request to retrieve an answer to an user's question from a specified document URL. The script includes an optional parameter, `deep_read`, to determine if nested pages should also be read to retrieve the answer. This parameter is set to `no` as `default`.
 
@@ -149,7 +148,6 @@ The script look like the following:
     ```python copy filename="requests.py"
     from typing import Optional
     from uagents import Model, Field
-
 
     class RagRequest(Model):
         question: str = Field(
@@ -221,7 +219,6 @@ The script for this agent looks as follows:
     nltk.download("punkt")
     nltk.download("averaged_perceptron_tagger")
 
-
     LANGCHAIN_RAG_SEED = "YOUR_LANGCHAIN_RAG_SEED"
     AGENT_MAILBOX_KEY = "YOUR_MAILBOX_KEY"
 
@@ -235,7 +232,6 @@ The script for this agent looks as follows:
 
     docs_bot_protocol = Protocol("DocsBot")
 
-
     PROMPT_TEMPLATE = """
     Answer the question based only on the following context:
 
@@ -245,7 +241,6 @@ The script for this agent looks as follows:
 
     Answer the question based on the above context: {question}
     """
-
 
     def create_retriever(
         ctx: Context, url: str, deep_read: bool
@@ -294,7 +289,6 @@ The script for this agent looks as follows:
             ctx.logger.error(f"Error happened: {exc}")
             traceback.format_exception(exc)
 
-
     @docs_bot_protocol.on_message(model=RagRequest, replies={UAgentResponse})
     async def answer_question(ctx: Context, sender: str, msg: RagRequest):
         ctx.logger.info(f"Received message from {sender}, session: {ctx.session}")
@@ -330,9 +324,7 @@ The script for this agent looks as follows:
             sender, UAgentResponse(message=response, type=UAgentResponseType.FINAL)
         )
 
-
     agent.include(docs_bot_protocol, publish_manifest=True)
-
 
     if __name__ == "__main__":
         agent.run()
