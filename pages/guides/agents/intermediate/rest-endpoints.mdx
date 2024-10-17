@@ -1,4 +1,5 @@
 import {Callout} from 'nextra/components'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # How to add custom REST endpoints to your Agent
 
@@ -63,47 +64,65 @@ Use the `@on_rest_post()` decorator to define a custom POST endpoint. You need t
 
 ### Example of custom GET and POST Routes
 
-```py copy filename="agent.py"
-import time
-from typing import Any, Dict
+<GithubCodeSegment digest="5810c0229db935fa9b2df1d7d8901013">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/rest-endpoints/agent.py"
+        lineStart={1}
+        lineEnd={39}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5810c0229db935fa9b2df1d7d8901013'>
 
-from uagents import Agent, Context, Model
+<DocsCode local={true}>
+	```py copy filename="agent.py"
 
-class Request(Model):
-    text: str
+	import time
+	from typing import Any, Dict
+	
+	from uagents import Agent, Context, Model
+	
+	class Request(Model):
+	    text: str
+	
+	class Response(Model):
+	    timestamp: int
+	    text: str
+	    agent_address: str
+	
+	# You can also use empty models to represent empty request/response bodies
+	class EmptyMessage(Model):
+	    pass
+	
+	agent = Agent(name="Rest API")
+	
+	@agent.on_rest_get("/rest/get", Response)
+	async def handle_get(ctx: Context) -> Dict[str, Any]:
+	    ctx.logger.info("Received GET request")
+	    return {
+	        "timestamp": int(time.time()),
+	        "text": "Hello from the GET handler!",
+	        "agent_address": ctx.agent.address,
+	    }
+	
+	@agent.on_rest_post("/rest/post", Request, Response)
+	async def handle_post(ctx: Context, req: Request) -> Response:
+	    ctx.logger.info("Received POST request")
+	    return Response(
+	        text=f"Received: {req.text}",
+	        agent_address=ctx.agent.address,
+	        timestamp=int(time.time()),
+	    )
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-class Response(Model):
-    timestamp: int
-    text: str
-    agent_address: str
-
-# You can also use empty models to represent empty request/response bodies
-class EmptyMessage(Model):
-    pass
-
-agent = Agent(name="Rest API")
-
-@agent.on_rest_get("/rest/get", Response)
-async def handle_get(ctx: Context) -> Dict[str, Any]:
-    ctx.logger.info("Received GET request")
-    return {
-        "timestamp": int(time.time()),
-        "text": "Hello from the GET handler!",
-        "agent_address": ctx.agent.address,
-    }
-
-@agent.on_rest_post("/rest/post", Request, Response)
-async def handle_post(ctx: Context, req: Request) -> Response:
-    ctx.logger.info("Received POST request")
-    return Response(
-        text=f"Received: {req.text}",
-        agent_address=ctx.agent.address,
-        timestamp=int(time.time()),
-    )
-
-if __name__ == "__main__":
-    agent.run()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ## Run the example
 

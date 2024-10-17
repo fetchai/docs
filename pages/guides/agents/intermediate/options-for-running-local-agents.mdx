@@ -1,5 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Options for running your Agents
 
@@ -33,44 +34,67 @@ Make sure you have read the following resources before going on with this guide:
 
 Consider the following Agent:
 
-    ```py copy filename="agent_endpoint.py"
-    from uagents.setup import fund_agent_if_low
-    from uagents import Agent, Context, Protocol, Model
-    import random
-    from uagents import Field
-    from ai_engine import UAgentResponse, UAgentResponseType
-    import sys
+<GithubCodeSegment digest="6eac33a85ad67e40a66214bc554ca0e9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/options-for-running-local-agents/agent_endpoint.py"
+        lineStart={1}
+        lineEnd={41}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6eac33a85ad67e40a66214bc554ca0e9'>
 
-    agent = Agent(
-        name="dungeonsanddragonsdiceroll",
-        port=6145,
-        seed="RANDOM STRINGS",
-        endpoint=["http://YOUR_IP:6145/submit"],
-    )
+<DocsCode local={true}>
+	```py copy filename="agent_endpoint.py"
 
-    fund_agent_if_low(agent.wallet.address())
+	from uagents.setup import fund_agent_if_low
+	from uagents import Agent, Context, Protocol, Model
+	import random
+	from uagents import Field
+	from ai_engine import UAgentResponse, UAgentResponseType
+	import sys
+	
+	agent = Agent(
+	    name="dungeonsanddragonsdiceroll",
+	    port=6145,
+	    seed="RANDOM STRINGS",
+	    endpoint=["http://YOUR_IP:6145/submit"],
+	)
+	
+	fund_agent_if_low(agent.wallet.address())
+	
+	
+	@agent.on_event("startup")
+	async def hi(ctx: Context):
+	    ctx.logger.info(agent.address)
+	
+	
+	class Request(Model):
+	    dice_sides: int = Field(description="How many sides does your dice need?")
+	
+	
+	dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
+	
+	
+	@dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
+	async def roll_dice(ctx: Context, sender: str, msg: Request):
+	    result = str(random.randint(1, msg.dice_sides))
+	    message = f"Dice roll result: {result}"
+	    await ctx.send(
+	        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+	    )
+	
+	
+	agent.include(dice_roll_protocol, publish_manifest=True)
+	
+	agent.run()
 
-    @agent.on_event("startup")
-    async def hi(ctx: Context):
-        ctx.logger.info(agent.address)
+```
+</DocsCode>
 
-    class Request(Model):
-        dice_sides: int = Field(description="How many sides does your dice need?")
+</CodeGroup>
 
-    dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
 
-    @dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
-    async def roll_dice(ctx: Context, sender: str, msg: Request):
-        result = str(random.randint(1, msg.dice_sides))
-        message = f"Dice roll result: {result}"
-        await ctx.send(
-            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
-        )
-
-    agent.include(dice_roll_protocol, publish_manifest=True)
-
-    agent.run()
-    ```
 
 To correctly run this code, you need to provide the `name`, `seed`, `port` and `endpoint` parameters.
 
@@ -108,36 +132,58 @@ Through the **Agentverse** you can set up [Mailboxes ↗️](/guides/agents/inte
 
 Let's start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
 
-        ```py copy filename="agent_mailbox"
-        from uagents import Agent, Context, Model
+<GithubCodeSegment digest="ff888f486c91b5abc9116c419091a018">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/options-for-running-local-agents/agent_mailbox.py"
+        lineStart={1}
+        lineEnd={32}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ff888f486c91b5abc9116c419091a018'>
 
-        class Message(Model):
-            message: str
+<DocsCode local={true}>
+	```py copy filename="agent_mailbox.py"
 
-        # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
-        SEED_PHRASE = "put_your_seed_phrase_here"
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	
+	# Copy the address shown below
+	print(f"Your agent's address is: {agent.address}")
+	
+	# Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+	# Then, copy the agent's utilising-the-mailbox key and insert it here below inline
+	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+	
+	# Now your agent is ready to join the agentverse!
+	agent = Agent(
+	    name="alice",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	
+	@agent.on_message(model=Message, replies={Message})
+	async def handle_message(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-        # Copy the address shown below
-        print(f"Your agent's address is: {agent.address}")
+```
+</DocsCode>
 
-        # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-        # Then, copy the agent's mailbox key and insert it here below inline
-        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+</CodeGroup>
 
-        # Now your agent is ready to join the agentverse!
-        agent = Agent(
-            name="alice",
-            seed=SEED_PHRASE,
-            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-        )
 
-        @agent.on_message(model=Message, replies={Message})
-        async def handle_message(ctx: Context, sender: str, msg: Message):
-            ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-        if __name__ == "__main__":
-            agent.run()
-       ```
 
 To correctly run this code, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters.
 

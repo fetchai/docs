@@ -1,5 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Multi-file agent pipeline for AI Engine: Hugging face API to create a multi agent pipeline
 
@@ -46,88 +47,131 @@ For setting up Hugging face function we need to create different agents as liste
 
 This Agent helps users with their queries for a text-classification model of their choosing. The agent always prioritizes Hugging Face request secondary function. Below is the script for creating our agent on [Agentverse ↗️](https://agentverse.ai/agents) using the **+New Agent** button.
 
-        ```python copy filename="hugging_face_system_agent.py"
-        # Here we demonstrate how we can create a hugging face system agent that is compatible with DeltaV.
+<GithubCodeSegment digest="a5a18b6cea7a34043525508675836ff0">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/primary-secondary-functions/hugging_face_system_agent.py"
+        lineStart={1}
+        lineEnd={32}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a5a18b6cea7a34043525508675836ff0'>
 
-        # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+<DocsCode local={true}>
+	```py copy filename="hugging_face_system_agent.py"
 
-        # Importing required libraries
-        import requests
-        from ai_engine import UAgentResponse, UAgentResponseType
+	# Here we demonstrate how we can create a hugging face system agent that is compatible with DeltaV.
+	
+	# After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+	
+	# Importing required libraries
+	import requests
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	
+	# Define a model class for the Hugging Face agent's expected message format
+	class HF(Model):
+	    response: str  # This class has a single attribute 'response' that holds the string response from the subtask.
+	
+	
+	# Create a protocol for the Hugging Face (HF) agent, specifying its interactions_and_interval_task protocol
+	hf_protocol = Protocol("Hugging Face")
+	
+	
+	# Define a handler for the Hugging face protocol
+	@hf_protocol.on_message(model=HF, replies=UAgentResponse)
+	async def on_hf_request(ctx: Context, sender: str, msg: HF):
+	    # Log the receipt of a response, including the sender and the message prompt
+	    ctx.logger.info(f"Received hugging face request from {sender} with prompt: {msg.response}")
+	
+	    # Format a response message incorporating the received message
+	    message = f'Response to your query from model is \n {msg.response}'
+	    # Asynchronously send a response back to the sender with the processed message
+	    await ctx.send(sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL))
+	
+	
+	# Include the Hugging Face protocol in your agent
+	agent.include(hf_protocol)
 
-        # Define a model class for the Hugging Face agent's expected message format
-        class HF(Model):
-            response : str # This class has a single attribute 'response' that holds the string response from the subtask.
+```
+</DocsCode>
 
-        # Create a protocol for the Hugging Face (HF) agent, specifying its communication protocol
-        hf_protocol = Protocol("Hugging Face")
+</CodeGroup>
 
-        # Define a handler for the Hugging face protocol
-        @hf_protocol.on_message(model=HF, replies = UAgentResponse)
-        async def on_hf_request(ctx: Context, sender: str, msg: HF):
 
-            # Log the receipt of a response, including the sender and the message prompt
-            ctx.logger.info(f"Received hugging face request from {sender} with prompt: {msg.response}")
-
-            # Format a response message incorporating the received message
-            message = f'Response to your query from model is \n {msg.response}'
-            # Asynchronously send a response back to the sender with the processed message
-            await ctx.send(sender, UAgentResponse(message = message, type = UAgentResponseType.FINAL))
-
-        # Include the Hugging Face protocol in your agent
-        agent.include(hf_protocol)
-        ```
 
 ### Hugging Face Request Agent
 
 This agent helps hugging face system to handle hugging face request to user and calculates the response. The agent has two fields i.e. `model_id` (to which query has to be made) and `query` (Question needed to be asked to the model). For `model_id` this task always prioritizes `Model List` secondary function to get list of available model of a specific type.
 
-        ```python copy filename="hugging_face_request_agent.py"
-        # Here we demonstrate how we can create a hugging face request agent that is compatible with DeltaV.
+<GithubCodeSegment digest="08326a1e58b4f89aa5cd53b89810358c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/primary-secondary-functions/hugging_face_request_agent.py"
+        lineStart={1}
+        lineEnd={48}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='08326a1e58b4f89aa5cd53b89810358c'>
 
-        # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
+<DocsCode local={true}>
+	```py copy filename="hugging_face_request_agent.py"
 
-        # Importing required libraries.
-        import requests
-        import json
-        from ai_engine import UAgentResponse, UAgentResponseType
+	# Here we demonstrate how we can create a hugging face request agent that is compatible with DeltaV.
+	
+	# After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
+	
+	# Importing required libraries.
+	import requests
+	import json
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	
+	# Define a model class for the Hugging Face Request agent's expected message format.
+	class Search(Model):
+	    model_id: str
+	    query: str
+	
+	
+	# Define a function to handle query from user using model_id and query provided by user.
+	async def handle_query(model_id, query):
+	    Model_ID = model_id
+	    API_URL = f'https://api-inference.huggingface.co/models/{Model_ID}'  # hugging face url
+	    API_TOKEN = 'YOUR TOKEN HERE'  # hugging face API token
+	
+	    headers = {"Authorization": f"Bearer {API_TOKEN}"}
+	
+	    # Make request to hugging face API with model_id and query.
+	    response = requests.post(API_URL, headers=headers, json=query).json()
+	    return response
+	
+	
+	# Create a protocol for the Hugging Face Request(HF) agent, specifying its interactions_and_interval_task protocol.
+	hfprotocol = Protocol(name='Hugging Face protocol')
+	
+	
+	# Define a handler for the Hugging face request protocol.
+	@hfprotocol.on_message(model=Search, replies=UAgentResponse)
+	async def handle_message(ctx: Context, sender: str, msg: Search):
+	    # Log the model_id and query provided by user.
+	    ctx.logger.info(f'Message sent from {sender} : {msg.model_id}')
+	    ctx.logger.info(f'Message sent from subtask : {msg.query}')
+	
+	    # Calling handle_query function to get response from API.
+	    response = await handle_query(msg.model_id, msg.query)
+	    # sending response to hugging face agent
+	    await ctx.send(sender, UAgentResponse(message=str(response), type=UAgentResponseType.FINAL))
+	
+	
+	# Include the Hugging Face protocol in your agent.
+	agent.include(hfprotocol, publish_manifest=True)
 
-        # Define a model class for the Hugging Face Request agent's expected message format.
-        class Search(Model):
-            model_id : str
-            query : str
+```
+</DocsCode>
 
-        # Define a function to handle query from user using model_id and query provided by user.
-        async def handle_query(model_id, query):
-            Model_ID = model_id
-            API_URL = f'https://api-inference.huggingface.co/models/{Model_ID}' # hugging face url
-            API_TOKEN = 'YOUR TOKEN HERE' # hugging face API token
+</CodeGroup>
 
-            headers = {"Authorization": f"Bearer {API_TOKEN}"} 
 
-            # Make request to hugging face API with model_id and query.
-            response = requests.post(API_URL, headers=headers, json=query).json()
-            return response
-
-        # Create a protocol for the Hugging Face Request(HF) agent, specifying its communication protocol.
-        hfprotocol = Protocol(name = 'Hugging Face protocol')
-
-        # Define a handler for the Hugging face request protocol.
-        @hfprotocol.on_message(model = Search, replies = UAgentResponse)
-        async def handle_message(ctx: Context, sender: str, msg: Search):
-
-            # Log the model_id and query provided by user.
-            ctx.logger.info(f'Message sent from {sender} : {msg.model_id}')
-            ctx.logger.info(f'Message sent from subtask : {msg.query}')
-
-            # Calling handle_query function to get response from API.
-            response = await handle_query(msg.model_id, msg.query)
-            # sending response to hugging face agent
-            await ctx.send(sender, UAgentResponse(message = str(response), type = UAgentResponseType.FINAL))
-
-        # Include the Hugging Face protocol in your agent.
-        agent.include(hfprotocol, publish_manifest = True)
-        ```
 
 To correctly run this code, you need to provide the `API_URL` and `API_TOKEN` parameters.
 
@@ -135,66 +179,89 @@ To correctly run this code, you need to provide the `API_URL` and `API_TOKEN` pa
 
 This agent helps user to look for specific model with search keyword. The agent queries hugging face url to get top 5 downloaded model related to search keyword. The agent returns list of models and user can select one they need.
 
-        ```python copy filename="model_list_agent.py"
-        # Here we demonstrate how we can create a model list agent that is compatible with DeltaV
+<GithubCodeSegment digest="719850e5bd50c22dea42fd1193540f49">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/primary-secondary-functions/model_list_agent.py"
+        lineStart={1}
+        lineEnd={63}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='719850e5bd50c22dea42fd1193540f49'>
 
-        # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address
+<DocsCode local={true}>
+	```py copy filename="model_list_agent.py"
 
-        # Importing required libraries
-        import requests
-        from ai_engine import UAgentResponse, UAgentResponseType
-        import json
+	# Here we demonstrate how we can create a model list agent that is compatible with DeltaV
+	
+	# After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address
+	
+	# Importing required libraries
+	import requests
+	from ai_engine import UAgentResponse, UAgentResponseType
+	import json
+	
+	
+	# Define a model class for the Model List agent's expected message format
+	class Search(Model):
+	    search: str  # This is a keyword for which user wants to search model
+	
+	
+	# Create a protocol for the Model List agent, specifying its interactions_and_interval_task protocol
+	model_list_protocol = Protocol(name='Model List protocol')
+	
+	
+	# Define a function to handle query from user using search keyword provided by user
+	async def handle_query(search):
+	    url = "https://huggingface.co/api/models"
+	
+	    params = {
+	        "search": search,
+	        "filter": "text-classification",
+	        "sort": "downloads",
+	        "direction": -1,
+	        "limit": 5
+	    }  # Search parameters.
+	
+	    models = []  # List of models.
+	
+	    # Make the GET request
+	    response = requests.get(url, params=params)
+	
+	    # Append models in list
+	    for model in response.json():
+	        models.append(model['id'])
+	
+	    return models
+	
+	
+	# Define a handler for the Model list protocol
+	@model_list_protocol.on_message(model=Search, replies=UAgentResponse)
+	async def handle_message(ctx: Context, sender: str, msg: Search):
+	    # Log search keyword provided by user.
+	    ctx.logger.info(f'Message sent from {sender} : {msg.search}')
+	
+	    # Call handle_query to get list of models
+	    options = handle_query(msg.search)
+	    # Log model list responded by hugging face request
+	    ctx.logger.info(f'Message sent from {sender} : {options}')
+	
+	    # Format options in dictionary format to provide options to user
+	    formatted_options = [{'key': i + 1, 'value': value} for i, value in enumerate(options)]
+	
+	    # Send message to the user
+	    await ctx.send(sender, UAgentResponse(message=str(formatted_options), type=UAgentResponseType.FINAL))
+	
+	
+	# Include model_list protocol in agent
+	agent.include(model_list_protocol, publish_manifest=True)
 
-        # Define a model class for the Model List agent's expected message format
-        class Search(Model):
-            search : str # This is a keyword for which user wants to search model
+```
+</DocsCode>
 
-        # Create a protocol for the Model List agent, specifying its communication protocol
-        model_list_protocol = Protocol(name = 'Model List protocol')
+</CodeGroup>
 
-        # Define a function to handle query from user using search keyword provided by user
-        async def handle_query(search):
-            url = "https://huggingface.co/api/models"
 
-            params = {
-                "search": search,
-                "filter": "text-classification",
-                "sort": "downloads",
-                "direction": -1,
-                "limit": 5
-            } # Search parameters.
-
-            models = [] # List of models.
-
-            # Make the GET request
-            response = requests.get(url, params = params)
-
-            # Append models in list
-            for model in response.json():
-                models.append(model['id'])
-
-            return models
-
-        # Define a handler for the Model list protocol
-        @model_list_protocol.on_message(model = Search, replies = UAgentResponse)
-        async def handle_message(ctx: Context, sender: str, msg: Search):
-            # Log search keyword provided by user.
-            ctx.logger.info(f'Message sent from {sender} : {msg.search}')
-
-            # Call handle_query to get list of models
-            options = handle_query(msg.search)
-            # Log model list responded by hugging face request
-            ctx.logger.info(f'Message sent from {sender} : {options}')
-
-            # Format options in dictionary format to provide options to user
-            formatted_options = [{'key': i + 1, 'value': value} for i, value in enumerate(options)]
-
-            # Send message to the user
-            await ctx.send(sender, UAgentResponse(message = str(formatted_options), type=UAgentResponseType.FINAL))
-
-        # Include model_list protocol in agent
-        agent.include(model_list_protocol, publish_manifest = True)
-        ```
 
 ## Setting up functions
 

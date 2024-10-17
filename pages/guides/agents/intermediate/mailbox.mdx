@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Agent Mailboxes
 
@@ -33,28 +34,46 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Local agent setup
 
-        ```py copy filename="mailbox_agent.py"
-        from uagents import Agent, Context, Model
+<GithubCodeSegment digest="46da63dae693d306d3687b4ce70466a9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/mailbox/mailbox_agent.py"
+        lineStart={1}
+        lineEnd={20}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='46da63dae693d306d3687b4ce70466a9'>
 
-        class Message(Model):
-            message: str
+<DocsCode local={true}>
+	```py copy filename="mailbox_agent.py"
 
-        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-        SEED_PHRASE = "put_your_seed_phrase_here"
+	from uagents import Agent, Context, Model
+	
+	class Message(Model):
+	    message: str
+	
+	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	
+	# Now your agent is ready to join the agentverse!
+	agent = Agent(
+	    name="alice",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	# Copy the address shown below
+	print(f"Your agent's address is: {agent.address}")
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-        # Now your agent is ready to join the agentverse!
-        agent = Agent(
-            name="alice",
-            seed=SEED_PHRASE,
-            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-        )
+```
+</DocsCode>
 
-        # Copy the address shown below
-        print(f"Your agent's address is: {agent.address}")
+</CodeGroup>
 
-        if __name__ == "__main__":
-            agent.run()
-       ```
+
 
 Importantly, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters to correctly run this example.
 
