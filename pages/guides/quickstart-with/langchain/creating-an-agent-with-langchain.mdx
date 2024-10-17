@@ -1,3 +1,5 @@
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+
 # Getting started with Fetch.ai x Langchain
 
 Fetch.ai creates a dynamic communication layer that allows you to abstract away components into individual [Agents ↗️](/guides/agents/getting-started/whats-an-agent). Agents are micro-services that are programmed to communicate with other agents, and or humans. By using **Agents** to represent different parts of your **Langchain** program you give your project the option to be used by [other parties ↗️](/guides/agents/intermediate/communicating-with-other-agents) for economic benefit.
@@ -48,49 +50,89 @@ Check out more detailed instructions for [installation ↗️](/guides/agents/ge
 
 Our first agent is simple; it sends a message every two seconds to a static address. When this agent receives a message, it prints that to log:
 
-```python copy filename="first_agent.py"
-from uagents import Agent, Context, Model
-from uagents.setup import fund_agent_if_low
+<GithubCodeSegment digest="e9060037880835cb3ce53ee008f14f0f">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/creating-an-agent-with-langchain/first_agent.py"
+        lineStart={1}
+        lineEnd={32}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='e9060037880835cb3ce53ee008f14f0f'>
 
-class Message(Model):
-    message: str
+<DocsCode local={true}>
+	```py copy filename="first_agent.py"
 
-RECIPIENT_ADDRESS = "agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp"
-
-agent = Agent(
-    name="agent",
-    port=8000,
-    seed="",
-    endpoint=["http://127.0.0.1:8000/submit"],
-)
-
-fund_agent_if_low(agent.wallet.address())
-
-@agent.on_interval(period=2.0)
-async def send_message(ctx: Context):
-    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
-
-@agent.on_message(model=Message)
-async def message_handler(ctx: Context, sender: str, msg: Message):
-    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-if __name__ == "__main__":
-    agent.run()
+	from uagents import Agent, Context, Model
+	from uagents.setup import fund_agent_if_low
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	RECIPIENT_ADDRESS = "agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp"
+	
+	agent = Agent(
+	    name="agent",
+	    port=8000,
+	    seed="",
+	    endpoint=["http://127.0.0.1:8000/submit"],
+	)
+	
+	fund_agent_if_low(agent.wallet.address())
+	
+	
+	@agent.on_interval(period=2.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
+	
+	
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 This first agent introduces a few core concepts you will need to be aware of when creating any agent.
 
 Agents are defined with the `Agent` class:
 
-```python copy
-    agent = Agent(
-    name="agent",
-    port=8000,
-    seed="",
-    endpoint=["http://127.0.0.1:8000/submit"],
-)
+<GithubCodeSegment digest="b6e32c5d1718b666fbd75c653925e4c1">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/creating-an-agent-with-langchain/first_agent.py"
+        lineStart={11}
+        lineEnd={16}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='b6e32c5d1718b666fbd75c653925e4c1'>
+
+<DocsCode local={true}>
+	```py copy filename="first_agent.py"
+
+	agent = Agent(
+	    name="agent",
+	    port=8000,
+	    seed="",
+	    endpoint=["http://127.0.0.1:8000/submit"],
+	)
+
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 A `seed` is a unique phrase which `uagents` library uses to create a unique private key pair for your agent. If you change your `seed` you may lose access to previous messages, and also, the agent's address registered to the Almanac will change subsequently. The `port` allows us to define a local port for messages to be received. The `endpoint` defines the path to the in-built Rest API. The `name` defines the name of the agent.
 
@@ -98,10 +140,28 @@ There are more options for the `Agent` class; see [`Agent` Class ↗️](/refere
 
 We then need to define our communication model:
 
-```python copy
-    class Message(Model):
-        message: str
+<GithubCodeSegment digest="c122c6e357e18361f4506a77cc2beb5a">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/creating-an-agent-with-langchain/first_agent.py"
+        lineStart={5}
+        lineEnd={6}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c122c6e357e18361f4506a77cc2beb5a'>
+
+<DocsCode local={true}>
+	```py copy filename="first_agent.py"
+
+	class Message(Model):
+	    message: str
+
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The `Model` defines the object sent from agent to agent and represents the type of messages the agent is able to handle. For explicit communication, both agents must handle the same `Model` class.  `Model` is the base class that inherits from Pydantic BaseModel.
 
@@ -111,55 +171,112 @@ Finally, agents have two decorated functions.
 
 The first one is the `agent.on_interval()` function. This one sends a message every 2 seconds. `ctx.send()` has the args of `destination_address` and `Message` which we defined earlier.
 
-```python copy
-@agent.on_interval(period=2.0)
-async def send_message(ctx: Context):
-    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
+<GithubCodeSegment digest="be22a47f6be9fc37453eefcbbce43f78">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/creating-an-agent-with-langchain/first_agent.py"
+        lineStart={21}
+        lineEnd={23}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='be22a47f6be9fc37453eefcbbce43f78'>
+
+<DocsCode local={true}>
+	```py copy filename="first_agent.py"
+
+	@agent.on_interval(period=2.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
+
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The second one is `agent.on_message()` which is a little different; when the agent receives a message at the `endpoint` we defined earlier, the `uagent` library unpacks the message and triggers any function which handles that message; in our case, the `agent.on_message()` function:
 
-```python copy
-@agent.on_message(model=Message)
-async def message_handler(ctx: Context, sender: str, msg: Message):
-    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+<GithubCodeSegment digest="12c7f3da6b8e658314d741d9088fe1ab">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/creating-an-agent-with-langchain/first_agent.py"
+        lineStart={26}
+        lineEnd={28}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='12c7f3da6b8e658314d741d9088fe1ab'>
+
+<DocsCode local={true}>
+	```py copy filename="first_agent.py"
+
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ### Second Agent
 
 Agent two doesn't do anything different to agent one; it has different args for the Agent instantiation, and instead of sending a message `on_event("startup")`, agent two just logs its address to screen. Whenever agent two receives a message matching `Message` data model, it will send a response to the sender.
 
-```python copy filename="second_agent.py"
-from uagents.setup import fund_agent_if_low
-from uagents import Agent, Context, Model
+<GithubCodeSegment digest="2c6fd3bba15ca76a7e00104fe6b9fc69">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/creating-an-agent-with-langchain/second_agent.py"
+        lineStart={1}
+        lineEnd={32}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2c6fd3bba15ca76a7e00104fe6b9fc69'>
 
+<DocsCode local={true}>
+	```py copy filename="second_agent.py"
 
-class Message(Model):
-    message: str
-
-agent = Agent(
-    name="agent 2",
-    port=8001,
-    seed="",
-    endpoint=["http://127.0.0.1:8001/submit"],
-)
-
-fund_agent_if_low(agent.wallet.address())
-
-@agent.on_event("startup")
-async def start(ctx: Context):
-    ctx.logger.info(f"agent address is {agent.address}")
-
-@agent.on_message(model=Message)
-async def message_handler(ctx: Context, sender: str, msg: Message):
-    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    await ctx.send(sender, Message(message="hello there"))
-
-if __name__ == "__main__":
-    agent.run()
+	from uagents.setup import fund_agent_if_low
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	agent = Agent(
+	    name="agent 2",
+	    port=8001,
+	    seed="",
+	    endpoint=["http://127.0.0.1:8001/submit"],
+	)
+	
+	fund_agent_if_low(agent.wallet.address())
+	
+	
+	@agent.on_event("startup")
+	async def start(ctx: Context):
+	    ctx.logger.info(f"agent address is {agent.address}")
+	
+	
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	    await ctx.send(sender, Message(message="hello there"))
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Okay, let's now run these agents.
 
@@ -171,15 +288,15 @@ Let's run the second agent's script first using this command: `poetry run python
 
 Updated `first_agent.py` script sample:
 
-```python copy filename="agent_one.py"
+```python copy filename="first_agent.py"
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
- 
+
 class Message(Model):
     message: bool
- 
+
 RECIPIENT_ADDRESS="agent...."
- 
+
 agent = Agent(
     	...
 ```
@@ -222,92 +339,138 @@ However now, `.on_message(model=DocumentsResponse)` expects a `DocumentsResponse
 
 To learn more about communication with other agents check out the following [Guide ↗️](/guides/agents/intermediate/communicating-with-other-agents)
 
-```python copy filename="langchain_agent_one.py"
-from uagents import Agent, Context, Protocol, Model
-from ai_engine import UAgentResponse, UAgentResponseType
-from typing import List
+<GithubCodeSegment digest="3554e530f1315d50197927ae57093464">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/creating-an-agent-with-langchain/langchain_agent_one.py"
+        lineStart={1}
+        lineEnd={40}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='3554e530f1315d50197927ae57093464'>
 
-class DocumentUnderstanding(Model):
-    pdf_path: str
-    question: str
+<DocsCode local={true}>
+	```py copy filename="langchain_agent_one.py"
 
-class DocumentsResponse(Model):
-    learnings: List
-
-agent = Agent(
-    name="find_in_pdf",
-    seed="",
-    port=8001,
-    endpoint=["http://127.0.0.1:8001/submit"]
-)
-
-print("uAgent address: ", agent.address)
-summary_protocol = Protocol("Text Summarizer")
-
-RECIPIENT_PDF_AGENT = ""
-
-@agent.on_event("startup")
-async def on_startup(ctx: Context):
-    await ctx.send(RECIPIENT_PDF_AGENT, DocumentUnderstanding(pdf_path="../a-little-story.pdf", question="What's the synopsis?"))
-
-@agent.on_message(model=DocumentsResponse)
-async def document_load(ctx: Context, sender: str, msg: DocumentsResponse):
-    ctx.logger.info(msg.learnings)
-
-agent.include(summary_protocol, publish_manifest=True)
-agent.run()
+	from uagents import Agent, Context, Protocol, Model
+	from ai_engine import UAgentResponse, UAgentResponseType
+	from typing import List
+	
+	
+	class DocumentUnderstanding(Model):
+	    pdf_path: str
+	    question: str
+	
+	
+	class DocumentsResponse(Model):
+	    learnings: List
+	
+	
+	agent = Agent(
+	    name="find_in_pdf",
+	    seed="",
+	    port=8001,
+	    endpoint=["http://127.0.0.1:8001/submit"]
+	)
+	
+	print("uAgent address: ", agent.address)
+	summary_protocol = Protocol("Text Summarizer")
+	
+	RECIPIENT_PDF_AGENT = ""
+	
+	
+	@agent.on_event("startup")
+	async def on_startup(ctx: Context):
+	    await ctx.send(RECIPIENT_PDF_AGENT,
+	                   DocumentUnderstanding(pdf_path="../a-little-story.pdf", question="What's the synopsis?"))
+	
+	
+	@agent.on_message(model=DocumentsResponse)
+	async def document_load(ctx: Context, sender: str, msg: DocumentsResponse):
+	    ctx.logger.info(msg.learnings)
+	
+	
+	agent.include(summary_protocol, publish_manifest=True)
+	agent.run()
 
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ### Agent two: wrapping the Langchain bits
 
 Agent two defines the same models as agent one, but this time, it wraps the logic for the Langchain PDF question in the `document_load()` function, which is decorated with `.on_message(model=DocumentUnderstanding, replies=DocumentsResponse)` . You can specify a `replies` argument in your `on_message` decorators; this is useful for being more explicit with communication.
 
-```python copy filename="langchain_agent_two.py"
-from langchain_community.document_loaders import PyPDFLoader
-import os
-from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
-from uagents import Agent, Context, Protocol, Model
-from typing import List
+<GithubCodeSegment digest="e4c98b451cd09437999b63d97a21635c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/creating-an-agent-with-langchain/langchain_agent_two.py"
+        lineStart={1}
+        lineEnd={47}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='e4c98b451cd09437999b63d97a21635c'>
 
-class DocumentUnderstanding(Model):
-    pdf_path: str
-    question: str
+<DocsCode local={true}>
+	```py copy filename="langchain_agent_two.py"
 
-class DocumentsResponse(Model):
-    learnings: List
-
-pdf_questioning_agent = Agent(
-    name="pdf_questioning_agent",
-    seed="",
-    port=8003,
-    endpoint=["http://127.0.0.1:8003/submit"],
-)
-
-print("uAgent address: ", pdf_questioning_agent.address)
-pdf_loader_protocol = Protocol("Text Summariser")
-
-@pdf_questioning_agent.on_message(model=DocumentUnderstanding, replies=DocumentsResponse)
-async def document_load(ctx: Context, sender: str, msg: DocumentUnderstanding):
-    loader = PyPDFLoader(msg.pdf_path)
-    pages = loader.load_and_split()
-    openai_api_key = os.environ['OPENAI_API_KEY']
-    learnings = []
-
-    faiss_index = FAISS.from_documents(pages, OpenAIEmbeddings(openai_api_key=openai_api_key))
-
-    docs = faiss_index.similarity_search(msg.question, k=2)
-
-    for doc in docs:
-        learnings.append(str(doc.metadata["page"]) + ":" + doc.page_content[:600])
-
-    await ctx.send(sender, DocumentsResponse(learnings=learnings))
-
-pdf_questioning_agent.include(pdf_loader_protocol, publish_manifest=True)
-pdf_questioning_agent.run()
+	from langchain_community.document_loaders import PyPDFLoader
+	import os
+	from langchain_community.vectorstores import FAISS
+	from langchain_openai import OpenAIEmbeddings
+	from uagents import Agent, Context, Protocol, Model
+	from typing import List
+	
+	
+	class DocumentUnderstanding(Model):
+	    pdf_path: str
+	    question: str
+	
+	
+	class DocumentsResponse(Model):
+	    learnings: List
+	
+	
+	pdf_questioning_agent = Agent(
+	    name="pdf_questioning_agent",
+	    seed="",
+	    port=8003,
+	    endpoint=["http://127.0.0.1:8003/submit"],
+	)
+	
+	print("uAgent address: ", pdf_questioning_agent.address)
+	pdf_loader_protocol = Protocol("Text Summariser")
+	
+	
+	@pdf_questioning_agent.on_message(model=DocumentUnderstanding, replies=DocumentsResponse)
+	async def document_load(ctx: Context, sender: str, msg: DocumentUnderstanding):
+	    loader = PyPDFLoader(msg.pdf_path)
+	    pages = loader.load_and_split()
+	    openai_api_key = os.environ['OPENAI_API_KEY']
+	    learnings = []
+	
+	    faiss_index = FAISS.from_documents(pages, OpenAIEmbeddings(openai_api_key=openai_api_key))
+	
+	    docs = faiss_index.similarity_search(msg.question, k=2)
+	
+	    for doc in docs:
+	        learnings.append(str(doc.metadata["page"]) + ":" + doc.page_content[:600])
+	
+	    await ctx.send(sender, DocumentsResponse(learnings=learnings))
+	
+	
+	pdf_questioning_agent.include(pdf_loader_protocol, publish_manifest=True)
+	pdf_questioning_agent.run()
 
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 With these agents now being defined, it is time to run them. Let's run Agent two first to get its address and then update Agent one to send a message to it by filling the `RECIPIENT_PDF_AGENT` field in-line.
 
