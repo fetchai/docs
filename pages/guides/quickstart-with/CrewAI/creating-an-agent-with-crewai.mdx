@@ -12,7 +12,7 @@ In this guide, we'll walk you through a simple CrewAI example to understand its 
 
 Let's use a shortened example that CrewAI provides; in this example we define an Agent and a Task. At a high level here, Agent is defining the LLMs "personality" and the Task is what that LLM is to solve.
 
-<GithubCodeSegment digest="">
+<GithubCodeSegment digest="bcfdd3ab8681e054656dfbdbc7006dfa">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/CrewAI/creating-an-agent-with-crewai/crew.py"
         lineStart={1}
@@ -20,6 +20,61 @@ Let's use a shortened example that CrewAI provides; in this example we define an
         hosted={true}
     />
 </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='bcfdd3ab8681e054656dfbdbc7006dfa'>
+
+<DocsCode local={true}>
+	```py copy filename="crew.py"
+
+	fimport
+	os
+	from crewai import Agent, Task, Crew, Process
+	from crewai_tools import SerperDevTool
+	
+	os.environ["OPENAI_API_KEY"] = "YOUR_API_KEY"
+	os.environ["SERPER_API_KEY"] = "Your Key"  # serper.dev API key
+	
+	search_tool = SerperDevTool()
+	
+	# Define your agents with roles and goals
+	researcher = Agent(
+	    role='Senior Research Analyst',
+	    goal='Uncover cutting-edge developments in AI and data science',
+	    backstory="""You work at a leading tech think tank.
+	  Your expertise lies in identifying emerging trends.
+	  You have a knack for dissecting complex data and presenting actionable insights.""",
+	    verbose=True,
+	    allow_delegation=False,
+	    tools=[search_tool]
+	)
+	
+	# Create tasks for your agents
+	task1 = Task(
+	    description="""Conduct a comprehensive analysis of the latest advancements in AI in 2024.
+	  Identify key trends, breakthrough technologies, and potential industry impacts.""",
+	    expected_output="Full analysis report in bullet points",
+	    agent=researcher
+	)
+	
+	# Instantiate your crew with a sequential process
+	crew = Crew(
+	    agents=[researcher, ],
+	    tasks=[task1, ],
+	    verbose=True,
+	    process=Process.sequential
+	)
+	
+	# Get your crew to work!
+	result = crew.kickoff()
+	
+	print("######################")
+	print(result)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 This is a nice feature; we love the idea of having many tasks and then orchestrating to agents which can execute them.
 But what if we want to create a workflow, perhaps one where information is passed back and forwards?
@@ -45,7 +100,7 @@ Check out more detailed instructions for [installation ↗️](/guides/agents/ge
 
 Our first agent is simple; it sends a message every two seconds to a static address. When this agent receives a message, it prints that to log:
 
-<GithubCodeSegment digest="">
+<GithubCodeSegment digest="c8ac69044f870078919ee861c0472d2a">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/CrewAI/creating-an-agent-with-crewai/sender_agent.py"
         lineStart={1}
@@ -53,13 +108,56 @@ Our first agent is simple; it sends a message every two seconds to a static addr
         hosted={true}
     />
 </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c8ac69044f870078919ee861c0472d2a'>
+
+<DocsCode local={true}>
+	```py copy filename="sender_agent.py"
+
+	from uagents import Agent, Context, Model
+	from uagents.setup import fund_agent_if_low
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	RECIPIENT_ADDRESS = "agent1qf4au6rzaauxhy2jze6v85rspgvredx9m42p0e0cukz0hv4dh2sqjuhujpp"
+	
+	agent = Agent(
+	    name="agent",
+	    port=8000,
+	    seed="",
+	    endpoint=["http://127.0.0.1:8000/submit"],
+	)
+	
+	fund_agent_if_low(agent.wallet.address())
+	
+	
+	@agent.on_interval(period=2.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
+	
+	
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
 
 
 This first agent introduces a few core concepts you will need to be aware of when creating any agent.
 
 Agents are defined with the `Agent` class:
 
-<GithubCodeSegment digest="">
+<GithubCodeSegment digest="672e73a8e18ce446b18bc6b532362a32">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/CrewAI/creating-an-agent-with-crewai/sender_agent.py"
         lineStart={11}
@@ -67,6 +165,24 @@ Agents are defined with the `Agent` class:
         hosted={true}
     />
 </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='672e73a8e18ce446b18bc6b532362a32'>
+
+<DocsCode local={true}>
+	```py copy filename="sender_agent.py"
+
+	agent = Agent(
+	    name="agent",
+	    port=8000,
+	    seed="",
+	    endpoint=["http://127.0.0.1:8000/submit"],
+	)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 A `seed` is a unique phrase which `uagents` library uses to create a unique private key pair for your agent. If you change your `seed` you may lose access to previous messages, and also, the agent's address registered to the Almanac will change subsequently. The `port` allows us to define a local port for messages to be received. The `endpoint` defines the path to the in-built Rest API. The `name` defines the name of the agent.
 
@@ -74,7 +190,7 @@ There are more options for the `Agent` class; see [`Agent` Class ↗️](/refere
 
 We then need to define our **communication model**:
 
-<GithubCodeSegment digest="">
+<GithubCodeSegment digest="a46c48221f19f43d31de9fa57ada1887">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/CrewAI/creating-an-agent-with-crewai/sender_agent.py"
         lineStart={5}
@@ -82,6 +198,20 @@ We then need to define our **communication model**:
         hosted={true}
     />
 </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a46c48221f19f43d31de9fa57ada1887'>
+
+<DocsCode local={true}>
+	```py copy filename="sender_agent.py"
+
+	class Message(Model):
+	    message: str
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The `Model` defines the object sent from agent to agent and represents the type of messages the agent is able to handle. For explicit communication, both agents must handle the same `Model` class. `Model` is the base class that inherits from Pydantic BaseModel.
 
@@ -91,7 +221,7 @@ Finally, agents have two decorated functions.
 
 The first one is the `agent.on_interval()` function. This one sends a message every 2 seconds. `ctx.send()` has the args of `destination_address` and `Message` which we defined earlier.
 
-<GithubCodeSegment digest="">
+<GithubCodeSegment digest="048b49e23e4dbc8139f4d9573c8ef1eb">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/CrewAI/creating-an-agent-with-crewai/sender_agent.py"
         lineStart={21}
@@ -99,10 +229,25 @@ The first one is the `agent.on_interval()` function. This one sends a message ev
         hosted={true}
     />
 </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='048b49e23e4dbc8139f4d9573c8ef1eb'>
+
+<DocsCode local={true}>
+	```py copy filename="sender_agent.py"
+
+	@agent.on_interval(period=2.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there"))
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The second one is `agent.on_message()` which is a little different; when the agent receives a message at the `endpoint` we defined earlier, the `uagent` library unpacks the message and triggers any function which handles that message; in our case, the `agent.on_message()` function:
 
-<GithubCodeSegment digest="">
+<GithubCodeSegment digest="80e840ac9860d0707fc97dfdcb155861">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/CrewAI/creating-an-agent-with-crewai/sender_agent.py"
         lineStart={26}
@@ -110,12 +255,27 @@ The second one is `agent.on_message()` which is a little different; when the age
         hosted={true}
     />
 </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='80e840ac9860d0707fc97dfdcb155861'>
+
+<DocsCode local={true}>
+	```py copy filename="sender_agent.py"
+
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ### Second Agent
 
 Agent two doesn't do anything different to agent one; it has different args for the Agent instantiation, and instead of sending a message `on_event("startup")`, agent two just logs its address to screen. Whenever agent two receives a message matching `Message` data model, it will send a response to the sender.
 
-<GithubCodeSegment digest="">
+<GithubCodeSegment digest="066e88410318b8289ce25474c824d5ed">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/CrewAI/creating-an-agent-with-crewai/receiver_agent.py"
         lineStart={1}
@@ -123,6 +283,50 @@ Agent two doesn't do anything different to agent one; it has different args for 
         hosted={true}
     />
 </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='066e88410318b8289ce25474c824d5ed'>
+
+<DocsCode local={true}>
+	```py copy filename="receiver_agent.py"
+
+	from uagents.setup import fund_agent_if_low
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	agent = Agent(
+	    name="agent 2",
+	    port=8001,
+	    seed="",
+	    endpoint=["http://127.0.0.1:8001/submit"],
+	)
+	
+	fund_agent_if_low(agent.wallet.address())
+	
+	
+	@agent.on_event("startup")
+	async def start(ctx: Context):
+	    ctx.logger.info(f"agent address is {agent.address}")
+	
+	
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	    await ctx.send(sender, Message(message="hello there"))
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Okay, let's now run these agents.
 
