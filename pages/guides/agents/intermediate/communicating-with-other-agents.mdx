@@ -267,7 +267,7 @@ Let's start by defining the script for **sigmar**.
     ```py copy
     @sigmar.on_interval(period=2.0)
     async def send_message(ctx: Context):
-        await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there slaanesh")
+        await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there slaanesh"))
    ```
 
     Here, the `.on_interval()` decorator schedules the `send_message()` function to be run every 2 seconds. Inside the function, there is an asynchronous call indicated by the `ctx.send()` method. This call sends a message with the content `"hello there slaanesh"` to the `RECIPIENT_ADDRESS`.
