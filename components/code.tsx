@@ -4,6 +4,7 @@ import { CopyIcon, DropDownArrow } from "src/icons/shared-icons";
 import { Windows, Mac, Ubuntu, OSProps } from "src/icons/os-icons";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+
 interface CodeGroupProps {
   children: ReactNode;
   isOSFile?: boolean;
@@ -11,6 +12,8 @@ interface CodeGroupProps {
   hasCopy?: boolean;
   osBlocks: ReactNode;
   codeBlocks: ReactNode;
+  dynamic?: boolean;
+  digest?: string;
 }
 
 interface CodeBlockProps {
@@ -563,4 +566,24 @@ export const DocsCode: React.FC<CodeGroupProps> = ({
       />
     </div>
   );
+};
+
+interface CodeSegment {
+  path: string;
+  lineStart: number;
+  lineEnd: number;
+  hosted: boolean;
+  filename?: string;
+}
+
+interface GithubCodeSegment {
+  digest?: string;
+}
+
+export const GithubCodeSegment: React.FC<GithubCodeSegment> = () => {
+  return <div hidden />;
+};
+
+export const CodeSegment: React.FC<CodeSegment> = () => {
+  return <div hidden />;
 };
