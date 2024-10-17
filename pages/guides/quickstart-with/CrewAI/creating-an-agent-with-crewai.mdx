@@ -395,121 +395,144 @@ The `senior_research_analyst_agent`, is designed to handle requests for city-spe
 
 When a request is received with a city name, the agent logs the request, conducts a comprehensive analysis, and returns a report that combines AI insights with real-time weather data. This functionality makes it a valuable tool for research organizations and tech consultancies seeking relevant information.
 
-    ```python copy filename="crewai_agent_1.py"
-    from uagents import Agent, Context, Model
-    import os
-    from crewai import Agent as CrewAIAgent, Task, Crew, Process
-    from crewai_tools import SerperDevTool
+<GithubCodeSegment digest="2d02c445022f18d3c9b9f016cffee4d9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/CrewAI/creating-an-agent-with-crewai/crewai_agent_1.py"
+        lineStart={1}
+        lineEnd={118}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2d02c445022f18d3c9b9f016cffee4d9'>
 
-    senior_research_analyst_agent = Agent(
-        name="senior_research_analyst_agent",
-        seed="senior_research_analyst_agent_seed",
-        port=8001,
-        endpoint=["http://127.0.0.1:8001/submit"],
-    )
+<DocsCode local={true}>
+	```py copy filename="crewai_agent_1.py"
 
-    class CityRequestModel(Model):
-        city: str
+	from uagents import Agent, Context, Model
+	import os
+	from crewai import Agent as CrewAIAgent, Task, Crew, Process
+	from crewai_tools import SerperDevTool
+	
+	senior_research_analyst_agent = Agent(
+	    name="senior_research_analyst_agent",
+	    seed="senior_research_analyst_agent_seed",
+	    port=8001,
+	    endpoint=["http://127.0.0.1:8001/submit"],
+	)
+	
+	
+	class CityRequestModel(Model):
+	    city: str
+	
+	
+	class ResearchReportModel(Model):
+	    report: str
+	
+	
+	os.environ["OPENAI_API_KEY"] = ""
+	os.environ["SERPER_API_KEY"] = ""
+	
+	
+	class SeniorResearchAnalyst:
+	    def __init__(self):
+	        """
+	        Initializes the Senior Research Analyst agent with a search tool.
+	        """
+	        self.search_tool = SerperDevTool()
+	
+	        self.researcher = CrewAIAgent(
+	            role="Senior Research Analyst",
+	            goal="Uncover cutting-edge developments in AI and provide weather updates.",
+	            backstory="""You work at a leading tech think tank.
+	            Your expertise lies in identifying emerging trends and understanding external factors like weather.""",
+	            verbose=True,
+	            allow_delegation=False,
+	            tools=[self.search_tool],
+	        )
+	
+	    def create_task(self, city: str) -> Task:
+	        """
+	        Creates a task for conducting research on AI advancements and retrieving weather updates.
+	
+	        Parameters:
+	        - city: str, the city for which the weather update is requested.
+	
+	        Returns:
+	        - Task: The created task with the specified description and expected output.
+	        """
+	        task_description = (
+	            f"Conduct a comprehensive analysis of the latest advancements in AI in 2024. "
+	            f"Also, use the search tool to provide the current weather update for {city}."
+	        )
+	
+	        return Task(
+	            description=task_description,
+	            expected_output="Full analysis report with weather data",
+	            agent=self.researcher,
+	        )
+	
+	    def run_process(self, city: str):
+	        """
+	        Runs the process for the created task and retrieves the result.
+	
+	        Parameters:
+	        - city: str, the city for which the task is run.
+	
+	        Returns:
+	        - result: The output from the CrewAI process after executing the task.
+	        """
+	        task = self.create_task(city)
+	        crew = Crew(
+	            agents=[self.researcher],
+	            tasks=[task],
+	            verbose=True,
+	            process=Process.sequential,
+	        )
+	        result = crew.kickoff()
+	        return result
+	
+	
+	@senior_research_analyst_agent.on_message(model=CityRequestModel, replies=ResearchReportModel)
+	async def handle_city_request(ctx: Context, sender: str, msg: CityRequestModel):
+	    """
+	    Handles incoming messages requesting city information.
+	
+	    What it does:
+	    - Logs the received city name.
+	    - Runs the research process for the specified city and sends the report back to the sender.
+	
+	    Parameters:
+	    - ctx: Context, provides the execution context for logging and messaging.
+	    - sender: str, the address of the sender agent.
+	    - msg: CityRequestModel, the received message containing the city name.
+	
+	    Returns:
+	    - None: Sends the research report to the sender agent.
+	    """
+	    ctx.logger.info(f"Received message from {sender} with city: {msg.city}")
+	    research_analyst = SeniorResearchAnalyst()
+	    gather_task_result = research_analyst.run_process(msg.city)
+	    await ctx.send(sender, ResearchReportModel(report=str(gather_task_result)))
+	
+	
+	if __name__ == "__main__":
+	    """
+	    Starts the communication agent and begins listening for messages.
+	
+	    What it does:
+	    - Runs the agent, enabling it to send/receive messages and handle events.
+	
+	    Returns:
+	    - None: Runs the agent loop indefinitely.
+	    """
+	    senior_research_analyst_agent.run()
 
-    class ResearchReportModel(Model):
-        report: str
+```
+</DocsCode>
 
-    os.environ["OPENAI_API_KEY"] = ""
-    os.environ["SERPER_API_KEY"] = ""
+</CodeGroup>
 
-    class SeniorResearchAnalyst:
-        def __init__(self):
-            """
-            Initializes the Senior Research Analyst agent with a search tool.
-            """
-            self.search_tool = SerperDevTool()
 
-            self.researcher = CrewAIAgent(
-                role="Senior Research Analyst",
-                goal="Uncover cutting-edge developments in AI and provide weather updates.",
-                backstory="""You work at a leading tech think tank.
-                Your expertise lies in identifying emerging trends and understanding external factors like weather.""",
-                verbose=True,
-                allow_delegation=False,
-                tools=[self.search_tool],
-            )
-
-        def create_task(self, city: str) -> Task:
-            """
-            Creates a task for conducting research on AI advancements and retrieving weather updates.
-
-            Parameters:
-            - city: str, the city for which the weather update is requested.
-
-            Returns:
-            - Task: The created task with the specified description and expected output.
-            """
-            task_description = (
-                f"Conduct a comprehensive analysis of the latest advancements in AI in 2024. "
-                f"Also, use the search tool to provide the current weather update for {city}."
-            )
-
-            return Task(
-                description=task_description,
-                expected_output="Full analysis report with weather data",
-                agent=self.researcher,
-            )
-
-        def run_process(self, city: str):
-            """
-            Runs the process for the created task and retrieves the result.
-
-            Parameters:
-            - city: str, the city for which the task is run.
-
-            Returns:
-            - result: The output from the CrewAI process after executing the task.
-            """
-            task = self.create_task(city)
-            crew = Crew(
-                agents=[self.researcher],
-                tasks=[task],
-                verbose=True,
-                process=Process.sequential,
-            )
-            result = crew.kickoff()
-            return result
-
-    @senior_research_analyst_agent.on_message(model=CityRequestModel, replies=ResearchReportModel)
-    async def handle_city_request(ctx: Context, sender: str, msg: CityRequestModel):
-        """
-        Handles incoming messages requesting city information.
-
-        What it does:
-        - Logs the received city name.
-        - Runs the research process for the specified city and sends the report back to the sender.
-
-        Parameters:
-        - ctx: Context, provides the execution context for logging and messaging.
-        - sender: str, the address of the sender agent.
-        - msg: CityRequestModel, the received message containing the city name.
-
-        Returns:
-        - None: Sends the research report to the sender agent.
-        """
-        ctx.logger.info(f"Received message from {sender} with city: {msg.city}")
-        research_analyst = SeniorResearchAnalyst()
-        gather_task_result = research_analyst.run_process(msg.city)
-        await ctx.send(sender, ResearchReportModel(report=str(gather_task_result)))
-
-    if __name__ == "__main__":
-        """
-        Starts the communication agent and begins listening for messages.
-
-        What it does:
-        - Runs the agent, enabling it to send/receive messages and handle events.
-
-        Returns:
-        - None: Runs the agent loop indefinitely.
-        """
-        senior_research_analyst_agent.run()
-
-    ```
 
 ### Agent two: Research Asking Agent
 
@@ -523,79 +546,102 @@ The `research_asking_agent` agent is designed to initiate requests for city-spec
 
 This agent operates continuously, enabling effective communication and retrieval of city-related research insights.
 
-    ```python copy filename="crewai_agent_2.py"
-    from uagents import Agent, Context, Model
+<GithubCodeSegment digest="87801e131ab076eaaf2d8965b307d5f5">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/CrewAI/creating-an-agent-with-crewai/crewai_agent_2.py"
+        lineStart={1}
+        lineEnd={76}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='87801e131ab076eaaf2d8965b307d5f5'>
 
-    class CityRequestModel(Model):
-        city: str
+<DocsCode local={true}>
+	```py copy filename="crewai_agent_2.py"
 
-    class ResearchReportModel(Model):
-        report: str
+	from uagents import Agent, Context, Model
+	
+	
+	class CityRequestModel(Model):
+	    city: str
+	
+	
+	class ResearchReportModel(Model):
+	    report: str
+	
+	
+	research_asking_agent = Agent(
+	    name="research_asking_agent",
+	    seed="research_asking_agent_seed",
+	    port=8000,
+	    endpoint=["http://127.0.0.1:8000/submit"],
+	)
+	
+	TARGET_AGENT_ADDRESS = (
+	    "agent1qgxfhzy78m2qfdsg726gtj4vnd0hkqx96xwprng2e4rmn0xfq7p35u6dz8q"
+	)
+	DEFAULT_CITY = "London"
+	
+	
+	@research_asking_agent.on_event("startup")
+	async def on_startup(ctx: Context):
+	    """
+	    Triggered when the agent starts up.
+	
+	    What it does:
+	    - Logs the agent's name and address.
+	    - Sends a message to the target agent with the default city (e.g., 'London').
+	
+	    Parameters:
+	    - ctx: Context, provides the execution context for logging and messaging.
+	
+	    Returns:
+	    - None: Sends the message to the target agent asynchronously.
+	    """
+	    ctx.logger.info(
+	        f"Hello, I'm {research_asking_agent.name}, and my address is {research_asking_agent.address}."
+	    )
+	
+	    await ctx.send(TARGET_AGENT_ADDRESS, CityRequestModel(city=DEFAULT_CITY))
+	
+	
+	@research_asking_agent.on_message(model=ResearchReportModel)
+	async def handle_research_report(ctx: Context, sender: str, msg: ResearchReportModel):
+	    """
+	    Triggered when a message of type ResearchReportModel is received.
+	
+	    What it does:
+	    - Logs the sender's address and the research report received.
+	
+	    Parameters:
+	    - ctx: Context, provides the execution context for logging and messaging.
+	    - sender: str, the address of the sender agent.
+	    - msg: ResearchReportModel, the received research report.
+	
+	    Returns:
+	    - None: Processes the message and logs it.
+	    """
+	    ctx.logger.info(f"Received research report from {sender}: {msg.report}")
+	
+	
+	if __name__ == "__main__":
+	    """
+	    Starts the research analyst agent and begins listening for events.
+	
+	    What it does:
+	    - Runs the agent, enabling it to send/receive messages and handle events.
+	
+	    Returns:
+	    - None: Runs the agent loop indefinitely.
+	    """
+	    research_asking_agent.run()
 
-    research_asking_agent = Agent(
-        name="research_asking_agent",
-        seed="research_asking_agent_seed",
-        port=8000,
-        endpoint=["http://127.0.0.1:8000/submit"],
-    )
+```
+</DocsCode>
 
-    TARGET_AGENT_ADDRESS = (
-        "agent1qgxfhzy78m2qfdsg726gtj4vnd0hkqx96xwprng2e4rmn0xfq7p35u6dz8q"
-    )
-    DEFAULT_CITY = "London"
+</CodeGroup>
 
-    @research_asking_agent.on_event("startup")
-    async def on_startup(ctx: Context):
-        """
-        Triggered when the agent starts up.
 
-        What it does:
-        - Logs the agent's name and address.
-        - Sends a message to the target agent with the default city (e.g., 'London').
-
-        Parameters:
-        - ctx: Context, provides the execution context for logging and messaging.
-
-        Returns:
-        - None: Sends the message to the target agent asynchronously.
-        """
-        ctx.logger.info(
-            f"Hello, I'm {research_asking_agent.name}, and my address is {research_asking_agent.address}."
-        )
-
-        await ctx.send(TARGET_AGENT_ADDRESS, CityRequestModel(city=DEFAULT_CITY))
-
-    @research_asking_agent.on_message(model=ResearchReportModel)
-    async def handle_research_report(ctx: Context, sender: str, msg: ResearchReportModel):
-        """
-        Triggered when a message of type ResearchReportModel is received.
-
-        What it does:
-        - Logs the sender's address and the research report received.
-
-        Parameters:
-        - ctx: Context, provides the execution context for logging and messaging.
-        - sender: str, the address of the sender agent.
-        - msg: ResearchReportModel, the received research report.
-
-        Returns:
-        - None: Processes the message and logs it.
-        """
-        ctx.logger.info(f"Received research report from {sender}: {msg.report}")
-
-    if __name__ == "__main__":
-        """
-        Starts the research analyst agent and begins listening for events.
-
-        What it does:
-        - Runs the agent, enabling it to send/receive messages and handle events.
-
-        Returns:
-        - None: Runs the agent loop indefinitely.
-        """
-        research_asking_agent.run()
-
-    ```
 
 ### Output
 

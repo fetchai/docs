@@ -1,4 +1,4 @@
-import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../../components/code";
 
 # Oracles
 
@@ -43,98 +43,174 @@ We initially need to download the binaries for both contracts, which can be done
 
 2. We would then also require the following imports:
 
-    ```py copy
-    from time import sleep
-    import requests
-    from cosmpy.aerial.client import LedgerClient, NetworkConfig
-    from cosmpy.aerial.contract import LedgerContract
-    from cosmpy.aerial.faucet import FaucetApi
-    from cosmpy.aerial.wallet import LocalWallet
-    from cosmpy.crypto.address import Address
-    ```
+<GithubCodeSegment digest="6e22dc69687ec93da3e71547e402112f">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/oracles/aerial_oracle.py"
+        lineStart={1}
+        lineEnd={10}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6e22dc69687ec93da3e71547e402112f'>
+
+<DocsCode local={true}>
+	```py copy filename="aerial_oracle.py"
+
+	import argparse
+	from time import sleep
+	
+	import requests
+	
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig
+	from cosmpy.aerial.contract import LedgerContract
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.wallet import LocalWallet
+	from cosmpy.crypto.address import Address
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 3. We then need to choose a data source for the coin price, the update interval, the decimal precision, and the decimal timeout for the oracle value:
 
-    ```py copy
-    COIN_PRICE_URL = (
-        "https://api.coingecko.com/api/v3/simple/price?ids=fetch-ai&vs_currencies=usd"
-    )
-    UPDATE_INTERVAL_SECONDS = 10
-    ORACLE_VALUE_DECIMALS = 5
-    DEFAULT_TIMEOUT = 60.0
-    ```
+<GithubCodeSegment digest="27c5e879584992e6a902516b8387b85b">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/oracles/aerial_oracle.py"
+        lineStart={12}
+        lineEnd={17}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='27c5e879584992e6a902516b8387b85b'>
+
+<DocsCode local={true}>
+	```py copy filename="aerial_oracle.py"
+
+	COIN_PRICE_URL = (
+	    "https://api.coingecko.com/api/v3/simple/price?ids=fetch-ai&vs_currencies=usd"
+	)
+	UPDATE_INTERVAL_SECONDS = 10
+	ORACLE_VALUE_DECIMALS = 5
+	DEFAULT_TIMEOUT = 60.0
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 4. We then proceed and define a `_parse_commandline()` function by first importing the `argparse` module, which is a standard Python module for parsing command-line arguments:
 
-    ```py copy
-    def _parse_commandline():
-        parser = argparse.ArgumentParser()
-        parser.add_argument(
-            "contract_path", help="The path to the oracle contract to upload"
-        )
-        parser.add_argument(
-            "contract_address",
-            nargs="?",
-            type=Address,
-            help="The address of the oracle contract if already deployed",
-        )
-        return parser.parse_args()
-    ```
+<GithubCodeSegment digest="e436f71e6cb33bb6826cbf60fb64b7d9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/oracles/aerial_oracle.py"
+        lineStart={20}
+        lineEnd={31}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='e436f71e6cb33bb6826cbf60fb64b7d9'>
+
+<DocsCode local={true}>
+	```py copy filename="aerial_oracle.py"
+
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument(
+	        "contract_path", help="The path to the oracle contract to upload"
+	    )
+	    parser.add_argument(
+	        "contract_address",
+	        nargs="?",
+	        type=Address,
+	        help="The address of the oracle contract if already deployed",
+	    )
+	    return parser.parse_args()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    This first creates an argument `parser` object. The `ArgumentParser` class provides a way to specify the arguments your script should accept and automatically generates help messages and error messages. We then use `add_argument()` to add a positional argument named `contract_path`. This argument is required and should be a path to the oracle contract that you want to upload. The help argument provides a description of what this argument does. We further add another positional argument named `contract_address`. This argument is optional (`nargs="?"` allows it to be omitted), and it should be of type `Address`. The `type` argument specifies the type of the argument. In this case, `Address` is a custom type or class used to represent addresses. The `help` argument provides a description of what this argument does. At the end, we parse the command-line arguments provided when the script is executed. It returns an object that contains the values of the parsed arguments.
 
 5. We then need to proceed and define our `main()` function:
 
-    ```py copy
-    def main():
-        """Run main."""
-        args = _parse_commandline()
+<GithubCodeSegment digest="019cc71d805be54e1f31e0d2a1b45a88">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/oracles/aerial_oracle.py"
+        lineStart={34}
+        lineEnd={82}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='019cc71d805be54e1f31e0d2a1b45a88'>
 
-        wallet = LocalWallet.generate()
+<DocsCode local={true}>
+	```py copy filename="aerial_oracle.py"
 
-        ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-        faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	def main():
+	    """Run main."""
+	    args = _parse_commandline()
+	
+	    wallet = LocalWallet.generate()
+	
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    while wallet_balance < (10 ** 18):
+	        print("Providing wealth to wallet...")
+	        faucet_api.get_wealth(wallet.address())
+	        wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    contract = LedgerContract(args.contract_path, ledger, address=args.contract_address)
+	
+	    if not args.contract_address:
+	        instantiation_message = {"fee": "100"}
+	        contract.deploy(instantiation_message, wallet, funds="1atestfet")
+	
+	    print(f"Oracle contract deployed at: {contract.address}")
+	
+	    grant_role_message = {"grant_oracle_role": {"address": wallet}}
+	    contract.execute(grant_role_message, wallet).wait_to_complete()
+	
+	    print(f"Oracle role granted to address: {wallet}")
+	
+	    while True:
+	        resp = requests.get(COIN_PRICE_URL, timeout=DEFAULT_TIMEOUT).json()
+	        price = resp["fetch-ai"]["usd"]
+	        value = int(price * 10 ** ORACLE_VALUE_DECIMALS)
+	
+	        update_message = {
+	            "update_oracle_value": {
+	                "value": str(value),
+	                "decimals": str(ORACLE_VALUE_DECIMALS),
+	            }
+	        }
+	        contract.execute(update_message, wallet).wait_to_complete()
+	
+	        print(f"Oracle value updated to: {price} USD")
+	        print(f"Next update in {UPDATE_INTERVAL_SECONDS} seconds...")
+	        sleep(UPDATE_INTERVAL_SECONDS)
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-        wallet_balance = ledger.query_bank_balance(wallet.address())
+```
+</DocsCode>
 
-        while wallet_balance < (10**18):
-            print("Providing wealth to wallet...")
-            faucet_api.get_wealth(wallet.address())
-            wallet_balance = ledger.query_bank_balance(wallet.address())
+</CodeGroup>
 
-        contract = LedgerContract(args.contract_path, ledger, address=args.contract_address)
 
-        if not args.contract_address:
-            instantiation_message = {"fee": "100"}
-            contract.deploy(instantiation_message, wallet, funds="1atestfet")
-
-        print(f"Oracle contract deployed at: {contract.address}")
-
-        grant_role_message = {"grant_oracle_role": {"address": wallet}}
-        contract.execute(grant_role_message, wallet).wait_to_complete()
-
-        print(f"Oracle role granted to address: {wallet}")
-
-        while True:
-            resp = requests.get(COIN_PRICE_URL, timeout=DEFAULT_TIMEOUT).json()
-            price = resp["fetch-ai"]["usd"]
-            value = int(price * 10**ORACLE_VALUE_DECIMALS)
-
-            update_message = {
-                "update_oracle_value": {
-                    "value": str(value),
-                    "decimals": str(ORACLE_VALUE_DECIMALS),
-                }
-            }
-            contract.execute(update_message, wallet).wait_to_complete()
-
-            print(f"Oracle value updated to: {price} USD")
-            print(f"Next update in {UPDATE_INTERVAL_SECONDS} seconds...")
-            sleep(UPDATE_INTERVAL_SECONDS)
-
-    if __name__ == "__main__":
-        main()
-    ```
 
     This defines our `main()` function. When we run the script, the code inside `main()` will be executed. `args = _parse_commandline()` calls the `_parse_commandline()` function that we defined earlier. It parses the command-line arguments and returns an object (`args`) containing the values of the parsed arguments. We then generate a new local wallet, and then create a client for interacting with a blockchain ledger, using `LedgerClient()` class. We configured it to use the Fetch.ai stable testnet. We then create a client for interacting with a faucet API and query the balance of the wallet's address using the `query_bank_balance()` method. We also define an initial `while` loop which continues as long as the `wallet_balance` is less than `10**18`. Inside this first loop: it prints a message indicating that wealth is being provided to the wallet, then it calls the faucet API to get wealth for the wallet, and it updates the `wallet_balance` by querying the bank balance again.
 
@@ -281,39 +357,76 @@ Now, we will write a script that deploys a contract that can request the oracle 
 
 2. We start by importing the needed classes and define a `REQUEST_INTERVAL_SECONDS` variable:
 
-    ```py copy
-    import argparse
-    from time import sleep
+<GithubCodeSegment digest="046ac57a6ba99a8cb5971a3fff68ac96">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/oracles/aerial_oracle_client.py"
+        lineStart={1}
+        lineEnd={10}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='046ac57a6ba99a8cb5971a3fff68ac96'>
 
-    from cosmpy.aerial.client import LedgerClient, NetworkConfig
-    from cosmpy.aerial.contract import LedgerContract
-    from cosmpy.aerial.faucet import FaucetApi
-    from cosmpy.aerial.wallet import LocalWallet
-    from cosmpy.crypto.address import Address
+<DocsCode local={true}>
+	```py copy filename="aerial_oracle_client.py"
 
-    REQUEST_INTERVAL_SECONDS = 10
-    ```
+	import argparse
+	from time import sleep
+	
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig
+	from cosmpy.aerial.contract import LedgerContract
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.wallet import LocalWallet
+	from cosmpy.crypto.address import Address
+	
+	REQUEST_INTERVAL_SECONDS = 10
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
 3. Like before, we proceed and define a `_parse_commandline()` function:
 
-    ```py copy
-    def _parse_commandline():
-        parser = argparse.ArgumentParser()
-        parser.add_argument(
-            "contract_path", help="The path to the oracle client contract to upload"
-        )
-        parser.add_argument(
-            "oracle_contract_address",
-            type=Address,
-            help="The address of the oracle contract",
-        )
-        parser.add_argument(
-            "contract_address",
-            nargs="?",
-            type=Address,
-            help="The address of the oracle client contract if already deployed",
-        )
-        return parser.parse_args()
-    ```
+<GithubCodeSegment digest="3da9555a84fc38f7ae6a86e4a6fb3802">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/oracles/aerial_oracle_client.py"
+        lineStart={12}
+        lineEnd={28}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='3da9555a84fc38f7ae6a86e4a6fb3802'>
+
+<DocsCode local={true}>
+	```py copy filename="aerial_oracle_client.py"
+
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument(
+	        "contract_path", help="The path to the oracle client contract to upload"
+	    )
+	    parser.add_argument(
+	        "oracle_contract_address",
+	        type=Address,
+	        help="The address of the oracle contract",
+	    )
+	    parser.add_argument(
+	        "contract_address",
+	        nargs="?",
+	        type=Address,
+	        help="The address of the oracle client contract if already deployed",
+	    )
+	    return parser.parse_args()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     This `_parse_commandline()` function is designed to parse command-line arguments. We first create a `parser` object. This object is used to specify what command-line arguments the program should expect. We then use the `add_argument()` method to define the arguments that the program expects. In this function, there are three arguments being defined:
 
@@ -325,47 +438,65 @@ Now, we will write a script that deploys a contract that can request the oracle 
 
 4. We can now define our `main()` function.
 
-    ```py copy
-    def main():
-        """Run main."""
-        args = _parse_commandline()
+<GithubCodeSegment digest="cdbce0ac22d3791bbdc9ce66c27e7fb9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/oracles/aerial_oracle_client.py"
+        lineStart={30}
+        lineEnd={68}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='cdbce0ac22d3791bbdc9ce66c27e7fb9'>
 
-        wallet = LocalWallet.generate()
+<DocsCode local={true}>
+	```py copy filename="aerial_oracle_client.py"
 
-        ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-        faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	def main():
+	    """Run main."""
+	    args = _parse_commandline()
+	
+	    wallet = LocalWallet.generate()
+	
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    while wallet_balance < (10**18):
+	        print("Providing wealth to wallet...")
+	        faucet_api.get_wealth(wallet.address())
+	        wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    contract = LedgerContract(args.contract_path, ledger, address=args.contract_address)
+	
+	    if not args.contract_address:
+	        instantiation_message = {
+	            "oracle_contract_address": str(args.oracle_contract_address)
+	        }
+	        contract.deploy(instantiation_message, wallet)
+	
+	    print(f"Oracle client contract deployed at: {contract.address}")
+	
+	    while True:
+	        request_message = {"query_oracle_value": {}}
+	        contract.execute(
+	            request_message, wallet, funds="100atestfet"
+	        ).wait_to_complete()
+	
+	        result = contract.query({"oracle_value": {}})
+	        print(f"Oracle value successfully retrieved: {result}")
+	
+	        sleep(REQUEST_INTERVAL_SECONDS)
+	
+	if __name__ == "__main__":
+	    main()
 
-        wallet_balance = ledger.query_bank_balance(wallet.address())
+```
+</DocsCode>
 
-        while wallet_balance < (10**18):
-            print("Providing wealth to wallet...")
-            faucet_api.get_wealth(wallet.address())
-            wallet_balance = ledger.query_bank_balance(wallet.address())
+</CodeGroup>
 
-        contract = LedgerContract(args.contract_path, ledger, address=args.contract_address)
 
-        if not args.contract_address:
-            instantiation_message = {
-                "oracle_contract_address": str(args.oracle_contract_address)
-            }
-            contract.deploy(instantiation_message, wallet)
-
-        print(f"Oracle client contract deployed at: {contract.address}")
-
-        while True:
-            request_message = {"query_oracle_value": {}}
-            contract.execute(
-                request_message, wallet, funds="100atestfet"
-            ).wait_to_complete()
-
-            result = contract.query({"oracle_value": {}})
-            print(f"Oracle value successfully retrieved: {result}")
-
-            sleep(REQUEST_INTERVAL_SECONDS)
-
-    if __name__ == "__main__":
-        main()
-    ```
 
     The first line calls the `_parse_commandline()` function that we defined earlier. It will parse the command-line arguments and return an object (`args`) containing the parsed values. We proceed and generate a new local wallet, `wallet`, and then create a new `ledger` object for interacting with the blockchain or ledger system, using `LedgerClient()`. Afterwards, we create a `FaucetApi` object, `faucet_api`,  which is used for interacting with the faucet service. We use the `query_bank_balance()` method to query the balance associated with the wallet's address. We then define a `while` loop which will continue as long as the `wallet_balance` is less than `10**18`. This is to ensure the wallet has a sufficient balance. Afterwards, we use the `get_wealth()` method to add wealth to the wallet, and then create a new `LedgerContract()` object which takes the `contract_path`, the `ledger` object, and an optional `contract_address`. `if not args.contract_address:` checks if `args.contract_address` is not provided. If it has not been provided, it means that the contract has not been deployed yet. We then create an `instantiation_message`, which contains the data needed for deploying the contract. `contract.deploy()` deploys the contract with the provided `instantiation_message` and the `wallet`. The code then prints out the address of the deployed contract. Finally, we define a second loop starting with `while True:` which repeatedly executes the following steps:
 
@@ -379,75 +510,93 @@ Now, we will write a script that deploys a contract that can request the oracle 
 
 The overall script should be as follows:
 
-```py copy filename="aerial_oracle_client.py"
-import argparse
-from time import sleep
+<GithubCodeSegment digest="ea9a907551dbabed9ede018b73377429">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/oracles/aerial_oracle_client.py"
+        lineStart={1}
+        lineEnd={68}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ea9a907551dbabed9ede018b73377429'>
 
-from cosmpy.aerial.client import LedgerClient, NetworkConfig
-from cosmpy.aerial.contract import LedgerContract
-from cosmpy.aerial.faucet import FaucetApi
-from cosmpy.aerial.wallet import LocalWallet
-from cosmpy.crypto.address import Address
+<DocsCode local={true}>
+	```py copy filename="aerial_oracle_client.py"
 
-REQUEST_INTERVAL_SECONDS = 10
+	import argparse
+	from time import sleep
+	
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig
+	from cosmpy.aerial.contract import LedgerContract
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.wallet import LocalWallet
+	from cosmpy.crypto.address import Address
+	
+	REQUEST_INTERVAL_SECONDS = 10
+	
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument(
+	        "contract_path", help="The path to the oracle client contract to upload"
+	    )
+	    parser.add_argument(
+	        "oracle_contract_address",
+	        type=Address,
+	        help="The address of the oracle contract",
+	    )
+	    parser.add_argument(
+	        "contract_address",
+	        nargs="?",
+	        type=Address,
+	        help="The address of the oracle client contract if already deployed",
+	    )
+	    return parser.parse_args()
+	
+	def main():
+	    """Run main."""
+	    args = _parse_commandline()
+	
+	    wallet = LocalWallet.generate()
+	
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    while wallet_balance < (10**18):
+	        print("Providing wealth to wallet...")
+	        faucet_api.get_wealth(wallet.address())
+	        wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    contract = LedgerContract(args.contract_path, ledger, address=args.contract_address)
+	
+	    if not args.contract_address:
+	        instantiation_message = {
+	            "oracle_contract_address": str(args.oracle_contract_address)
+	        }
+	        contract.deploy(instantiation_message, wallet)
+	
+	    print(f"Oracle client contract deployed at: {contract.address}")
+	
+	    while True:
+	        request_message = {"query_oracle_value": {}}
+	        contract.execute(
+	            request_message, wallet, funds="100atestfet"
+	        ).wait_to_complete()
+	
+	        result = contract.query({"oracle_value": {}})
+	        print(f"Oracle value successfully retrieved: {result}")
+	
+	        sleep(REQUEST_INTERVAL_SECONDS)
+	
+	if __name__ == "__main__":
+	    main()
 
-def _parse_commandline():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "contract_path", help="The path to the oracle client contract to upload"
-    )
-    parser.add_argument(
-        "oracle_contract_address",
-        type=Address,
-        help="The address of the oracle contract",
-    )
-    parser.add_argument(
-        "contract_address",
-        nargs="?",
-        type=Address,
-        help="The address of the oracle client contract if already deployed",
-    )
-    return parser.parse_args()
-
-def main():
-    """Run main."""
-    args = _parse_commandline()
-
-    wallet = LocalWallet.generate()
-
-    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
-
-    wallet_balance = ledger.query_bank_balance(wallet.address())
-
-    while wallet_balance < (10**18):
-        print("Providing wealth to wallet...")
-        faucet_api.get_wealth(wallet.address())
-        wallet_balance = ledger.query_bank_balance(wallet.address())
-
-    contract = LedgerContract(args.contract_path, ledger, address=args.contract_address)
-
-    if not args.contract_address:
-        instantiation_message = {
-            "oracle_contract_address": str(args.oracle_contract_address)
-        }
-        contract.deploy(instantiation_message, wallet)
-
-    print(f"Oracle client contract deployed at: {contract.address}")
-
-    while True:
-        request_message = {"query_oracle_value": {}}
-        contract.execute(
-            request_message, wallet, funds="100atestfet"
-        ).wait_to_complete()
-
-        result = contract.query({"oracle_value": {}})
-        print(f"Oracle value successfully retrieved: {result}")
-
-        sleep(REQUEST_INTERVAL_SECONDS)
-
-if __name__ == "__main__":
-    main()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Bear in mind that specific data related to the oracle's address and contract need to be provided by hand based on your personalized information!
