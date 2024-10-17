@@ -33,7 +33,7 @@ Make sure you have read the following resources before going on with this guide:
 
 Consider the following Agent:
 
-    ```py copy filename="agent.py"
+    ```py copy filename="agent_endpoint.py"
     from uagents.setup import fund_agent_if_low
     from uagents import Agent, Context, Protocol, Model
     import random
@@ -82,7 +82,7 @@ Our `on_message()` doesn't do much other than return a number between 1 and the 
 
 `.run()` initializes the agent.
 
-Finally, we  run our agent as follows: `python agent.py`
+Finally, we  run our agent as follows: `python agent_endpoint.py`
 
 **Expected output**:
 
@@ -108,7 +108,7 @@ Through the **Agentverse** you can set up [Mailboxes ↗️](/guides/agents/inte
 
 Let's start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
 
-        ```py copy
+        ```py copy filename="agent_mailbox"
         from uagents import Agent, Context, Model
     
         class Message(Model):

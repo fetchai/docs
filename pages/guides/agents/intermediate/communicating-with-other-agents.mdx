@@ -40,25 +40,25 @@ The first step to better understand how agents communicate is to introduce how 2
 
 1. First of all, let's create a Python script for this task:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch agents_communication.py
-```
-</DocsCode>
-
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > agents_communication.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch agents_communication.py
-    ```
-    </DocsCode>
-</CodeGroup>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+   ```py copy filename="mac"
+   touch agents_communication.py
+   ```
+   </DocsCode>
+   
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > agents_communication.py
+       ```
+       </DocsCode>
+   
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch agents_communication.py
+       ```
+       </DocsCode>
+   </CodeGroup>
    
 2. Then, we import  `Agent`, `Context`, `Bureau`, and `Model` from the uagents library and we then define the message structure for messages to be exchanged between the agents using the class `Model`:
 
@@ -189,47 +189,48 @@ The first step would be to create two different Python scripts for this task, ea
 
     Slaanesh:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch remote_agents_slaanesh.py
-```
-</DocsCode>
-
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > remote_agents_slaanesh.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch remote_agents_slaanesh.py
-    ```
-    </DocsCode>
-</CodeGroup>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+   ```py copy filename="mac"
+   touch remote_agents_slaanesh.py
+   ```
+   </DocsCode>
+   
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > remote_agents_slaanesh.py
+       ```
+       </DocsCode>
+   
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch remote_agents_slaanesh.py
+       ```
+       </DocsCode>
+   </CodeGroup>
 
     Sigmar:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch remote_agents_sigmar.py
-```
-</DocsCode>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+   ```py copy filename="mac"
+   touch remote_agents_sigmar.py
+   ```
+   </DocsCode>
+   
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > remote_agents_sigmar.py
+       ```
+       </DocsCode>
+   
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch remote_agents_sigmar.py
+       ```
+       </DocsCode>
+   </CodeGroup>
 
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > remote_agents_sigmar.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch remote_agents_sigmar.py
-    ```
-    </DocsCode>
-</CodeGroup>
 Let's start by defining the script for **sigmar**.
 
 #### Sigmar
@@ -266,7 +267,7 @@ Let's start by defining the script for **sigmar**.
     ```py copy
     @sigmar.on_interval(period=2.0)
     async def send_message(ctx: Context):
-        await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there slaanesh")
+        await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there slaanesh"))
    ```
 
     Here, the `.on_interval()` decorator schedules the `send_message()` function to be run every 2 seconds. Inside the function, there is an asynchronous call indicated by the `ctx.send()` method. This call sends a message with the content `"hello there slaanesh"` to the `RECIPIENT_ADDRESS`.

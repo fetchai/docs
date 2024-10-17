@@ -18,43 +18,43 @@ First of all, we need to create 2 Python scripts for our two agents using the fo
 
     Bob:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-    ```py copy filename="mac"
-    touch agent_1.py
-    ```
-</DocsCode>
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > agent_1.py
-    ```
-</DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch agent_1.py
-    ```
-    </DocsCode>
-
-</CodeGroup>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+       ```py copy filename="mac"
+       touch bob.py
+       ```
+   </DocsCode>
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > bob.py
+       ```
+   </DocsCode>
+   
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch bob.py
+       ```
+       </DocsCode>
+   
+   </CodeGroup>
 
     Alice:
     
 <CodeGroup hasCopy isOSFile>
 <DocsCode mac={true}>
     ```py copy filename="mac"
-    touch agent_2.py
+    touch alice.py
     ```
 </DocsCode>
 <DocsCode windows={true}>
     ```py copy filename="windows"
-    echo. > agent_2.py
+    echo. > alice.py
     ```
 </DocsCode>
 
 <DocsCode ubuntu={true}>
     ```py copy filename="ubuntu"
-    touch agent_2.py
+    touch alice.py
     ```
     </DocsCode>
 
@@ -142,7 +142,7 @@ Let's start with the first agent of this example, Bob.
 
 The overall script for this example should look as follows:
 
-```python copy filename="agent_1.py"
+```python copy filename="bob.py"
 from cosmpy.aerial.wallet import LocalWallet
 from uagents import Agent, Context, Model
 from uagents.network import get_faucet, get_name_service_contract
@@ -242,7 +242,7 @@ Let's now define the code for our second agent, Alice.
 
 The overall script for this example should look as follows:
 
-```python copy filename="agent_2.py"
+```python copy filename="alice.py"
 from uagents import Agent, Context, Model
 
 class Message(Model):

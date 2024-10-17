@@ -54,7 +54,7 @@ Login to [News API ↗️](https://newsapi.org/docs/endpoints/top-headlines) and
 
 This agent helps users to read news according to their willingness. This agent triggers the news details gathering secondary functions and asks the user for the news type and subtype they want to read today. This agent responds to the final result to the [DeltaV ↗️](/concepts/ai-engine/deltav) GUI as well.
 
-    ```python copy filename="agent.py"
+    ```python copy filename="news_reading_url_system_agent.py"
 
     # Here we demonstrate how we can create a news reading system agent that is compatible with DeltaV
         
@@ -91,7 +91,7 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 This agent asks users for the type and subtype of news they want to read today from options like **categorical**, **country** related or **keyword** related and respective subtypes. It then directs the user request to relevant secondary function to generate that type of news title and respond it back to the **News Reading system**.
 
-    ```python copy filename="agent.py"
+    ```python copy filename="news_reading_details_agent.py"
     # Here we demonstrate how we can create a news details agent that is compatible with DeltaV.
     # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
 
@@ -199,7 +199,7 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 This subtask is triggered if the user wants to read categorical news and it provides the the category of news which is subtype in news reading details from options business, entertainment, general, health, science, sports, technology and return specific news titles options as list to **News Reading Details Secondary function**.
 
-    ```python copy filename="agent.py"
+    ```python copy filename="generate_categorical_news.py"
     # Here we demonstrate how we can create a categorical news generating agent that is compatible with DeltaV.
     # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
 
@@ -261,7 +261,7 @@ Remember that you need to provide the `api_key` parameter to correctly run this 
 
 This subtask is triggered if the user wants to read regional or country specific news, it gets country as news subtype **News Reading details Secondary function** and get list of news titles.
 
-    ```python copy filename="agent.py"
+    ```python copy filename="generate_regional_news.py"
     # Import libraries
     import requests
     import json
@@ -337,7 +337,7 @@ Remember that you need to provide the `api_key` parameter to correctly run this 
 
 This subtask is triggered if the user wants to read keyword specific news, it gets keyword as news subtype **News reading details Secondary function** and get list of news titles.
 
-    ```python copy filename="agent.py"
+    ```python copy filename="generate_keyword_news.py"
     # Import libraries
     import requests
     import json
@@ -435,7 +435,7 @@ Click **Save** button after filling out the form.
 
 ### News Reading Details Secondary function
 
-    - **Function title**: just the name of your service; in this example let's call it **News Reading details**.
+    - **Function title**: just the name of your function; in this example let's call it **News Reading details**.
     - **Description for AI Engine**: super important to be as detailed as you can, as reasoning engine looks at descriptions to understand what your function does; in this example we can specify something like "**This function takes different details for news reading from user. This is triggered always after News Reading url system.**
     - **Application**: Secondary function.
     - **Protocol** and **Data Model** will be automatically populated based on the source code of [your news generating agent ↗️](/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask#news-generating-agent).

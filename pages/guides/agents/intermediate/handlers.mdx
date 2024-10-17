@@ -38,25 +38,25 @@ Make sure you have read the following resources before going on with this guide:
 
 1. Let's create a Python script for this task, and name it:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch interval-task.py
-```
-</DocsCode>
-
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > interval-task.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch interval-task.py
-    ```
-    </DocsCode>
-</CodeGroup>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+   ```py copy filename="mac"
+   touch interval_task.py
+   ```
+   </DocsCode>
+   
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > interval_task.py
+       ```
+       </DocsCode>
+   
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch interval_task.py
+       ```
+       </DocsCode>
+   </CodeGroup>
    
 2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
 
@@ -91,7 +91,7 @@ touch interval-task.py
 
 The overall script should look as follows:
 
-```py copy filename="interval-task.py"
+```py copy filename="interval_task.py"
 from uagents import Agent, Context
 
 agent = Agent(name="alice", seed="alice recovery phrase")
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
 ### Run the script
 
-Run the script: `python interval-task.py`
+Run the script: `python interval_task.py`
 
 The output should be as follows:
 
@@ -132,26 +132,26 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
 1. First of all, let's create a Python script for this task, and name it:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch broadcast.py
-```
-</DocsCode>
-
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > broadcast.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch broadcast.py
-    ```
-    </DocsCode>
-</CodeGroup>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+   ```py copy filename="mac"
+   touch broadcast.py
+   ```
+   </DocsCode>
    
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > broadcast.py
+       ```
+       </DocsCode>
+   
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch broadcast.py
+       ```
+       </DocsCode>
+   </CodeGroup>
+      
 2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library, and the `fund_agent_if_low` from `uagents.setup`. Then, let's create the 3 different agents using the class `Agent`. Each agent is initialized with a unique name and a seed phrase for wallet recovery. Additionally, if an agent's wallet balance is low, the `fund_agent_if_low()` function is called to add funds to their wallet:
 
     ```py copy
@@ -364,25 +364,25 @@ Let's explore the Proxy code script step-by-step:
 1. First of all navigate to directory where you want to create your project.
 2. Create a Python script name `on_query.py` by running:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch on_query.py
-```
-</DocsCode>
-
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > on_query.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch on_query.py
-    ```
-    </DocsCode>
-</CodeGroup>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+   ```py copy filename="mac"
+   touch on_query.py
+   ```
+   </DocsCode>
+   
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > on_query.py
+       ```
+       </DocsCode>
+   
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch on_query.py
+       ```
+       </DocsCode>
+   </CodeGroup>
    
 3. We need to import `json`, `fastapi`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `TestRequest` class as a subclass of `Model`:
 

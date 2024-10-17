@@ -79,7 +79,7 @@ Check out more detailed instructions for [installation ↗️](/guides/agents/ge
 
 Our first agent is simple; it sends a message every two seconds to a static address. When this agent receives a message, it prints that to log:
 
-    ```python copy filename="agent1.py"
+    ```python copy filename="sender_agent.py"
     from uagents import Agent, Context, Model
     from uagents.setup import fund_agent_if_low
     
@@ -160,7 +160,7 @@ The second one is `agent.on_message()` which is a little different; when the age
 
 Agent two doesn't do anything different to agent one; it has different args for the Agent instantiation, and instead of sending a message `on_event("startup")`, agent two just logs its address to screen. Whenever agent two receives a message matching `Message` data model, it will send a response to the sender.
 
-    ```python copy filename="agent2.py"
+    ```python copy filename="receiver_agent.py"
     from uagents.setup import fund_agent_if_low
     from uagents import Agent, Context, Model
     
@@ -196,7 +196,7 @@ Okay, let's now run these agents.
 
 ### Running the agents
 
-Let's run the second agent's script first using this command: `poetry run python agent2.py`
+Let's run the second agent's script first using this command: `poetry run python receiver_agent.py`
 
 **We must run the second agent first to get its unique address**. This is shown in output in the log. Let's update `agent1.py` script by filling the `RECIPIENT_ADDRESS` field with the address of the second agent from of the output we previously got by running `agent2.py` script.
 

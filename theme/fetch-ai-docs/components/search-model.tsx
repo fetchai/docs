@@ -101,7 +101,9 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
           z-index: 100;
           opacity: 0;
         }
-
+        :is(html[class~="dark"] .modal-content) {
+          background-color: #20222c;
+        }
         .modal-content.animate {
           animation: fadeIn 0.4s forwards;
         }

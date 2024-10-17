@@ -46,7 +46,7 @@ For setting up Hugging face function we need to create different agents as liste
 
 This Agent helps users with their queries for a text-classification model of their choosing. The agent always prioritizes Hugging Face request secondary function. Below is the script for creating our agent on [Agentverse ↗️](https://agentverse.ai/agents) using the **+New Agent** button.
 
-        ```python copy filename="agent.py"
+        ```python copy filename="hugging_face_system_agent.py"
         # Here we demonstrate how we can create a hugging face system agent that is compatible with DeltaV.
 
         # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
@@ -82,7 +82,7 @@ This Agent helps users with their queries for a text-classification model of the
 
 This agent helps hugging face system to handle hugging face request to user and calculates the response. The agent has two fields i.e. `model_id` (to which query has to be made) and `query` (Question needed to be asked to the model). For `model_id` this task always prioritizes `Model List` secondary function to get list of available model of a specific type.
 
-        ```python copy filename="agent.py"
+        ```python copy filename="hugging_face_request_agent.py"
         # Here we demonstrate how we can create a hugging face request agent that is compatible with DeltaV.
 
         # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address.
@@ -135,7 +135,7 @@ To correctly run this code, you need to provide the `API_URL` and `API_TOKEN` pa
 
 This agent helps user to look for specific model with search keyword. The agent queries hugging face url to get top 5 downloaded model related to search keyword. The agent returns list of models and user can select one they need.
 
-        ```python copy filename="agent.py"
+        ```python copy filename="model_list_agent.py"
         # Here we demonstrate how we can create a model list agent that is compatible with DeltaV
 
         # After running this agent, it can be registered to DeltaV on Agentverse Services tab. For registration you will have to use the agent's address
