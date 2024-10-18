@@ -2,6 +2,9 @@ import React, { ReactNode, useState, useEffect, useRef } from "react";
 import { Tab as HeadlessTab } from "@headlessui/react";
 import { DropDownArrow, Tickicon } from "src/icons/shared-icons";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import { ThemeMode } from "theme/fetch-ai-docs/helpers";
 
 function InfoIcon(properties) {
   return (
@@ -289,3 +292,32 @@ export function Grid2({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+interface ImageByThemePropsTypes {
+  darkSrc: string;
+  lightSrc: string;
+  alt: string;
+  width?: number | `${number}`;
+  height?: number | `${number}`;
+}
+
+export const ImageByTheme = ({
+  darkSrc,
+  lightSrc,
+  alt,
+  width,
+  height,
+}: ImageByThemePropsTypes) => {
+  const { resolvedTheme } = useTheme();
+  const src = resolvedTheme === ThemeMode.Dark ? darkSrc : lightSrc;
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      layout="responsive"
+      className="nx-my-6 nx-rounded-lg"
+    />
+  );
+};
