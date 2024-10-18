@@ -192,7 +192,7 @@ export function MatchingRoutesComponent({
         </ul>
       ) : (
         <div className="nx-mt-4">
-          <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
+          <div className="grid-container-tag nx-gap-4">
             {matchedRoutes.map((routeInfo, index) => {
               const guideInfo = findGuideByPath(content, routeInfo.route);
               return (

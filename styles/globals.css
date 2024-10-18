@@ -2582,6 +2582,12 @@ span:target + .subheading-anchor:after {
   border-radius: 8px;
 }
 
+:is(html[class~="dark"] .nextra-hover:hover) {
+  background: rgba(95, 56, 251, 0.2);
+  backdrop-filter: blur(35px);
+  color: #bfaffd;
+}
+
 .nextra-sidebar-ul {
   display: flex;
   padding: 0px 12px;
@@ -4576,7 +4582,8 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 }
 
 :is(html[class~="dark"] .list-view:hover) {
-  background-color: #363841;
+  background: rgba(95, 56, 251, 0.2);
+  backdrop-filter: blur(35px);
   color: #bfaffd;
 }
 
@@ -4793,7 +4800,8 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 }
 
 :is(html[class~="dark"] .link-hover) {
-  background: #363841;
+  background: rgba(95, 56, 251, 0.2);
+  backdrop-filter: blur(35px);
 }
 
 .link-text {
@@ -5057,7 +5065,8 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 }
 
 :is(html[class~="dark"] .nextra-nav-icon-wrapper:hover) {
-  background: #363841;
+  background: rgba(95, 56, 251, 0.2);
+  backdrop-filter: blur(35px);
 }
 
 .nextra-nav-icon-wrapper {
@@ -5263,6 +5272,12 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
   color: #5f38fb;
 }
 
+:is(html[class~="dark"] .tags:hover) {
+  background: rgba(95, 56, 251, 0.2);
+  backdrop-filter: blur(35px);
+  color: #bfaffd;
+}
+
 .toggle-view {
   border-radius: 8px;
   border: 1px solid #b9c5d4;
@@ -5332,4 +5347,26 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 
 :is(html[class~="dark"] .tag-description) {
   color: #d2d3d5;
+}
+
+.grid-container-tag {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1504px) {
+  .grid-container-tag {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 698px) {
+  .grid-container-tag {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 487px) {
+  .grid-container-tag {
+    grid-template-columns: 1fr;
+  }
 }
