@@ -226,13 +226,30 @@ Creating your first agent is a straightforward process. First of all, we need to
 
 We can now code our agent. Let's start by importing the required modules. In our case, we would need to import the `Agent` module from the `uagents` library, and proceed to instantiate the agent by providing a `name`. The following code exemplifies the creation of the simplest possible agent:
 
-    ```py copy
-    # Import the required classes
-    from uagents import Agent
+<GithubCodeSegment digest="5fa833350ab46b034749c41f60ea21e7">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/alice_agent.py"
+        lineStart={1}
+        lineEnd={4}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5fa833350ab46b034749c41f60ea21e7'>
 
-    # Initialize your first Agent and give it a name
-    agent = Agent(name="alice", seed="alice recovery phrase")
-    ```
+<DocsCode local={true}>
+	```py copy filename="alice_agent.py"
+
+	# Import the required classes
+	from uagents import Agent, Context
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 You can run this with `poetry run python alice_agent.py` but it won't do much, yet!
 
@@ -246,21 +263,41 @@ Let's get Alice to do something! We're going to get Alice, on start up, to intro
 
 Let's update `alice_agent.py` with the code snippet below:
 
-    ```py copy filename="alice_agent.py"
-    # Import the required classes
-    from uagents import Agent, Context
+<GithubCodeSegment digest="59d410505a8d50829ab2dd32d53689a5">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/alice_agent.py"
+        lineStart={1}
+        lineEnd={15}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='59d410505a8d50829ab2dd32d53689a5'>
 
-    agent = Agent(name="alice", seed="alice recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="alice_agent.py"
 
-    # Provide your Agent with a job
-    @agent.on_event("startup")
-    async def introduce_agent(ctx: Context):
-        ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	# Import the required classes
+	from uagents import Agent, Context
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+	
+	
+	# Provide your Agent with a job
+	@agent.on_event("startup")
+	async def introduce_agent(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	
+	
+	# This constructor simply ensure that only this script is running
+	if __name__ == "__main__":
+	    agent.run()
 
-    # This constructor simply ensure that only this script is running
-    if __name__ == "__main__":
-        agent.run()
-    ```
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the agent knows how to act on the declared decorated functions.
 
@@ -475,83 +512,199 @@ Let's create a new script for this example:
 
 We can now define the `Message` data model and our two agents:
 
-    ```py copy
-    from uagents import Agent, Bureau, Context, Model
+<GithubCodeSegment digest="eb1174325d601aa2049fb5e768e5aa6c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={1}
+        lineEnd={9}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='eb1174325d601aa2049fb5e768e5aa6c'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
 
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    bob = Agent(name="bob", seed="bob recovery phrase")
-    ```
+	from uagents import Agent, Bureau, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	bob = Agent(name="bob", seed="bob recovery phrase")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 We need to define a function for `alice` to send messages to `bob` periodically. We can do this by defining a `send_message()` function using the `Context` class and make `alice` send a message to `bob` on an interval:
 
-    ```py copy
-    @alice.on_interval(period=3.0)
-    async def send_message(ctx: Context):
-        await ctx.send(bob.address, Message(message="hello there bob"))
-    ```
+<GithubCodeSegment digest="36f4b15506531e2015d93512a111bd17">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={12}
+        lineEnd={14}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='36f4b15506531e2015d93512a111bd17'>
+
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
+
+	@alice.on_interval(period=3.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(bob.address, Message(message="hello there bob"))
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 We then need a way for `bob` to receive these messages. We can do this by creating a function for `bob` to handle all incoming messages from other agents.  We can do this with a `on_message()` decorator that will activate the `message_handler()` function once `bob` receives a message matching the `Message` data model we previously defined:
 
-    ```py copy
-    @bob.on_message(model=Message)
-    async def bob_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-        await ctx.send(alice.address, Message(message="hello there alice"))
-    ```
+<GithubCodeSegment digest="ff4ad05ac771603ec1074dc0270072f7">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={17}
+        lineEnd={20}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ff4ad05ac771603ec1074dc0270072f7'>
+
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
+
+	@bob.on_message(model=Message)
+	async def bob_message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	    await ctx.send(alice.address, Message(message="hello there alice"))
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 We then need to define a message handler function for `alice` to handle response messages from `bob`. We do so using a `on_message()` decorator:
 
-    ```py copy
-    @alice.on_message(model=Message)
-    async def alice_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-    ```
+<GithubCodeSegment digest="c4eb1d4fffee4ca44aba0e8133326281">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={23}
+        lineEnd={25}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c4eb1d4fffee4ca44aba0e8133326281'>
+
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
+
+	@alice.on_message(model=Message)
+	async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Finally, we need to add both agents to the `Bureau` in order to run them from the same script:
 
-    ```py copy
-    bureau = Bureau()
-    bureau.add(alice)
-    bureau.add(bob)
+<GithubCodeSegment digest="4eda71fce8d2daf20cb3ce010670fd3c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={28}
+        lineEnd={33}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='4eda71fce8d2daf20cb3ce010670fd3c'>
 
-    if __name__ == "__main__":
-        bureau.run()
-    ```
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
+
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	
+	if __name__ == "__main__":
+	    bureau.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The overall script would be:
 
-    ```py copy filename="agent_communication.py"
-    from uagents import Agent, Bureau, Context, Model
+<GithubCodeSegment digest="9ed3a45551f019ad98402e56760de8d7">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={1}
+        lineEnd={33}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9ed3a45551f019ad98402e56760de8d7'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
 
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    bob = Agent(name="bob", seed="bob recovery phrase")
+	from uagents import Agent, Bureau, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	bob = Agent(name="bob", seed="bob recovery phrase")
+	
+	
+	@alice.on_interval(period=3.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(bob.address, Message(message="hello there bob"))
+	
+	
+	@bob.on_message(model=Message)
+	async def bob_message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	    await ctx.send(alice.address, Message(message="hello there alice"))
+	
+	
+	@alice.on_message(model=Message)
+	async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	
+	if __name__ == "__main__":
+	    bureau.run()
 
-    @alice.on_interval(period=3.0)
-    async def send_message(ctx: Context):
-        await ctx.send(bob.address, Message(message="hello there bob"))
+```
+</DocsCode>
 
-    @bob.on_message(model=Message)
-    async def bob_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-        await ctx.send(alice.address, Message(message="hello there alice"))
+</CodeGroup>
 
-    @alice.on_message(model=Message)
-    async def alice_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-    bureau = Bureau()
-    bureau.add(alice)
-    bureau.add(bob)
-
-    if __name__ == "__main__":
-        bureau.run()
-    ```
 
 We can now run the script. Just run: `poetry run python agent_communication.py` in your terminal.
 
