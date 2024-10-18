@@ -870,7 +870,7 @@ Let's then define the message handlers for the `query_proto` protocol:
     We define a protocol `query_proto` using the `Protocol` class of `uagents`. It is defined with a `name` and a `version`.
 
     The `handle_query_request()` function is the message handler function defined using the `on_message()` decorator. It handles the `QueryTableRequest` messages and replies with a `QueryTableResponse` message. The handler processes the table availability query based on the provided parameters, checks the table status stored in the agent's storage, and sends the available table numbers as a response to the querying agent.
-    
+
     Additionally, the handler tracks the total number of queries made and increments the count in storage. On the other hand, `handle_get_total_queries()` is the message handler function defined using the `on_query()` decorator. It handles the `GetTotalQueries` query and replies with a `TotalQueries` message containing the total number of queries made to the system. The handler retrieves the total query count from the agent's storage and responds with the count.
 
 The overall script should look as follows:
@@ -1220,7 +1220,6 @@ The overall script would be:
         if not completed:
             await ctx.send(RESTAURANT_ADDRESS, table_query)
 
-
     @user.on_message(QueryTableResponse, replies={BookTableRequest})
     async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
         if len(msg.tables) > 0:
@@ -1236,7 +1235,6 @@ The overall script would be:
             ctx.logger.info("No free tables - nothing more to do")
             ctx.storage.set("completed", True)
 
-
     @user.on_message(BookTableResponse, replies=set())
     async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
         if msg.success:
@@ -1245,7 +1243,6 @@ The overall script would be:
             ctx.logger.info("Table reservation was UNSUCCESSFUL")
 
         ctx.storage.set("completed", True)
-
 
     if __name__ == "__main__":
         user.run()

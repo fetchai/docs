@@ -17,7 +17,7 @@ At any stage, if you encounter issues or have questions about specific terms or 
 
       Current version of the AI Engine package is <PackageVersion packageName="uagents-ai-engine" packageType="pypi" />
     </Callout>
-    
+
 ## Quick overview of Fetch.ai
 
 Fetch.ai is developing a platform to help build an AI-enabled decentralized digital economy. Agents are
@@ -363,7 +363,6 @@ Let's take a look.
     class SummaryRequest(Model):
         url: str
 
-
     SEED_PHRASE = "<your_seed_phrase>"
     AGENT_MAILBOX_KEY = "<your_mailbox_key>"
     OPENAI_API_KEY = "<your_open_ai_key>"
@@ -378,7 +377,6 @@ Let's take a look.
 
     print(summaryAgent.address)
     print(OPENAI_API_KEY)
-
 
     @summary_protocol.on_message(model=SummaryRequest, replies={UAgentResponse})
     async def summarise(ctx: Context, sender: str, msg: SummaryRequest):
@@ -414,7 +412,6 @@ Let's take a look.
         sender,
         UAgentResponse(message=(result["output_text"]), type=UAgentResponseType.FINAL),
     )
-
 
     summaryAgent.include(summary_protocol, publish_manifest=True)
     summaryAgent.run()

@@ -1,5 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Multi-file agent pipeline for AI Engine: using News API to build network of functions and secondary functions in Agentverse
 
@@ -54,36 +55,56 @@ Login to [News API ↗️](https://newsapi.org/docs/endpoints/top-headlines) and
 
 This agent helps users to read news according to their willingness. This agent triggers the news details gathering secondary functions and asks the user for the news type and subtype they want to read today. This agent responds to the final result to the [DeltaV ↗️](/concepts/ai-engine/deltav) GUI as well.
 
-    ```python copy filename="news_reading_url_system_agent.py"
+<GithubCodeSegment digest="e0ef5215d53fbbf749e0c1b653440f3e">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask/news_reading_url_system_agent.py"
+        lineStart={1}
+        lineEnd={30}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='e0ef5215d53fbbf749e0c1b653440f3e'>
 
-    # Here we demonstrate how we can create a news reading system agent that is compatible with DeltaV
-        
-    # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address
+<DocsCode local={true}>
+	```py copy filename="news_reading_url_system_agent.py"
 
-    # Import required libraries
-    import requests
-    from ai_engine import UAgentResponse, UAgentResponseType
+	# Here we demonstrate how we can create a news reading system agent that is compatible with DeltaV
+	
+	# After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address
+	
+	# Import required libraries
+	import requests
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	
+	# Define News Reading Model
+	class News(Model):
+	    news: str
+	
+	
+	# Define Protocol for news reading system
+	news_protocol = Protocol("News System")
+	
+	
+	# Define a handler for the News system protocol
+	@news_protocol.on_message(model=News, replies=UAgentResponse)
+	async def on_news_request(ctx: Context, sender: str, msg: News):
+	    # Printing the news response on logger
+	    ctx.logger.info(f"Received news request from {sender} with title: {msg.news}")
+	    # Creating hyperlink and sending final response to the DeltaV GUI
+	    message = f"<a href='{msg.news}'>YOUR NEWS CONTENT</a>"
+	    await ctx.send(sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL))
+	
+	
+	# Include the Generate News protocol in your agent
+	agent.include(news_protocol)
 
-    # Define News Reading Model
-    class News(Model):
-        news : str
+```
+</DocsCode>
 
-    # Define Protocol for news reading system
-    news_protocol = Protocol("News System")
-
-    # Define a handler for the News system protocol
-    @news_protocol.on_message(model=News, replies = UAgentResponse)
-    async def on_news_request(ctx: Context, sender: str, msg: News):
-        #Printing the news response on logger
-        ctx.logger.info(f"Received news request from {sender} with title: {msg.news}")
-        #Creating hyperlink and sending final response to the DeltaV GUI
-        message = f"<a href='{msg.news}'>YOUR NEWS CONTENT</a>"
-        await ctx.send(sender, UAgentResponse(message = message, type = UAgentResponseType.FINAL))
+</CodeGroup>
 
 
-    # Include the Generate News protocol in your agent
-    agent.include(news_protocol)
-    ```
 
 Now click on the **Run** button in the upper right corner of the editor so that you have your news system agent agent up and running!
 
@@ -91,251 +112,394 @@ Now click on the **Run** button in the upper right corner of the editor so that 
 
 This agent asks users for the type and subtype of news they want to read today from options like **categorical**, **country** related or **keyword** related and respective subtypes. It then directs the user request to relevant secondary function to generate that type of news title and respond it back to the **News Reading system**.
 
-    ```python copy filename="news_reading_details_agent.py"
-    # Here we demonstrate how we can create a news details agent that is compatible with DeltaV.
-    # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+<GithubCodeSegment digest="8e429424794689d6f3499e3eb5efd0ea">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask/news_reading_details_agent.py"
+        lineStart={1}
+        lineEnd={103}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='8e429424794689d6f3499e3eb5efd0ea'>
 
-    # Import required libraries
-    import requests
-    import json
-    from ai_engine import UAgentResponse, UAgentResponseType
+<DocsCode local={true}>
+	```py copy filename="news_reading_details_agent.py"
 
-    # Define News Generating Model.
-    class GetNewsDetails(Model):
-        news_type: str
-        news_subtype : str
-        news_url_content : str
+	# Here we demonstrate how we can create a news details agent that is compatible with DeltaV.
+	# After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+	
+	# Import required libraries
+	import requests
+	import json
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	
+	# Define News Generating Model.
+	class GetNewsDetails(Model):
+	    news_type: str
+	    news_subtype: str
+	    news_url_content: str
+	
+	
+	# Define Generate news protocol.
+	generate_news_protocol = Protocol("Get News Details")
+	
+	
+	# Define a handler for the News generation protocol
+	@generate_news_protocol.on_message(model=GetNewsDetails, replies=UAgentResponse)
+	async def news_details_agent(ctx: Context, sender: str, msg: GetNewsDetails):
+	    # Logging user request
+	    ctx.logger.info(
+	        f"Received ticket request from {sender} with prompt: {msg.news_type} and {msg.news_subtype}")  # and {msg.news_subtype}
+	    # Defining dictionary for country codes
+	    country_codes = {
+	        "argentina": "ar", "australia": "au", "austria": "at", "belgium": "be",
+	        "bulgaria": "bg", "brazil": "br", "canada": "ca", "china": "cn",
+	        "colombia": "co", "cuba": "cu", "czech republic": "cz", "germany": "de",
+	        "egypt": "eg", "france": "fr", "united kingdom": "gb", "greece": "gr",
+	        "hong kong": "hk", "hungary": "hu", "indonesia": "id", "ireland": "ie",
+	        "israel": "il", "india": "in", "italy": "it", "japan": "jp",
+	        "south korea": "kr", "lithuania": "lt", "latvia": "lv", "morocco": "ma",
+	        "mexico": "mx", "malaysia": "my", "nigeria": "ng", "netherlands": "nl",
+	        "norway": "no", "new zealand": "nz", "philippines": "ph", "poland": "pl",
+	        "portugal": "pt", "romania": "ro", "serbia": "rs", "russia": "ru",
+	        "saudi arabia": "sa", "sweden": "se", "singapore": "sg", "slovenia": "si",
+	        "slovakia": "sk", "thailand": "th", "turkey": "tr", "taiwan": "tw",
+	        "ukraine": "ua", "united states": "us", "venezuela": "ve", "south africa": "za"
+	    }
+	
+	    try:
+	        # Generate news based on the requested category.
+	        ctx.logger.info('Getting News URL')
+	        ctx.logger.info(f'User have selected {msg.news_type} type and {msg.news_subtype} subtype')
+	
+	        # Checking news type and getting news url
+	        if msg.news_type.lower() == 'categorical':  # For categorical news type
+	            main_url = f"https://newsapi.org/v2/top-headlines?country=gb&category={msg.news_subtype}&apiKey={api_key}"
+	            response = requests.get(main_url).json()
+	            ctx.logger.info(response)
+	            # Iterate through the news articles to find a title containing the msg.news
+	            for article in response['articles']:
+	                if msg.news_url_content.lower() in article['title'].lower():
+	                    # If found, send the URL back as a clickable link
+	                    news_url = article['url']
+	                    ctx.logger.info(f'Categorical news {news_url}')
+	                    await ctx.send(sender, UAgentResponse(message=str(news_url), type=UAgentResponseType.FINAL))
+	        elif msg.news_type.lower() == 'regional':  # For regional news type
+	            main_url = f"https://newsapi.org/v2/top-headlines?country={country_codes.get(msg.news_subtype.lower())}&apiKey={api_key}"
+	            response = requests.get(main_url).json()
+	            ctx.logger.info(response)
+	            # Iterate through the news articles to find a title containing the msg.news
+	            for article in response['articles']:
+	                if msg.news_url_content.lower() in article['title'].lower():
+	                    # If found, send the URL back as a clickable link
+	                    news_url = article['url']
+	                    ctx.logger.info(f'Regional news {news_url}')
+	                    await ctx.send(sender, UAgentResponse(message=str(news_url), type=UAgentResponseType.FINAL))
+	
+	        elif msg.news_type.lower() == 'keyword':  # For Keyword news type
+	            main_url = f"https://newsapi.org/v2/top-headlines?q={msg.news_subtype}&apiKey={api_key}"
+	            response = requests.get(main_url).json()
+	            ctx.logger.info(response)
+	            # Iterate through the news articles to find a title containing the msg.news
+	            for article in response['articles']:
+	                if msg.news_url_content.lower() in article['title'].lower():
+	                    # If found, send the URL back as a clickable link
+	                    news_url = article['url']
+	                    ctx.logger.info(f'Keyword news {news_url}')
+	                    await ctx.send(sender, UAgentResponse(message=str(news_url), type=UAgentResponseType.FINAL))
+	        else:  # If news type is not valid
+	            await ctx.send(sender, UAgentResponse(message="You have not provided valid news type",
+	                                                  type=UAgentResponseType.FINAL))
+	
+	    # Handle any exceptions that occur during news generation.
+	    except Exception as exc:
+	        ctx.logger.error(f"Error in generating  news: {exc}")
+	
+	        # Send an error response with details of the encountered error.
+	        await ctx.send(
+	            sender,
+	            UAgentResponse(
+	                message=f"Error in generating news: {exc}",
+	                type=UAgentResponseType.ERROR
+	            )
+	        )
+	
+	
+	# Include the Generate News protocol in your agent.
+	agent.include(generate_news_protocol)
 
-    # Define Generate news protocol.
-    generate_news_protocol = Protocol("Get News Details")
+```
+</DocsCode>
 
-    # Define a handler for the News generation protocol
-    @generate_news_protocol.on_message(model=GetNewsDetails, replies=UAgentResponse)
-    async def news_details_agent(ctx: Context, sender: str, msg: GetNewsDetails):
-        
-        # Logging user request
-        ctx.logger.info(f"Received ticket request from {sender} with prompt: {msg.news_type} and {msg.news_subtype}")#and {msg.news_subtype}
-        # Defining dictionary for country codes
-        country_codes = {
-        "argentina": "ar", "australia": "au", "austria": "at", "belgium": "be", 
-        "bulgaria": "bg", "brazil": "br", "canada": "ca", "china": "cn", 
-        "colombia": "co", "cuba": "cu", "czech republic": "cz", "germany": "de", 
-        "egypt": "eg", "france": "fr", "united kingdom": "gb", "greece": "gr", 
-        "hong kong": "hk", "hungary": "hu", "indonesia": "id", "ireland": "ie", 
-        "israel": "il", "india": "in", "italy": "it", "japan": "jp", 
-        "south korea": "kr", "lithuania": "lt", "latvia": "lv", "morocco": "ma", 
-        "mexico": "mx", "malaysia": "my", "nigeria": "ng", "netherlands": "nl", 
-        "norway": "no", "new zealand": "nz", "philippines": "ph", "poland": "pl", 
-        "portugal": "pt", "romania": "ro", "serbia": "rs", "russia": "ru", 
-        "saudi arabia": "sa", "sweden": "se", "singapore": "sg", "slovenia": "si", 
-        "slovakia": "sk", "thailand": "th", "turkey": "tr", "taiwan": "tw", 
-        "ukraine": "ua", "united states": "us", "venezuela": "ve", "south africa": "za"
-        }
+</CodeGroup>
 
 
-        try:
-            # Generate news based on the requested category.
-            ctx.logger.info('Getting News URL')
-            ctx.logger.info(f'User have selected {msg.news_type} type and {msg.news_subtype} subtype')
-
-            # Checking news type and getting news url
-            if msg.news_type.lower() == 'categorical': # For categorical news type
-                main_url = f"https://newsapi.org/v2/top-headlines?country=gb&category={msg.news_subtype}&apiKey={api_key}"
-                response = requests.get(main_url).json()
-                ctx.logger.info(response)
-                # Iterate through the news articles to find a title containing the msg.news
-                for article in response['articles']:
-                    if msg.news_url_content.lower() in article['title'].lower():
-                        # If found, send the URL back as a clickable link
-                        news_url = article['url']
-                        ctx.logger.info(f'Categorical news {news_url}')
-                        await ctx.send(sender, UAgentResponse(message = str(news_url), type = UAgentResponseType.FINAL))
-            elif msg.news_type.lower() == 'regional': # For regional news type
-                main_url = f"https://newsapi.org/v2/top-headlines?country={country_codes.get(msg.news_subtype.lower())}&apiKey={api_key}"
-                response = requests.get(main_url).json()
-                ctx.logger.info(response)
-                # Iterate through the news articles to find a title containing the msg.news
-                for article in response['articles']:
-                    if msg.news_url_content.lower() in article['title'].lower():
-                        # If found, send the URL back as a clickable link
-                        news_url = article['url']
-                        ctx.logger.info(f'Regional news {news_url}')
-                        await ctx.send(sender, UAgentResponse(message = str(news_url), type = UAgentResponseType.FINAL))
-            
-            elif msg.news_type.lower() == 'keyword': # For Keyword news type
-                main_url = f"https://newsapi.org/v2/top-headlines?q={msg.news_subtype}&apiKey={api_key}"
-                response = requests.get(main_url).json()
-                ctx.logger.info(response)
-                # Iterate through the news articles to find a title containing the msg.news
-                for article in response['articles']:
-                    if msg.news_url_content.lower() in article['title'].lower():
-                        # If found, send the URL back as a clickable link
-                        news_url = article['url']
-                        ctx.logger.info(f'Keyword news {news_url}')
-                        await ctx.send(sender, UAgentResponse(message = str(news_url), type = UAgentResponseType.FINAL))
-            else: # If news type is not valid
-                await ctx.send(sender, UAgentResponse(message = "You have not provided valid news type", type = UAgentResponseType.FINAL))
-
-        # Handle any exceptions that occur during news generation.
-        except Exception as exc:
-            ctx.logger.error(f"Error in generating  news: {exc}")
-        
-            # Send an error response with details of the encountered error.
-            await ctx.send(
-                sender,
-                UAgentResponse(
-                    message=f"Error in generating news: {exc}",
-                    type=UAgentResponseType.ERROR
-                    )
-                    )
-
-    # Include the Generate News protocol in your agent.
-    agent.include(generate_news_protocol)
-    ```
 
 Now click on the **Run** button in the upper right corner of the editor so that you have your news system agent agent up and running!
 
 ### Generate Categorical News
 
-This subtask is triggered if the user wants to read categorical news and it provides the the category of news which is subtype in news reading details from options business, entertainment, general, health, science, sports, technology and return specific news titles options as list to **News Reading Details Secondary function**.
+This secondary function is triggered if the user wants to read categorical news and it provides the the category of news which is subtype in news reading details from options business, entertainment, general, health, science, sports, technology and return specific news titles options as list to **News Reading Details Secondary function**.
 
-    ```python copy filename="generate_categorical_news.py"
-    # Here we demonstrate how we can create a categorical news generating agent that is compatible with DeltaV.
-    # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+<GithubCodeSegment digest="96ddbab8c8b027eb361073fcad1ff8e3">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask/generate_categorical_news.py"
+        lineStart={1}
+        lineEnd={57}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='96ddbab8c8b027eb361073fcad1ff8e3'>
 
-    # Importing libraries
-    import requests
-    import json
-    from ai_engine import UAgentResponse, UAgentResponseType
+<DocsCode local={true}>
+	```py copy filename="generate_categorical_news.py"
 
-    # Define the Generate News model
-    class GenerateNews(Model):
-        category: str
+	# Here we demonstrate how we can create a categorical news generating agent that is compatible with DeltaV.
+	# After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+	
+	# Importing libraries
+	import requests
+	import json
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	
+	# Define the Generate News model
+	class GenerateNews(Model):
+	    category: str
+	
+	
+	# Define protocol for categorical news generation
+	generate_cat_news_protocol = Protocol("Generate Categorical News")
+	
+	
+	# Define function to generate news according to category in great britain - GB
+	async def generate_news(category):
+	    api_key = 'YOUR_NEWS_API_KEY'
+	    main_url = f"https://newsapi.org/v2/top-headlines?country=gb&category={category}&apiKey={api_key}"
+	    news = requests.get(main_url).json()
+	    # strip the source, get top 10 news and join the list with ' nnn ' to return the news as string and not list (DeltaV compatible type)
+	    titles = [article['title'].split(' - ')[0].strip() for article in news['articles']]
+	    titles = titles[:10]
+	    return titles
+	
+	
+	# Define a handler for the Categorical News generation protocol
+	@generate_cat_news_protocol.on_message(model=GenerateNews, replies=UAgentResponse)
+	async def on_generate_cat_news_request(ctx: Context, sender: str, msg: GenerateNews):
+	    # Logging category of news user wants to read
+	    ctx.logger.info(f"Received ticket request from {sender} with prompt: {msg.category}")
+	    try:
+	        # Generate news based on the requested category
+	        news_titles = generate_news(msg.category)
+	        # logging news
+	        ctx.logger.info(news_titles)
+	        # Send a successful response with the generated news
+	        await ctx.send(sender, UAgentResponse(message=str(news_titles), type=UAgentResponseType.FINAL))
+	
+	    # Handle any exceptions that occur during news generation
+	    except Exception as exc:
+	        ctx.logger.error(f"Error in generating News: {exc}")
+	        # Send an error response with details of the encountered error.
+	        await ctx.send(
+	            sender,
+	            UAgentResponse(
+	                message=f"Error in generating News: {exc}",
+	                type=UAgentResponseType.ERROR
+	            )
+	        )
+	
+	
+	# Include the Generate News protocol in your agent
+	agent.include(generate_cat_news_protocol)
 
-    # Define protocol for categorical news generation
-    generate_cat_news_protocol = Protocol("Generate Categorical News")
+```
+</DocsCode>
 
-    # Define function to generate news according to category in great britain - GB
-    async def generate_news(category):
-        api_key = 'YOUR_NEWS_API_KEY'
-        main_url = f"https://newsapi.org/v2/top-headlines?country=gb&category={category}&apiKey={api_key}"
-        news = requests.get(main_url).json() 
-        #strip the source, get top 10 news and join the list with ' nnn ' to return the news as string and not list (DeltaV compatible type)
-        titles = [article['title'].split(' - ')[0].strip() for article in news['articles']]
-        titles = titles[:10]
-        return titles
-
-    # Define a handler for the Categorical News generation protocol
-    @generate_cat_news_protocol.on_message(model=GenerateNews, replies=UAgentResponse)
-    async def on_generate_cat_news_request(ctx: Context, sender: str, msg: GenerateNews):
-        # Logging category of news user wants to read
-        ctx.logger.info(f"Received ticket request from {sender} with prompt: {msg.category}")
-        try:
-            # Generate news based on the requested category
-            news_titles = generate_news(msg.category)
-            #logging news
-            ctx.logger.info(news_titles)
-            # Send a successful response with the generated news
-            await ctx.send(sender, UAgentResponse(message = str(news_titles), type = UAgentResponseType.FINAL))
-                
-        # Handle any exceptions that occur during news generation
-        except Exception as exc:
-            ctx.logger.error(f"Error in generating News: {exc}")
-            # Send an error response with details of the encountered error.
-            await ctx.send(
-                sender,
-                UAgentResponse(
-                    message=f"Error in generating News: {exc}",
-                    type=UAgentResponseType.ERROR
-                )
-            )
+</CodeGroup>
 
 
-    # Include the Generate News protocol in your agent
-    agent.include(generate_cat_news_protocol)
-    ```
 
 Remember that you need to provide the `api_key` parameter to correctly run this code. Now click on the **Run** button in the upper right corner of the editor so that you have your news system agent agent up and running!
 
 ### Generate Regional News
 
-This subtask is triggered if the user wants to read regional or country specific news, it gets country as news subtype **News Reading details Secondary function** and get list of news titles.
+This secondary function is triggered if the user wants to read regional or country specific news, it gets country as news subtype **News Reading details Secondary function** and get list of news titles.
 
-    ```python copy filename="generate_regional_news.py"
-    # Import libraries
-    import requests
-    import json
-    from ai_engine import UAgentResponse, UAgentResponseType
+<GithubCodeSegment digest="345dfffbaace6d5e13d5fdfaabeeac55">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask/generate_regional_news.py"
+        lineStart={1}
+        lineEnd={70}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='345dfffbaace6d5e13d5fdfaabeeac55'>
 
-    # Define dictionary with country codes
-    country_codes = {
-        "argentina": "ar", "australia": "au", "austria": "at", "belgium": "be", 
-        "bulgaria": "bg", "brazil": "br", "canada": "ca", "china": "cn", 
-        "colombia": "co", "cuba": "cu", "czech republic": "cz", "germany": "de", 
-        "egypt": "eg", "france": "fr", "united kingdom": "gb", "greece": "gr", 
-        "hong kong": "hk", "hungary": "hu", "indonesia": "id", "ireland": "ie", 
-        "israel": "il", "india": "in", "italy": "it", "japan": "jp", 
-        "south korea": "kr", "lithuania": "lt", "latvia": "lv", "morocco": "ma", 
-        "mexico": "mx", "malaysia": "my", "nigeria": "ng", "netherlands": "nl", 
-        "norway": "no", "new zealand": "nz", "philippines": "ph", "poland": "pl", 
-        "portugal": "pt", "romania": "ro", "serbia": "rs", "russia": "ru", 
-        "saudi arabia": "sa", "sweden": "se", "singapore": "sg", "slovenia": "si", 
-        "slovakia": "sk", "thailand": "th", "turkey": "tr", "taiwan": "tw", 
-        "ukraine": "ua", "united states": "us", "venezuela": "ve", "south africa": "za"
-    }
+<DocsCode local={true}>
+	```py copy filename="generate_regional_news.py"
 
-    # Define the Generate News model
-    class GenerateNews(Model):
-        country: str
+	# Import libraries
+	import requests
+	import json
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	# Define dictionary with country codes
+	country_codes = {
+	    "argentina": "ar", "australia": "au", "austria": "at", "belgium": "be",
+	    "bulgaria": "bg", "brazil": "br", "canada": "ca", "china": "cn",
+	    "colombia": "co", "cuba": "cu", "czech republic": "cz", "germany": "de",
+	    "egypt": "eg", "france": "fr", "united kingdom": "gb", "greece": "gr",
+	    "hong kong": "hk", "hungary": "hu", "indonesia": "id", "ireland": "ie",
+	    "israel": "il", "india": "in", "italy": "it", "japan": "jp",
+	    "south korea": "kr", "lithuania": "lt", "latvia": "lv", "morocco": "ma",
+	    "mexico": "mx", "malaysia": "my", "nigeria": "ng", "netherlands": "nl",
+	    "norway": "no", "new zealand": "nz", "philippines": "ph", "poland": "pl",
+	    "portugal": "pt", "romania": "ro", "serbia": "rs", "russia": "ru",
+	    "saudi arabia": "sa", "sweden": "se", "singapore": "sg", "slovenia": "si",
+	    "slovakia": "sk", "thailand": "th", "turkey": "tr", "taiwan": "tw",
+	    "ukraine": "ua", "united states": "us", "venezuela": "ve", "south africa": "za"
+	}
+	
+	
+	# Define the Generate News model
+	class GenerateNews(Model):
+	    country: str
+	
+	
+	# Define function to generate regional news according to country
+	async def get_regional_news(country):
+	    api_key = 'YOUR_API_KEY'
+	    main_url = f"https://newsapi.org/v2/top-headlines?country={country_codes.get(country.lower())}&apiKey={api_key}"
+	    news = requests.get(main_url).json()
+	    # Strip the source, get top 10 news and join the list with nnn to return the news as string and not list - DeltaV compatible type
+	    titles = [article['title'].split(' - ')[0].strip() for article in news['articles']]
+	    titles = titles[:10]
+	    return titles
+	
+	
+	# Define protocol for regional news generation Protocol
+	generate_news_reg_protocol = Protocol("Generate Regional News")
+	
+	
+	# Define a handler for the Regional News generation protocol
+	@generate_news_reg_protocol.on_message(model=GenerateNews, replies=UAgentResponse)
+	async def on_generate_news_request(ctx: Context, sender: str, msg: GenerateNews):
+	    ctx.logger.info(f"Received ticket request from {sender} with prompt: {msg.country}")
+	    try:
+	        # Get the country code from the country_code dictionary
+	        country_code = country_codes.get(msg.country.lower())
+	        # Generate news based on the requested country and log it on agentverse
+	        news_titles = await get_regional_news(msg.country)
+	        ctx.logger.info(f"Message from endpoint: {news_titles}")
+	        # Send a successful response with the generated news
+	        await ctx.send(sender, UAgentResponse(message=str(news_titles), type=UAgentResponseType.FINAL))
+	    # Handle any exceptions that occur during news generation
+	    except Exception as exc:
+	        ctx.logger.error(f"Error in generating News: {exc}")
+	        # Send an error response with details of the encountered error
+	        await ctx.send(
+	            sender,
+	            UAgentResponse(
+	                message=f"Error in generating News: {exc}",
+	                type=UAgentResponseType.ERROR
+	            )
+	        )
+	
+	
+	# Include the Generate Regional News protocol in your agent
+	agent.include(generate_news_protocol)
 
-    # Define function to generate regional news according to country
-    async def get_regional_news(country):
-        api_key = 'YOUR_API_KEY'
-        main_url = f"https://newsapi.org/v2/top-headlines?country={country_codes.get(country.lower())}&apiKey={api_key}"
-        news = requests.get(main_url).json() 
-        # Strip the source, get top 10 news and join the list with nnn to return the news as string and not list - DeltaV compatible type
-        titles = [article['title'].split(' - ')[0].strip()for article in news['articles']]
-        titles = titles[:10]
-        return titles
+```
+</DocsCode>
 
-    # Define protocol for regional news generation Protocol
-    generate_news_reg_protocol = Protocol("Generate Regional News")
+</CodeGroup>
 
-    # Define a handler for the Regional News generation protocol
-    @generate_news_reg_protocol.on_message(model=GenerateNews, replies=UAgentResponse)
-    async def on_generate_news_request(ctx: Context, sender: str, msg: GenerateNews):
 
-        ctx.logger.info(f"Received ticket request from {sender} with prompt: {msg.country}")
-        try:
-            # Get the country code from the country_code dictionary
-            country_code = country_codes.get(msg.country.lower())
-            # Generate news based on the requested country and log it on agentverse
-            news_titles = await get_regional_news(msg.country)
-            ctx.logger.info(f"Message from endpoint: {news_titles}")
-            # Send a successful response with the generated news
-            await ctx.send(sender, UAgentResponse(message=str(news_titles), type=UAgentResponseType.FINAL))
-        # Handle any exceptions that occur during news generation
-        except Exception as exc:
-            ctx.logger.error(f"Error in generating News: {exc}")
-            # Send an error response with details of the encountered error
-            await ctx.send(
-                sender,
-                UAgentResponse(
-                    message=f"Error in generating News: {exc}",
-                    type=UAgentResponseType.ERROR
-                )
-            )
-                
-
-    # Include the Generate Regional News protocol in your agent
-    agent.include(generate_news_protocol)
-    ```
 
 Remember that you need to provide the `api_key` parameter to correctly run this code. Now click on the **Run** button in the upper right corner of the editor so that you have your news system agent agent up and running!
 
 ### Generate Keyword News
 
-This subtask is triggered if the user wants to read keyword specific news, it gets keyword as news subtype **News reading details Secondary function** and get list of news titles.
+This secondary function is triggered if the user wants to read keyword specific news, it gets keyword as news subtype **News reading details Secondary function** and get list of news titles.
+
+<GithubCodeSegment digest="5adb2bcec43c2e44276aac73ccdbd7d6">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/utilizing-api-to-build-network-of-task-and-subtask/generate_keyword_news.py"
+        lineStart={1}
+        lineEnd={57}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5adb2bcec43c2e44276aac73ccdbd7d6'>
+
+<DocsCode local={true}>
+	```py copy filename="generate_keyword_news.py"
+
+	# Import libraries
+	import requests
+	import json
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	
+	# Define the Generate News model
+	class GenerateNews(Model):
+	    keyword: str
+	
+	
+	# Define protocol for keyword news generation
+	generate_news_keyw_protocol = Protocol("Generate Keyword News")
+	
+	
+	# Define function to generate news according to keyword
+	async def get_keyword_news(keyword):
+	    api_key = 'YOUR_API_KEY'
+	    main_url = f"https://newsapi.org/v2/top-headlines?q={keyword}&apiKey={api_key}"
+	    news = requests.get(main_url).json()
+	    # Strip the source, get top 10 news and join the list with nnn to return the news as string and not list - DeltaV compatible type
+	    titles = [article['title'].split(' - ')[0].strip() for article in news['articles']]
+	    titles = titles[:10]
+	    return titles
+	
+	
+	# Define a handler for the Keyword News generation protocol
+	@generate_news_keyw_protocol.on_message(model=GenerateNews, replies=UAgentResponse)
+	async def on_generate_news_request(ctx: Context, sender: str, msg: GenerateNews):
+	    ctx.logger.info(f"Received news request from {sender} with prompt: {msg.keyword}")
+	    # Generate news based on the requested keyword
+	    try:
+	        news_titles = get_keyword_news(msg.keyword)
+	        # Send a successful response with the generated news
+	        await ctx.send(
+	            sender,
+	            UAgentResponse(
+	                message=str(news_titles),
+	                type=UAgentResponseType.FINAL
+	            )
+	        )
+	
+	    # Handle any exceptions that occur during news generation
+	    except Exception as exc:
+	        ctx.logger.error(f"Error in generating News: {exc}")
+	        # Send an error response with details of the encountered error
+	        await ctx.send(
+	            sender,
+	            UAgentResponse(
+	                message=f"Error in generating News: {exc}",
+	                type=UAgentResponseType.ERROR
+	            )
+	        )
+	
+	
+	# Include the Generate Keyword News protocol in your agent
+	agent.include(generate_news_keyw_protocol)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     ```python copy filename="generate_keyword_news.py"
     # Import libraries
@@ -349,7 +513,7 @@ This subtask is triggered if the user wants to read keyword specific news, it ge
 
     # Define protocol for keyword news generation
     generate_news_keyw_protocol = Protocol("Generate Keyword News")
-    
+
     # Define function to generate news according to keyword
     async def get_keyword_news(keyword):
 
@@ -445,7 +609,7 @@ Click **Save** button after filling out the form.
             - **'categorical': One from list [business, entertainment, general, health, science, sports, technology].**
             - **'regional' : What is the country you want to get news for?,**
             - **'keyword' : What is the keyword you want to read news for?**
-            
+
         - news_type - **This is type of news user wants to read from options from Categorical, Regional or Keyword. After this ask user for field news_subtype.**
         - news_url_content - **Trigger corresponding secondary function according to 'news_type' given by user to get this field:**
 

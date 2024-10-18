@@ -1,3 +1,5 @@
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+
 # Hosted, Local, and Mailbox Agents
 
 Agents can operate in multiple environments based on how they are created and deployed within the network. Understanding the difference between **Hosted**, **Local**, and **Mailbox Agents** is helpful for developers to correctly choose the right setup for their use cases and applications.
@@ -47,27 +49,48 @@ Local agents can use a Mailbox to ensure that no messages are lost when they are
 
 In order to set up a mailbox for a local agent, you first need to create and configure a local agent. The agent's address is used to register it on the Agentverse, and then to generate a **Mailbox API key** for your agent. For instance, consider the following basic agent:
 
-        ```py copy filename="mailbox_agent.py"
-        from uagents import Agent, Context, Model
-    
-        class Message(Model):
-            message: str
-    
-        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-        SEED_PHRASE = "put_your_seed_phrase_here"
+<GithubCodeSegment digest="eb2c647f10022dc60bc04ef571db50cb">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/agent-types/mailbox_agent.py"
+        lineStart={1}
+        lineEnd={22}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='eb2c647f10022dc60bc04ef571db50cb'>
 
-        agent = Agent(
-            name="alice",
-            seed=SEED_PHRASE,
-            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-        )
-    
-        # Copy the address shown below and paste it in Agentverse
-        print(f"Your agent's address is: {agent.address}")
-    
-        if __name__ == "__main__":
-            agent.run()
-       ```
+<DocsCode local={true}>
+	```py copy filename="mailbox_agent.py"
+
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	
+	# Now your agent is ready to join the agentverse!
+	agent = Agent(
+	    name="alice",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	# Copy the address shown below
+	print(f"Your agent's address is: {agent.address}")
+	
+	if __name__ == "__main__":
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Then, head over to the [Agentverse ↗️](https://agentverse.ai/) and navigate to the **My Agents** tab. Here, select **Local Agents** and click on **Connect Local Agent**. Paste your agent's address retrieved from running your local agent and follow the steps until you get a **Mailbox API Key**, which you will use to update your agent's configuration above. To test your Mailbox setup, you can create another agent (on Agentverse for instance) that sends messages to the Mailbox while the first agent is offline. When the first agent comes back online, it will retrieve and process the stored messages. For a complete example, check out this [guide ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox).
 
