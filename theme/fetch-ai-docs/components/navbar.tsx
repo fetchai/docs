@@ -7,12 +7,10 @@ import type { ReactElement, ReactNode } from "react";
 import { useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
-import { useState } from "react";
-import React from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Gear } from "src/icons/shared-icons";
-import { useRef } from "react";
-import { ThemeSwitcher } from "..";
+import { ThemeSwitcher } from "./theme-switcher";
+import { useTheme } from "next-themes";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -104,6 +102,8 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
+
+  const handleOpenClose = () => setOpenOs((prev) => !prev);
 
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
@@ -210,10 +210,10 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                 directories: flatDirectories,
               })}
             </div>
-            <div className="nx-relative">
-              <Gear onClickHandler={() => setOpenOs((prev) => !prev)} />
+            <div ref={dropdownRef} className="nx-relative">
+              <Gear onClickHandler={handleOpenClose} />
               {openOs && (
-                <div ref={dropdownRef}>
+                <div>
                   <ThemeSwitcher />
                 </div>
               )}
