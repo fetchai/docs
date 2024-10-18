@@ -3,8 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 const TooltipComponent = ({ children }: { children: React.ReactNode }) => {
   const [tooltip, setTooltip] = useState(false);
   const [boundary, setBoundary] = useState(false);
+  const timeoutRef = useRef(null);
 
   const showTooltip = () => {
+    clearTimeout(timeoutRef.current);
     setTooltip(true);
   };
 
@@ -23,12 +25,16 @@ const TooltipComponent = ({ children }: { children: React.ReactNode }) => {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutRef.current);
     };
   }, []);
 
   const hideTooltip = () => {
-    setTooltip(false);
+    timeoutRef.current = setTimeout(() => {
+      setTooltip(false);
+    }, 500);
   };
+
   return (
     <div>
       <div className="flex flex-col items-start px-6 mx-auto nx-container nx-pl-12 md:nx-pl-0 md:items-center">
