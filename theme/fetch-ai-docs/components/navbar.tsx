@@ -10,7 +10,6 @@ import { Anchor } from "./anchor";
 import React, { useState, useEffect, useRef } from "react";
 import { Gear } from "src/icons/shared-icons";
 import { ThemeSwitcher } from "./theme-switcher";
-import { useTheme } from "next-themes";
 
 export type NavBarProps = {
   flatDirectories: Item[];
