@@ -1,5 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Agentverse Functions: register a coin toss Agent as a Function
 
@@ -48,40 +49,56 @@ A new Agent will be created for you:
 
 After clicking on the row of your newly created Agent, you should be able to see the source code of your coin toss Agent in the editor view:
 
-    ```python copy filename="agent.py"
-    # Here we demonstrate how we can create a simple coin toss Agent that is compatible with DeltaV.
+<GithubCodeSegment digest="10d78ecdd8c62fe5edbd30f167f1a6b0">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/agentverse-functions/registering-agent-coin-toss/agent.py"
+        lineStart={1}
+        lineEnd={30}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='10d78ecdd8c62fe5edbd30f167f1a6b0'>
 
-    # After running this Agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the Agent's address.
+<DocsCode local={true}>
+	```py copy filename="agent.py"
 
-    import random
-    # third party modules used in this example
-    from uagents import Field
-    from ai_engine import UAgentResponse, UAgentResponseType
+	# Here we demonstrate how we can create a simple coin toss agent that is compatible with DeltaV.
+	
+	# After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
+	
+	import random
+	# third party modules used in this example
+	from uagents import Field
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	class CoinToss(Model):
+	    choice: str = Field(description="The choice. Must be heads or tails.")
+	
+	coin_toss_protocol = Protocol("CoinToss")
+	
+	@coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
+	async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
+	    random_number = random.randint(0, 1)
+	    if random_number == 0:
+	        coin_tossed = "heads"
+	    else:
+	        coin_tossed = "tails"
+	    if coin_tossed == msg.choice:
+	        message = "You won!"
+	    else:
+	        message = "You lost!"
+	    await ctx.send(
+	        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+	    )
+	
+	agent.include(coin_toss_protocol, publish_manifest=True)
+
+```
+</DocsCode>
+
+</CodeGroup>
 
 
-    class CoinToss(Model):
-        choice: str = Field(description="The choice. Must be heads or tails.")
-
-    coin_toss_protocol = Protocol("CoinToss")
-
-
-    @coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
-    async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
-        random_number = random.randint(0, 1)
-        if random_number == 0:
-            coin_tossed = "heads"
-        else:
-            coin_tossed = "tails"
-        if coin_tossed == msg.choice:
-            message = "You won!"
-        else:
-            message = "You lost!"
-        await ctx.send(
-            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
-    )
-
-    agent.include(coin_toss_protocol, publish_manifest=True)
-    ````
 
 Now click on the **Run** button in the upper right corner of the editor so that you have your coin toss Agent up and running!
 

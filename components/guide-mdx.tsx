@@ -1,6 +1,8 @@
 import React, { ChangeEvent, useState } from "react";
 import { GuideBox } from "./feature-guide-tabs";
 import { Grid3 } from "./mdx";
+import styles from "./footer.module.css";
+import { SearchIcon } from "src/icons/shared-icons";
 
 interface Guide {
   title: string;
@@ -57,12 +59,12 @@ const GuideMdx = ({ content }: GuidesData) => {
     .filter((con) => con.data.length > 0);
 
   return (
-    <div className="nx-flex nx-flex-col nx-w-full nx-items-end nx-justify-end">
+    <div className="nx-flex nx-flex-col nx-w-full nx-mt-6">
       <div className="md:nx-flex nx-block nx-gap-5">
         <select
           name="select"
           onChange={onSelectChange}
-          className="nx-rounded-[10px] nx-outline-none nx-cursor-pointer nx-border nx-border-solid nx-px-3 nx-py-2"
+          className="nx-rounded-[10px] nx-outline-none nx-cursor-pointer nx-border nx-border-solid nx-bg-transparent nx-py-2 nx-px-4 dark:full-border-dark dark:nx-text-white-90"
         >
           <option value="">All Types</option>
           {content
@@ -73,13 +75,16 @@ const GuideMdx = ({ content }: GuidesData) => {
               </option>
             ))}
         </select>
-        <input
-          name="input"
-          value={inputVal}
-          onChange={onInputChange}
-          placeholder="Search...."
-          className="nx-font-normal nx-mt-5 md:nx-mt-0 nx-bg-transparent nx-rounded-full nx-border nx-border-solid nx-border-purple nx-px-6 nx-py-2"
-        />
+        <div className={styles.inputBox}>
+          <input
+            name="input"
+            value={inputVal}
+            onChange={onInputChange}
+            className={styles.inputInner}
+            placeholder="Search...."
+          />
+          <SearchIcon />
+        </div>
       </div>
       {filteredContent.map((con, index) => (
         <div key={index}>

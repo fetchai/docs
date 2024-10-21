@@ -134,18 +134,18 @@ export function MatchingRoutesComponent({
         }}
       >
         <div>
-          <h3 className="nx-text-xl nx-mt-8 nx-font-normal nx-text-[#0B1742]">
+          <h3 className="nx-text-xl nx-mt-8 nx-font-normal nx-text-[#0B1742] dark:nx-text-white-90">
             {matchedRoutes?.length} topics matching with the tag
           </h3>
         </div>
 
         <div
-          className={`nx-flex nx-w-[60px] nx-h-[32px] nx-p-[2px] nx-items-start nx-gap-[0px] toggle-view`}
+          className={`nx-flex nx-w-[60px] nx-h-[32px] nx-p-[2px] nx-items-start nx-gap-[0px] toggle-view nx-bg-transparent`}
         >
           <button
             onClick={() => toggleView("list")}
             className={
-              viewType === "list" ? "toggle-list-grid-bg" : "nx-bg-white"
+              viewType === "list" ? "toggle-list-grid-bg" : "nx-bg-transparent"
             }
           >
             <ListViewIcon viewType={viewType} />
@@ -153,7 +153,7 @@ export function MatchingRoutesComponent({
           <button
             onClick={() => toggleView("grid")}
             className={
-              viewType === "grid" ? "toggle-list-grid-bg" : "nx-bg-white"
+              viewType === "grid" ? "toggle-list-grid-bg" : "nx-bg-transparent"
             }
           >
             <GridViewIcon viewType={viewType} />
@@ -178,30 +178,21 @@ export function MatchingRoutesComponent({
             const guideInfo = findGuideByPath(content, routeInfo.route);
             return (
               <li
-                className="list-view list-view-title nx-mt-4"
+                className="list-view list-view-title nx-mt-4 dark:nx-bg-dark-mode-white-5 dark:nx-border-none"
                 key={index}
                 onClick={() => {
                   router.push(routeInfo.route);
                 }}
               >
                 <p>{guideInfo.title}</p>
-                <p
-                  style={{
-                    color: "#0B1742",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    opacity: 0.6,
-                  }}
-                >
-                  {guideInfo.description}
-                </p>
+                <p className="tag-description">{guideInfo.description}</p>
               </li>
             );
           })}
         </ul>
       ) : (
         <div className="nx-mt-4">
-          <div className="nx-grid nx-grid-cols-1 sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-4 nx-gap-4">
+          <div className="grid-container-tag nx-gap-4">
             {matchedRoutes.map((routeInfo, index) => {
               const guideInfo = findGuideByPath(content, routeInfo.route);
               return (

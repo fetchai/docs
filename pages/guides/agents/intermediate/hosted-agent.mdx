@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 <Callout type="info" emoji="ℹ️">
 This article is a work-in-progress. It will be expanded rapidly.
@@ -12,34 +13,49 @@ However, you should be aware of how state works in a hosted Agent. A global vari
 
 Let's show this with an example:
 
-    ```python copy filename="storage_agent_example.py"
-    from uagents import Agent, Context
+<GithubCodeSegment digest="d22308858911041c3d71bcc3752de118">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/hosted-agent/storage_agent_example.py"
+        lineStart={1}
+        lineEnd={23}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d22308858911041c3d71bcc3752de118'>
 
-    agent = Agent()
+<DocsCode local={true}>
+	```py copy filename="storage_agent_example.py"
 
-    global_counter = 0
+	from uagents import Agent, Context
+	
+	agent = Agent()
+	
+	global_counter = 0
+	
+	@agent.on_interval(period=1.0)
+	async def on_interval(ctx: Context):
+	    global global_counter
+	
+	    # increment the global counter - bad!
+	    global_counter += 1
+	
+	    current_count = int(ctx.storage.get("count") or 0)
+	    current_count += 1
+	
+	    ctx.logger.info(f"My count is: {current_count}")
+	    ctx.logger.info(f"My global is: {global_counter}")
+	
+	    ctx.storage.set("count", current_count)
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-    @agent.on_interval(period=1.0)
-    async def on_interval(ctx: Context):
-        global global_counter
+```
+</DocsCode>
+
+</CodeGroup>
 
 
-        # increment the global counter - bad!
-        global_counter += 1
-
-
-        current_count = int(ctx.storage.get("count") or 0)
-        current_count += 1
-
-        ctx.logger.info(f"My count is: {current_count}")
-        ctx.logger.info(f"My global is: {global_counter}")
-
-        ctx.storage.set("count", current_count)
-
-
-    if __name__ == "__main__":
-        agent.run()
-    ```
 
 Output in Agentverse would be:
 
@@ -55,5 +71,4 @@ Output in Agentverse would be:
 You can see from this output, **global is never updated**.
 
 To learn more about Agents storage and how it works in Agentverse, take a look at [Storage Functions ↗️](/guides/agents/intermediate/storage-function).
-
 

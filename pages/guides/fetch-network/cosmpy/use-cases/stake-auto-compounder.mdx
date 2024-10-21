@@ -1,4 +1,4 @@
-import { CodeGroup, DocsCode } from "../../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../../components/code";
 
 # Stake auto-compounder
 
@@ -79,67 +79,103 @@ Below we provide a step-by-step guide to create an auto compounder using the `co
 
 1. First of all, create a Python script and name it:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch aerial_compounder.py
-```
-</DocsCode>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+      ```py copy filename="mac"
+      touch aerial_compounder.py
+      ```
+   </DocsCode>
 
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > aerial_compounder.py
-    ```
-    </DocsCode>
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > aerial_compounder.py
+       ```
+       </DocsCode>
 
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch aerial_compounder.py
-    ```
-    </DocsCode>
-</CodeGroup>
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch aerial_compounder.py
+       ```
+       </DocsCode>
+   </CodeGroup>
 
 2. We need to import the necessary modules, including `argparse`, `time`, and various modules from the `cosmpy.aerial` package:
 
-    ```py copy
-    import argparse
-    import time
+<GithubCodeSegment digest="ab7b89902472904e9b489ef613bfc0d5">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/stake-auto-compounder/aerial_compounder.py"
+        lineStart={1}
+        lineEnd={7}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ab7b89902472904e9b489ef613bfc0d5'>
 
-    from cosmpy.aerial.client import LedgerClient
-    from cosmpy.aerial.config import NetworkConfig
-    from cosmpy.aerial.faucet import FaucetApi
-    from cosmpy.aerial.wallet import LocalWallet
-    ```
+<DocsCode local={true}>
+	```py copy filename="aerial_compounder.py"
+
+	import argparse
+	import time
+	
+	from cosmpy.aerial.client import LedgerClient
+	from cosmpy.aerial.config import NetworkConfig
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.wallet import LocalWallet
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 3. We now need to define a `_parse_commandline()` function responsible for parsing command-line arguments when the script is being executed:
 
-    ```py copy
-    def _parse_commandline():
-        parser = argparse.ArgumentParser()
-        parser.add_argument(
-            "initial_stake",
-            type=int,
-            nargs="?",
-            default=9000000000000000000,
-            help="Initial amount of atestfet to delegate to validator",
-        )
-        parser.add_argument(
-            "time_limit",
-            type=int,
-            nargs="?",
-            default=600,
-            help="total time",
-        )
-        parser.add_argument(
-            "period",
-            type=int,
-            nargs="?",
-            default=100,
-            help="compounding period",
-        )
+<GithubCodeSegment digest="7cd9c5d6b5f458446700d36e5858b4b5">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/stake-auto-compounder/aerial_compounder.py"
+        lineStart={10}
+        lineEnd={34}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='7cd9c5d6b5f458446700d36e5858b4b5'>
 
-        return parser.parse_args()
-    ```
+<DocsCode local={true}>
+	```py copy filename="aerial_compounder.py"
+
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument(
+	        "initial_stake",
+	        type=int,
+	        nargs="?",
+	        default=9000000000000000000,
+	        help="Initial amount of atestfet to delegate to validator",
+	    )
+	    parser.add_argument(
+	        "time_limit",
+	        type=int,
+	        nargs="?",
+	        default=600,
+	        help="total time",
+	    )
+	    parser.add_argument(
+	        "period",
+	        type=int,
+	        nargs="?",
+	        default=100,
+	        help="compounding period",
+	    )
+	
+	    return parser.parse_args()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     We first create a `parser` instance of the `ArgumentParser` class using the `argparse` module. Argument parsers are used to specify and parse command-line arguments. The `add_argument()` method is used to specify the arguments that the script will accept. It takes several parameters, including:
 
@@ -159,80 +195,98 @@ touch aerial_compounder.py
 
 4. We are now ready to define our `main()` function:
 
-    ```py copy
-    def main():
-        """Run main."""
-        args = _parse_commandline()
+<GithubCodeSegment digest="d9381521a9c76ca13ccc53203fdf24b3">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/stake-auto-compounder/aerial_compounder.py"
+        lineStart={37}
+        lineEnd={108}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d9381521a9c76ca13ccc53203fdf24b3'>
 
-        ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-        faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+<DocsCode local={true}>
+	```py copy filename="aerial_compounder.py"
 
-        # get all the active validators on the network
-        validators = ledger.query_validators()
+	def main():
+	    """Run main."""
+	    args = _parse_commandline()
+	
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    # get all the active validators on the network
+	    validators = ledger.query_validators()
+	
+	    # choose any validator
+	    validator = validators[0]
+	
+	    alice = LocalWallet.generate()
+	
+	    wallet_balance = ledger.query_bank_balance(alice.address())
+	    initial_stake = args.initial_stake
+	
+	    while wallet_balance < (initial_stake):
+	        print("Providing wealth to wallet...")
+	        faucet_api.get_wealth(alice.address())
+	        wallet_balance = ledger.query_bank_balance(alice.address())
+	
+	    # delegate some tokens to this validator
+	    tx = ledger.delegate_tokens(validator.address, initial_stake, alice)
+	    tx.wait_to_complete()
+	
+	    # set time limit and compounding period in seconds
+	    time_limit = args.time_limit
+	    period = args.period
+	
+	    time_check = 0
+	    start_time = time.monotonic()
+	    time.sleep(period)
+	
+	    # query, claim and stake rewards after time period
+	    while time_check < time_limit:
+	
+	        begin = time.monotonic()
+	
+	        summary = ledger.query_staking_summary(alice.address())
+	        print(f"Staked: {summary.total_staked}")
+	
+	        balance_before = ledger.query_bank_balance(alice.address())
+	
+	        tx = ledger.claim_rewards(validator.address, alice)
+	        tx.wait_to_complete()
+	
+	        balance_after = ledger.query_bank_balance(alice.address())
+	
+	        # reward after any fees
+	        true_reward = balance_after - balance_before
+	
+	        if true_reward > 0:
+	
+	            print(f"Staking {true_reward} (reward after fees)")
+	
+	            tx = ledger.delegate_tokens(validator.address, true_reward, alice)
+	            tx.wait_to_complete()
+	
+	        else:
+	            print("Fees from claim rewards transaction exceeded reward")
+	
+	        print()
+	
+	        end = time.monotonic()
+	        time.sleep(period - (end - begin))
+	        time_check = time.monotonic() - start_time
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-        # choose any validator
-        validator = validators[0]
+```
+</DocsCode>
 
-        alice = LocalWallet.generate()
-
-        wallet_balance = ledger.query_bank_balance(alice.address())
-        initial_stake = args.initial_stake
-
-        while wallet_balance < (initial_stake):
-            print("Providing wealth to wallet...")
-            faucet_api.get_wealth(alice.address())
-            wallet_balance = ledger.query_bank_balance(alice.address())
-
-        # delegate some tokens to this validator
-        tx = ledger.delegate_tokens(validator.address, initial_stake, alice)
-        tx.wait_to_complete()
-
-        # set time limit and compounding period in seconds
-        time_limit = args.time_limit
-        period = args.period
-
-        time_check = 0
-        start_time = time.monotonic()
-        time.sleep(period)
-
-        # query, claim and stake rewards after time period
-        while time_check < time_limit:
-
-            begin = time.monotonic()
-
-            summary = ledger.query_staking_summary(alice.address())
-            print(f"Staked: {summary.total_staked}")
-
-            balance_before = ledger.query_bank_balance(alice.address())
-
-            tx = ledger.claim_rewards(validator.address, alice)
-            tx.wait_to_complete()
-
-            balance_after = ledger.query_bank_balance(alice.address())
-
-            # reward after any fees
-            true_reward = balance_after - balance_before
-
-            if true_reward > 0:
-
-                print(f"Staking {true_reward} (reward after fees)")
-
-                tx = ledger.delegate_tokens(validator.address, true_reward, alice)
-                tx.wait_to_complete()
-
-            else:
-                print("Fees from claim rewards transaction exceeded reward")
-
-            print()
-
-            end = time.monotonic()
-            time.sleep(period - (end - begin))
-            time_check = time.monotonic() - start_time
+</CodeGroup>
 
 
-    if __name__ == "__main__":
-        main()
-    ```
 
     The first line calls the `_parse_commandline()` function we defined earlier. It returns an object with the parsed command-line arguments. We then create two objects:
 
@@ -247,113 +301,132 @@ touch aerial_compounder.py
 
 The overall script should look as follows:
 
-```py copy filename="aerial_compounder.py"
-import argparse
-import time
+<GithubCodeSegment digest="a2608cf7e3e375e36ad61ed145cadd89">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/stake-auto-compounder/aerial_compounder.py"
+        lineStart={1}
+        lineEnd={108}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a2608cf7e3e375e36ad61ed145cadd89'>
 
-from cosmpy.aerial.client import LedgerClient
-from cosmpy.aerial.config import NetworkConfig
-from cosmpy.aerial.faucet import FaucetApi
-from cosmpy.aerial.wallet import LocalWallet
+<DocsCode local={true}>
+	```py copy filename="aerial_compounder.py"
 
+	import argparse
+	import time
+	
+	from cosmpy.aerial.client import LedgerClient
+	from cosmpy.aerial.config import NetworkConfig
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.wallet import LocalWallet
+	
+	
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument(
+	        "initial_stake",
+	        type=int,
+	        nargs="?",
+	        default=9000000000000000000,
+	        help="Initial amount of atestfet to delegate to validator",
+	    )
+	    parser.add_argument(
+	        "time_limit",
+	        type=int,
+	        nargs="?",
+	        default=600,
+	        help="total time",
+	    )
+	    parser.add_argument(
+	        "period",
+	        type=int,
+	        nargs="?",
+	        default=100,
+	        help="compounding period",
+	    )
+	
+	    return parser.parse_args()
+	
+	
+	def main():
+	    """Run main."""
+	    args = _parse_commandline()
+	
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    # get all the active validators on the network
+	    validators = ledger.query_validators()
+	
+	    # choose any validator
+	    validator = validators[0]
+	
+	    alice = LocalWallet.generate()
+	
+	    wallet_balance = ledger.query_bank_balance(alice.address())
+	    initial_stake = args.initial_stake
+	
+	    while wallet_balance < (initial_stake):
+	        print("Providing wealth to wallet...")
+	        faucet_api.get_wealth(alice.address())
+	        wallet_balance = ledger.query_bank_balance(alice.address())
+	
+	    # delegate some tokens to this validator
+	    tx = ledger.delegate_tokens(validator.address, initial_stake, alice)
+	    tx.wait_to_complete()
+	
+	    # set time limit and compounding period in seconds
+	    time_limit = args.time_limit
+	    period = args.period
+	
+	    time_check = 0
+	    start_time = time.monotonic()
+	    time.sleep(period)
+	
+	    # query, claim and stake rewards after time period
+	    while time_check < time_limit:
+	
+	        begin = time.monotonic()
+	
+	        summary = ledger.query_staking_summary(alice.address())
+	        print(f"Staked: {summary.total_staked}")
+	
+	        balance_before = ledger.query_bank_balance(alice.address())
+	
+	        tx = ledger.claim_rewards(validator.address, alice)
+	        tx.wait_to_complete()
+	
+	        balance_after = ledger.query_bank_balance(alice.address())
+	
+	        # reward after any fees
+	        true_reward = balance_after - balance_before
+	
+	        if true_reward > 0:
+	
+	            print(f"Staking {true_reward} (reward after fees)")
+	
+	            tx = ledger.delegate_tokens(validator.address, true_reward, alice)
+	            tx.wait_to_complete()
+	
+	        else:
+	            print("Fees from claim rewards transaction exceeded reward")
+	
+	        print()
+	
+	        end = time.monotonic()
+	        time.sleep(period - (end - begin))
+	        time_check = time.monotonic() - start_time
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-def _parse_commandline():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "initial_stake",
-        type=int,
-        nargs="?",
-        default=9000000000000000000,
-        help="Initial amount of atestfet to delegate to validator",
-    )
-    parser.add_argument(
-        "time_limit",
-        type=int,
-        nargs="?",
-        default=600,
-        help="total time",
-    )
-    parser.add_argument(
-        "period",
-        type=int,
-        nargs="?",
-        default=100,
-        help="compounding period",
-    )
-
-    return parser.parse_args()
-
-
-def main():
-    """Run main."""
-    args = _parse_commandline()
-
-    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
-
-    # get all the active validators on the network
-    validators = ledger.query_validators()
-
-    # choose any validator
-    validator = validators[0]
-
-    alice = LocalWallet.generate()
-
-    wallet_balance = ledger.query_bank_balance(alice.address())
-    initial_stake = args.initial_stake
-
-    while wallet_balance < (initial_stake):
-        print("Providing wealth to wallet...")
-        faucet_api.get_wealth(alice.address())
-        wallet_balance = ledger.query_bank_balance(alice.address())
-
-    # delegate some tokens to this validator
-    tx = ledger.delegate_tokens(validator.address, initial_stake, alice)
-    tx.wait_to_complete()
-
-    # set time limit and compounding period in seconds
-    time_limit = args.time_limit
-    period = args.period
-
-    time_check = 0
-    start_time = time.monotonic()
-    time.sleep(period)
-
-    # query, claim and stake rewards after time period
-    while time_check < time_limit:
-
-        begin = time.monotonic()
-
-        summary = ledger.query_staking_summary(alice.address())
-        print(f"Staked: {summary.total_staked}")
-
-        balance_before = ledger.query_bank_balance(alice.address())
-
-        tx = ledger.claim_rewards(validator.address, alice)
-        tx.wait_to_complete()
-
-        balance_after = ledger.query_bank_balance(alice.address())
-
-        # reward after any fees
-        true_reward = balance_after - balance_before
-
-        if true_reward > 0:
-
-            print(f"Staking {true_reward} (reward after fees)")
-
-            tx = ledger.delegate_tokens(validator.address, true_reward, alice)
-            tx.wait_to_complete()
-
-        else:
-            print("Fees from claim rewards transaction exceeded reward")
-
-        print()
-
-        end = time.monotonic()
-        time.sleep(period - (end - begin))
-        time_check = time.monotonic() - start_time
-
-
-if __name__ == "__main__":
-    main()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
+

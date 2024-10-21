@@ -1,5 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Agent Functions
 
@@ -30,8 +31,8 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Imports needed
 
-    - [`uagents` ↗️](https://pypi.org/project/uagents/)
-    - [`uagents-ai-engine` ↗️](https://pypi.org/project/uagents-ai-engine/)
+    - [uAgents ↗️](https://pypi.org/project/uagents/)
+    - [AI Engine ↗️](https://pypi.org/project/uagents-ai-engine/)
 
 ## Local Agent Function registration
 
@@ -43,45 +44,63 @@ This system is pretty simple and makes you get started as quickly as possible. Y
 
 ### The Agent
 
-    ```py copy filename="agent.py"
-    from uagents.setup import fund_agent_if_low
-    from uagents import Agent, Context, Protocol, Model
-    import random
-    from uagents import Field
-    from ai_engine import UAgentResponse, UAgentResponseType
-    import sys
+    <GithubCodeSegment digest="5fa41264e8e66bcc1db1ab0b403e18c1">
+        <CodeSegment
+            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/agent-functions/simple_function.py"
+            lineStart={1}
+            lineEnd={37}
+            hosted={true}
+        />
+    </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5fa41264e8e66bcc1db1ab0b403e18c1'>
 
-    dungeons = Agent(
-        name="dungeonsanddragonsdiceroll",
-        port=6145,
-        seed="RANDOM STRINGS",
-        endpoint=["http://YOUR_IP:6145/submit"],
-    )
+<DocsCode local={true}>
+	```py copy filename="simple_function.py"
 
-    fund_agent_if_low(dungeons.wallet.address())
+	from uagents.setup import fund_agent_if_low
+	from uagents import Agent, Context, Protocol, Model
+	import random
+	from uagents import Field
+	from ai_engine import UAgentResponse, UAgentResponseType
+	import sys
+	
+	dungeons = Agent(
+	    name="dungeonsanddragonsdiceroll",
+	    port=6145,
+	    seed="RANDOM STRINGS",
+	    endpoint=["http://YOUR_IP:6145/submit"],
+	)
+	
+	fund_agent_if_low(dungeons.wallet.address())
+	
+	@dungeons.on_event("startup")
+	async def hi(ctx: Context):
+	    ctx.logger.info(dungeons.address)
+	
+	class Request(Model):
+	    dice_sides: int = Field(description="How many sides does your dice need?")
+	
+	
+	dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
+	
+	@dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
+	async def roll_dice(ctx: Context, sender: str, msg: Request):
+	    result = str(random.randint(1, msg.dice_sides))
+	    message = f"Dice roll result: {result}"
+	    await ctx.send(
+	        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+	    )
+	
+	dungeons.include(dice_roll_protocol, publish_manifest=True)
+	
+	dungeons.run()
 
-    @dungeons.on_event("startup")
-    async def hi(ctx: Context):
-        ctx.logger.info(dungeons.address)
+```
+</DocsCode>
 
-    class Request(Model):
-        dice_sides: int = Field(description="How many sides does your dice need?")
-
-    dice_roll_protocol = Protocol("DungeonsAndDragonsDiceRoll")
-
-    @dice_roll_protocol.on_message(model=Request, replies={UAgentResponse})
-    async def roll_dice(ctx: Context, sender: str, msg: Request):
-        result = str(random.randint(1, msg.dice_sides))
-        message = f"Dice roll result: {result}"
-        await ctx.send(
-            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
-        )
+</CodeGroup>
 
 
-    dungeons.include(dice_roll_protocol, publish_manifest=True)
-
-    dungeons.run()
-     ```
 
 It is important that you provide the `name`, `port`, `seed` and `endpoint` for your Agent to correctly run this code.
 
@@ -93,7 +112,7 @@ Our `on_message` doesn't do much other than return a number between 1 and the de
 
 `.run()` initializes the Agent.
 
-Finally, we run our Agent as follows: `python agent.py`
+Finally, we run our agent as follows: `python simple_function.py`
 
 **Expected output**:
 

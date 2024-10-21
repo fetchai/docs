@@ -4,6 +4,7 @@ import { CopyIcon, DropDownArrow } from "src/icons/shared-icons";
 import { Windows, Mac, Ubuntu, OSProps } from "src/icons/os-icons";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+
 interface CodeGroupProps {
   children: ReactNode;
   isOSFile?: boolean;
@@ -11,6 +12,8 @@ interface CodeGroupProps {
   hasCopy?: boolean;
   osBlocks: ReactNode;
   codeBlocks: ReactNode;
+  dynamic?: boolean;
+  digest?: string;
 }
 
 interface CodeBlockProps {
@@ -152,7 +155,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
         onClick={toggleDropdown}
         className="nx-relative nx-flex nx-items-center nx-gap-1 nx-cursor-pointer"
       >
-        <span className="dropdown-text">{selectedOption || placeholder}</span>
+        <span className="dropdown-text dark:nx-text-white-80">
+          {selectedOption || placeholder}
+        </span>
         <DropDownArrow />
       </div>
       {isDropdownOpen && (
@@ -234,13 +239,13 @@ export const CodeBlock: React.FC<{
                   viewBox="0 0 12 8"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="copy-icon"
                 >
-                  <path
-                    d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
-                    fill="#0B1742"
-                  />
+                  <path d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z" />
                 </svg>
-                <span className="nx-copy-text">Copied</span>
+                <span className="nx-copy-text dark:nx-text-white-80">
+                  Copied
+                </span>
               </>
             ) : (
               <CopyIcon />
@@ -249,7 +254,7 @@ export const CodeBlock: React.FC<{
         )}
       </header>
       <span className="filename">{selectedLabel}</span>
-      <div ref={codeRef} style={{ overflowX: "scroll", width: "100%" }}>
+      <div ref={codeRef} style={{ width: "100%" }}>
         {selectedCodeBlock?.component ?? "No code block selected"}
       </div>
     </div>
@@ -407,11 +412,13 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
+                        className="copy-icon"
                         d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
-                        fill="#0B1742"
                       />
                     </svg>
-                    <span className="nx-copy-text">Copied</span>
+                    <span className="nx-copy-text dark:nx-text-white-80">
+                      Copied
+                    </span>
                   </>
                 ) : (
                   <CopyIcon />
@@ -481,13 +488,13 @@ export const ModifiedPre = ({
                   viewBox="0 0 12 8"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="copy-icon"
                 >
-                  <path
-                    d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z"
-                    fill="#0B1742"
-                  />
+                  <path d="M11.3359 0.414062C11.5469 0.648438 11.5469 1 11.3359 1.21094L5.14844 7.39844C4.91406 7.63281 4.5625 7.63281 4.35156 7.39844L1.16406 4.21094C0.929688 4 0.929688 3.64844 1.16406 3.4375C1.375 3.20312 1.72656 3.20312 1.9375 3.4375L4.72656 6.22656L10.5391 0.414062C10.75 0.203125 11.1016 0.203125 11.3125 0.414062H11.3359Z" />
                 </svg>
-                <span className="nx-copy-text">Copied</span>
+                <span className="nx-copy-text dark:nx-text-white-80">
+                  Copied
+                </span>
               </>
             ) : (
               // <CopyIcon />
@@ -559,4 +566,24 @@ export const DocsCode: React.FC<CodeGroupProps> = ({
       />
     </div>
   );
+};
+
+interface CodeSegment {
+  path: string;
+  lineStart: number;
+  lineEnd: number;
+  hosted: boolean;
+  filename?: string;
+}
+
+interface GithubCodeSegment {
+  digest?: string;
+}
+
+export const GithubCodeSegment: React.FC<GithubCodeSegment> = () => {
+  return <div hidden />;
+};
+
+export const CodeSegment: React.FC<CodeSegment> = () => {
+  return <div hidden />;
 };

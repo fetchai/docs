@@ -1,4 +1,4 @@
-import { CodeGroup, DocsCode } from "../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Agents address
 
@@ -12,7 +12,7 @@ It is possible to distinguish between two different types of addresses:
 
     - `Fetch network address`: this address is linked to the Agent's wallet on the Fetch.ai network. It is essential to perform multiple functionalities like holding cryptocurrency, interacting with the [Fetch Ledger ↗️](/concepts/fetch-network/ledger/intro) and performing secure transactions. This address is needed to register an Agent to the [Almanac ↗️](/concepts/fetch-network/almanac) contract. Note, you must ensure the Agents has enough funds available to perform operations in the Fetch Network, however this is all done automatically and no funds are currently required. 
 
-If you want to retrieve the address of an Agent, you can either use the `print()` function and specify which of the above addresses you wish to print out, or by calling the `.address()` or `.wallet.address()` methods using the `agent` object to retrieve specific information.
+If you want to retrieve the address of an Agent, you can either use the `print()` function and specify which of the above addresses you wish to print out, or by calling the `.address()` or `.wallet.address()` methods using the `Agent` object to retrieve specific information.
 
 **Let's now check how these ways of retrieving addresses look like!**
 
@@ -25,7 +25,7 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Imports needed
 
-    - [`uagents` ↗️](https://pypi.org/project/uagents/)
+    - [uAgents ↗️](https://pypi.org/project/uagents/)
 
 ## Print Agent address
 
@@ -33,39 +33,57 @@ You can print the `uAgent address` related to your Agent in the following way:
 
 1. First of all, create a Python script and name it:
 
+   <CodeGroup hasCopy isOSFile>
+       <DocsCode mac={true}>
+       ```py copy filename="mac"
+       touch uagent_address.py
+       ```
+       </DocsCode>
 
-<CodeGroup hasCopy isOSFile>
-    <DocsCode mac={true}>
-    ```py copy filename="mac"
-    touch uagent-address.py
-    ```
-    </DocsCode>
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > uagent_address.py
+       ```
+       </DocsCode>
 
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > uagent-address.py
-    ```
-    </DocsCode>
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch uagent_address.py
+       ```
+       </DocsCode>
+   </CodeGroup>
 
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch uagent-address.py
-    ```
-    </DocsCode>
-</CodeGroup>
-   
 2. We then need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `uAgent address`. Importantly, remember that the `seed` parameter is used, when creating an Agent, to set fixed addresses, otherwise a random address will be generated every time you run the Agent:
 
-   ```py copy filename="uagent-address.py"
-   from uagents import Agent
+   <GithubCodeSegment digest="329b381fe128e02b26a5d0e7130f6dea">
+       <CodeSegment
+           path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/getting-uagent-address/uagent_address.py"
+           lineStart={1}
+           lineEnd={8}
+           last_updated={""}
+           hosted={true}
+       />
+   </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='329b381fe128e02b26a5d0e7130f6dea'>
 
-   agent = Agent(name="alice", seed="alice recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="uagent_address.py"
 
-   print("uAgent address: ", agent.address)
+	from uagents import Agent
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+	
+	print("uAgent address: ", agent.address)
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-   if __name__ == "__main__":
-       agent.run()
-   ```
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 3. Save the script.
 
@@ -82,38 +100,57 @@ You can print the `Fetch network address` related to your Agent in the following
 
 1. Let's create a Python script, and name it:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch fetch-address.py
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+   ```py copy filename="mac"
+   touch fetch_address.py
+   ```
+   </DocsCode>
+
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > fetch_address.py
+       ```
+       </DocsCode>
+
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch fetch_address.py
+       ```
+       </DocsCode>
+   </CodeGroup>
+
+2. As before, we first need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `Fetch Network address`:
+
+   <GithubCodeSegment digest="4440bff25b5df546e299315b23cfbb0d">
+       <CodeSegment
+           path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/getting-uagent-address/fetch_address.py"
+           lineStart={1}
+           lineEnd={8}
+           last_updated={""}
+           hosted={true}
+       />
+   </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='4440bff25b5df546e299315b23cfbb0d'>
+
+<DocsCode local={true}>
+	```py copy filename="fetch_address.py"
+
+	from uagents import Agent
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+	
+	print("Fetch network address: ", agent.wallet.address())
+	
+	if __name__ == "__main__":
+	    agent.run()
+
 ```
 </DocsCode>
 
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > fetch-address.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch fetch-address.py
-    ```
-    </DocsCode>
 </CodeGroup>
-   
-2. As before, we first need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `Fetch Network address`:
 
-   ```py copy filename="fetch-address.py"
-   from uagents import Agent
 
-   agent = Agent(name="alice", seed="alice recovery phrase")
-
-   print("Fetch network address: ", agent.wallet.address())
-
-   if __name__ == "__main__":
-       agent.run()
-   ```
 
 3. Save the script.
 
@@ -138,44 +175,82 @@ In this guide, we aim at showing how to create an Agent being able to say hello 
 
 1. First of all, you need to create a Python script and name it: 
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch my_agent.py
-```
-</DocsCode>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+   ```py copy filename="mac"
+   touch my_agent.py
+   ```
+   </DocsCode>
 
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > my_agent.py
-    ```
-    </DocsCode>
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > my_agent.py
+       ```
+       </DocsCode>
 
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch my_agent.py
-    ```
-    </DocsCode>
-</CodeGroup>
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch my_agent.py
+       ```
+       </DocsCode>
+   </CodeGroup>
 
 2. We then need to import the necessary classes `Agent` and `Context` from the `uagents` library, and then create an instance of the `Agent` class, `alice`. Below you can see the `agent` object being initialized:
 
-   ```py copy
-   from uagents import Agent, Context
+   <GithubCodeSegment digest="dc132f52de064074ed98e54a7023c893">
+       <CodeSegment
+           path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/getting-uagent-address/my_agent.py"
+           lineStart={1}
+           lineEnd={3}
+           last_updated={""}
+           hosted={true}
+       />
+   </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='dc132f52de064074ed98e54a7023c893'>
 
-   agent = Agent(name="alice", seed="alice recovery phrase")
-   ```
+<DocsCode local={true}>
+	```py copy filename="my_agent.py"
+
+	from uagents import Agent, Context
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 3. We would then need to assign the Agent the behavior to be executed. In this case, `agent` could send a message when it is being run saying hello and printing its `name` and `address` using the `agent` object:
 
-   ```py copy
-   @agent.on_event("startup")
-   async def introduce_agent(ctx: Context):
-       ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+   <GithubCodeSegment digest="205cb63ba0491f084f4bce18a13dc378">
+       <CodeSegment
+           path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/getting-uagent-address/my_agent.py"
+           lineStart={5}
+           lineEnd={10}
+           last_updated={""}
+           hosted={true}
+       />
+   </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='205cb63ba0491f084f4bce18a13dc378'>
 
-    if __name__ == "__main__":
-        agent.run()
-   ```
+<DocsCode local={true}>
+	```py copy filename="my_agent.py"
+
+	@agent.on_event("startup")
+	async def introduce_agent(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	
+	if __name__ == "__main__":
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    This `introduce_agent()` function takes a single argument `ctx` of type `Context`. The message is printed out using the `ctx.logger.info()` method, and includes the Agent's name obtained from attribute `name` and retrieved using `agent.name()` method. The same for the Agent's address, which is obtained from attribute `address` and retrieved using `agent.address()` method.
 
@@ -183,18 +258,37 @@ touch my_agent.py
 
 The overall script should look as follows:
 
-```py copy filename="my_agent.py"
-from uagents import Agent, Context
+   <GithubCodeSegment digest="649f95e68b00135835e462b705fbb5f9">
+       <CodeSegment
+           path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/getting-uagent-address/my_agent.py"
+           lineStart={1}
+           lineEnd={10}
+           last_updated={""}
+           hosted={true}
+       />
+   </GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='649f95e68b00135835e462b705fbb5f9'>
 
-agent = Agent(name="alice", seed="alice recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="my_agent.py"
 
-@agent.on_event("startup")
-async def introduce_agent(ctx: Context):
-    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	from uagents import Agent, Context
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+	
+	@agent.on_event("startup")
+	async def introduce_agent(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-if __name__ == "__main__":
-    agent.run()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ### Run the script
 

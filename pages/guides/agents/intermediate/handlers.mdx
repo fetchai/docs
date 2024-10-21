@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components'
-import { CodeGroup, DocsCode } from "../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Agent Handlers
 
@@ -31,59 +31,113 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Imports needed
 
-    - [`uagents` ↗️](https://pypi.org/project/uagents/)
+    - [uAgents ↗️](https://pypi.org/project/uagents/)
     - [FastAPI ↗️](https://pypi.org/project/fastapi/)
 
 ### Walk-through
 
 1. Let's create a Python script for this task, and name it:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch interval-task.py
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+      ```py copy filename="mac"
+      touch interval-task.py
+      ```
+   </DocsCode>
+
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > interval-task.py
+       ```
+       </DocsCode>
+
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch interval-task.py
+       ```
+       </DocsCode>
+   </CodeGroup>
+
+2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
+
+<GithubCodeSegment digest="c8837162a1b05488e1df231312b4f109">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/interval-task.py"
+        lineStart={1}
+        lineEnd={3}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c8837162a1b05488e1df231312b4f109'>
+
+<DocsCode local={true}>
+	```py copy filename="interval-task.py"
+
+	from uagents import Agent, Context
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+
 ```
 </DocsCode>
 
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > interval-task.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch interval-task.py
-    ```
-    </DocsCode>
 </CodeGroup>
-   
-2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our Agent:
 
-   ```py copy
-   from uagents import Agent, Context
 
-   agent = Agent(name="alice", seed="alice recovery phrase")
-   ```
 
 3. Create a function to handle the startup event, which will introduce the uAgent:
 
-    ```py copy
-    @agent.on_event("startup")
-    async def introduce_agent(ctx: Context):
-        ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
-    ```
+<GithubCodeSegment digest="dc15c1506a6195fdb61ca5c320eb3253">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/interval-task.py"
+        lineStart={5}
+        lineEnd={7}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='dc15c1506a6195fdb61ca5c320eb3253'>
+
+<DocsCode local={true}>
+	```py copy filename="interval-task.py"
+
+	@agent.on_event("startup")
+	async def introduce_agent(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 4. We can now define our Agent's interval behavior. We want our Agent to log a message every 2 seconds using the `on_interval` decorator:
 
-   ```py copy
-   @agent.on_interval(period=2.0)
-   async def say_hello(ctx: Context):
-       ctx.logger.info("Hello!")
+<GithubCodeSegment digest="7a158c3a59212c6d7566ffb9837999c7">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/interval-task.py"
+        lineStart={9}
+        lineEnd={14}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='7a158c3a59212c6d7566ffb9837999c7'>
 
-   if __name__ == "__main__":
-       agent.run()
-   ```
+<DocsCode local={true}>
+	```py copy filename="interval-task.py"
+
+	@agent.on_interval(period=2.0)
+	async def say_hello(ctx: Context):
+	    ctx.logger.info("Hello!")
+	
+	if __name__ == "__main__":
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    The output will be printed out using the `ctx.logger.info()` method.
 
@@ -91,22 +145,40 @@ touch interval-task.py
 
 The overall script should look as follows:
 
-```py copy filename="interval-task.py"
-from uagents import Agent, Context
+<GithubCodeSegment digest="61e9008ed35ec747ce881dd9519a67f5">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/interval-task.py"
+        lineStart={1}
+        lineEnd={14}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='61e9008ed35ec747ce881dd9519a67f5'>
 
-agent = Agent(name="alice", seed="alice recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="interval-task.py"
 
-@agent.on_event("startup")
-async def introduce_agent(ctx: Context):
-    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	from uagents import Agent, Context
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+	
+	@agent.on_event("startup")
+	async def introduce_agent(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	
+	@agent.on_interval(period=2.0)
+	async def say_hello(ctx: Context):
+	    ctx.logger.info("Hello!")
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-@agent.on_interval(period=2.0)
-async def say_hello(ctx: Context):
-    ctx.logger.info("Hello!")
-
-if __name__ == "__main__":
-    agent.run()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ### Run the script
 
@@ -132,73 +204,146 @@ We now showcase a scenario where three Agents, named `alice`, `bob`, and `charle
 
 1. First of all, let's create a Python script for this task, and name it:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch broadcast.py
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+       ```py copy filename="mac"
+       touch broadcast.py
+       ```
+   </DocsCode>
+
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > broadcast.py
+       ```
+   </DocsCode>
+
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch broadcast.py
+       ```
+   </DocsCode>
+   </CodeGroup>
+
+2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library. Then, let's create the 3 different agents using the class `Agent`. Each agent is initialized with a unique name and a seed phrase for wallet recovery.
+
+<GithubCodeSegment digest="4b21b0bf628200d653d4edf46d10a7b8">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/broadcast.py"
+        lineStart={1}
+        lineEnd={8}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='4b21b0bf628200d653d4edf46d10a7b8'>
+
+<DocsCode local={true}>
+	```py copy filename="broadcast.py"
+
+	from uagents import Agent, Bureau, Context, Model, Protocol
+	
+	# create agents
+	# alice and bob will support the protocol
+	# charles will try to reach all agents supporting the protocol
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	bob = Agent(name="bob", seed="bob recovery phrase")
+	charles = Agent(name="charles", seed="charles recovery phrase")
+
 ```
 </DocsCode>
 
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > broadcast.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch broadcast.py
-    ```
-    </DocsCode>
 </CodeGroup>
-   
-2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library, and the `fund_agent_if_low` from `uagents.setup`. Then, let's create the 3 different Agents using the class `Agent`. Each uAgent is initialized with a unique name and a seed phrase for wallet recovery. Additionally, if an Agent's wallet balance is low, the `fund_agent_if_low()` function is called to add funds to their wallet:
 
-    ```py copy
-    from uagents import Agent, Bureau, Context, Model, Protocol
-    from uagents.setup import fund_agent_if_low
 
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    bob = Agent(name="bob", seed="bob recovery phrase")
-    charles = Agent(name="charles", seed="charles recovery phrase")
-
-    fund_agent_if_low(alice.wallet.address())
-    fund_agent_if_low(bob.wallet.address())
-    fund_agent_if_low(charles.wallet.address())
-    ```
 
    It is optional but useful to include a `seed` parameter when creating an Agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the Agent.
 
 3. Let's then define the message data models to specify the type of messages being handled and exchanged by the Agents. We define a `BroadcastExampleRequest` and a `BroadcastExampleResponse` data models. Finally, create a `protocol` named `proto` with version `1.0`:
 
-    ```py copy
-    class BroadcastExampleRequest(Model):
-        pass
+<GithubCodeSegment digest="adfcd86c76024038e6abd0785266b842">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/broadcast.py"
+        lineStart={11}
+        lineEnd={20}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='adfcd86c76024038e6abd0785266b842'>
 
-    class BroadcastExampleResponse(Model):
-        text: str
+<DocsCode local={true}>
+	```py copy filename="broadcast.py"
 
-    proto = Protocol(name="proto", version="1.0")
-    ```
+	class BroadcastExampleRequest(Model):
+	    pass
+	
+	
+	class BroadcastExampleResponse(Model):
+	    text: str
+	
+	
+	# define protocol
+	proto = Protocol(name="proto", version="1.0")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 4. Let's now define a message handler function for incoming messages of type `BroadcastExampleRequest` in the protocol:
 
-    ```py copy
-    @proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
-    async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
-        await ctx.send(
-            sender, BroadcastExampleResponse(text=f"Hello from {ctx.agent.name}")
-        )
-    ```
+<GithubCodeSegment digest="e22f96861d700bdb76460ec91ebab6ba">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/broadcast.py"
+        lineStart={23}
+        lineEnd={27}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='e22f96861d700bdb76460ec91ebab6ba'>
+
+<DocsCode local={true}>
+	```py copy filename="broadcast.py"
+
+	@proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
+	async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
+	    await ctx.send(
+	        sender, BroadcastExampleResponse(text=f"Hello from {ctx.agent.name}")
+	    )
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     Here we defined a `handle_request()` function which is used whenever a request is received. This sends a response back to the sender. This function is decorated with the `.on_message()` decorator indicating that this function is triggered whenever a message of type `BroadcastExampleRequest` is received. The function sends a response containing a greeting message with the name of the Agent that sent the request in the first place.
 
 5. Now, we need to include the `protocol` into the Agents. Specifically, the protocol is included in both `alice` and `bob` Agents. This means they will follow the rules defined in the protocol when communicating:
 
-    ```py copy
-    alice.include(proto)
-    bob.include(proto)
-    ```
+<GithubCodeSegment digest="42d2a1938c3e3268e4d2f81adeca4c8c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/broadcast.py"
+        lineStart={33}
+        lineEnd={34}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='42d2a1938c3e3268e4d2f81adeca4c8c'>
+
+<DocsCode local={true}>
+	```py copy filename="broadcast.py"
+
+	alice.include(proto)
+	bob.include(proto)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     <Callout type="info" emoji="ℹ️">
       After the first registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) smart contract, it will take about 5 minutes before the Agents can be found through the protocol.
@@ -206,16 +351,35 @@ touch broadcast.py
 
 6. It is now time to define the behavior and function of `charles` Agent:
 
-    ```py copy
-    @charles.on_interval(period=5)
-    async def say_hello(ctx: Context):
-        status_list = await ctx.broadcast(proto.digest, message=BroadcastExampleRequest())
-        ctx.logger.info(f"Trying to contact {len(status_list)} agents.")
+<GithubCodeSegment digest="91a57d668d9edd0b231db4b58fdcedd8">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/broadcast.py"
+        lineStart={38}
+        lineEnd={46}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='91a57d668d9edd0b231db4b58fdcedd8'>
 
-    @charles.on_message(model=BroadcastExampleResponse)
-    async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
-        ctx.logger.info(f"Received response from {sender}: {msg.text}")
-    ```
+<DocsCode local={true}>
+	```py copy filename="broadcast.py"
+
+	@charles.on_interval(period=5)
+	async def say_hello(ctx: Context):
+	    status_list = await ctx.broadcast(proto.digest, message=BroadcastExampleRequest())
+	    ctx.logger.info(f"Trying to contact {len(status_list)} agents.")
+	
+	
+	@charles.on_message(model=BroadcastExampleResponse)
+	async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
+	    ctx.logger.info(f"Received response from {sender}: {msg.text}")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    In the first part, we use the `.on_interval()` decorator to define an interval behavior for this Agent when the script is being run. In this case, the Agent will execute the `say_hello()` function every 5 seconds. The `Context` object is a collection of data and functions related to the Agent. Inside the `say_hello()` function, the Agent uses the `ctx.broadcast()` method to send a broadcast message. The message is of type `BroadcastExampleRequest()` and it is being sent using the protocol's digest (`proto.digest`).
 
@@ -223,15 +387,33 @@ touch broadcast.py
 
 7. We are now ready to set up a `Bureau` object for Agents to be run together at the same time, and we add `alice`, `bob`, and `charles` to it using the `bureau.add()` method:
 
-    ```py copy
-    bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
-    bureau.add(alice)
-    bureau.add(bob)
-    bureau.add(charles)
+<GithubCodeSegment digest="3ec667f21db4a5d5a5b3a6fb75be0b03">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/broadcast.py"
+        lineStart={49}
+        lineEnd={55}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='3ec667f21db4a5d5a5b3a6fb75be0b03'>
 
-    if __name__ == "__main__":
-        bureau.run()
-    ```
+<DocsCode local={true}>
+	```py copy filename="broadcast.py"
+
+	bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
+	bureau.add(alice)
+	bureau.add(bob)
+	bureau.add(charles)
+	
+	if __name__ == "__main__":
+	    bureau.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     The bureau is assigned to listen on `port=8000` and specifies an `endpoint` at `"http://localhost:8000/submit"` for submitting data.
 
@@ -239,55 +421,81 @@ touch broadcast.py
 
 The overall script should look as follows:
 
-```py copy filename="broadcast.py"
-from uagents import Agent, Bureau, Context, Model, Protocol
+<GithubCodeSegment digest="45fc7b683cc120b2455e658fb70c7a4f">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/broadcast.py"
+        lineStart={1}
+        lineEnd={55}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='45fc7b683cc120b2455e658fb70c7a4f'>
 
-# create Agents
-# alice and bob will support the protocol
-# charles will try to reach all Agents supporting the protocol
-alice = Agent(name="alice", seed="alice recovery phrase")
-bob = Agent(name="bob", seed="bob recovery phrase")
-charles = Agent(name="charles", seed="charles recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="broadcast.py"
 
-class BroadcastExampleRequest(Model):
-    pass
+	from uagents import Agent, Bureau, Context, Model, Protocol
+	
+	# create agents
+	# alice and bob will support the protocol
+	# charles will try to reach all agents supporting the protocol
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	bob = Agent(name="bob", seed="bob recovery phrase")
+	charles = Agent(name="charles", seed="charles recovery phrase")
+	
+	
+	class BroadcastExampleRequest(Model):
+	    pass
+	
+	
+	class BroadcastExampleResponse(Model):
+	    text: str
+	
+	
+	# define protocol
+	proto = Protocol(name="proto", version="1.0")
+	
+	
+	@proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
+	async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
+	    await ctx.send(
+	        sender, BroadcastExampleResponse(text=f"Hello from {ctx.agent.name}")
+	    )
+	
+	
+	# include protocol
+	# Note: after the first registration on the almanac smart contract, it will
+	# take about 5 minutes before the agents can be found through the protocol
+	alice.include(proto)
+	bob.include(proto)
+	
+	
+	# let charles send the message to all agents supporting the protocol
+	@charles.on_interval(period=5)
+	async def say_hello(ctx: Context):
+	    status_list = await ctx.broadcast(proto.digest, message=BroadcastExampleRequest())
+	    ctx.logger.info(f"Trying to contact {len(status_list)} agents.")
+	
+	
+	@charles.on_message(model=BroadcastExampleResponse)
+	async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
+	    ctx.logger.info(f"Received response from {sender}: {msg.text}")
+	
+	
+	bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
+	bureau.add(alice)
+	bureau.add(bob)
+	bureau.add(charles)
+	
+	if __name__ == "__main__":
+	    bureau.run()
 
-class BroadcastExampleResponse(Model):
-    text: str
-
-# define protocol
-proto = Protocol(name="proto", version="1.0")
-
-@proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
-async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
-    await ctx.send(
-        sender, BroadcastExampleResponse(text=f"Hello from {ctx.agent.name}")
-    )
-
-# include protocol
-# Note: after the first registration on the almanac smart contract, it will
-# take about 5 minutes before the Agents can be found through the protocol
-alice.include(proto)
-bob.include(proto)
-
-# let charles send the message to all Agents supporting the protocol
-@charles.on_interval(period=5)
-async def say_hello(ctx: Context):
-    status_list = await ctx.broadcast(proto.digest, message=BroadcastExampleRequest())
-    ctx.logger.info(f"Trying to contact {len(status_list)} agents.")
-
-@charles.on_message(model=BroadcastExampleResponse)
-async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
-    ctx.logger.info(f"Received response from {sender}: {msg.text}")
-
-bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
-bureau.add(alice)
-bureau.add(bob)
-bureau.add(charles)
-
-if __name__ == "__main__":
-    bureau.run()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ### Run the script
 
@@ -313,44 +521,60 @@ The `on_query()` handler is used to register a [Function ↗️](/guides/agents/
 
 For the Agent, the script sets up an Agent to handle incoming queries. It defines two models: `TestRequest` and `Response`. Upon startup, it logs the Agent's details. The core functionality lies in the `query_handler`, decorated with `@agent.on_query()`, which processes received queries and sends back a predefined response. This demonstrates creating responsive Agents within the `uagents` Framework, showcasing how they can interact with other Agents or functions in an asynchronous, event-driven architecture.
 
-    ```py copy filename="agent.py"
-    from uagents import Agent, Context, Model
+<GithubCodeSegment digest="0ead5b0ce3c12f95c619c8a9e7808286">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/agent.py"
+        lineStart={1}
+        lineEnd={35}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='0ead5b0ce3c12f95c619c8a9e7808286'>
 
-    class TestRequest(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="agent.py"
 
-    class Response(Model):
-        text: str
+	from uagents import Agent, Context, Model
+	
+	class TestRequest(Model):
+	    message: str
+	
+	class Response(Model):
+	    text: str
+	
+	# Initialize the agent with its configuration.
+	agent = Agent(
+	    name="your_agent_name_here",
+	    seed="your_agent_seed_here",
+	    port=8001,
+	    endpoint="http://localhost:8001/submit",
+	)
+	
+	@agent.on_event("startup")
+	async def startup(ctx: Context):
+	    ctx.logger.info(f"Starting up {agent.name}")
+	    ctx.logger.info(f"With address: {agent.address}")
+	    ctx.logger.info(f"And wallet address: {agent.wallet.address()}")
+	
+	# Decorator to handle incoming queries.
+	@agent.on_query(model=TestRequest, replies={Response})
+	async def query_handler(ctx: Context, sender: str, _query: TestRequest):
+	    ctx.logger.info("Query received")
+	    try:
+	        # do something here
+	        await ctx.send(sender, Response(text="success"))
+	    except Exception:
+	        await ctx.send(sender, Response(text="fail"))
+	
+	# Main execution block to run the agent.
+	if __name__ == "__main__":
+	    agent.run()
 
-    # Initialize the agent with its configuration.
-    agent = Agent(
-        name="your_agent_name_here",
-        seed="your_agent_seed_here",
-        port=8001,
-        endpoint="http://localhost:8001/submit",
-    )
+```
+</DocsCode>
 
-    @agent.on_event("startup")
-    async def startup(ctx: Context):
-        ctx.logger.info(f"Starting up {agent.name}")
-        ctx.logger.info(f"With address: {agent.address}")
-        ctx.logger.info(f"And wallet address: {agent.wallet.address()}")
+</CodeGroup>
 
-    # Decorator to handle incoming queries.
-    @agent.on_query(model=TestRequest, replies={Response})
-    async def query_handler(ctx: Context, sender: str, _query: TestRequest):
-        ctx.logger.info("Query received")
-        try:
-            # do something here
-            await ctx.send(sender, Response(text="success"))
-        except Exception:
-            await ctx.send(sender, Response(text="fail"))
-
-
-    # Main execution block to run the uAgent.
-    if __name__ == "__main__":
-        agent.run()
-    ```
 
 
 The Agent is created using the `Agent` class from `uagents` library. You can initialise it by providing it with a `name`, `seed`, `port`, and `endpoint`. It defines an `on_event()` handler for the `startup` event, where it logs information about the Agent's initialisation. It defines an `on_query()` handler for handling queries of type `TestRequest`. Upon receiving a query, it processes it and sends back a `Response`. The Agent is then set to run.
@@ -362,121 +586,230 @@ The proxy is implemented using `FastAPI`. It sets up two routes: `"/"` for a sim
 Let's explore the Proxy code script step-by-step:
 
 1. First of all navigate to directory where you want to create your project.
-2. Create a Python script name `on_query.py` by running:
+2. Create a Python script named `on_query.py` by running:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch on_query.py
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+      ```py copy filename="mac"
+      touch on_query.py
+      ```
+   </DocsCode>
+
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > on_query.py
+       ```
+   </DocsCode>
+
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch on_query.py
+       ```
+   </DocsCode>
+   </CodeGroup>
+
+3. We need to import `json`, `fastapi`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `TestRequest` class as a subclass of `Model`:
+
+<GithubCodeSegment digest="6eb7aafba80e53d5e7ffbb05d66a2eb1">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/on_query.py"
+        lineStart={1}
+        lineEnd={11}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6eb7aafba80e53d5e7ffbb05d66a2eb1'>
+
+<DocsCode local={true}>
+	```py copy filename="on_query.py"
+
+	import json
+	
+	from fastapi import FastAPI, Request
+	from uagents import Model
+	from uagents.query import query
+	from uagents.envelope import Envelope
+	
+	AGENT_ADDRESS = "agent1qt6ehs6kqdgtrsduuzslqnrzwkrcn3z0cfvwsdj22s27kvatrxu8sy3vag0"
+	
+	class TestRequest(Model):
+	    message: str
+
 ```
 </DocsCode>
 
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > on_query.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch on_query.py
-    ```
-    </DocsCode>
 </CodeGroup>
-   
-3. We need to import `json`, `fastapi`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `TestRequest` class as a subclass of `Model`:
 
-    ```py copy
-    import json
 
-    from fastapi import FastAPI, Request
-    from uagents import Model
-    from uagents.query import query
-    from uagents.envelope import Envelope
-
-    AGENT_ADDRESS = "agent1qt6ehs6kqdgtrsduuzslqnrzwkrcn3z0cfvwsdj22s27kvatrxu8sy3vag0"
-
-    class TestRequest(Model):
-        message: str
-    ```
 
 4. Create `agent_query()` function to send query to Agent and decode the response received.
 
-    ```py copy
-    async def agent_query(req):
-        response = await query(destination=AGENT_ADDRESS, message=req, timeout=15)
-        if isinstance(response, Envelope):
-            data = json.loads(response.decode_payload())
-            return data["text"]
-        return response
-    ```
+<GithubCodeSegment digest="5f61686f599181ddfba7204d2304de75">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/on_query.py"
+        lineStart={13}
+        lineEnd={18}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5f61686f599181ddfba7204d2304de75'>
+
+<DocsCode local={true}>
+	```py copy filename="on_query.py"
+
+	async def agent_query(req):
+	    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15)
+	    if isinstance(response, Envelope):
+	        data = json.loads(response.decode_payload())
+	        return data["text"]
+	    return response
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 5. Initialize a `FastAPI` app:
 
-    ```py copy
-    app = FastAPI()
-    ```
+<GithubCodeSegment digest="d2ffed01d209fce577745e44c9d5d06f">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/on_query.py"
+        lineStart={21}
+        lineEnd={21}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d2ffed01d209fce577745e44c9d5d06f'>
+
+<DocsCode local={true}>
+	```py copy filename="on_query.py"
+
+	app = FastAPI()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 6. Define a root endpoint to test the server:
 
-    ```py copy
-    @app.get("/")
-    def read_root():
-        return "Hello from the Agent controller"
-    ```
+<GithubCodeSegment digest="ff46fde1e30f157045a9acf5ba31fd77">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/on_query.py"
+        lineStart={23}
+        lineEnd={25}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ff46fde1e30f157045a9acf5ba31fd77'>
+
+<DocsCode local={true}>
+	```py copy filename="on_query.py"
+
+	@app.get("/")
+	def read_root():
+	    return "Hello from the Agent controller"
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 7. Define an endpoint to make Agent calls:
 
-    ```py copy
-    @app.post("/endpoint")
-    async def make_agent_call(req: Request):
-        model = TestRequest.parse_obj(await req.json())
-        try:
-            res = await agent_query(model)
-            return f"successful call - agent response: {res}"
-        except Exception:
-            return "unsuccessful agent call"
-    ```
+<GithubCodeSegment digest="f67d9b78fcce83e53826526764155879">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/on_query.py"
+        lineStart={27}
+        lineEnd={34}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='f67d9b78fcce83e53826526764155879'>
+
+<DocsCode local={true}>
+	```py copy filename="on_query.py"
+
+	@app.post("/endpoint")
+	async def make_agent_call(req: Request):
+	    model = TestRequest.parse_obj(await req.json())
+	    try:
+	        res = await agent_query(model)
+	        return f"successful call - agent response: {res}"
+	    except Exception:
+	        return "unsuccessful agent call"
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 8. Save the script. Remember that you need to provide the `AGENT_ADDRESS` parameter to correctly run this code.
 
 The overall script should look as follows:
 
-```py copy filename="on_query.py"
-import json
+<GithubCodeSegment digest="d082999e45ff5bddb57e8ca51c0c0a01">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/on_query.py"
+        lineStart={1}
+        lineEnd={34}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d082999e45ff5bddb57e8ca51c0c0a01'>
 
-from fastapi import FastAPI, Request
-from uagents import Model
-from uagents.query import query
-from uagents.envelope import Envelope 
+<DocsCode local={true}>
+	```py copy filename="on_query.py"
 
-AGENT_ADDRESS = "agent1qt6ehs6kqdgtrsduuzslqnrzwkrcn3z0cfvwsdj22s27kvatrxu8sy3vag0"
+	import json
+	
+	from fastapi import FastAPI, Request
+	from uagents import Model
+	from uagents.query import query
+	from uagents.envelope import Envelope
+	
+	AGENT_ADDRESS = "agent1qt6ehs6kqdgtrsduuzslqnrzwkrcn3z0cfvwsdj22s27kvatrxu8sy3vag0"
+	
+	class TestRequest(Model):
+	    message: str
+	
+	async def agent_query(req):
+	    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15)
+	    if isinstance(response, Envelope):
+	        data = json.loads(response.decode_payload())
+	        return data["text"]
+	    return response
+	
+	
+	app = FastAPI()
+	
+	@app.get("/")
+	def read_root():
+	    return "Hello from the Agent controller"
+	
+	@app.post("/endpoint")
+	async def make_agent_call(req: Request):
+	    model = TestRequest.parse_obj(await req.json())
+	    try:
+	        res = await agent_query(model)
+	        return f"successful call - agent response: {res}"
+	    except Exception:
+	        return "unsuccessful agent call"
 
-class TestRequest(Model):
-    message: str
-
-async def agent_query(req):
-    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15)
-    if isinstance(response, Envelope):
-        data = json.loads(response.decode_payload())
-        return data["text"]
-    return response
-
-app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return "Hello from the Agent controller"
-
-@app.post("/endpoint")
-async def make_agent_call(req: Request):
-    model = TestRequest.parse_obj(await req.json())
-    try:
-        res = await agent_query(model)
-        return f"successful call - agent response: {res}"
-    except Exception:
-        return "unsuccessful agent call"
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 #### Run the example
 
@@ -496,22 +829,20 @@ Here's an example:
 
 ### on_event("startup")
 
-```python copy
-    @agent.on_event("startup")
-    async def introduce_agent(ctx: Context):
-        ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
-        ...
- 
-```
+    ```python copy
+        @agent.on_event("startup")
+        async def introduce_agent(ctx: Context):
+            ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+            ...
+
+    ```
 
 ### on_event("shutdown")
 
-```python copy
-    @agent.on_event("shutdown")
-    async def introduce_agent(ctx: Context):
-        ctx.logger.info(f"Hello, I'm agent {agent.name} and I am shutting down")
-        ...
- 
-```
+    ```python copy
+        @agent.on_event("shutdown")
+        async def introduce_agent(ctx: Context):
+            ctx.logger.info(f"Hello, I'm agent {agent.name} and I am shutting down")
+            ...
 
-
+    ```

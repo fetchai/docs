@@ -1,3 +1,5 @@
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+
 # Creating a simple dice roll Agent on Agentverse
 
 ## Introduction
@@ -31,32 +33,53 @@ Now, a new Agent has been created for you:
 
 After clicking on the row of your newly created Agent, you should be able to see the source code of your dice roll Agent in the editor view:
 
-    ```python copy filename="agent.py"
-    # Here we demonstrate how we can create a simple dice roll Agent that is compatible with DeltaV.
+<GithubCodeSegment digest="9ddf51e355aa7de1f85954bc211a5b54">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/creating-agentverse-agents/simple-dice-roll-agent/agent.py"
+        lineStart={1}
+        lineEnd={27}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9ddf51e355aa7de1f85954bc211a5b54'>
 
-    # After running this Agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the Agent's address.
+<DocsCode local={true}>
+	```py copy filename="agent.py"
 
-    import random
-    # third party modules used in this example
-    from uagents import Field
-    from ai_engine import UAgentResponse, UAgentResponseType
+	# Here we demonstrate how we can create a simple dice roll agent that is compatible with DeltaV.
+	
+	# After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
+	
+	import random
+	# third party modules used in this example
+	from uagents import Field
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	
+	class DiceRoll(Model):
+	    num_rolls: int = Field(description="Number of rolls.")
+	
+	
+	dice_roll_protocol = Protocol("DiceRoll")
+	
+	
+	@dice_roll_protocol.on_message(model=DiceRoll, replies={UAgentResponse})
+	async def roll_dice(ctx: Context, sender: str, msg: DiceRoll):
+	    result = ", ".join([str(random.randint(1, 6)) for _ in range(msg.num_rolls)])
+	    message = f"Dice roll results: {result}"
+	    await ctx.send(
+	        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+	    )
+	
+	
+	agent.include(dice_roll_protocol, publish_manifest=True)
 
-    class DiceRoll(Model):
-        num_rolls: int = Field(description="Number of rolls.")
+```
+</DocsCode>
 
-    dice_roll_protocol = Protocol("DiceRoll")
+</CodeGroup>
 
 
-    @dice_roll_protocol.on_message(model=DiceRoll, replies={UAgentResponse})
-    async def roll_dice(ctx: Context, sender: str, msg: DiceRoll):
-        result = ", ".join([str(random.randint(1, 6)) for _ in range(msg.num_rolls)])
-        message = f"Dice roll results: {result}"
-        await ctx.send(
-            sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
-    )
-
-    agent.include(dice_roll_protocol, publish_manifest=True)
-    ````
 
 Now click on the **Run** button in the upper right corner of the editor so that you have your dice roll Agent up and running!
 

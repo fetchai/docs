@@ -88,7 +88,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
         </p>
       ) : (
         <>
-          <h3 className="nx-text-lg md:nx-mt-0 nx-mt-3 nx-flex nx-justify-center ">
+          <h3 className="nx-text-lg md:nx-mt-0 nx-mt-3 nx-flex nx-justify-center dark:nx-text-white-60">
             Was this page helpful?
           </h3>
           <div
@@ -126,7 +126,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
           {isInputVisible && (
             <div className="nx-mt-4 nx-flex nx-flex-col nx-w-full">
               <textarea
-                className={`nx-rounded-lg nx-border nx-border-gray-300 nx-bg-gray-100 nx-p-4 nx-shadow-inner nx-max-w-532px nx-w-full nx-mx-auto nx-min-h-132px ${
+                className={`nx-rounded-lg nx-border nx-border-gray-300 nx-bg-gray-100 nx-p-4 nx-shadow-inner nx-max-w-532px nx-w-full dark:nx-outline-none dark:nx-bg-dark-mode-white-5 dark:nx-border-none nx-mx-auto nx-min-h-132px ${
                   maliciousStringDetected ? "nx-border-red" : ""
                 }`}
                 placeholder="Enter your feedback..."
@@ -143,7 +143,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
                 </p>
               )}
               <button
-                className={`nx-mt-4 nx-bg-submit-feedback nx-text-white nx-font-bold nx-py-2 nx-px-4 nx-rounded-xxl nx-max-w-180px nx-mx-auto nx-w-full ${
+                className={`nx-mt-4 nx-bg-submit-feedback nx-text-sm nx-text-white  nx-font-medium nx-py-2 nx-px-4 nx-rounded-lg nx-max-w-180px nx-mx-auto nx-w-full ${
                   maliciousStringDetected ? "nx-bg-gray-400" : ""
                 }`}
                 onClick={handleFeedbackSubmit}
@@ -153,7 +153,7 @@ const FeedbackComponent = ({ pageUrl }: { pageUrl: string }) => {
               </button>
             </div>
           )}
-          <h3 className="md:nx-text-base nx-text-sm nx-flex nx-justify-center nx-mt-3">
+          <h3 className="md:nx-text-base nx-text-sm nx-flex nx-justify-center nx-mt-3 dark:nx-text-white-60">
             You can also leave detailed feedback
             <Link
               className="nx-text-primary-600 nx-ml-1 nx-underline nx-decoration-from-font [text-underline-position:from-font]"

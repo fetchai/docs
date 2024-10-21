@@ -1,3 +1,5 @@
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+
 # Multi-agent workflows with Fetch.ai x Langchain
 
 Multi-agent workflows are at the forefront of modern Agent development; the idea that individual [Agents ↗️](/guides/agents/getting-started/whats-an-agent) can be utilized to create larger more complex services for people has created lots of excitement in the AI space. At Fetch.ai, we're building the Agent communication layer which perfectly compliments Langchain libraries.
@@ -14,12 +16,12 @@ Three Agents make up a simple Agent workflow: **RequestAgent**, **PDFQuestionAge
 
 A variation of the following `Model` class is passed between each Agent:
 
-```
-class DocumentUnderstanding(Model):
-    pdf_path: str
-    question: str
+  ```py copy
+  class DocumentUnderstanding(Model):
+      pdf_path: str
+      question: str
 
-```
+  ```
 
 The flow is the following:
 
@@ -60,138 +62,183 @@ Versions used for this example are:
 
 ### Agent 1 - RequestAgent: provides a question and a source
 
-
 This is our simplest Agent; this Agent provides a link to a PDF and question to be answered from the document.
 
-```python copy filename="request_agent.py"
-from uagents import Agent, Context, Protocol, Model
+<GithubCodeSegment digest="aa8354ece4dbc474ca5a72cc3c0acf61">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/multiple-agent-workflows/request_agent.py"
+        lineStart={1}
+        lineEnd={40}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='aa8354ece4dbc474ca5a72cc3c0acf61'>
 
-class DocumentUnderstanding(Model):
-    pdf_path: str
-    question: str
+<DocsCode local={true}>
+	```py copy filename="request_agent.py"
 
-class DocumentsResponse(Model):
-    learnings: str
-
-agent = Agent(
-    name="find_in_pdf",
-    seed="",
-    port=8001,
-    endpoint=["http://127.0.0.1:8001/submit"],
-)
-
-print("uAgent address: ", agent.address)
-summary_protocol = Protocol("Text Summarizer")
-
-AGENT_2_FAISS = ""
-
-@agent.on_event("startup")
-async def on_startup(ctx: Context):
-    await ctx.send(
-        AGENT_2_FAISS,
-        DocumentUnderstanding(pdf_path="./a.pdf", question="What is the story about?"),
-    )
-
-@agent.on_message(model=DocumentsResponse)
-async def document_load(ctx: Context, sender: str, msg: DocumentsResponse):
-    ctx.logger.info(msg.learnings)
-
-
-agent.include(summary_protocol, publish_manifest=True)
-agent.run()
-
+	from uagents import Agent, Context, Protocol, Model
+	
+	
+	class DocumentUnderstanding(Model):
+	    pdf_path: str
+	    question: str
+	
+	
+	class DocumentsResponse(Model):
+	    learnings: str
+	
+	
+	agent = Agent(
+	    name="find_in_pdf",
+	    seed="",
+	    port=8001,
+	    endpoint=["http://127.0.0.1:8001/submit"],
+	)
+	
+	print("uAgent address: ", agent.address)
+	summary_protocol = Protocol("Text Summarizer")
+	
+	AGENT_2_FAISS = ""
+	
+	
+	@agent.on_event("startup")
+	async def on_startup(ctx: Context):
+	    await ctx.send(
+	        AGENT_2_FAISS,
+	        DocumentUnderstanding(pdf_path="./a.pdf", question="What is the story about?"),
+	    )
+	
+	
+	@agent.on_message(model=DocumentsResponse)
+	async def document_load(ctx: Context, sender: str, msg: DocumentsResponse):
+	    ctx.logger.info(msg.learnings)
+	
+	
+	agent.include(summary_protocol, publish_manifest=True)
+	agent.run()
 
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ### Agent 2 - PDFQuestionAgent: takes a request and returns a result
 
 The PDFQuestionAgent gets the PDF and the request from the first Agent, but is unable to split the PDF. This second Agent sends a request to the third Agent to split the PDF. Once the pages from the PDF are returned, a FAISS similarity search is ran on the pages by the second Agent.
 
-```python copy filename="pdf_question_agent.py"
-from langchain_community.vectorstores import FAISS
-from langchain_community.docstore.in_memory import InMemoryDocstore
-from langchain_openai import OpenAIEmbeddings
-from uagents import Agent, Context, Protocol, Model
-from langchain_core.documents import Document
-from typing import List
-import os
-import uuid
-import faiss
+<GithubCodeSegment digest="24bdb8d2c1fc8c86e64aabcd98dfb79a">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/multiple-agent-workflows/pdf_question_agent.py"
+        lineStart={1}
+        lineEnd={90}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='24bdb8d2c1fc8c86e64aabcd98dfb79a'>
 
-class PDF_Request(Model):
-    pdf_path: str
+<DocsCode local={true}>
+	```py copy filename="pdf_question_agent.py"
 
-class DocumentUnderstanding(Model):
-    pdf_path: str
-    question: str
-
-class PagesResponse(Model):
-    pages: List
-
-class DocumentsResponse(Model):
-    learnings: str
-
-faiss_pdf_agent = Agent(
-    name="faiss_pdf_agent",
-    seed="",
-    port=8002,
-    endpoint=["http://127.0.0.1:8002/submit"],
-)
-
-print("uAgent address: ", faiss_pdf_agent.address)
-faiss_protocol = Protocol("FAISS")
-
-RequestAgent = ""
-PDF_splitter_address = ""
-
-openai_api_key = os.environ["OPENAI_API_KEY"]
-embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
-
-@faiss_pdf_agent.on_message(model=DocumentUnderstanding, replies=PDF_Request)
-async def document_load(ctx: Context, sender: str, msg: DocumentUnderstanding):
-    ctx.logger.info(msg)
-    ctx.storage.set(str(ctx.session), {"question": msg.question, "sender": sender})
-    await ctx.send(
-        PDF_splitter_address, PDF_Request(pdf_path=msg.pdf_path)
-    )
-
-@faiss_pdf_agent.on_message(model=PagesResponse, replies=DocumentsResponse)
-async def document_understand(ctx: Context, sender: str, msg: PagesResponse):
-    index = faiss.IndexFlatL2(len(embeddings.embed_query("hello")))
-
-    vector_store = FAISS(
-        embedding_function=embeddings,
-        index=index,
-        docstore=InMemoryDocstore(),
-        index_to_docstore_id={},
-    )
-
-    documents = []
-    for page in msg.pages:
-        documents.append(
-            Document(page_content=page["page_content"], metadata=page["metadata"])
-        )
-
-    uuids = [str(uuid.uuid4()) for _ in range(len(documents))]
-
-    vector_store.add_documents(documents=documents, ids=uuids)
-
-    prev = ctx.storage.get(str(ctx.session))
-
-    results = vector_store.similarity_search(
-        prev["question"],
-        k=2,
-    )
-
-    if len(results) > 0:
-        await ctx.send(
-            prev["sender"], DocumentsResponse(learnings=results[0].page_content)
-        )
-
-faiss_pdf_agent.include(faiss_protocol, publish_manifest=True)
-faiss_pdf_agent.run()
+	from langchain_community.vectorstores import FAISS
+	from langchain_community.docstore.in_memory import InMemoryDocstore
+	from langchain_openai import OpenAIEmbeddings
+	from uagents import Agent, Context, Protocol, Model
+	from langchain_core.documents import Document
+	from typing import List
+	import os
+	import uuid
+	import faiss
+	
+	
+	class PDF_Request(Model):
+	    pdf_path: str
+	
+	
+	class DocumentUnderstanding(Model):
+	    pdf_path: str
+	    question: str
+	
+	
+	class PagesResponse(Model):
+	    pages: List
+	
+	
+	class DocumentsResponse(Model):
+	    learnings: str
+	
+	
+	faiss_pdf_agent = Agent(
+	    name="faiss_pdf_agent",
+	    seed="",
+	    port=8002,
+	    endpoint=["http://127.0.0.1:8002/submit"],
+	)
+	
+	print("uAgent address: ", faiss_pdf_agent.address)
+	faiss_protocol = Protocol("FAISS")
+	
+	RequestAgent = ""
+	PDF_splitter_address = ""
+	
+	openai_api_key = os.environ["OPENAI_API_KEY"]
+	embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+	
+	
+	@faiss_pdf_agent.on_message(model=DocumentUnderstanding, replies=PDF_Request)
+	async def document_load(ctx: Context, sender: str, msg: DocumentUnderstanding):
+	    ctx.logger.info(msg)
+	    ctx.storage.set(str(ctx.session), {"question": msg.question, "sender": sender})
+	    await ctx.send(
+	        PDF_splitter_address, PDF_Request(pdf_path=msg.pdf_path)
+	    )
+	
+	
+	@faiss_pdf_agent.on_message(model=PagesResponse, replies=DocumentsResponse)
+	async def document_understand(ctx: Context, sender: str, msg: PagesResponse):
+	    index = faiss.IndexFlatL2(len(embeddings.embed_query("hello")))
+	
+	    vector_store = FAISS(
+	        embedding_function=embeddings,
+	        index=index,
+	        docstore=InMemoryDocstore(),
+	        index_to_docstore_id={},
+	    )
+	
+	    documents = []
+	    for page in msg.pages:
+	        documents.append(
+	            Document(page_content=page["page_content"], metadata=page["metadata"])
+	        )
+	
+	    uuids = [str(uuid.uuid4()) for _ in range(len(documents))]
+	
+	    vector_store.add_documents(documents=documents, ids=uuids)
+	
+	    prev = ctx.storage.get(str(ctx.session))
+	
+	    results = vector_store.similarity_search(
+	        prev["question"],
+	        k=2,
+	    )
+	
+	    if len(results) > 0:
+	        await ctx.send(
+	            prev["sender"], DocumentsResponse(learnings=results[0].page_content)
+	        )
+	
+	
+	faiss_pdf_agent.include(faiss_protocol, publish_manifest=True)
+	faiss_pdf_agent.run()
 
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The core difference with Agent two compared to other Agents you have seen so far is that there are multiple `on_message` decorators. Your Agent can have as many any number of message handlers as you want.
 
@@ -201,37 +248,59 @@ The core difference with Agent two compared to other Agents you have seen so far
 
 The PDFSplitAgent receives the PDF, and splits the document using the `langchain_community` document loader `PyPDFLoader`. It then returns an array of pages to the second Agent.
 
-```python copy filename="pdf_split_agent.py"
-from langchain_community.document_loaders import PyPDFLoader
-from uagents import Agent, Context, Protocol, Model
-from typing import List
+<GithubCodeSegment digest="46fe3e7bfed8d5262593a420724884f3">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/langchain/multiple-agent-workflows/pdf_split_agent.py"
+        lineStart={1}
+        lineEnd={33}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='46fe3e7bfed8d5262593a420724884f3'>
 
-class PDF_Request(Model):
-    pdf_path: str
+<DocsCode local={true}>
+	```py copy filename="pdf_split_agent.py"
 
-class PagesResponse(Model):
-    pages: List
-
-pdf_loader_agent = Agent(
-    name="pdf_loader_agent",
-    seed="",
-    port=8003,
-    endpoint=["http://127.0.0.1:8003/submit"],
-)
-
-print("uAgent address: ", pdf_loader_agent.address)
-pdf_loader_protocol = Protocol("Text Summarizer")
-
-@pdf_loader_agent.on_message(model=PDF_Request, replies=PagesResponse)
-async def document_load(ctx: Context, sender: str, msg: PDF_Request):
-    loader = PyPDFLoader(msg.pdf_path)
-    pages = loader.load_and_split()
-    await ctx.send(sender, PagesResponse(pages=pages))
-
-pdf_loader_agent.include(pdf_loader_protocol, publish_manifest=True)
-pdf_loader_agent.run()
+	from langchain_community.document_loaders import PyPDFLoader
+	from uagents import Agent, Context, Protocol, Model
+	from typing import List
+	
+	
+	class PDF_Request(Model):
+	    pdf_path: str
+	
+	
+	class PagesResponse(Model):
+	    pages: List
+	
+	
+	pdf_loader_agent = Agent(
+	    name="pdf_loader_agent",
+	    seed="",
+	    port=8003,
+	    endpoint=["http://127.0.0.1:8003/submit"],
+	)
+	
+	print("uAgent address: ", pdf_loader_agent.address)
+	pdf_loader_protocol = Protocol("Text Summarizer")
+	
+	
+	@pdf_loader_agent.on_message(model=PDF_Request, replies=PagesResponse)
+	async def document_load(ctx: Context, sender: str, msg: PDF_Request):
+	    loader = PyPDFLoader(msg.pdf_path)
+	    pages = loader.load_and_split()
+	    await ctx.send(sender, PagesResponse(pages=pages))
+	
+	
+	pdf_loader_agent.include(pdf_loader_protocol, publish_manifest=True)
+	pdf_loader_agent.run()
 
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ## Run the Agents
 

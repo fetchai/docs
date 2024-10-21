@@ -1,6 +1,5 @@
 import { Callout } from 'nextra/components'
-import { CodeGroup, DocsCode } from "../../../../components/code";
-
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # How to use Agents to send tokens
 
@@ -22,50 +21,68 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Imports needed
 
-    - [`uagents` ↗️](https://pypi.org/project/uagents/)
+    - [uAgents ↗️](https://pypi.org/project/uagents/)
 
 ## Walk-through
 
 1. First of all, create a Python script for this task, and name it:
 
-<CodeGroup hasCopy isOSFile>
-<DocsCode mac={true}>
-```py copy filename="mac"
-touch sending_tokens.py
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+   ```py copy filename="mac"
+   touch sending_tokens.py
+   ```
+   </DocsCode>
+
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > sending_tokens.py
+       ```
+       </DocsCode>
+
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch sending_tokens.py
+       ```
+       </DocsCode>
+   </CodeGroup>
+
+2. Then, import the necessary modules from `uagents`, `uagents.network`, and `uagents.setup`. Let's then define two data models: `PaymentRequest` and `TransactionInfo`. We then need to set up the values for the `AMOUNT` and `DENOM` variables, which define the default amount and denomination for the payment requests:
+
+<GithubCodeSegment digest="c51c18627a8546764d0619c18c08024d">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/send-tokens/sending_tokens.py"
+        lineStart={1}
+        lineEnd={14}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c51c18627a8546764d0619c18c08024d'>
+
+<DocsCode local={true}>
+	```py copy filename="sending_tokens.py"
+
+	from uagents import Agent, Bureau, Context, Model
+	from uagents.network import wait_for_tx_to_complete
+	from uagents.setup import fund_agent_if_low
+	
+	class PaymentRequest(Model):
+	    wallet_address: str
+	    amount: int
+	    denom: str
+	
+	class TransactionInfo(Model):
+	    tx_hash: str
+	
+	AMOUNT = 100
+	DENOM = "atestfet"
+
 ```
 </DocsCode>
 
-<DocsCode windows={true}>
-    ```py copy filename="windows"
-    echo. > sending_tokens.py
-    ```
-    </DocsCode>
-
-<DocsCode ubuntu={true}>
-    ```py copy filename="ubuntu"
-    touch sending_tokens.py
-    ```
-    </DocsCode>
 </CodeGroup>
-   
-2. Then, import the necessary modules from `uagents`, `uagents.network`, and `uagents.setup`. Let's then define two data models: `PaymentRequest` and `TransactionInfo`. We then need to set up the values for the `AMOUNT` and `DENOM` variables, which define the default amount and denomination for the payment requests:
 
-    ```py copy
-    from uagents import Agent, Bureau, Context, Model
-    from uagents.network import wait_for_tx_to_complete
-    from uagents.setup import fund_agent_if_low
 
-    class PaymentRequest(Model):
-        wallet_address: str
-        amount: int
-        denom: str
-
-    class TransactionInfo(Model):
-        tx_hash: str
-
-    AMOUNT = 100
-    DENOM = "atestfet"
-    ```
 
    - The `PaymentRequest` model represents a payment request which contains the `wallet_address`, `amount`, and `denom`.
 
@@ -73,43 +90,97 @@ touch sending_tokens.py
 
 3. Let's now define our Agents, `alice` and `bob`. Ensure they have enough funds in their wallets to carry out transactions:
 
-    ```py copy
-    alice = Agent(name="alice", seed="alice secret phrase")
-    bob = Agent(name="bob", seed="bob secret phrase")
+<GithubCodeSegment digest="a456e900b5f350052212d2bb637d23ec">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/send-tokens/sending_tokens.py"
+        lineStart={16}
+        lineEnd={19}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a456e900b5f350052212d2bb637d23ec'>
 
-    fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
-    ```
+<DocsCode local={true}>
+	```py copy filename="sending_tokens.py"
+
+	alice = Agent(name="alice", seed="alice secret phrase")
+	bob = Agent(name="bob", seed="bob secret phrase")
+	
+	fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 4. We can now define our Agents behaviour and functions:
 
-    ```py copy
-    @alice.on_interval(period=10.0)
-    async def request_funds(ctx: Context):
-        await ctx.send(
-            bob.address,
-            PaymentRequest(
-                wallet_address=str(alice.wallet.address()), amount=AMOUNT, denom=DENOM
-            ),
-        )
-    ```
+<GithubCodeSegment digest="2cf2d3d7614a66a911803cb9c51722db">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/send-tokens/sending_tokens.py"
+        lineStart={21}
+        lineEnd={28}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2cf2d3d7614a66a911803cb9c51722db'>
+
+<DocsCode local={true}>
+	```py copy filename="sending_tokens.py"
+
+	@alice.on_interval(period=10.0)
+	async def request_funds(ctx: Context):
+	    await ctx.send(
+	        bob.address,
+	        PaymentRequest(
+	            wallet_address=str(alice.wallet.address()), amount=AMOUNT, denom=DENOM
+	        ),
+	    )
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    This defines an event handler for `alice` using the `.on_interval()` decorator. This event handler is triggered at regular intervals of `10.0` seconds in this case. The event handler function is named `request_funds()` and takes a `ctx` parameter of type `Context`. Within the function, `alice` sends a payment request message to `bob` by using the `ctx.send()` method. The `ctx.send()` method is called with the recipient address, `bob.address`, which specifies that the message should be sent to `bob`. The message is an instance of the `PaymentRequest()` model. It contains `alice`'s wallet address (`alice.wallet.address()`), the amount (`AMOUNT`), and the denomination (`DENOM`).
 
 5. We can now define a `confirm_transaction()` message handler for `alice` to handle incoming messages from `bob` of type `TransactionInfo`:
 
-    ```py copy
-    @alice.on_message(model=TransactionInfo)
-    async def confirm_transaction(ctx: Context, sender: str, msg: TransactionInfo):
-        ctx.logger.info(f"Received transaction info from {sender}: {msg}")
-        tx_resp = await wait_for_tx_to_complete(msg.tx_hash, ctx.ledger)
+<GithubCodeSegment digest="0ce13122967ca5dd0690aa1e85dfe6f3">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/send-tokens/sending_tokens.py"
+        lineStart={30}
+        lineEnd={40}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='0ce13122967ca5dd0690aa1e85dfe6f3'>
 
-        coin_received = tx_resp.events["coin_received"]
-        if (
-            coin_received["receiver"] == str(alice.wallet.address())
-            and coin_received["amount"] == f"{AMOUNT}{DENOM}"
-        ):
-            ctx.logger.info(f"Transaction was successful: {coin_received}")
-    ```
+<DocsCode local={true}>
+	```py copy filename="sending_tokens.py"
+
+	@alice.on_message(model=TransactionInfo)
+	async def confirm_transaction(ctx: Context, sender: str, msg: TransactionInfo):
+	    ctx.logger.info(f"Received transaction info from {sender}: {msg}")
+	    tx_resp = await wait_for_tx_to_complete(msg.tx_hash, ctx.ledger)
+	
+	    coin_received = tx_resp.events["coin_received"]
+	    if (
+	            coin_received["receiver"] == str(alice.wallet.address())
+	            and coin_received["amount"] == f"{AMOUNT}{DENOM}"
+	    ):
+	        ctx.logger.info(f"Transaction was successful: {coin_received}")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    The event handler function is named `confirm_transaction()` and takes three parameters: `ctx`, `sender`, and `msg`. Within the function, `alice` logs an informational message using the `ctx.logger.info()` method, indicating the receipt of transaction information from the sender Agent, `bob`, and displaying the `msg` object. The `wait_for_tx_to_complete()` function is used to await the completion of the transaction specified by the `tx_hash` received in the message.
 
@@ -119,19 +190,37 @@ touch sending_tokens.py
 
 6. Let's now define an event handler for `bob`. This event handler is triggered when `bob` receives a message of type `PaymentRequest` from `alice`:
 
-    ```py copy
-    @bob.on_message(model=PaymentRequest, replies=TransactionInfo)
-    async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
-        ctx.logger.info(f"Received payment request from {sender}: {msg}")
+<GithubCodeSegment digest="d21b394fc27d78a932014c99178b0605">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/send-tokens/sending_tokens.py"
+        lineStart={42}
+        lineEnd={52}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d21b394fc27d78a932014c99178b0605'>
 
-        # send the payment
-        transaction = ctx.ledger.send_tokens(
-            msg.wallet_address, msg.amount, msg.denom, bob.wallet
-        )
+<DocsCode local={true}>
+	```py copy filename="sending_tokens.py"
 
-        # send the tx hash so alice can confirm
-        await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
-    ```
+	@bob.on_message(model=PaymentRequest, replies=TransactionInfo)
+	async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
+	    ctx.logger.info(f"Received payment request from {sender}: {msg}")
+	
+	    # send the payment
+	    transaction = ctx.ledger.send_tokens(
+	        msg.wallet_address, msg.amount, msg.denom, bob.wallet
+	    )
+	
+	    # send the tx hash so alice can confirm
+	    await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    The event handler function is named `send_payment()` and takes three parameters: `ctx`, `sender`, and `msg`. Within the function, `bob` logs an informational message using the `ctx.logger.info()` method, indicating the receipt of a payment request from the sender Agent, `bob`, and displaying the `msg` object.
 
@@ -141,78 +230,114 @@ touch sending_tokens.py
 
 7. We are now ready to use the Bureau class to create a `bureau` object and add both Agents to it so for them to be run together:
 
-    ```py copy
-    bureau = Bureau()
-    bureau.add(alice)
-    bureau.add(bob)
+<GithubCodeSegment digest="cc7f12563b8e04ebcf56aad053c58872">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/send-tokens/sending_tokens.py"
+        lineStart={54}
+        lineEnd={59}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='cc7f12563b8e04ebcf56aad053c58872'>
 
-    if __name__ == "__main__":
-        bureau.run()
-    ```
+<DocsCode local={true}>
+	```py copy filename="sending_tokens.py"
+
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	
+	if __name__ == "__main__":
+	    bureau.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The overall script for this example should look as follows:
 
-```py copy filename="sending_tokens.py"
-from uagents import Agent, Bureau, Context, Model
-from uagents.network import wait_for_tx_to_complete
-from uagents.setup import fund_agent_if_low
+<GithubCodeSegment digest="7923911bc3b4175b33253b5bb283280a">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/send-tokens/sending_tokens.py"
+        lineStart={1}
+        lineEnd={59}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='7923911bc3b4175b33253b5bb283280a'>
 
-class PaymentRequest(Model):
-    wallet_address: str
-    amount: int
-    denom: str
+<DocsCode local={true}>
+	```py copy filename="sending_tokens.py"
 
-class TransactionInfo(Model):
-    tx_hash: str
+	from uagents import Agent, Bureau, Context, Model
+	from uagents.network import wait_for_tx_to_complete
+	from uagents.setup import fund_agent_if_low
+	
+	class PaymentRequest(Model):
+	    wallet_address: str
+	    amount: int
+	    denom: str
+	
+	class TransactionInfo(Model):
+	    tx_hash: str
+	
+	AMOUNT = 100
+	DENOM = "atestfet"
+	
+	alice = Agent(name="alice", seed="alice secret phrase")
+	bob = Agent(name="bob", seed="bob secret phrase")
+	
+	fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
+	
+	@alice.on_interval(period=10.0)
+	async def request_funds(ctx: Context):
+	    await ctx.send(
+	        bob.address,
+	        PaymentRequest(
+	            wallet_address=str(alice.wallet.address()), amount=AMOUNT, denom=DENOM
+	        ),
+	    )
+	
+	@alice.on_message(model=TransactionInfo)
+	async def confirm_transaction(ctx: Context, sender: str, msg: TransactionInfo):
+	    ctx.logger.info(f"Received transaction info from {sender}: {msg}")
+	    tx_resp = await wait_for_tx_to_complete(msg.tx_hash, ctx.ledger)
+	
+	    coin_received = tx_resp.events["coin_received"]
+	    if (
+	            coin_received["receiver"] == str(alice.wallet.address())
+	            and coin_received["amount"] == f"{AMOUNT}{DENOM}"
+	    ):
+	        ctx.logger.info(f"Transaction was successful: {coin_received}")
+	
+	@bob.on_message(model=PaymentRequest, replies=TransactionInfo)
+	async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
+	    ctx.logger.info(f"Received payment request from {sender}: {msg}")
+	
+	    # send the payment
+	    transaction = ctx.ledger.send_tokens(
+	        msg.wallet_address, msg.amount, msg.denom, bob.wallet
+	    )
+	
+	    # send the tx hash so alice can confirm
+	    await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
+	
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	
+	if __name__ == "__main__":
+	    bureau.run()
 
-AMOUNT = 100
-DENOM = "atestfet"
-
-alice = Agent(name="alice", seed="alice secret phrase")
-bob = Agent(name="bob", seed="bob secret phrase")
-
-fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
-
-@alice.on_interval(period=10.0)
-async def request_funds(ctx: Context):
-    await ctx.send(
-        bob.address,
-        PaymentRequest(
-            wallet_address=str(alice.wallet.address()), amount=AMOUNT, denom=DENOM
-        ),
-    )
-
-@alice.on_message(model=TransactionInfo)
-async def confirm_transaction(ctx: Context, sender: str, msg: TransactionInfo):
-    ctx.logger.info(f"Received transaction info from {sender}: {msg}")
-    tx_resp = await wait_for_tx_to_complete(msg.tx_hash, ctx.ledger)
-
-    coin_received = tx_resp.events["coin_received"]
-    if (
-        coin_received["receiver"] == str(alice.wallet.address())
-        and coin_received["amount"] == f"{AMOUNT}{DENOM}"
-    ):
-        ctx.logger.info(f"Transaction was successful: {coin_received}")
-
-@bob.on_message(model=PaymentRequest, replies=TransactionInfo)
-async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
-    ctx.logger.info(f"Received payment request from {sender}: {msg}")
-
-    # send the payment
-    transaction = ctx.ledger.send_tokens(
-        msg.wallet_address, msg.amount, msg.denom, bob.wallet
-    )
-
-    # send the tx hash so alice can confirm
-    await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
-
-bureau = Bureau()
-bureau.add(alice)
-bureau.add(bob)
-
-if __name__ == "__main__":
-    bureau.run()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ## Run the script
 

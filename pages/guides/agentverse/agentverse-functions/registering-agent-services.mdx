@@ -1,5 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Agentverse Functions: register your Agent Functions on the Agentverse!
 
@@ -34,19 +35,39 @@ First of all, to proceed with an Agent Function registration on the [Agentverse 
 
 You will then need to define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). You can do this by creating a **simple_protocol.py** within the Agent Editor window:
 
-    ```py copy filename="simple_protocol.py"
-    from uagents import Context, Model, Protocol
-    from ai_engine import UAgentResponse, UAgentResponseType
+<GithubCodeSegment digest="189f5703124b43a18f2a578a55a030e9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/agentverse-functions/registering-agent-services/simple_protocol.py"
+        lineStart={1}
+        lineEnd={13}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='189f5703124b43a18f2a578a55a030e9'>
 
-    simples = Protocol(name="simples", version="1.1")
+<DocsCode local={true}>
+	```py copy filename="simple_protocol.py"
 
-    class Request(Model):
-        message: str
+	from uagents import Context, Model, Protocol
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	simples = Protocol(name="simples", version="1.1")
+	
+	
+	class Request(Model):
+	    message: str
+	
+	
+	@simples.on_message(model=Request, replies={UAgentResponse})
+	async def handle_message(ctx: Context, sender: str, msg: Request):
+	    await ctx.send(sender, UAgentResponse(message="0", type=UAgentResponseType.FINAL))
 
-    @simples.on_message(model=Request, replies={UAgentResponse})
-    async def handle_message(ctx: Context, sender: str, msg: Request):
-        await ctx.send(sender, UAgentResponse(message="0", type=UAgentResponseType.FINAL))
-    ```
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Currently, for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` classes as this is the defined model that are reinforced.
 
@@ -61,11 +82,29 @@ Currently, for a service to be allowed you must import and use `UAgentResponse, 
 
 The message you pack into this `UAgentResponse(message="0")` can be any string. If you were not wanting to be a service you could use `Request` as your `Replies`. Let's now define the **agent.py** script for our Agent:
 
-    ```py copy filename="agent.py"
-    from simple_protocol import simples
+<GithubCodeSegment digest="d73ba0b40438f26793c2e90697912c71">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/agentverse-functions/registering-agent-services/agent.py"
+        lineStart={1}
+        lineEnd={3}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d73ba0b40438f26793c2e90697912c71'>
 
-    agent.include(simples)
-    ```
+<DocsCode local={true}>
+	```py copy filename="agent.py"
+
+	from simple_protocol import simples
+	
+	agent.include(simples)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     <Callout type="info" emoji="ℹ️">
       You can follow the [Creating an Agentverse hosted Agent ↗️](/guides/agentverse/creating-a-hosted-agent) guide if you don't know how to create an Agent, or simply haven't created one already.
@@ -128,21 +167,39 @@ You may need to test your description, if you're ever having trouble let us know
 
 If you want an Agent to periodically send a message to your Agent Function, you can use the following code example:
 
-    ```python copy filename="simple_interval.py"
-    from ai_engine import UAgentResponse, UAgentResponseType
+<GithubCodeSegment digest="2429f97d64984b6b254ae8e749954795">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/agentverse-functions/registering-agent-services/simple_interval.py"
+        lineStart={1}
+        lineEnd={13}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2429f97d64984b6b254ae8e749954795'>
 
-    class Request(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="simple_interval.py"
 
-    @agent.on_message(model=UAgentResponse)
-    async def handle_message(ctx: Context, sender: str, msg: UAgentResponse):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	class Request(Model):
+	    message: str
+	
+	@agent.on_message(model=UAgentResponse)
+	async def handle_message(ctx: Context, sender: str, msg: UAgentResponse):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	@agent.on_interval(period=3.0)
+	async def send_message(ctx: Context):
+	    await ctx.send('YOUR AGENT ADDRESS', Request(message="hello there bob"))
+	    ctx.logger.info(f"Message has been sent to basically zero")
 
-    @agent.on_interval(period=3.0)
-    async def send_message(ctx: Context):
-        await ctx.send('YOUR AGENT ADDRESS', Request(message="hello there bob"))
-        ctx.logger.info(f"Message has been sent to basically zero")
-    ```
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ## Let's find our service on DeltaV
 
