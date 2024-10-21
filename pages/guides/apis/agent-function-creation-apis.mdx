@@ -4,7 +4,7 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../co
 
 ## Introduction
 
-This guide shows how to create **Agents** and **Agent Functions** in Agentverse using APIs. With this guide, we set up a Python script that interacts with the Agentverse and help us creating Agents and Agent Functions. Before you begin, it is necessary that you satisfy the following requirements:
+This guide shows how to create **Agents** and **Agent Functions** in Agentverse using APIs. With this guide, we set up a Python script that interacts with the Agentverse and help us to create Agents and Agent Functions. Before you begin, it is necessary that you satisfy the following requirements:
 
     - Python version greater than 3.9 and less than 3.11.
     - The `requests` library is installed. You can install it using: `pip install requests`.
@@ -35,13 +35,13 @@ This guide shows how to create **Agents** and **Agent Functions** in Agentverse 
     ```py copy filename="windows"
     echo. > agent.py
     ```
-    </DocsCode>
+</DocsCode>
 
 <DocsCode ubuntu={true}>
     ```py copy filename="ubuntu"
     touch agent.py
     ```
-    </DocsCode>
+</DocsCode>
 </CodeGroup>
 
 <CodeGroup hasCopy isOSFile>
@@ -55,13 +55,13 @@ This guide shows how to create **Agents** and **Agent Functions** in Agentverse 
     ```py copy filename="windows"
     echo. > agent_create.py
     ```
-    </DocsCode>
+</DocsCode>
 
 <DocsCode ubuntu={true}>
     ```py copy filename="ubuntu"
     touch agent_create.py
     ```
-    </DocsCode>
+</DocsCode>
 </CodeGroup>
 
     3. Fill in the scripts with the code presented here below for each one of them:
@@ -144,18 +144,18 @@ This script interacts with the Agentverse API to achieve the Agent and Function 
     token = 'Bearer <Your_access_token>'
     ```
 
-2. Take the agent name from user and store the agent's address:
+2. Take the Agent name from user and store the Agent's address:
 
     ```python
-    # Take name of agent from user
+    # Take name of Agent from user
     name = input('Please give name of your agent? ')
 
-    # Create payload for agent creation request
+    # Create payload for Agent creation request
     agent_creation_data = {
         "name": name
     }
 
-    # Post request to create an agent and store address
+    # Post request to create an Agent and store address
     response_agent = requests.post("https://agentverse.ai/v1/hosting/agents", json=agent_creation_data, headers={
         "Authorization": token
     }).json()
@@ -163,33 +163,33 @@ This script interacts with the Agentverse API to achieve the Agent and Function 
     print(f'Agent Address : {address}')
     ```
 
-3. Take code from `agent.py` file. Then, store it in a dedicated script for the created agent:
+3. Take code from `agent.py` file. Then, store it in a dedicated script for the created Agent:
 
     ```python
-    # Reading code to be placed in agent
+    # Reading code to be placed in Agent
     with open('agent.py', 'r') as file:
         code = file.read()
     agent_code_data = {
         "code": code
     }
 
-        # Creating agent.py script for created agent
+        # Creating agent.py script for created Agent
         response_code_update = requests.put(f"https://agentverse.ai/v1/hosting/agents/{address}/code", json=agent_code_data, headers={
             "Authorization": token
         })
 
-    # Starting the agent
+    # Starting the Agent
     requests.post(f"https://agentverse.ai/v1/hosting/agents/{address}/start", headers={
         "Authorization": token
     })
 
-    time.sleep(10) # waiting before getting agent's protocol
+    time.sleep(10) # waiting before getting uAgent's protocol
     ```
 
 4. Requesting protocol digest for the created Agent:
 
     ```python
-    # Request to get agent protocol digest
+    # Request to get uAgent protocol digest
     response_protcol = requests.get(f"https://agentverse.ai/v1/almanac/agents/{address}", headers={
         "Authorization": token
     })
@@ -202,7 +202,7 @@ This script interacts with the Agentverse API to achieve the Agent and Function 
 5. Request `Model` digest and name using Almanac APIs:
 
     ```python
-    # Request to get agent's model details
+    # Request to get Agent's model details
     response_model = requests.get(f"https://agentverse.ai/v1/almanac/manifests/protocols/{protocol_digest}", headers={
         "Authorization": token
     })
@@ -385,7 +385,7 @@ This script interacts with the Agentverse API to achieve the Agent and Function 
 3. Head over to the [Agentverse ↗️](https://agentverse.ai/profile/api-keys) and [generate API keys ↗️](#how-to-get-agentverse-api-tokens).
 4. Open script in editor and replace `token` field.
 5. Run command `python agent_create.py` and enter the required details.
-6. Provide Agent and Function details as asked, then, check agent and function on Agentverse.
+6. Provide Agent and Function details as asked, then, check Agent and function on Agentverse.
 
 ## Expected Output
 

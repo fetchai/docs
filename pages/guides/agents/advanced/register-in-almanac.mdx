@@ -5,14 +5,14 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 
 ## Introduction
 
-The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract requires agents to register using their **Agent Address** and pay a fee for registration to be found by other agents on the network.
+The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract requires Agents to register using their **uAgent Address** and pay a fee for registration to be found by other Agents on the network.
 
 ## Prerequisites
 
 Make sure you have read the following resources before going on with this guide:
 
     - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
     - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
@@ -78,16 +78,18 @@ Make sure you have read the following resources before going on with this guide:
 	
 	agent.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
 
-There's a few things happening in this script; we initialize Alice with an endpoint. An endpoint is the address in which other agents can send messages to where Alice will be listening. As highlighted in [Registration and Endpoints Weighting ↗️](/references/contracts/uagents-almanac/endpoints), agents can communicate by querying the Almanac and retrieving an endpoint from the recipient agent. Therefore, we need to specify the service endpoints when defining our agents.
 
-We also have to define `agent.run()`. This `.run()` function runs the agent, but more importantly this registers the agent to the Almanac when code is initialized.
 
-Once you run your script, your agent will start the registration process automatically, the balance of the agent's wallet will be checked and funded if needed. Finally, it will try to register on the Almanac contract. Then, we will be ready to start to a remote communication with other agents registered within the Almanac contract.
+There's a few things happening in this script; we initialize Alice with an endpoint. An endpoint is the address in which other Agents can send messages to where Alice will be listening. As highlighted in [Registration and Endpoints Weighting ↗️](/references/contracts/uagents-almanac/endpoints), Agents can communicate by querying the Almanac and retrieving an endpoint from the recipient Agent. Therefore, we need to specify the service endpoints when defining our Agents.
+
+We also have to define `agent.run()`. This `.run()` function runs the Agent, but more importantly this registers the Agent to the Almanac when code is initialized.
+
+Once you run your script, your Agent will start the registration process automatically, the balance of the Agent's wallet will be checked and funded if needed. Finally, it will try to register on the Almanac contract. Then, we will be ready to start to a remote communication with other Agents registered within the Almanac contract.
 
     <Callout type="info" emoji="ℹ️">
         For further information on how to set up your Agents and register them into the Almanac to allow for remote

@@ -28,7 +28,7 @@ pip install ai-engine-sdk
 
 <Callout type="info" emoji="ℹ️">
       Explore the additional resources we have on AI Engine compatible Agents:
-        - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+        - [Make your Agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
         - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
         - [Register Agent Functions ↗️](/guides/agentverse/agentverse-functions/registering-agent-services)
         - [DeltaV ↗️](/concepts/ai-engine/deltav)
@@ -121,7 +121,7 @@ await session.start(objective)
 
 ### Querying new messages
 
-This line asynchronously queries the AI engine to retrieve a list of messages related to the current session. The messages are returned as a list of `ApiBaseMessage` objects, which can include various types of messages such as agent messages, AI engine messages, task selections, confirmations, and session stop messages. These messages are then processed to determine the next actions in the session workflow.
+This line asynchronously queries the AI engine to retrieve a list of messages related to the current session. The messages are returned as a list of `ApiBaseMessage` objects, which can include various types of messages such as Agent messages, AI engine messages, task selections, confirmations, and session stop messages. These messages are then processed to determine the next actions in the session workflow.
 
 ```py copy
 while True:
@@ -145,7 +145,7 @@ This message type doesn't require a user response; it simply notifies the user a
 
 #### Confirmation Message (`is_confirmation_message`)
 
-This message is sent when the AI Engine has gathered all necessary inputs for the agent's function, indicating that the context is complete.
+This message is sent when the AI Engine has gathered all necessary inputs for the Agent's function, indicating that the context is complete.
 
 #### Stop Message (`is_stop_message`)
 
@@ -161,7 +161,7 @@ All message types (expect for the AI engine message and stop message) expects a 
 
 Use `session.submit_task_selection`.
 
-### Agent Message
+### uAgent Message
 
 Use `session.submit_response`.
 

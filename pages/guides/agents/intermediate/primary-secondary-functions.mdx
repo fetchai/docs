@@ -2,7 +2,7 @@ import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
 import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
-# Multi-file agent pipeline for AI Engine: Hugging face API to create a multi agent pipeline
+# Multi-file Agents pipeline for AI Engine: Hugging face API to create a multi Agents pipeline
 
 ## Introduction
 
@@ -17,15 +17,15 @@ from the top downloaded models and make queries to them. This system consists of
 Make sure you have read the following resources before going on with this guide:
 
     - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
     - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
-    - [Using agents storage function ↗️](/guides/agents/intermediate/storage-function)
+    - [Using Agents storage function ↗️](/guides/agents/intermediate/storage-function)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
     - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
-    - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+    - [Make your Agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
     - [Field descriptions for DeltaV ↗️](/guides/agentverse/agentverse-functions/field-descriptions-for-deltav)
 
 ## Imports needed
@@ -37,15 +37,15 @@ Make sure you have read the following resources before going on with this guide:
 
 Login to [Hugging face ↗️](https://huggingface.co/settings/profile) and get your API key by logging in and going to account settings. 
 
-Create news [access token ↗️](https://huggingface.co/settings/tokens) in settings for reading access type. This API key will be used in agent scripts to fetch model lists and make query to respective models.
+Create news [access token ↗️](https://huggingface.co/settings/tokens) in settings for reading access type. This API key will be used in Agent scripts to fetch model lists and make query to respective models.
 
-## Setting up the agents
+## Setting up the Agents
 
-For setting up Hugging face function we need to create different agents as listed below.
+For setting up Hugging face function we need to create different Agents as listed below.
 
 ### Hugging Face System Agent
 
-This Agent helps users with their queries for a text-classification model of their choosing. The agent always prioritizes Hugging Face request secondary function. Below is the script for creating our agent on [Agentverse ↗️](https://agentverse.ai/agents) using the **+New Agent** button.
+This Agent helps users with their queries for a text-classification model of their choosing. The Agent always prioritizes Hugging Face request secondary function. Below is the script for creating our Agent on [Agentverse ↗️](https://agentverse.ai/agents) using the **+ New Agent** button.
 
 <GithubCodeSegment digest="a5a18b6cea7a34043525508675836ff0">
     <CodeSegment
@@ -102,7 +102,7 @@ This Agent helps users with their queries for a text-classification model of the
 
 ### Hugging Face Request Agent
 
-This agent helps hugging face system to handle hugging face request to user and calculates the response. The agent has two fields i.e. `model_id` (to which query has to be made) and `query` (Question needed to be asked to the model). For `model_id` this task always prioritizes `Model List` secondary function to get list of available model of a specific type.
+This Agent helps hugging face system to handle hugging face request to user and calculates the response. The Agent has two fields i.e. `model_id` (to which query has to be made) and `query` (Question needed to be asked to the model). For `model_id` this task always prioritizes `Model List` secondary function to get list of available model of a specific type.
 
 <GithubCodeSegment digest="08326a1e58b4f89aa5cd53b89810358c">
     <CodeSegment
@@ -177,8 +177,7 @@ To correctly run this code, you need to provide the `API_URL` and `API_TOKEN` pa
 
 ### Model List Agent
 
-This agent helps user to look for specific model with search keyword. The agent queries hugging face url to get top 5 downloaded model related to search keyword. The agent returns list of models and user can select one they need.
-
+This Agent helps user to look for specific model with search keyword. The Agent queries hugging face url to get top 5 downloaded model related to search keyword. The Agent returns list of models and user can select one they need.
 <GithubCodeSegment digest="719850e5bd50c22dea42fd1193540f49">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/primary-secondary-functions/model_list_agent.py"
@@ -265,9 +264,9 @@ This agent helps user to look for specific model with search keyword. The agent 
 
 ## Setting up functions
 
-Go to [Agentverse ↗️](https://agentverse.ai/) and create new function for all three agents created [above ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
+Go to [Agentverse ↗️](https://agentverse.ai/) and create new function for all three Agents created [above ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
 
-The properties of function for each agent are listed below.
+The properties of function for each Agent are listed below.
 
 ### Hugging Face System
 
@@ -279,7 +278,7 @@ The properties of function for each agent are listed below.
                         **Secondary function chronology**
                         **Hugging face system -> Hugging face request -> Model List**
     - **Application**: Primary function.
-    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
+    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system Agent ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
     - **Field descriptions**: This field is super important to be detailed and is responsible for triggering secondary function. - in this example we can specify something like: _**Describes the response to the user query. Always go for Hugging face request secondary function to get this field. Never ask this from user**_.
 
 ### Hugging Face Request
@@ -290,7 +289,7 @@ The properties of function for each agent are listed below.
     - **Function title**: just the name of your function - in this example let's call it **Hugging Face Request**.
     - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists secondary function**.
     - **Application**: Secondary function.
-    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agents/intermediate/primary-secondary-functions#hugging-face-request-agent).
+    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system Agent ↗️](/guides/agents/intermediate/primary-secondary-functions#hugging-face-request-agent).
     - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like:
         - **Model_id**: **_Always go for model list secondary function. Never ask this field to user._**
         - **query**: **_Describes the query user wants to ask to the model Always ask this to user after model_id is given by model list secondary function._**
@@ -303,7 +302,7 @@ The properties of function for each agent are listed below.
     - **Function title**: just the name of your function - in this example let's call it **Model List**.
     - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option.**
     - **Application**: Secondary function.
-    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agents/intermediate/primary-secondary-functions#model-list-agent)
+    - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system Agent ↗️](/guides/agents/intermediate/primary-secondary-functions#model-list-agent)
     - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary function. In this example we can specify something like: _**This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options.**_
 
 ## Let's find our service on DeltaV
@@ -318,7 +317,7 @@ Type in **Hugging Face System** and click on `Advanced options`. Select `All Fun
 
 ![](../../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-1.png)
 
-Select **Hugging Face System** from options provided by DeltaV and it will initiate Hugging Face Request secondary function.
+Select **Hugging Face System** from options provided by DeltaV, and it will initiate Hugging Face Request secondary function.
 Hugging Face secondary function will initiate Model Lists secondary function and ask for **Search keyword** for which you want to search the models for.
 
 ![](../../../../src/images/guides/agentverse/Hugging-Face-System/deltaV-2.png)

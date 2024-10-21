@@ -4,16 +4,16 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 
 ## Introduction
 
-The fast-paced startup environment and market makes it essential to correctly and efficiently validate a business idea quickly in order to attract users and investors. Fetch.ai [Agents ↗️](/guides/agents/getting-started/whats-an-agent) technology makes it possible to develop an application being able to evaluate startup ideas autonomously. By using **CrewAI** and **Agents** it is possible to design a **Startup Idea Analyzer** offering a structured way to assess the feasibility and validity of any business idea you may have. By leveraging agents, which are programmable micro-services designed to communicate with one another, this system can independently evaluate key aspects of your business including market demand, technological needs, and business strategies with the aim of providing a comprehensive evaluation of your startup idea.
+The fast-paced startup environment and market makes it essential to correctly and efficiently validate a business idea quickly in order to attract users and investors. Fetch.ai [Agents ↗️](/guides/agents/getting-started/whats-an-agent) technology makes it possible to develop an application being able to evaluate startup ideas autonomously. By using **CrewAI** and **Agents** it is possible to design a **Startup Idea Analyzer** offering a structured way to assess the feasibility and validity of any business idea you may have. By leveraging Agents, which are programmable microservices designed to communicate with one another, this system can independently evaluate key aspects of your business including market demand, technological needs, and business strategies with the aim of providing a comprehensive evaluation of your startup idea.
 
-This guide aims at walking you through the setting up and running of a simple evaluation system, allowing you to not only assess your ideas viability but also to integrate them with other systems, users and agents, thus unlocking new potential for economic collaboration and growth.
+This guide aims at walking you through the setting up and running of a simple evaluation system, allowing you to not only assess your ideas viability but also to integrate them with other systems, users and Agents, thus unlocking new potential for economic collaboration and growth.
 
 Let's get started!
 
 ### Supporting documentation
 
-- [Creating an agent ↗️](/guides/agents/create-a-uagent)
-- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Creating an Agent ↗️](/guides/agents/create-a-uagent)
+- [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Utilising the Agentverse Mailroom service ↗️](/guides/agentverse/utilising-the-mailbox)
@@ -30,7 +30,7 @@ Let's get started!
 
 ## Project Structure
 
-The Agent project presented in this guide has the following structure:
+The Agents project presented in this guide has the following structure:
 
     ```
     .startup-idea-analyzer
@@ -44,7 +44,7 @@ The Agent project presented in this guide has the following structure:
 
 Each file serves a specific purpose in building and managing the **Startup Idea Analyzer** system:
 
-    - `agent.py`: this defines the core agent setup and protocol communication.
+    - `agent.py`: this defines the core Agent setup and protocol communication.
     - `crew_ai.py`: it defines the market research, technology assistance and business strategy processes.
     - `poetry.lock`: this ensures a consistent dependency management.
     - `project.json`: it contains the project configuration.
@@ -66,7 +66,7 @@ Each file serves a specific purpose in building and managing the **Startup Idea 
 
 ## Startup Idea Analyzer
 
-This guide showcases how to use Agents to analyze a startup idea by performing **market research**, **technological assessments**, and **business planning**. It employs two different systems: `uagents` (for agent-based communication) and `crew_ai` (for task-driven collaboration).
+This guide showcases how to use Agents to analyze a startup idea by performing **market research**, **technological assessments**, and **business planning**. It employs two different systems: `uagents` (for Agent-based communication) and `crew_ai` (for task-driven collaboration).
 
 ### Features
 
@@ -87,7 +87,7 @@ Here below we depict how the system works:
     2. **Technological Analysis**: The _Technology Expert Agent_ evaluates the necessary technologies, offering insights on the best tools and methods for your product development.
     3. **Business Strategy Development**: The _Business Consultant Agent_ consolidates all gathered information to create a comprehensive business plan, including strategies, milestones, and a timeline.
 
-### Agent System
+### Agents System
 
 This system defines an Agent called **startup idea analyzer** that interacts with other Agents using a [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). The Agent listens for messages containing a startup idea `description` and forwards this input to a market research process, which returns a response based on the input provided.
 
@@ -155,13 +155,13 @@ This system defines an Agent called **startup idea analyzer** that interacts wit
 
 
 
-    The `Agent` is defined using a seed phrase for wallet generation and a mailbox for message exchanges. Then, a protocol named `Startup idea Analyzer version` (`version 0.1.2`) defines how the agent processes incoming messages. The agent uses this protocol to respond to requests containing startup idea descriptions. The agent relies on a component called `MarketResearchProcess` from an external module `crew_ai` to conduct market research on the provided startup idea. This research process is triggered upon receiving a startup idea description. The `StartUpIdeaAnalyzer` class defines a data model for startup idea descriptions; this model expects a field `description` that holds the string of text describing the startup idea provided by the user.
+    The `Agent` is defined using a seed phrase for wallet generation and a mailbox for message exchanges. Then, a protocol named `Startup idea Analyzer version` (`version 0.1.2`) defines how the Agent processes incoming messages. The Agent uses this protocol to respond to requests containing startup idea descriptions. The Agent relies on a component called `MarketResearchProcess` from an external module `crew_ai` to conduct market research on the provided startup idea. This research process is triggered upon receiving a startup idea description. The `StartUpIdeaAnalyzer` class defines a data model for startup idea descriptions; this model expects a field `description` that holds the string of text describing the startup idea provided by the user.
 
-    Whenever the agent receives a message matching the `StartUpIdeaAnalyzer` model, it logs the incoming message, sends the startup description to the `MarketResearchProcess`, and then responds to the sender with the result. The agent is set to include this `protocol`, publish a manifest of its functionalities, and run continuously to process incoming requests.
+    Whenever the Agent receives a message matching the `StartUpIdeaAnalyzer` model, it logs the incoming message, sends the startup description to the `MarketResearchProcess`, and then responds to the sender with the result. The Agent is set to include this `protocol`, publish a manifest of its functionalities, and run continuously to process incoming requests.
 
 ### CrewAI System
 
-The following script defines a `MarketResearchProcess` class that sets up a market research workflow using three specialized agents: a `Market Research Analyst`, a `Technology Expert`, and a `Business Development Consultant`. The script creates and assigns tasks to these agents, such as analyzing market demand, assessing technological needs, and developing a business plan. It then uses the `Crew` class to execute these tasks sequentially, passing the results from one agent to the next one, to then return the final outcome.
+The following script defines a `MarketResearchProcess` class that sets up a market research workflow using three specialized vs: a `Market Research Analyst`, a `Technology Expert`, and a `Business Development Consultant`. The script creates and assigns tasks to these Agents, such as analyzing market demand, assessing technological needs, and developing a business plan. It then uses the `Crew` class to execute these tasks sequentially, passing the results from one Agent to the next one, to then return the final outcome.
 
 <GithubCodeSegment digest="092b7a5266dc6b7e092583407029168b">
     <CodeSegment
@@ -278,13 +278,13 @@ The following script defines a `MarketResearchProcess` class that sets up a mark
 
 
 
-    The script initializes by loading a Large Language Model (LLM) called `ChatGoogleGenerativeAI`, which uses the Gemini API for generating detailed text-based outputs. This LLM is shared among the agents to enhance their ability to generate accurate and detailed reports.
+    The script initializes by loading a Large Language Model (LLM) called `ChatGoogleGenerativeAI`, which uses the Gemini API for generating detailed text-based outputs. This LLM is shared among the Agents to enhance their ability to generate accurate and detailed reports.
 
-    **Each agent has a unique role and goal**: the **Market Research Analyst** focuses on understanding market demand, target audience, and marketing strategies. The **Technology Expert** assesses the technological feasibility of the company and suggests necessary technologies for success. The **Business Development Consultant** evaluates the business model, scalability, and potential revenue streams to ensure long-term sustainability.
+    **Each Agent has a unique role and goal**: the **Market Research Analyst** focuses on understanding market demand, target audience, and marketing strategies. The **Technology Expert** assesses the technological feasibility of the company and suggests necessary technologies for success. The **Business Development Consultant** evaluates the business model, scalability, and potential revenue streams to ensure long-term sustainability.
 
-    The `create_tasks` method generates specific tasks for each agent. These tasks involve analyzing input data (e.g., a business idea), producing reports in their areas of expertise, and then passing these reports from one agent to the next one. For instance, the Market Research Analyst creates a marketing strategy, which the Technology Expert uses to assess technological needs, and finally, the Business Development Consultant uses both reports to develop a business plan.
+    The `create_tasks` method generates specific tasks for each Agent. These tasks involve analyzing input data (e.g., a business idea), producing reports in their areas of expertise, and then passing these reports from one Agent to the next one. For instance, the Market Research Analyst creates a marketing strategy, which the Technology Expert uses to assess technological needs, and finally, the Business Development Consultant uses both reports to develop a business plan.
 
-    The `run_process` method coordinates the execution of these tasks in a sequential manner. A `Crew` is formed, comprising the three agents and their tasks. The process is set to execute each task one after the other, passing the output of one task as input for the next. The final result is a comprehensive report that includes market research, technological assessments, and a business plan.
+    The `run_process` method coordinates the execution of these tasks in a sequential manner. A `Crew` is formed, comprising the three Agents and their tasks. The process is set to execute each task one after the other, passing the output of one task as input for the next. The final result is a comprehensive report that includes market research, technological assessments, and a business plan.
 
 ## How to Run This Example
 

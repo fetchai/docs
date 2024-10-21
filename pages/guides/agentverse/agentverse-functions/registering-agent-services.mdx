@@ -2,11 +2,11 @@ import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
 import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
-# Agentverse Functions: register your Agents Functions on the Agentverse!
+# Agentverse Functions: register your Agent Functions on the Agentverse!
 
 ## Introduction
 
-You can enrol your [Agent Functions ↗️](/guides/services/services) on the Agentverse to be discovered by other agents and start interacting with them. This feature aims at connecting multiple agents offering different Functions to enhance users journey, results and development. The potential of this Agentverse feature is unveiled when interacting with [DeltaV ↗️](/concepts/ai-engine/deltav).
+You can enrol your [Agent Functions ↗️](/guides/services/services) on the Agentverse to be discovered by other Agent and start interacting with them. This feature aims at connecting multiple Agents offering different Functions to enhance users journey, results and development. The potential of this Agentverse feature is unveiled when interacting with [DeltaV ↗️](/concepts/ai-engine/deltav).
 
     <Callout type="info" emoji="ℹ️">
       Check out the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) to download it and start integrating your Agents with this tool!
@@ -19,14 +19,14 @@ You can enrol your [Agent Functions ↗️](/guides/services/services) on the Ag
 Make sure you have read the following resources before going on with this guide:
 
     - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
-    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agent address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Agent protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
-    - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+    - [Make your Agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
     - [Field descriptions for DeltaV ↗️](/guides/agentverse/agentverse-functions/field-descriptions-for-deltav)
 
 ## Walk-through
@@ -72,15 +72,15 @@ You will then need to define the [protocol ↗️](/references/uagents/uagents-p
 Currently, for a service to be allowed you must import and use `UAgentResponse, UAgentResponseType` classes as this is the defined model that are reinforced.
 
     <Callout type="info" emoji="ℹ️">
-      `UAgentResponseType` is used to represent different response types of the agent. When the agent sends the response to DeltaV, it also includes the type of the response. It contains the following types:
+      `UAgentResponseType` is used to represent different response types of the Agent. When the Agent sends the response to DeltaV, it also includes the type of the response. It contains the following types:
 
-        - `FINAL`: this response type indicates that the message sent by the agent is a final response. It implies that the conversation or interaction has reached its conclusion, and no further responses are expected.
-        - `ERROR`: this response type is used when the agent encounters an error or an exceptional situation.
+        - `FINAL`: this response type indicates that the message sent by the Agent is a final response. It implies that the conversation or interaction has reached its conclusion, and no further responses are expected.
+        - `ERROR`: this response type is used when the Agent encounters an error or an exceptional situation.
         - `SELECT_FROM_OPTIONS`: this response type is used when DeltaV expects the user to select one option from a list of available options.
-        - `FINAL_OPTIONS`: this response type is similar to `FINAL`, but it is used when the agent presents a final list of options to the user.
+        - `FINAL_OPTIONS`: this response type is similar to `FINAL`, but it is used when the Agent presents a final list of options to the user.
     </Callout>
 
-The message you pack into this `UAgentResponse(message="0")` can be any string. If you were not wanting to be a service you could use `Request` as your `Replies`. Let's now define the **agent.py** script for our agent:
+The message you pack into this `UAgentResponse(message="0")` can be any string. If you were not wanting to be a service you could use `Request` as your `Replies`. Let's now define the **agent.py** script for our Agent:
 
 <GithubCodeSegment digest="d73ba0b40438f26793c2e90697912c71">
     <CodeSegment
@@ -107,27 +107,27 @@ The message you pack into this `UAgentResponse(message="0")` can be any string. 
 
 
     <Callout type="info" emoji="ℹ️">
-      You can follow the [Creating an Agentverse hosted agent ↗️](/guides/agentverse/creating-a-hosted-agent) guide if you don't know how to create an agent, or simply haven't created one already.
+      You can follow the [Creating an Agentverse hosted Agent ↗️](/guides/agentverse/creating-a-hosted-agent) guide if you don't know how to create an Agent, or simply haven't created one already.
     </Callout>
 
-In this example, we have created a simple agent doing nothing but responding to any agent that sends it a message with `0`.
+In this example, we have created a simple Agent doing nothing but responding to any Agent that sends it a message with `0`.
 
 The Agentverse Functions functionality shows its potential when operating on the [DeltaV ↗️](/concepts/ai-engine/deltav) platform. This because Agents registered within the Agentverse, are those retrieved by the AI Engine when users interact with DeltaV chat interface to require a specific objective execution.
 
-Once you finalized the development of your agent, and it is being run (assuming no issues arise), then the agent and its [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) manifests are uploaded to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contact in the form of **protocol digests**.
+Once you finalized the development of your Agent, and it is being run (assuming no issues arise), then the Agent and its [protocols ↗️](/references/uagents/uagents-protocols/agent-protocols) manifests are uploaded to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contact in the form of **protocol digests**.
 
     <Callout type="warning" emoji="⚠️">
-      You can check and validate that the uploading process has been carried out correctly by searching for your agent's address on the Agentverse Explorer, and check if the protocols have been uploaded successfully. If not, you need to wait until the protocols will be uploaded successfully.
+      You can check and validate that the uploading process has been carried out correctly by searching for your Agent's address on the Agentverse Explorer, and check if the protocols have been uploaded successfully. If not, you need to wait until the protocols will be uploaded successfully.
     </Callout>
 
-## Register your agents and their functions!
+## Register your Agents and their functions!
 
-On the [Agentverse ↗️](https://agentverse.ai/) within the **My Agents** tab we previously defined our agent. In here, we can now define the Agent Function we want to provide to users. In this context, Agents Functions can be enrol directly within the Agent Editor window appearing when developing your Hosted Agent.
+On the [Agentverse ↗️](https://agentverse.ai/) within the **My Agents** tab we previously defined our Agent. In here, we can now define the Agent Function we want to provide to users. In this context, uAgents Functions can be enrolled directly within the Agent Editor window appearing when developing your Hosted Agent.
 
 Let's go ahead and click on your Agent to open the Agent Editor. Then click on the **Deploy** tab.
 
     <Callout type="warning" emoji="⚠️">
-      You need to make sure your agent is up and running correctly as Agent Functions can be registered only if your agent is running!
+      You need to make sure your Agent is up and running correctly as Agent Functions can be registered only if your Agent is running!
     </Callout>
 
 ![](src/images/guides/services/service-guide/simple_protocol_0.png)
@@ -147,17 +147,17 @@ There's a little to unpack here, but it's quite simple:
 
 ### Provide a detailed description
 
-The description is super important to the success of your Agent Function. You need to be very descriptive so that the AI Engine can retrieve your agent Functions correctly.
+The description is super important to the success of your Agent Function. You need to be very descriptive so that the AI Engine can retrieve your Agent Functions correctly.
 
-An example for an agent that returns zero:
+An example for an Agent that returns zero:
 
     `"This Agent Function returns the value zero. This agent returns a string representation of the integer 0. This Function is a representation of the value of zero."`
 
-#### A **bad** example for an agent that sells analytical data on .csv file you send to it:
+#### A **bad** example for an Agent that sells analytical data on .csv file you send to it:
 
     `"This Agent Function gives inferences on the data file you upload."`
 
-#### A **good** example for an agent that sells analytical data on .csv file you send to it:
+#### A **good** example for an Agent that sells analytical data on .csv file you send to it:
 
     `"This Agent Function gives insight and inferences into the CSV file you upload. The function can give you insight into your CSV data. Upload a CSV file to learn more about the data."`
 
@@ -165,7 +165,7 @@ You may need to test your description, if you're ever having trouble let us know
 
 ## Just in case, to test!
 
-If you want an agent to periodically send a message to your Agent Function, you can use the following code example:
+If you want an Agent to periodically send a message to your Agent Function, you can use the following code example:
 
 <GithubCodeSegment digest="2429f97d64984b6b254ae8e749954795">
     <CodeSegment
