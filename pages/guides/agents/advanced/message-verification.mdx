@@ -1,4 +1,4 @@
-import { CodeGroup, DocsCode } from "../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # How to use agents to verify messages
 
@@ -38,27 +38,46 @@ Make sure you have read the following resources before going on with this guide:
        echo. > message_verification.py
        ```
    </DocsCode>
-   
+
    <DocsCode ubuntu={true}>
        ```py copy filename="ubuntu"
        touch message_verification.py
        ```
        </DocsCode>
-   
+
    </CodeGroup>
-      
+
 3. We now need to import the necessary classes from `uagents` (`Agent`, `Bureau`, `Context`, and `Model`), `uagents.crypto` (`Identity`) and `hashlib`. Then we would need to define the messages format using the `Message` class as a subclass of `Model`:
 
-   ```py copy
-   import hashlib
-   from uagents import Agent, Bureau, Context, Model
-   from uagents.crypto import Identity
+<GithubCodeSegment digest="46acb16adb20d2b2386fc5ce42c42d3a">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/message-verification/message_verification.py"
+        lineStart={1}
+        lineEnd={9}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='46acb16adb20d2b2386fc5ce42c42d3a'>
 
-   class Message(Model):
-       message: str
-       digest: str
-       signature: str
-   ```
+<DocsCode local={true}>
+	```py copy filename="message_verification.py"
+
+	import hashlib
+	from uagents import Agent, Bureau, Context, Model
+	from uagents.crypto import Identity
+	
+	
+	class Message(Model):
+	    message: str
+	    digest: str
+	    signature: str
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    The message format has three attributes:
 
@@ -68,48 +87,122 @@ Make sure you have read the following resources before going on with this guide:
 
 4. Let's now define an `encode()` function used to generate the digest for each message before it is signed:
 
-   ```py copy
-   def encode(message: str) -> bytes:
-       hasher = hashlib.sha256()
-       hasher.update(message.encode())
-       return hasher.digest()
-   ```
+<GithubCodeSegment digest="11756976820d2a5f40283c1cb220eab4">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/message-verification/message_verification.py"
+        lineStart={12}
+        lineEnd={15}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='11756976820d2a5f40283c1cb220eab4'>
+
+<DocsCode local={true}>
+	```py copy filename="message_verification.py"
+
+	def encode(message: str) -> bytes:
+	    hasher = hashlib.sha256()
+	    hasher.update(message.encode())
+	    return hasher.digest()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    This function is used to hash a string message using the SHA-256 algorithm and return the resulting digest as bytes.
 
 5. We can now proceed and create our agents using the `Agent` class:
 
-   ```py copy
-   alice = Agent(name="alice", seed="alice recovery password")
-   bob = Agent(name="bob", seed="bob recovery password")
-   ```
+<GithubCodeSegment digest="f101bffbdc97d3adde60627f32debd3d">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/message-verification/message_verification.py"
+        lineStart={18}
+        lineEnd={19}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='f101bffbdc97d3adde60627f32debd3d'>
+
+<DocsCode local={true}>
+	```py copy filename="message_verification.py"
+
+	alice = Agent(name="alice", seed="alice recovery password")
+	bob = Agent(name="bob", seed="bob recovery password")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 6. Let's now define a `send_message()` function for `alice` to send messages to `bob`:
 
-   ```py copy
-   @alice.on_interval(period=3.0)
-   async def send_message(ctx: Context):
-       msg = "hello there bob"
-       digest = encode(msg)
-       await ctx.send(
-           bob.address,
-           Message(message=msg, digest=digest.hex(), signature=alice.sign_digest(digest)),
-       )
-   ```
+<GithubCodeSegment digest="1bbd34b41b08d242ff2c9aa9926cf43e">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/message-verification/message_verification.py"
+        lineStart={22}
+        lineEnd={30}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='1bbd34b41b08d242ff2c9aa9926cf43e'>
+
+<DocsCode local={true}>
+	```py copy filename="message_verification.py"
+
+	@alice.on_interval(period=3.0)
+	async def send_message(ctx: Context):
+	    msg = "hello there bob"
+	    digest = encode(msg)
+	
+	    await ctx.send(
+	        bob.address,
+	        Message(message=msg, digest=digest.hex(), signature=alice.sign_digest(digest)),
+	    )
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    This function is decorated using the `.on_interval()` decorator, which indicates that the function is called periodically every `3.0` seconds to send messages to `bob`'s address. It takes in a single argument `ctx`. The function first creates a message, `msg`, and computes its digest using the `encode` function. The message is then sent to `bob` using the `ctx.send()` method, along with the `digest` and a `signature` of the digest using the `alice.sign_digest()` function.
 
 7. Let's then define an `alice_rx_message()` function used to receive and process messages sent by `bob`:
 
-   ```py copy
-   @alice.on_message(model=Message)
-   async def alice_rx_message(ctx: Context, sender: str, msg: Message):
-       assert Identity.verify_digest(
-           sender, bytes.fromhex(msg.digest), msg.signature
-       ), "couldn't verify bob's message"
-       ctx.logger.info("Bob's message verified!")
-       ctx.logger.info(f"Received message from {sender}: {msg.message}")
-   ```
+<GithubCodeSegment digest="8c6bc3a42e206e2e14f608d7dcd52351">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/message-verification/message_verification.py"
+        lineStart={33}
+        lineEnd={40}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='8c6bc3a42e206e2e14f608d7dcd52351'>
+
+<DocsCode local={true}>
+	```py copy filename="message_verification.py"
+
+	@alice.on_message(model=Message)
+	async def alice_rx_message(ctx: Context, sender: str, msg: Message):
+	    assert Identity.verify_digest(
+	        sender, bytes.fromhex(msg.digest), msg.signature
+	    ), "couldn't verify bob's message"
+	
+	    ctx.logger.info("Bob's message verified!")
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    This function is decorated using the `.on_message()`, indicating that the function is triggered when a message is being received of type `Message`. The function takes in three arguments: `ctx`, `sender`, and `msg`.
 
@@ -117,23 +210,42 @@ Make sure you have read the following resources before going on with this guide:
 
 8. We can now define a `bob_rx_message()` function used by `bob` to receive and process messages sent by `alice`:
 
-   ```py copy
-   @bob.on_message(model=Message)
-   async def bob_rx_message(ctx: Context, sender: str, msg: Message):
-       assert Identity.verify_digest(
-           sender, bytes.fromhex(msg.digest), msg.signature
-       ), "couldn't verify alice's message"
+<GithubCodeSegment digest="27a6d823564c9797ec85d705594f8070">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/message-verification/message_verification.py"
+        lineStart={43}
+        lineEnd={58}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='27a6d823564c9797ec85d705594f8070'>
 
-       ctx.logger.info("Alice's message verified!")
-       ctx.logger.info(f"Received message from {sender}: {msg.message}")
+<DocsCode local={true}>
+	```py copy filename="message_verification.py"
 
-       msg = "hello there alice"
-       digest = encode(msg)
-       await ctx.send(
-           alice.address,
-           Message(message=msg, digest=digest.hex(), signature=bob.sign_digest(digest)),
-       )
-   ```
+	@bob.on_message(model=Message)
+	async def bob_rx_message(ctx: Context, sender: str, msg: Message):
+	    assert Identity.verify_digest(
+	        sender, bytes.fromhex(msg.digest), msg.signature
+	    ), "couldn't verify alice's message"
+	
+	    ctx.logger.info("Alice's message verified!")
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	    msg = "hello there alice"
+	    digest = encode(msg)
+	
+	    await ctx.send(
+	        alice.address,
+	        Message(message=msg, digest=digest.hex(), signature=bob.sign_digest(digest)),
+	    )
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
    This function is decorated using the `.on_message()` decorator, indicating that the function is triggered when a message is being received of type `Message`. It takes in three arguments: `ctx`, `sender`, and `msg`.
 
@@ -141,79 +253,123 @@ Make sure you have read the following resources before going on with this guide:
 
 9. We can now create a `bureau` object from the `Bureau` class and then add both agents to it so for them to be run together.
 
-   ```py copy
-   bureau = Bureau()
-   bureau.add(alice)
-   bureau.add(bob)
+<GithubCodeSegment digest="de19cedfebb41d0078930daab497ca92">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/message-verification/message_verification.py"
+        lineStart={61}
+        lineEnd={66}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='de19cedfebb41d0078930daab497ca92'>
 
-   if __name__ == "__main__":
-       bureau.run()
-   ```
+<DocsCode local={true}>
+	```py copy filename="message_verification.py"
+
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	
+	if __name__ == "__main__":
+	    bureau.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 10. Save the script.
 
 The overall script should look as follows:
 
-```py copy filename="message_verification.py"
-import hashlib
-from uagents import Agent, Bureau, Context, Model
-from uagents.crypto import Identity
-class Message(Model):
-    message: str
-    digest: str
-    signature: str
+<GithubCodeSegment digest="bcd930749f9eee82a609a481d4d0fc7c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/message-verification/message_verification.py"
+        lineStart={1}
+        lineEnd={66}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='bcd930749f9eee82a609a481d4d0fc7c'>
 
-def encode(message: str) -> bytes:
-    hasher = hashlib.sha256()
-    hasher.update(message.encode())
-    return hasher.digest()
+<DocsCode local={true}>
+	```py copy filename="message_verification.py"
 
-alice = Agent(name="alice", seed="alice recovery password")
-bob = Agent(name="bob", seed="bob recovery password")
+	import hashlib
+	from uagents import Agent, Bureau, Context, Model
+	from uagents.crypto import Identity
+	
+	
+	class Message(Model):
+	    message: str
+	    digest: str
+	    signature: str
+	
+	
+	def encode(message: str) -> bytes:
+	    hasher = hashlib.sha256()
+	    hasher.update(message.encode())
+	    return hasher.digest()
+	
+	
+	alice = Agent(name="alice", seed="alice recovery password")
+	bob = Agent(name="bob", seed="bob recovery password")
+	
+	
+	@alice.on_interval(period=3.0)
+	async def send_message(ctx: Context):
+	    msg = "hello there bob"
+	    digest = encode(msg)
+	
+	    await ctx.send(
+	        bob.address,
+	        Message(message=msg, digest=digest.hex(), signature=alice.sign_digest(digest)),
+	    )
+	
+	
+	@alice.on_message(model=Message)
+	async def alice_rx_message(ctx: Context, sender: str, msg: Message):
+	    assert Identity.verify_digest(
+	        sender, bytes.fromhex(msg.digest), msg.signature
+	    ), "couldn't verify bob's message"
+	
+	    ctx.logger.info("Bob's message verified!")
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	@bob.on_message(model=Message)
+	async def bob_rx_message(ctx: Context, sender: str, msg: Message):
+	    assert Identity.verify_digest(
+	        sender, bytes.fromhex(msg.digest), msg.signature
+	    ), "couldn't verify alice's message"
+	
+	    ctx.logger.info("Alice's message verified!")
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	    msg = "hello there alice"
+	    digest = encode(msg)
+	
+	    await ctx.send(
+	        alice.address,
+	        Message(message=msg, digest=digest.hex(), signature=bob.sign_digest(digest)),
+	    )
+	
+	
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	
+	if __name__ == "__main__":
+	    bureau.run()
 
-@alice.on_interval(period=3.0)
-async def send_message(ctx: Context):
-    msg = "hello there bob"
-    digest = encode(msg)
-
-    await ctx.send(
-        bob.address,
-        Message(message=msg, digest=digest.hex(), signature=alice.sign_digest(digest)),
-    )
-
-@alice.on_message(model=Message)
-async def alice_rx_message(ctx: Context, sender: str, msg: Message):
-    assert Identity.verify_digest(
-        sender, bytes.fromhex(msg.digest), msg.signature
-    ), "couldn't verify bob's message"
-
-    ctx.logger.info("Bob's message verified!")
-    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-@bob.on_message(model=Message)
-async def bob_rx_message(ctx: Context, sender: str, msg: Message):
-    assert Identity.verify_digest(
-        sender, bytes.fromhex(msg.digest), msg.signature
-    ), "couldn't verify alice's message"
-
-    ctx.logger.info("Alice's message verified!")
-    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    msg = "hello there alice"
-    digest = encode(msg)
-
-    await ctx.send(
-        alice.address,
-        Message(message=msg, digest=digest.hex(), signature=bob.sign_digest(digest)),
-    )
-
-bureau = Bureau()
-bureau.add(alice)
-bureau.add(bob)
-
-if __name__ == "__main__":
-    bureau.run()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ## Run your script
 

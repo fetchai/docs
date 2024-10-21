@@ -46,7 +46,7 @@ const classes = {
   ),
   inactive: cn(
     "nextra-hover",
-    "dark:nx-text-white-60 dark:hover:nx-bg-primary-100/5 dark:hover:nx-text-gray-50",
+    "dark:nx-text-white-60",
     "contrast-more:nx-text-gray-900 contrast-more:dark:nx-text-gray-50",
     "contrast-more:nx-border-transparent contrast-more:hover:nx-border-gray-900 contrast-more:dark:hover:nx-border-gray-50",
   ),

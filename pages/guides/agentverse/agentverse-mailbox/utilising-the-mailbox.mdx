@@ -1,3 +1,5 @@
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+
 # Utilizing the Agentverse Mailroom feature
 
 ## Introduction
@@ -38,36 +40,58 @@ Make sure you have read the following resources before going on with this guide:
 
 Let's now start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
 
-    ```py copy filename="local_agent_setup.py"
-    from uagents import Agent, Context, Model
+<GithubCodeSegment digest="40cf2f46e466f542ff704d0b88910ca1">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/agentverse-mailbox/utilising-the-mailbox/local_agent_setup.py"
+        lineStart={1}
+        lineEnd={32}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='40cf2f46e466f542ff704d0b88910ca1'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="local_agent_setup.py"
 
-    # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
-    SEED_PHRASE = "put_your_seed_phrase_here"
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	
+	# Copy the address shown below
+	print(f"Your agent's address is: {agent.address}")
+	
+	# Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+	# Then, copy the agent's mailbox key and insert it here below inline
+	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+	
+	# Now your agent is ready to join the agentverse!
+	agent = Agent(
+	    name="alice",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	
+	@agent.on_message(model=Message, replies={Message})
+	async def handle_message(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-    # Copy the address shown below
-    print(f"Your agent's address is: {agent.address}")
+```
+</DocsCode>
 
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
-    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+</CodeGroup>
 
-    # Now your agent is ready to join the agentverse!
-    agent = Agent(
-        name="alice",
-        seed=SEED_PHRASE,
-        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-    )
 
-    @agent.on_message(model=Message, replies={Message})
-    async def handle_message(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    if __name__ == "__main__":
-        agent.run()
-   ```
 
 You can then restart your agent; now your agent doesn't need to run all the time as their messages will be waiting for them for when they come back online.
 
@@ -75,37 +99,60 @@ You can then restart your agent; now your agent doesn't need to run all the time
 
 Now create an Agentverse agent `bob` by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, select a blank script and add the following code into it:
 
-    ```py copy filename="agentverse_agent_setup.py"
-    from uagents import Agent, Context, Model
+<GithubCodeSegment digest="67e279e499e6f8439af7445668f0c418">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/agentverse-mailbox/utilising-the-mailbox/agentverse_agent_setup.py"
+        lineStart={1}
+        lineEnd={34}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='67e279e499e6f8439af7445668f0c418'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="agentverse_agent_setup.py"
 
-    # Copy ALICE_ADDRESS generated in agent_1.py
-    ALICE_ADDRESS = "agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf"
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	# Copy ALICE_ADDRESS generated in mailbox_agent.py
+	ALICE_ADDRESS = "agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf"
+	
+	# Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	
+	# Now let's create the Agentverse agent
+	agent = Agent(
+	    name="bob",
+	    seed=SEED_PHRASE,
+	    endpoint="http://127.0.0.1:8001/submit",
+	)
+	
+	
+	@agent.on_interval(period=2.0)
+	async def send_message(ctx: Context):
+	    ctx.logger.info("Sending message to alice")
+	    await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
+	
+	
+	@agent.on_message(model=Message, replies=set())
+	async def on_message(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-    # Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
-    SEED_PHRASE = "put_your_seed_phrase_here"
+```
+</DocsCode>
 
-    # Now let's create the Agentverse agent
-    agent = Agent(
-        name="bob",
-        seed=SEED_PHRASE,
-        endpoint="http://127.0.0.1:8001/submit",
-    )
+</CodeGroup>
 
-    @agent.on_interval(period=2.0)
-    async def send_message(ctx: Context):
-        ctx.logger.info("Sending message to alice")
-        await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
 
-    @agent.on_message(model=Message, replies=set())
-    async def on_message(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    if __name__ == "__main__":
-        agent.run()
-   ```
 
 Next, run **bob** on the Agentverse.
 

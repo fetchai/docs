@@ -1,4 +1,4 @@
-import { CodeGroup, DocsCode } from "../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Using agents storage function
 
@@ -23,44 +23,62 @@ Make sure you have read the following resources before going on with this guide:
 
    <CodeGroup hasCopy isOSFile>
    <DocsCode mac={true}>
-   ```py copy filename="mac"
-   touch storage.py
-   ```
+      ```py copy filename="mac"
+      touch storage.py
+      ```
    </DocsCode>
-   
+
    <DocsCode windows={true}>
        ```py copy filename="windows"
        echo. > storage.py
        ```
-       </DocsCode>
-   
+   </DocsCode>
+
    <DocsCode ubuntu={true}>
        ```py copy filename="ubuntu"
        touch storage.py
        ```
-       </DocsCode>
+   </DocsCode>
    </CodeGroup>
-   
+
 2. Then, we need to open the script in the text editor of choice and import the necessary classes, `Agent` and `Context`, from the `uagents` library.
 
 3. Let's then create an agent named `alice` which logs a message every second using the `.on_interval()` decorator, indicating the current count. The `on_interval()` function takes a `Context` object as a parameter: the `Context` object contains a `storage` attribute, which is used to store and retrieve data between method calls:
 
-   ```py copy filename="storage.py"
-   from uagents import Agent, Context
+<GithubCodeSegment digest="a20a1b5aa1aa22ff7fc48061558b3568">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/storage-function/storage.py"
+        lineStart={1}
+        lineEnd={14}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a20a1b5aa1aa22ff7fc48061558b3568'>
 
-   alice = Agent(name="alice", seed="alice recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="storage.py"
 
-   @alice.on_interval(period=1.0)
-   async def on_interval(ctx: Context):
-       current_count = ctx.storage.get("count") or 0
+	from uagents import Agent, Context
+	
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	
+	@alice.on_interval(period=1.0)
+	async def on_interval(ctx: Context):
+	    current_count = ctx.storage.get("count") or 0
+	
+	    ctx.logger.info(f"My count is: {current_count}")
+	
+	    ctx.storage.set("count", current_count + 1)
+	
+	if __name__ == "__main__":
+	    alice.run()
 
-       ctx.logger.info(f"My count is: {current_count}")
+```
+</DocsCode>
 
-       ctx.storage.set("count", current_count + 1)
+</CodeGroup>
 
-   if __name__ == "__main__":
-       alice.run()
-   ```
+
 
    Here, the `on_interval()` function retrieves the current count from the storage attribute using the `ctx.storage.get()` method. It prints the `current_count` value, and then increments it by `1`, and stores the updated count back to the storage attribute using the `ctx.storage.set()` method. The current count is then logged using the `ctx.logger.info()` method.
 

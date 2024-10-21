@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
-import { CodeGroup, DocsCode } from "../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../components/code";
 
 # Agents 101
 
@@ -226,13 +226,30 @@ Creating your first agent is a straightforward process. First of all, we need to
 
 We can now code our agent. Let's start by importing the required modules. In our case, we would need to import the `Agent` module from the `uagents` library, and proceed to instantiate the agent by providing a `name`. The following code exemplifies the creation of the simplest possible agent:
 
-    ```py copy
-    # Import the required classes
-    from uagents import Agent
+<GithubCodeSegment digest="5fa833350ab46b034749c41f60ea21e7">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/alice_agent.py"
+        lineStart={1}
+        lineEnd={4}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5fa833350ab46b034749c41f60ea21e7'>
 
-    # Initialize your first Agent and give it a name
-    agent = Agent(name="alice", seed="alice recovery phrase")
-    ```
+<DocsCode local={true}>
+	```py copy filename="alice_agent.py"
+
+	# Import the required classes
+	from uagents import Agent, Context
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 You can run this with `poetry run python alice_agent.py` but it won't do much, yet!
 
@@ -246,21 +263,41 @@ Let's get Alice to do something! We're going to get Alice, on start up, to intro
 
 Let's update `alice_agent.py` with the code snippet below:
 
-    ```py copy filename="alice_agent.py"
-    # Import the required classes
-    from uagents import Agent, Context
+<GithubCodeSegment digest="59d410505a8d50829ab2dd32d53689a5">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/alice_agent.py"
+        lineStart={1}
+        lineEnd={15}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='59d410505a8d50829ab2dd32d53689a5'>
 
-    agent = Agent(name="alice", seed="alice recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="alice_agent.py"
 
-    # Provide your Agent with a job
-    @agent.on_event("startup")
-    async def introduce_agent(ctx: Context):
-        ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	# Import the required classes
+	from uagents import Agent, Context
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+	
+	
+	# Provide your Agent with a job
+	@agent.on_event("startup")
+	async def introduce_agent(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	
+	
+	# This constructor simply ensure that only this script is running
+	if __name__ == "__main__":
+	    agent.run()
 
-    # This constructor simply ensure that only this script is running
-    if __name__ == "__main__":
-        agent.run()
-    ```
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the agent knows how to act on the declared decorated functions.
 
@@ -282,14 +319,32 @@ This time, the output will be:
 
 Sometimes, we just need to see what a value looks like. We can quickly do so in Python by using the `print()` in-built function. As we have mentioned earlier, every AI Agent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses. We have showed above how to check for an uAgent address using the `agent.address` method of the `Context` class. Let's now print them in the console to see their differences using the `print()` function:
 
-    ```py copy filename="address.py"
-    from uagents import Agent
+<GithubCodeSegment digest="3ef75cfff15d9d5d4469418349ecc95c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/address.py"
+        lineStart={1}
+        lineEnd={6}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='3ef75cfff15d9d5d4469418349ecc95c'>
 
-    agent = Agent(name="alice")
+<DocsCode local={true}>
+	```py copy filename="address.py"
 
-    print("uAgent address: ", agent.address)
-    print("Fetch network address: ", agent.wallet.address())
-    ```
+	from uagents import Agent
+	
+	agent = Agent(name="alice")
+	
+	print("uAgent address: ", agent.address)
+	print("Fetch network address: ", agent.wallet.address())
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The output of the above would look similar to:
 
@@ -308,18 +363,38 @@ The output of the above would look similar to:
 
 If you want to create an interval task, you need to use an `on_interval()` decorator to set up an interval with a timer that triggers the task repetition. As an introductory example, we can consider an agent periodically printing hello and its name on the console. In this case, we apply the decorator to a `say_hello()` function which will be repeated at the specified time interval:
 
-    ```py copy filename="interval_task.py"
-    from uagents import Agent, Context
+<GithubCodeSegment digest="8ef86b74899f070756d97a06654ed2c6">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/interval_task.py"
+        lineStart={1}
+        lineEnd={12}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='8ef86b74899f070756d97a06654ed2c6'>
 
-    agent = Agent(name="agent", seed="alice recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="interval_task.py"
 
-    @agent.on_interval(period=2.0)
-    async def say_hello(ctx: Context):
-        ctx.logger.info(f'hello, my name is {agent.name}')
+	from uagents import Agent, Context
+	
+	agent = Agent(name="agent", seed="alice recovery phrase")
+	
+	
+	@agent.on_interval(period=2.0)
+	async def say_hello(ctx: Context):
+	    ctx.logger.info(f'hello, my name is {agent.name}')
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-    if __name__ == "__main__":
-        agent.run()
-    ```
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The output will be printed on your terminal every 2 seconds using the `ctx.logger.info()` method of the `Context` class.
 
@@ -363,27 +438,38 @@ Let's create a new Python file for these agents:
 
 The script will look as follows:
 
-    ```py copy filename="duo_agent.py"
-    from uagents import Agent, Context, Bureau
+<GithubCodeSegment digest="a71bf5f04e4a7628e3058c607dc6e8b5">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/duo_agent.py"
+        lineStart={1}
+        lineEnd={12}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a71bf5f04e4a7628e3058c607dc6e8b5'>
 
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    bob = Agent(name="bob", seed="bob recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="duo_agent.py"
 
-    @alice.on_interval(period=2.0)
-    async def say_hello(ctx: Context):
-        ctx.logger.info(f'Hello, my name is {alice.name}')
+	from uagents import Agent, Context, Bureau
+	
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	bob = Agent(name="bob", seed="bob recovery phrase")
+	
+	
+	@alice.on_interval(period=2.0)
+	async def say_hello(ctx: Context):
+	    ctx.logger.info(f'Hello, my name is {alice.name}')
+	
+	
+	@bob.on_interval(period=2.0)
 
-    @bob.on_interval(period=2.0)
-    async def say_hello(ctx: Context):
-        ctx.logger.info(f'Hello, my name is {bob.name}')
+```
+</DocsCode>
 
-    bureau = Bureau()
-    bureau.add(alice)
-    bureau.add(bob)
+</CodeGroup>
 
-    if __name__ == "__main__":
-        bureau.run()
-    ```
+
 
 You can now run the script: `poetry run python duo_agent.py`.
 
@@ -426,83 +512,199 @@ Let's create a new script for this example:
 
 We can now define the `Message` data model and our two agents:
 
-    ```py copy
-    from uagents import Agent, Bureau, Context, Model
+<GithubCodeSegment digest="eb1174325d601aa2049fb5e768e5aa6c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={1}
+        lineEnd={9}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='eb1174325d601aa2049fb5e768e5aa6c'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
 
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    bob = Agent(name="bob", seed="bob recovery phrase")
-    ```
+	from uagents import Agent, Bureau, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	bob = Agent(name="bob", seed="bob recovery phrase")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 We need to define a function for `alice` to send messages to `bob` periodically. We can do this by defining a `send_message()` function using the `Context` class and make `alice` send a message to `bob` on an interval:
 
-    ```py copy
-    @alice.on_interval(period=3.0)
-    async def send_message(ctx: Context):
-        await ctx.send(bob.address, Message(message="hello there bob"))
-    ```
+<GithubCodeSegment digest="36f4b15506531e2015d93512a111bd17">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={12}
+        lineEnd={14}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='36f4b15506531e2015d93512a111bd17'>
+
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
+
+	@alice.on_interval(period=3.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(bob.address, Message(message="hello there bob"))
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 We then need a way for `bob` to receive these messages. We can do this by creating a function for `bob` to handle all incoming messages from other agents.  We can do this with a `on_message()` decorator that will activate the `message_handler()` function once `bob` receives a message matching the `Message` data model we previously defined:
 
-    ```py copy
-    @bob.on_message(model=Message)
-    async def bob_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-        await ctx.send(alice.address, Message(message="hello there alice"))
-    ```
+<GithubCodeSegment digest="ff4ad05ac771603ec1074dc0270072f7">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={17}
+        lineEnd={20}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ff4ad05ac771603ec1074dc0270072f7'>
+
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
+
+	@bob.on_message(model=Message)
+	async def bob_message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	    await ctx.send(alice.address, Message(message="hello there alice"))
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 We then need to define a message handler function for `alice` to handle response messages from `bob`. We do so using a `on_message()` decorator:
 
-    ```py copy
-    @alice.on_message(model=Message)
-    async def alice_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-    ```
+<GithubCodeSegment digest="c4eb1d4fffee4ca44aba0e8133326281">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={23}
+        lineEnd={25}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c4eb1d4fffee4ca44aba0e8133326281'>
+
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
+
+	@alice.on_message(model=Message)
+	async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Finally, we need to add both agents to the `Bureau` in order to run them from the same script:
 
-    ```py copy
-    bureau = Bureau()
-    bureau.add(alice)
-    bureau.add(bob)
+<GithubCodeSegment digest="4eda71fce8d2daf20cb3ce010670fd3c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={28}
+        lineEnd={33}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='4eda71fce8d2daf20cb3ce010670fd3c'>
 
-    if __name__ == "__main__":
-        bureau.run()
-    ```
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
+
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	
+	if __name__ == "__main__":
+	    bureau.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The overall script would be:
 
-    ```py copy filename="agent_communication.py"
-    from uagents import Agent, Bureau, Context, Model
+<GithubCodeSegment digest="9ed3a45551f019ad98402e56760de8d7">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/agent_communication.py"
+        lineStart={1}
+        lineEnd={33}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9ed3a45551f019ad98402e56760de8d7'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="agent_communication.py"
 
-    alice = Agent(name="alice", seed="alice recovery phrase")
-    bob = Agent(name="bob", seed="bob recovery phrase")
+	from uagents import Agent, Bureau, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	bob = Agent(name="bob", seed="bob recovery phrase")
+	
+	
+	@alice.on_interval(period=3.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(bob.address, Message(message="hello there bob"))
+	
+	
+	@bob.on_message(model=Message)
+	async def bob_message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	    await ctx.send(alice.address, Message(message="hello there alice"))
+	
+	
+	@alice.on_message(model=Message)
+	async def alice_message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	
+	if __name__ == "__main__":
+	    bureau.run()
 
-    @alice.on_interval(period=3.0)
-    async def send_message(ctx: Context):
-        await ctx.send(bob.address, Message(message="hello there bob"))
+```
+</DocsCode>
 
-    @bob.on_message(model=Message)
-    async def bob_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-        await ctx.send(alice.address, Message(message="hello there alice"))
+</CodeGroup>
 
-    @alice.on_message(model=Message)
-    async def alice_message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-    bureau = Bureau()
-    bureau.add(alice)
-    bureau.add(bob)
-
-    if __name__ == "__main__":
-        bureau.run()
-    ```
 
 We can now run the script. Just run: `poetry run python agent_communication.py` in your terminal.
 
@@ -555,25 +757,45 @@ Let's create a Python script for this example:
 
 We will have what follows:
 
-    ```py copy filename="almanac_registration.py"
-    from uagents.setup import fund_agent_if_low
-    from uagents import Agent, Context, Protocol
+<GithubCodeSegment digest="9e27f7c429b54464db493c6417ccf02a">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/almanac_registration.py"
+        lineStart={1}
+        lineEnd={19}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9e27f7c429b54464db493c6417ccf02a'>
 
-    agent = Agent(
-        name="alice",
-        port=8000,
-        seed="alice secret phrase",
-        endpoint=["http://127.0.0.1:8000/submit"],
-    )
+<DocsCode local={true}>
+	```py copy filename="almanac_registration.py"
 
-    fund_agent_if_low(agent.wallet.address())
+	from uagents.setup import fund_agent_if_low
+	from uagents import Agent, Context, Protocol
+	
+	agent = Agent(
+	    name="alice",
+	    port=8000,
+	    seed="alice secret phrase",
+	    endpoint=["http://127.0.0.1:8000/submit"],
+	)
+	
+	fund_agent_if_low(agent.wallet.address())
+	
+	
+	@agent.on_interval(period=3)
+	async def hi(ctx: Context):
+	    ctx.logger.info(f"Hello")
+	
+	
+	agent.run()
 
-    @agent.on_interval(period=3)
-    async def hi(ctx: Context):
-        ctx.logger.info(f"Hello")
+```
+</DocsCode>
 
-    agent.run()
-    ```
+</CodeGroup>
+
+
 
 Here, we defined a local http address but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your agent so you don't have to fund different addresses each time you run your agent.
 
@@ -615,35 +837,58 @@ We first import the required modules. We then use the `Model` class to define a 
 
 The script would be as follows:
 
-    ```py copy filename="remote_alice.py"
-    from uagents import Agent, Context, Model
-    from uagents.setup import fund_agent_if_low
+<GithubCodeSegment digest="85702f15f210eebccf770aaa059cb95c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/remote_alice.py"
+        lineStart={1}
+        lineEnd={32}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='85702f15f210eebccf770aaa059cb95c'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="remote_alice.py"
 
-    RECIPIENT_ADDRESS = "agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+	from uagents import Agent, Context, Model
+	from uagents.setup import fund_agent_if_low
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	RECIPIENT_ADDRESS = "agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+	
+	agent = Agent(
+	    name="alice",
+	    port=8000,
+	    seed="alice secret phrase",
+	    endpoint=["http://127.0.0.1:8000/submit"],
+	)
+	
+	fund_agent_if_low(agent.wallet.address())
+	
+	
+	@agent.on_interval(period=2.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))
+	
+	
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-    agent = Agent(
-        name="alice",
-        port=8000,
-        seed="alice secret phrase",
-        endpoint=["http://127.0.0.1:8000/submit"],
-    )
+```
+</DocsCode>
 
-    fund_agent_if_low(agent.wallet.address())
+</CodeGroup>
 
-    @agent.on_interval(period=2.0)
-    async def send_message(ctx: Context):
-        await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there bob"))
 
-    @agent.on_message(model=Message)
-    async def message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    if __name__ == "__main__":
-        agent.run()
-    ```
 
 Similarly, we need to define a script for `bob` so to create a remote communication with `alice` agent. Let's create a Python script for it:
 
@@ -669,31 +914,53 @@ Similarly, we need to define a script for `bob` so to create a remote communicat
 
 Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
 
-    ```py copy filename="remote_bob.py"
-    from uagents.setup import fund_agent_if_low
-    from uagents import Agent, Context, Model
+<GithubCodeSegment digest="f17ca35602044b49164c4c102142e6a9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/remote_bob.py"
+        lineStart={1}
+        lineEnd={27}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='f17ca35602044b49164c4c102142e6a9'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="remote_bob.py"
 
-    agent = Agent(
-        name="bob",
-        port=8001,
-        seed="bob secret phrase",
-        endpoint=["http://127.0.0.1:8001/submit"],
-    )
+	from uagents.setup import fund_agent_if_low
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	agent = Agent(
+	    name="bob",
+	    port=8001,
+	    seed="bob secret phrase",
+	    endpoint=["http://127.0.0.1:8001/submit"],
+	)
+	
+	fund_agent_if_low(agent.wallet.address())
+	
+	
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	    await ctx.send(sender, Message(message="hello there alice"))
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-    fund_agent_if_low(agent.wallet.address())
+```
+</DocsCode>
 
-    @agent.on_message(model=Message)
-    async def message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+</CodeGroup>
 
-        await ctx.send(sender, Message(message="hello there alice"))
 
-    if __name__ == "__main__":
-        agent.run()
-    ```
 
 Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent!
 
@@ -756,22 +1023,42 @@ We first create the Python file containing the script. Run:
 
 The script for this example is:
 
-    ```py copy filename="storage.py"
-    from uagents import Agent, Context
+<GithubCodeSegment digest="48f52668374451e85d6d621ac0ad92ce">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/storage.py"
+        lineStart={1}
+        lineEnd={16}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='48f52668374451e85d6d621ac0ad92ce'>
 
-    agent = Agent(name="alice", seed="alice recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="storage.py"
 
-    @agent.on_interval(period=1.0)
-    async def on_interval(ctx: Context):
-        current_count = ctx.storage.get("count") or 0
+	from uagents import Agent, Context
+	
+	agent = Agent(name="alice", seed="alice recovery phrase")
+	
+	
+	@agent.on_interval(period=1.0)
+	async def on_interval(ctx: Context):
+	    current_count = ctx.storage.get("count") or 0
+	
+	    ctx.logger.info(f"My count is: {current_count}")
+	
+	    ctx.storage.set("count", current_count + 1)
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-        ctx.logger.info(f"My count is: {current_count}")
+```
+</DocsCode>
 
-        ctx.storage.set("count", current_count + 1)
+</CodeGroup>
 
-    if __name__ == "__main__":
-        agent.run()
-    ```
+
 
 We can then run the script: `poetry run python storage.py`
 The output would be:
@@ -795,31 +1082,53 @@ We can start by writing the code for our two protocols.
 
 Let's start by defining the protocol for querying availability of tables at the restaurant. We start by importing the necessary classes and defining the message data models for types of messages being handled. We then proceed and create an instance of the `Protocol` class and name it `query_proto`:
 
-    ```py copy
-    from typing import List
+<GithubCodeSegment digest="d7af30f1ab21183104ed198b50002aba">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/query.py"
+        lineStart={1}
+        lineEnd={27}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d7af30f1ab21183104ed198b50002aba'>
 
-    from uagents import Context, Model, Protocol
+<DocsCode local={true}>
+	```py copy filename="query.py"
 
-    class TableStatus(Model):
-        seats: int
-        time_start: int
-        time_end: int
+	from typing import List
+	
+	from uagents import Context, Model, Protocol
+	
+	
+	class TableStatus(Model):
+	    seats: int
+	    time_start: int
+	    time_end: int
+	
+	
+	class QueryTableRequest(Model):
+	    guests: int
+	    time_start: int
+	    duration: int
+	
+	
+	class QueryTableResponse(Model):
+	    tables: List[int]
+	
+	
+	class GetTotalQueries(Model):
+	    pass
+	
+	
+	class TotalQueries(Model):
+	    total_queries: int
 
-    class QueryTableRequest(Model):
-        guests: int
-        time_start: int
-        duration: int
+```
+</DocsCode>
 
-    class QueryTableResponse(Model):
-        tables: List[int]
+</CodeGroup>
 
-    class GetTotalQueries(Model):
-        pass
 
-    class TotalQueries(Model):
-        total_queries: int
-
-    ```
 
 Here, we defined different messages data models:
 
@@ -831,278 +1140,438 @@ Here, we defined different messages data models:
 
 Let's then define the message handlers for the `query_proto` protocol:
 
-    ```py copy
-    query_proto = Protocol(name="RestaurantQueryProtocolExample", version="0.1.0")
+<GithubCodeSegment digest="ee3bd45c7d88de20a1585203bd7038d3">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/query.py"
+        lineStart={30}
+        lineEnd={64}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ee3bd45c7d88de20a1585203bd7038d3'>
 
-    @query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
-    async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
-        tables = {
-            int(num): TableStatus(**status)
-            for (
-                num,
-                status,
-            ) in ctx.storage._data.items()  # pylint: disable=protected-access
-            if isinstance(num, int)
-        }
+<DocsCode local={true}>
+	```py copy filename="query.py"
 
-        available_tables = []
-        for number, status in tables.items():
-            if (
-                status.seats >= msg.guests
-                and status.time_start <= msg.time_start
-                and status.time_end >= msg.time_start + msg.duration
-            ):
-                available_tables.append(int(number))
+	query_proto = Protocol(name="RestaurantQueryProtocolExample", version="0.1.0")
+	
+	
+	@query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
+	async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
+	    tables = {
+	        int(num): TableStatus(**status)
+	        for (
+	            num,
+	            status,
+	        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+	        if isinstance(num, int)
+	    }
+	
+	    available_tables = []
+	    for number, status in tables.items():
+	        if (
+	                status.seats >= msg.guests
+	                and status.time_start <= msg.time_start
+	                and status.time_end >= msg.time_start + msg.duration
+	        ):
+	            available_tables.append(int(number))
+	
+	    ctx.logger.info(f"Query: {msg}. Available tables: {available_tables}.")
+	
+	    await ctx.send(sender, QueryTableResponse(tables=available_tables))
+	
+	    total_queries = int(ctx.storage.get("total_queries") or 0)
+	    ctx.storage.set("total_queries", total_queries + 1)
+	
+	
+	@query_proto.on_query(model=GetTotalQueries, replies=TotalQueries)
+	async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQueries):
+	    total_queries = int(ctx.storage.get("total_queries") or 0)
+	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-        ctx.logger.info(f"Query: {msg}. Available tables: {available_tables}.")
+```
+</DocsCode>
 
-        await ctx.send(sender, QueryTableResponse(tables=available_tables))
+</CodeGroup>
 
-        total_queries = int(ctx.storage.get("total_queries") or 0)
-        ctx.storage.set("total_queries", total_queries + 1)
 
-    @query_proto.on_query(model=GetTotalQueries, replies=TotalQueries)
-    async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQueries):
-        total_queries = int(ctx.storage.get("total_queries") or 0)
-        await ctx.send(sender, TotalQueries(total_queries=total_queries))
-    ```
 
     We define a protocol `query_proto` using the `Protocol` class of `uagents`. It is defined with a `name` and a `version`.
 
     The `handle_query_request()` function is the message handler function defined using the `on_message()` decorator. It handles the `QueryTableRequest` messages and replies with a `QueryTableResponse` message. The handler processes the table availability query based on the provided parameters, checks the table status stored in the agent's storage, and sends the available table numbers as a response to the querying agent.
-    
+
     Additionally, the handler tracks the total number of queries made and increments the count in storage. On the other hand, `handle_get_total_queries()` is the message handler function defined using the `on_query()` decorator. It handles the `GetTotalQueries` query and replies with a `TotalQueries` message containing the total number of queries made to the system. The handler retrieves the total query count from the agent's storage and responds with the count.
 
 The overall script should look as follows:
 
-    ```py copy filename="query.py"
-    from typing import List
+<GithubCodeSegment digest="a758f657d6af04cf2677350fef112f95">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/query.py"
+        lineStart={1}
+        lineEnd={64}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a758f657d6af04cf2677350fef112f95'>
 
-    from uagents import Context, Model, Protocol
+<DocsCode local={true}>
+	```py copy filename="query.py"
 
-    class TableStatus(Model):
-        seats: int
-        time_start: int
-        time_end: int
+	from typing import List
+	
+	from uagents import Context, Model, Protocol
+	
+	
+	class TableStatus(Model):
+	    seats: int
+	    time_start: int
+	    time_end: int
+	
+	
+	class QueryTableRequest(Model):
+	    guests: int
+	    time_start: int
+	    duration: int
+	
+	
+	class QueryTableResponse(Model):
+	    tables: List[int]
+	
+	
+	class GetTotalQueries(Model):
+	    pass
+	
+	
+	class TotalQueries(Model):
+	    total_queries: int
+	
+	
+	query_proto = Protocol(name="RestaurantQueryProtocolExample", version="0.1.0")
+	
+	
+	@query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
+	async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
+	    tables = {
+	        int(num): TableStatus(**status)
+	        for (
+	            num,
+	            status,
+	        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+	        if isinstance(num, int)
+	    }
+	
+	    available_tables = []
+	    for number, status in tables.items():
+	        if (
+	                status.seats >= msg.guests
+	                and status.time_start <= msg.time_start
+	                and status.time_end >= msg.time_start + msg.duration
+	        ):
+	            available_tables.append(int(number))
+	
+	    ctx.logger.info(f"Query: {msg}. Available tables: {available_tables}.")
+	
+	    await ctx.send(sender, QueryTableResponse(tables=available_tables))
+	
+	    total_queries = int(ctx.storage.get("total_queries") or 0)
+	    ctx.storage.set("total_queries", total_queries + 1)
+	
+	
+	@query_proto.on_query(model=GetTotalQueries, replies=TotalQueries)
+	async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQueries):
+	    total_queries = int(ctx.storage.get("total_queries") or 0)
+	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-    class QueryTableRequest(Model):
-        guests: int
-        time_start: int
-        duration: int
+```
+</DocsCode>
 
-    class QueryTableResponse(Model):
-        tables: List[int]
+</CodeGroup>
 
-    class GetTotalQueries(Model):
-        pass
 
-    class TotalQueries(Model):
-        total_queries: int
-
-    query_proto = Protocol(name="RestaurantQueryProtocolExample", version="0.1.0")
-
-    @query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
-    async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
-        tables = {
-            int(num): TableStatus(**status)
-            for (
-                num,
-                status,
-            ) in ctx.storage._data.items()  # pylint: disable=protected-access
-            if isinstance(num, int)
-        }
-
-        available_tables = []
-        for number, status in tables.items():
-            if (
-                status.seats >= msg.guests
-                and status.time_start <= msg.time_start
-                and status.time_end >= msg.time_start + msg.duration
-            ):
-                available_tables.append(int(number))
-
-        ctx.logger.info(f"Query: {msg}. Available tables: {available_tables}.")
-
-        await ctx.send(sender, QueryTableResponse(tables=available_tables))
-
-        total_queries = int(ctx.storage.get("total_queries") or 0)
-        ctx.storage.set("total_queries", total_queries + 1)
-
-    @query_proto.on_query(model=GetTotalQueries, replies=TotalQueries)
-    async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQueries):
-        total_queries = int(ctx.storage.get("total_queries") or 0)
-        await ctx.send(sender, TotalQueries(total_queries=total_queries))
-    ```
 
 #### Table booking protocol
 
 We can now proceed by writing the booking protocol script for booking the table at the restaurant. We first need to import the necessary classes and define the message data models. In this case, the booking protocol consists of two message models: `BookTableRequest` and `BookTableResponse`. Then, we create an instance of the `Protocol` class and name it `book_proto` and give it a version:
 
-    ```py copy
-    from uagents import Context, Model, Protocol
-    from .query import TableStatus
+<GithubCodeSegment digest="f56269b51ff7b55dc1c3e99b74eada65">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/book.py"
+        lineStart={1}
+        lineEnd={15}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='f56269b51ff7b55dc1c3e99b74eada65'>
 
-    class BookTableRequest(Model):
-        table_number: int
-        time_start: int
-        duration: int
+<DocsCode local={true}>
+	```py copy filename="book.py"
 
-    class BookTableResponse(Model):
-        success: bool
+	from uagents import Context, Model, Protocol
+	from .query import TableStatus
+	
+	
+	class BookTableRequest(Model):
+	    table_number: int
+	    time_start: int
+	    duration: int
+	
+	
+	class BookTableResponse(Model):
+	    success: bool
+	
+	
+	book_proto = Protocol(name="RestaurantBookingProtocolExample", version="0.1.0")
 
-    book_proto = Protocol(name="RestaurantBookingProtocolExample", version="0.1.0")
+```
+</DocsCode>
 
-    ```
+</CodeGroup>
+
+
 
     - `BookTableRequest` represents the request to book a table. It includes attributes: `table_number` to be booked, `time_start`of the booking, and the duration of the booking.
     - `BookTableResponse` contains the response to the table booking request. It includes a boolean attribute success indicating whether the booking was successful or not.
 
 Let's now define the message handler function:
 
-    ```py copy
-    @book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
-    async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
-        tables = {
-            int(num): TableStatus(**status)
-            for (
-                num,
-                status,
-            ) in ctx.storage._data.items()  # pylint: disable=protected-access
-            if isinstance(num, int)
-        }
-        table = tables[msg.table_number]
+<GithubCodeSegment digest="76e4a2f95f71b5830393d340d2f9cfde">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/book.py"
+        lineStart={18}
+        lineEnd={41}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='76e4a2f95f71b5830393d340d2f9cfde'>
 
-        if (
-            table.time_start <= msg.time_start
-            and table.time_end >= msg.time_start + msg.duration
-        ):
-            success = True
-            table.time_start = msg.time_start + msg.duration
-            ctx.storage.set(msg.table_number, table.dict())
-        else:
-            success = False
+<DocsCode local={true}>
+	```py copy filename="book.py"
 
-        # send the response
-        await ctx.send(sender, BookTableResponse(success=success))
-    ```
+	@book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
+	async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
+	    tables = {
+	        int(num): TableStatus(**status)
+	        for (
+	            num,
+	            status,
+	        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+	        if isinstance(num, int)
+	    }
+	    table = tables[msg.table_number]
+	
+	    if (
+	            table.time_start <= msg.time_start
+	            and table.time_end >= msg.time_start + msg.duration
+	    ):
+	        success = True
+	        table.time_start = msg.time_start + msg.duration
+	        ctx.storage.set(msg.table_number, table.dict())
+	    else:
+	        success = False
+	
+	    # send the response
+	    await ctx.send(sender, BookTableResponse(success=success))
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     The `handle_book_request()` handler first retrieves table statuses from the agent's storage and converts them into a dictionary with integer keys (table numbers) and `TableStatus` values. The `TableStatus` class is imported from the query module. Next, the handler gets the table associated with the requested `table_number` from the tables dictionary. The handler checks if the requested time_start falls within the availability period of the table. If the table is available for the requested booking duration, the handler sets success to `True`, updates the table's `time_start` to reflect the end of the booking, and saves the updated table information in the agent's storage using `ctx.storage.set()`. If the table is not available for the requested booking, the handler sets success to `False`. The handler sends a `BookTableResponse` message back to the sender with the success status of the booking using the `ctx.send()` method.
 
 The overall script should be: 
 
-    ```py copy filename="book.py"
-    from uagents import Context, Model, Protocol
-    from .query import TableStatus
+<GithubCodeSegment digest="3491725d847c172617642144bbc73160">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/book.py"
+        lineStart={1}
+        lineEnd={41}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='3491725d847c172617642144bbc73160'>
 
-    class BookTableRequest(Model):
-        table_number: int
-        time_start: int
-        duration: int
+<DocsCode local={true}>
+	```py copy filename="book.py"
 
-    class BookTableResponse(Model):
-        success: bool
+	from uagents import Context, Model, Protocol
+	from .query import TableStatus
+	
+	
+	class BookTableRequest(Model):
+	    table_number: int
+	    time_start: int
+	    duration: int
+	
+	
+	class BookTableResponse(Model):
+	    success: bool
+	
+	
+	book_proto = Protocol(name="RestaurantBookingProtocolExample", version="0.1.0")
+	
+	
+	@book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
+	async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
+	    tables = {
+	        int(num): TableStatus(**status)
+	        for (
+	            num,
+	            status,
+	        ) in ctx.storage._data.items()  # pylint: disable=protected-access
+	        if isinstance(num, int)
+	    }
+	    table = tables[msg.table_number]
+	
+	    if (
+	            table.time_start <= msg.time_start
+	            and table.time_end >= msg.time_start + msg.duration
+	    ):
+	        success = True
+	        table.time_start = msg.time_start + msg.duration
+	        ctx.storage.set(msg.table_number, table.dict())
+	    else:
+	        success = False
+	
+	    # send the response
+	    await ctx.send(sender, BookTableResponse(success=success))
 
-    book_proto = Protocol(name="RestaurantBookingProtocolExample", version="0.1.0")
+```
+</DocsCode>
 
-    @book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
-    async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
-        tables = {
-            int(num): TableStatus(**status)
-            for (
-                num,
-                status,
-            ) in ctx.storage._data.items()  # pylint: disable=protected-access
-            if isinstance(num, int)
-        }
-        table = tables[msg.table_number]
+</CodeGroup>
 
-        if (
-            table.time_start <= msg.time_start
-            and table.time_end >= msg.time_start + msg.duration
-        ):
-            success = True
-            table.time_start = msg.time_start + msg.duration
-            ctx.storage.set(msg.table_number, table.dict())
-        else:
-            success = False
 
-        # send the response
-        await ctx.send(sender, BookTableResponse(success=success))
-    ```
 
 #### Restaurant agent
 
 Let's now move forward and create our restaurant agent in a separate file. In this step, we will import the essential classes from the `uagents` library and reintegrate the two protocols (`book_proto` and `query_proto`) we've previously coded:
 
-    ```py copy
-    from protocols.book import book_proto
-    from protocols.query import TableStatus, query_proto
-    from uagents import Agent
+<GithubCodeSegment digest="ad2d3759fb8e52236dcbebfd9a9cae09">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/restaurant_agent.py"
+        lineStart={1}
+        lineEnd={12}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ad2d3759fb8e52236dcbebfd9a9cae09'>
 
-    restaurant = Agent(
-        name="restaurant",
-        port=8001,
-        seed="restaurant recovery phrase",
-        endpoint={
-            "http://127.0.0.1:8001/submit": {},
-        },
-    )
-    ```
+<DocsCode local={true}>
+	```py copy filename="restaurant_agent.py"
+
+	from protocols.book import book_proto
+	from protocols.query import TableStatus, query_proto
+	from uagents import Agent
+	
+	restaurant = Agent(
+	    name="restaurant",
+	    port=8001,
+	    seed="restaurant recovery phrase",
+	    endpoint={
+	        "http://127.0.0.1:8001/submit": {},
+	    },
+	)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly set up the agent. Let's build the `restaurant` agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the `restaurant` agent storage:
 
-    ```py copy
-    # build the restaurant agent from stock protocols and publish their details
-    restaurant.include(query_proto, publish_manifest=True)
-    restaurant.include(book_proto, publish_manifest=True)
+<GithubCodeSegment digest="71a030dd37ebfc70742f475ecfafc942">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/restaurant_agent.py"
+        lineStart={14}
+        lineEnd={28}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='71a030dd37ebfc70742f475ecfafc942'>
 
-    TABLES = {
-        1: TableStatus(seats=2, time_start=16, time_end=22),
-        2: TableStatus(seats=4, time_start=19, time_end=21),
-        3: TableStatus(seats=4, time_start=17, time_end=19),
-    }
+<DocsCode local={true}>
+	```py copy filename="restaurant_agent.py"
 
-    for number, status in TABLES.items():
-        restaurant.storage.set(number, status.dict())
+	# build the restaurant agent from stock protocols and publish their details
+	restaurant.include(query_proto, publish_manifest=True)
+	restaurant.include(book_proto, publish_manifest=True)
+	
+	TABLES = {
+	    1: TableStatus(seats=2, time_start=16, time_end=22),
+	    2: TableStatus(seats=4, time_start=19, time_end=21),
+	    3: TableStatus(seats=4, time_start=17, time_end=19),
+	}
+	
+	for number, status in TABLES.items():
+	    restaurant.storage.set(number, status.dict())
+	
+	if __name__ == "__main__":
+	    restaurant.run()
 
-    if __name__ == "__main__":
-        restaurant.run()
-    ```
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The `restaurant` agent is now online and ready to receive messages.
 
 The overall script would be as follows:
 
-    ```py copy filename="restaurant_agent.py"
-    from protocols.book import book_proto
-    from protocols.query import TableStatus, query_proto
-    from uagents import Agent
+<GithubCodeSegment digest="31eb098ed35d5dd8c1fa8e88e971935d">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/restaurant_agent.py"
+        lineStart={1}
+        lineEnd={28}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='31eb098ed35d5dd8c1fa8e88e971935d'>
 
-    restaurant = Agent(
-        name="restaurant",
-        port=8001,
-        seed="restaurant recovery phrase",
-        endpoint={
-            "http://127.0.0.1:8001/submit": {},
-        },
-    )
+<DocsCode local={true}>
+	```py copy filename="restaurant_agent.py"
 
-    # build the restaurant agent from stock protocols and publish their details
-    restaurant.include(query_proto, publish_manifest=True)
-    restaurant.include(book_proto, publish_manifest=True)
+	from protocols.book import book_proto
+	from protocols.query import TableStatus, query_proto
+	from uagents import Agent
+	
+	restaurant = Agent(
+	    name="restaurant",
+	    port=8001,
+	    seed="restaurant recovery phrase",
+	    endpoint={
+	        "http://127.0.0.1:8001/submit": {},
+	    },
+	)
+	
+	# build the restaurant agent from stock protocols and publish their details
+	restaurant.include(query_proto, publish_manifest=True)
+	restaurant.include(book_proto, publish_manifest=True)
+	
+	TABLES = {
+	    1: TableStatus(seats=2, time_start=16, time_end=22),
+	    2: TableStatus(seats=4, time_start=19, time_end=21),
+	    3: TableStatus(seats=4, time_start=17, time_end=19),
+	}
+	
+	for number, status in TABLES.items():
+	    restaurant.storage.set(number, status.dict())
+	
+	if __name__ == "__main__":
+	    restaurant.run()
 
-    TABLES = {
-        1: TableStatus(seats=2, time_start=16, time_end=22),
-        2: TableStatus(seats=4, time_start=19, time_end=21),
-        3: TableStatus(seats=4, time_start=17, time_end=19),
-    }
+```
+</DocsCode>
 
-    for number, status in TABLES.items():
-        restaurant.storage.set(number, status.dict())
+</CodeGroup>
 
-    if __name__ == "__main__":
-        restaurant.run()
-    ```
+
 
 #### User agent
 
@@ -1110,146 +1579,239 @@ We can now define the script for our `user` agent querying and booking a table a
 
 Once we've imported the necessary classes from the `uagents` library and the two protocols we previously defined, we also need the `restaurant` agent's address so for the `user` agent to be able to communicate with it:
 
-    ```py copy
-    from protocols.book import BookTableRequest, BookTableResponse
-    from protocols.query import (
-        QueryTableRequest,
-        QueryTableResponse,
-    )
-    from uagents import Agent, Context
+<GithubCodeSegment digest="3877e76d518d86bfa7c1c9840cce7e1d">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/user_agent.py"
+        lineStart={1}
+        lineEnd={19}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='3877e76d518d86bfa7c1c9840cce7e1d'>
 
-    RESTAURANT_ADDRESS = (
-        "test-agent://agent1qfpqn9jhvp9cg33f27q6jvmuv52dgyg9rfuu37rmxrletlqe7lewwjed5gy"
-    )
+<DocsCode local={true}>
+	```py copy filename="user_agent.py"
 
-    user = Agent(
-        name="user",
-        port=8000,
-        seed="user recovery phrase",
-        endpoint={
-            "http://127.0.0.1:8000/submit": {},
-        },
-    )
-    ```
+	from protocols.book import BookTableRequest, BookTableResponse
+	from protocols.query import (
+	    QueryTableRequest,
+	    QueryTableResponse,
+	)
+	from uagents import Agent, Context
+	
+	RESTAURANT_ADDRESS = (
+	    "test-agent://agent1qfpqn9jhvp9cg33f27q6jvmuv52dgyg9rfuu37rmxrletlqe7lewwjed5gy"
+	)
+	
+	user = Agent(
+	    name="user",
+	    port=8000,
+	    seed="user recovery phrase",
+	    endpoint={
+	        "http://127.0.0.1:8000/submit": {},
+	    },
+	)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Remember that you need to provide the `RESTAURANT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly set up the agent and code. Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. Then, we need to create an `on_interval()` function which periodically queries the `restaurant`, asking for the availability of a table given the `table_query` parameters:
 
-    ```py copy
-    table_query = QueryTableRequest(
-        guests=3,
-        time_start=19,
-        duration=2,
-    )
+<GithubCodeSegment digest="6172a83feaa735a079048eaa5cdadd74">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/user_agent.py"
+        lineStart={21}
+        lineEnd={33}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6172a83feaa735a079048eaa5cdadd74'>
 
-    @user.on_interval(period=3.0, messages=QueryTableRequest)
-    async def interval(ctx: Context):
-        completed = ctx.storage.get("completed")
+<DocsCode local={true}>
+	```py copy filename="user_agent.py"
 
-        if not completed:
-            await ctx.send(RESTAURANT_ADDRESS, table_query)
-    ```
+	table_query = QueryTableRequest(
+	    guests=3,
+	    time_start=19,
+	    duration=2,
+	)
+	
+	
+	@user.on_interval(period=3.0, messages=QueryTableRequest)
+	async def interval(ctx: Context):
+	    completed = ctx.storage.get("completed")
+	
+	    if not completed:
+	        await ctx.send(RESTAURANT_ADDRESS, table_query)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 We then need to define the message handler function for incoming `QueryTableResponse` messages from the `restaurant` agent:
 
-    ```py copy
-    @user.on_message(QueryTableResponse, replies={BookTableRequest})
-    async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
-        if len(msg.tables) > 0:
-            ctx.logger.info("There is a free table, attempting to book one now")
-            table_number = msg.tables[0]
-            request = BookTableRequest(
-                table_number=table_number,
-                time_start=table_query.time_start,
-                duration=table_query.duration,
-            )
-            await ctx.send(sender, request)
-        else:
-            ctx.logger.info("No free tables - nothing more to do")
-            ctx.storage.set("completed", True)
-    ```
+<GithubCodeSegment digest="0a1eb4067f8f98b674e3e50788094c55">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/user_agent.py"
+        lineStart={36}
+        lineEnd={49}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='0a1eb4067f8f98b674e3e50788094c55'>
+
+<DocsCode local={true}>
+	```py copy filename="user_agent.py"
+
+	@user.on_message(QueryTableResponse, replies={BookTableRequest})
+	async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
+	    if len(msg.tables) > 0:
+	        ctx.logger.info("There is a free table, attempting to book one now")
+	        table_number = msg.tables[0]
+	        request = BookTableRequest(
+	            table_number=table_number,
+	            time_start=table_query.time_start,
+	            duration=table_query.duration,
+	        )
+	        await ctx.send(sender, request)
+	    else:
+	        ctx.logger.info("No free tables - nothing more to do")
+	        ctx.storage.set("completed", True)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Let's then define a function which will handle messages from the `restaurant` agent on whether the reservation was successful or not:
 
-    ```py copy
-    @user.on_message(BookTableResponse, replies=set())
-    async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
-        if msg.success:
-            ctx.logger.info("Table reservation was successful")
-        else:
-            ctx.logger.info("Table reservation was UNSUCCESSFUL")
+<GithubCodeSegment digest="cf5dba3af895bd9c56723a8f7616a0d6">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/user_agent.py"
+        lineStart={52}
+        lineEnd={63}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='cf5dba3af895bd9c56723a8f7616a0d6'>
 
-        ctx.storage.set("completed", True)
+<DocsCode local={true}>
+	```py copy filename="user_agent.py"
 
-    if __name__ == "__main__":
-        user.run()
-    ```
+	@user.on_message(BookTableResponse, replies=set())
+	async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
+	    if msg.success:
+	        ctx.logger.info("Table reservation was successful")
+	    else:
+	        ctx.logger.info("Table reservation was UNSUCCESSFUL")
+	
+	    ctx.storage.set("completed", True)
+	
+	
+	if __name__ == "__main__":
+	    user.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The overall script would be:
 
-    ```py copy filename="user_agent.py"
-    from protocols.book import BookTableRequest, BookTableResponse
-    from protocols.query import (
-        QueryTableRequest,
-        QueryTableResponse,
-    )
-    from uagents import Agent, Context
+<GithubCodeSegment digest="b6c2b3d154e313b7aa49c90edda103e3">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/user_agent.py"
+        lineStart={1}
+        lineEnd={63}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='b6c2b3d154e313b7aa49c90edda103e3'>
 
-    RESTAURANT_ADDRESS = (
-        "test-agent://agent1qfpqn9jhvp9cg33f27q6jvmuv52dgyg9rfuu37rmxrletlqe7lewwjed5gy"
-    )
+<DocsCode local={true}>
+	```py copy filename="user_agent.py"
 
-    user = Agent(
-        name="user",
-        port=8000,
-        seed="user recovery phrase",
-        endpoint={
-            "http://127.0.0.1:8000/submit": {},
-        },
-    )
+	from protocols.book import BookTableRequest, BookTableResponse
+	from protocols.query import (
+	    QueryTableRequest,
+	    QueryTableResponse,
+	)
+	from uagents import Agent, Context
+	
+	RESTAURANT_ADDRESS = (
+	    "test-agent://agent1qfpqn9jhvp9cg33f27q6jvmuv52dgyg9rfuu37rmxrletlqe7lewwjed5gy"
+	)
+	
+	user = Agent(
+	    name="user",
+	    port=8000,
+	    seed="user recovery phrase",
+	    endpoint={
+	        "http://127.0.0.1:8000/submit": {},
+	    },
+	)
+	
+	table_query = QueryTableRequest(
+	    guests=3,
+	    time_start=19,
+	    duration=2,
+	)
+	
+	
+	@user.on_interval(period=3.0, messages=QueryTableRequest)
+	async def interval(ctx: Context):
+	    completed = ctx.storage.get("completed")
+	
+	    if not completed:
+	        await ctx.send(RESTAURANT_ADDRESS, table_query)
+	
+	
+	@user.on_message(QueryTableResponse, replies={BookTableRequest})
+	async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
+	    if len(msg.tables) > 0:
+	        ctx.logger.info("There is a free table, attempting to book one now")
+	        table_number = msg.tables[0]
+	        request = BookTableRequest(
+	            table_number=table_number,
+	            time_start=table_query.time_start,
+	            duration=table_query.duration,
+	        )
+	        await ctx.send(sender, request)
+	    else:
+	        ctx.logger.info("No free tables - nothing more to do")
+	        ctx.storage.set("completed", True)
+	
+	
+	@user.on_message(BookTableResponse, replies=set())
+	async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
+	    if msg.success:
+	        ctx.logger.info("Table reservation was successful")
+	    else:
+	        ctx.logger.info("Table reservation was UNSUCCESSFUL")
+	
+	    ctx.storage.set("completed", True)
+	
+	
+	if __name__ == "__main__":
+	    user.run()
 
-    table_query = QueryTableRequest(
-        guests=3,
-        time_start=19,
-        duration=2,
-    )
+```
+</DocsCode>
 
-    @user.on_interval(period=3.0, messages=QueryTableRequest)
-    async def interval(ctx: Context):
-        completed = ctx.storage.get("completed")
-
-        if not completed:
-            await ctx.send(RESTAURANT_ADDRESS, table_query)
+</CodeGroup>
 
 
-    @user.on_message(QueryTableResponse, replies={BookTableRequest})
-    async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
-        if len(msg.tables) > 0:
-            ctx.logger.info("There is a free table, attempting to book one now")
-            table_number = msg.tables[0]
-            request = BookTableRequest(
-                table_number=table_number,
-                time_start=table_query.time_start,
-                duration=table_query.duration,
-            )
-            await ctx.send(sender, request)
-        else:
-            ctx.logger.info("No free tables - nothing more to do")
-            ctx.storage.set("completed", True)
-
-
-    @user.on_message(BookTableResponse, replies=set())
-    async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
-        if msg.success:
-            ctx.logger.info("Table reservation was successful")
-        else:
-            ctx.logger.info("Table reservation was UNSUCCESSFUL")
-
-        ctx.storage.set("completed", True)
-
-
-    if __name__ == "__main__":
-        user.run()
-    ```
 
 We are ready to run the example.
 
