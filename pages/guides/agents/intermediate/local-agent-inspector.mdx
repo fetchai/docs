@@ -2,15 +2,15 @@ import { Callout } from 'nextra/components'
 
 # Local Agent Inspector
 
-The Local Agent Inspector is a developer tool on Agentverse that enhances the debugging and monitoring experience for [Agents running on a local infrastructure](https://fetch.ai/docs/guides/agents/intermediate/agent-types#local-agents). It allows you to track and understand the real-time behavior of these Agents, whether they are connected to Agentverse or not. The tool offers developers detailed insights into your local agent’s performance and interactions, even though the agent itself is run within your infrastructure.
+The **Local Agent Inspector** is a developer tool on Agentverse that enhances the debugging and monitoring experience for [Agents running on a local infrastructure ↗️](/guides/agents/intermediate/agent-types#local-agents). It allows you to track and understand the real-time behavior of these Agents, whether they are connected to Agentverse or not. The tool offers developers detailed insights into your local agent’s performance and interactions, even though the agent itself is run within your infrastructure.
 
     <Callout type="info" emoji="ℹ️">
         Local Agents can communicate and interact with other Agents and Functions connected to the Agentverse and Fetch Network through a Mailbox. For more information on Mailbox and how to connect local Agents and their function to the Agentverse, have a look at these guides:
-        
-            - [Agent Mailbox](https://fetch.ai/docs/guides/agents/intermediate/mailbox).  
-            - [Options for running local Agents]()
-            - [Agent Functions ](https://fetch.ai/docs/guides/agents/intermediate/agent-functions). 
-            - [Agentverse Functions: register your Agents Functions on the Agentverse!](https://fetch.ai/docs/guides/agentverse/agentverse-functions/registering-agent-services). 
+
+            - [Agent Mailbox ↗️](/guides/agents/intermediate/mailbox).  
+            - [Options for running local Agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
+            - [Agent Functions  ↗️](/guides/agents/intermediate/agent-functions). 
+            - [Agentverse Functions: register your Agents Functions on the Agentverse! ↗️](/guides/agentverse/agentverse-functions/registering-agent-services). 
     </Callout>
 
 The Inspector tool provides developers with multiple key insights, including the agent’s address, details about its local and external endpoints, the types of messages sent and received, and comprehensive data about the sender and recipient of each message. This functionality makes it easier to monitor communication flows, troubleshoot issues, and analyze performance in real-time.
@@ -34,29 +34,27 @@ For instance, consider the following simple local agent:
     ```py copy filename="agent_inspector_example.py"
     from uagents import Agent, Context, Model
     from uagents.setup import fund_agent_if_low
-    
+
     class Message(Model):
         message: str 
-    
-    
+
     bob = Agent(
         name="Bob",
         port=8001,
         seed="BobSecretPhrase",
         endpoint=["http://127.0.0.1/:8001/submit"],
         )
-    
+
     fund_agent_if_low(bob.wallet.address())
-     
+
     print(f"Your agent's address is: {bob.address}")
-     
+
     @bob.on_message(model=Message)
     async def message_handler(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f'Received message from {sender}: {msg.message}') 
-    
+
         await ctx.send(sender, Message(message="Hello There!"))
-     
-     
+
     if __name__ == "__main__":
         bob.run()
     ```
@@ -74,7 +72,6 @@ By running the above Agent, the output you get should be similar to the followin
     INFO:     [  Bob]: Agent inspector available at https://agentverse.ai/inspect/?uri=http://127.0.0.1:8001
     INFO:     [  Bob]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
     ```
-
 
 By clicking on the dedicated link depicted here, you will then be redirected to the **Inspector Dashboard**.
 
