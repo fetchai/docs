@@ -152,7 +152,7 @@ const items: { [key: string]: Item[] } = {
       title: "Analytics",
       description: <>Coming soon.</>,
       icon: analyticsIcon,
-      path: "/guides",
+      path: "",
     },
   ],
   "Agentverse components": [
