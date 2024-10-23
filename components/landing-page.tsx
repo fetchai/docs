@@ -17,6 +17,8 @@ import coursesStackSecond from "../src/svgs/courses-stack-second.svg";
 import langchain from "../src/svgs/langchain.svg";
 import crewai from "../src/svgs/crewai.svg";
 import fastapi from "../src/svgs/fastapi.svg";
+import openAI from "../src/svgs/openai.svg";
+import darkOpenAI from "../src/svgs/dark-openai.svg";
 import darkLangchain from "../src/svgs/dark-langchain.svg";
 import darkCrewai from "../src/svgs/dark-crew-ai.svg";
 import darkFastapi from "../src/svgs/dark-fast-api.svg";
@@ -59,6 +61,11 @@ function LandingPage() {
       name: "CrewAI",
       icon: theme === ThemeMode.Light ? crewai : darkCrewai,
       link: "/guides/quickstart-with/CrewAI/startup-idea-analyser",
+    },
+    {
+      name: "OpenAI",
+      icon: theme === ThemeMode.Light ? openAI : darkOpenAI,
+      link: "/guides/quickstart-with/OpenAI/integrating-with-swarm",
     },
   ];
 
