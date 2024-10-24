@@ -102,7 +102,7 @@ export const InstantAlgoliaSearch = ({
   const NoResultsBoundary = ({ fallback }: { fallback: string }) => {
     return (
       <div className="nx-mt-2 nx-absolute nx-w-full nx-h-full">
-        <div className="nx-flex nx-p-4 nx-font-normal nx-text-fetch-main nx-justify-center">{`${fallback}`}</div>
+        <div className="nx-flex nx-p-4 nx-font-normal nx-justify-center">{`${fallback}`}</div>
       </div>
     );
   };
