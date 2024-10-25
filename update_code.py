@@ -63,33 +63,34 @@ def insert_html_after_jsx(filepath):
             og_digest = digest_match.group(1) if digest_match.group(1) else ""
 
             code_groups = re.findall(code_groups_regex, match.group(0))
-            code_group = code_groups[0]
             code_block = ""
+            for code_group in code_groups:
 
-            pairs = {}
 
-            for internal_match in re.finditer(regex, code_group):
-                key = internal_match.group(1)
-                value = internal_match.group(2).replace("{", "").replace("}", "")
-                pairs[key] = value
+                pairs = {}
 
-            parts = pairs["path"].split("/");
-            username = parts[3];
-            repository = parts[4];
-            code_filepath = "/".join(parts[7:]).replace("\"", "")
-            filename = parts[len(parts) - 1]
+                for internal_match in re.finditer(regex, code_group):
+                    key = internal_match.group(1)
+                    value = internal_match.group(2).replace("{", "").replace("}", "")
+                    pairs[key] = value
 
-            if "filename" in pairs:
-                filename = pairs["filename"]
+                parts = pairs["path"].split("/");
+                username = parts[3];
+                repository = parts[4];
+                code_filepath = "/".join(parts[7:]).replace("\"", "")
+                filename = parts[len(parts) - 1]
 
-            hosted = pairs["hosted"]
+                if "filename" in pairs:
+                    filename = pairs["filename"]
 
-            lines = get_github_data(username, repository, code_filepath)
-            selection = lines.split("\n")[int(pairs["lineStart"]) - 1:int(pairs["lineEnd"])]
-            selection = ["\t" + s for s in selection]
-            reformed_code_block = '\n'.join(selection)
+                hosted = pairs["hosted"]
 
-            code_block = code_block + f"""\n<DocsCode local={{{hosted}}}>\n\t```py copy filename="{filename}"\n\n{reformed_code_block}\n\n```\n</DocsCode>\n"""
+                lines = get_github_data(username, repository, code_filepath)
+                selection = lines.split("\n")[int(pairs["lineStart"]) - 1:int(pairs["lineEnd"])]
+                selection = ["\t" + s for s in selection]
+                reformed_code_block = '\n'.join(selection)
+
+                code_block = code_block + f"""\n<DocsCode local={{{hosted}}}>\n\t```py copy filename="{filename}"\n\n{reformed_code_block}\n\n```\n</DocsCode>\n"""
 
             digest = hashlib.md5(code_block.encode('utf-8')).hexdigest()  # digest the entire jsx obj
 

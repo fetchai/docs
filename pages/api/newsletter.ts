@@ -6,7 +6,6 @@ export default async function handler(
 ) {
   const email = req.body;
   try {
-    const url = new URL(`${process.env.NEWSLETTER_BASE_URL}/v2/subscribers`);
     const headers = {
       Authorization: `Bearer ${process.env.SENDER_TOKEN}`,
       "Content-Type": "application/json",
@@ -14,15 +13,18 @@ export default async function handler(
     };
 
     const data = {
-      email,
+      email: email,
       groups: ["e1rVB0"],
     };
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(data),
-    }).then((response) => response.json());
+    const response = await fetch(
+      `${process.env.NEWSLETTER_BASE_URL}/v2/subscribers`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify(data),
+      },
+    ).then((response) => response.json());
     if (!response.success) {
       console.log("unable to subscribe user");
     }
