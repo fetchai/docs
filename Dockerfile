@@ -21,8 +21,8 @@ COPY . /app
 
 ENV NODE_ENV="production"
 
-RUN echo BACKEND_URL="${BACKEND_URL}" > .env.local && \
-    echo SENDER_TOKEN="${SENDER_TOKEN}" > .env.local && \
+RUN echo BACKEND_URL="${BACKEND_URL}" >> .env.local && \
+    echo SENDER_TOKEN="${SENDER_TOKEN}" >> .env.local && \
     echo NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID="${NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}" >> .env.local && \
     echo NEXT_PUBLIC_ALGOLIA_APP_ID="${NEXT_PUBLIC_ALGOLIA_APP_ID}" >> .env.local && \
     echo NEXT_PUBLIC_ALGOLIA_API_KEY="${NEXT_PUBLIC_ALGOLIA_API_KEY}" >> .env.local && \
