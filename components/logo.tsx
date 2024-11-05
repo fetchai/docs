@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import fetchLogo from "../src/svgs/logo.svg";
 import darkfetchLogo from "../src/svgs/dark-fetch-logo.svg";
@@ -7,6 +7,14 @@ import { ThemeMode } from "theme/fetch-ai-docs/helpers";
 
 const Logo: React.FC = () => {
   const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
   return (
     <div className="nx-flex nx-gap-3 nx-items-baseline">
       <Image

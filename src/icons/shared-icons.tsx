@@ -1,6 +1,9 @@
 import { useTheme } from "next-themes";
-import React, { useState } from "react";
+import Image from "next/image";
+import React, { useState, useEffect } from "react";
 import { ThemeMode } from "theme/fetch-ai-docs/helpers";
+import systemDiagram from "../svgs/system-diagram.svg";
+import darkSystemDiagram from "../svgs/dark-system-diagram.svg";
 
 export const Message = () => {
   return (
@@ -37,6 +40,14 @@ export const Play = () => {
 };
 
 export const DarkShortcut = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
   return (
     <svg
       width="43"
@@ -59,6 +70,14 @@ export const DarkShortcut = () => {
 };
 
 export const Shortcut = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
   return (
     <svg
       width="43"
@@ -471,5 +490,28 @@ export const ListViewIcon = ({ viewType }: { viewType: string }) => {
         fill={viewType === "list" ? "#5F38FB" : "#B9C5D4"}
       />
     </svg>
+  );
+};
+
+export const SystemDiagram = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+  return (
+    <>
+      <Image
+        className="nx-py-6 nx-w-full md:dark:nx-h-[586px] nx-h-auto dark:nx-bg-[#2C2E38] nx-my-10 dark:nx-rounded-lg"
+        src={
+          resolvedTheme === ThemeMode.Dark ? darkSystemDiagram : systemDiagram
+        }
+        alt="system-diagram"
+      />
+    </>
   );
 };
