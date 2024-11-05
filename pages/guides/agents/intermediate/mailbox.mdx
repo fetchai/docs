@@ -81,8 +81,10 @@ You should get something similar within your terminal output:
 
         ```
         Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cukd7gkegxcm5vx5pku7kf
+        INFO:     [alice]: Registration on Almanac API successful
         INFO:     [alice]: Registering on almanac contract...
         INFO:     [alice]: Registering on almanac contract...complete
+        INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
         INFO:     [alice]: Connecting to mailbox server at agentverse.ai
         INFO:     [alice]: Mailbox access token acquired
         ```
@@ -197,19 +199,14 @@ Let's create and run a second agent to message Alice every 3 seconds. You need t
 
 ## Testing
 
-With both `alice` and `agent_2` running, stop `alice` and let `agent_2` run for a further 20 seconds, or so. After
-that period of time, restart `alice` and she should print out a bunch of messages from the mailbox, like so:
-
-        ```
-            INFO:     [alice]: Registering on almanac contract...complete
-            INFO:     [alice]: Connecting to mailbox server at agentverse.ai
-            INFO:     [alice]: Mailbox access token acquired
-        ```
+With both `alice` and `agent_2` running, stop `alice` and let `agent_2` run for a further 20 seconds, or so.
 
  **You can now restart your agent!**
+ 
+You will see a bunch of messages being displayed by `alice` which are sent by `agent_2`.
 
     <Callout type="warning" emoji="⚠️">
-      Remember, each agent needs a different dedicated Mailbox!
+      Whenever working with mulitple local Agents, you need a different dedicated Mailbox for each one of them!
     </Callout>
 
 Now your agent doesn't need to be running all the time as messages will be waiting when it comes back online.

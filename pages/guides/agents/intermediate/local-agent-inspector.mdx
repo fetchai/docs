@@ -33,7 +33,6 @@ For instance, consider the following simple local agent:
 
     ```py copy filename="agent_inspector_example.py"
     from uagents import Agent, Context, Model
-    from uagents.setup import fund_agent_if_low
 
     class Message(Model):
         message: str 
@@ -44,8 +43,6 @@ For instance, consider the following simple local agent:
         seed="BobSecretPhrase",
         endpoint=["http://127.0.0.1/:8001/submit"],
         )
-
-    fund_agent_if_low(bob.wallet.address())
 
     print(f"Your agent's address is: {bob.address}")
 
@@ -69,7 +66,7 @@ By running the above Agent, the output you get should be similar to the followin
     INFO:     [  Bob]: Registering on Almanac API successful
     INFO:     [  Bob]: Registering on almanac contract...
     INFO:     [  Bob]: Registering on almanac contract...complete
-    INFO:     [  Bob]: Agent inspector available at https://agentverse.ai/inspect/?uri=http://127.0.0.1:8001
+    INFO:     [  Bob]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8001&address=agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50
     INFO:     [  Bob]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
     ```
 

@@ -106,7 +106,7 @@ It is important that you provide the `name`, `port`, `seed` and `endpoint` for y
 
 A few things to note; you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`.
 
-The agent is initialized with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an int as seen in the `Request` object.
+The agent is initialized with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an `int` as seen in the `Request` object.
 
 Our `on_message` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of  `UAgentResponse` which is essential to communicate with DeltaV.
 
@@ -118,6 +118,7 @@ Finally, we run our agent as follows: `python simple_function.py`
 
     ```
     INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
+    INFO:     [dungeonsanddragonsdiceroll]: Registration on Almanac API successful
     INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
     INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
     INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
