@@ -337,14 +337,6 @@ export default function Layout({
   children,
   ...context
 }: NextraThemeLayoutProps): ReactElement {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
   return (
     <ThemeDocProvider>
       <ErrorBoundary FallbackComponent={Error404}>

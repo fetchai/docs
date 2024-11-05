@@ -9,8 +9,6 @@ import darktechStack from "../src/svgs/dark-tech-stack.svg";
 import Products from "./products";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import systemDiagram from "../src/svgs/system-diagram.svg";
-import darkSystemDiagram from "../src/svgs/dark-system-diagram.svg";
 import coursesStack from "../src/svgs/courses-stack.svg";
 import darkCoursesStack from "../src/svgs/dark-course-stack.svg";
 import coursesStackSecond from "../src/svgs/courses-stack-second.svg";
@@ -22,7 +20,12 @@ import darkOpenAI from "../src/svgs/dark-openai.svg";
 import darkLangchain from "../src/svgs/dark-langchain.svg";
 import darkCrewai from "../src/svgs/dark-crew-ai.svg";
 import darkFastapi from "../src/svgs/dark-fast-api.svg";
-import { Arrow, vectorPointer, vectorSquare } from "src/icons/shared-icons";
+import {
+  Arrow,
+  SystemDiagram,
+  vectorPointer,
+  vectorSquare,
+} from "src/icons/shared-icons";
 import { useTheme } from "next-themes";
 import { ThemeMode } from "theme/fetch-ai-docs/helpers";
 
@@ -197,6 +200,7 @@ function LandingPage() {
   }) => {
     const router = useRouter();
     const [hover, setHover] = useState<boolean>(false);
+
     return (
       <div
         className={hover ? styles.hoverGuideBox : styles.guideBox}
@@ -267,11 +271,7 @@ function LandingPage() {
           make choices on their own for individuals, companies, and devices.
           Agents are the actors, and the heart of Fetch.ai ecosystem.
         </p>
-        <Image
-          className="nx-py-6 nx-w-full md:dark:nx-h-[586px] nx-h-auto dark:nx-bg-[#2C2E38] nx-my-10 dark:nx-rounded-lg"
-          src={theme === ThemeMode.Dark ? darkSystemDiagram : systemDiagram}
-          alt="system-diagram"
-        />
+        <SystemDiagram />
         <p className={styles.systemDescripton}>
           Agents are flexible problem solvers, capable of not just completing
           tasks but also tackling difficult issues across several domains.
