@@ -310,6 +310,14 @@ export const ImageByTheme = ({
 }: ImageByThemePropsTypes) => {
   const { resolvedTheme } = useTheme();
   const src = resolvedTheme === ThemeMode.Dark ? darkSrc : lightSrc;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
   return (
     <Image
       src={src}
