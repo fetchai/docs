@@ -85,11 +85,25 @@ Make sure you have read the following resources before going on with this guide:
 
 
 
+
 There's a few things happening in this script; we initialize Alice with an endpoint. An endpoint is the address in which other agents can send messages to where Alice will be listening. As highlighted in [Registration and Endpoints Weighting ↗️](/references/contracts/uagents-almanac/endpoints), agents can communicate by querying the Almanac and retrieving an endpoint from the recipient agent. Therefore, we need to specify the service endpoints when defining our agents.
 
 We also have to define `agent.run()`. This `.run()` function runs the agent, but more importantly this registers the agent to the Almanac when code is initialized.
 
-Once you run your script, your agent will start the registration process automatically, the balance of the agent's wallet will be checked and funded if needed. Finally, it will try to register on the Almanac contract. Then, we will be ready to start to a remote communication with other agents registered within the Almanac contract.
+Once you run your script, your agent will start the registration process automatically. Finally, it will try to register on the Almanac contract. Then, we will be ready to start to a remote communication with other agents registered within the Almanac contract. The output should be similar to:
+
+   ```
+   INFO:     [Alice]: Registration on Almanac API successful
+   INFO:     [Alice]: Registering on almanac contract...
+   INFO:     [Alice]: Registering on almanac contract...complete
+   INFO:     [Alice]: Hello
+   INFO:     [Alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qfccl7xc2hrwzntx9rxgf56lh80kuf5av6h4nyk3ywvxyu846zqwyl3g0jf
+   INFO:     [Alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     [Alice]: Hello
+   INFO:     [Alice]: Hello
+   INFO:     [Alice]: Hello
+   ```
+
 
     <Callout type="info" emoji="ℹ️">
         For further information on how to set up your Agents and register them into the Almanac to allow for remote

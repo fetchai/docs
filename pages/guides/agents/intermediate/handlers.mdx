@@ -186,13 +186,16 @@ Run the script: `python interval_task.py`
 
 The output should be as follows:
 
-    ```
-    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    INFO:     [alice]: Hello, I'm agent alice and my address is agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t.
-    INFO:     [alice]: Hello!
-    INFO:     [alice]: Hello!
-    INFO:     [alice]: Hello!
-    ```
+   ```
+   WARNING:  [alice]: No endpoints provided. Skipping registration: Agent won't be reachable.
+   INFO:     [alice]: Hello, I'm agent alice and my address is agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t.
+   INFO:     [alice]: Hello!
+   INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
+   INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     [alice]: Hello!
+   INFO:     [alice]: Hello!
+   INFO:     [alice]: Hello!
+   ```
 
 ## Handle messages using the `on_message()` handler
 
@@ -505,11 +508,24 @@ Run the script: `python broadcast.py`
 
 The output would be:
 
-    ```
-    Trying to contact 2 agents.
-    Received response from alice: Hello from alice
-    Received response from bob: Hello from bob
-    ```
+   ```
+   INFO:     [alice]: Registration on Almanac API successful
+   INFO:     [alice]: Registering on almanac contract...
+   INFO:     [alice]: Registering on almanac contract...complete
+   INFO:     [  bob]: Registration on Almanac API successful
+   INFO:     [  bob]: Registering on almanac contract...
+   INFO:     [  bob]: Registering on almanac contract...complete
+   INFO:     [charles]: Registration on Almanac API successful
+   INFO:     [charles]: Registering on almanac contract...
+   INFO:     [charles]: Registering on almanac contract...complete
+   INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     [charles]: Trying to contact 2 agents.
+   INFO:     [charles]: Received response from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: Hello from bob
+   INFO:     [charles]: Received response from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: Hello from alice
+   INFO:     [charles]: Trying to contact 2 agents.
+   INFO:     [charles]: Received response from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: Hello from bob
+   INFO:     [charles]: Received response from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: Hello from alice
+   ```
 
 ## Answer queries with `on_query()` handler
 
