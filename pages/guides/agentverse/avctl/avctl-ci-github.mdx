@@ -3,7 +3,7 @@ import agentverse_secret from 'src/images/guides/agentverse/avctl/agentverse_sec
 import github_secret from 'src/images/guides/agentverse/avctl/github_secret.png';
 import action from 'src/images/guides/agentverse/avctl/action.png';
 import { ImageByTheme } from "components/mdx"
-import {CodeSegment, GithubCodeSegment} from "../../../../components/code";
+import {CodeGroup, CodeSegment, DocsCode, GithubCodeSegment} from "../../../../components/code";
 
 # CI with AVCTL and github actions
 
@@ -33,7 +33,7 @@ This logic is very simple, we have a github workflow that triggers when the bran
 deployment script in `scripts/deploy-agent.sh`, this script works as follows:
 
 Check if the agent already has an address defined in `.avctl/config.toml`, if it does is this agent registered? If
-it isn't, let's register this agent. If it is registered let's stop this agent and sync it.
+it isn't, let's register this agent. If it is registered let's stop the remote agent and update it.
 
 You can see the deplot script below, or on [github](https://github.com/fetchai/avctl-ci-example/blob/main/scripts/deploy-agent.sh)
 
