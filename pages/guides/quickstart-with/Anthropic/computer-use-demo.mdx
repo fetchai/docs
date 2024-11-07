@@ -1,23 +1,23 @@
 # Integration of uAgents with Anthropic's Computer Use Demo
 
-This guide demonstrates how to integrate the uagents library with Anthropic's computer use demo. By combining the capabilities of uagents, which manages agent behaviors and interactions, with Anthropic's advanced computer-use features, you can create an intelligent agent system that handles real-time messages and executes tasks within a controlled environment. This integration offers a seamless way to simulate user-agent interactions and enhance your application with advanced AI functionalities while ensuring safety and control over internet interactions.
+This guide demonstrates how to integrate the uAgents library with **Anthropic**'s computer use demo. By combining the capabilities of [Agents ↗️](/guides/agents/getting-started/whats-an-agent) with Anthropic's advanced computer-use features, you can create an intelligent Agent system that handles real-time messages and executes tasks within a controlled environment. This integration offers an easy way to simulate user-agent interactions and enhance your application with advanced AI functionalities while ensuring safety and control over internet interactions.
 
 Let's get started!
 
 ### Supporting documentation
 
 - [Creating an agent ↗️](/guides/agents/create-a-uagent)
-- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
-- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+- [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
-- [Rest endpoints with an agent ↗️](/guides/agents/intermediate/rest-endpoints)
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+- [Rest endpoints with an Agent ↗️](/guides/agents/intermediate/rest-endpoints)
 
 ### Set Up the Agent to Handle Incoming Messages
 
-The agent's backend will already be set up with a REST API endpoint that listens to incoming POST requests at `/rendering_messages`. This handler will receive the message from the Streamlit app and perform the necessary actions.
+The Agent's backend will already be set up with a REST API endpoint that listens to incoming POST requests at `/rendering_messages`. This handler will receive the message from the Streamlit app and perform the necessary actions.
 Here’s an example of how the `receiver_agent` REST handler (`/rendering_messages`) might look:
 
-```py
+```py copy
 import logging
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
@@ -66,17 +66,17 @@ if __name__ == "__main__":
 
 ```
 
-### Explanation of the Agent Backend:
+### Explanation of the Agent Backend
 
-- Request and Response Models : The Request model captures the message text, while the Response model defines the message that will be sent back to Streamlit.
-- POST Endpoint : The `@receiver_agent.on_rest_post("/rendering_messages", Request, Response)` decorator listens for POST requests and processes the incoming messages.
-- Message Processing : The incoming message is logged, processed (through `_render_message()`), and a response is sent back, acknowledging the message.
+- **Request and Response Models**: the `Request` model captures the message text, while the `Response` model defines the message that will be sent back to Streamlit.
+- **POST Endpoint**: The `@receiver_agent.on_rest_post("/rendering_messages", Request, Response)` decorator listens for POST requests and processes the incoming messages.
+- **Message Processing**: The incoming message is logged, processed (through `_render_message()`), and a response is sent back, acknowledging the message.
 
 ### Rendering Messages in Streamlit
 
 The `_render_message` function takes a message from the user or the agent and renders it in Streamlit's chat interface. It handles different message types such as plain text, tool results, and errors.
 
-```py
+```py copy
 def _render_message(
     sender: Sender,
     message: str | BetaContentBlockParam | ToolResult,
@@ -126,20 +126,23 @@ The `setup_state` function initializes the session state, such as storing API ke
 ### 2. API Key Handling
 
 The API key for authentication with AI services is either loaded from a file or environment variable (e.g., `ANTHROPIC_API_KEY`).
+
 Get your anthropic api key from here [API KEY ↗️](https://console.anthropic.com/login?returnTo=%2F%3F) 
 
 ### 3. UI Components
 
 The sidebar allows users to:
-- Select the API provider
-- Input the model name
-- Enter an API key
-- Manage settings like the number of images sent or hide screenshots
+
+  - Select the API provider
+  - Input the model name
+  - Enter an API key
+  - Manage settings like the number of images sent or hide screenshots
 
 The main area displays the chat interface where users can:
-- Type messages
-- Receive responses from the assistant
-- View logs of HTTP exchanges and tool outputs
+
+  - Type messages
+  - Receive responses from the assistant
+  - View logs of HTTP exchanges and tool outputs
 
 ### 4. Asynchronous Processing (`initializing_messages`)
 
@@ -147,9 +150,9 @@ The `initializing_messages` function handles user interactions. It processes new
 
 #### Sending Messages to uagents via REST
 
-This part of the code sends user messages from Streamlit to the uagents framework via a REST API. When a new message is provided, it’s sent as a `POST` request to the `/rendering_messages` endpoint of the uagents backend.
+This part of the code sends user messages from Streamlit to the uAgents Framework via a REST API. When a new message is provided, it is sent as a `POST` request to the `/rendering_messages` endpoint of the Agent's backend.
 
-    ```python
+    ```python copy
     if new_message:
         data = {"text": new_message}
         response = requests.post("http://localhost:8000/rendering_messages", json=data)
@@ -182,13 +185,12 @@ Functions for loading and saving configuration data (like the API key or custom 
 ### 10. UI Layout
 
 The app uses Streamlit's layout components like:
-- `st.radio`
-- `st.text_input`
-- `st.chat_input`
+
+  - `st.radio`
+  - `st.text_input`
+  - `st.chat_input`
 
 These components build an interactive interface, dynamically updating the UI based on user input and the assistant’s responses.
-
-
 
 # EntryPoint for Streamlit
 
@@ -198,8 +200,7 @@ This file is the entry point for running the Streamlit app. It serves as a user 
 
 The application uses Streamlit, `httpx`, and `requests` to create an interactive UI where agent can communicate with the bot, view the HTTP exchange logs, and control a computer via various APIs.
 
-
-```py
+```py copy
 """
 Entrypoint for streamlit, see https://docs.streamlit.io/
 """
@@ -621,7 +622,6 @@ if __name__ == "__main__":
 
 ```
 
-
 ### Expected output
 
     ```
@@ -648,7 +648,5 @@ if __name__ == "__main__":
 
     ![](src/images/guides/quickstart-with/anthropic/output1.png)
 
-
     ![](src/images/guides/quickstart-with/anthropic/output2.png)
-
     
