@@ -1,24 +1,23 @@
 import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
-# Using Jupyter notebook to build an agent
+# Using Jupyter notebook to build an Agent
 
-Jupyter notebook natively supports asyncio, and as uAgents are asynchronous by design, Jupyter and agents work together with ease.
+**Jupyter notebook** natively supports asyncio, and as Agents ↗️](/guides/agents/getting-started/whats-an-agent) are asynchronous by design, Jupyter and Agents work together with ease.
 
-Please check out the example code in our [examples repo](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/jupyter-notebook) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/jupyter-notebook) to run this locally.
 
 ## Installation
 
-We're using [poetry]() to manage our application, not super essential for you. Just be sure to have the following
-libraries installed:
+We're using [poetry](https://python-poetry.org/) to manage our application, but it is not super essential for you. Just be sure to have the following libraries installed on your system:
 
-```bash
-    python = "3.11"
-    uagents = "^0.17.1"
-    notebook = "^7.2.2"
-    jupyter = "^1.1.1"
-```
+    ```bash
+        python = "3.11"
+        uagents = "^0.17.1"
+        notebook = "^7.2.2"
+        jupyter = "^1.1.1"
+    ```
 
-Are you new to agents? To understand the agent in this example, please read [communicating with agents](/guides/agents/intermediate/communicating-with-other-agents)
+Are you new to Agents? To understand the agent in this example, please read [communicating with agents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
 
 ## Notebook
 
@@ -266,15 +265,15 @@ Are you new to agents? To understand the agent in this example, please read [com
 
 
 
-## run this file:
+## Run this file
 
-If using poetry:
+If you are using Poetry, then run:
 
 ```
 poetry run jupyter notebook
 ```
 
-Else from pip:
+Else, from Pip:
 
 ```
 jupyter notebook
@@ -282,30 +281,32 @@ jupyter notebook
 
 ## Testing
 
-To test your agent running in a Jupyter notebook, let's run the second agent:
+To test your Agent running in a Jupyter notebook, let's run the second Agent:
 
 ```
 python agent.py
 ```
 
-### expected output
+### Expected output
 
 In Jupyter:
 
 ```
 INFO:     [first_agent]: Registration on Almanac API successful
-INFO:     [first_agent]: Almanac contract registration is up to date!
+INFO:     [first_agent]: Registering on almanac contract... 
+INFO:     [first_agent]: Registering on almanac contract...complete
 ERROR:    [first_agent]: Unable to resolve destination endpoint
 INFO:     [first_agent]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8005&address=agent1qdwgulp6q2jw93u3yhh9teectdjaxvrmmwl900cs33vz4skkawstg3q74n4
 INFO:     [first_agent]: Starting server on http://0.0.0.0:8005 (Press CTRL+C to quit)
 INFO:     [first_agent]: Received message from agent1qgdefk0mewtn88dj5nu05lkwtxd3jedn9g8lw7jttrkz9c09l37lqnhs5zt: Hello from first agent
 ```
 
-From command line python agent:
+From Command Line Python Agent:
 
 ```
 INFO:     [jupyter_test_agent]: Registration on Almanac API successful
-INFO:     [jupyter_test_agent]: Almanac contract registration is up to date!
+INFO:     [jupyter_test_agent]: Registering on almanac contract... 
+INFO:     [jupyter_test_agent]: Registering on almanac contract...complete
 INFO:     [jupyter_test_agent]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8009&address=agent1qgdefk0mewtn88dj5nu05lkwtxd3jedn9g8lw7jttrkz9c09l37lqnhs5zt
 INFO:     [jupyter_test_agent]: Starting server on http://0.0.0.0:8009 (Press CTRL+C to quit)
 ```
