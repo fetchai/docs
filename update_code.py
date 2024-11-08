@@ -47,6 +47,7 @@ def get_github_data(owner, repo, filePath):
 
 
 def insert_html_after_jsx(filepath):
+    print (filepath)
     with open(filepath, "r+") as f:
         data = f.read()
         base_regex = r"<GithubCodeSegment(.*?)>(.*?)</GithubCodeSegment>"
@@ -137,8 +138,8 @@ def directory_loop(directory, removal):
                     delete_code_sample(os.path.join(root, file))
 
 
-directory_loop('./pages/guides', True)
-directory_loop('./pages/guides', False)
+directory_loop('./pages', True)
+directory_loop('./pages', False)
 
 """
 todo: add in function to remove all CodeGroup and set all GithubCodeSegment digests to an empty string
