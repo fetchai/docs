@@ -4,7 +4,57 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 
 ## Introduction
 
-In this guide, we want to illustrate how storage functions are called and how to use them. We want to create an agent which gets a value from the storage (starting from 0) every second. Then prints it, and puts the new value back into the storage but increased by 1 unit.
+Agents will need to store data for later use, uAgents has an inbuilt function to store data to json file, this is done with `ctx.storage`. Data is stored in `key:value` format. `ctx` object’s `storage` attribute has different function like `get` and `set` to use agent’s storage.
+
+## Overview
+
+We can store simple integers like :
+
+```python
+ctx.storage.set("Messages_sent", 1)
+```
+
+Or strings:
+
+```python
+ctx.storage.set("Passkey", "#-eiwfwrign")
+```
+
+Complex data can also be stored:
+
+```python
+Record1 = {"name":ctx.name, "address":ctx.address}
+ctx.storage.set("Record1", Record1)
+```
+
+We can access these values like so:
+
+```python
+ctx.logger.info(ctx.storage.get("Record1"))
+ctx.logger.info(ctx.storage.get("Messages_sent"))
+ctx.logger.info(ctx.storage.get("Passkey"))
+```
+
+Expected Output:
+
+```bash
+INFO:     [Receiver]: {"name": "Receiver", "address": "agent1qdlcar9glcm6f9rpzway3xqaw4clfltxdhtwflxrjz3ahy98ep5dx7xy6x7"}
+INFO:     [Receiver]: 2
+INFO:     [Receiver]: "#-eiwfwrign"
+```
+
+Locally, this will be stored as a json file:
+
+```json
+{
+"Messages_sent" : 2,
+"Record1" : {"name" : "Receiver", "address" : "agent1qdlcar9glcm6f9rpzway3xqaw4clfltxdhtwflxrjz3ahy98ep5dx7xy6x7"},
+"Passkey" : "#-eiwfwrign"
+}
+```
+
+Generally, any object that is compatible with pydantic Models will be fine with uAgents.
+
 
 ## Prerequisites
 
@@ -19,6 +69,9 @@ Make sure you have read the following resources before going on with this guide:
    - [uAgents ↗️](https://pypi.org/project/uagents/)
 
 ## Walk-through
+
+In this walkthrough, we want to show how storage functions are called and how to use them. We want to create an agent which gets a value from the storage (starting from 0) every second. Then prints it, and puts the new value back into the storage but increased by 1 unit.
+
 
 1. To start let's create a Python script and name it `storage.py`, we can do this in terminal with the following command:
 
@@ -100,3 +153,7 @@ The output should look as follows:
     INFO:     [alice]: My count is: 3
     ...
     ```
+
+
+
+
