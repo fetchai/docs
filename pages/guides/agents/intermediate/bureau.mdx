@@ -80,7 +80,7 @@ The Bureau can be customized through a few important arguments when instantiated
 
 - `port` (Optional[int]): The port number on which the Bureau's ASGI server will run. This is crucial if your agents need to expose REST APIs for external communication. The default port is `8000`, but you can specify any available port.
 
-- `endpoint` (Optional[Union[str, List[str], Dict[str, dict]]]): Configuration for the agent endpoints. You can specify how agents communicate with external systems via REST. This could be a string, a list of strings, or a dictionary defining more complex configurations.
+- `endpoint` (Optional[Union[str, List[str], Dict[str, dict]]]): Configuration for the agent endpoints. You can specify how agents communicate with external systems via REST. This could be a string, a list of strings, or a dictionary defining more complex configurations. If you want agents external to the bureau to be able to communicate with the agents within the Bureau this must be defined.
 
 - `loop` (Optional[asyncio.AbstractEventLoop]): The event loop that the Bureau will use to manage asynchronous tasks. By default, the Bureau creates an event loop if one is not provided.
 
@@ -93,7 +93,7 @@ bureau = Bureau()
 
 or 
 # Initialize the Bureau, optionally specifying port, agents, and other configurations
-bureau = Bureau(port=8000, agents=[agent_a, agent_b])
+bureau = Bureau(port=8000, agents=[agent_a, agent_b], port=8000, endpoint="http://localhost:8000/submit")
 
 bureau.add(agent_a)
 bureau.add(agent_b)
@@ -144,6 +144,10 @@ The overall script for this example should look as follows:
         await ctx.send(agent_a.address, Message(message="Reply from agent_b"))
     
     bureau = Bureau()
+
+    # if we want our bureau agents to receive messages from external agents:
+    # bureau = Bureau(port=8000, agents=[agent_a, agent_b], endpoint="http://localhost:8000/submit")
+
     bureau.add(agent_a)
     bureau.add(agent_b)
     
