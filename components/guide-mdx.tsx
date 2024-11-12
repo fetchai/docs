@@ -100,7 +100,7 @@ const FilterDropdown = ({
         className="nx-z-50 nx-mt-2 nx-absolute dropDownGuide"
         style={{ overflow: "hidden" }}
       >
-        <div className="nx-flex-col nx-text-white nx-p-2 nx-w-full !nx-items-start nx-justify-between nx-cursor-pointer">
+        <div className="nx-flex-col nx-p-2 nx-w-full !nx-items-start nx-justify-between nx-cursor-pointer">
           <div
             className={`nx-text-lg nx-cursor-pointer ${styles.tab}`}
             onClick={() => onSelectChange("All Types")}
