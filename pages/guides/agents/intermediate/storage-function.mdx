@@ -8,28 +8,28 @@ Agents will need to store data for later use, uAgents has an inbuilt function to
 
 ## Overview
 
-We can store simple integers like :
+We can store simple integers like:
 
-```python
+```python copy
 ctx.storage.set("Messages_sent", 1)
 ```
 
 Or strings:
 
-```python
+```python copy
 ctx.storage.set("Passkey", "#-eiwfwrign")
 ```
 
 Complex data can also be stored:
 
-```python
+```python copy
 Record1 = {"name":ctx.name, "address":ctx.address}
 ctx.storage.set("Record1", Record1)
 ```
 
 We can access these values like so:
 
-```python
+```python copy
 ctx.logger.info(ctx.storage.get("Record1"))
 ctx.logger.info(ctx.storage.get("Messages_sent"))
 ctx.logger.info(ctx.storage.get("Passkey"))

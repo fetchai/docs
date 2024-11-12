@@ -124,7 +124,7 @@ const items: { [key: string]: Item[] } = {
         <>Introducing the AI Engine and its role in DeltaV functionalities.</>
       ),
       icon: aiEngine,
-      path: "/concepts/ai-engine/ai-engine-intro",
+      path: "/concepts#introduction",
     },
     {
       title: "Powering connections and smart operations in DeltaV",
@@ -135,7 +135,7 @@ const items: { [key: string]: Item[] } = {
         </>
       ),
       icon: synergyIcon,
-      path: "/concepts/ai-engine/powering-connections-and-smart-operations-in-deltav",
+      path: "/concepts#powering-connections-and-smart-operations-in-deltav",
     },
     {
       title: "DeltaV",
@@ -166,7 +166,7 @@ const items: { [key: string]: Item[] } = {
         </>
       ),
       icon: hostingIcon,
-      path: "/concepts/agent-services/agent-hosting",
+      path: "/concepts#deploy-and-run-agents",
     },
     {
       title: "Agentverse: Mailroom / IoT Gateway",
@@ -177,7 +177,7 @@ const items: { [key: string]: Item[] } = {
         </>
       ),
       icon: mailBoxIcon,
-      path: "/concepts/agent-services/agent-mail",
+      path: "/concepts#agentverse-mailroom--iot-gateway",
     },
     {
       title: "Agentverse Functions: register your Functions on the Agentverse!",
@@ -205,7 +205,7 @@ const items: { [key: string]: Item[] } = {
         </>
       ),
       icon: explorerIcon,
-      path: "/concepts/agent-services/agent-explorer",
+      path: "/concepts#agentverse-marketplace",
     },
   ],
   "Open Network": [
@@ -236,7 +236,7 @@ const items: { [key: string]: Item[] } = {
       title: "Ledger",
       description: <>Get started with the Fetch Ledger.</>,
       icon: ledgerIcon,
-      path: "/concepts/fetch-network/ledger/intro",
+      path: "/concepts#3-fetch-ledger-and-indexer",
     },
   ],
 };
