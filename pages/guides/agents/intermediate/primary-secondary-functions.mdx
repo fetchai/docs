@@ -8,16 +8,16 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 
 It's time to build an example of secondary functions in use.
 
-The **Hugging Face Inference API** allows access to thousands of models for specific tasks. In this tutorial, we will integrate the
-Hugging Face API with the Agentverse Agent, enabling users to select their preferred **text-classification** model. Users can choose 
-from the top downloaded models and make queries to them. This system consists of multiple layers of primary and secondary functions, with the  Hugging Face system as the main objective and Hugging Face request and model list as secondary functions. For a better understanding of the workflow, please refer to the documentation below.
+The **Hugging Face Inference API** allows access to thousands of models for specific tasks. In this tutorial, we will integrate the Hugging Face API with the Agentverse Agent, enabling users to select their preferred **text-classification** model. Users can choose from the top downloaded models and make queries to them. This system consists of multiple layers of primary and secondary functions, with the  Hugging Face system as the main objective and Hugging Face request and model list as secondary functions. 
+
+For a better understanding of the workflow, please refer to the documentation below.
 
 ## Prerequisites
 
 Make sure you have read the following resources before going on with this guide:
 
     - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
     - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Using agents storage function ↗️](/guides/agents/intermediate/storage-function)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
@@ -35,13 +35,13 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Hugging face Inference API
 
-Login to [Hugging face ↗️](https://huggingface.co/settings/profile) and get your API key by logging in and going to account settings. 
+Login to [Hugging Face ↗️](https://huggingface.co/settings/profile) and get your API key by logging in and going to account settings. 
 
-Create news [access token ↗️](https://huggingface.co/settings/tokens) in settings for reading access type. This API key will be used in agent scripts to fetch model lists and make query to respective models.
+Create news [access token ↗️](https://huggingface.co/settings/tokens) in settings for reading access type. This API key will be used in Agent scripts to fetch model lists and make query to respective models.
 
 ## Setting up the agents
 
-For setting up Hugging face function we need to create different agents as listed below.
+For setting up Hugging Face function we need to create different agents as listed below.
 
 ### Hugging Face System Agent
 
@@ -107,7 +107,7 @@ After creating and running this Agent, it can be registered to DeltaV on Agentve
 
 ### Hugging Face Request Agent
 
-This agent helps hugging face system to handle hugging face request to user and calculates the response. The agent has two fields i.e. `model_id` (to which query has to be made) and `query` (Question needed to be asked to the model). For `model_id` this task always prioritizes `Model List` secondary function to get list of available model of a specific type.
+This Agent helps Hugging Face system to handle hugging face request to user and calculates the response. The Agent has two fields, i.e. `model_id` (towards which the query has to be made) and `query` (question needed to be asked to the model). For `model_id` this task always prioritizes `Model List` secondary function to get list of available model of a specific type.
 
 <GithubCodeSegment digest="08326a1e58b4f89aa5cd53b89810358c">
     <CodeSegment
@@ -176,21 +176,25 @@ This agent helps hugging face system to handle hugging face request to user and 
 
 </CodeGroup>
 
-Within this code snippet, we create a Hugging Face request Agent that can interact with DeltaV and be registered on the Agentverse using the Agent's address. The code first imports the necessary libraries: `requests` for handling HTTP requests, json for data handling, and `UAgentResponse` and `UAgentResponseType` from `ai_engine` for structuring responses.
+Within this code snippet, we create a Hugging Face request Agent that can interact with DeltaV and which can be registered on the Agentverse using the Agent's address. The code first imports the necessary libraries: 
+
+    - `requests` for handling HTTP requests;
+    - `json` for data handling;
+    - `UAgentResponse` and `UAgentResponseType` from `ai_engine` to make Agents AI Engine compatible.
 
 The `Search` model class is then defined to represent the expected message format, containing two fields: `model_id`, which specifies the Hugging Face model, and `query`, which represents the user’s request.
 
 The function `handle_query` is then created to make an API call to the Hugging Face model specified by `model_id` using the user's query. This function builds the API endpoint URL, authenticates with an API token (`API_TOKEN`), and sends the query as a JSON object. The function returns the JSON response from Hugging Face.
 
-Next, a protocol `hfprotocol` is created to define the interactions for the Hugging Face request Agent. The handler `handle_message` is associated with this protocol and is triggered whenever a message of type Search is received. This handler logs the `model_id` and query details for reference, calls `handle_query` to retrieve the API response, and then sends the formatted response back to the original sender.
+Next, a protocol `hfprotocol` is created to define the interactions for the Hugging Face request Agent. The handler `handle_message` is associated with this protocol and is triggered whenever a message of type `Search` is received. This handler logs the `model_id` and query details for reference, calls `handle_query` to retrieve the API response, and then sends the formatted response back to the original sender.
 
-Finally, `hfprotocol` is included in the agent, with the option `publish_manifest=True` to make this protocol available for registration and use in DeltaV.
+Finally, `hfprotocol` is included in the Agent, with the option `publish_manifest=True` to make this protocol available for registration and use in DeltaV.
 
 Remember that you need to provide the `API_URL` and `API_TOKEN` parameters in order to correctly run this code.
 
 ### Model List Agent
 
-This agent helps user to look for specific model with search keyword. The agent queries hugging face url to get top 5 downloaded model related to search keyword. The agent returns list of models and user can select one they need.
+This agent helps user to look for specific model with search keyword. The Agent queries Hugging Face URL to get top 5 downloaded model related to search keyword. The Agent returns list of models and users can select the one they need.
 
 <GithubCodeSegment digest="719850e5bd50c22dea42fd1193540f49">
     <CodeSegment
@@ -274,7 +278,12 @@ This agent helps user to look for specific model with search keyword. The agent 
 
 </CodeGroup>
 
-In the above, we defined a Model List Agent compatible with DeltaV, which, after running, can be registered on Agentverse  using the Agent's address. We begin by importing the necessary libraries: `requests` for making HTTP requests and classes from `ai_engine` to structure responses.
+In the above, we defined a Model List Agent compatible with DeltaV, which, after being run, can be registered on Agentverse  using the Agent's address. 
+
+We begin by importing the necessary libraries: 
+
+    - `requests` for making HTTP requests;
+    - `UAgentResponse` and `UAgentResponseType` from `ai_engine` to make Agents AI Engine compatible.
 
 The `Search` model class is defined to represent the message format expected by this Agent, containing a single attribute, `search`, which holds the user's keyword for model search.
 
@@ -282,13 +291,13 @@ Next, we defined the function `handle_query` which is created to query the Huggi
 
 A protocol `model_list_protocol` is then defined to handle interactions for this Agent. Within it, the message handler `handle_message` is set up to process incoming messages of type `Search`. This handler logs the user-provided search keyword, calls `handle_query` to retrieve a list of matching models, and logs this list. It then formats the list into a structured dictionary of options, where each model ID is associated with a numbered key, and sends this formatted response back to the sender.
 
-Finally, `model_list_protocol` is included in the agent with `publish_manifest=True`, making the protocol accessible for DeltaV registration.
+Finally, `model_list_protocol` is included in the Agent with `publish_manifest=True`, making the protocol accessible for DeltaV registration.
 
 ## Setting up functions
 
-Go to [Agentverse ↗️](https://agentverse.ai/) and create new function for all three agents created [above ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
+Go to [Agentverse ↗️](https://agentverse.ai/) and create new function for all three Agents created [above ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
 
-The properties of function for each agent are listed below.
+The properties of function for each Agent are listed below.
 
 ### Hugging Face System
 
@@ -327,7 +336,7 @@ The properties of function for each agent are listed below.
     - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agents/intermediate/primary-secondary-functions#model-list-agent)
     - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary function. In this example we can specify something like: _**This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options.**_
 
-## Let's find our service on DeltaV
+## Let's find our Function on DeltaV
 
 Now, head to [DeltaV ↗️](https://deltav.agentverse.ai/) and sign in.
 
