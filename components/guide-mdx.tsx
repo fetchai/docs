@@ -37,12 +37,6 @@ const getPathLabel = (path: string): string => {
   return "";
 };
 
-const labelClasses: { [key: string]: string } = {
-  Beginner: styles.labelBeginner,
-  Intermediate: styles.labelIntermediate,
-  Advanced: styles.labelAdvanced,
-};
-
 const SectionHeading = ({
   heading,
   icon,
@@ -64,17 +58,10 @@ const SectionDetails = ({
   path: string;
 }) => {
   const label = getPathLabel(path);
-  const labelClass = labelClasses[label] || "";
   return (
     <div className={styles.sectionDetails}>
       {children}
-      {label && (
-        <div
-          className={`${labelClass} nx-py-[0.5px] nx-px-1 nx-border nx-rounded-md nx-font-light nx-text-xs`}
-        >
-          {label}
-        </div>
-      )}
+      {label && <div className={`${styles.label}`}>{label}</div>}
     </div>
   );
 };
