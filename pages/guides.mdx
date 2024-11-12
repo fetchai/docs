@@ -3,11 +3,14 @@
 <div className="nx-text-fetch-content">
   The place where you can find all tutorials and guides needed to familiarise with the concepts and code in a practical way to develop your ideas autonomously.
 </div>
-import GuideMdx from "../components/guide-mdx"
 
-<GuideMdx  content={ [
+import GuidesMdx from "../components/guide-mdx"
+import { AgentsIcon, AgentverseIcon, CliIcon,FetchNetwork, AsiIcon, LedgerIcon } from "src/icons/main-page-icons";
+
+<GuidesMdx content={ [
   {
     type: "Agents",
+    icon: AgentsIcon,
     description:
 
       "A list of guides showing the process to get started and develop use cases using Agents technology.",
@@ -15,80 +18,80 @@ import GuideMdx from "../components/guide-mdx"
       {
         title: "Installing the uAgents Framework",
         description: "A guide for installing the uAgents Framework.",
-        path: "/guides/agents/installing-uagent",
+        path: "/guides/agents/getting-started/installing-uagent",
       },
       {
         title: "Creating your first Agent",
-
         description: "Build your first Agent in a matter of few steps.",
-        path: "/guides/agents/create-a-uagent",
+        path: "/guides/agents/getting-started/create-a-uagent",
       },
       {
         title: "Creating an interval task",
         description: "A guide to understand how Agents perform interval tasks.",
-        path: "/guides/agents/interval-task",
+        path: "/guides/agents/intermediate/handlers#creating-an-interval-task-with-on_interval-handler",
       },
       {
         title: "Agent addresses",
         description:
           "A guide to understand how to retrieve an Agent's addresses.",
-        path: "/guides/agents/getting-uagent-address",
+        path: "/guides/agents/getting-started/getting-uagent-address",
       },
       {
         title: "Using Agents storage function",
         description:
-          "A guide to understand how to call and use Agents' storage functions.",
-        path: "/guides/agents/storage-function",
+          "A guide to understand how to call and use Agent's storage functions.",
+        path: "/guides/agents/intermediate/storage-function",
       },
       {
         title: "Registering in the Almanac contract",
         description:
 
           "A guide showing how to correctly register within the Almanac contract.",
-        path: "/guides/agents/register-in-almanac",
+        path: "/guides/agents/advanced/register-in-almanac",
       },
       {
         title: "Communicating with other Agents",
         description:
           "A guide showing different communication methods between Agents.",
-        path: "/guides/agents/communicating-with-other-agents",
+        path: "/guides/agents/intermediate/communicating-with-other-agents",
       },
       {
         title: "How to use Agents to send tokens",
         description:
           "A guide showing how to use Agents to send tokens with one another.",
-        path: "/guides/agents/send-tokens",
+        path: "/guides/agents/intermediate/send-tokens",
       },
       {
         title: "Agents: broadcast",
         description:
 
           "A guide showing how to use Agents to broadcast messages using protocols.",
-        path: "/guides/agents/broadcast",
+        path: "/guides/agents/intermediate/broadcast",
       },
       {
         title: "Dialogues",
         description:
           "Understand the concept of dialogues and how it applies to Agents.",
-        path: "/guides/agents/dialogues",
+        path: "/guides/agents/advanced/dialogues",
       }
     ],
   },
   {
     type: "Agentverse",
+    icon: AgentverseIcon,
     description:
-      "A list of guides representing the various features offered within the Agentverse platform.",
+      "A list of guides representing the various features offered within the Agentverse.",
     data: [
       {
         title: "Creating an Agentverse hosted Agents",
         description:
-          "Use the Agentverse: My Agents tab to develop Agents directly on the Agentverse platform.",
+          "Use the Agentverse: My Agents tab to develop Agents directly on Agentverse.",
         path: "/guides/agentverse/creating-a-hosted-agent",
       },
       {
         title: "Utilizing the Agentverse Mailroom service",
         description:
-          "Set up Agentverse mailboxes for your locally-run Agents and to run them independently of your constant presence to run the server.",
+          "Set up Agentverse Mailboxes for your local Agents and to run them independently of your constant presence to run the server.",
         path: "/guides/agentverse/utilising-the-mailbox",
       },
       {
@@ -102,28 +105,30 @@ import GuideMdx from "../components/guide-mdx"
         title: "Agentverse allowed imports",
         description:
 
-          "A guide helping to understand what imports are allowed on the Agentverse.",
+          "A guide to understand what imports are allowed on the Agentverse.",
         path: "/guides/agentverse/allowed-imports",
       },
     ],
   },
   {
     type: "Agentverse Command Line interface",
+    icon: CliIcon,
     data: [
       {
         title: "AVCTL",
-        description: "A guide for using CLI to perform Agents related actions on Agentverse.",
+        description: "A guide to use CLI to perform Agents related actions on Agentverse.",
         path: "/guides/avctl/avctl"
       },
     ],
   },
   {
     type: "Fetch network",
+    icon: FetchNetwork,
     description: "A list of guides related to operations and tools executable on the Fetch Network.",
     data: [
       {
         title: "How to convert Native FET to and from ERC-20 FET",
-        description: "A guide for converting Native FET to and from ERC-20 FET.",
+        description: "A guide to convert Native FET to and from ERC-20 FET.",
         path: "/guides/fetch-network/how-to-convert-fet-to-and-from-erc20"
       },
       {
@@ -133,12 +138,12 @@ import GuideMdx from "../components/guide-mdx"
       },
       {
         title: "Different ways of staking FET",
-        description: "A guide showing the different ways one can stake FET.",
+        description: "A guide showing different ways one can stake FET.",
         path: "/guides/fetch-network/different-ways-to-stake-the-fet-token"
       },
       {
         title: "Re-delegating staked FET token",
-        description: "A guide showing the steps to undertake to complete re-delegation successfully.",
+        description: "A guide showing the steps to complete re-delegation successfully.",
         path: "/guides/fetch-network/re-delegating-staked-fet-token"
       },
       {
@@ -150,32 +155,34 @@ import GuideMdx from "../components/guide-mdx"
   },
     {
     type: "ASI Alliance Wallet",
+    icon: AsiIcon,
     subSection: true,
     data: [
       {
         title: "ASI Alliance Mobile Wallet: Get Started",
-        description: "A guide showing how to get started with ASI Alliance Mobile Wallet functionalities.",
+        description: "A guide to get started with ASI Alliance Mobile Wallet functionalities.",
         path: "/guides/fetch-network/fetch-wallet/mobile-wallet/get-started"
       },
       {
         title: "Fetch Web Wallet: Get Started",
-        description: "A guide showing how to get started with the Fetch Web wallet functionalities.",
+        description: "A guide to get started with the Fetch Web wallet functionalities.",
         path: "/guides/fetch-network/fetch-wallet/web-wallet/get-started"
       },
       {
         title: "How to stake with ASI Alliance Mobile Wallet",
-        description: "A guide showing how to stake using the ASI Alliance Mobile wallet.",
+        description: "A guide to stake using the ASI Alliance Mobile wallet.",
         path: "/guides/fetch-network/fetch-wallet/mobile-wallet/stake"
       },
       {
         title: "How to stake with Fetch Web Wallet",
-        description: "A guide showing how to stake using the Fetch Web wallet.",
+        description: "A guide to stake using the Fetch Web wallet.",
         path: "/guides/fetch-network/fetch-wallet/web-wallet/stake"
       }
     ]
   },
   {
     type: "Ledger",
+    icon: LedgerIcon,
     subSection: true,
     description: "A list of guides related to operations executable on the Fetch Ledger.",
     data: [
@@ -218,6 +225,7 @@ import GuideMdx from "../components/guide-mdx"
   },
   {
     type: "CLI - Command Line Interface",
+    icon: CliIcon,
     subSection: true,
     data: [
       {
@@ -232,12 +240,12 @@ import GuideMdx from "../components/guide-mdx"
       },
       {
         title: "CLI - Managing tokens",
-        description: "Learn how to manage your tokens using CLI.",
+        description: "Learn to manage your tokens using CLI.",
         path: "/guides/fetch-network/ledger/cli/tokens"
       },
       {
         title: "CLI - Multisig keys",
-        description: "Learn how to create multi signature keys using CLI.",
+        description: "Learn to create multi signature keys using CLI.",
         path: "/guides/fetch-network/ledger/cli/multisig-keys"
       },
       {
@@ -247,13 +255,14 @@ import GuideMdx from "../components/guide-mdx"
       },
       {
         title: "Governance proposals",
-        description: "Learn how to create a governance proposal using CLI.",
+        description: "Learn to create a governance proposal using CLI.",
         path: "/guides/fetch-network/ledger/cli/governance-proposals"
       }
     ]
   },
   {
     type: "Cosmpy",
+    icon: AsiIcon,
     subSection: true,
     data: [
       {
@@ -263,33 +272,34 @@ import GuideMdx from "../components/guide-mdx"
       },
       {
         title: "Connecting to a blockchain",
-        description: "A guide showing how to use CosmPy to connect to blockchains.",
+        description: "A guide to use CosmPy to connect to blockchains.",
         path: "/guides/fetch-network/cosmpy/establishing-node-connection"
       },
       {
         title: "Querying balances",
-        description: "A guide showing how to use CosmPy to query balances related to an address.",
+        description: "A guide to use CosmPy to query balances related to an address.",
         path: "/guides/fetch-network/cosmpy/querying-address-balances"
       },
       {
         title: "Wallets and private keys",
-        description: "A guide showing how to use CosmPy to create wallets and private keys.",
+        description: "A guide to use CosmPy to create wallets and private keys.",
         path: "/guides/fetch-network/cosmpy/creating-wallet"
       },
       {
         title: "Sending funds",
-        description: "A guide showing how to use CosmPy to send funds.",
+        description: "A guide to use CosmPy to send funds.",
         path: "/guides/fetch-network/cosmpy/transaction-broadcast"
       },
       {
         title: "Staking with CosmPy",
-        description: "A guide showing how to use CosmPy to stake your tokens.",
+        description: "A guide to use CosmPy to stake your tokens.",
         path: "/guides/fetch-network/cosmpy/staking"
       }
     ]
   },
   {
     type: "Cosmpy: use cases",
+    icon: AsiIcon,
     subSection: true,
     data: [
       {
@@ -326,6 +336,7 @@ import GuideMdx from "../components/guide-mdx"
   },
   {
     type: "Jenesis",
+    icon: AsiIcon,
     data: [
       {
         title: "Jenesis: Installation",
@@ -371,6 +382,7 @@ import GuideMdx from "../components/guide-mdx"
   },
   {
     type: "Courses",
+    icon: AgentsIcon,
     data: [
       {
         title: "Agents 101",
@@ -384,5 +396,6 @@ import GuideMdx from "../components/guide-mdx"
       }
     ]
   }
-]}
-/>
+]} />
+
+<div className="nx-mb-8"></div>
