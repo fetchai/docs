@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { ThemeMode } from "theme/fetch-ai-docs/helpers";
 import systemDiagram from "../svgs/system-diagram.svg";
 import darkSystemDiagram from "../svgs/dark-system-diagram.svg";
+import { motion } from "framer-motion";
 
 export const Message = () => {
   return (
@@ -350,20 +351,26 @@ export const Tick = () => {
   );
 };
 
-export const DropDownArrow = () => {
+interface DropDownArrowProps {
+  isActive?: boolean;
+}
+
+export const DropDownArrow: React.FC<DropDownArrowProps> = ({ isActive }) => {
   return (
-    <svg
+    <motion.svg
       width="12"
       height="7"
       viewBox="0 0 12 7"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      animate={{ rotate: isActive ? 180 : 0 }}
+      transition={{ duration: 0.3 }}
     >
       <path
         d="M5.60156 5.89844L1.10156 1.39844C0.867188 1.1875 0.867188 0.835938 1.10156 0.601562C1.3125 0.390625 1.66406 0.390625 1.89844 0.601562L6 4.72656L10.1016 0.625C10.3125 0.390625 10.6641 0.390625 10.8984 0.625C11.1094 0.835938 11.1094 1.1875 10.8984 1.39844L6.375 5.89844C6.16406 6.13281 5.8125 6.13281 5.60156 5.89844Z"
         fill="#87929C"
       />
-    </svg>
+    </motion.svg>
   );
 };
 
