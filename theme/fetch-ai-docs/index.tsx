@@ -160,7 +160,7 @@ const Body = ({
       <article
         className={cn(
           classes.main,
-          "nextra-content nx-flex nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-min-w-0 nx-pb-8 nx-pr-[calc(env(safe-area-inset-right)-1.5rem)]",
+          "nextra-content nx-flex border-body-left  nx-min-h-[calc(100vh-var(--nextra-navbar-height))] nx-min-w-0 nx-pb-8 nx-pr-[calc(env(safe-area-inset-right)-1.5rem)]",
           themeContext.typesetting === "article" &&
             "nextra-body-typesetting-article",
         )}

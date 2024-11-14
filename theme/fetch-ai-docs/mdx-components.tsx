@@ -51,11 +51,11 @@ function HeadingLink({
       className={cn(
         "nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90",
         {
-          h2: "nx-mt-10 nx-border-b nx-pb-1 nx-text-3xl nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400",
-          h3: "nx-mt-8 nx-text-2xl",
-          h4: "nx-mt-8 nx-text-xl",
-          h5: "nx-mt-8 nx-text-lg",
-          h6: "nx-mt-8 nx-text-base",
+          h2: "nx-mt-10 nx-border-b nx-pb-1 nx-text-2xl nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400",
+          h3: "nx-mt-8 nx-text-xl",
+          h4: "nx-mt-8 nx-text-lg",
+          h5: "nx-mt-8 nx-text-base",
+          h6: "nx-mt-8 nx-text-sm",
         }[Tag],
       )}
       {...props}
@@ -169,7 +169,7 @@ export const Link = ({ href = "", className, ...props }: AnchorProps) => {
           href={href}
           newWindow={EXTERNAL_HREF_REGEX.test(href)}
           className={cn(
-            "nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]",
+            "nx-text-primary-600 nx-underline nx-text-paragraph nx-decoration-from-font [text-underline-position:from-font]",
             className,
           )}
           {...props}
@@ -204,7 +204,7 @@ export const getComponents = ({
   return {
     h1: (props) => (
       <h1
-        className="nx-mt-2 nx-text-4xl nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90"
+        className="nx-mt-2 nx-text-32 nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90"
         {...props}
       />
     ),

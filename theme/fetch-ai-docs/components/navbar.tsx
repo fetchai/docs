@@ -190,12 +190,12 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                   >
                     <span
                       className={`${
-                        hoveredLink === href && !isActive ? "link-text " : ""
-                      } nx-absolute nx-inset-x-0 nx-text-base nx-text-center`}
+                        hoveredLink === href && !isActive ? "link-text" : ""
+                      } nx-absolute nx-inset-x-0 nx-text-sm nx-text-center`}
                     >
                       {page.title}
                     </span>
-                    <span className="nx-invisible nx-text-base">
+                    <span className="nx-invisible nx-text-sm">
                       {page.title}
                     </span>
                   </Anchor>

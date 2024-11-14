@@ -26,7 +26,7 @@ export function ServerSideErrorPage(): ReactElement | null {
           labels,
         })}
         newWindow
-        className="nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]"
+        className="nx-text-primary-600 nx-underline nx-decoration-from-font nx-text-paragraph [text-underline-position:from-font]"
       >
         {renderComponent(content)}
       </Anchor>
