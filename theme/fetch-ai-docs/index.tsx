@@ -285,7 +285,7 @@ const InnerLayout = ({
           flatDirectories,
           items: docsDirectories,
         })}
-      <div className="nx-mx-auto nx-flex">
+      <div className="nx-mx-auto nx-flex nx-max-w-body">
         <ActiveAnchorProvider>
           <Sidebar
             docsDirectories={docsDirectories}

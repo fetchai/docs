@@ -250,7 +250,7 @@ export const getComponents = ({
     ),
     p: (props) => (
       <p
-        className="nx-mt-6 nx-leading-7 first:nx-mt-0 dark:nx-text-white-60"
+        className="nx-mt-6 nx-leading-7 first:nx-mt-0 nx-text-paragraph dark:nx-text-white-60"
         {...props}
       />
     ),
