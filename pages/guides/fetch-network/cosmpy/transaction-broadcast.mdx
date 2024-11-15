@@ -1,3 +1,5 @@
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+
 # Sending funds
 
 CosmPy allows for simplification of transactions broadcasting. After [creating a wallet ↗️](/guides/fetch-network/cosmpy/creating-wallet) you can send transactions by following the below provided example. In it, we first connect to the desired network then provide the desired destination address. The transaction is then broadcast using the `Ledger_client.send_tokens()` function:
@@ -26,59 +28,79 @@ For a more comprehensive example, we will use the **testnet** and submit a trans
 
 Once created, the next step is to establish a connection to Fetch.ai's testnet. We then query `alice`'s balance and include a while function to make sure `alice` has a positive balance and can perform the transaction. In this case `alice` will send `bob` 10 atestfet. As a final step, we will print the transaction hash, as well as `bob`'s and `alice`'s related balances:
 
-    ```py copy
-    # Import the required libraries and modules
-    from cosmpy.aerial.client import LedgerClient, NetworkConfig # Required to establish a connection to the network
-    from cosmpy.aerial.faucet import FaucetApi # Required to fund Alice's wallet if she has a 0 balance
-    from cosmpy.aerial.wallet import LocalWallet # Required to create Alice and Bob's local wallets
+<GithubCodeSegment digest="5527b8e07dba0696e519bc16e5fe2930">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/transaction-broadcast/sending_funds.py"
+        lineStart={1}
+        lineEnd={53}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5527b8e07dba0696e519bc16e5fe2930'>
 
-    def main():
-        """Run main."""
-        # Create Alice and Bob's wallets
-        alice = LocalWallet.generate()
-        bob = LocalWallet.generate()
+<DocsCode local={true}>
+	```py copy filename="sending_funds.py"
 
-        # Establish a connection to the testnet
-        ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-        faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	# Import the required libraries and modules
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig  # Required to establish a connection to the network
+	from cosmpy.aerial.faucet import FaucetApi  # Required to fund Alice's wallet if she has a 0 balance
+	from cosmpy.aerial.wallet import LocalWallet  # Required to create Alice and Bob's local wallets
+	
+	
+	def main():
+	    """Run main."""
+	    # Create Alice and Bob's wallets
+	    alice = LocalWallet.generate()
+	    bob = LocalWallet.generate()
+	
+	    # Establish a connection to the testnet
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    # Query Alice's Balance
+	    alice_balance = ledger.query_bank_balance(bob.address())
+	
+	    # Should alice have no funds in her wallet, add funds
+	    while alice_balance < (10 ** 18):
+	        print("Providing wealth to alice...")
+	        faucet_api.get_wealth(alice.address())
+	        alice_balance = ledger.query_bank_balance(alice.address())
+	
+	    # Print Alice and Bob's getting-uagent-address and balances
+	    print(
+	        f"Alice Address: {alice.address()} Balance: {ledger.query_bank_balance(alice.address())}"
+	    )
+	
+	    print(
+	        f"Bob   Address: {bob.address()} Balance: {ledger.query_bank_balance(bob.address())}"
+	    )
+	
+	    # Broadcast the transaction and print the outputs on the terminal
+	    tx = ledger.send_tokens(bob.address(), 10, "atestfet", alice)
+	    print(f"TX {tx.tx_hash} waiting to complete...")
+	
+	    tx.wait_to_complete()
+	
+	    print(f"TX {tx.tx_hash} waiting to complete...done")
+	
+	    print(
+	        f"Alice Address: {alice.address()} Balance: {ledger.query_bank_balance(alice.address())}"
+	    )
+	
+	    print(
+	        f"Bob   Address: {bob.address()} Balance: {ledger.query_bank_balance(bob.address())}"
+	    )
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-        # Query Alice's Balance
-        alice_balance = ledger.query_bank_balance(bob.address())
+```
+</DocsCode>
 
-        # Should alice have no funds in her wallet, add funds
-        while alice_balance < (10**18):
-            print("Providing wealth to alice...")
-            faucet_api.get_wealth(alice.address())
-            alice_balance = ledger.query_bank_balance(alice.address())
+</CodeGroup>
 
-        # Print Alice and Bob's addresses and balances
-        print(
-            f"Alice Address: {alice.address()} Balance: {ledger.query_bank_balance(alice.address())}"
-        )
 
-        print(
-            f"Bob   Address: {bob.address()} Balance: {ledger.query_bank_balance(bob.address())}"
-        )
-
-        # Broadcast the transaction and print the outputs on the terminal
-        tx = ledger.send_tokens(bob.address(), 10, "atestfet", alice)
-        print(f"TX {tx.tx_hash} waiting to complete...")
-
-        tx.wait_to_complete()
-
-        print(f"TX {tx.tx_hash} waiting to complete...done")
-
-        print(
-            f"Alice Address: {alice.address()} Balance: {ledger.query_bank_balance(alice.address())}"
-        )
-
-        print(
-            f"Bob   Address: {bob.address()} Balance: {ledger.query_bank_balance(bob.address())}"
-        )
-
-    if __name__ == "__main__":
-        main()
-    ```
 
 Once you have executed the script, you will notice the console output is consistent with the code. At first, we see a print of the starting balance of both addresses. Then, we see the transaction hash along with the new balances for both `alice` and `bob`:
 

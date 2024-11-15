@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../../components/code";
 
 # Wallet top-up 💵
 
@@ -12,67 +12,107 @@ The following guide is about how to top-up a wallet using the CosmPy library. To
 
 1. Let's start by creating a Python script for this:
 
-    <CodeGroup hasCopy isOSFile>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+      ```py copy filename="mac"
+      touch aerial_authz.py
+      ```
+   </DocsCode>
 
-        ```py copy filename="mac"
-        touch aerial_authz.py
-        ```
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > aerial_authz.py
+       ```
+       </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > aerial_authz.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch aerial_authz.py
-        ```
-
-    </CodeGroup>
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch aerial_authz.py
+       ```
+       </DocsCode>
+   </CodeGroup>
 
 2. First of all, we need to import the necessary classes:
 
-    ```py copy
-    import argparse
-    from datetime import datetime, timedelta
+<GithubCodeSegment digest="83b306ed76a8534ee03c834d0ba9b33a">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/wallet-top-up/aerial_authz.py"
+        lineStart={1}
+        lineEnd={14}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='83b306ed76a8534ee03c834d0ba9b33a'>
 
-    from google.protobuf import any_pb2, timestamp_pb2
+<DocsCode local={true}>
+	```py copy filename="aerial_authz.py"
 
-    from cosmpy.aerial.client import LedgerClient, NetworkConfig
-    from cosmpy.aerial.client.utils import prepare_and_broadcast_basic_transaction
-    from cosmpy.aerial.faucet import FaucetApi
-    from cosmpy.aerial.tx import Transaction
-    from cosmpy.aerial.wallet import LocalWallet
-    from cosmpy.protos.cosmos.authz.v1beta1.authz_pb2 import Grant
-    from cosmpy.protos.cosmos.authz.v1beta1.tx_pb2 import MsgGrant
-    from cosmpy.protos.cosmos.bank.v1beta1.authz_pb2 import SendAuthorization
-    from cosmpy.protos.cosmos.base.v1beta1.coin_pb2 import Coin
-    ```
+	import argparse
+	from datetime import datetime, timedelta
+	
+	from google.protobuf import any_pb2, timestamp_pb2
+	
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig
+	from cosmpy.aerial.client.utils import prepare_and_broadcast_basic_transaction
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.tx import Transaction
+	from cosmpy.aerial.wallet import LocalWallet
+	from cosmpy.protos.cosmos.authz.v1beta1.authz_pb2 import Grant
+	from cosmpy.protos.cosmos.authz.v1beta1.tx_pb2 import MsgGrant
+	from cosmpy.protos.cosmos.bank.v1beta1.authz_pb2 import SendAuthorization
+	from cosmpy.protos.cosmos.base.v1beta1.coin_pb2 import Coin
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 3. We then proceed and define a `_parse_commandline()` function:
 
-    ```py copy
-    def _parse_commandline():
-        parser = argparse.ArgumentParser()
-        parser.add_argument(
-            "authz_address",
-            help="address that will be granted authorization to send tokens from wallet",
-        )
-        parser.add_argument(
-            "total_authz_time",
-            type=int,
-            nargs="?",
-            default=10,
-            help="authorization time for authz_address in minutes",
-        )
-        parser.add_argument(
-            "spend_limit",
-            type=int,
-            nargs="?",
-            default=1000000000000000000,
-            help="maximum tokens that authz_wallet will be able to spend from wallet",
-        )
+<GithubCodeSegment digest="cc9f67086054d1f41b3f8c3e177d019e">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/wallet-top-up/aerial_authz.py"
+        lineStart={17}
+        lineEnd={38}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='cc9f67086054d1f41b3f8c3e177d019e'>
 
-        return parser.parse_args()
-    ```
+<DocsCode local={true}>
+	```py copy filename="aerial_authz.py"
+
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument(
+	        "authz_address",
+	        help="address that will be granted authorization to send tokens from wallet",
+	    )
+	    parser.add_argument(
+	        "total_authz_time",
+	        type=int,
+	        nargs="?",
+	        default=10,
+	        help="authorization time for authz_address in minutes",
+	    )
+	    parser.add_argument(
+	        "spend_limit",
+	        type=int,
+	        nargs="?",
+	        default=1000000000000000000,
+	        help="maximum tokens that authz_wallet will be able to spend from wallet",
+	    )
+	
+	    return parser.parse_args()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     The `_parse_commandline()` function is using the `argparse` module to define a command-line interface for this script. It expects and processes three command-line arguments:
 
@@ -86,57 +126,75 @@ The following guide is about how to top-up a wallet using the CosmPy library. To
 
 4. We can then define our `main()` function:
 
-    ```py copy
-    def main():
-        """Run main."""
-        args = _parse_commandline()
+<GithubCodeSegment digest="e63770827d77359d318cd1faccf43054">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/wallet-top-up/aerial_authz.py"
+        lineStart={41}
+        lineEnd={89}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='e63770827d77359d318cd1faccf43054'>
 
-        wallet = LocalWallet.generate()
+<DocsCode local={true}>
+	```py copy filename="aerial_authz.py"
 
-        authz_address = args.authz_address
+	def main():
+	    """Run main."""
+	    args = _parse_commandline()
+	
+	    wallet = LocalWallet.generate()
+	
+	    authz_address = args.authz_address
+	
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    total_authz_time = args.total_authz_time
+	    wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    amount = args.spend_limit
+	
+	    while wallet_balance < (amount):
+	        print("Providing wealth to wallet...")
+	        faucet_api.get_wealth(wallet.address())
+	        wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    spend_amount = Coin(amount=str(amount), denom="atestfet")
+	
+	    # Authorize authz_wallet to send tokens from wallet
+	    authz_any = any_pb2.Any()
+	    authz_any.Pack(
+	        SendAuthorization(spend_limit=[spend_amount]),
+	        "",
+	    )
+	
+	    expiry = timestamp_pb2.Timestamp()
+	    expiry.FromDatetime(datetime.now() + timedelta(seconds=total_authz_time * 60))
+	    grant = Grant(authorization=authz_any, expiration=expiry)
+	
+	    msg = MsgGrant(
+	        granter=str(wallet.address()),
+	        grantee=authz_address,
+	        grant=grant,
+	    )
+	
+	    tx = Transaction()
+	    tx.add_message(msg)
+	
+	    tx = prepare_and_broadcast_basic_transaction(ledger, tx, wallet)
+	    tx.wait_to_complete()
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-        ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-        faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+```
+</DocsCode>
 
-        total_authz_time = args.total_authz_time
-        wallet_balance = ledger.query_bank_balance(wallet.address())
-
-        amount = args.spend_limit
-
-        while wallet_balance < (amount):
-            print("Providing wealth to wallet...")
-            faucet_api.get_wealth(wallet.address())
-            wallet_balance = ledger.query_bank_balance(wallet.address())
-
-        spend_amount = Coin(amount=str(amount), denom="atestfet")
-
-        # Authorize authz_wallet to send tokens from wallet
-        authz_any = any_pb2.Any()
-        authz_any.Pack(
-            SendAuthorization(spend_limit=[spend_amount]),
-            "",
-        )
-
-        expiry = timestamp_pb2.Timestamp()
-        expiry.FromDatetime(datetime.now() + timedelta(seconds=total_authz_time * 60))
-        grant = Grant(authorization=authz_any, expiration=expiry)
-
-        msg = MsgGrant(
-            granter=str(wallet.address()),
-            grantee=authz_address,
-            grant=grant,
-        )
-
-        tx = Transaction()
-        tx.add_message(msg)
-
-        tx = prepare_and_broadcast_basic_transaction(ledger, tx, wallet)
-        tx.wait_to_complete()
+</CodeGroup>
 
 
-    if __name__ == "__main__":
-        main()
-    ```
 
     In the first line we define a variable `args`  using `_parse_commandline()` function defined previously to retrieve the command-line arguments `authz_address`, `total_authz_time`, and `spend_limit`. The values are stored in the `args` variable. We then generate a new wallet using the `generate()` method of the `LocalWallet` class, and then set the `authz_address` variable to retrieve the `authz_address` from the command-line arguments previously defined. This is the address that will be granted authorization to send tokens from the wallet. We then initialize a `ledger` object using the `LedgerClient` class and configure it to connect to the Fetch.ai stable testnet. We also initialize a `faucet_api` object using the `FaucetApi` class to provide access to a faucet API on the Fetch.ai stable testnet.
 
@@ -148,97 +206,115 @@ The following guide is about how to top-up a wallet using the CosmPy library. To
 
 The overall script should be as follows.
 
-```py copy filename="aerial_authz.py"
-import argparse
-from datetime import datetime, timedelta
+<GithubCodeSegment digest="c16f2a48c64fb40a230515c658a201ce">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/wallet-top-up/aerial_authz.py"
+        lineStart={1}
+        lineEnd={89}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c16f2a48c64fb40a230515c658a201ce'>
 
-from google.protobuf import any_pb2, timestamp_pb2
+<DocsCode local={true}>
+	```py copy filename="aerial_authz.py"
 
-from cosmpy.aerial.client import LedgerClient, NetworkConfig
-from cosmpy.aerial.client.utils import prepare_and_broadcast_basic_transaction
-from cosmpy.aerial.faucet import FaucetApi
-from cosmpy.aerial.tx import Transaction
-from cosmpy.aerial.wallet import LocalWallet
-from cosmpy.protos.cosmos.authz.v1beta1.authz_pb2 import Grant
-from cosmpy.protos.cosmos.authz.v1beta1.tx_pb2 import MsgGrant
-from cosmpy.protos.cosmos.bank.v1beta1.authz_pb2 import SendAuthorization
-from cosmpy.protos.cosmos.base.v1beta1.coin_pb2 import Coin
+	import argparse
+	from datetime import datetime, timedelta
+	
+	from google.protobuf import any_pb2, timestamp_pb2
+	
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig
+	from cosmpy.aerial.client.utils import prepare_and_broadcast_basic_transaction
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.tx import Transaction
+	from cosmpy.aerial.wallet import LocalWallet
+	from cosmpy.protos.cosmos.authz.v1beta1.authz_pb2 import Grant
+	from cosmpy.protos.cosmos.authz.v1beta1.tx_pb2 import MsgGrant
+	from cosmpy.protos.cosmos.bank.v1beta1.authz_pb2 import SendAuthorization
+	from cosmpy.protos.cosmos.base.v1beta1.coin_pb2 import Coin
+	
+	
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument(
+	        "authz_address",
+	        help="address that will be granted authorization to send tokens from wallet",
+	    )
+	    parser.add_argument(
+	        "total_authz_time",
+	        type=int,
+	        nargs="?",
+	        default=10,
+	        help="authorization time for authz_address in minutes",
+	    )
+	    parser.add_argument(
+	        "spend_limit",
+	        type=int,
+	        nargs="?",
+	        default=1000000000000000000,
+	        help="maximum tokens that authz_wallet will be able to spend from wallet",
+	    )
+	
+	    return parser.parse_args()
+	
+	
+	def main():
+	    """Run main."""
+	    args = _parse_commandline()
+	
+	    wallet = LocalWallet.generate()
+	
+	    authz_address = args.authz_address
+	
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    total_authz_time = args.total_authz_time
+	    wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    amount = args.spend_limit
+	
+	    while wallet_balance < (amount):
+	        print("Providing wealth to wallet...")
+	        faucet_api.get_wealth(wallet.address())
+	        wallet_balance = ledger.query_bank_balance(wallet.address())
+	
+	    spend_amount = Coin(amount=str(amount), denom="atestfet")
+	
+	    # Authorize authz_wallet to send tokens from wallet
+	    authz_any = any_pb2.Any()
+	    authz_any.Pack(
+	        SendAuthorization(spend_limit=[spend_amount]),
+	        "",
+	    )
+	
+	    expiry = timestamp_pb2.Timestamp()
+	    expiry.FromDatetime(datetime.now() + timedelta(seconds=total_authz_time * 60))
+	    grant = Grant(authorization=authz_any, expiration=expiry)
+	
+	    msg = MsgGrant(
+	        granter=str(wallet.address()),
+	        grantee=authz_address,
+	        grant=grant,
+	    )
+	
+	    tx = Transaction()
+	    tx.add_message(msg)
+	
+	    tx = prepare_and_broadcast_basic_transaction(ledger, tx, wallet)
+	    tx.wait_to_complete()
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-
-def _parse_commandline():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "authz_address",
-        help="address that will be granted authorization to send tokens from wallet",
-    )
-    parser.add_argument(
-        "total_authz_time",
-        type=int,
-        nargs="?",
-        default=10,
-        help="authorization time for authz_address in minutes",
-    )
-    parser.add_argument(
-        "spend_limit",
-        type=int,
-        nargs="?",
-        default=1000000000000000000,
-        help="maximum tokens that authz_wallet will be able to spend from wallet",
-    )
-
-    return parser.parse_args()
-
-
-def main():
-    """Run main."""
-    args = _parse_commandline()
-
-    wallet = LocalWallet.generate()
-
-    authz_address = args.authz_address
-
-    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
-
-    total_authz_time = args.total_authz_time
-    wallet_balance = ledger.query_bank_balance(wallet.address())
-
-    amount = args.spend_limit
-
-    while wallet_balance < (amount):
-        print("Providing wealth to wallet...")
-        faucet_api.get_wealth(wallet.address())
-        wallet_balance = ledger.query_bank_balance(wallet.address())
-
-    spend_amount = Coin(amount=str(amount), denom="atestfet")
-
-    # Authorize authz_wallet to send tokens from wallet
-    authz_any = any_pb2.Any()
-    authz_any.Pack(
-        SendAuthorization(spend_limit=[spend_amount]),
-        "",
-    )
-
-    expiry = timestamp_pb2.Timestamp()
-    expiry.FromDatetime(datetime.now() + timedelta(seconds=total_authz_time * 60))
-    grant = Grant(authorization=authz_any, expiration=expiry)
-
-    msg = MsgGrant(
-        granter=str(wallet.address()),
-        grantee=authz_address,
-        grant=grant,
-    )
-
-    tx = Transaction()
-    tx.add_message(msg)
-
-    tx = prepare_and_broadcast_basic_transaction(ledger, tx, wallet)
-    tx.wait_to_complete()
-
-
-if __name__ == "__main__":
-    main()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ### Aerial top-up
 
@@ -246,71 +322,113 @@ We are now ready to write a Python script which automates the process of topping
 
 1. Let's create a Python script for this and name it: 
 
-    <CodeGroup hasCopy isOSFile>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+      ```py copy filename="mac"
+      touch aerial_topup.py
+      ```
+   </DocsCode>
 
-        ```py copy filename="mac"
-        touch aerial_topup.py
-        ```
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > aerial_topup.py
+       ```
+       </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > aerial_topup.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch aerial_topup.py
-        ```
-
-    </CodeGroup>
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch aerial_topup.py
+       ```
+       </DocsCode>
+   </CodeGroup>
 
 2. Let's then import the needed modules such as `argparse` for command-line argument parsing and modules from the `cosmpy` library for blockchain interaction:
 
-    ```py copy
-    import argparse
-    import time
-    from google.protobuf import any_pb2
-    from cosmpy.aerial.client import LedgerClient, NetworkConfig
-    from cosmpy.aerial.client.utils import prepare_and_broadcast_basic_transaction
-    from cosmpy.aerial.faucet import FaucetApi
-    from cosmpy.aerial.tx import Transaction
-    from cosmpy.aerial.wallet import LocalWallet
-    from cosmpy.protos.cosmos.authz.v1beta1.tx_pb2 import MsgExec
-    from cosmpy.protos.cosmos.bank.v1beta1.tx_pb2 import MsgSend
-    from cosmpy.protos.cosmos.base.v1beta1.coin_pb2 import Coin
-    ```
+<GithubCodeSegment digest="945bfc4a9c00bc9e8207eb1c9f233966">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/wallet-top-up/aerial_topup.py"
+        lineStart={1}
+        lineEnd={13}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='945bfc4a9c00bc9e8207eb1c9f233966'>
+
+<DocsCode local={true}>
+	```py copy filename="aerial_topup.py"
+
+	import argparse
+	import time
+	
+	from google.protobuf import any_pb2
+	
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig
+	from cosmpy.aerial.client.utils import prepare_and_broadcast_basic_transaction
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.tx import Transaction
+	from cosmpy.aerial.wallet import LocalWallet
+	from cosmpy.protos.cosmos.authz.v1beta1.tx_pb2 import MsgExec
+	from cosmpy.protos.cosmos.bank.v1beta1.tx_pb2 import MsgSend
+	from cosmpy.protos.cosmos.base.v1beta1.coin_pb2 import Coin
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 3. We then define a `_parse_commandline()` function that sets up command-line arguments:
 
-    ```py copy
-    def _parse_commandline():
-        parser = argparse.ArgumentParser()
-        parser.add_argument("wallet_address", help="main wallet address")
-        parser.add_argument(
-            "task_wallet_address", help="wallet address that will perform transactions"
-        )
-        parser.add_argument(
-            "top_up_amount",
-            type=int,
-            nargs="?",
-            default=10000000000000000,
-            help="top-up amount from wallet address to task_wallet address",
-        )
-        parser.add_argument(
-            "minimum_balance",
-            type=int,
-            nargs="?",
-            default=1000000000000000,
-            help="minimum task_wallet address balance that will trigger top-up",
-        )
-        parser.add_argument(
-            "interval_time",
-            type=int,
-            nargs="?",
-            default=5,
-            help="interval time in seconds to query task_wallet's balance",
-        )
+<GithubCodeSegment digest="a2c644f670af1fb11a4acbf6430eab24">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/wallet-top-up/aerial_topup.py"
+        lineStart={16}
+        lineEnd={44}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a2c644f670af1fb11a4acbf6430eab24'>
 
-        return parser.parse_args()
-    ```
+<DocsCode local={true}>
+	```py copy filename="aerial_topup.py"
+
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument("wallet_address", help="main wallet address")
+	    parser.add_argument(
+	        "task_wallet_address", help="wallet address that will perform transactions"
+	    )
+	    parser.add_argument(
+	        "top_up_amount",
+	        type=int,
+	        nargs="?",
+	        default=10000000000000000,
+	        help="top-up amount from wallet address to task_wallet address",
+	    )
+	    parser.add_argument(
+	        "minimum_balance",
+	        type=int,
+	        nargs="?",
+	        default=1000000000000000,
+	        help="minimum task_wallet address balance that will trigger top-up",
+	    )
+	    parser.add_argument(
+	        "interval_time",
+	        type=int,
+	        nargs="?",
+	        default=5,
+	        help="interval time in seconds to query task_wallet's balance",
+	    )
+	
+	    return parser.parse_args()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     Above we defined different arguments including the addresses of the main wallet (`wallet_address`) and the task wallet (`task_wallet_address`), the top-up amount from `wallet_address` to `task_wallet_address` (`top_up_amount`), the minimum balance for `task_wallet_address` (`minimum_balance`), and the interval time in seconds to query `task_wallet_address`'s balance (`interval_time`).
 
@@ -318,75 +436,92 @@ We are now ready to write a Python script which automates the process of topping
 
 4. We are now ready to define our `main()` function:
 
-    ```py copy
-    def main():
-        """Run main."""
-        ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-        args = _parse_commandline()
+<GithubCodeSegment digest="f1e0ea631f7a5ee342405129328812c9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/wallet-top-up/aerial_topup.py"
+        lineStart={47}
+        lineEnd={112}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='f1e0ea631f7a5ee342405129328812c9'>
 
-        wallet_address = args.wallet_address
+<DocsCode local={true}>
+	```py copy filename="aerial_topup.py"
 
-        task_wallet_address = args.task_wallet_address
+	def main():
+	    """Run main."""
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    args = _parse_commandline()
+	
+	    wallet_address = args.wallet_address
+	
+	    task_wallet_address = args.task_wallet_address
+	
+	    # Use aerial_authz.py to authorize authz_wallet address to send tokens from wallet
+	    authz_wallet = LocalWallet.generate()
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    wallet_balance = ledger.query_bank_balance(authz_wallet.address())
+	
+	    while wallet_balance < (10 ** 18):
+	        print("Providing wealth to wallet...")
+	        faucet_api.get_wealth(authz_wallet.address())
+	        wallet_balance = ledger.query_bank_balance(authz_wallet.address())
+	
+	    ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
+	
+	    # Top-up amount
+	    amount = args.top_up_amount
+	    top_up_amount = Coin(amount=str(amount), denom="atestfet")
+	
+	    # Minimum balance for task_wallet
+	    minimum_balance = args.minimum_balance
+	
+	    # Interval to query task_wallet's balance
+	    interval_time = args.interval_time
+	
+	    while True:
+	
+	        wallet_balance = ledger.query_bank_balance(wallet_address)
+	
+	        if wallet_balance < amount:
+	            print("Wallet doesn't have enough balance to top-up task_wallet")
+	            break
+	
+	        task_wallet_balance = ledger.query_bank_balance(task_wallet_address)
+	
+	        if task_wallet_balance < minimum_balance:
+	            print("topping up task wallet")
+	            # Top-up task_wallet
+	            msg = any_pb2.Any()
+	            msg.Pack(
+	                MsgSend(
+	                    from_address=wallet_address,
+	                    to_address=task_wallet_address,
+	                    amount=[top_up_amount],
+	                ),
+	                "",
+	            )
+	
+	            tx = Transaction()
+	            tx.add_message(MsgExec(grantee=str(authz_wallet.address()), msgs=[msg]))
+	
+	            tx = prepare_and_broadcast_basic_transaction(ledger, tx, authz_wallet)
+	            tx.wait_to_complete()
+	
+	        time.sleep(interval_time)
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-        # Use aerial_authz.py to authorize authz_wallet address to send tokens from wallet
-        authz_wallet = LocalWallet.generate()
-        faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+```
+</DocsCode>
 
-        wallet_balance = ledger.query_bank_balance(authz_wallet.address())
-
-        while wallet_balance < (10**18):
-            print("Providing wealth to wallet...")
-            faucet_api.get_wealth(authz_wallet.address())
-            wallet_balance = ledger.query_bank_balance(authz_wallet.address())
-
-        ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
-
-        # Top-up amount
-        amount = args.top_up_amount
-        top_up_amount = Coin(amount=str(amount), denom="atestfet")
-
-        # Minimum balance for task_wallet
-        minimum_balance = args.minimum_balance
-
-        # Interval to query task_wallet's balance
-        interval_time = args.interval_time
-
-        while True:
-
-            wallet_balance = ledger.query_bank_balance(wallet_address)
-
-            if wallet_balance < amount:
-                print("Wallet doesn't have enough balance to top-up task_wallet")
-                break
-
-            task_wallet_balance = ledger.query_bank_balance(task_wallet_address)
-
-            if task_wallet_balance < minimum_balance:
-
-                print("topping up task wallet")
-                # Top-up task_wallet
-                msg = any_pb2.Any()
-                msg.Pack(
-                    MsgSend(
-                        from_address=wallet_address,
-                        to_address=task_wallet_address,
-                        amount=[top_up_amount],
-                    ),
-                    "",
-                )
-
-                tx = Transaction()
-                tx.add_message(MsgExec(grantee=str(authz_wallet.address()), msgs=[msg]))
-
-                tx = prepare_and_broadcast_basic_transaction(ledger, tx, authz_wallet)
-                tx.wait_to_complete()
-
-            time.sleep(interval_time)
+</CodeGroup>
 
 
-    if __name__ == "__main__":
-        main()
-    ```
 
     Here we defined the `main()` function which orchestrates all of the operations. It first initializes a `ledger` object to interact with the blockchain using the `LedgerClient()` class. It then parses command-line arguments using `_parse_commandline()` and stores them in the `args` variable. The function then retrieves wallet addresses for `wallet` and `task_wallet` from `args`. The function then uses `aerial_authz.py` script previously created above to authorize `authz_wallet` address to send tokens from `wallet`. If the balance of `authz_wallet` is below `10**18`, it uses a faucet API to provide wealth to the wallet until it reaches this threshold. Within the script, we then re-initialize the ledger object with the latest stable testnet configuration. We then proceed to set the top-up amount, the minimum balance, and  interval timer thresholds from `args`. The script then enters an infinite loop (`while True`) in which it queries the balance of the main `wallet`. Checks if the main wallet has enough balance to top-up `task_wallet`. Queries the balance of `task_wallet`: if its balance falls below the specified minimum, it initiates a top-up by first creating a message to send tokens from `wallet_address` to `task_wallet_address`, then constructing a transaction (`tx`) with the authorization and message. It then prepares, broadcasts the transaction, and waits for a specified interval before repeating the process.
 
@@ -394,115 +529,136 @@ We are now ready to write a Python script which automates the process of topping
 
 The overall script should be as follows:
 
-```py copy filename="aerial_topup.py"
-import argparse
-import time
+<GithubCodeSegment digest="f3c8b3ac06a1693940a632be20bc7607">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/wallet-top-up/aerial_topup.py"
+        lineStart={1}
+        lineEnd={112}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='f3c8b3ac06a1693940a632be20bc7607'>
 
-from google.protobuf import any_pb2
+<DocsCode local={true}>
+	```py copy filename="aerial_topup.py"
 
-from cosmpy.aerial.client import LedgerClient, NetworkConfig
-from cosmpy.aerial.client.utils import prepare_and_broadcast_basic_transaction
-from cosmpy.aerial.faucet import FaucetApi
-from cosmpy.aerial.tx import Transaction
-from cosmpy.aerial.wallet import LocalWallet
-from cosmpy.protos.cosmos.authz.v1beta1.tx_pb2 import MsgExec
-from cosmpy.protos.cosmos.bank.v1beta1.tx_pb2 import MsgSend
-from cosmpy.protos.cosmos.base.v1beta1.coin_pb2 import Coin
+	import argparse
+	import time
+	
+	from google.protobuf import any_pb2
+	
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig
+	from cosmpy.aerial.client.utils import prepare_and_broadcast_basic_transaction
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.tx import Transaction
+	from cosmpy.aerial.wallet import LocalWallet
+	from cosmpy.protos.cosmos.authz.v1beta1.tx_pb2 import MsgExec
+	from cosmpy.protos.cosmos.bank.v1beta1.tx_pb2 import MsgSend
+	from cosmpy.protos.cosmos.base.v1beta1.coin_pb2 import Coin
+	
+	
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument("wallet_address", help="main wallet address")
+	    parser.add_argument(
+	        "task_wallet_address", help="wallet address that will perform transactions"
+	    )
+	    parser.add_argument(
+	        "top_up_amount",
+	        type=int,
+	        nargs="?",
+	        default=10000000000000000,
+	        help="top-up amount from wallet address to task_wallet address",
+	    )
+	    parser.add_argument(
+	        "minimum_balance",
+	        type=int,
+	        nargs="?",
+	        default=1000000000000000,
+	        help="minimum task_wallet address balance that will trigger top-up",
+	    )
+	    parser.add_argument(
+	        "interval_time",
+	        type=int,
+	        nargs="?",
+	        default=5,
+	        help="interval time in seconds to query task_wallet's balance",
+	    )
+	
+	    return parser.parse_args()
+	
+	
+	def main():
+	    """Run main."""
+	    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
+	    args = _parse_commandline()
+	
+	    wallet_address = args.wallet_address
+	
+	    task_wallet_address = args.task_wallet_address
+	
+	    # Use aerial_authz.py to authorize authz_wallet address to send tokens from wallet
+	    authz_wallet = LocalWallet.generate()
+	    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
+	
+	    wallet_balance = ledger.query_bank_balance(authz_wallet.address())
+	
+	    while wallet_balance < (10 ** 18):
+	        print("Providing wealth to wallet...")
+	        faucet_api.get_wealth(authz_wallet.address())
+	        wallet_balance = ledger.query_bank_balance(authz_wallet.address())
+	
+	    ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
+	
+	    # Top-up amount
+	    amount = args.top_up_amount
+	    top_up_amount = Coin(amount=str(amount), denom="atestfet")
+	
+	    # Minimum balance for task_wallet
+	    minimum_balance = args.minimum_balance
+	
+	    # Interval to query task_wallet's balance
+	    interval_time = args.interval_time
+	
+	    while True:
+	
+	        wallet_balance = ledger.query_bank_balance(wallet_address)
+	
+	        if wallet_balance < amount:
+	            print("Wallet doesn't have enough balance to top-up task_wallet")
+	            break
+	
+	        task_wallet_balance = ledger.query_bank_balance(task_wallet_address)
+	
+	        if task_wallet_balance < minimum_balance:
+	            print("topping up task wallet")
+	            # Top-up task_wallet
+	            msg = any_pb2.Any()
+	            msg.Pack(
+	                MsgSend(
+	                    from_address=wallet_address,
+	                    to_address=task_wallet_address,
+	                    amount=[top_up_amount],
+	                ),
+	                "",
+	            )
+	
+	            tx = Transaction()
+	            tx.add_message(MsgExec(grantee=str(authz_wallet.address()), msgs=[msg]))
+	
+	            tx = prepare_and_broadcast_basic_transaction(ledger, tx, authz_wallet)
+	            tx.wait_to_complete()
+	
+	        time.sleep(interval_time)
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-def _parse_commandline():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("wallet_address", help="main wallet address")
-    parser.add_argument(
-        "task_wallet_address", help="wallet address that will perform transactions"
-    )
-    parser.add_argument(
-        "top_up_amount",
-        type=int,
-        nargs="?",
-        default=10000000000000000,
-        help="top-up amount from wallet address to task_wallet address",
-    )
-    parser.add_argument(
-        "minimum_balance",
-        type=int,
-        nargs="?",
-        default=1000000000000000,
-        help="minimum task_wallet address balance that will trigger top-up",
-    )
-    parser.add_argument(
-        "interval_time",
-        type=int,
-        nargs="?",
-        default=5,
-        help="interval time in seconds to query task_wallet's balance",
-    )
-
-    return parser.parse_args()
-
-def main():
-    """Run main."""
-    ledger = LedgerClient(NetworkConfig.fetchai_stable_testnet())
-    args = _parse_commandline()
-
-    wallet_address = args.wallet_address
-
-    task_wallet_address = args.task_wallet_address
-
-    # Use aerial_authz.py to authorize authz_wallet address to send tokens from wallet
-    authz_wallet = LocalWallet.generate()
-    faucet_api = FaucetApi(NetworkConfig.fetchai_stable_testnet())
-
-    wallet_balance = ledger.query_bank_balance(authz_wallet.address())
-
-    while wallet_balance < (10**18):
-        print("Providing wealth to wallet...")
-        faucet_api.get_wealth(authz_wallet.address())
-        wallet_balance = ledger.query_bank_balance(authz_wallet.address())
-
-    ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
-
-    # Top-up amount
-    amount = args.top_up_amount
-    top_up_amount = Coin(amount=str(amount), denom="atestfet")
-
-    # Minimum balance for task_wallet
-    minimum_balance = args.minimum_balance
-
-    # Interval to query task_wallet's balance
-    interval_time = args.interval_time
-
-    while True:
-
-        wallet_balance = ledger.query_bank_balance(wallet_address)
-
-        if wallet_balance < amount:
-            print("Wallet doesn't have enough balance to top-up task_wallet")
-            break
-
-        task_wallet_balance = ledger.query_bank_balance(task_wallet_address)
-
-        if task_wallet_balance < minimum_balance:
-
-            print("topping up task wallet")
-            # Top-up task_wallet
-            msg = any_pb2.Any()
-            msg.Pack(
-                MsgSend(
-                    from_address=wallet_address,
-                    to_address=task_wallet_address,
-                    amount=[top_up_amount],
-                ),
-                "",
-            )
-
-            tx = Transaction()
-            tx.add_message(MsgExec(grantee=str(authz_wallet.address()), msgs=[msg]))
-
-            tx = prepare_and_broadcast_basic_transaction(ledger, tx, authz_wallet)
-            tx.wait_to_complete()
-
-        time.sleep(interval_time)
-
-if __name__ == "__main__":
-    main()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
+

@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../components/code"
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Using News API to build network of Primary and Secondary functions
 
@@ -20,8 +20,9 @@ This file can be run on any platform supporting Python, with the necessary insta
 #### News Reading Agent
 
 <CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
 
-    ```python copy filename="local-agent.py"
+    ```python copy filename="agent.py"
 
     # Here we demonstrate how we can create a news reading system agent that is compatible with DeltaV
 
@@ -75,8 +76,11 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     news_agent.run()
     ```
+</DocsCode>
 
-    ```python copy filename="hosted-agent.py"
+    <DocsCode local={false}>
+
+    ```python copy filename="agent.py"
 
     # Here we demonstrate how we can create a news reading system agent that is compatible with DeltaV
 
@@ -109,12 +113,14 @@ This file can be run on any platform supporting Python, with the necessary insta
     # Include the Generate News protocol in your agent
     agent.include(news_protocol)
     ```
+    </DocsCode>
 </CodeGroup>
 #### News Generating Agent
 
 <CodeGroup hasCopy isLocalHostedFile>
 
-    ```python copy filename="local-agent.py"
+<DocsCode local={true}>
+    ```python copy filename="agent.py"
     # Here we demonstrate how we can create a news generating agent that is compatible with DeltaV.
 
     # Import required libraries
@@ -190,8 +196,9 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     generate_news_agent.run()
     ```
-
-    ```python copy filename="hosted-agent.py"
+</DocsCode>
+<DocsCode local={false}>
+    ```python copy filename="agent.py"
     # Here we demonstrate how we can create a news generating agent that is compatible with DeltaV.
     # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
@@ -245,13 +252,14 @@ This file can be run on any platform supporting Python, with the necessary insta
     # Include the Generate News protocol in your agent.
     agent.include(generate_news_protocol)
     ```
+    </DocsCode>
 </CodeGroup>
 
 #### Generate Categorical News
 
 <CodeGroup hasCopy isLocalHostedFile>
-
-    ```python copy filename="local-agent.py"
+<DocsCode local={true}>
+    ```python copy filename="agent.py"
     # Here we demonstrate how we can create a categorical news generating agent that is compatible with DeltaV.
 
     # Importing libraries
@@ -331,8 +339,10 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     generate_cat_news_agent.run()
     ```
+</DocsCode>
 
-    ```python copy filename="hosted-agent.py"
+<DocsCode local={false}>
+    ```python copy filename="agent.py"
     # Here we demonstrate how we can create a categorical news generating agent that is compatible with DeltaV.
     # After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
 
@@ -390,12 +400,14 @@ This file can be run on any platform supporting Python, with the necessary insta
     # Include the Generate News protocol in your agent.
     agent.include(generate_cat_news_protocol)
     ```
+    </DocsCode>
 </CodeGroup>
 
 #### Generate Regional News
 
 <CodeGroup hasCopy isLocalHostedFile>
-    ```python copy filename="local-agent.py"
+    <DocsCode local={true}>
+    ```python copy filename="agent.py"
     # Import libraries
     import requests
     import json
@@ -489,6 +501,9 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     generate_news_reg_agent.run()
     ```
+    </DocsCode>
+
+    <DocsCode local={false}>
 
     ```python copy filename="hosted-agent.py"
     # Import libraries
@@ -561,13 +576,14 @@ This file can be run on any platform supporting Python, with the necessary insta
     # Include the Generate Regional News protocol in your agent
     agent.include(generate_news_protocol)
     ```
+    </DocsCode>
 </CodeGroup>
 
 #### Generate Keyword News
 
 <CodeGroup hasCopy isLocalHostedFile>
-
-    ```python copy filename="local-agent.py"
+<DocsCode local={true}>
+    ```python copy filename="agent.py"
     # Import libraries
     import requests
     from uagents import Agent, Context, Model, Field, Protocol
@@ -646,8 +662,10 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     generate_news_keyw_agent.run()
     ```
+</DocsCode>
 
-    ```python copy filename="hosted-agent.py"
+<DocsCode local={false}>
+    ```python copy filename="agent.py"
     # Import libraries
     import requests
     import json
@@ -703,4 +721,5 @@ This file can be run on any platform supporting Python, with the necessary insta
     # Include the Generate Keyword News protocol in your agent
     agent.include(generate_news_keyw_protocol)
     ```
+    </DocsCode>
 </CodeGroup>

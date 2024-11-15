@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 import PackageVersion from 'components/package-version'
-import { CodeGroup } from "../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../components/code";
 
 # Agents 101 for AI Engine
 
@@ -17,7 +17,7 @@ At any stage, if you encounter issues or have questions about specific terms or 
 
       Current version of the AI Engine package is <PackageVersion packageName="uagents-ai-engine" packageType="pypi" />
     </Callout>
-    
+
 ## Quick overview of Fetch.ai
 
 Fetch.ai is developing a platform to help build an AI-enabled decentralized digital economy. Agents are
@@ -107,64 +107,90 @@ In this guide, our first agent takes any text and returns a sentiment of content
 We need to create a Python file for this example.
 We can do this by running:
 
-    <CodeGroup hasCopy isOSFile>
-
-        ```py copy filename="mac"
-        touch sentiment_agent.py
-        ```
-
-        ```py copy filename="windows"
-        echo. > sentiment_agent.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch sentiment_agent.py
-        ```
-
-    </CodeGroup>
-
-    ```py copy filename="sentiment_agent.py"
-    from uagents import Agent, Context, Protocol, Model
-    from ai_engine import UAgentResponse, UAgentResponseType
-    import openai
-
-    class SentimentResponse(Model):
-        text: str
-
-    SEED_PHRASE = ""
-    AGENT_MAILBOX_KEY = ""
-
-    sentimentagent = Agent(
-        name="SentimentAgent", #or any name
-        seed=SEED_PHRASE,
-        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-    )
-
-    print(sentimentAgent.address)
-
-    content_protocol = Protocol("text sentiment analysis")
-
-    def get_sentiment(text):
-        response = openai.chat.completions.create(
-
-            messages=[{
-                "role": "user",
-                "content": f"Sentiment analysis of the following text:\n{text}\n",
-            }], model = ("gpt-3.5-turbo"))
-
-        return response.choices[0].message.content
-
-    @content_protocol.on_message(model=SentimentResponse, replies={UAgentResponse})
-    async def sentiment(ctx: Context, sender: str, msg: SentimentResponse):
-
-        sentiment = get_sentiment(msg.text)
-        await ctx.send(
-            sender, UAgentResponse(message=sentiment, type=UAgentResponseType.FINAL)
-        )
-
-    sentimentAgent.include(content_protocol, publish_manifest=True)
-    sentimentAgent.run()
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch sentiment_agent.py
     ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > sentiment_agent.py
+    ```
+</DocsCode>
+
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch sentiment_agent.py
+    ```
+    </DocsCode>
+
+</CodeGroup>
+
+<GithubCodeSegment digest="ff89a607ff46aab15eaa39924eb26f2e">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/agents-for-ai/sentiment_agent.py"
+        lineStart={1}
+        lineEnd={44}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ff89a607ff46aab15eaa39924eb26f2e'>
+
+<DocsCode local={true}>
+	```py copy filename="sentiment_agent.py"
+
+	from uagents import Agent, Context, Protocol, Model
+	from ai_engine import UAgentResponse, UAgentResponseType
+	import openai
+	
+	
+	class SentimentResponse(Model):
+	    text: str
+	
+	
+	SEED_PHRASE = ""
+	AGENT_MAILBOX_KEY = ""
+	
+	sentimentagent = Agent(
+	    name="SentimentAgent",  # or any name
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	print(sentimentAgent.address)
+	
+	content_protocol = Protocol("text sentiment analysis")
+	
+	
+	def get_sentiment(text):
+	    response = openai.chat.completions.create(
+	
+	        messages=[{
+	            "role": "user",
+	            "content": f"Sentiment analysis of the following text:\n{text}\n",
+	        }], model=("gpt-3.5-turbo"))
+	
+	    return response.choices[0].message.content
+	
+	
+	@content_protocol.on_message(model=SentimentResponse, replies={UAgentResponse})
+	async def sentiment(ctx: Context, sender: str, msg: SentimentResponse):
+	    sentiment = get_sentiment(msg.text)
+	    await ctx.send(
+	        sender, UAgentResponse(message=sentiment, type=UAgentResponseType.FINAL)
+	    )
+	
+	
+	sentimentAgent.include(content_protocol, publish_manifest=True)
+	sentimentAgent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     <Callout type="warning" emoji="⚠️">
       Remember that you need to provide the `SEED_PHRASE`, `AGENT_MAILBOX_KEY`, `name`, `seed` and `mailbox` parameters to correctly run this example.
@@ -175,23 +201,42 @@ Okay, we've got the whole code block above for our first agent. This agent does 
 
 There are a lot of really cool, neat things you need to know from code above. Let's explore it:
 
-    ```py copy
-    class SentimentResponse(Model):
-        text: str
+<GithubCodeSegment digest="acedc4b019fe1f1adfa56c1ace722875">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/agents-for-ai/sentiment_agent.py"
+        lineStart={6}
+        lineEnd={21}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='acedc4b019fe1f1adfa56c1ace722875'>
 
-    SEED_PHRASE = ""
-    AGENT_MAILBOX_KEY = ""
+<DocsCode local={true}>
+	```py copy filename="sentiment_agent.py"
 
-    sentimentAgent = Agent(
-        name="SentimentAgent", #or any name
-        seed=SEED_PHRASE,
-        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-    )
+	class SentimentResponse(Model):
+	    text: str
+	
+	
+	SEED_PHRASE = ""
+	AGENT_MAILBOX_KEY = ""
+	
+	sentimentagent = Agent(
+	    name="SentimentAgent",  # or any name
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	print(sentimentAgent.address)
+	
+	content_protocol = Protocol("text sentiment analysis")
 
-    print(sentimentAgent.address)
+```
+</DocsCode>
 
-    content_protocol = Protocol("text sentiment analysis")
-    ```
+</CodeGroup>
+
+
 
     - The `class SentimentResponse` defines the structure of the message the agent expects to receive. In this case, each message
     should have `text` variable
@@ -206,16 +251,32 @@ We can now initialize the Agent and define the [Protocol ↗️](/references/uag
 
 Then, we have the **on_message()** handler:
 
-    ```py copy
-    @content_protocol.on_message(model=SentimentResponse, replies={UAgentResponse})
-    async def sentiment(ctx: Context, sender: str, msg: SentimentResponse):
+<GithubCodeSegment digest="4062beca9a7cafff6002e8e8ff9c7a28">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/agents-for-ai/sentiment_agent.py"
+        lineStart={35}
+        lineEnd={40}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='4062beca9a7cafff6002e8e8ff9c7a28'>
 
-        sentiment = get_sentiment(msg.text)
-        await ctx.send(
-            sender, UAgentResponse(message=sentiment, type=UAgentResponseType.FINAL)
-        )
+<DocsCode local={true}>
+	```py copy filename="sentiment_agent.py"
 
-    ```
+	@content_protocol.on_message(model=SentimentResponse, replies={UAgentResponse})
+	async def sentiment(ctx: Context, sender: str, msg: SentimentResponse):
+	    sentiment = get_sentiment(msg.text)
+	    await ctx.send(
+	        sender, UAgentResponse(message=sentiment, type=UAgentResponseType.FINAL)
+	    )
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 We need a way for our Agent to receive messages. We do this by creating a function for our agent to handle all
  incoming messages from other Agents. We use `on_message()` decorator which activates the `sentiment()` function once
@@ -225,10 +286,28 @@ calling another function inside a decorated function is easy to do.
 
 We can finally run the Agent at the bottom of the script:
 
-    ```py
-    sentimentAgent.include(content_protocol, publish_manifest=True)
-    sentimentAgent.run()
-    ```
+<GithubCodeSegment digest="669ae61db8d1e79422c0db593b959609">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/agents-for-ai/sentiment_agent.py"
+        lineStart={43}
+        lineEnd={44}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='669ae61db8d1e79422c0db593b959609'>
+
+<DocsCode local={true}>
+	```py copy filename="sentiment_agent.py"
+
+	sentimentAgent.include(content_protocol, publish_manifest=True)
+	sentimentAgent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Including the protocol in the Agent effectively allows other Agents to know how this Agent expects communication.
 
@@ -323,94 +402,117 @@ Okay, take a quick break then let's create the second Agent; it's time to introd
 
 The next agent in the chain is the **Summary agent**. Let's name the script `web_summary_agent.py`. To do so run:
 
-    <CodeGroup hasCopy isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch web_sentiment_agent.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > web_sentiment_agent.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch web_summary_agent.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch web_sentiment_agent.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > web_summary_agent.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch web_summary_agent.py
-        ```
-
-    </CodeGroup>
+</CodeGroup>
 
 This Agent has the same structure as the sentiment Agent we previously defined.
 
 Let's take a look.
 
-    ```py copy filename="web_download_agent.py"
-    from langchain.chains.summarize import load_summarize_chain
-    from langchain_community.document_loaders import UnstructuredHTMLLoader
-    from langchain_openai import ChatOpenAI
-    from uagents import Agent, Context, Protocol, Model
-    from ai_engine import UAgentResponse, UAgentResponseType
-    import requests
-    import os
+<GithubCodeSegment digest="fafd6ffc9100640780632ce42d8c90ac">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/agents-for-ai/web_sentiment_agent.py"
+        lineStart={1}
+        lineEnd={67}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='fafd6ffc9100640780632ce42d8c90ac'>
 
-    class SummaryRequest(Model):
-        url: str
+<DocsCode local={true}>
+	```py copy filename="web_sentiment_agent.py"
+
+	from langchain.chains.summarize import load_summarize_chain
+	from langchain_community.document_loaders import UnstructuredHTMLLoader
+	from langchain_openai import ChatOpenAI
+	from uagents import Agent, Context, Protocol, Model
+	from ai_engine import UAgentResponse, UAgentResponseType
+	import requests
+	import os
+	
+	
+	class SummaryRequest(Model):
+	    url: str
+	
+	
+	SEED_PHRASE = "<your_seed_phrase>"
+	AGENT_MAILBOX_KEY = "<your_mailbox_key>"
+	OPENAI_API_KEY = "<your_open_ai_key>"
+	
+	summaryAgent = Agent(
+	    name="SummaryAgent",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	summary_protocol = Protocol("Text Summariser")
+	
+	print(summaryAgent.address)
+	print(OPENAI_API_KEY)
+	
+	
+	@summary_protocol.on_message(model=SummaryRequest, replies={UAgentResponse})
+	async def summarise(ctx: Context, sender: str, msg: SummaryRequest):
+	
+	
+	r = requests.get(msg.url)
+	with open("./temp.html", "w", encoding="utf-8") as f:
+	    f.write(r.text)
+	
+	# Step 1: Initialize WebBaseLoader with the given URL
+	loader = UnstructuredHTMLLoader("./temp.html")
+	
+	# Step 2: Load the document
+	docs = loader.load()
+	
+	# Step 3: Load summarization chain
+	llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, temperature=0, model_name="gpt-3.5-turbo-1106")
+	chain = load_summarize_chain(llm, chain_type="stuff")
+	
+	# Step 4: Run the summarization chain on the loaded document
+	summarized_content = chain.invoke(docs)
+	summarized = summarized_content["input_documents"][0].to_json()
+	
+	# Step 5: Define the needed dependencies
+	dependencies = {
+	    "langchain": ">=1.0.0",
+	    "langchain_community": ">=1.0.0",
+	    "langchain_openai": ">=1.0.0"
+	}
+	
+	result = chain.invoke(docs)
+	
+	await ctx.send(
+	    sender,
+	    UAgentResponse(message=(result["output_text"]), type=UAgentResponseType.FINAL),
+	)
+	
+	summaryAgent.include(summary_protocol, publish_manifest=True)
+	summaryAgent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
 
 
-    SEED_PHRASE = "<your_seed_phrase>"
-    AGENT_MAILBOX_KEY = "<your_mailbox_key>"
-    OPENAI_API_KEY = "<your_open_ai_key>"
-
-    summaryAgent = Agent(
-        name="SummaryAgent",
-        seed=SEED_PHRASE,
-        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-    )
-
-    summary_protocol = Protocol("Text Summariser")
-
-    print(summaryAgent.address)
-    print(OPENAI_API_KEY)
-
-
-    @summary_protocol.on_message(model=SummaryRequest, replies={UAgentResponse})
-    async def summarise(ctx: Context, sender: str, msg: SummaryRequest):
-
-    r = requests.get(msg.url)
-    with open("./temp.html", "w", encoding="utf-8") as f:
-        f.write(r.text)
-
-    # Step 1: Initialize WebBaseLoader with the given URL
-    loader = UnstructuredHTMLLoader("./temp.html")
-
-    # Step 2: Load the document
-    docs = loader.load()
-
-    # Step 3: Load summarization chain
-    llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, temperature=0, model_name="gpt-3.5-turbo-1106")
-    chain = load_summarize_chain(llm, chain_type="stuff")
-
-    # Step 4: Run the summarization chain on the loaded document
-    summarized_content = chain.invoke(docs)
-    summarized = summarized_content["input_documents"][0].to_json()
-
-    # Step 5: Define the needed dependencies
-    dependencies = {
-        "langchain": ">=1.0.0",
-        "langchain_community": ">=1.0.0",
-        "langchain_openai": ">=1.0.0"
-    }
-
-    result = chain.invoke(docs)
-
-    await ctx.send(
-        sender,
-        UAgentResponse(message=(result["output_text"]), type=UAgentResponseType.FINAL),
-    )
-
-
-    summaryAgent.include(summary_protocol, publish_manifest=True)
-    summaryAgent.run()
-    ```
 
     <Callout type="warning" emoji="⚠️">
       Remember that you need to provide the `SEED_PHRASE`, `AGENT_MAILBOX_KEY`, `OPENAI_API_KEY`, `name`, `seed` and `mailbox` parameters to correctly run this example.
