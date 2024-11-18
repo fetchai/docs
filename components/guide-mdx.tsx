@@ -23,7 +23,7 @@ interface GuidesData {
 }
 
 const pathLabels = new Map<RegExp, string>([
-  [/\/.*?(quickstart|getting-started).*?\//i, "Beginner"],
+  [/\/.*?(quickstart|getting-started|easy).*?\//i, "Beginner"],
   [/\/.*?intermediate.*?\//i, "Intermediate"],
   [/\/.*?advanced.*?\//i, "Advanced"],
 ]);
