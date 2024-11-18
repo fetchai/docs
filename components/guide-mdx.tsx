@@ -184,14 +184,9 @@ const GuidesMdx = ({ content }: GuidesData) => {
           return con.type === filterState.value;
         }
         if (filterState.evt === "input" && filterState.inputVal !== "") {
-          return (
-            item.title
-              .toLowerCase()
-              .includes(filterState.inputVal.toLowerCase()) ||
-            item.description
-              .toLowerCase()
-              .includes(filterState.inputVal.toLowerCase())
-          );
+          return item.title
+            .toLowerCase()
+            .includes(filterState.inputVal.toLowerCase());
         }
         return true;
       }),

@@ -63,9 +63,10 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
 
   return (
     <div
+      style={{ display: !hasHeadings && "none" }}
       ref={tocRef}
       className={cn(
-        "nextra-scrollbar no-scrollbar hide-toc  nx-top-16 nx-w-full nextra-toc-container nx-sticky nx-overflow-y-auto nx-text-sm [hyphens:auto]",
+        "nextra-scrollbar no-scrollbar hide-toc  nx-top-16 nx-w-full nextra-toc-container nx-text-toc nx-sticky nx-overflow-y-auto [hyphens:auto]",
         "nx-max-h-[calc(100vh-var(--nextra-navbar-height)-env(safe-area-inset-bottom))] rtl:-nx-ml-4",
       )}
     >

@@ -428,7 +428,7 @@ export function Sidebar({
         )}
         onClick={() => setMenu(false)}
       />
-      <div className="nextra-scrollbar-bg">
+      <div>
         <aside
           className={cn(
             "nextra-sidebar-container nx-sidebar-scrollable    nx-flex nx-flex-col nx-p-3",

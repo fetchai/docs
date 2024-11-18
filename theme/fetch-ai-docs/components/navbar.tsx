@@ -114,7 +114,7 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           "contrast-more:nx-shadow-[0_0_0_1px_#000] contrast-more:dark:nx-shadow-[0_0_0_1px_#fff]",
         )}
       />
-      <nav className="nx-mx-auto nx-py-4 nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
+      <nav className="nx-mx-auto nx-max-w-body nx-py-4 nx-items-center nx-justify-end nx-gap-2">
         <div className="nx-flex nx-items-center nx-justify-between">
           <div className="nx-flex nx-justify-center nx-items-center nx-gap-6">
             {config.logoLink ? (
@@ -190,12 +190,12 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                   >
                     <span
                       className={`${
-                        hoveredLink === href && !isActive ? "link-text " : ""
-                      } nx-absolute nx-inset-x-0 nx-text-base nx-text-center`}
+                        hoveredLink === href && !isActive ? "link-text" : ""
+                      } nx-absolute nx-inset-x-0 nx-text-sm nx-text-center`}
                     >
                       {page.title}
                     </span>
-                    <span className="nx-invisible nx-text-base">
+                    <span className="nx-invisible nx-text-sm">
                       {page.title}
                     </span>
                   </Anchor>

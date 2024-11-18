@@ -35,7 +35,7 @@ export const GuideBox = ({
       >
         {content.title}
       </h3>
-      <p className="nx-text-gray-500 dark:nx-text-white-60 nx-font-normal">
+      <p className="nx-text-gray-500 nx-text-paragraph dark:nx-text-white-60 nx-font-normal">
         {content.description}
       </p>
     </section>

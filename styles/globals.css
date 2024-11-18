@@ -517,6 +517,10 @@ video {
   max-width: 100%;
 }
 
+.nx-max-w-body {
+  max-width: 1216px;
+}
+
 .nx-w-80 {
   width: 80%;
 }
@@ -1725,7 +1729,14 @@ video {
 }
 
 .nx-text-base {
-  font-size: 1.1rem;
+  font-size: 1rem;
+}
+
+.nx-text-paragraph {
+  font-size: 1rem;
+}
+.nx-text-toc {
+  font-size: 0.75rem;
 }
 
 .nx-text-lg {
@@ -1742,6 +1753,10 @@ video {
 
 .nx-text-xs {
   font-size: 0.75rem;
+}
+
+.nx-text-32 {
+  font-size: 2rem;
 }
 
 .nx-font-bold {
@@ -2606,7 +2621,14 @@ span:target + .subheading-anchor:after {
 
 :is(html[class~="dark"] .nextra-scrollbar-bg) {
   background-color: #20222c;
-  border-right: 1px solid var(--Dark-Mode-White-10, #363841);
+}
+
+.border-body-left {
+  border-left: 1px solid var(--Cold-Grey-Grey200, #dce2ea);
+}
+
+:is(html[class~="dark"] .border-body-left) {
+  border-left: 1px solid var(--Dark-Mode-White-10, #363841);
 }
 
 .nextra-active-route {
@@ -3120,7 +3142,7 @@ article details > summary::-webkit-details-marker {
 
 article details > summary:before {
   vertical-align: -4px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clip-rule='evenodd' /%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='w-5 h-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clip-rule='evenodd' /%3E%3C/svg%3E");
   width: 1.2em;
   height: 1.2em;
 }
@@ -4827,7 +4849,7 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 .link-text {
   color: #5f38fb;
   font-weight: 400;
-  font-size: 1.1rem;
+  font-size: 0.875rem;
 }
 
 :is(html[class~="dark"] .link-text) {
@@ -4896,7 +4918,7 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 }
 
 .nextra-toc-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 150%;
   text-transform: capitalize;
