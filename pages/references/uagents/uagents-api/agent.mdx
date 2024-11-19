@@ -16,11 +16,7 @@ import {
     ApiResponses,
 } from "../../../../components/api-endpoint";
 
-
-
 # Agent
-
-
 
 ## Agent Objects
 
@@ -152,8 +148,6 @@ import {
     </Properties>
 </Row>
 
-
-
 #### `__`init`__`
 
     ```python
@@ -180,8 +174,6 @@ Initialize an Agent instance.
     - `resolve` _Optional[Resolver]_ - The resolver to use for agent communication.
     - `version` _Optional[str]_ - The version of the agent.
 
-
-
 #### name
 
     ```python
@@ -194,8 +186,6 @@ Get the name of the agent.
 **Returns**:
 
     - `str` - The name of the agent.
-
-
 
 #### address
 
@@ -210,8 +200,6 @@ Get the address of the agent used for communication.
 
     - `str` - The agent's address.
 
-
-
 #### wallet
 
     ```python
@@ -224,8 +212,6 @@ Get the wallet of the agent.
 **Returns**:
 
     - `LocalWallet` - The agent's wallet.
-
-
 
 #### storage
 
@@ -240,8 +226,6 @@ Get the key-value store used by the agent for data storage.
 
     - `KeyValueStore` - The key-value store instance.
 
-
-
 #### mailbox
 
     ```python
@@ -254,8 +238,6 @@ Get the mailbox configuration of the agent (deprecated and replaced by agentvers
 **Returns**:
 
     Dict[str, str]: The mailbox configuration.
-
-
 
 #### agentverse
 
@@ -270,8 +252,6 @@ Get the agentverse configuration of the agent.
 
     Dict[str, str]: The agentverse configuration.
 
-
-
 #### mailbox`_`client
 
     ```python
@@ -284,8 +264,6 @@ Get the mailbox client used by the agent for mailbox communication.
 **Returns**:
 
     - `MailboxClient` - The mailbox client instance.
-
-
 
 #### mailbox
 
@@ -300,8 +278,6 @@ Set the mailbox configuration for the agent (deprecated and replaced by agentver
 
     - `config` _Union[str, Dict[str, str]]_ - The new mailbox configuration.
 
-
-
 #### agentverse
 
     ```python
@@ -314,8 +290,6 @@ Set the agentverse configuration for the agent.
 **Arguments**:
 
     - `config` _Union[str, Dict[str, str]]_ - The new agentverse configuration.
-
-
 
 #### sign
 
@@ -333,8 +307,6 @@ Sign the provided data.
 
     - `str` - The signature of the data.
 
-
-
 #### sign`_`digest
 
     ```python
@@ -351,8 +323,6 @@ Sign the provided digest.
 
     - `str` - The signature of the digest.
 
-
-
 #### sign`_`registration
 
     ```python
@@ -365,12 +335,9 @@ Sign the registration data for Almanac contract.
 
     - `str` - The signature of the registration data.
 
-
 **Raises**:
 
     - `AssertionError` - If the Almanac contract address is None.
-
-
 
 #### update`_`endpoints
 
@@ -384,8 +351,6 @@ Update the list of endpoints.
 
     - `endpoints` _List[Dict[str, Any]]_ - List of endpoint dictionaries.
 
-
-
 #### update`_`loop
 
     ```python
@@ -397,8 +362,6 @@ Update the event loop.
 **Arguments**:
 
     - `loop` - The event loop.
-
-
 
 #### update`_`queries
 
@@ -412,8 +375,6 @@ Update the queries attribute.
 
     - `queries` - The queries attribute.
 
-
-
 #### register
 
     ```python
@@ -424,8 +385,6 @@ Register with the Almanac contract.
 
 This method checks for registration conditions and performs registration
 if necessary.
-
-
 
 #### on`_`interval
 
@@ -446,8 +405,6 @@ Decorator to register an interval handler for the provided period.
 
     - `Callable` - The decorator function for registering interval handlers.
 
-
-
 #### on`_`query
 
     ```python
@@ -465,8 +422,6 @@ Set up a query event with a callback.
 **Returns**:
 
     - `Callable` - The decorator function for registering query handlers.
-
-
 
 #### on`_`message
 
@@ -488,8 +443,6 @@ Decorator to register an message handler for the provided message model.
 
     - `Callable` - The decorator function for registering message handlers.
 
-
-
 #### on`_`event
 
     ```python
@@ -505,8 +458,6 @@ Decorator to register an event handler for a specific event type.
 **Returns**:
 
     - `Callable` - The decorator function for registering event handlers.
-
-
 
 #### include
 
@@ -525,8 +476,6 @@ Include a protocol into the agent's capabilities.
 
     - `RuntimeError` - If a duplicate model, signed message handler, or message handler is encountered.
 
-
-
 #### publish`_`manifest
 
     ```python
@@ -538,8 +487,6 @@ Publish a protocol manifest to the Almanac service.
 **Arguments**:
 
     - `manifest` _Dict[str, Any]_ - The protocol manifest.
-
-
 
 #### handle`_`message
 
@@ -557,8 +504,6 @@ Handle an incoming message.
     - `message` _JsonStr_ - The message content in JSON format.
     - `session` _uuid.UUID_ - The session UUID.
 
-
-
 #### setup
 
     ```python
@@ -566,8 +511,6 @@ Handle an incoming message.
     ```
 
 Include the internal agent protocol, run startup tasks, and start background tasks.
-
-
 
 #### start`_`background`_`tasks
 
@@ -577,8 +520,6 @@ Include the internal agent protocol, run startup tasks, and start background tas
 
 Start background tasks for the agent.
 
-
-
 #### run
 
     ```python
@@ -586,8 +527,6 @@ Start background tasks for the agent.
     ```
 
 Run the agent.
-
-
 
 ## Bureau Objects
 
@@ -618,8 +557,6 @@ This class manages a collection of agents and orchestrates their execution.
     - `_use_mailbox` _bool_ - A flag indicating whether mailbox functionality is enabled for any
       of the agents.
 
-
-
 #### `__`init`__`
 
     ```python
@@ -636,8 +573,6 @@ Initialize a Bureau instance.
     - `endpoint` _Optional[Union[str, List[str], Dict[str, dict]]]_ - The endpoint configuration
 for the bureau.
 
-
-
 #### add
 
     ```python
@@ -649,8 +584,6 @@ Add an agent to the bureau.
 **Arguments**:
 
     - `agent` _Agent_ - The agent to be added.
-
-
 
 #### run
 

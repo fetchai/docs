@@ -39,11 +39,11 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
-    
+
     # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
     # Then, copy the agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-    
+
     # Now your agent is ready to join the agentverse!
     news_agent = Agent(
         name="news_agent",
@@ -52,7 +52,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(news_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {news_agent.address}")
 
@@ -69,7 +69,6 @@ This file can be run on any platform supporting Python, with the necessary insta
         ctx.logger.info(f"Received news request from {sender} with prompt: {final_news}")
         #sending final response to the DeltaV GUI
         await ctx.send(sender, UAgentResponse(message = final_news, type = UAgentResponseType.FINAL))
-
 
     # Include the Generate News protocol in your agent
     news_agent.include(news_protocol)
@@ -109,7 +108,6 @@ This file can be run on any platform supporting Python, with the necessary insta
         #sending final response to the DeltaV GUI
         await ctx.send(sender, UAgentResponse(message = final_news, type = UAgentResponseType.FINAL))
 
-
     # Include the Generate News protocol in your agent
     agent.include(news_protocol)
     ```
@@ -137,11 +135,11 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
-    
+
     # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
     # Then, copy the agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-    
+
     # Now your agent is ready to join the agentverse!
     generate_news_agent = Agent(
         name="generate_news_agent",
@@ -150,13 +148,12 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(generate_news_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {generate_news_agent.address}")
 
     # Define Generate news protocol.
     generate_news_protocol = Protocol("Generate News")
-
 
     # Define a handler for the News generation protocol
     @generate_news_protocol.on_message(model=GenerateNews, replies=UAgentResponse)
@@ -214,7 +211,6 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     # Define Generate news protocol.
     generate_news_protocol = Protocol("Generate News")
-
 
     # Define a handler for the News generation protocol
     @generate_news_protocol.on_message(model=GenerateNews, replies=UAgentResponse)
@@ -275,11 +271,11 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
-    
+
     # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
     # Then, copy the agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-    
+
     # Now your agent is ready to join the agentverse!
     generate_cat_news_agent = Agent(
         name="generate_cat_news_agent",
@@ -288,7 +284,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(generate_cat_news_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {generate_cat_news_agent.address}")
 
@@ -332,7 +328,6 @@ This file can be run on any platform supporting Python, with the necessary insta
                     type=UAgentResponseType.ERROR
                 )
             )
-
 
     # Include the Generate News protocol in your agent.
     generate_cat_news_agent.include(generate_cat_news_protocol)
@@ -396,7 +391,6 @@ This file can be run on any platform supporting Python, with the necessary insta
                 )
             )
 
-
     # Include the Generate News protocol in your agent.
     agent.include(generate_cat_news_protocol)
     ```
@@ -435,14 +429,14 @@ This file can be run on any platform supporting Python, with the necessary insta
     # Define the Generate News model
     class GenerateNews(Model):
         country: str
-    
+
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
-    
+
     # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
     # Then, copy the agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-    
+
     # Now your agent is ready to join the agentverse!
     generate_news_reg_agent = Agent(
         name="generate_news_reg_agent",
@@ -451,7 +445,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(generate_news_reg_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {generate_news_reg_agent.address}")
 
@@ -494,7 +488,6 @@ This file can be run on any platform supporting Python, with the necessary insta
                     type=UAgentResponseType.ERROR
                 )
             )
-
 
     # Include the Generate Regional News protocol in your agent
     generate_news_reg_agent.include(generate_news_protocol)
@@ -572,7 +565,6 @@ This file can be run on any platform supporting Python, with the necessary insta
                 )
             )
 
-
     # Include the Generate Regional News protocol in your agent
     agent.include(generate_news_protocol)
     ```
@@ -594,14 +586,14 @@ This file can be run on any platform supporting Python, with the necessary insta
     # Define the Generate News model
     class GenerateNews(Model):
         keyword: str
-    
+
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
-    
+
     # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
     # Then, copy the agent's mailbox key and insert it here below inline
     AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-    
+
     # Now your agent is ready to join the agentverse!
     generate_news_keyw_agent = Agent(
         name="generate_news_keyw_agent",
@@ -610,7 +602,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(generate_news_keyw_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {generate_news_keyw_agent.address}")
 

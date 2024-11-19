@@ -36,10 +36,8 @@ This example provides details on how to create Agents and respective Agent Funct
     import requests
     from ai_engine import UAgentResponse, UAgentResponseType
 
-
     class Coordinates(Model):
         location: str
-
 
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
@@ -62,7 +60,6 @@ This example provides details on how to create Agents and respective Agent Funct
 
     location_protocol = Protocol("Location Coordinates")
 
-
     async def location_coordinates(latitude, longitude):
         url = "https://geocoding-by-api-ninjas.p.rapidapi.com/v1/reversegeocoding"
         querystring = {"lat": latitude, "lon": longitude}
@@ -77,7 +74,6 @@ This example provides details on how to create Agents and respective Agent Funct
         data = response.json()[0]["name"]
 
         return data
-
 
     @location_protocol.on_message(model=Coordinates, replies=UAgentResponse)
     async def location_coordinates_calculator(ctx: Context, sender: str, msg: Coordinates):
@@ -90,7 +86,6 @@ This example provides details on how to create Agents and respective Agent Funct
             sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
         )
 
-
     location_agent.include(location_protocol)
 
     location_agent.run()
@@ -102,13 +97,10 @@ This example provides details on how to create Agents and respective Agent Funct
     import requests
     from ai_engine import UAgentResponse, UAgentResponseType
 
-
     class Coordinates(Model):
         location: str
 
-
     location_protocol = Protocol("Location Coordinates")
-
 
     async def location_coordinates(latitude, longitude):
         url = "https://geocoding-by-api-ninjas.p.rapidapi.com/v1/reversegeocoding"
@@ -124,7 +116,6 @@ This example provides details on how to create Agents and respective Agent Funct
         data = response.json()[0]["name"]
 
         return data
-
 
     @location_protocol.on_message(model=Coordinates, replies=UAgentResponse)
     async def location_coordinates_calculator(ctx: Context, sender: str, msg: Coordinates):
@@ -224,7 +215,7 @@ function_group_ids = requests.get(
 function_group_id = function_group_ids.json()[0]["uuid"]
 time.sleep(10)
 ```
-    
+
 - Saving all the details required for creating function and creating function on basis of details received:
 
 ```python
@@ -389,7 +380,7 @@ response_function = requests.post(
 name = response_function.json()["name"]
 print(f"Function Created with name: {name}")
 ```
-    
+
 ## Steps to run the script
 
 1. Open terminal and go to directory `agents` created above.

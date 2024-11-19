@@ -31,7 +31,7 @@ Make sure you have read the following resources before going on with this guide:
     - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
     - [Mailbox ↗️](/guides/agents/intermediate/mailbox)
     - [Utilising the Agentverse Mailroom service ↗️](/guides/agentverse/utilising-the-mailbox)
-    - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Agents protocols ↗️](/guides/agents/intermediate/protocols)
     - [Agentverse Functions ↗️](/guides/agents/intermediate/agent-functions)
     - [Register an Agent Function on the Agentverse ↗️](/guides/agentverse/agentverse-functions/registering-agent-services)
 
@@ -212,15 +212,15 @@ The agent is defined as a [local agent with a Mailbox ↗️](https://fetch.ai/d
 
 The script for this agent looks as follows:
 
-<GithubCodeSegment digest="6055cc43a51cb8b2143427125213df2d">
+<GithubCodeSegment digest="d8fcf4b9769b9ddb42a3334613ddc41c">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/langchain-rag-agent/langchain_rag_agent.py"
         lineStart={1}
-        lineEnd={134}
+        lineEnd={132}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='6055cc43a51cb8b2143427125213df2d'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d8fcf4b9769b9ddb42a3334613ddc41c'>
 
 <DocsCode local={true}>
 	```py copy filename="langchain_rag_agent.py"
@@ -242,7 +242,6 @@ The script for this agent looks as follows:
 	from langchain.retrievers.document_compressors import CohereRerank
 	from ai_engine import UAgentResponse, UAgentResponseType
 	import nltk
-	from uagents.setup import fund_agent_if_low
 	
 	nltk.download("punkt")
 	nltk.download("averaged_perceptron_tagger")
@@ -256,7 +255,6 @@ The script for this agent looks as follows:
 	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
 	)
 	
-	fund_agent_if_low(agent.wallet.address())
 	
 	docs_bot_protocol = Protocol("DocsBot")
 	
@@ -371,7 +369,7 @@ The script for this agent looks as follows:
 
     The agent fetches and processes information from specified URLs to answer users' questions. Let's explore the script above in more detail. Initially, multiple modules are imported, including tools for making HTTP requests, parsing HTML, and handling Natural Language Processing (NLP). The agent uses **OpenAI's GPT-4o-mini model** for generating answers based on retrieved documents. We then up an agent called `langchain_rag_agent()` with a unique `seed` and `mailbox` address. Check out the [Mailbox ↗️](/guides/agents/intermediate/mailbox) guide for additional info on Agent Mailboxes.
 
-    To ensure the agent has sufficient funds to operate, the `fund_agent_if_low()` function is invoked.
+    **Ensure the agent has sufficient funds to operate**.
 
     Next, the `DocsBot` [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) is defined using the `Protocol` class of the `uagents` library to handle message interactions. This protocol uses a predefined prompt template to structure the questions and context for the language model.
 
@@ -411,15 +409,15 @@ Create a file for this agent:
 
 The script looks as follows:
 
-<GithubCodeSegment digest="bac253facec76142dc4312fb8535af16">
+<GithubCodeSegment digest="2e2c8a970f5234e67a105952c88f7630">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/langchain-rag-agent/langchain_rag_user.py"
         lineStart={1}
-        lineEnd={41}
+        lineEnd={40}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='bac253facec76142dc4312fb8535af16'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2e2c8a970f5234e67a105952c88f7630'>
 
 <DocsCode local={true}>
 	```py copy filename="langchain_rag_user.py"
@@ -427,7 +425,6 @@ The script looks as follows:
 	from uagents import Agent, Context, Protocol
 	from messages.requests import RagRequest
 	from ai_engine import UAgentResponse
-	from uagents.setup import fund_agent_if_low
 	
 	QUESTION = "How to install uagents using pip"
 	URL = "https://fetch.ai/docs/guides/agents/installing-uagent"
@@ -442,7 +439,7 @@ The script looks as follows:
 	    port=8000,
 	    endpoint=["http://127.0.0.1:8000/submit"],
 	)
-	fund_agent_if_low(user.wallet.address())
+	
 	rag_user = Protocol("LangChain RAG user")
 	
 	
@@ -481,7 +478,7 @@ The script looks as follows:
 
     The `RAG_AGENT_ADDRESS` variable holds the address of the RAG agent, which is responsible for retrieving and processing the webpage content to answer the user's question.
 
-    We are now ready to define the User Agent. We create the `langchain_rag_user` is created with a specific `port` and `endpoint`, which is where it will communicate with the RAG Agent. The agent's wallet is funded if needed using the `fund_agent_if_low()` function.
+    We are now ready to define the User Agent. We create the `langchain_rag_user` is created with a specific `port` and `endpoint`, which is where it will communicate with the RAG Agent. **Make sure the agent's enough funds in the wallet to operate**.
 
     We then proceed and define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). A protocol named `LangChain RAG user` is defined using the `Protocol` class of the `uagents` library to handle the agent's interactions. This protocol contains two important functions:
 

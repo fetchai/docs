@@ -721,13 +721,13 @@ The output would look as follows:
 
 ### Enabling search and discovery for your Agent (Almanac registration)
 
-Agent registration in the Almanac contract is a key feature which enables discoverability of agents as well enabled remote agent communication. To register, agents must pay a small fee. Therefore your agents need to have funds available in their Fetch wallet address. Luckily in this demo we utilize the testnet environment to simulate real world transactions.
+Agent registration in the Almanac contract is a key feature which enables discoverability of agents as well enabled remote agent communication. To register, agents must pay a small fee. Therefore your agents need to have funds available in their Fetch wallet address.
 
     <Callout type="info" emoji="ℹ️">
       When using the testnet, you can use the function `fund_agent_if_low()` to fund your agent.
     </Callout>
 
-We first import modules, then initialize our agents and include a function ensuring that agents have non-zero balances in their wallets. This function will check if you have enough tokens to register in the Almanac. If not, it will add tokens to your Fetch wallet address. Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
+We first import modules. Make sure your GAnet has enough funds in its wallet for registration in Almanac. Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
 
     <Callout type="info" emoji="ℹ️">
       HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. These endpoints define the entry points for various operations or functions offered by a web service or application.
@@ -757,7 +757,7 @@ Let's create a Python script for this example:
 
 We will have what follows:
 
-<GithubCodeSegment digest="9e27f7c429b54464db493c6417ccf02a">
+<GithubCodeSegment digest="6ae779e605343536a4618ccc0a03be1b">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/almanac_registration.py"
         lineStart={1}
@@ -765,12 +765,11 @@ We will have what follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='9e27f7c429b54464db493c6417ccf02a'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6ae779e605343536a4618ccc0a03be1b'>
 
 <DocsCode local={true}>
 	```py copy filename="almanac_registration.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Protocol
 	
 	agent = Agent(
@@ -779,9 +778,6 @@ We will have what follows:
 	    seed="alice secret phrase",
 	    endpoint=["http://127.0.0.1:8000/submit"],
 	)
-	
-	fund_agent_if_low(agent.wallet.address())
-	
 	
 	@agent.on_interval(period=3)
 	async def hi(ctx: Context):
@@ -797,7 +793,7 @@ We will have what follows:
 
 
 
-Here, we defined a local http address but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your agent so you don't have to fund different addresses each time you run your agent.
+Here, we defined a local http address, but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your agent, so you don't have to fund different addresses each time you run your agent.
 
     <Callout type="info" emoji="ℹ️">
       A seed phrase is a series of random words (typically 12 or 24) that provide the data needed to recover a lost or broken crypto wallet. It is also known as a mnemonic phrase and is best understood as a security measure for self-custody of digital assets. Agents have a crypto wallet address, and having the seed phrase enables the restoration of an agent's wallet address.
@@ -914,7 +910,7 @@ Similarly, we need to define a script for `bob` so to create a remote communicat
 
 Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
 
-<GithubCodeSegment digest="f17ca35602044b49164c4c102142e6a9">
+<GithubCodeSegment digest="26fe31b518db52d424c41a9c87c5ecf2">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/remote_bob.py"
         lineStart={1}
@@ -922,12 +918,11 @@ Instead of creating and manually writing out the same script we can copy and ren
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='f17ca35602044b49164c4c102142e6a9'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='26fe31b518db52d424c41a9c87c5ecf2'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_bob.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Model
 	
 	
@@ -941,8 +936,6 @@ Instead of creating and manually writing out the same script we can copy and ren
 	    seed="bob secret phrase",
 	    endpoint=["http://127.0.0.1:8001/submit"],
 	)
-	
-	fund_agent_if_low(agent.wallet.address())
 	
 	
 	@agent.on_message(model=Message)

@@ -107,7 +107,7 @@ Once the agent is correctly retrieved, you will have to give it a **name**. When
 
 Let's update `alice` agent; `alice` will now print to console any message it receives, provided the message is of type `Message`. Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`,  `name`, `seed`  and `mailbox` parameters to correctly run this code:
 
-<GithubCodeSegment digest="bb05019e1987c0454281a35446d404f4">
+<GithubCodeSegment digest="d5c56bbef4f96985c0ad5565cd24fe76">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/mailbox/mailbox_agent_updated.py"
         lineStart={1}
@@ -115,7 +115,7 @@ Let's update `alice` agent; `alice` will now print to console any message it rec
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='bb05019e1987c0454281a35446d404f4'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d5c56bbef4f96985c0ad5565cd24fe76'>
 
 <DocsCode local={true}>
 	```py copy filename="mailbox_agent_updated.py"
@@ -135,13 +135,13 @@ Let's update `alice` agent; `alice` will now print to console any message it rec
 	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
 	)
 	
+	print(f"Your agent's address is: {agent.address}")
+	
 	@agent.on_message(model=Message, replies={Message})
 	async def handle_message(ctx: Context, sender: str, msg: Message):
 	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 	
 	
-	if __name__ == "__main__":
-	    agent.run()
 
 ```
 </DocsCode>
@@ -154,7 +154,7 @@ Let's update `alice` agent; `alice` will now print to console any message it rec
 
 Let's create and run a second agent to message Alice every 3 seconds. You need to provide the `ALICE_ADDRESS`, `name` and `seed` parameters to correctly run this code:
 
-<GithubCodeSegment digest="9c5f21c33a1c67291068668d85e62ce8">
+<GithubCodeSegment digest="03eb3122058ee19a17748a48cae5dc13">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/mailbox/test_agent.py"
         lineStart={1}
@@ -162,7 +162,7 @@ Let's create and run a second agent to message Alice every 3 seconds. You need t
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='9c5f21c33a1c67291068668d85e62ce8'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='03eb3122058ee19a17748a48cae5dc13'>
 
 <DocsCode local={true}>
 	```py copy filename="test_agent.py"
@@ -186,7 +186,7 @@ Let's create and run a second agent to message Alice every 3 seconds. You need t
 	
 	
 	if __name__ == "__main__":
-	    agent.run()
+	    agent_2.run()
 
 ```
 </DocsCode>
