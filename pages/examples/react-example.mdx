@@ -78,34 +78,33 @@ In this section we will setup agents and as well as flask app which will respond
    from uagents.query import query
    from uagents import Model
    import json
-   
+
    # Define Request Data Model classes for interacting with different agents
    class NewsRequest(Model):
        company_name: str
-   
+
    class UrlRequest(Model):
        company_name: str
-   
+
    class wrapRequest(Model):
        url : str
-   
+
    class SentimentRequest(Model):
        news : str
-   
+
    # Initialize Flask application
    app = Flask(__name__)
    CORS(app)  # Enables CORS for all domains on all routes
-   
+
    # Define agent addresses
    news_agent_address = "agent1q2e9kfdrxfa5dxn6zeyw47287ca36cdur9xevhmdzzfmf4cwlmahv73mpev"
    news_content_agent_address = "agent1qvumqq9xju7musr82l6ulqsvgka7d7z77jvvdrkyyr7n5s0u0lfdvse6k4t"
    sentiment_agent_address = "agent1q2pm392d2uux3wjsydatd4zhagrtq0lrwfgw4s8pv4x0090sfzk9qpgztaz"
-   
-   
+
    @app.route('/')
    def home():
        return "Welcome to the Company Analyzer API!"
-   
+
    # Define an asynchronous endpoint to get news for a given company
    @app.route('/api/news/<string:company_name>', methods=['GET'])
    async def get_news(company_name):
@@ -113,8 +112,7 @@ In this section we will setup agents and as well as flask app which will respond
        data = json.loads(response.decode_payload())
        print(data)
        return data["news_list"]
-   
-   
+
    # Define an asynchronous endpoint to analyse sentiment for a given company
    @app.route('/api/sentiment/<string:company_name>', methods=['GET'])
    async def get_sentiment(company_name):
@@ -124,7 +122,7 @@ In this section we will setup agents and as well as flask app which will respond
        content_list = []
        sentiment_scores = {}
        url_list = data.get("url_list", [])
-   
+
        # For each URL, query for content and perform sentiment analysis
        for url in url_list:
            content = await query(destination=news_content_agent_address, message=wrapRequest(url=url), timeout=15.0)
@@ -146,7 +144,7 @@ In this section we will setup agents and as well as flask app which will respond
            else:
                sentiment_scores[label] = [score]
            sentiment_means = {label: sum(scores) / len(scores) for label, scores in sentiment_scores.items() if scores}
-   
+
        # Calculate average sentiment scores and determine the predominant sentiment
        if sentiment_means:
            max_sentiment = max(sentiment_means, key=sentiment_means.get)
@@ -154,12 +152,12 @@ In this section we will setup agents and as well as flask app which will respond
            return final_sentiment
        else:
            return None, None
-   
+
    # Start the Flask application in debug mode
    if __name__ == '__main__':
        app.run(debug=True)
    ```
-   
+
 2. Agents:
 
     - **News and URL agent:** Fetches news articles titles and url for them as well.
@@ -167,33 +165,33 @@ In this section we will setup agents and as well as flask app which will respond
 <CodeGroup hasCopy isLocalHostedFile>
 
     <DocsCode local={true}>
- 
+
    ```python copy filename="news_agent.py"
    # Import Required libraries
    import requests
    import os
    from uagents import Agent, Context, Model
    from uagents.setup import fund_agent_if_low
-    
+
    # Define Request and Response Models
    class NewsRequest(Model):
        company_name: str
-   
+
    class UrlRequest(Model):
        company_name: str
-   
+
    class NewsResponse(Model):
        news_list : list
-   
+
    class UrlResponse(Model):
        url_list: list
-   
+
    class ErrorResponse(Model):
        error : str
-   
+
    ALPHA_VANTAGE_API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
    GNEWS_API_KEY = os.getenv('GNEWS_API_KEY')
-    
+
    # Define function to get ticker symbol for given company name
    async def fetch_symbol(company_name):
        url = f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={company_name}&apikey={ALPHA_VANTAGE_API_KEY}"
@@ -208,7 +206,7 @@ In this section we will setup agents and as well as flask app which will respond
                return 'No Symbol found'
        else:
            return 'No Symbol found'
-    
+
    async def fetch_news(company_name): # get news urls and description for the given news company or ticker
        url = f"https://gnews.io/api/v4/search?q={company_name}&token={GNEWS_API_KEY}&lang=en"
        response = requests.get(url)
@@ -223,7 +221,7 @@ In this section we will setup agents and as well as flask app which will respond
                         "title": description}
            news_list.append(hyperlink)
        return news_list
-   
+
    async def fetch_url(company_name): # Get the news url's for given company name or symbol
        url = f"https://gnews.io/api/v4/search?q={company_name}&token={GNEWS_API_KEY}&lang=en"
        response = requests.get(url)
@@ -234,7 +232,7 @@ In this section we will setup agents and as well as flask app which will respond
            article_url = article.get('url', 'No url')
            url_list.append(article_url)
        return url_list
-    
+
    # Define News Agent
    NewsAgent = Agent(
        name="NewsAgent",
@@ -242,15 +240,15 @@ In this section we will setup agents and as well as flask app which will respond
        seed="News Agent secret phrase",
        endpoint=["http://127.0.0.1:8000/submit"],
    )
-    
+
    # Registering agent on Almanac and funding it.
    fund_agent_if_low(NewsAgent.wallet.address())
-    
+
    # On agent startup printing address
    @NewsAgent.on_event('startup')
    async def agent_details(ctx: Context):
        ctx.logger.info(f'Search Agent Address is {NewsAgent.address}')
-   
+
    # On_query handler for news request
    @NewsAgent.on_query(model=NewsRequest, replies={NewsResponse})
    async def query_handler(ctx: Context, sender: str, msg: NewsRequest):
@@ -264,13 +262,13 @@ In this section we will setup agents and as well as flask app which will respond
                news_list = await fetch_news(msg.company_name)
                ctx.logger.info(str(news_list))
            await ctx.send(sender, NewsResponse(news_list=news_list))
-   
+
        except Exception as e:
            error_message = f"Error fetching job details: {str(e)}"
            ctx.logger.error(error_message)
            # Ensure the error message is sent as a string
            await ctx.send(sender, ErrorResponse(error=str(error_message)))
-   
+
    # On_query handler for news_url request
    @NewsAgent.on_query(model=UrlRequest, replies={UrlResponse})
    async def query_handler(ctx: Context, sender: str, msg: UrlRequest):
@@ -289,8 +287,7 @@ In this section we will setup agents and as well as flask app which will respond
            ctx.logger.error(error_message)
            # Ensure the error message is sent as a string
            await ctx.send(sender, ErrorResponse(error=str(error_message)))
-   
-   
+
    if __name__ == "__main__":
        NewsAgent.run() 
    ```
@@ -301,26 +298,26 @@ In this section we will setup agents and as well as flask app which will respond
    # Import Required libraries
    import requests
    from uagents import Agent, Context, Model
-    
+
    # Define Request and Response Models
    class NewsRequest(Model):
        company_name: str
-   
+
    class UrlRequest(Model):
        company_name: str
-   
+
    class NewsResponse(Model):
        news_list : list
-   
+
    class UrlResponse(Model):
        url_list: list
-   
+
    class ErrorResponse(Model):
        error : str
-   
+
    ALPHA_VANTAGE_API_KEY = "YOUR_ALPHA_VANTAGE_API_KEY"
    GNEWS_API_KEY = "YOUR_GNEWS_API_KEY"
-    
+
    # Define function to get ticker symbol for given company name
    async def fetch_symbol(company_name):
        url = f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={company_name}&apikey={ALPHA_VANTAGE_API_KEY}"
@@ -335,7 +332,7 @@ In this section we will setup agents and as well as flask app which will respond
                return 'No Symbol found'
        else:
            return 'No Symbol found'
-    
+
    async def fetch_news(company_name): # get news urls and description for the given news company or ticker
        url = f"https://gnews.io/api/v4/search?q={company_name}&token={GNEWS_API_KEY}&lang=en"
        response = requests.get(url)
@@ -350,7 +347,7 @@ In this section we will setup agents and as well as flask app which will respond
                         "title": description}
            news_list.append(hyperlink)
        return news_list
-   
+
    async def fetch_url(company_name): # Get the news url's for given company name or symbol
        url = f"https://gnews.io/api/v4/search?q={company_name}&token={GNEWS_API_KEY}&lang=en"
        response = requests.get(url)
@@ -361,12 +358,12 @@ In this section we will setup agents and as well as flask app which will respond
            article_url = article.get('url', 'No url')
            url_list.append(article_url)
        return url_list
-    
+
    # On agent startup printing address
    @agent.on_event('startup')
    async def agent_details(ctx: Context):
        ctx.logger.info(f'Search Agent Address is {NewsAgent.address}')
-   
+
    # On_query handler for news request
    @agent.on_query(model=NewsRequest, replies={NewsResponse})
    async def query_handler(ctx: Context, sender: str, msg: NewsRequest):
@@ -380,13 +377,13 @@ In this section we will setup agents and as well as flask app which will respond
                news_list = await fetch_news(msg.company_name)
                ctx.logger.info(str(news_list))
            await ctx.send(sender, NewsResponse(news_list=news_list))
-   
+
        except Exception as e:
            error_message = f"Error fetching job details: {str(e)}"
            ctx.logger.error(error_message)
            # Ensure the error message is sent as a string
            await ctx.send(sender, ErrorResponse(error=str(error_message)))
-   
+
    # On_query handler for news_url request
    @agent.on_query(model=UrlRequest, replies={UrlResponse})
    async def query_handler(ctx: Context, sender: str, msg: UrlRequest):
@@ -424,20 +421,20 @@ In this section we will setup agents and as well as flask app which will respond
       from uagents.setup import fund_agent_if_low
       from bs4 import BeautifulSoup
       import time
-       
+
       # Define data Models to handle request
       class wrapRequest(Model):
           url : str
-      
+
       class Message(Model):
           message : str
-      
+
       class wrapResponse(Model):
           summary : str
-      
+
       class ErrorResponse(Model):
           error : str
-      
+
       # Define webscraper Agent
       webScraperAgent = Agent(
           name="Web Scraper Agent",
@@ -445,7 +442,7 @@ In this section we will setup agents and as well as flask app which will respond
           seed="Web Scraper Agent secret phrase",
           endpoint=["http://127.0.0.1:8001/submit"],
       )
-       
+
       # Define function to scrap webpage and get paragraph content.
       async def get_webpage_content(url):
           try:
@@ -454,13 +451,13 @@ In this section we will setup agents and as well as flask app which will respond
                       if response.status == 200:
                           response_text = await response.text()
                           soup = BeautifulSoup(response_text, 'html.parser')
-                          
+
                           for script_or_style in soup(["script", "style", "header", "footer", "nav", "aside"]):
                               script_or_style.decompose()
-      
+
                           text_blocks = soup.find_all('p')
                           text_content = ' '.join(block.get_text(strip=True) for block in text_blocks if block.get_text(strip=True))
-      
+
                           words = text_content.split()
                           limited_text = ' '.join(words[:500])  # Limit to first 500 words for faster response of sentiment agent.
                           return limited_text
@@ -468,13 +465,12 @@ In this section we will setup agents and as well as flask app which will respond
                           return "Error: Unable to fetch content."
           except Exception as e:
               return f"Error encountered: {str(e)}"
-      
-       
+
       # On agent startup printing address
       @webScraperAgent.on_event('startup')
       async def agent_details(ctx: Context):
           ctx.logger.info(f'Search Agent Address is {webScraperAgent.address}')
-      
+
       # On_query handler to handle webpage wrapping
       @webScraperAgent.on_query(model=wrapRequest, replies={wrapResponse})
       async def query_handler(ctx: Context, sender: str, msg: wrapRequest):
@@ -491,7 +487,7 @@ In this section we will setup agents and as well as flask app which will respond
               ctx.logger.error(error_message)
               # Ensure the error message is sent as a string
               await ctx.send(sender, ErrorResponse(error=str(error_message)))
-      
+
       if __name__ == "__main__":
           webScraperAgent.run()
       ```
@@ -511,17 +507,17 @@ In this section we will setup agents and as well as flask app which will respond
       import asyncio
       import aiohttp
       import json
-       
+
       # Define Request and Response Data Models
       class SentimentRequest(Model):
           news : str
-      
+
       class SentimentResponse(Model):
           sentiment : str
-      
+
       class ErrorResponse(Model):
           error : str
-      
+
       # Define Sentiment analysis Agent
       SentimentAgent = Agent(
           name="Sentiment Agent",
@@ -529,17 +525,17 @@ In this section we will setup agents and as well as flask app which will respond
           seed="Sentiment Agent secret phrase",
           endpoint=["http://127.0.0.1:8002/submit"],
       )
-      
+
       # Registering agent on Almanac and funding it.
       fund_agent_if_low(SentimentAgent.wallet.address())
-       
+
       # Define function to provide sentiment for given content
       async def sentiment_analysis(news):
           API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert"
           headers = {"Authorization": "Bearer <Hugging face API>"}
-      
+
           payload = {"inputs": news}
-      
+
           async with aiohttp.ClientSession() as session:
               async with session.post(API_URL, headers=headers, json=payload) as response:
                   if response.status == 200:
@@ -553,12 +549,12 @@ In this section we will setup agents and as well as flask app which will respond
                       return f"{max_label},{max_score}"
                   else:
                       return "Error: Failed to fetch data from API"
-      
+
       # On agent startup printing address
       @SentimentAgent.on_event('startup')
       async def agent_details(ctx: Context):
           ctx.logger.info(f'Search Agent Address is {SentimentAgent.address}')
-      
+
       # On_query handler for processing sentiment request
       @SentimentAgent.on_query(model=SentimentRequest, replies={SentimentResponse})
       async def query_handler(ctx: Context, sender: str, msg: SentimentRequest):
@@ -574,7 +570,7 @@ In this section we will setup agents and as well as flask app which will respond
               ctx.logger.error(error_message)
               # Ensure the error message is sent as a string
               await ctx.send(sender, ErrorResponse(error=str(error_message)))
-      
+
       if __name__ == "__main__":
           SentimentAgent.run()
       ```
@@ -617,7 +613,7 @@ In this section we will setup agents and as well as flask app which will respond
 
    ```
    import React from 'react';
-   
+
    function NewsFeed({ news }) {
        return (
            <div className="news-feed">
@@ -644,14 +640,14 @@ In this section we will setup agents and as well as flask app which will respond
    ```
    import React, { useState } from 'react';
    import './SearchComponent.css'; // Importing CSS for styling
-   
+
    function SearchComponent({ onSearch }) {
        const [searchTerm, setSearchTerm] = useState('');
        const handleSubmit = (event) => {
        event.preventDefault();
        onSearch(searchTerm); // This function would be passed down from the parent component or defined here to handle the search logic
        };
-   
+
        return (
            <div className="search-area">
                <form onSubmit={handleSubmit}>
@@ -667,7 +663,7 @@ In this section we will setup agents and as well as flask app which will respond
        );
        }
    export default SearchComponent;
-   
+
    ```
 
     - `SearchComponent.css`:
@@ -680,18 +676,18 @@ In this section we will setup agents and as well as flask app which will respond
        height: 100px; /* Approx 1 inch */
        background-color: #007BFF; /* Blue background */
        }
-     
+
    .search-area form {
        display: flex;
        gap: 20px;
        }
-     
+
    .search-area input {
        padding: 8px;
        border-radius: 4px;
        border: 1px solid #ccc;
        }
-     
+
    .search-area button {
        background-color: #0056b3;
        color: white;
@@ -700,7 +696,7 @@ In this section we will setup agents and as well as flask app which will respond
        padding: 8px 16px;
        cursor: pointer;
        }
-     
+
    .search-area button:hover {
        background-color: #004494;
        }
@@ -712,20 +708,20 @@ In this section we will setup agents and as well as flask app which will respond
    .App {
        text-align: center;
        }
-   
+
    .search-container, .news-feed, .stock-info {
        margin: 20px;
        padding: 10px;
        }
-   
+
    input[type="text"] {
        margin-right: 10px;
        }
-   
+
    .news-feed div {
        margin: 5px;
        }
-   
+
    button {
        background-color: red;
        color: white;
@@ -733,11 +729,11 @@ In this section we will setup agents and as well as flask app which will respond
        padding: 10px 20px;
        cursor: pointer;
        }
-   
+
    button:hover {
        opacity: 0.8;
        }
-   
+
    .news-feed {
        margin-top: 20px;
        padding: 10px;
@@ -746,18 +742,17 @@ In this section we will setup agents and as well as flask app which will respond
        color: black;
        text-decoration: none;
        }
-   
+
    .news-feed a:hover {
        color: black; 
        text-decoration: underline;
        } 
-   
-   
+
    .news-feed ul {
        list-style-type: none;
        padding: 0;
        }
-   
+
    .news-feed li {
        margin-bottom: 10px;
        padding: 5px;
@@ -766,7 +761,7 @@ In this section we will setup agents and as well as flask app which will respond
        color: black; /* Black color for text */
        text-align: left;
        }
-   
+
    .sentiment-block {
        margin-top: 30px;
        padding: 10px;
@@ -776,17 +771,17 @@ In this section we will setup agents and as well as flask app which will respond
        font-size: 20px;
        text-align: center;
        }
-   
+
    .sentiment-block.neutral {
        background-color: #fcf8e3;
        color: #8a6d3b; 
        }
-   
+
    .sentiment-block.negative {
        background-color: #f2dede; 
        color: #a94442; 
        }
-   
+
    .title-bar {
        background-color: #007BFF; 
        color: white;
@@ -803,14 +798,14 @@ In this section we will setup agents and as well as flask app which will respond
    import SearchComponent from './components/SearchComponent';
    import NewsFeed from './components/NewsFeed';
    import './App.css';  // Import CSS for styling
-   
+
    // Define the main React functional component
    function App() {
      // State hooks to manage news data, sentiment, and type of sentiment
      const [news, setNews] = useState([]);
      const [sentiment, setSentiment] = useState('');
      const [sentimentType, setSentimentType] = useState('');
-   
+
      // Function to handle search operations
      const handleSearch = async (searchTerm) => {
        try {
@@ -819,7 +814,7 @@ In this section we will setup agents and as well as flask app which will respond
          const newsData = await newsResponse.json();  // Convert response to JSON
          setNews(newsData);  // Update the news state
          console.log('Fetched news:', newsData);  // Log the fetched news data
-   
+
          // API request to fetch sentiment analysis for the search term
          const sentimentResponse = await fetch(`http://127.0.0.1:5000/api/sentiment/${searchTerm}`);
          const sentimentData = await sentimentResponse.text();  // Get response as text
@@ -832,7 +827,7 @@ In this section we will setup agents and as well as flask app which will respond
          setSentimentType('');  // Reset sentiment type state on error
        }
      };
-   
+
      // Helper function to process the sentiment text and update state
      const processSentiment = (sentimentText) => {
        const parts = sentimentText.split(':');  // Split sentiment text by colon
@@ -840,7 +835,7 @@ In this section we will setup agents and as well as flask app which will respond
        setSentiment(sentimentText);  // Update sentiment state
        setSentimentType(sentimentValue);  // Update sentiment type state
      };
-   
+
      // Render the application UI
      return (
        <div className="App">
@@ -850,7 +845,7 @@ In this section we will setup agents and as well as flask app which will respond
        </div>
      );
    }
-   
+
    export default App;  // Export the App component for use in other parts of the application
    ```
 
@@ -933,7 +928,6 @@ In this section we will setup agents and as well as flask app which will respond
    ```
 
        - This typically starts the React application on `http://localhost:3000`.
-
 
 ### Accessing the Application
 
