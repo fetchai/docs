@@ -42,7 +42,7 @@ const startingGuides = (theme) => [
   },
   {
     label: "The Fetch.ai technology stack",
-    path: "/concepts#introducing-fetchai-pioneering-an-ai-powered-decentralized-digital-economy",
+    path: "/concepts/introducing-fetchai",
     image: theme === ThemeMode.Dark ? darktechStack : techStack,
   },
 ];
