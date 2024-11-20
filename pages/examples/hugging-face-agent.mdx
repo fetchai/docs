@@ -1,0 +1,397 @@
+import { CodeGroup, DocsCode } from "../../components/code"
+
+# Hugging face API agent as a Function
+
+## Introduction
+
+This system shows how to integrate the Hugging Face API with an Agentverse Agent. The example consists of multiple layers of Primary and Secondary functions, with the Hugging Face system as the main Primary function and Hugging Face request and model list as Secondary function.
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+- [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+
+- [Agentverse Functions ↗️](/concepts/agent-services/services)
+
+- [Register an Agent Function on the Agentverse ↗️](/guides/agentverse/registering-agent-services)
+
+### The agents
+#### Hugging Face System Agent
+
+<CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
+
+        ```python copy filename="agent.py"
+        # Here we demonstrate how we can create a hugging face system agent that is compatible with DeltaV.
+
+        # Importing required libraries.
+        import requests
+        from uagents import Agent, Context, Model, Field, Protocol
+        from uagents.setup import fund_agent_if_low
+        from ai_engine import UAgentResponse, UAgentResponseType
+
+        # Define a model class for the Hugging Face agent's expected message format.
+        class HF(Model):
+            response : str # This class has a single attribute 'response' that holds the string response from the subtask.
+        
+        # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+        SEED_PHRASE = "put_your_seed_phrase_here"
+        
+        # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+        # Then, copy the agent's mailbox key and insert it here below inline
+        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+        
+        # Now your agent is ready to join the agentverse!
+        hf_agent = Agent(
+            name="hf_agent",
+            seed=SEED_PHRASE,
+            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+        )
+
+        fund_agent_if_low(hf_agent.wallet.address())
+        
+        # Copy the address shown below
+        print(f"Your agent's address is: {hf_agent.address}")
+
+        # Create a protocol for the Hugging Face (HF) agent, specifying its communication protocol.
+        hf_protocol = Protocol("Hugging Face")
+
+        # Define a handler for the Hugging face protocol.
+        @hf_protocol.on_message(model=HF, replies = UAgentResponse)
+        async def on_hf_request(ctx: Context, sender: str, msg: HF):
+
+            # Log the receipt of a response, including the sender and the message prompt.
+            ctx.logger.info(f"Received hugging face request from {sender} with prompt: {msg.response}")
+
+            # Format a response message incorporating the received message.
+            message = f'Response to your query from model is \n {msg.response}'
+            # Asynchronously send a response back to the sender with the processed message.
+            await ctx.send(sender, UAgentResponse(message = message, type = UAgentResponseType.FINAL))
+
+        # Include the Hugging Face protocol in your agent.
+        hf_agent.include(hf_protocol)
+
+        hf_agent.run()
+    ```
+
+    </DocsCode>
+
+    <DocsCode local={false}>
+
+    ```python copy filename="agent.py"
+        # Here we demonstrate how we can create a hugging face system agent that is compatible with DeltaV.
+
+        # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+
+        # Importing required libraries.
+        import requests
+        from ai_engine import UAgentResponse, UAgentResponseType
+
+        # Define a model class for the Hugging Face agent's expected message format.
+        class HF(Model):
+            response : str # This class has a single attribute 'response' that holds the string response from the subtask.
+
+        # Create a protocol for the Hugging Face (HF) agent, specifying its communication protocol.
+        hf_protocol = Protocol("Hugging Face")
+
+        # Define a handler for the Hugging face protocol.
+        @hf_protocol.on_message(model=HF, replies = UAgentResponse)
+        async def on_hf_request(ctx: Context, sender: str, msg: HF):
+
+            # Log the receipt of a response, including the sender and the message prompt.
+            ctx.logger.info(f"Received hugging face request from {sender} with prompt: {msg.response}")
+
+            # Format a response message incorporating the received message.
+            message = f'Response to your query from model is \n {msg.response}'
+            # Asynchronously send a response back to the sender with the processed message.
+            await ctx.send(sender, UAgentResponse(message = message, type = UAgentResponseType.FINAL))
+
+        # Include the Hugging Face protocol in your agent.
+        agent.include(hf_protocol)
+    ```
+    </DocsCode>
+</CodeGroup>
+
+#### Hugging Face Request Agent
+
+<CodeGroup hasCopy isLocalHostedFile>
+
+    <DocsCode local={true}>
+
+        ```python copy filename="agent.py"
+        # Here we demonstrate how we can create a hugging face request agent that is compatible with DeltaV.
+
+        # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+
+        # Importing required libraries.
+        import requests
+        import json
+        from uagents import Agent, Context, Model, Field, Protocol
+        from uagents.setup import fund_agent_if_low
+        from ai_engine import UAgentResponse, UAgentResponseType
+
+        # Define a model class for the Hugging Face Request agent's expected message format.
+        class Search(Model):
+            model_id : str
+            query : str
+
+        # Define a function to handle query from user using model_id and query provided by user.
+        async def handle_query(model_id, query):
+            Model_ID = model_id
+            API_URL = f'https://api-inference.huggingface.co/models/{Model_ID}' # hugging face url
+            API_TOKEN = 'YOUR TOKEN HERE' # hugging face API token
+
+            headers = {"Authorization": f"Bearer {API_TOKEN}"}
+
+            # Make request to hugging face API with model_id and query.
+            response = requests.post(API_URL, headers=headers, json=query).json()
+            return response
+        
+        # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+        SEED_PHRASE = "put_your_seed_phrase_here"
+        
+        # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+        # Then, copy the agent's mailbox key and insert it here below inline
+        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+        
+        # Now your agent is ready to join the agentverse!
+        hf_request_agent = Agent(
+            name="hf_request_agent",
+            seed=SEED_PHRASE,
+            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+        )
+
+        fund_agent_if_low(hf_request_agent.wallet.address())
+        
+        # Copy the address shown below
+        print(f"Your agent's address is: {hf_request_agent.address}")
+
+        # Create a protocol for the Hugging Face Request(HF) agent, specifying its communication protocol.
+        hfprotocol = Protocol(name = 'Hugging Face protocol')
+
+        # Define a handler for the Hugging face request protocol.
+        @hfprotocol.on_message(model = Search, replies = UAgentResponse)
+        async def handle_message(ctx: Context, sender: str, msg: Search):
+
+            # Log the model_id and query provided by user.
+            ctx.logger.info(f'Message sent from {sender} : {msg.model_id}')
+            ctx.logger.info(f'Message sent from subtask : {msg.query}')
+
+            # Calling handle_query function to get response from API.
+            response = await handle_query(msg.model_id, msg.query)
+            # sending response to hugging face agent
+            await ctx.send(sender, UAgentResponse(message = str(response), type = UAgentResponseType.FINAL))
+
+        # Include the Hugging Face protocol in your agent.
+        hf_request_agent.include(hfprotocol, publish_manifest = True)
+
+        hf_request_agent.run()
+    ```
+    </DocsCode>
+
+    <DocsCode local={false}>
+
+    ```python copy filename="agent.py"
+        # Here we demonstrate how we can create a hugging face request agent that is compatible with DeltaV.
+
+        # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+
+        # Importing required libraries.
+        import requests
+        import json
+        from ai_engine import UAgentResponse, UAgentResponseType
+
+        # Define a model class for the Hugging Face Request agent's expected message format.
+        class Search(Model):
+            model_id : str
+            query : str
+
+        # Define a function to handle query from user using model_id and query provided by user.
+        async def handle_query(model_id, query):
+            Model_ID = model_id
+            API_URL = f'https://api-inference.huggingface.co/models/{Model_ID}' # hugging face url
+            API_TOKEN = 'YOUR TOKEN HERE' # hugging face API token
+
+            headers = {"Authorization": f"Bearer {API_TOKEN}"}
+
+            # Make request to hugging face API with model_id and query.
+            response = requests.post(API_URL, headers=headers, json=query).json()
+            return response
+
+        # Create a protocol for the Hugging Face Request(HF) agent, specifying its communication protocol.
+        hfprotocol = Protocol(name = 'Hugging Face protocol')
+
+        # Define a handler for the Hugging face request protocol.
+        @hfprotocol.on_message(model = Search, replies = UAgentResponse)
+        async def handle_message(ctx: Context, sender: str, msg: Search):
+
+            # Log the model_id and query provided by user.
+            ctx.logger.info(f'Message sent from {sender} : {msg.model_id}')
+            ctx.logger.info(f'Message sent from subtask : {msg.query}')
+
+            # Calling handle_query function to get response from API.
+            response = await handle_query(msg.model_id, msg.query)
+            # sending response to hugging face agent
+            await ctx.send(sender, UAgentResponse(message = str(response), type = UAgentResponseType.FINAL))
+
+        # Include the Hugging Face protocol in your agent.
+        agent.include(hfprotocol, publish_manifest = True)
+    ```
+    </DocsCode>
+</CodeGroup>
+#### Model List Agent
+
+<CodeGroup hasCopy isLocalHostedFile>
+
+    <DocsCode local={true}>
+
+        ```python copy filename="agent.py"
+        # Here we demonstrate how we can create a model list agent that is compatible with DeltaV.
+
+        # Importing required libraries.
+        import requests
+        from ai_engine import UAgentResponse, UAgentResponseType
+        import json
+
+        # Define a model class for the Model List agent's expected message format.
+        class Search(Model):
+            search : str # This is a keyword for which user wants to search model
+        
+        # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+        SEED_PHRASE = "put_your_seed_phrase_here"
+        
+        # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+        # Then, copy the agent's mailbox key and insert it here below inline
+        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+        
+        # Now your agent is ready to join the agentverse!
+        model_list_agent = Agent(
+            name="model_list_agent",
+            seed=SEED_PHRASE,
+            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+        )
+
+        fund_agent_if_low(model_list_agent.wallet.address())
+        
+        # Copy the address shown below
+        print(f"Your agent's address is: {model_list_agent.address}")
+
+        # Create a protocol for the Model List agent, specifying its communication protocol.
+        model_list_protocol = Protocol(name = 'Model List protocol')
+
+        # Define a function to handle query from user using search keyword provided by user.
+        async def handle_query(search):
+            url = "https://huggingface.co/api/models"
+
+            params = {
+                "search": search,
+                "filter": "text-classification",
+                "sort": "downloads",
+                "direction": -1,
+                "limit": 5
+            } # Search parameters.
+
+            models = [] # List of models.
+
+            # Make the GET request.
+            response = requests.get(url, params = params)
+
+            # Append models in list.
+            for model in response.json():
+                models.append(model['id'])
+
+            return models
+
+        # Define a handler for the Model list protocol.
+        @model_list_protocol.on_message(model = Search, replies = UAgentResponse)
+        async def handle_message(ctx: Context, sender: str, msg: Search):
+            # Log search keyword provided by user.
+            ctx.logger.info(f'Message sent from {sender} : {msg.search}')
+
+            # Call handle_query to get list of models.
+            options = handle_query(msg.search)
+            # Log model list responded by hugging face request.
+            ctx.logger.info(f'Message sent from {sender} : {options}')
+
+            # Format options in dictionary format to provide options to user.
+            formatted_options = [{'key': i + 1, 'value': value} for i, value in enumerate(options)]
+
+            # Send message to the user.
+            await ctx.send(sender, UAgentResponse(message = str(formatted_options), type=UAgentResponseType.FINAL))
+
+        # Include model_list protocol in agent.
+        model_list_agent.include(model_list_protocol, publish_manifest = True)
+
+        model_list_agent.run()
+    ```
+    </DocsCode>
+
+    <DocsCode local={false}>
+
+    ```python copy filename="agent.py"
+        # Here we demonstrate how we can create a model list agent that is compatible with DeltaV.
+
+        # After running this agent, it can be registered to DeltaV on Agentverse. For registration you will have to use the agent's address.
+
+        # Importing required libraries.
+        import requests
+        from ai_engine import UAgentResponse, UAgentResponseType
+        import json
+
+        # Define a model class for the Model List agent's expected message format.
+        class Search(Model):
+            search : str # This is a keyword for which user wants to search model
+
+        # Create a protocol for the Model List agent, specifying its communication protocol.
+        model_list_protocol = Protocol(name = 'Model List protocol')
+
+        # Define a function to handle query from user using search keyword provided by user.
+        async def handle_query(search):
+            url = "https://huggingface.co/api/models"
+
+            params = {
+                "search": search,
+                "filter": "text-classification",
+                "sort": "downloads",
+                "direction": -1,
+                "limit": 5
+            } # Search parameters.
+
+            models = [] # List of models.
+
+            # Make the GET request.
+            response = requests.get(url, params = params)
+
+            # Append models in list.
+            for model in response.json():
+                models.append(model['id'])
+
+            return models
+
+        # Define a handler for the Model list protocol.
+        @model_list_protocol.on_message(model = Search, replies = UAgentResponse)
+        async def handle_message(ctx: Context, sender: str, msg: Search):
+            # Log search keyword provided by user.
+            ctx.logger.info(f'Message sent from {sender} : {msg.search}')
+
+            # Call handle_query to get list of models.
+            options = handle_query(msg.search)
+            # Log model list responded by hugging face request.
+            ctx.logger.info(f'Message sent from {sender} : {options}')
+
+            # Format options in dictionary format to provide options to user.
+            formatted_options = [{'key': i + 1, 'value': value} for i, value in enumerate(options)]
+
+            # Send message to the user.
+            await ctx.send(sender, UAgentResponse(message = str(formatted_options), type=UAgentResponseType.FINAL))
+
+        # Include model_list protocol in agent.
+        agent.include(model_list_protocol, publish_manifest = True)
+    ```
+    </DocsCode>
+</CodeGroup>

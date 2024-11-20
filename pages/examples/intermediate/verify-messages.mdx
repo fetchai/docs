@@ -1,3 +1,5 @@
+import { CodeGroup, DocsCode } from "../../../components/code"
+
 # Verify messages with Agents
 
 ## Introduction
@@ -16,6 +18,8 @@ This example shows how to use Agents to make them verify authenticity of message
 
 ### The agent
 
+<CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
     ```py copy filename="message_verification.py"
     import hashlib
     from uagents import Agent, Bureau, Context, Model
@@ -76,9 +80,9 @@ This example shows how to use Agents to make them verify authenticity of message
     if __name__ == "__main__":
         bureau.run()
     ```
-
+    </DocsCode>
+</CodeGroup>
 ### Expected output
-
     ```
     [  bob]: Alice's message verified!
     [  bob]: Received message from agent1qf5gfqm48k9acegez3sg82ney2aa6l5fvpwh3n3z0ajh0nam3ssgwnn5me7: hello there bob

@@ -30,6 +30,7 @@ import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
 import Error404 from "components/error-404";
 import LastUpdatedTime from "components/last-updated";
+import { ThemeDocProvider } from "./contexts/theme-provider";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -92,22 +93,13 @@ const Body = ({
     setMatchingTagRoute(filteredRoutes);
   };
 
-  const tagColors = [
-    "bg-indigo",
-    "bg-orange",
-    "bg-light-green",
-    "bg-blue-150",
-    "bg-yellow-150",
-    "bg-red-150",
-  ];
-  const tagsComponent = tags && (
+  const tagsComponent = tags && !matchingTagRoute && (
     <div className="nx-mt-4 nx-mb-4 nx-flex nx-flex-wrap nx-gap-2 nx-max-w-50rem">
       {tags.map((tag, index) => (
         <span
           key={index}
-          className={`nx-text-fetch-main nx-text-sm nx-font-normal nx-rounded nx-px-4 nx-py-2 nx-${
-            tagColors[index % tagColors.length]
-          }`}
+          className={`nx-text-fetch-main tags
+          nx-rounded nx-text-sm nx-font-normal nx-px-4 nx-py-2`}
         >
           <button onClick={() => handleTagClick(tag)}>{tag}</button>
         </span>
@@ -129,7 +121,10 @@ const Body = ({
     <>
       {tagsComponent}
       {matchingTagRoute ? (
-        <MatchingRoutesComponent routes={matchingTagRoute} />
+        <MatchingRoutesComponent
+          setMatchingTagRoute={setMatchingTagRoute}
+          routes={matchingTagRoute}
+        />
       ) : (
         ""
       )}
@@ -171,7 +166,7 @@ const Body = ({
         )}
       >
         <main className="nextra-body-full-container nx-flex-col">
-          {breadcrumb}
+          {!matchingTagRoute && breadcrumb}
           {body}
         </main>
 
@@ -343,11 +338,13 @@ export default function Layout({
   ...context
 }: NextraThemeLayoutProps): ReactElement {
   return (
-    <ErrorBoundary FallbackComponent={Error404}>
-      <ConfigProvider value={context}>
-        <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
-      </ConfigProvider>
-    </ErrorBoundary>
+    <ThemeDocProvider>
+      <ErrorBoundary FallbackComponent={Error404}>
+        <ConfigProvider value={context}>
+          <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
+        </ConfigProvider>
+      </ErrorBoundary>
+    </ThemeDocProvider>
   );
 }
 
@@ -369,7 +366,7 @@ export {
   ServerSideErrorPage,
   SkipNavContent,
   SkipNavLink,
-  ThemeSwitch,
+  ThemeSwitcher,
 } from "./components";
 
 export { useConfig } from "./contexts";

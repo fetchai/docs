@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.9]
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
@@ -36,4 +36,4 @@ jobs:
       # Step 4: Run the custom Python spell-checking script
       - name: Run spell-check script
         run: |
-          python check_spelling.py || exit 1
+          python .github/spelling/check_spelling.py || exit 1

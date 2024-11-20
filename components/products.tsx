@@ -71,7 +71,7 @@ const Item = ({
             className={
               hover
                 ? "nx-text-purple nx-text-lg nx-font-medium nx-mb-2"
-                : "nx-text-black nx-text-lg nx-font-medium nx-mb-2"
+                : "nx-text-black dark:nx-text-[#E9E9EA] nx-text-lg nx-font-medium nx-mb-2"
             }
           >
             {item.title}
@@ -152,7 +152,7 @@ const items: { [key: string]: Item[] } = {
       title: "Analytics",
       description: <>Coming soon.</>,
       icon: analyticsIcon,
-      path: "/guides",
+      path: "",
     },
   ],
   "Agentverse components": [

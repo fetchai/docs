@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Agent Mailboxes
 
@@ -33,28 +34,46 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Local agent setup
 
-        ```py copy filename="agent_1.py"
-        from uagents import Agent, Context, Model
-    
-        class Message(Model):
-            message: str
-    
-        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-        SEED_PHRASE = "put_your_seed_phrase_here"
-    
-        # Now your agent is ready to join the agentverse!
-        agent = Agent(
-            name="alice",
-            seed=SEED_PHRASE,
-            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-        )
-    
-        # Copy the address shown below
-        print(f"Your agent's address is: {agent.address}")
-    
-        if __name__ == "__main__":
-            agent.run()
-       ```
+<GithubCodeSegment digest="46da63dae693d306d3687b4ce70466a9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/mailbox/mailbox_agent.py"
+        lineStart={1}
+        lineEnd={20}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='46da63dae693d306d3687b4ce70466a9'>
+
+<DocsCode local={true}>
+	```py copy filename="mailbox_agent.py"
+
+	from uagents import Agent, Context, Model
+	
+	class Message(Model):
+	    message: str
+	
+	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	
+	# Now your agent is ready to join the agentverse!
+	agent = Agent(
+	    name="alice",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	# Copy the address shown below
+	print(f"Your agent's address is: {agent.address}")
+	
+	if __name__ == "__main__":
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Importantly, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters to correctly run this example.
 
@@ -86,56 +105,95 @@ Once the agent is correctly retrieved, you will have to give it a **name**. When
 
 ## Updating your agent
 
-Let's update `alice`, alice will now print to console any message it receives, provided the message is of type `Message`. Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`,  `name`, `seed`  and `mailbox` parameters to correctly run this code:
+Let's update `alice` agent; `alice` will now print to console any message it receives, provided the message is of type `Message`. Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`,  `name`, `seed`  and `mailbox` parameters to correctly run this code:
 
-        ```py copy filename="alice.py"
-        from uagents import Agent, Context, Model
-    
-        class Message(Model):
-            message: str
-    
-        AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-        SEED_PHRASE = "put_your_seed_phrase_here"
-    
-        # Now your agent is ready to join the agentverse!
-        agent = Agent(
-            name="alice",
-            seed=SEED_PHRASE,
-            mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-        )
-    
-        @agent.on_message(model=Message, replies={Message})
-        async def handle_message(ctx: Context, sender: str, msg: Message):
-            ctx.logger.info(f"Received message from {sender}: {msg.message}")
-    
-        if __name__ == "__main__":
-            agent.run()
-       ```
+<GithubCodeSegment digest="bb05019e1987c0454281a35446d404f4">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/mailbox/mailbox_agent_updated.py"
+        lineStart={1}
+        lineEnd={22}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='bb05019e1987c0454281a35446d404f4'>
+
+<DocsCode local={true}>
+	```py copy filename="mailbox_agent_updated.py"
+
+	from uagents import Agent, Context, Model
+	
+	class Message(Model):
+	    message: str
+	
+	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	
+	# Now your agent is ready to join the agentverse!
+	agent = Agent(
+	    name="alice",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	@agent.on_message(model=Message, replies={Message})
+	async def handle_message(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ## Creating a second agent
 
 Let's create and run a second agent to message Alice every 3 seconds. You need to provide the `ALICE_ADDRESS`, `name` and `seed` parameters to correctly run this code:
 
-        ```py copy filename="agent_2.py"
-    
-        from uagents import Agent, Bureau, Context, Model
-        from datetime import datetime
-    
-        class Message(Model):
-            message: str
-    
-        agent_2 = Agent(name="agent_2", seed="agent_2 recovery phrase", port=8001, endpoint="http://localhost:8001/submit")
-    
-        ALICE_ADDRESS = "add_address_of_alice_agent"
-    
-        @agent_2.on_interval(period=3.0)
-        async def send_message(ctx: Context):
-           await ctx.send(ALICE_ADDRESS, Message(message=f"hello {datetime.today().date()}"))
-    
-        if __name__ == "__main__":
-            agent.run()
-    
-        ```
+<GithubCodeSegment digest="9c5f21c33a1c67291068668d85e62ce8">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/mailbox/test_agent.py"
+        lineStart={1}
+        lineEnd={20}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9c5f21c33a1c67291068668d85e62ce8'>
+
+<DocsCode local={true}>
+	```py copy filename="test_agent.py"
+
+	from uagents import Agent, Bureau, Context, Model
+	from datetime import datetime
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	agent_2 = Agent(name="agent_2", seed="agent_2 recovery phrase", port=8001, endpoint="http://localhost:8001/submit")
+	
+	ALICE_ADDRESS = "add_address_of_alice_agent"
+	
+	
+	@agent_2.on_interval(period=3.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(ALICE_ADDRESS, Message(message=f"hello {datetime.today().date()}"))
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 ## Testing
 

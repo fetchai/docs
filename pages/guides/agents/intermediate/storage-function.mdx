@@ -1,10 +1,60 @@
-import { CodeGroup } from "../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Using agents storage function
 
 ## Introduction
 
-In this guide, we want to illustrate how storage functions are called and how to use them. We want to create an agent which gets a value from the storage (starting from 0) every second. Then prints it, and puts the new value back into the storage but increased by 1 unit.
+Agents will need to store data for later use, uAgents has an inbuilt function to store data to json file, this is done with `ctx.storage`. Data is stored in `key:value` format. `ctx` object’s `storage` attribute has different function like `get` and `set` to use agent’s storage.
+
+## Overview
+
+We can store simple integers like :
+
+```python
+ctx.storage.set("Messages_sent", 1)
+```
+
+Or strings:
+
+```python
+ctx.storage.set("Passkey", "#-eiwfwrign")
+```
+
+Complex data can also be stored:
+
+```python
+Record1 = {"name":ctx.name, "address":ctx.address}
+ctx.storage.set("Record1", Record1)
+```
+
+We can access these values like so:
+
+```python
+ctx.logger.info(ctx.storage.get("Record1"))
+ctx.logger.info(ctx.storage.get("Messages_sent"))
+ctx.logger.info(ctx.storage.get("Passkey"))
+```
+
+Expected Output:
+
+```bash
+INFO:     [Receiver]: {"name": "Receiver", "address": "agent1qdlcar9glcm6f9rpzway3xqaw4clfltxdhtwflxrjz3ahy98ep5dx7xy6x7"}
+INFO:     [Receiver]: 2
+INFO:     [Receiver]: "#-eiwfwrign"
+```
+
+Locally, this will be stored as a json file:
+
+```json
+{
+"Messages_sent" : 2,
+"Record1" : {"name" : "Receiver", "address" : "agent1qdlcar9glcm6f9rpzway3xqaw4clfltxdhtwflxrjz3ahy98ep5dx7xy6x7"},
+"Passkey" : "#-eiwfwrign"
+}
+```
+
+Generally, any object that is compatible with pydantic Models will be fine with uAgents.
+
 
 ## Prerequisites
 
@@ -19,44 +69,69 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Walk-through
 
+In this walkthrough, we want to show how storage functions are called and how to use them. We want to create an agent which gets a value from the storage (starting from 0) every second. Then prints it, and puts the new value back into the storage but increased by 1 unit.
+
+
 1. To start let's create a Python script and name it `storage.py`, we can do this in terminal with the following command:
 
-    <CodeGroup isOSFile>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+      ```py copy filename="mac"
+      touch storage.py
+      ```
+   </DocsCode>
 
-        ```py copy filename="mac"
-        touch storage.py
-        ```
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > storage.py
+       ```
+   </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > storage.py
-        ```
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch storage.py
+       ```
+   </DocsCode>
+   </CodeGroup>
 
-        ```py copy filename="ubuntu"
-        touch storage.py
-        ```
-
-    </CodeGroup>
-   
 2. Then, we need to open the script in the text editor of choice and import the necessary classes, `Agent` and `Context`, from the `uagents` library.
 
 3. Let's then create an agent named `alice` which logs a message every second using the `.on_interval()` decorator, indicating the current count. The `on_interval()` function takes a `Context` object as a parameter: the `Context` object contains a `storage` attribute, which is used to store and retrieve data between method calls:
 
-   ```py copy filename="storage.py"
-   from uagents import Agent, Context
+<GithubCodeSegment digest="a20a1b5aa1aa22ff7fc48061558b3568">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/storage-function/storage.py"
+        lineStart={1}
+        lineEnd={14}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a20a1b5aa1aa22ff7fc48061558b3568'>
 
-   alice = Agent(name="alice", seed="alice recovery phrase")
+<DocsCode local={true}>
+	```py copy filename="storage.py"
 
-   @alice.on_interval(period=1.0)
-   async def on_interval(ctx: Context):
-       current_count = ctx.storage.get("count") or 0
+	from uagents import Agent, Context
+	
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	
+	@alice.on_interval(period=1.0)
+	async def on_interval(ctx: Context):
+	    current_count = ctx.storage.get("count") or 0
+	
+	    ctx.logger.info(f"My count is: {current_count}")
+	
+	    ctx.storage.set("count", current_count + 1)
+	
+	if __name__ == "__main__":
+	    alice.run()
 
-       ctx.logger.info(f"My count is: {current_count}")
+```
+</DocsCode>
 
-       ctx.storage.set("count", current_count + 1)
+</CodeGroup>
 
-   if __name__ == "__main__":
-       alice.run()
-   ```
+
 
    Here, the `on_interval()` function retrieves the current count from the storage attribute using the `ctx.storage.get()` method. It prints the `current_count` value, and then increments it by `1`, and stores the updated count back to the storage attribute using the `ctx.storage.set()` method. The current count is then logged using the `ctx.logger.info()` method.
 
@@ -77,3 +152,7 @@ The output should look as follows:
     INFO:     [alice]: My count is: 3
     ...
     ```
+
+
+
+
