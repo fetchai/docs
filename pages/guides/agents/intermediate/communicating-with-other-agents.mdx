@@ -91,7 +91,7 @@ The first step to better understand how agents communicate is to introduce how 2
 
 3. Now we create two agent instances, `sigmar` and `slaanesh`, with `name` and `seed` parameters:
 
-<GithubCodeSegment digest="373e99b179f1426e66d392df7267a8ac">
+<GithubCodeSegment digest="34be80ff0f3aaf78584324f83ee851ef">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/agent_communication.py"
         lineStart={6}
@@ -99,13 +99,13 @@ The first step to better understand how agents communicate is to introduce how 2
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='373e99b179f1426e66d392df7267a8ac'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='34be80ff0f3aaf78584324f83ee851ef'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_communication.py"
 
-	sigmar = Agent(name="sigmar", seed="sigmar recovery phrase")
-	slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase")
+	sigmar = Agent(name="sigmar", seed="sigmar recovery phrase", port=8000, endpoint=["http://localhost:8000/submit"])
+	slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase", port=8001, endpoint=["http://localhost:8001/submit"])
 
 ```
 </DocsCode>
@@ -257,7 +257,7 @@ The first step to better understand how agents communicate is to introduce how 2
 
 The complete script should be looking as follows:
 
-<GithubCodeSegment digest="16a65d05d24655cdf63408cbb4babc76">
+<GithubCodeSegment digest="302462329835e1de9218a3e0f75391a4">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/agent_communication.py"
         lineStart={1}
@@ -265,7 +265,7 @@ The complete script should be looking as follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='16a65d05d24655cdf63408cbb4babc76'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='302462329835e1de9218a3e0f75391a4'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_communication.py"
@@ -275,8 +275,8 @@ The complete script should be looking as follows:
 	class Message(Model):
 	    message: str
 	
-	sigmar = Agent(name="sigmar", seed="sigmar recovery phrase")
-	slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase")
+	sigmar = Agent(name="sigmar", seed="sigmar recovery phrase", port=8000, endpoint=["http://localhost:8000/submit"])
+	slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase", port=8001, endpoint=["http://localhost:8001/submit"])
 	
 	@sigmar.on_interval(period=3.0)
 	async def send_message(ctx: Context):

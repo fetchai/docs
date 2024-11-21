@@ -96,7 +96,7 @@ In this walkthrough, we want to show how storage functions are called and how to
 
 3. Let's then create an agent named `alice` which logs a message every second using the `.on_interval()` decorator, indicating the current count. The `on_interval()` function takes a `Context` object as a parameter: the `Context` object contains a `storage` attribute, which is used to store and retrieve data between method calls:
 
-<GithubCodeSegment digest="a20a1b5aa1aa22ff7fc48061558b3568">
+<GithubCodeSegment digest="c819774fd37229dedf85705c27499f8b">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/storage-function/storage.py"
         lineStart={1}
@@ -104,14 +104,14 @@ In this walkthrough, we want to show how storage functions are called and how to
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='a20a1b5aa1aa22ff7fc48061558b3568'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c819774fd37229dedf85705c27499f8b'>
 
 <DocsCode local={true}>
 	```py copy filename="storage.py"
 
 	from uagents import Agent, Context
 	
-	alice = Agent(name="alice", seed="alice recovery phrase")
+	alice = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
 	
 	@alice.on_interval(period=1.0)
 	async def on_interval(ctx: Context):
