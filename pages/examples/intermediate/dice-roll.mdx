@@ -35,17 +35,16 @@ from uagents import Agent, Context, Model, Field, Protocol
 from uagents.setup import fund_agent_if_low
 from ai_engine import UAgentResponse, UAgentResponseType
 
-
 class DiceRoll(Model):
     num_rolls: int = Field(description="Number of rolls.")
 
 # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
 SEED_PHRASE = "put_your_seed_phrase_here"
- 
+
 # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
 # Then, copy the agent's mailbox key and insert it here below inline
 AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
- 
+
 # Now your agent is ready to join the agentverse!
 dice_roll_agent = Agent(
     name="dice_roll_agent",
@@ -54,12 +53,11 @@ dice_roll_agent = Agent(
 )
 
 fund_agent_if_low(dice_roll_agent.wallet.address())
- 
+
 # Copy the address shown below
 print(f"Your agent's address is: {dice_roll_agent.address}")
 
 dice_roll_protocol = Protocol("DiceRoll")
-
 
 @dice_roll_protocol.on_message(model=DiceRoll, replies={UAgentResponse})
 async def roll_dice(ctx: Context, sender: str, msg: DiceRoll):
@@ -83,12 +81,10 @@ import random
 from uagents import Field
 from ai_engine import UAgentResponse, UAgentResponseType
 
-
 class DiceRoll(Model):
     num_rolls: int = Field(description="Number of rolls.")
 
 dice_roll_protocol = Protocol("DiceRoll")
-
 
 @dice_roll_protocol.on_message(model=DiceRoll, replies={UAgentResponse})
 async def roll_dice(ctx: Context, sender: str, msg: DiceRoll):

@@ -1,13 +1,13 @@
 import { CodeGroup, DocsCode } from "../../components/code"
 
 # Utilize the PostgreSQL database with the Agent
-    
+
 ## Introduction
 
 In this documentation example, we demonstrate how to use the uAgent library to create agents that interact with PostgreSQL data within a Docker Compose setup. In this scenario, one agent handles the insertion of employee data into the PostgreSQL database, while another agent retrieves this data. This example illustrates the seamless integration between agents, PostgreSQL, and Docker, showcasing how to manage data flow and communication in a distributed system.
 
 ### Supporting Documents
-   
+
     - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
     - [How to create an agent ↗️](../../guides/agents/create-a-uagent).
     - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
@@ -44,7 +44,6 @@ In this documentation example, we demonstrate how to use the uAgent library to c
 
 ### Set up the PostgreSQL connection with Docker using Docker Compose
 
-
 This section details the files involved in setting up the PostgreSQL connection within your project.
 
 **`db_connection.py`**: Contains the functions to establish and close the connection to the PostgreSQL database using the psycopg2 library. The `create_connection` function connects to the database with provided credentials, while the `close_connection` function ensures the connection is safely terminated.
@@ -52,7 +51,6 @@ This section details the files involved in setting up the PostgreSQL connection 
 ```py copy filename="db_connection.py"
 import psycopg2
 from psycopg2 import OperationalError
-
 
 def create_connection(dbname, user, password, host="localhost", port="5432"):
     """
@@ -74,7 +72,6 @@ def create_connection(dbname, user, password, host="localhost", port="5432"):
     except OperationalError as error:
         print(f"Error connecting to PostgreSQL database: {error}")
         return None
-
 
 def close_connection(conn):
     if conn:
@@ -147,22 +144,17 @@ ENTRYPOINT ["poetry", "run"]
 CMD ["python", "main.py"]
 ```
 
-
 ### Defining the Employees Database Schema and Model
 
 The `Employees` class defines a model representing employee data as a dictionary. The `GetEmployees` class represents a model used to request employee information, with a flag indicating whether a response is expected.
 
 The `employees.sql` script defines a schema for an Employees table in a PostgreSQL database, if it doesn't already exist. This table includes columns for employee ID, first name, last name, birth date, and salary.
 
-
-
 ```py copy filename="models.py"
 from uagents import Model
 
-
 class Employees(Model):
     employees_data: dict
-
 
 class GetEmployees(Model):
     reply_back: bool
@@ -234,7 +226,6 @@ from db.models.models import Employees, GetEmployees
 from constants import employees_data
 from constants import db_params, DB_FETCH_AGENT_ADDRESS
 
-
 def get_db_version():
     """
     Retrieves the PostgreSQL database version.
@@ -253,12 +244,10 @@ def get_db_version():
             print(f"Error executing query: {error}")
             return None
 
-
 db_insert_agent = Agent(name="db_inserter", seed="db_inserter_seed_phrase")
 db_fetch_agent = Agent(name="db_fetcher", seed="db_fetcher_seed_phrase")
 
 DB_FETCH_AGENT_ADDRESS = DB_FETCH_AGENT_ADDRESS
-
 
 @db_fetch_agent.on_event("startup")
 async def on_startup(ctx: Context):
@@ -277,7 +266,6 @@ async def on_startup(ctx: Context):
         ctx.logger.info(
             f"Hello, I'm agent {db_insert_agent.name} and my address is {db_insert_agent.address}. Could not retrieve the database version."
         )
-
 
 @db_insert_agent.on_message(model=Employees, replies=GetEmployees)
 async def handle_employee_data(ctx: Context, sender: str, msg: Employees):
@@ -318,7 +306,6 @@ async def handle_employee_data(ctx: Context, sender: str, msg: Employees):
     else:
         ctx.logger.error("Could not connect to the database.")
 
-
 @db_fetch_agent.on_message(model=GetEmployees)
 async def fetch_all_employee_details(ctx: Context, sender: str, msg: GetEmployees):
     """
@@ -353,7 +340,6 @@ async def fetch_all_employee_details(ctx: Context, sender: str, msg: GetEmployee
                 ctx.logger.error(f"Error retrieving employee data: {error}")
         else:
             ctx.logger.error("Could not connect to the database.")
-
 
 bureau = Bureau()
 bureau.add(db_insert_agent)
@@ -418,8 +404,6 @@ DB_NAME=
 - Update the constant file with new entries to store in the database
 - Run `docker-compose build`
 - Run `docker-compose up`
-
-
 
 ## Expected Output
 
