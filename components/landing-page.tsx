@@ -17,6 +17,8 @@ import crewai from "../src/svgs/crewai.svg";
 import fastapi from "../src/svgs/fastapi.svg";
 import openAI from "../src/svgs/openai.svg";
 import darkOpenAI from "../src/svgs/dark-openai.svg";
+import ethereum from "../src/svgs/ethereum.svg";
+import darkEthereum from "../src/svgs/dark-ethereum.svg";
 import darkLangchain from "../src/svgs/dark-langchain.svg";
 import darkCrewai from "../src/svgs/dark-crew-ai.svg";
 import darkFastapi from "../src/svgs/dark-fast-api.svg";
@@ -59,6 +61,11 @@ function LandingPage() {
       name: "FastAPI",
       icon: theme === ThemeMode.Light ? fastapi : darkFastapi,
       link: "/guides/agents/intermediate/rest-endpoints",
+    },
+    {
+      name: "Ethereum",
+      icon: theme === ThemeMode.Light ? ethereum : darkEthereum,
+      link: "/examples/intermediate/sending-and-verifying-token-transactions-with-agent",
     },
     {
       name: "CrewAI",
