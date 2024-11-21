@@ -264,7 +264,7 @@ function LandingPage() {
       </section>
       <div className={styles.horizontalLine} />
       <section>
-        <p className={styles.subTitle}>Our technology loop</p>
+        <p className={styles.subTitle}>Get to know Fetch.ai</p>
         <p className={styles.systemDescripton}>
           Fetch.ai is developing a platform to help the development of an AI
           enabled decentralized digital economy. Agents are programs that can
