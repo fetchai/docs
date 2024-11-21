@@ -91,11 +91,8 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
         focusedRouteInside ||
         (theme && "collapsed" in theme
           ? !theme.collapsed
-          : level < config.sidebar.defaultMenuCollapseLevel) ||
-        item.collapsed
+          : level < config.sidebar.defaultMenuCollapseLevel)
       : TreeState[item.route] || focusedRouteInside;
-
-
 
   const rerender = useState({})[1];
 
@@ -119,24 +116,24 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
     item.route,
     config.sidebar.autoCollapse,
   ]);
-  console.log(item)
-  // if (item.type === "menu") {
-  //   const menu = item as MenuItem;
-  //   const routes = Object.fromEntries(
-  //     (menu.children || []).map((route) => [route.name, route]),
-  //   );
-  //   item.children = Object.entries(menu.items || {}).map(([key, item]) => {
-  //     const route = routes[key] || {
-  //       name: key,
-  //       ...("locale" in menu && { locale: menu.locale }),
-  //       route: menu.route + "/" + key,
-  //     };
-  //     return {
-  //       ...route,
-  //       ...item,
-  //     };
-  //   });
-  // }
+
+  if (item.type === "menu") {
+    const menu = item as MenuItem;
+    const routes = Object.fromEntries(
+      (menu.children || []).map((route) => [route.name, route]),
+    );
+    item.children = Object.entries(menu.items || {}).map(([key, item]) => {
+      const route = routes[key] || {
+        name: key,
+        ...("locale" in menu && { locale: menu.locale }),
+        route: menu.route + "/" + key,
+      };
+      return {
+        ...route,
+        ...item,
+      };
+    });
+  }
   const isLink = "withIndexPage" in item && item.withIndexPage;
   const ComponentToUse = isLink ? Anchor : "button";
   if (
@@ -146,57 +143,58 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
     return (
       <>
         <li className={cn({ open, active }, "nx-w-full")}>
-          <ComponentToUse
-            id={`sidebar${item.route?.split("/").join("-").toLowerCase()}`}
-            href={isLink ? item.route : undefined}
-            className={cn(
-              "nx-items-center  nx-w-full nx-justify-between nx-gap-2",
-              isLink ? "first-title" : "nx-text-left nx-w-full",
-              classes.link,
-              active ? classes.active : classes.inactive,
-              activeRouteInside ? "nextra-active-route" : "",
-            )}
-            onClick={(e) => {
-              const clickedToggleIcon = ["svg", "path"].includes(
-                (e.target as HTMLElement).tagName.toLowerCase(),
-              );
-              if (clickedToggleIcon) {
-                e.preventDefault();
-              }
-              if (isLink) {
-                if (active || clickedToggleIcon) {
+          {(!isLink || ["Ledger", "Indexer"].includes(item.title)) && (
+            <ComponentToUse
+              id={`sidebar${item.route?.split("/").join("-").toLowerCase()}`}
+              href={isLink ? item.route : undefined}
+              className={cn(
+                "nx-items-center  nx-w-full nx-justify-between nx-gap-2",
+                isLink ? "first-title" : "nx-text-left nx-w-full",
+                classes.link,
+                active ? classes.active : classes.inactive,
+                activeRouteInside ? "nextra-active-route" : "",
+              )}
+              onClick={(e) => {
+                const clickedToggleIcon = ["svg", "path"].includes(
+                  (e.target as HTMLElement).tagName.toLowerCase(),
+                );
+                if (clickedToggleIcon) {
+                  e.preventDefault();
+                }
+                if (isLink) {
+                  if (active || clickedToggleIcon) {
+                    TreeState[item.route] = !open;
+                  } else {
+                    TreeState[item.route] = true;
+                    setMenu(false);
+                  }
+                  rerender({});
+                  return;
+                }
+                if (active) return;
+                // removing menu toggle for collapsed content
+                if (!item.collapsed) {
                   TreeState[item.route] = !open;
-
-                } else {
-                  TreeState[item.route] = true;
-                  setMenu(false);
                 }
                 rerender({});
-                return;
-              }
-              if (active) return;
-              // removing menu toggle for collapsed content
-              if (!item.collapsed){TreeState[item.route] = !open}
-              rerender({});
-            }}
-          >
-
-            {renderComponent(config.sidebar.titleComponent, {
-              title: item.title,
-              type: item.type,
-              route: item.route,
-            })}
-            {!config.sidebar.autoCollapse && !isLink && !item.collapsed && (
-              <ArrowRightIcon
-                className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
-                pathClassName={cn(
-                  "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
-                  open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
-                )}
-              />
-            )}
-          </ComponentToUse>
-
+              }}
+            >
+              {renderComponent(config.sidebar.titleComponent, {
+                title: item.title,
+                type: item.type,
+                route: item.route,
+              })}
+              {!config.sidebar.autoCollapse && !isLink && !item.collapsed && (
+                <ArrowRightIcon
+                  className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
+                  pathClassName={cn(
+                    "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
+                    open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
+                  )}
+                />
+              )}
+            </ComponentToUse>
+          )}
           <Collapse
             className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1"
             isOpen={config.sidebar.autoCollapse || open}
