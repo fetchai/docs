@@ -2,7 +2,7 @@ import {Callout} from 'nextra/components'
 import PackageVersion from 'components/package-version'
 import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
-# Build a LangChain RAG Agent
+# Build a RAG Agent with uAgents and Langchain
 
 ## Introduction
 
@@ -26,9 +26,9 @@ Make sure you have read the following resources before going on with this guide:
     - [Creating an Agent ↗️](/guides/agents/create-a-uagent)
     - [Creating an interval task ↗️](/guides/agents/interval-task)
     - [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
-    - [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
-    - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+    - [Agent handlers ↗️](/guides/agents/intermediate/handlers)
     - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+    - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
     - [Mailbox ↗️](/guides/agents/intermediate/mailbox)
     - [Utilising the Agentverse Mailroom service ↗️](/guides/agentverse/utilising-the-mailbox)
     - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
@@ -37,7 +37,12 @@ Make sure you have read the following resources before going on with this guide:
 
 ## API KEYs
 
-Importantly, you will need two API keys to correctly go through this guide: one from **OpenAI** and one from **Cohere**. Follow the steps provided below to obtain these keys:
+You will need **two API keys** to correctly go through this guide: 
+
+    1. One from **OpenAI**
+    2. One from **Cohere**. 
+
+Follow the steps provided below to obtain them:
 
 ### OpenAI API Key
 
@@ -51,7 +56,7 @@ Importantly, you will need two API keys to correctly go through this guide: one 
 1. Visit the [Cohere website ↗️](https://dashboard.cohere.com/).
 2. Sign up or log in to your account.
 3. Go to the **API Keys** section.
-4. Copy an existing key or create a new one.: one from OpenAI and one from Cohere. Follow the steps below to obtain these keys.
+4. Copy an existing key or create a new one.
 
 ## Project structure and overview
 
@@ -75,10 +80,10 @@ The project is structured as follows:
 
     The source code directory (`src`) contains the following directories and files:
 
-        - `agents`: Contains scripts for the LangChain Agents.
-            - `langchain_rag_agent.py`: Script for the RAG Agent (retrieves info, finds documents, generates answers).
-            - langchain_rag_user.py: Script for the User Agent (asks questions, handles responses).
-        - `main.py`: Starts both the RAG and user Agents.
+        - `agents`: contains the scripts for the LangChain Agents.
+            - `langchain_rag_agent.py`: it is the script for the RAG agent (retrieves info, finds documents, generates answers).
+            - `langchain_rag_user.py`: Script for the User agent (asks questions, handles responses).
+        - `main.py`: Starts both the RAG and user agents.
         - `messages`: Defines custom message models.
             - `requests.py`: Defines the RagRequest message model (question, URL, optional deep read).
 
@@ -97,29 +102,30 @@ To do this, navigate to the `src` directory. Here, create and source the `.env` 
 
 ### Project dependencies
 
-You'll need several Python packages for the project. These can be managed efficiently using [Poetry ↗️](https://python-poetry.org/). The following dependencies are needed for the correct development of the Langchain RAG Agent project:
+You'll need several Python packages for the project. These can be managed efficiently using [Poetry ↗️](https://python-poetry.org/). The following dependencies are required for the correct development of the Langchain RAG Agent project:
 
     ```
     [tool.poetry.dependencies]
     python = ">=3.10,<3.12"
-    uagents = "*"
+    uagents = "^0.17.1"
     requests = "^2.31.0"
-    langchain = "^0.2.11"
-    openai = "^1.12.0"
-    langchain-openai = "^0.1.19"
-    tiktoken = "^0.7.0"
-    cohere = "^4.47"
-    faiss-cpu = "^1.7.4"
-    validators = "^0.22.0"
-    uagents-ai-engine = "^0.4.0"
-    unstructured = "^0.12.4"
+    langchain = "^0.3.7"
+    openai = "^1.54.5"
+    langchain-openai = "^0.2.9"
+    tiktoken = "^0.8.0"
+    cohere = "^5.11.4"
+    faiss-cpu = "^1.9.0.post1"
+    validators = "^0.34.0"
+    uagents-ai-engine = "^0.6.0"
+    unstructured = "^0.16.5"
+    langchain-community = "^0.3.7"
     ```
 
 ## Messages Data Model
 
 ### RagRequest Model
 
-We now need to define the `requests.py` file under the `messages` folder in the project. 
+We now need to define the `requests.py` file under the `messages` folder in the project:
 
     <CodeGroup hasCopy isOSFile>
     <DocsCode mac={true}>
@@ -141,7 +147,7 @@ We now need to define the `requests.py` file under the `messages` folder in the 
         </DocsCode>
     </CodeGroup>
 
-The script look like the following:
+The script looks like the following:
 
 <GithubCodeSegment digest="493c2b4110eff6ffd0bb367510718002">
     <CodeSegment
@@ -176,17 +182,17 @@ The script look like the following:
 
 
 
-    Here's a breakdown of the `RagRequest` message data Model:
+    Here's a breakdown of the `RagRequest` message data model:
 
-        - `question (str)`: This is the user's question that needs to be answered based on the provided website URL.
-        - `url (str)`: This is the URL of the website where the answer should be found.
-        - `deep_read (Optional[str], default="no")`: This optional field allows you to specify whether the RAG Agent should follow and read nested pages (i.e., pages linked from the starting URL). Valid values are `"yes"` or `"no"`. By `default`, the Agent focuses only on the initial URL.
+        - `question (str)`: it is the user's question that needs to be answered based on the provided website URL.
+        - `url (str)`: it is the URL of the website where the answer should be found.
+        - `deep_read (Optional[str], default="no")`: this optional field allows you to specify whether the RAG agent should follow and read nested pages (i.e., pages linked from the starting URL). Valid values are `"yes"` or `"no"`. By `default`, it is set to `"no"`, meaning that the agent only will focus on the initial page linked to the URL.
 
 ## Agents
 
 ### LangChain RAG Agent
 
-This step involves setting up the **LangChain Retrieval-Augmented Generation (RAG) Agent** which is able to scrape web content, retrieve relevant documents, and generate answers to user queries based on that content. Let's create the file within the `agents` directory we created under `src` directory of our project and name it `langchain_rag_agent.py` by using the following command:
+This step involves setting up the **LangChain Retrieval-Augmented Generation (RAG) Agent** which can scrape web content, retrieve relevant documents, and generate answers to user queries based on the retrieved content. 
 
 <CodeGroup hasCopy isOSFile>
 <DocsCode mac={true}>
@@ -208,7 +214,7 @@ This step involves setting up the **LangChain Retrieval-Augmented Generation (RA
 </DocsCode>
 </CodeGroup>
 
-The Agent is defined as a [local agent with a Mailbox ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) and it is able to answer questions by fetching and summarizing information from a given website URL.
+The Agent is defined as a [local Agent with a Mailbox ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) and it is able to answer questions by fetching and summarizing information from a given website URL.
 
 The script for this Agent looks as follows:
 
@@ -367,13 +373,13 @@ The script for this Agent looks as follows:
 
 
 
-    In order to correctly run this code, you need to provide the `name`, `seed`, `mailbox`, `LANGCHAIN_RAG_SEED`, `PROMPT_TEMPLATE` and `AGENT_MAILBOX_KEY` parameters to correctly run this example.
+    To correctly run this code, you need to provide the `name`, `seed`, `mailbox`, `LANGCHAIN_RAG_SEED`, `PROMPT_TEMPLATE` and `AGENT_MAILBOX_KEY` parameters.
 
-    The Agent fetches and processes information from specified URLs to answer users' questions. Let's explore the script above in more detail. Initially, multiple modules are imported, including tools for making HTTP requests, parsing HTML, and handling Natural Language Processing (NLP). The Agent uses **OpenAI's GPT-4o-mini model** for generating answers based on retrieved documents. We then up an Agent called `langchain_rag_agent()` with a unique `seed` and `mailbox` address. Check out the [Mailbox ↗️](/guides/agents/intermediate/mailbox) guide for additional info on Agent Mailboxes.
+    The Agent fetches and processes information from specified URLs to answer users' questions. 
 
-    To ensure the Agent has sufficient funds to operate, the `fund_agent_if_low()` function is invoked.
+    Let's explore the script above in more detail. We start by importing multiple modules, including tools for making HTTP requests, parsing HTML, and handling Natural Language Processing (NLP). The agent uses **OpenAI's GPT-4o-mini model** to generate answers based on the retrieved documents. We then create an agent called `langchain_rag_agent()` with a unique `seed` and `mailbox` address. Check out the [Mailbox ↗️](/guides/agents/intermediate/mailbox) guide for additional information on how to set up Mailboxes for your Agents. **Make sure to have enough funds in the Agent's wallet for it to correctly register in the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview). You can use the `fund_agent_if_low` function on the testnet to add funds to your Agent's wallet if needed.
 
-    Next, the `DocsBot` [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) is defined using the `Protocol` class of the `uagents` library to handle message interactions. This protocol uses a predefined prompt template to structure the questions and context for the language model.
+    Next, we define the `DocsBot` [protocol ↗️](/guides/agents/intermediate/protocols) using the `Protocol` class of the `uagents` library to handle message interactions. This protocol uses a predefined prompt template to structure the questions and context for the language model.
 
     The `create_retriever()` function is responsible for fetching and parsing web pages. If necessary, it can perform deep scraping, which involves gathering all linked pages within the same domain. The function validates URLs, retrieves HTML content, and uses `BeautifulSoup` to parse the HTML and find links. The documents are then loaded and split using LangChain's `UnstructuredURLLoader`, indexed with `FAISS`, and compressed with `Cohere`, creating a retriever that can extract relevant information.
 
@@ -381,11 +387,12 @@ The script for this Agent looks as follows:
 
     The generated answer is then sent back to the user.
 
-    Finally, the Agent is set to include the `DocsBot` protocol and is then run, which starts the Agent and allows it to receive and process incoming messages.
+    Finally, the Agent is set to include the `DocsBot` protocol. We can then run the Agent's script; it will start the Agent and allow it to receive and process incoming messages.
 
 ### LangChain User uAgent
 
-We are now ready to define the **LangChain User Agent** which interacts with the LangChain RAG Agent defined previously to ask a question based on documents found at specified URLs. The user Agent sends a request to the RAG Agent to retrieve and process information from the web page and then handle the response. The Agent is defined as a [local uAgent with an endpoint ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-with-an-endpoint).
+
+We are now ready to define the **LangChain User Agent** which interacts with the LangChain RAG Agent we defined above to ask a question based on documents found at specified URLs. The user Agent request the RAG Agent to retrieve and process information from the web page and then to handle the response. The Agent is defined as a [local Agent with an endpoint ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-with-an-endpoint).
 
 Create a file for this Agent:
 
@@ -471,28 +478,26 @@ The script looks as follows:
 
 </CodeGroup>
 
+    Here, we create the User Agent which interacts with the LangChain RAG Agent we previously defined. The User Agent periodically asks the RAG Agent a predefined question and then handles the response.
 
+    After importing all required modules and classes, a specific `QUESTION` is provided: `"How to install uagents using pip"`. We also provide the `URL` for the web page where the relevant information can be found to answer the question. The `DEEP_READ` variable is set to `no`; this indicates that the gent should only read the main page.
 
-    Remember that you need to provide the `QUESTION`, `URL`, `DEEP_READ`, `RAG_AGENT_ADDRESS`, `name`, `seed`  and `endpoint` parameters to correctly run this code.
+    The `RAG_AGENT_ADDRESS` variable holds the address of the RAG agent responsible of retrieving and processing the web page content to answer the user's question.
 
-    Here, we have created the User Agent which interacts with the LangChain RAG Agent we previously defined. The User Agent periodically asks the RAG Agent a predefined question and then handles the response.
+    We can then define the User Agent. We create the `langchain_rag_user` with a specific `port` and `endpoint`; this last one is essential to allow for communication with the RAG Agent. **Make sure your Agent has enough funds to register in the Almanac contract**. On the Testnet, you can use the `fund_agent_if_low()` function to fund your Agent's wallet if needed.
 
-    After importing all required modules and classes, a specific `QUESTION` is provided: `"How to install uagents using pip"`. We also provide the `URL` for the webpage where the relevant information can be found to answer the question. The `DEEP_READ` variable is set to `no` thus indicating that the Agent should only read the main page and not follow and read any nested or linked pages.
+    We then proceed and define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). A protocol named `LangChain RAG user` is created using the `Protocol` class from the `uagents` library to handle the Agent's interactions. This protocol contains two important functions:
 
-    The `RAG_AGENT_ADDRESS` variable holds the address of the RAG Agent, which is responsible for retrieving and processing the webpage content to answer the user's question.
+        1. The `ask_question()` function, which is decorated with the `.on_interval()` [handler ↗️](/guides/agents/intermediate/handlers) and which is set to run at 60-second intervals. This function sends a `RagRequest` message to the LangChain RAG Agent, asking it to answer the `QUESTION` based on the specified `URL`. It then logs the `QUESTION` and `URL` details for debugging purposes.
+        2. The `handle_data()` function is decorated with the `.on_message()` handler and it handles incoming messages from the LangChain RAG agent. When a response is received, it logs the response message.
 
-    We are now ready to define the User Agent. We create the `langchain_rag_user` is created with a specific `port` and `endpoint`, which is where it will communicate with the RAG Agent. The Agent's wallet is funded if needed using the `fund_agent_if_low()` function.
+    Finally, the LangChain RAG user protocol is included using the `.include()` method into the Agent which is then run by calling `rag_user.run()` in the main block.
 
-    We then proceed and define the [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). A protocol named `LangChain RAG user` is defined using the `Protocol` class of the `uagents` library to handle the Agent's interactions. This protocol contains two important functions:
-
-        1. The `ask_question()` function is decorated with the `.on_interval()` [handler ↗️](/guides/agents/intermediate/handlers) and it is set to run at 60-second intervals. This function sends a `RagRequest` message to the LangChain RAG Agent, asking it to answer the `QUESTION` based on the specified `URL`. It then logs the `QUESTION` and `URL` details for debugging purposes.
-        2. The `handle_data()` function is decorated with the `.on_message()` handler and it handles incoming messages from the LangChain RAG Agent. When a response is received, it logs the response message.
-
-Finally, the LangChain RAG user protocol is then included using the `.include()` method into the Agent which is then run by calling `rag_user.run()` in the main block.
+    **Remember to provide the `QUESTION`, `URL`, `DEEP_READ`, `RAG_AGENT_ADDRESS`, `name`, `seed`  and `endpoint` parameters to correctly run this code.**
 
 ## Main script
 
-We are now ready to define the main script for our project. In the `src` folder of our project we create a Python script named `main.py` using the following command:
+We are now ready to define the main script for our project. In the `src` folder of the project, we create a Python script named `main.py` using the following command:
 
     <CodeGroup hasCopy isOSFile>
     <DocsCode mac={true}>
@@ -500,7 +505,7 @@ We are now ready to define the main script for our project. In the `src` folder 
         touch main.py
         ```
     </DocsCode>
-
+    
     <DocsCode windows={true}>
         ```py copy filename="windows"
         echo. > main.py
@@ -514,7 +519,9 @@ We are now ready to define the main script for our project. In the `src` folder 
     </DocsCode>
     </CodeGroup>
 
-We then define the code within this one which looks like the one provided here below:
+We can now write the code for it. 
+
+It will look as follows:
 
 <GithubCodeSegment digest="b0d529c9d92b8c2a0392459e5e904c1c">
     <CodeSegment
@@ -546,19 +553,12 @@ We then define the code within this one which looks like the one provided here b
 
 </CodeGroup>
 
+Cool! All scripts are now set up! You will need to [connect the local Agent to the Agentverse using a Mailbox ↗️](/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox). The Mailbox enables your Agents to be retrievable for communication and interaction with any other registered Agent on the Almanac contract and Fetch Network. In this example, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox). The `langchain_rag_user` Agent is used as a testing agent for the RAG Agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
 
-
-Now, both of Agents are set up, and you will need to **connect your local Agent to the Agentverse** so for them to be retrievable for communication and interaction with any other registered Agent on the Fetch Network. This way, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox) and afterward a [Agent Function ↗️](https://fetch.ai/docs/guides/agents/intermediate/agent-functions) will be created and [registered ↗️](https://fetch.ai/docs/guides/agentverse/agentverse-functions/registering-agent-services) for this Agent.
-
-The `langchain_rag_user` Agent is used as a testing Agent for the RAG Agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
-
-    <Callout type="info" emoji="ℹ️">
-      Head over to the following [guide ↗️](/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) for a better understanding of local Agent registration on the Agentverse.
-    </Callout>
+By creating an [Agent Function ↗️](https://fetch.ai/docs/guides/agents/intermediate/agent-functions) and [registering it ↗️](https://fetch.ai/docs/guides/agentverse/agentverse-functions/registering-agent-services) via the Agentverse, you will make it retrievable to the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) for interaction with users via natural language queries made on [DeltaV ↗️](/concepts/ai-engine/deltav).
 
 ### Expected output
 
-The expected output for this example should be similar to the following one where we questioned the **RAG Agent** with the question `How to install uagents using pip` from the **RAG user** Agent:
+The expected output for this example should be similar to the following one. Here, we questioned the **RAG Agent** with the question `How to install uagents using pip` from the **RAG User** Agent:
 
 ![](src/images/examples/rag_deltav_response.png)
-
