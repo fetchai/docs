@@ -91,8 +91,11 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
         focusedRouteInside ||
         (theme && "collapsed" in theme
           ? !theme.collapsed
-          : level < config.sidebar.defaultMenuCollapseLevel)
+          : level < config.sidebar.defaultMenuCollapseLevel) ||
+        item.collapsed
       : TreeState[item.route] || focusedRouteInside;
+
+
 
   const rerender = useState({})[1];
 
@@ -116,24 +119,24 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
     item.route,
     config.sidebar.autoCollapse,
   ]);
-
-  if (item.type === "menu") {
-    const menu = item as MenuItem;
-    const routes = Object.fromEntries(
-      (menu.children || []).map((route) => [route.name, route]),
-    );
-    item.children = Object.entries(menu.items || {}).map(([key, item]) => {
-      const route = routes[key] || {
-        name: key,
-        ...("locale" in menu && { locale: menu.locale }),
-        route: menu.route + "/" + key,
-      };
-      return {
-        ...route,
-        ...item,
-      };
-    });
-  }
+  console.log(item)
+  // if (item.type === "menu") {
+  //   const menu = item as MenuItem;
+  //   const routes = Object.fromEntries(
+  //     (menu.children || []).map((route) => [route.name, route]),
+  //   );
+  //   item.children = Object.entries(menu.items || {}).map(([key, item]) => {
+  //     const route = routes[key] || {
+  //       name: key,
+  //       ...("locale" in menu && { locale: menu.locale }),
+  //       route: menu.route + "/" + key,
+  //     };
+  //     return {
+  //       ...route,
+  //       ...item,
+  //     };
+  //   });
+  // }
   const isLink = "withIndexPage" in item && item.withIndexPage;
   const ComponentToUse = isLink ? Anchor : "button";
   if (
@@ -163,6 +166,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
               if (isLink) {
                 if (active || clickedToggleIcon) {
                   TreeState[item.route] = !open;
+
                 } else {
                   TreeState[item.route] = true;
                   setMenu(false);
@@ -171,16 +175,18 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
                 return;
               }
               if (active) return;
-              TreeState[item.route] = !open;
+              // removing menu toggle for collapsed content
+              if (!item.collapsed){TreeState[item.route] = !open}
               rerender({});
             }}
           >
+
             {renderComponent(config.sidebar.titleComponent, {
               title: item.title,
               type: item.type,
               route: item.route,
             })}
-            {!config.sidebar.autoCollapse && !isLink && (
+            {!config.sidebar.autoCollapse && !isLink && !item.collapsed && (
               <ArrowRightIcon
                 className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
                 pathClassName={cn(
@@ -190,6 +196,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
               />
             )}
           </ComponentToUse>
+
           <Collapse
             className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1"
             isOpen={config.sidebar.autoCollapse || open}
