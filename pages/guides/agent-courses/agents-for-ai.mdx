@@ -36,21 +36,15 @@ Let's try and keep this simple 🎉:
 
  - **DeltaV**: It is an assistive chat interface that allows human input to interact with agents registered through the Agentverse.
 
-Once you get familiar with the uAgents Framework toolset for Agents development, you can then get started and start building your first [Agent Function ↗️](/guides/agents/intermediate/agent-functions). You create Agents offering some functionality which is then made discoverable on Agentverse to any other users, Agents and the AI Engine. For a better comprehension of Functions, how to register them on Agentverse, and how these play a role within the AI Engine, have a look at the following resources:
-
-    - [Agent Function ↗️](/guides/agents/intermediate/agent-functions)
-    - [Agentverse Functions: register your Agents Functions on the Agentverse! ↗️](/guides/agentverse/agentverse-functions/registering-agent-services)
-    - [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro)
-    - [Hosted, Local, and Mailbox Agents ↗️](/guides/agents/intermediate/agent-types)
     <Callout type="warning" emoji="⚠️">
-       Agents are <i>programs</i>, whereas <i>functions</i> are specific Agent Functions your agents offer.
+       Agents are <i>programs</i>, whereas <i>functions</i> are specific [Agent Functions ↗️](/guides/agents/intermediate/agent-functions) your Agents offer.
     </Callout>
 
-In a nutshell, AI Engine indexes Agents, and translates human input into **objectives**. It may sound like a search engine, but it does much more. Have a look at the following [resource ↗️](/concepts/ai-engine/powering-connections-and-smart-operations-in-deltav) to better understand how this process works.
+In a nutshell, AI Engine indexes Agents and related functions, and translates human input into **objectives**. It may sound like a search engine, but it does much more. Have a look at the following [resource ↗️](/concepts/ai-engine/powering-connections-and-smart-operations-in-deltav) to better understand how this process works.
 
 ![The AI Engine has an internal database that creates understanding and links to existing Agent Functions](../../../src/images/guides/101/ai-connects.jpg)
 
-The AI Engine allows **chaining**. Say that you ask DeltaV "Tell me about the animal Zebra". The AI Engine would then look for an agent that could give you a summary, as well as another agent that could provide information about zebras. The AI Engine understands that the **Summary Agent** requires text to parse and summarise. So it would contact the **Zebra Agent** and get the information from it. The AI Engine would then call the **Summary Agent** with the **Zebra Agent** information so that the former would return the summarized text.
+The AI Engine allows **chaining**. Say that you ask DeltaV: "Tell me about the animal Zebra". The AI Engine would then look for an Agent that could give you a summary, as well as another agent that could provide information about zebras. The AI Engine understands that the **Summary Agent** requires text to parse and summarise. So it would contact the **Zebra Agent** and get the information from it. The AI Engine would then call the **Summary Agent** with the **Zebra Agent** information so that the former would return the summarized text.
 
 It works like this:
 
@@ -397,7 +391,7 @@ Your Agent running locally should provide a similar output to this one below:
     INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
     ```
 
-Okay, take a quick break then let's create the second Agent; it's time to introduce multi-agents workflows ☕.
+Okay, take a quick break then let's create the second Agent; it's time to introduce multi-agent workflows ☕.
 
 ### Create the Webpage Summary Agent
 

@@ -314,11 +314,7 @@ Let's update `alice_agent.py` with the code snippet below:
 
 
 
-Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the agent knows how to act on the declared decorated functions. For additional information on decorators within the uAgents library, check out the following [resource ↗️](/guides/agents/intermediate/handlers) for a better understanding of **Agent Handlers**.
-
-    <Callout type="info" emoji="ℹ️">
-      To find out more about decorators, take a look at [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/).
-    </Callout>
+Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the agent knows how to act on the declared decorated functions. For additional information on decorators, check out the following resources: [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/) and [Agent Handlers ↗️](/guides/agents/intermediate/handlers) for additional information on decorators within the uAgents Framework.
 
 In our example above, the `on_event()` decorator specifies that the agent should run an `introduce_agent()` function when the agent starts up. This function will then return a message presenting the agent with its name and address by using the `Context` class, which is used to retrieve the agent's related name and address using the `agent.name` and `agent.address` methods.
 
@@ -762,11 +758,11 @@ Checkout the following documentation and resources for a better understanding of
     -  [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
     -  [Bureau ↗️](/guides/agents/intermediate/bureau)
 
-### Enabling search and discovery for your Agent (Almanac registration)
+### Registering your Agents to the Open Marketplace
 
-Agent registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is a key feature which enables discoverability of Agents as well enabled remote Agents communication. To register, Agents must pay a small fee. Therefore your agents need to have funds available in their Fetch wallet address. 
+Agent registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is a key feature enabling Agents discoverability as well as remote Agents communication. When Agents regiterin the Almanac, they become part of the Open Marketplace and become avaiable for interactions with other users and Agents registered in the contract. To register, Agents must pay a small fee. Therefore your agents need to have funds available in their Fetch wallet address. 
 
-We first import modules, then initialize our Agents and include a function ensuring that Agents have non-zero balances in their wallets. This function will check if you have enough tokens to register in the Almanac. If not, it will add tokens to your Fetch wallet address. Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
+ Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an Agent at registration.
 
     <Callout type="info" emoji="ℹ️">
       HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. These endpoints define the entry points for various operations or functions offered by a web service or application.
@@ -790,7 +786,7 @@ Let's create a Python script for this example:
     ```py copy filename="ubuntu"
     touch almanac_registration.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
@@ -834,9 +830,7 @@ We will have what follows:
 
 </CodeGroup>
 
-
-
-Here, we defined a local http address, but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your agent, so you don't have to fund different addresses each time you run your agent.
+Here, we defined a local http address, but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your Agent, so you don't have to fund different addresses each time you run your agent. The `fund_agent_if_low` is used on the Tesnet to make sure your Agent has enough funds in its wallet to register and operate correctly.
 
     <Callout type="info" emoji="ℹ️">
       A seed phrase is a series of random words (typically 12 or 24) that provide the data needed to recover a lost or broken crypto wallet. It is also known as a mnemonic phrase and is best understood as a security measure for self-custody of digital assets. Agents have a crypto wallet address, and having the seed phrase enables the restoration of an agent's wallet address.
@@ -846,9 +840,9 @@ To run the script use the `poetry run python almanac_registration.py` command.
 
 Check out the following [guide ↗️](/guides/agents/advanced/register-in-almanac) for an in-depth overview of the Almanac registration process.
 
-### Remote agent communication
+### Remote Agent communication
 
-Agents can also interact **remotely**. To achieve a remote communication, we simply need an agent's address and query the rest of its information in the Almanac contract. You can create two agents operating on separate ports and terminals within the same device; this mirrors a real-world scenario in which agents communicate across different geographic locations.
+Agents can also interact **remotely**. To achieve a remote communication, we simply need an Agent's address and query the rest of its information in the Almanac contract. You can create two agents operating on separate ports and terminals within the same device; this mirrors a real-world scenario in which agents communicate across different geographic locations.
 
 In this example, we provide scripts for two agents. To establish a line of remote communication, both agents need to be registered on the Almanac contract and need to have non-zero balances in their Fetch wallet addresses.
 
@@ -1878,14 +1872,8 @@ Run the `restaurant` agent and then the `user` agent from different terminals. T
 
 We appreciate your active participation in our introductory course on Agents! The knowledge you've acquired here forms a robust basis for your future Agents development endeavors.
 
-Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of Agents by exploring our dedicated [Agents ↗️](/guides/agents/getting-started/whats-an-agent) documentation and [GitHub ↗️](https://github.com/fetchai/uAgents) repository. Also, do not forget to checkout our full list of [Agents guides ↗️](/guides) diving into the development of Agents and concepts explained in this introductory course, but in a more detailed manner.
+We invite you to delve deeper into the world of Agents by exploring our dedicated [Agents ↗️](/guides/agents/getting-started/whats-an-agent) documentation, [GitHub ↗️](https://github.com/fetchai/uAgents) and [uAgents Examples ↗️](https://github.com/fetchai/uAgent-Examples) repositories. Also, do not forget to checkout our full list of [Agents guides ↗️](/guides) diving into the development of Agents and concepts explained in this introductory course, but in a more detailed manner. 
 
-Once you get familiar with the uAgents Framework toolset for Agents development, you can then get started and start building your first [Agent Function ↗️](/guides/agents/intermediate/agent-functions). To get to know Functions and how to register them on Agentverse to make them discoverable to other Agents and the AI Engine, then have a look at our dedicated resources, including:
-
-    - [Agent Function ↗️](/guides/agents/intermediate/agent-functions)
-    - [Agentverse Functions: register your Agents Functions on the Agentverse! ↗️](/guides/agentverse/agentverse-functions/registering-agent-services)
-    - [Hosted, Local, and Mailbox Agents ↗️](/guides/agents/intermediate/agent-types)
+Also, check out the [Agents 101 for AI Engine ↗️](/guides/agents/getting-started/whats-an-agent) to understand how to integrate the [AI Engine ↗️](/guides/agent-courses/agents-for-ai) within your Agents project.
     
-Join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun!
-
-There, you can not only star the project but also access valuable resources that will enhance your agent development journey. We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.
+Join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun! There, you can not only star the project but also access valuable resources that will enhance your agent development journey. We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.
