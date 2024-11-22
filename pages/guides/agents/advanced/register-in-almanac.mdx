@@ -47,7 +47,7 @@ Make sure you have read the following resources before going on with this guide:
 
 2. Open your terminal and `registration.py` file in an editor of your choice. Let's start by importing the `Agent` class from the `uagents` library to create our agent, and the `fund_agent_if_low` class from the `uagents.setup` module. This function will check if you have enough tokens to register in the Almanac contract, if not it will add testnet tokens to your `Fetch Network address`. Then, create an agent, `alice`, you need to provide the `name`, `seed`, `port` and `endpoint` parameters to correctly run it! The code will look similar to the following:
 
-<GithubCodeSegment digest="2c6beabe5ec88375db41965c64bc5502">
+<GithubCodeSegment digest="5ce0153e7a3d445dd4f8945b30a2b473">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/register-in-almanac/registration.py"
         lineStart={1}
@@ -55,12 +55,11 @@ Make sure you have read the following resources before going on with this guide:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='2c6beabe5ec88375db41965c64bc5502'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5ce0153e7a3d445dd4f8945b30a2b473'>
 
 <DocsCode local={true}>
 	```py copy filename="registration.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Protocol
 	
 	agent = Agent(
@@ -69,8 +68,6 @@ Make sure you have read the following resources before going on with this guide:
 	    seed="alice secret phrase",
 	    endpoint=["http://127.0.0.1:8000/submit"],
 	)
-	
-	fund_agent_if_low(agent.wallet.address())
 	
 	@agent.on_interval(period=3)
 	async def hi(ctx: Context):
@@ -82,7 +79,6 @@ Make sure you have read the following resources before going on with this guide:
 </DocsCode>
 
 </CodeGroup>
-
 
 
 
@@ -103,7 +99,6 @@ Once you run your script, your agent will start the registration process automat
    INFO:     [Alice]: Hello
    INFO:     [Alice]: Hello
    ```
-
 
     <Callout type="info" emoji="ℹ️">
         For further information on how to set up your Agents and register them into the Almanac to allow for remote

@@ -34,7 +34,7 @@ Make sure you have read the following resources before going on with this guide:
 
 Consider the following Agent:
 
-<GithubCodeSegment digest="6eac33a85ad67e40a66214bc554ca0e9">
+<GithubCodeSegment digest="a07d83b0ed210be19d88a188bb065df5">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/options-for-running-local-agents/agent_endpoint.py"
         lineStart={1}
@@ -42,12 +42,11 @@ Consider the following Agent:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='6eac33a85ad67e40a66214bc554ca0e9'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a07d83b0ed210be19d88a188bb065df5'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_endpoint.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Protocol, Model
 	import random
 	from uagents import Field
@@ -60,8 +59,6 @@ Consider the following Agent:
 	    seed="RANDOM STRINGS",
 	    endpoint=["http://YOUR_IP:6145/submit"],
 	)
-	
-	fund_agent_if_low(agent.wallet.address())
 	
 	
 	@agent.on_event("startup")
@@ -133,7 +130,7 @@ Through the **Agentverse** you can set up [Mailboxes ↗️](/guides/agents/inte
 
 Let's start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
 
-<GithubCodeSegment digest="ff888f486c91b5abc9116c419091a018">
+<GithubCodeSegment digest="6f746d8a2a6a98c302b05243a56544ed">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/options-for-running-local-agents/agent_mailbox.py"
         lineStart={1}
@@ -141,7 +138,7 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='ff888f486c91b5abc9116c419091a018'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6f746d8a2a6a98c302b05243a56544ed'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_mailbox.py"
@@ -156,9 +153,6 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
 	# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
 	SEED_PHRASE = "put_your_seed_phrase_here"
 	
-	# Copy the address shown below
-	print(f"Your agent's address is: {agent.address}")
-	
 	# Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
 	# Then, copy the agent's utilising-the-mailbox key and insert it here below inline
 	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
@@ -170,6 +164,8 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
 	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
 	)
 	
+	# Copy the address shown below
+	print(f"Your agent's address is: {agent.address}")
 	
 	@agent.on_message(model=Message, replies={Message})
 	async def handle_message(ctx: Context, sender: str, msg: Message):

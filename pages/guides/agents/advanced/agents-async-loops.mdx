@@ -47,7 +47,7 @@ First of all, let's create a Python script:
 
 Now, paste the below code into it:
 
-<GithubCodeSegment digest="2f3f0744a953cd4ceff94963441a2f96">
+<GithubCodeSegment digest="cc2ad7d371dc8cf31e730b9cb6d9ef26">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/agents-async-loops/external_loop_attach.py"
         lineStart={1}
@@ -55,7 +55,7 @@ Now, paste the below code into it:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='2f3f0744a953cd4ceff94963441a2f96'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='cc2ad7d371dc8cf31e730b9cb6d9ef26'>
 
 <DocsCode local={true}>
 	```py copy filename="external_loop_attach.py"
@@ -70,6 +70,8 @@ Now, paste the below code into it:
 	agent = Agent(
 	    name="looper",
 	    seed="<YOUR_SEED>",
+	    port=8001,
+	    endpoint=["http://127.0.0.1:8001/submit"],
 	)
 	
 	bureau = Bureau(
@@ -103,8 +105,6 @@ Now, paste the below code into it:
 	    # > when attaching a bureau to the external loop
 	    # loop.create_task(bureau.run_async())
 	
-	    with contextlib.suppress(KeyboardInterrupt):
-	        loop.run_forever()
 
 ```
 </DocsCode>
@@ -153,7 +153,7 @@ Let's start by creating a Python script:
 
 Then, let's paste the below code into it:
 
-<GithubCodeSegment digest="aa7c205c69e65b45336f9edc21defdab">
+<GithubCodeSegment digest="9cca4ae94c3da8faa8d2f451879925ed">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/agents-async-loops/external_loop_run.py"
         lineStart={1}
@@ -161,7 +161,7 @@ Then, let's paste the below code into it:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='aa7c205c69e65b45336f9edc21defdab'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9cca4ae94c3da8faa8d2f451879925ed'>
 
 <DocsCode local={true}>
 	```py copy filename="external_loop_run.py"
@@ -176,6 +176,8 @@ Then, let's paste the below code into it:
 	    name="looper",
 	    seed="<YOUR_SEED>",
 	    loop=loop,
+	    port = 8000,
+	    endpoint = ["http://127.0.0.1:8000/submit"],
 	)
 	
 	bureau = Bureau(
@@ -207,8 +209,6 @@ Then, let's paste the below code into it:
 	    # > when starting the external loop from the agent
 	    agent.run()
 	
-	    # > when starting the external loop from the bureau
-	    # bureau.run()
 
 ```
 </DocsCode>

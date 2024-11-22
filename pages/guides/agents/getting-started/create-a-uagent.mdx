@@ -47,7 +47,7 @@ Make sure you have read the following resources before going on with this guide:
 
 2. We then need to import the `Agent` and `Context` classes from the `uagents` library, and then create an agent using the class `Agent`:
 
-   <GithubCodeSegment digest="1848fd5f6f05167abf301fd5a0cae057">
+   <GithubCodeSegment digest="b7cfb59c93a8a17a328b687575ed3a41">
        <CodeSegment
            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/create-a-uagent/first_agent.py"
            lineStart={1}
@@ -55,14 +55,14 @@ Make sure you have read the following resources before going on with this guide:
            hosted={true}
        />
    </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='1848fd5f6f05167abf301fd5a0cae057'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='b7cfb59c93a8a17a328b687575ed3a41'>
 
 <DocsCode local={true}>
 	```py copy filename="first_agent.py"
 
 	from uagents import Agent, Context
 	
-	agent = Agent(name="alice", seed="secret_seed_phrase")
+	agent = Agent(name="alice", seed="secret_seed_phrase", port=8000, endpoint=["http://localhost:8000/submit"])
 
 ```
 </DocsCode>
@@ -108,7 +108,7 @@ Make sure you have read the following resources before going on with this guide:
 
 The overall script should look as follows:
 
-   <GithubCodeSegment digest="5c9291fccbe5e54925b1849a291b2b34">
+   <GithubCodeSegment digest="ae9594feed39e2816a1f8f60261bac15">
        <CodeSegment
            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/create-a-uagent/first_agent.py"
            lineStart={1}
@@ -116,14 +116,14 @@ The overall script should look as follows:
            hosted={true}
        />
    </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='5c9291fccbe5e54925b1849a291b2b34'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ae9594feed39e2816a1f8f60261bac15'>
 
 <DocsCode local={true}>
 	```py copy filename="first_agent.py"
 
 	from uagents import Agent, Context
 	
-	agent = Agent(name="alice", seed="secret_seed_phrase")
+	agent = Agent(name="alice", seed="secret_seed_phrase", port=8000, endpoint=["http://localhost:8000/submit"])
 	
 	@agent.on_event("startup")
 	async def introduce_agent(ctx: Context):
