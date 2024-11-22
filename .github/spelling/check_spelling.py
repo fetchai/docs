@@ -19,7 +19,6 @@ import_pattern = re.compile(r'import\s*{\s*([\s\S]*?)\s*}\s*from\s*["\']([^"\']+
 jsx_like_tags_pattern = re.compile(r'<[^>]*>[\s\S]*?<\/[^>]*>|<[^>]*?/>', re.DOTALL)
 path_pattern = re.compile(r'path:\s*"/[^"]*"')
 guidebox_pattern = re.compile(r'<GuideBox[\s\S]*?/>', re.IGNORECASE)
-hex_colours = re.compile(r'([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})')
 
 # Corrected word pattern to allow apostrophes in valid words
 word_pattern = re.compile(r"\b\w+(?:'\w+)?\b")
@@ -27,7 +26,7 @@ word_pattern = re.compile(r"\b\w+(?:'\w+)?\b")
 # Pattern to exclude words containing escape sequences (\n, \u, etc.)
 escape_sequence_pattern = re.compile(r'\\[nu][0-9a-fA-F]+|u[0-9a-fA-F]{4}')
 
-# Function to extract text while ignoring specified components and handling code blocks differently
+# Function to extract text while ignoring specified components and skipping code blocks
 def extract_text_from_mdx(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
@@ -46,20 +45,15 @@ def extract_text_from_mdx(file_path):
     md = MarkdownIt()
     parsed = md.parse(content)
 
-    # Extract text while separating code blocks for warnings
+    # Extract text while skipping code blocks
     text = []
-    code_blocks = []
-    in_code_block = False
 
     def traverse(node):
-        nonlocal in_code_block
-        if node.type == 'fence':  # For fenced code blocks (```code```)
-            if not in_code_block:
-                code_blocks.append(node.content)  # Capture code block content
-            in_code_block = not in_code_block
-        elif node.type == 'code_inline' and not in_code_block:  # Skip inline code
+        if node.type == 'fence':  # Skip fenced code blocks
             return
-        elif node.type == 'text' and not in_code_block:
+        elif node.type == 'code_inline':  # Skip inline code
+            return
+        elif node.type == 'text':
             text.append(node.content)
 
         for child in node.children or []:
@@ -68,10 +62,10 @@ def extract_text_from_mdx(file_path):
     for node in parsed:
         traverse(node)
 
-    return '\n'.join(text), code_blocks
+    return '\n'.join(text)
 
 # Function to check for spelling errors
-def check_spelling(text, is_code_block=False):
+def check_spelling(text):
     def split_underscore_words(word):
         return re.split(r'[_\s]+', word)
 
@@ -109,8 +103,8 @@ def check_spelling(text, is_code_block=False):
     ]
     misspelled = spell.unknown(reduced_words)
 
-    # Return misspelled words with a flag indicating if they came from code
-    return misspelled if not is_code_block else {'warnings': misspelled}
+    # Return misspelled words
+    return misspelled
 
 # Function to check all .mdx files in a directory
 def check_directory(directory):
@@ -122,8 +116,8 @@ def check_directory(directory):
                 file_path = os.path.join(root, file)
                 print(f'========== Checking file: {file_path} ==========')
 
-                # Extract text and code blocks from the MDX file
-                text, code_blocks = extract_text_from_mdx(file_path)
+                # Extract text from the MDX file
+                text = extract_text_from_mdx(file_path)
 
                 # Check for spelling errors in text
                 errors = check_spelling(text)
@@ -132,16 +126,6 @@ def check_directory(directory):
                     for error in errors:
                         print(f'  - {error}')
                     has_errors = True
-
-                # Check for spelling errors in code blocks (warnings)
-                warnings = []
-                for code_block in code_blocks:
-                    warnings = check_spelling(code_block, is_code_block=True).get('warnings', [])
-
-                if warnings:
-                    print(f'Warnings (spelling errors in code block) in {file_path}:')
-                    for warning in warnings:
-                        print(f'  - {warning}')
 
     return has_errors
 
