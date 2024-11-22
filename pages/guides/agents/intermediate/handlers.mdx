@@ -60,7 +60,7 @@ Make sure you have read the following resources before going on with this guide:
 
 2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
 
-<GithubCodeSegment digest="c8837162a1b05488e1df231312b4f109">
+<GithubCodeSegment digest="d746949fe6a18298b58d4bf0200f943d">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/interval-task.py"
         lineStart={1}
@@ -68,14 +68,14 @@ Make sure you have read the following resources before going on with this guide:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='c8837162a1b05488e1df231312b4f109'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d746949fe6a18298b58d4bf0200f943d'>
 
 <DocsCode local={true}>
 	```py copy filename="interval-task.py"
 
 	from uagents import Agent, Context
 	
-	agent = Agent(name="alice", seed="alice recovery phrase")
+	agent = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://localhost:8000/submit"])
 
 ```
 </DocsCode>
@@ -145,7 +145,7 @@ Make sure you have read the following resources before going on with this guide:
 
 The overall script should look as follows:
 
-<GithubCodeSegment digest="61e9008ed35ec747ce881dd9519a67f5">
+<GithubCodeSegment digest="b43f32226d67009f57ed92a4e59f5758">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/interval-task.py"
         lineStart={1}
@@ -153,14 +153,14 @@ The overall script should look as follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='61e9008ed35ec747ce881dd9519a67f5'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='b43f32226d67009f57ed92a4e59f5758'>
 
 <DocsCode local={true}>
 	```py copy filename="interval-task.py"
 
 	from uagents import Agent, Context
 	
-	agent = Agent(name="alice", seed="alice recovery phrase")
+	agent = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://localhost:8000/submit"])
 	
 	@agent.on_event("startup")
 	async def introduce_agent(ctx: Context):
@@ -186,13 +186,17 @@ Run the script: `python interval_task.py`
 
 The output should be as follows:
 
-    ```
-    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    INFO:     [alice]: Hello, I'm agent alice and my address is agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t.
-    INFO:     [alice]: Hello!
-    INFO:     [alice]: Hello!
-    INFO:     [alice]: Hello!
-    ```
+   ```
+   INFO:     [alice]: Registration on Almanac API successful
+   INFO:     [alice]: Registering on almanac contract...
+   INFO:     [alice]: Registering on almanac contract...complete
+   INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
+   INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     [alice]: Hello, I'm agent alice and my address is agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t.
+   INFO:     [alice]: Hello!
+   INFO:     [alice]: Hello!
+   INFO:     [alice]: Hello!
+   ```
 
 ## Handle messages using the `on_message()` handler
 
@@ -206,22 +210,22 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
    <CodeGroup hasCopy isOSFile>
    <DocsCode mac={true}>
-   ```py copy filename="mac"
-   touch broadcast.py
-   ```
+      ```py copy filename="mac"
+      touch broadcast.py
+      ```
    </DocsCode>
 
    <DocsCode windows={true}>
        ```py copy filename="windows"
        echo. > broadcast.py
        ```
-       </DocsCode>
+   </DocsCode>
 
    <DocsCode ubuntu={true}>
        ```py copy filename="ubuntu"
        touch broadcast.py
        ```
-       </DocsCode>
+   </DocsCode>
    </CodeGroup>
 
 2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library. Then, let's create the 3 different agents using the class `Agent`. Each agent is initialized with a unique name and a seed phrase for wallet recovery.
@@ -505,11 +509,21 @@ Run the script: `python broadcast.py`
 
 The output would be:
 
-    ```
-    Trying to contact 2 agents.
-    Received response from alice: Hello from alice
-    Received response from bob: Hello from bob
-    ```
+   ```
+   INFO:     [alice]: Registration on Almanac API successful
+   INFO:     [alice]: Registering on almanac contract...
+   INFO:     [alice]: Registering on almanac contract...complete
+   INFO:     [  bob]: Registration on Almanac API successful
+   INFO:     [  bob]: Registering on almanac contract...
+   INFO:     [  bob]: Registering on almanac contract...complete
+   INFO:     [charles]: Registration on Almanac API successful
+   INFO:     [charles]: Registration on Almanac API successful
+   INFO:     [charles]: Registering on almanac contract...
+   INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     [charles]: Trying to contact 2 agents.
+   INFO:     [charles]: Received response from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: Hello from bob
+   INFO:     [charles]: Received response from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: Hello from alice
+   ```
 
 ## Answer queries with `on_query()` handler
 
