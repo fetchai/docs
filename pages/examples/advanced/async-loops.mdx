@@ -28,7 +28,6 @@ In this example, we demonstrate how to use agents to communicate and exchange st
 
     loop = asyncio.get_event_loop()
 
-
     agent = Agent(
         name="looper",
         seed="<YOUR_SEED>",
@@ -38,22 +37,18 @@ In this example, we demonstrate how to use agents to communicate and exchange st
         agents=[agent],
     )
 
-
     @agent.on_event("startup")
     async def startup(ctx: Context):
         ctx.logger.info(">>> Looper is starting up.")
-
 
     @agent.on_event("shutdown")
     async def shutdown(ctx: Context):
         ctx.logger.info(">>> Looper is shutting down.")
 
-
     async def coro():
         while True:
             print("Doing hard work...")
             await asyncio.sleep(1)
-
 
     if __name__ == "__main__":
         print("Attaching the agent or bureau to the external loop...")
@@ -83,7 +78,6 @@ In this example, we demonstrate how to use agents to communicate and exchange st
 
     loop = asyncio.get_event_loop()
 
-
     agent = Agent(
         name="looper",
         seed="<YOUR_SEED>",
@@ -95,22 +89,18 @@ In this example, we demonstrate how to use agents to communicate and exchange st
         loop=loop,
     )
 
-
     @agent.on_event("startup")
     async def startup(ctx: Context):
         ctx.logger.info(">>> Looper is starting up.")
-
 
     @agent.on_event("shutdown")
     async def shutdown(ctx: Context):
         ctx.logger.info(">>> Looper is shutting down.")
 
-
     async def coro():
         while True:
             print("Doing hard work...")
             await asyncio.sleep(1)
-
 
     if __name__ == "__main__":
         print("Starting the external loop from the agent or bureau...")
