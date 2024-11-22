@@ -6,9 +6,7 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../co
 
 ## Overview
 
-Welcome to **Agents 101 for AI Engine**! This course is designed to introduce you to the overall system of Fetch.ai, and shows how to
-build agents to be accessible to the AI Engine and integrate with other projects. This course is a parallel track to
-[Agents 101 ↗️](/guides/agent-courses/introductory-course) which instead focuses only on Agents creation.
+Welcome to **Agents 101 for AI Engine**! This course is designed to introduce you to the overall system of Fetch.ai, and shows how to  build Agents to be accessible to the AI Engine and integrate with other projects. This course is a parallel track to [Agents 101 ↗️](/guides/agent-courses/introductory-course) which instead focuses only on Agents creation using the [uAgents ↗️](/guides/agents/getting-started/installing-uagent) library.
 
 At any stage, if you encounter issues or have questions about specific terms or topics, our support team is available on [Discord ↗️](https://discord.gg/fetchai) to assist you.
 
@@ -39,15 +37,14 @@ Let's try and keep this simple 🎉:
  - **DeltaV**: It is an assistive chat interface that allows human input to interact with agents registered through the Agentverse.
 
     <Callout type="warning" emoji="⚠️">
-       Agents are <i>programs</i>, whereas <i>functions</i> are specific Agent Functions your agents offer.
+       Agents are <i>programs</i>, whereas <i>functions</i> are specific [Agent Functions ↗️](/guides/agents/intermediate/agent-functions) your Agents offer.
     </Callout>
 
-In a nutshell, AI Engine indexes Agents, and translates human input into **objectives**. It may sound like a search engine, but it does much more.
+In a nutshell, AI Engine indexes Agents and related functions, and translates human input into **objectives**. It may sound like a search engine, but it does much more. Have a look at the following [resource ↗️](/concepts/ai-engine/powering-connections-and-smart-operations-in-deltav) to better understand how this process works.
 
 ![The AI Engine has an internal database that creates understanding and links to existing Agent Functions](../../../src/images/guides/101/ai-connects.jpg)
 
-The AI Engine allows **chaining**. Say that you ask DeltaV "Tell me about the animal
-Zebra". The AI Engine would then look for an agent that could give you a summary, as well as another agent that could provide information about zebras. The AI Engine understands that the **Summary Agent** requires text to parse and summarise. So it would contact the **Zebra Agent** and get the information from it. The AI Engine would then call the **Summary Agent** with the **Zebra Agent** information so that the former would return the summarized text.
+The AI Engine allows **chaining**. Say that you ask DeltaV: "Tell me about the animal Zebra". The AI Engine would then look for an Agent that could give you a summary, as well as another agent that could provide information about zebras. The AI Engine understands that the **Summary Agent** requires text to parse and summarise. So it would contact the **Zebra Agent** and get the information from it. The AI Engine would then call the **Summary Agent** with the **Zebra Agent** information so that the former would return the summarized text.
 
 It works like this:
 
@@ -196,8 +193,7 @@ We can do this by running:
       Remember that you need to provide the `SEED_PHRASE`, `AGENT_MAILBOX_KEY`, `name`, `seed` and `mailbox` parameters to correctly run this example.
     </Callout>
 
-Okay, we've got the whole code block above for our first agent. This agent does not run on Agentverse currently, as
-`openai` is not supported. Have a look at list of available packages on the Agentverse [here ↗️](/guides/agentverse/allowed-imports).
+Okay, we've got the whole code block above for our first agent. Have a look at list of available packages on the Agentverse [here ↗️](/guides/agentverse/allowed-imports) to get started with Agents development on the Agentverse.
 
 There are a lot of really cool, neat things you need to know from code above. Let's explore it:
 
@@ -249,7 +245,7 @@ There are a lot of really cool, neat things you need to know from code above. Le
 
 We can now initialize the Agent and define the [Protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). To read more about **Agent objects**, please check out [the reference docs ↗️](/references/uagents/uagents-api/agent#agent-objects).
 
-Then, we have the **on_message()** handler:
+Then, we have the **on_message()** [handler ↗️](/guides/agents/intermediate/handlers):
 
 <GithubCodeSegment digest="4062beca9a7cafff6002e8e8ff9c7a28">
     <CodeSegment
@@ -308,8 +304,7 @@ We can finally run the Agent at the bottom of the script:
 </CodeGroup>
 
 
-
-Including the protocol in the Agent effectively allows other Agents to know how this Agent expects communication.
+Including the [Protocol ↗️](/guides/agents/intermediate/protocols) in the Agent effectively allows other Agents to know how this Agent expects communication.
 
 You can run this with: `poetry run python sentiment_agent.py`.
 
@@ -319,8 +314,8 @@ Let's use this address to create a **Mailbox** on the Agentverse.
 
 ### Creating a Mailbox for Sentiment Agent
 
-A **mailbox** is a service provided by Agentverse that allows agents to receive messages when they're not running online.
-`uagents` library will poll for new messages (and old unread ones) when your agent is running. Pretty handy.
+A **mailbox** is a service provided by Agentverse that allows Agents to receive messages when they're not running online.
+The `uagents` library will poll for new messages (and old unread ones) when your Agent is running. Pretty handy.
 
 Let's go to [Agentverse ↗️](https://agentverse.ai/agents/local) and create a Mailbox for this agent.
 
@@ -338,7 +333,7 @@ Once the Agent will be successfully fetched, add a **Name** to it.
 
 A new **Mailbox API Key** will be provided for the local agent. Let's first copy the new Mailbox API Key and then update the `AGENT_MAILBOX_KEY = "AGENT_MAILBOX_KEY"` inline.
 
-Now, you can restart your agent and it will be registered to the Mailbox.
+Now, you can restart your agent, and it will be registered to the Mailbox.
 
 Your terminal output will look similar to the following:
 
@@ -353,7 +348,7 @@ Your terminal output will look similar to the following:
 
 #### Let's run this agent on DeltaV, it'll be good to test, right?
 
-We're going to need to create an **Agent Function** on Agentverse; to get a comprehensive overview of what Agent Functions visit [our dedicated guide ↗️](/guides/services/services). To get the idea, an **Agent Function** refers to an Agent enrolled within the Agentverse, and made discoverable by other agents and users for interaction, which is retrievable through natural language queries. For instance, a Function could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Functions are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
+We're going to need to create an **Agent Function** on Agentverse; to get a comprehensive overview of what Agent Functions visit [our dedicated guide ↗️](/guides/agents/intermediate/agent-functions). To get the idea, an **Agent Function** refers to an Agent enrolled within the Agentverse, and made discoverable to other Agents and users for interaction, which is retrievable through natural language queries. For instance, a Function could be an Agent helping in booking an airplane ticket to some destination. Successfully registered Agent Functions are discoverable and accessible through DeltaV and users can engage with them using natural language queries.
 
 Let's go to the [Agentverse ↗️](https://agentverse.ai/) and head over to the **My Agents** tab and select the Agent we have fetched above through **Connect Local Agent** button. A page will open showing your Agent Profile details.
 
@@ -535,7 +530,7 @@ The following is the Function for the **Summary_agent**:
 
 ![](../../../src/images/guides/101/service_url_summary.png)
 
-This one is quite simple, but we are defining this as a Secondary Function. A Secondary Function tells the AI Engine that this function should only be called to support another agent, and not as a primary response. You can learn more about this in our [guide ↗️](/guides/services/services#primary-and-secondary-functions)
+This one is quite simple, but we are defining this as a Secondary Function. A Secondary Function tells the AI Engine that this function should only be called to support another Agent, and not as a primary response. You can learn more about this in our [guide ↗️](/guides/services/services#primary-and-secondary-functions)
 
 We also need to go and update the Sentiment Agent Function.
 
@@ -570,4 +565,6 @@ We're hoping here that we can ask for a sentiment of a webpage. You may need to 
 
 Thank you for sticking with us on this guide, this guide aims to show you the true potential of an AI system that can execute code at the prompt of a user.
 
-We invite you to dive deeper into the world of Agents, Agentverse and AI Engine by exploring the dedicated documentation and [GitHub ↗️](https://github.com/fetchai/) repository. Join our [Discord ↗️](https://discord.com/invite/fetchai) and team up with other developers to participate in hackathons, collectively build projects, or simply have fun!
+We invite you to dive deeper into the world of Agents, Agentverse and AI Engine by exploring the dedicated documentation and [GitHub ↗️](https://github.com/fetchai/) repository. 
+
+Join our [Discord ↗️](https://discord.com/invite/fetchai) and team up with other developers to participate in hackathons, collectively build projects, or simply have fun!

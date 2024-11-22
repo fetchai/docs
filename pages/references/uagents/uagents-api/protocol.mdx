@@ -2,9 +2,6 @@
 
 # Exchange Protocol
 
-
-
-
 ## Protocol Objects
 
 ```python
@@ -15,8 +12,6 @@ The Protocol class encapsulates a particular set of functionalities for an agent
 It typically relates to the exchange of messages between agents for executing some task.
 It includes the message (model) types it supports, the allowed replies, and the
 interval message handlers that define the logic of the protocol.
-
-
 
 #### `__`init`__`
 
@@ -31,8 +26,6 @@ Initialize a Protocol instance.
 - `name` _Optional[str], optional_ - The name of the protocol. Defaults to None.
 - `version` _Optional[str], optional_ - The version of the protocol. Defaults to None.
 
-
-
 #### intervals
 
 ```python
@@ -46,8 +39,6 @@ Property to access the interval handlers.
 
   List[Tuple[IntervalCallback, float]]: List of interval handlers and their periods.
 
-
-
 #### models
 
 ```python
@@ -60,8 +51,6 @@ Property to access the registered models.
 **Returns**:
 
   Dict[str, Type[Model]]: Dictionary of registered models with schema digests as keys.
-
-
 
 #### replies
 
@@ -77,8 +66,6 @@ Property to access the registered replies.
   Dict[str, Dict[str, Type[Model]]]: Dictionary mapping message schema digests to their
   allowed replies.
 
-
-
 #### interval`_`messages
 
 ```python
@@ -91,8 +78,6 @@ Property to access the interval message digests.
 **Returns**:
 
 - `Set[str]` - Set of message digests that may be sent by interval handlers.
-
-
 
 #### signed`_`message`_`handlers
 
@@ -107,8 +92,6 @@ Property to access the signed message handlers.
 
   Dict[str, MessageCallback]: Dictionary mapping message schema digests to their handlers.
 
-
-
 #### unsigned`_`message`_`handlers
 
 ```python
@@ -121,8 +104,6 @@ Property to access the unsigned message handlers.
 **Returns**:
 
   Dict[str, MessageCallback]: Dictionary mapping message schema digests to their handlers.
-
-
 
 #### name
 
@@ -137,8 +118,6 @@ Property to access the protocol name.
 
 - `str` - The protocol name.
 
-
-
 #### version
 
 ```python
@@ -151,8 +130,6 @@ Property to access the protocol version.
 **Returns**:
 
 - `str` - The protocol version.
-
-
 
 #### canonical`_`name
 
@@ -167,8 +144,6 @@ Property to access the canonical name of the protocol ('name:version').
 
 - `str` - The canonical name of the protocol.
 
-
-
 #### digest
 
 ```python
@@ -181,8 +156,6 @@ Property to access the digest of the protocol's manifest.
 **Returns**:
 
 - `str` - The digest of the protocol's manifest.
-
-
 
 #### on`_`interval
 
@@ -199,13 +172,10 @@ Decorator to register an interval handler for the protocol.
 - `period` _float_ - The interval period in seconds.
 - `messages` _Optional[Union[Type[Model], Set[Type[Model]]]], optional_ - The associated
   message types. Defaults to None.
-  
 
 **Returns**:
 
 - `Callable` - The decorator to register the interval handler.
-
-
 
 #### on`_`query
 
@@ -221,13 +191,10 @@ Decorator to register a query handler for the protocol.
 - `model` _Type[Model]_ - The message model type.
 - `replies` _Optional[Union[Type[Model], Set[Type[Model]]]], optional_ - The associated
   reply types. Defaults to None.
-  
 
 **Returns**:
 
 - `Callable` - The decorator to register the query handler.
-
-
 
 #### on`_`message
 
@@ -246,13 +213,10 @@ Decorator to register a message handler for the protocol.
   reply types. Defaults to None.
 - `allow_unverified` _Optional[bool], optional_ - Whether to allow unverified messages.
   Defaults to False.
-  
 
 **Returns**:
 
 - `Callable` - The decorator to register the message handler.
-
-
 
 #### manifest
 
@@ -267,8 +231,6 @@ protocol details and interface.
 
   Dict[str, Any]: The protocol's manifest.
 
-
-
 #### compute`_`digest
 
 ```python
@@ -281,7 +243,6 @@ Compute the digest of a given manifest.
 **Arguments**:
 
 - `manifest` _Dict[str, Any]_ - The manifest to compute the digest for.
-  
 
 **Returns**:
 

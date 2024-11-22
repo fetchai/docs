@@ -44,7 +44,7 @@ This example illustrates an automated dialogue scenario using a hardcoded dialog
     </DocsCode>
 
 </CodeGroup>
-  
+
 - Import required libraries.
 
     ```python
@@ -237,14 +237,14 @@ Include all the above mentioned script sections into a single script and save it
 ## Step 2: setting up the agents
 
 These two agents use the `hardcoded_chitchat` dialogue system to automate the interaction with minimal intervention. The dialogue is mostly automated, with `agent3` configured to respond to initiation and continue based on predefined rules, and `agent4` automatically initiating the conversation.
-    
+
 ### Setting up `agent1`
 
 `agent1` is designed to receive and respond to messages according to hardcoded rules within the ChitChatDialogue class.
 
     - Navigate to your working directory and create a Python script named `agent1.py`.
     - Copy the following script into `agent1.py`:
-    
+
 <CodeGroup hasCopy isLocalHostedFile>
     <DocsCode local={true}>
 
@@ -296,7 +296,6 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
             except EOFError:
                 await ctx.send(sender, ConcludeChitChatDialogue())
 
-
         agent.include(chitchat_dialogue)  # Including dialogue in agent
 
         if __name__ == "__main__":
@@ -335,7 +334,6 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
             endpoint="http://127.0.0.1:8002/submit",
         )
 
-
         # Instantiate the dialogues
         chitchat_dialogue = ChitChatDialogue(
             version="0.1",
@@ -351,7 +349,6 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
             ctx.logger.info(f"Returning: {msg.text}")
             await ctx.send(sender, ChitChatDialogueMessage(text=msg.text))
 
-
         # Initiate dialogue after 5 seconds
         @agent.on_event("startup")
         async def start_cycle(ctx: Context):
@@ -359,7 +356,6 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
             await chitchat_dialogue.start_dialogue(
                 ctx, CHIT_AGENT_ADDRESS, InitiateChitChatDialogue()
             )
-
 
         agent.include(chitchat_dialogue)
 
