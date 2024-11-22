@@ -13,7 +13,7 @@ However, you should be aware of how state works in a hosted Agent. A global vari
 
 Let's show this with an example:
 
-<GithubCodeSegment digest="d22308858911041c3d71bcc3752de118">
+<GithubCodeSegment digest="93d1c346a18241fe88de5c003ea54c7e">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/hosted-agent/storage_agent_example.py"
         lineStart={1}
@@ -21,14 +21,14 @@ Let's show this with an example:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='d22308858911041c3d71bcc3752de118'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='93d1c346a18241fe88de5c003ea54c7e'>
 
 <DocsCode local={true}>
 	```py copy filename="storage_agent_example.py"
 
 	from uagents import Agent, Context
 	
-	agent = Agent()
+	agent = Agent(name="Hosted", seed="your_seed_phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
 	
 	global_counter = 0
 	

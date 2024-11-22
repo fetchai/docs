@@ -55,7 +55,7 @@ You can print the `uAgent address` related to your Agent in the following way:
 
 2. We then need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `uAgent address`. Importantly, remember that the `seed` parameter is used, when creating an Agent, to set fixed addresses, otherwise a random address will be generated every time you run the Agent:
 
-   <GithubCodeSegment digest="329b381fe128e02b26a5d0e7130f6dea">
+   <GithubCodeSegment digest="dc9c1e764bfffbbc0e4b2d21fac166f0">
        <CodeSegment
            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/getting-uagent-address/uagent_address.py"
            lineStart={1}
@@ -64,14 +64,14 @@ You can print the `uAgent address` related to your Agent in the following way:
            hosted={true}
        />
    </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='329b381fe128e02b26a5d0e7130f6dea'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='dc9c1e764bfffbbc0e4b2d21fac166f0'>
 
 <DocsCode local={true}>
 	```py copy filename="uagent_address.py"
 
 	from uagents import Agent
 	
-	agent = Agent(name="alice", seed="alice recovery phrase")
+	agent = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
 	
 	print("uAgent address: ", agent.address)
 	
@@ -122,7 +122,7 @@ You can print the `Fetch network address` related to your Agent in the following
 
 2. As before, we first need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `Fetch Network address`:
 
-   <GithubCodeSegment digest="4440bff25b5df546e299315b23cfbb0d">
+   <GithubCodeSegment digest="c1a9f6fba2e2472ad6adbbfe330dee10">
        <CodeSegment
            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/getting-uagent-address/fetch_address.py"
            lineStart={1}
@@ -131,14 +131,14 @@ You can print the `Fetch network address` related to your Agent in the following
            hosted={true}
        />
    </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='4440bff25b5df546e299315b23cfbb0d'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c1a9f6fba2e2472ad6adbbfe330dee10'>
 
 <DocsCode local={true}>
 	```py copy filename="fetch_address.py"
 
 	from uagents import Agent
 	
-	agent = Agent(name="alice", seed="alice recovery phrase")
+	agent = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
 	
 	print("Fetch network address: ", agent.wallet.address())
 	
@@ -197,7 +197,7 @@ In this guide, we aim at showing how to create an Agent being able to say hello 
 
 2. We then need to import the necessary classes `Agent` and `Context` from the `uagents` library, and then create an instance of the `Agent` class, `alice`. Below you can see the `agent` object being initialized:
 
-   <GithubCodeSegment digest="dc132f52de064074ed98e54a7023c893">
+   <GithubCodeSegment digest="b85672be4742d383d6415f4b70f788b3">
        <CodeSegment
            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/getting-uagent-address/my_agent.py"
            lineStart={1}
@@ -206,14 +206,14 @@ In this guide, we aim at showing how to create an Agent being able to say hello 
            hosted={true}
        />
    </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='dc132f52de064074ed98e54a7023c893'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='b85672be4742d383d6415f4b70f788b3'>
 
 <DocsCode local={true}>
 	```py copy filename="my_agent.py"
 
 	from uagents import Agent, Context
 	
-	agent = Agent(name="alice", seed="alice recovery phrase")
+	agent = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
 
 ```
 </DocsCode>
@@ -258,7 +258,7 @@ In this guide, we aim at showing how to create an Agent being able to say hello 
 
 The overall script should look as follows:
 
-   <GithubCodeSegment digest="649f95e68b00135835e462b705fbb5f9">
+   <GithubCodeSegment digest="c22a07c304b533e9ed80acb99da1783e">
        <CodeSegment
            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/getting-started/getting-uagent-address/my_agent.py"
            lineStart={1}
@@ -267,14 +267,14 @@ The overall script should look as follows:
            hosted={true}
        />
    </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='649f95e68b00135835e462b705fbb5f9'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c22a07c304b533e9ed80acb99da1783e'>
 
 <DocsCode local={true}>
 	```py copy filename="my_agent.py"
 
 	from uagents import Agent, Context
 	
-	agent = Agent(name="alice", seed="alice recovery phrase")
+	agent = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
 	
 	@agent.on_event("startup")
 	async def introduce_agent(ctx: Context):

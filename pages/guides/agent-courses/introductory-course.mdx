@@ -312,6 +312,8 @@ Let's update `alice_agent.py` with the code snippet below:
 
 </CodeGroup>
 
+
+
 Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the agent knows how to act on the declared decorated functions. For additional information on decorators, check out the following resources: [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/) and [Agent Handlers ↗️](/guides/agents/intermediate/handlers) for additional information on decorators within the uAgents Framework.
 
 In our example above, the `on_event()` decorator specifies that the Agent should run an `introduce_agent()` function when the Agent starts up. This function will then return a message presenting the Agent with its name and address by using the `Context` class, which is used to retrieve the Agent's related name and address using the `agent.name` and `agent.address` methods.
@@ -790,7 +792,7 @@ Let's create a Python script for this example:
 
 We will have what follows:
 
-<GithubCodeSegment digest="9e27f7c429b54464db493c6417ccf02a">
+<GithubCodeSegment digest="6ae779e605343536a4618ccc0a03be1b">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/almanac_registration.py"
         lineStart={1}
@@ -798,12 +800,11 @@ We will have what follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='9e27f7c429b54464db493c6417ccf02a'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6ae779e605343536a4618ccc0a03be1b'>
 
 <DocsCode local={true}>
 	```py copy filename="almanac_registration.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Protocol
 	
 	agent = Agent(
@@ -812,9 +813,6 @@ We will have what follows:
 	    seed="alice secret phrase",
 	    endpoint=["http://127.0.0.1:8000/submit"],
 	)
-	
-	fund_agent_if_low(agent.wallet.address())
-	
 	
 	@agent.on_interval(period=3)
 	async def hi(ctx: Context):
@@ -827,6 +825,7 @@ We will have what follows:
 </DocsCode>
 
 </CodeGroup>
+
 
 
 Here, we defined a local http address, but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your Agent, so you don't have to fund different addresses each time you run your agent. The `fund_agent_if_low` is used on the Testnet to make sure your Agent has enough funds in its wallet to register and operate correctly.
@@ -948,7 +947,7 @@ Similarly, we need to define a script for `bob` so to create a remote communicat
 
 Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the Agent's `name`, `seed`, `port`, decorator as well as the message content:
 
-<GithubCodeSegment digest="f17ca35602044b49164c4c102142e6a9">
+<GithubCodeSegment digest="26fe31b518db52d424c41a9c87c5ecf2">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/remote_bob.py"
         lineStart={1}
@@ -956,12 +955,11 @@ Instead of creating and manually writing out the same script we can copy and ren
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='f17ca35602044b49164c4c102142e6a9'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='26fe31b518db52d424c41a9c87c5ecf2'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_bob.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Model
 	
 	
@@ -975,8 +973,6 @@ Instead of creating and manually writing out the same script we can copy and ren
 	    seed="bob secret phrase",
 	    endpoint=["http://127.0.0.1:8001/submit"],
 	)
-	
-	fund_agent_if_low(agent.wallet.address())
 	
 	
 	@agent.on_message(model=Message)
@@ -1162,6 +1158,8 @@ Let's start by defining the protocol for querying availability of tables at the 
 </DocsCode>
 
 </CodeGroup>
+
+
 
 Here, we defined different messages data models:
 
@@ -1476,6 +1474,8 @@ The overall script should be:
 
 </CodeGroup>
 
+
+
 #### Restaurant Agent
 
 Let's now move forward and create our restaurant Agent in a separate file. In this step, we will import the essential classes from the `uagents` library and reintegrate the two protocols (`book_proto` and `query_proto`) we've previously coded:
@@ -1510,6 +1510,8 @@ Let's now move forward and create our restaurant Agent in a separate file. In th
 </DocsCode>
 
 </CodeGroup>
+
+
 
 Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly set up the Agent. Let's build the `restaurant` Agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the `restaurant` Agent storage:
 
@@ -1599,6 +1601,8 @@ The overall script would be as follows:
 </DocsCode>
 
 </CodeGroup>
+
+
 
 #### User Agent
 
@@ -1864,5 +1868,5 @@ We appreciate your active participation in our introductory course on Agents! Th
 We invite you to delve deeper into the world of Agents by exploring our dedicated [Agents ↗️](/guides/agents/getting-started/whats-an-agent) documentation, [GitHub ↗️](https://github.com/fetchai/uAgents) and [uAgents Examples ↗️](https://github.com/fetchai/uAgent-Examples) repositories. Also, do not forget to checkout our full list of [Agents guides ↗️](/guides) diving into the development of Agents and concepts explained in this introductory course, but in a more detailed manner. 
 
 Also, check out the [Agents 101 for AI Engine ↗️](/guides/agents/getting-started/whats-an-agent) to understand how to integrate the [AI Engine ↗️](/guides/agent-courses/agents-for-ai) within your Agents project.
-    
+
 Join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun! There, you can not only star the project but also access valuable resources that will enhance your agent development journey. We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.

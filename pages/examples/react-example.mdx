@@ -78,7 +78,7 @@ In this section we will set up Agents and as well as flask app which will respon
    from uagents.query import query
    from uagents import Model
    import json
-   
+
    # Define Request Data Model classes for interacting with different Agents
 
    class NewsRequest(Model):
@@ -96,7 +96,7 @@ In this section we will set up Agents and as well as flask app which will respon
    # Initialize Flask application
    app = Flask(__name__)
    CORS(app)  # Enables CORS for all domains on all routes
-   
+
    # Define Agent addresses
 
    news_agent_address = "agent1q2e9kfdrxfa5dxn6zeyw47287ca36cdur9xevhmdzzfmf4cwlmahv73mpev"
@@ -242,7 +242,7 @@ In this section we will set up Agents and as well as flask app which will respon
        seed="News Agent secret phrase",
        endpoint=["http://127.0.0.1:8000/submit"],
    )
-       
+
    # Registering Agent on Almanac and funding it.
 
    fund_agent_if_low(NewsAgent.wallet.address())
@@ -361,7 +361,7 @@ In this section we will set up Agents and as well as flask app which will respon
            article_url = article.get('url', 'No url')
            url_list.append(article_url)
        return url_list
-    
+
    # On Agent startup printing address
 
    @agent.on_event('startup')
@@ -470,7 +470,7 @@ In this section we will set up Agents and as well as flask app which will respon
                           return "Error: Unable to fetch content."
           except Exception as e:
               return f"Error encountered: {str(e)}"
-       
+
       # On Agent startup printing address
       @webScraperAgent.on_event('startup')
       async def agent_details(ctx: Context):
@@ -530,7 +530,7 @@ In this section we will set up Agents and as well as flask app which will respon
           seed="Sentiment Agent secret phrase",
           endpoint=["http://127.0.0.1:8002/submit"],
       )
-      
+
       # Registering Agent on Almanac and funding it.
       fund_agent_if_low(SentimentAgent.wallet.address())
 
@@ -554,7 +554,7 @@ In this section we will set up Agents and as well as flask app which will respon
                       return f"{max_label},{max_score}"
                   else:
                       return "Error: Failed to fetch data from API"
-      
+
       # On Agent startup printing address
 
       @SentimentAgent.on_event('startup')

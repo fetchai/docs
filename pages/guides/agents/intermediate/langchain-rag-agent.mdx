@@ -138,33 +138,34 @@ We now need to define the `requests.py` file under the `messages` folder in the 
         ```py copy filename="windows"
         echo. > requests.py
         ```
-        </DocsCode>
+    </DocsCode>
 
     <DocsCode ubuntu={true}>
         ```py copy filename="ubuntu"
         touch requests.py
         ```
-        </DocsCode>
+    </DocsCode>
     </CodeGroup>
 
 The script looks like the following:
 
-<GithubCodeSegment digest="493c2b4110eff6ffd0bb367510718002">
+<GithubCodeSegment digest="6d99301cf7b5b94c82d8cc447a1891fe">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/langchain-rag-agent/requests.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/langchain-rag/src/messages/requests.py"
         lineStart={1}
-        lineEnd={12}
+        lineEnd={14}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='493c2b4110eff6ffd0bb367510718002'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6d99301cf7b5b94c82d8cc447a1891fe'>
 
 <DocsCode local={true}>
 	```py copy filename="requests.py"
 
 	from typing import Optional
 	from uagents import Model, Field
-	
+	 
+	 
 	class RagRequest(Model):
 	    question: str = Field(
 	        description="The question that the user wants to have an answer for."
@@ -174,6 +175,7 @@ The script looks like the following:
 	        description="Specifies weather all nested pages referenced from the starting URL should be read or not. The value should be yes or no.",
 	        default="no",
 	    )
+	 
 
 ```
 </DocsCode>
@@ -218,15 +220,15 @@ The Agent is defined as a [local Agent with a Mailbox ↗️](https://fetch.ai/d
 
 The script for this Agent looks as follows:
 
-<GithubCodeSegment digest="6055cc43a51cb8b2143427125213df2d">
+<GithubCodeSegment digest="6e1bac7fcd2e972c9e57b0baae58c27c">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/langchain-rag-agent/langchain_rag_agent.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/langchain-rag/src/agents/langchain_rag_agent.py"
         lineStart={1}
-        lineEnd={134}
+        lineEnd={137}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='6055cc43a51cb8b2143427125213df2d'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6e1bac7fcd2e972c9e57b0baae58c27c'>
 
 <DocsCode local={true}>
 	```py copy filename="langchain_rag_agent.py"
@@ -249,48 +251,49 @@ The script for this Agent looks as follows:
 	from ai_engine import UAgentResponse, UAgentResponseType
 	import nltk
 	from uagents.setup import fund_agent_if_low
-	
+	 
 	nltk.download("punkt")
 	nltk.download("averaged_perceptron_tagger")
-	
+	 
+	 
 	LANGCHAIN_RAG_SEED = "YOUR_LANGCHAIN_RAG_SEED"
 	AGENT_MAILBOX_KEY = "YOUR_MAILBOX_KEY"
-	
+	 
 	agent = Agent(
-	    name="langchain-rag-agent",
+	    name="langchain_rag_agent",
 	    seed=LANGCHAIN_RAG_SEED,
 	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
 	)
-	
 	fund_agent_if_low(agent.wallet.address())
-	
+	 
 	docs_bot_protocol = Protocol("DocsBot")
-	
+	 
+	 
 	PROMPT_TEMPLATE = """
 	Answer the question based only on the following context:
-	
+	 
 	{context}
-	
+	 
 	---
-	
+	 
 	Answer the question based on the above context: {question}
 	"""
-	
-	
+	 
+	 
 	def create_retriever(
-	        ctx: Context, url: str, deep_read: bool
+	    ctx: Context, url: str, deep_read: bool
 	) -> ContextualCompressionRetriever:
 	    def scrape(site: str):
 	        if not validators.url(site):
 	            ctx.logger.info(f"Url {site} is not valid")
 	            return
-	
+	 
 	        r = requests.get(site)
 	        soup = BeautifulSoup(r.text, "html.parser")
-	
+	 
 	        parsed_url = urlparse(url)
 	        base_domain = parsed_url.scheme + "://" + parsed_url.netloc
-	
+	 
 	        link_array = soup.find_all("a")
 	        for link in link_array:
 	            href: str = link.get("href", "")
@@ -298,20 +301,20 @@ The script for this Agent looks as follows:
 	                continue
 	            current_site = f"{base_domain}{href}" if href.startswith("/") else href
 	            if (
-	                    ".php" in current_site
-	                    or "#" in current_site
-	                    or not current_site.startswith(url)
-	                    or current_site in urls
+	                ".php" in current_site
+	                or "#" in current_site
+	                or not current_site.startswith(url)
+	                or current_site in urls
 	            ):
 	                continue
 	            urls.append(current_site)
 	            scrape(current_site)
-	
+	 
 	    urls = [url]
 	    if deep_read:
 	        scrape(url)
 	        ctx.logger.info(f"After deep scraping - urls to parse: {urls}")
-	
+	 
 	    try:
 	        loader = UnstructuredURLLoader(urls=urls)
 	        docs = loader.load_and_split()
@@ -323,15 +326,15 @@ The script for this Agent looks as follows:
 	    except Exception as exc:
 	        ctx.logger.error(f"Error happened: {exc}")
 	        traceback.format_exception(exc)
-	
-	
+	 
+	 
 	@docs_bot_protocol.on_message(model=RagRequest, replies={UAgentResponse})
 	async def answer_question(ctx: Context, sender: str, msg: RagRequest):
 	    ctx.logger.info(f"Received message from {sender}, session: {ctx.session}")
 	    ctx.logger.info(
 	        f"input url: {msg.url}, question: {msg.question}, is deep scraping: {msg.deep_read}"
 	    )
-	
+	 
 	    parsed_url = urlparse(msg.url)
 	    if not parsed_url.scheme or not parsed_url.netloc:
 	        ctx.logger.error("invalid input url")
@@ -345,26 +348,28 @@ The script for this Agent looks as follows:
 	        return
 	    base_domain = parsed_url.scheme + "://" + parsed_url.netloc
 	    ctx.logger.info(f"Base domain: {base_domain}")
-	
+	 
 	    retriever = create_retriever(ctx, url=msg.url, deep_read=msg.deep_read == "yes")
-	
+	 
 	    compressed_docs = retriever.get_relevant_documents(msg.question)
 	    context_text = "\n\n---\n\n".join([doc.page_content for doc in compressed_docs])
 	    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 	    prompt = prompt_template.format(context=context_text, question=msg.question)
-	
+	 
 	    model = ChatOpenAI(model="gpt-4o-mini")
 	    response = model.predict(prompt)
 	    ctx.logger.info(f"Response: {response}")
 	    await ctx.send(
 	        sender, UAgentResponse(message=response, type=UAgentResponseType.FINAL)
 	    )
-	
-	
+	 
+	 
 	agent.include(docs_bot_protocol, publish_manifest=True)
-	
+	 
+	 
 	if __name__ == "__main__":
 	    agent.run()
+	 
 
 ```
 </DocsCode>
@@ -390,7 +395,6 @@ The script for this Agent looks as follows:
     Finally, the Agent is set to include the `DocsBot` protocol. We can then run the Agent's script; it will start the Agent and allow it to receive and process incoming messages.
 
 ### LangChain User uAgent
-
 
 We are now ready to define the **LangChain User Agent** which interacts with the LangChain RAG Agent we defined above to ask a question based on documents found at specified URLs. The user Agent request the RAG Agent to retrieve and process information from the web page and then to handle the response. The Agent is defined as a [local Agent with an endpoint ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-with-an-endpoint).
 
@@ -418,15 +422,15 @@ Create a file for this Agent:
 
 The script looks as follows:
 
-<GithubCodeSegment digest="bac253facec76142dc4312fb8535af16">
+<GithubCodeSegment digest="67ca92154bcb99f3c17512c6210727a4">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/langchain-rag-agent/langchain_rag_user.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/langchain-rag/src/agents/langchain_rag_user.py"
         lineStart={1}
-        lineEnd={41}
+        lineEnd={43}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='bac253facec76142dc4312fb8535af16'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='67ca92154bcb99f3c17512c6210727a4'>
 
 <DocsCode local={true}>
 	```py copy filename="langchain_rag_user.py"
@@ -435,15 +439,16 @@ The script looks as follows:
 	from messages.requests import RagRequest
 	from ai_engine import UAgentResponse
 	from uagents.setup import fund_agent_if_low
-	
+	 
+	 
 	QUESTION = "How to install uagents using pip"
 	URL = "https://fetch.ai/docs/guides/agents/installing-uagent"
 	DEEP_READ = (
 	    "no"
 	)
-	
+	 
 	RAG_AGENT_ADDRESS = "YOUR_LANGCHAIN_RAG_AGENT_ADDRESS"
-	
+	 
 	user = Agent(
 	    name="langchain_rag_user",
 	    port=8000,
@@ -451,8 +456,8 @@ The script looks as follows:
 	)
 	fund_agent_if_low(user.wallet.address())
 	rag_user = Protocol("LangChain RAG user")
-	
-	
+	 
+	 
 	@rag_user.on_interval(60, messages=RagRequest)
 	async def ask_question(ctx: Context):
 	    ctx.logger.info(
@@ -461,22 +466,25 @@ The script looks as follows:
 	    await ctx.send(
 	        RAG_AGENT_ADDRESS, RagRequest(question=QUESTION, url=URL, deep_read=DEEP_READ)
 	    )
-	
-	
+	 
+	 
 	@rag_user.on_message(model=UAgentResponse)
 	async def handle_data(ctx: Context, sender: str, data: UAgentResponse):
 	    ctx.logger.info(f"Got response from RAG agent: {data.message}")
-	
-	
+	 
+	 
 	user.include(rag_user)
-	
+	 
 	if __name__ == "__main__":
 	    rag_user.run()
+	 
 
 ```
 </DocsCode>
 
 </CodeGroup>
+
+
 
     Here, we create the User Agent which interacts with the LangChain RAG Agent we previously defined. The User Agent periodically asks the RAG Agent a predefined question and then handles the response.
 
@@ -505,7 +513,7 @@ We are now ready to define the main script for our project. In the `src` folder 
         touch main.py
         ```
     </DocsCode>
-    
+
     <DocsCode windows={true}>
         ```py copy filename="windows"
         echo. > main.py
@@ -523,15 +531,15 @@ We can now write the code for it.
 
 It will look as follows:
 
-<GithubCodeSegment digest="b0d529c9d92b8c2a0392459e5e904c1c">
+<GithubCodeSegment digest="9018aca08a2c6ffee127165c2cff6043">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/langchain-rag-agent/main.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/langchain-rag/src/main.py"
         lineStart={1}
-        lineEnd={11}
+        lineEnd={12}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='b0d529c9d92b8c2a0392459e5e904c1c'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9018aca08a2c6ffee127165c2cff6043'>
 
 <DocsCode local={true}>
 	```py copy filename="main.py"
@@ -539,7 +547,8 @@ It will look as follows:
 	from uagents import Bureau
 	from agents.langchain_rag_agent import agent
 	from agents.langchain_rag_user import user
-	
+	 
+	 
 	if __name__ == "__main__":
 	    bureau = Bureau(endpoint="http://127.0.0.1:8000/submit", port=8000)
 	    print(f"Adding RAG agent to Bureau: {agent.address}")
@@ -552,6 +561,8 @@ It will look as follows:
 </DocsCode>
 
 </CodeGroup>
+
+
 
 Cool! All scripts are now set up! You will need to [connect the local Agent to the Agentverse using a Mailbox ↗️](/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox). The Mailbox enables your Agents to be retrievable for communication and interaction with any other registered Agent on the Almanac contract and Fetch Network. In this example, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox). The `langchain_rag_user` Agent is used as a testing agent for the RAG Agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
 

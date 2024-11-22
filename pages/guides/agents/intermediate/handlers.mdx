@@ -60,7 +60,7 @@ Make sure you have read the following resources before going on with this guide:
 
 2. Then import the necessary classes from `uagents` library, `Agent` and `Context`, and create our agent:
 
-<GithubCodeSegment digest="c8837162a1b05488e1df231312b4f109">
+<GithubCodeSegment digest="d746949fe6a18298b58d4bf0200f943d">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/interval-task.py"
         lineStart={1}
@@ -68,14 +68,14 @@ Make sure you have read the following resources before going on with this guide:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='c8837162a1b05488e1df231312b4f109'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d746949fe6a18298b58d4bf0200f943d'>
 
 <DocsCode local={true}>
 	```py copy filename="interval-task.py"
 
 	from uagents import Agent, Context
 	
-	agent = Agent(name="alice", seed="alice recovery phrase")
+	agent = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://localhost:8000/submit"])
 
 ```
 </DocsCode>
@@ -145,7 +145,7 @@ Make sure you have read the following resources before going on with this guide:
 
 The overall script should look as follows:
 
-<GithubCodeSegment digest="61e9008ed35ec747ce881dd9519a67f5">
+<GithubCodeSegment digest="b43f32226d67009f57ed92a4e59f5758">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/interval-task.py"
         lineStart={1}
@@ -153,14 +153,14 @@ The overall script should look as follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='61e9008ed35ec747ce881dd9519a67f5'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='b43f32226d67009f57ed92a4e59f5758'>
 
 <DocsCode local={true}>
 	```py copy filename="interval-task.py"
 
 	from uagents import Agent, Context
 	
-	agent = Agent(name="alice", seed="alice recovery phrase")
+	agent = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://localhost:8000/submit"])
 	
 	@agent.on_event("startup")
 	async def introduce_agent(ctx: Context):

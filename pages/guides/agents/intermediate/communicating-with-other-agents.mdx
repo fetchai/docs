@@ -91,7 +91,7 @@ The first step to better understand how Agents communicate is to introduce how 2
 
 3. Now we create two Agent instances, `sigmar` and `slaanesh`, with `name` and `seed` parameters:
 
-<GithubCodeSegment digest="373e99b179f1426e66d392df7267a8ac">
+<GithubCodeSegment digest="34be80ff0f3aaf78584324f83ee851ef">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/agent_communication.py"
         lineStart={6}
@@ -99,13 +99,13 @@ The first step to better understand how Agents communicate is to introduce how 2
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='373e99b179f1426e66d392df7267a8ac'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='34be80ff0f3aaf78584324f83ee851ef'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_communication.py"
 
-	sigmar = Agent(name="sigmar", seed="sigmar recovery phrase")
-	slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase")
+	sigmar = Agent(name="sigmar", seed="sigmar recovery phrase", port=8000, endpoint=["http://localhost:8000/submit"])
+	slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase", port=8001, endpoint=["http://localhost:8001/submit"])
 
 ```
 </DocsCode>
@@ -257,7 +257,7 @@ The first step to better understand how Agents communicate is to introduce how 2
 
 The complete script should be looking as follows:
 
-<GithubCodeSegment digest="16a65d05d24655cdf63408cbb4babc76">
+<GithubCodeSegment digest="302462329835e1de9218a3e0f75391a4">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/agent_communication.py"
         lineStart={1}
@@ -265,7 +265,7 @@ The complete script should be looking as follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='16a65d05d24655cdf63408cbb4babc76'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='302462329835e1de9218a3e0f75391a4'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_communication.py"
@@ -275,8 +275,8 @@ The complete script should be looking as follows:
 	class Message(Model):
 	    message: str
 	
-	sigmar = Agent(name="sigmar", seed="sigmar recovery phrase")
-	slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase")
+	sigmar = Agent(name="sigmar", seed="sigmar recovery phrase", port=8000, endpoint=["http://localhost:8000/submit"])
+	slaanesh = Agent(name="slaanesh", seed="slaanesh recovery phrase", port=8001, endpoint=["http://localhost:8001/submit"])
 	
 	@sigmar.on_interval(period=3.0)
 	async def send_message(ctx: Context):
@@ -382,7 +382,7 @@ Let's start by defining the script for **sigmar**.
 
 1. In `remote_agents_sigmar.py` script, we would need to import the necessary classes from the `uagents` (`Agent`, `Context`, and `Model`) and from `uagents.setup` (`fund_agent_if_low`). We then need to define the message structure for messages to be exchanged between Agents using the class `Model`, as well as the `RECIPIENT_ADDRESS` (slaanesh's address). Note that if you don't know slaanesh's address yet, you can use `print(slaanesh.address)` after defining Agent `slaanesh` to get this information. This is the address towards which `sigmar` will send messages:
 
-<GithubCodeSegment digest="28aed0446619437dc50d1a4083e92433">
+<GithubCodeSegment digest="55da3e08ce0c9f1f8e0501910cb1bebd">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_sigmar.py"
         lineStart={1}
@@ -390,18 +390,18 @@ Let's start by defining the script for **sigmar**.
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='28aed0446619437dc50d1a4083e92433'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='55da3e08ce0c9f1f8e0501910cb1bebd'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_sigmar.py"
 
 	from uagents import Agent, Context, Model
-	from uagents.setup import fund_agent_if_low
 	
 	class Message(Model):
 	    message: str
 	
 	RECIPIENT_ADDRESS = "agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum"
+	
 
 ```
 </DocsCode>
@@ -412,7 +412,7 @@ Let's start by defining the script for **sigmar**.
 
 2. Let's now create our Agent, `sigmar`, by providing `name`, `seed`, `port`, and `endpoint`. Also, make sure it has enough funds to register in the Almanac contract:
 
-<GithubCodeSegment digest="ea624d8a59e3ec2bf2b3481391cef04d">
+<GithubCodeSegment digest="598aad236207cb6c05691940d16f705d">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_sigmar.py"
         lineStart={9}
@@ -420,19 +420,19 @@ Let's start by defining the script for **sigmar**.
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='ea624d8a59e3ec2bf2b3481391cef04d'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='598aad236207cb6c05691940d16f705d'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_sigmar.py"
 
-	sigmar = Agent(
 	    name="sigmar",
 	    port=8000,
 	    seed="sigmar secret phrase",
 	    endpoint=["http://127.0.0.1:8000/submit"],
 	)
 	
-	fund_agent_if_low(sigmar.wallet.address())
+	@sigmar.on_interval(period=2.0)
+	async def send_message(ctx: Context):
 
 ```
 </DocsCode>
@@ -445,7 +445,7 @@ Let's start by defining the script for **sigmar**.
 
 3. We are ready to define `sigmar`'s behaviors. Let's start with a function for `sigmar` to send messages:
 
-<GithubCodeSegment digest="0c9dff8a3f6b9b4472313ab6744a726c">
+<GithubCodeSegment digest="5ac7498111602c060d004555a97494fb">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_sigmar.py"
         lineStart={18}
@@ -453,14 +453,14 @@ Let's start by defining the script for **sigmar**.
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='0c9dff8a3f6b9b4472313ab6744a726c'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5ac7498111602c060d004555a97494fb'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_sigmar.py"
 
-	@sigmar.on_interval(period=2.0)
-	async def send_message(ctx: Context):
-	    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there slaanesh"))
+	
+	@sigmar.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
 
 ```
 </DocsCode>
@@ -473,7 +473,7 @@ Let's start by defining the script for **sigmar**.
 
 4. We then need to define a function for `sigmar` to handle incoming messages from other Agents:
 
-<GithubCodeSegment digest="76a903ec8cea8a1a3507595dfdc69332">
+<GithubCodeSegment digest="44e7d494baa71c05ab23af6d88f14512">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_sigmar.py"
         lineStart={22}
@@ -481,14 +481,11 @@ Let's start by defining the script for **sigmar**.
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='76a903ec8cea8a1a3507595dfdc69332'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='44e7d494baa71c05ab23af6d88f14512'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_sigmar.py"
 
-	@sigmar.on_message(model=Message)
-	async def message_handler(ctx: Context, sender: str, msg: Message):
-	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 	
 	if __name__ == "__main__":
 	    sigmar.run()
@@ -508,7 +505,7 @@ Let's start by defining the script for **sigmar**.
 
 The overall script for sigmar Agent should be looking as follows:
 
-<GithubCodeSegment digest="c1d63b6bbc0184275219900ab7fabcb7">
+<GithubCodeSegment digest="a05f24fb9ca37139eb2f11b3f3feb221">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_sigmar.py"
         lineStart={1}
@@ -516,13 +513,12 @@ The overall script for sigmar Agent should be looking as follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='c1d63b6bbc0184275219900ab7fabcb7'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a05f24fb9ca37139eb2f11b3f3feb221'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_sigmar.py"
 
 	from uagents import Agent, Context, Model
-	from uagents.setup import fund_agent_if_low
 	
 	class Message(Model):
 	    message: str
@@ -535,8 +531,6 @@ The overall script for sigmar Agent should be looking as follows:
 	    seed="sigmar secret phrase",
 	    endpoint=["http://127.0.0.1:8000/submit"],
 	)
-	
-	fund_agent_if_low(sigmar.wallet.address())
 	
 	@sigmar.on_interval(period=2.0)
 	async def send_message(ctx: Context):
@@ -564,7 +558,7 @@ We can now proceed by writing the script for Agent `slaanesh`.
 
 1. In `remote_agents_slaanesh.py` script, import the necessary classes from the `uagents` and `uagents.setup`. Then, define the message structure for messages to be exchanged between the Agents using the `Model` class, as well as our second Agent, `slaanesh`, by providing `name`, `seed`, `port`, and `endpoint`. Make sure it has enough funds to register in the Almanac contract:
 
-<GithubCodeSegment digest="0dce2e83b29d1790e0cfd62d6133aeb7">
+<GithubCodeSegment digest="d5684381540b9d298210d797df335586">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_slaanesh.py"
         lineStart={1}
@@ -572,12 +566,11 @@ We can now proceed by writing the script for Agent `slaanesh`.
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='0dce2e83b29d1790e0cfd62d6133aeb7'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d5684381540b9d298210d797df335586'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_slaanesh.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Model
 	
 	class Message(Model):
@@ -590,7 +583,8 @@ We can now proceed by writing the script for Agent `slaanesh`.
 	    endpoint=["http://127.0.0.1:8001/submit"],
 	)
 	
-	fund_agent_if_low(slaanesh.wallet.address())
+	@slaanesh.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
 
 ```
 </DocsCode>
@@ -601,7 +595,7 @@ We can now proceed by writing the script for Agent `slaanesh`.
 
 2. Let's now define a function for `slaanesh` to handle incoming messages and answering back to the sender:
 
-<GithubCodeSegment digest="70a3805cc51a661eafd6ffc8724c9f7e">
+<GithubCodeSegment digest="2a68547795d2b49b70b975507e9c5441">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_slaanesh.py"
         lineStart={16}
@@ -609,14 +603,11 @@ We can now proceed by writing the script for Agent `slaanesh`.
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='70a3805cc51a661eafd6ffc8724c9f7e'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2a68547795d2b49b70b975507e9c5441'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_slaanesh.py"
 
-	@slaanesh.on_message(model=Message)
-	async def message_handler(ctx: Context, sender: str, msg: Message):
-	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 	
 	    await ctx.send(sender, Message(message="hello there sigmar"))
 	
@@ -636,7 +627,7 @@ We can now proceed by writing the script for Agent `slaanesh`.
 
 The overall script for `slaanesh` should be looking as follows:
 
-<GithubCodeSegment digest="898a3b9870d75808bdadb2595eb5bd31">
+<GithubCodeSegment digest="601939cd9be6d64bf620d618d99e5abc">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_slaanesh.py"
         lineStart={1}
@@ -644,12 +635,11 @@ The overall script for `slaanesh` should be looking as follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='898a3b9870d75808bdadb2595eb5bd31'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='601939cd9be6d64bf620d618d99e5abc'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_slaanesh.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Model
 	
 	class Message(Model):
@@ -661,8 +651,6 @@ The overall script for `slaanesh` should be looking as follows:
 	    seed="slaanesh secret phrase",
 	    endpoint=["http://127.0.0.1:8001/submit"],
 	)
-	
-	fund_agent_if_low(slaanesh.wallet.address())
 	
 	@slaanesh.on_message(model=Message)
 	async def message_handler(ctx: Context, sender: str, msg: Message):
