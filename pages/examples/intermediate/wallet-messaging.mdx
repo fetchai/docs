@@ -100,7 +100,6 @@ This section presents the entire script in one block, allowing users to easily c
     alice = Agent(name="alice", seed=ALICE_SEED, enable_wallet_messaging = True)
     bob = Agent(name="bob", seed=BOB_SEED, enable_wallet_messaging = True)
 
-
     @alice.on_wallet_message()
     async def reply(ctx: Context, msg: WalletMessage):
         ctx.logger.info(f"Got wallet message: {msg.text}")

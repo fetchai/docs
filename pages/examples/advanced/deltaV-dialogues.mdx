@@ -40,21 +40,17 @@ Each dialogue transition needs a separate message:
         """I initiate ChitChat dialogue request"""
         pass
 
-
     class AcceptChitChatDialogue(Model):
         """I accept ChitChat dialogue request"""
         pass
-
 
     class ChitChatDialogueMessage(DialogueMessage):
         """ChitChat dialogue message"""
         pass
 
-
     class ConcludeChitChatDialogue(Model):
         """I conclude ChitChat dialogue request"""
         pass
-
 
     class RejectChitChatDialogue(Model):
         """I reject ChitChat dialogue request"""
@@ -117,7 +113,6 @@ Setup the functions making API calls to get ticker symbol and stock price:
         # do something when the dialogue is initiated
         await ctx.send(sender, AcceptChitChatDialogue())
 
-
     @chitchat_dialogue.on_start_dialogue(AcceptChitChatDialogue)
     async def accepted_chitchat(
         ctx: Context,
@@ -128,7 +123,6 @@ Setup the functions making API calls to get ticker symbol and stock price:
             f"session with {sender} was accepted. This shouldn't be called as this agent is not the initiator."
         )
 
-
     @chitchat_dialogue.on_reject_session(RejectChitChatDialogue)
     async def reject_chitchat(
         ctx: Context,
@@ -137,7 +131,6 @@ Setup the functions making API calls to get ticker symbol and stock price:
     ):
         # do something when the dialogue is rejected and nothing has been sent yet
         ctx.logger.info(f"Received conclude message from: {sender}")
-
 
     @chitchat_dialogue.on_continue_dialogue(ChitChatDialogueMessage)
     async def continue_chitchat(
@@ -161,7 +154,6 @@ Setup the functions making API calls to get ticker symbol and stock price:
         except EOFError:
             await ctx.send(sender, ConcludeChitChatDialogue())
 
-
     @chitchat_dialogue.on_end_session(ConcludeChitChatDialogue)
     async def conclude_chitchat(
         ctx: Context,
@@ -171,7 +163,6 @@ Setup the functions making API calls to get ticker symbol and stock price:
         # do something when the dialogue is concluded after messages have been exchanged
         ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
         ctx.logger.info(chitchat_dialogue.get_conversation(ctx.session))
-
 
     agent.include(chitchat_dialogue, publish_manifest=True)
 

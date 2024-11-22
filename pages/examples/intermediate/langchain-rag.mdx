@@ -2,11 +2,9 @@ import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Langchain RAG Agent
 
-
 ## Introduction
 
 This example demonstrates how LangChain's RAG (Retrieval-Augmented Generation) technology integrates with Agents. It shows how to create a RAG application that can answer questions based on a document.
-
 
 ### Supporting documentation
 
@@ -19,7 +17,6 @@ This example demonstrates how LangChain's RAG (Retrieval-Augmented Generation) t
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
 - [Agentverse Functions ↗️](/guides/agents/intermediate/agent-functions)
 - [Register an Agent Function on the Agentverse ↗️](/guides/agentverse/agentverse-functions/registering-agent-services)
-
 
 ## Pre-requisites
 
@@ -43,7 +40,6 @@ To run this example, you will need two API keys: one from OpenAI and one from Co
 3. Go to the **API Keys** section.
 4. Copy an existing key or create a new one.
 
-
 ## Project Structure
 
 Outline of basic structure of the project:
@@ -61,7 +57,6 @@ langchain-rag/
     └── messages
         └── requests.py
 ```
-
 
 ## Setting Up Environment Variables
 
@@ -82,7 +77,6 @@ Here is an example of what your `.env` file might look like:
 export COHERE_API_KEY="YOUR_COHERE_API_KEY"
 export OPENAI_API_KEY="YOUR_OPENAI_API_KEY"
 ```
-
 
 ## Langchain RAG Setup
 
@@ -113,7 +107,6 @@ The `RagRequest` model represents a request for retrieving an answer to a user's
 from typing import Optional
 from uagents import Model, Field
 
-
 class RagRequest(Model):
     question: str = Field(
         description="The question that the user wants to have an answer for."
@@ -124,9 +117,7 @@ class RagRequest(Model):
         default="no",
     )
 
-
 ```
-
 
 ### Langchain RAG Agent
 
@@ -158,7 +149,6 @@ from uagents.setup import fund_agent_if_low
 nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
 
-
 LANGCHAIN_RAG_SEED = "YOUR_LANGCHAIN_RAG_SEED"
 AGENT_MAILBOX_KEY = "YOUR_MAILBOX_KEY"
 
@@ -171,7 +161,6 @@ fund_agent_if_low(agent.wallet.address())
 
 docs_bot_protocol = Protocol("DocsBot")
 
-
 PROMPT_TEMPLATE = """
 Answer the question based only on the following context:
 
@@ -181,7 +170,6 @@ Answer the question based only on the following context:
 
 Answer the question based on the above context: {question}
 """
-
 
 def create_retriever(
     ctx: Context, url: str, deep_read: bool
@@ -230,7 +218,6 @@ def create_retriever(
         ctx.logger.error(f"Error happened: {exc}")
         traceback.format_exception(exc)
 
-
 @docs_bot_protocol.on_message(model=RagRequest, replies={UAgentResponse})
 async def answer_question(ctx: Context, sender: str, msg: RagRequest):
     ctx.logger.info(f"Received message from {sender}, session: {ctx.session}")
@@ -266,9 +253,7 @@ async def answer_question(ctx: Context, sender: str, msg: RagRequest):
         sender, UAgentResponse(message=response, type=UAgentResponseType.FINAL)
     )
 
-
 agent.include(docs_bot_protocol, publish_manifest=True)
-
 
 if __name__ == "__main__":
     agent.run()
@@ -289,7 +274,6 @@ from messages.requests import RagRequest
 from ai_engine import UAgentResponse
 from uagents.setup import fund_agent_if_low
 
-
 QUESTION = "How to install uagents using pip"
 URL = "https://fetch.ai/docs/guides/agents/installing-uagent"
 DEEP_READ = (
@@ -306,7 +290,6 @@ user = Agent(
 fund_agent_if_low(user.wallet.address())
 rag_user = Protocol("LangChain RAG user")
 
-
 @rag_user.on_interval(60, messages=RagRequest)
 async def ask_question(ctx: Context):
     ctx.logger.info(
@@ -316,11 +299,9 @@ async def ask_question(ctx: Context):
         RAG_AGENT_ADDRESS, RagRequest(question=QUESTION, url=URL, deep_read=DEEP_READ)
     )
 
-
 @rag_user.on_message(model=UAgentResponse)
 async def handle_data(ctx: Context, sender: str, data: UAgentResponse):
     ctx.logger.info(f"Got response from RAG agent: {data.message}")
-
 
 user.include(rag_user)
 
@@ -356,7 +337,6 @@ RAG_AGENT_ADDRESS = "YOUR_LANGCHAIN_RAG_AGENT_ADDRESS"
 
 rag_user = Protocol("LangChain RAG user")
 
-
 @agent.on_interval(60, messages=RagRequest)
 async def ask_question(ctx: Context):
     ctx.logger.info(
@@ -366,11 +346,9 @@ async def ask_question(ctx: Context):
         RAG_AGENT_ADDRESS, RagRequest(question=QUESTION, url=URL, deep_read=DEEP_READ)
     )
 
-
 @agent.on_message(model=UAgentResponse)
 async def handle_data(ctx: Context, sender: str, data: UAgentResponse):
     ctx.logger.info(f"Got response from RAG agent: {data.message}")
-
 
 agent.include(rag_user)
 
@@ -383,7 +361,6 @@ from uagents import Bureau
 from agents.langchain_rag_agent import agent
 from agents.langchain_rag_user import user
 
-
 if __name__ == "__main__":
     bureau = Bureau(endpoint="http://127.0.0.1:8000/submit", port=8000)
     print(f"Adding RAG agent to Bureau: {agent.address}")
@@ -393,16 +370,6 @@ if __name__ == "__main__":
     bureau.run()
 ```
 
-
 ## Expected output
 ![](src/images/examples/rag_deltav_response.png)
-
-
-
-
-
-
-
-
-
 

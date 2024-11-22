@@ -99,6 +99,7 @@ This Agent helps users with their queries for a text-classification model of the
 </CodeGroup>
 
 
+
 Within the above code snippet, we defined an Agent which is able to handle specific message types and respond to them accordingly. First, the `requests` library and classes from `ai_engine` are imported to manage Agent responses. The `HF` model class is then defined, with a single attribute response that stores the response string expected from Hugging Face.
 
 A `Protocol` instance, `hf_protocol`, is created, representing the communication protocol for the Hugging Face Agent. Within this protocol, a message handler `on_hf_request` is set up to respond to messages that match the `HF` model format. This handler is triggered asynchronously on receiving a message, logging details about the sender and the prompt provided. The handler formats a response by embedding the received message content into a reply and sends it back to the sender. Finally, the `hf_protocol` protocol is included in the Agent.
@@ -175,6 +176,8 @@ This Agent helps Hugging Face system to handle hugging face request to user and 
 </DocsCode>
 
 </CodeGroup>
+
+
 
 Within this code snippet, we create a Hugging Face request Agent that can interact with DeltaV and which can be registered on the Agentverse using the Agent's address. The code first imports the necessary libraries: 
 
@@ -277,6 +280,8 @@ This Agent helps user to look for specific model with search keyword. The Agent 
 </DocsCode>
 
 </CodeGroup>
+
+
 
 In the above, we defined a Model List Agent compatible with DeltaV, which, after being run, can be registered on Agentverse  using the Agent's address. 
 

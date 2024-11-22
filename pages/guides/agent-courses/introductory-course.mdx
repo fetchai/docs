@@ -142,6 +142,8 @@ The [uAgents Framework ↗️](/concepts/agents/agents) provides the essential i
       Current version of the uAgents package is <PackageVersion packageName="uagents" packageType="pypi" />.
     </Callout>
 
+Check out the [uAgents Framework installation guide ↗️](/guides/agents/getting-started/installing-uagent) if you wish to get started immediately with Agents creation using the uAgents toolset! 
+
 ### Core concepts
 #### Addresses
 
@@ -152,7 +154,7 @@ Agents are identified by **two types of addresses**, serving as identifiers for 
     2. **Fetch Address**: this cryptographic public address is linked to the Agent and its wallet on the Fetch.ai blockchain; it enables various functionalities, including interacting with the [Fetch ledger ↗️](/concepts/fetch-network/ledger/intro), registering in the Almanac contract and performing operations, including token or asset transfers on the blockchain.
 
     <Callout type="info" emoji="ℹ️">
-      Check out the [Getting an Agent addresses ↗️](/guides/agents/getting-uagent-address) guide to learn more on this topic.
+      Check out the following [guide ↗️](/guides/agents/getting-uagent-address) to learn more on Agents' addresses.
     </Callout>
 
 #### Storage
@@ -226,15 +228,15 @@ Creating your first Agent is a straightforward process. First of all, we need to
 
 We can now code our Agent. Let's start by importing the required modules. In our case, we would need to import the `Agent` module from the uAgents library, and proceed to instantiate the Agent by providing a `name`. The following code exemplifies the creation of the simplest possible Agent:
 
-<GithubCodeSegment digest="5fa833350ab46b034749c41f60ea21e7">
+<GithubCodeSegment digest="59d410505a8d50829ab2dd32d53689a5">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/alice_agent.py"
         lineStart={1}
-        lineEnd={4}
+        lineEnd={15}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='5fa833350ab46b034749c41f60ea21e7'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='59d410505a8d50829ab2dd32d53689a5'>
 
 <DocsCode local={true}>
 	```py copy filename="alice_agent.py"
@@ -243,6 +245,17 @@ We can now code our Agent. Let's start by importing the required modules. In our
 	from uagents import Agent, Context
 	
 	agent = Agent(name="alice", seed="alice recovery phrase")
+	
+	
+	# Provide your Agent with a job
+	@agent.on_event("startup")
+	async def introduce_agent(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	
+	
+	# This constructor simply ensure that only this script is running
+	if __name__ == "__main__":
+	    agent.run()
 
 ```
 </DocsCode>
@@ -256,6 +269,8 @@ You can run this with `poetry run python alice_agent.py` but it won't do much, y
     <Callout type="info" emoji="ℹ️">
       If you're not too familiar with classes in Python, take a look [w3schools Python classes ↗️](https://www.w3schools.com/python/python_classes.asp).
     </Callout>
+
+Check out this [guide ↗️](/guides/agents/getting-started/create-a-uagent) here for a more in-depth overview of all parts of the code provided above.
 
 ### Create a second Agent and start an interaction
 
@@ -297,13 +312,7 @@ Let's update `alice_agent.py` with the code snippet below:
 
 </CodeGroup>
 
-
-
-Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the Agent knows how to act on the declared decorated functions.
-
-    <Callout type="info" emoji="ℹ️">
-      To find out more about decorators, take a look at [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/).
-    </Callout>
+Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the agent knows how to act on the declared decorated functions. For additional information on decorators, check out the following resources: [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/) and [Agent Handlers ↗️](/guides/agents/intermediate/handlers) for additional information on decorators within the uAgents Framework.
 
 In our example above, the `on_event()` decorator specifies that the Agent should run an `introduce_agent()` function when the Agent starts up. This function will then return a message presenting the Agent with its name and address by using the `Context` class, which is used to retrieve the Agent's related name and address using the `agent.name` and `agent.address` methods.
 
@@ -359,9 +368,11 @@ The output of the above would look similar to:
 
 ### Agent and interval tasks
 
-**Interval tasks** are tasks or set of instructions executed at predefined time intervals. These are useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. Setting up interval tasks for Agent is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more.
+**Interval tasks** are tasks or set of instructions executed at predefined time intervals. These are useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more. 
 
-If you want to create an interval task, you need to use an `on_interval()` decorator to set up an interval with a timer that triggers the task repetition. As an introductory example, we can consider an Agent periodically printing hello and its name on the console. In this case, we apply the decorator to a `say_hello()` function which will be repeated at the specified time interval:
+If you want to create an interval task, you need to use an `on_interval()` decorator to set up an interval with a timer that triggers the task repetition. As an introductory example, we can consider an agent periodically printing hello and its name on the console. Check out the following [resource ↗️](/guides/agents/intermediate/handlers) for a better understanding of **Agent handlers and decorators** in the uAgents Framework.
+
+In this case, we apply the decorator to a `say_hello()` function which will be repeated at the specified time interval:
 
 <GithubCodeSegment digest="8ef86b74899f070756d97a06654ed2c6">
     <CodeSegment
@@ -493,6 +504,14 @@ The output would look as follows:
     [alice] Hello, my name is alice
     [  bob] Hello, my name is bob
     ```
+
+Check out the following guides for a better understanding of all above topics:
+
+    -  [What's an Agent ↗️](/guides/agents/getting-started/whats-an-agent)
+    -  [Create your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    -  [Agent Addresses ↗️](/guides/agents/getting-started/getting-uagent-address)
+    -  [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
+    -  [Bureau ↗️](/guides/agents/intermediate/bureau)
 
 ### Agent communication
 
@@ -729,15 +748,19 @@ The output would look as follows:
     [ bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
     ```
 
-### Enabling search and discovery for your Agent (Almanac registration)
+Checkout the following documentation and resources for a better understanding of the above topics:
 
-Agents registration in the Almanac contract is a key feature which enables discoverability of Agents as well enabled remote Agent communication. To register, Agents must pay a small fee. Therefore, your Agents need to have funds available in their Fetch wallet address. Luckily in this demo we utilize the testnet environment to simulate real world transactions.
+    -  [What's an Agent ↗️](/guides/agents/getting-started/whats-an-agent)
+    -  [Create your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    -  [Agent Addresses ↗️](/guides/agents/getting-started/getting-uagent-address)
+    -  [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
+    -  [Bureau ↗️](/guides/agents/intermediate/bureau)
 
-    <Callout type="info" emoji="ℹ️">
-      When using the testnet, you can use the function `fund_agent_if_low()` to fund your Agents.
-    </Callout>
+### Registering your Agents to the Open Marketplace
 
-We first import modules, then initialize our Agents and include a function ensuring that Agents have non-zero balances in their wallets. This function will check if you have enough tokens to register in the Almanac. If not, it will add tokens to your Fetch wallet address. Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient Agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
+Agent registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is a key feature enabling Agents discoverability as well as remote Agents communication. When Agents regiterin the Almanac, they become part of the Open Marketplace and become avaiable for interactions with other users and Agents registered in the contract. To register, Agents must pay a small fee. Therefore your agents need to have funds available in their Fetch wallet address. 
+
+ Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an Agent at registration.
 
     <Callout type="info" emoji="ℹ️">
       HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. These endpoints define the entry points for various operations or functions offered by a web service or application.
@@ -806,8 +829,7 @@ We will have what follows:
 </CodeGroup>
 
 
-
-Here, we defined a local http address but you could also define a remote address to allow Agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your Agent, so you don't have to fund different addresses each time you run your agent.
+Here, we defined a local http address, but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your Agent, so you don't have to fund different addresses each time you run your agent. The `fund_agent_if_low` is used on the Testnet to make sure your Agent has enough funds in its wallet to register and operate correctly.
 
     <Callout type="info" emoji="ℹ️">
       A seed phrase is a series of random words (typically 12 or 24) that provide the data needed to recover a lost or broken crypto wallet. It is also known as a mnemonic phrase and is best understood as a security measure for self-custody of digital assets. Agents have a crypto wallet address, and having the seed phrase enables the restoration of an Agent's wallet address.
@@ -815,9 +837,11 @@ Here, we defined a local http address but you could also define a remote address
 
 To run the script use the `poetry run python almanac_registration.py` command.
 
-### Remote Agents communication
+Check out the following [guide ↗️](/guides/agents/advanced/register-in-almanac) for an in-depth overview of the Almanac registration process.
 
-Agents can also interact **remotely**. To achieve a remote communication, we simply need an Agent's address and query the rest of its information in the Almanac contract. You can create two Agents operating on separate ports and terminals within the same device; this mirrors a real-world scenario in which Agents communicate across different geographic locations.
+### Remote Agent communication
+
+Agents can also interact **remotely**. To achieve a remote communication, we simply need an Agent's address and query the rest of its information in the Almanac contract. You can create two agents operating on separate ports and terminals within the same device; this mirrors a real-world scenario in which agents communicate across different geographic locations.
 
 In this example, we provide scripts for two Agents. To establish a line of remote communication, both Agents need to be registered on the Almanac contract and need to have non-zero balances in their Fetch wallet addresses.
 
@@ -993,7 +1017,8 @@ In different terminal windows, first run `remote_bob.py` and then `remote_alice.
         ```
 
     <Callout type="info" emoji="ℹ️">
-      Checkout our [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding Agents communication both locally and remotely.
+      Checkout our [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding Agents communication both **locally** and **remotely**.
+
     </Callout>
 
 ### Agents and storage
@@ -1084,7 +1109,9 @@ We now want to show how to set up the code to create a **restaurant booking serv
 
 We can do this by defining 2 specific **protocols**: one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). We then need to define two Agents, `restaurant` and `user`, which will make use of the protocols to query and book a table.
 
-We can start by writing the code for our two protocols.
+Check out the following [resource ↗️](/guides/agents/intermediate/protocols) for a better understanding of Agents Protocols.
+
+We can start by writing the code for our two Protocols.
 
 #### Table querying protocol
 
@@ -1135,8 +1162,6 @@ Let's start by defining the protocol for querying availability of tables at the 
 </DocsCode>
 
 </CodeGroup>
-
-
 
 Here, we defined different messages data models:
 
@@ -1451,8 +1476,6 @@ The overall script should be:
 
 </CodeGroup>
 
-
-
 #### Restaurant Agent
 
 Let's now move forward and create our restaurant Agent in a separate file. In this step, we will import the essential classes from the `uagents` library and reintegrate the two protocols (`book_proto` and `query_proto`) we've previously coded:
@@ -1487,8 +1510,6 @@ Let's now move forward and create our restaurant Agent in a separate file. In th
 </DocsCode>
 
 </CodeGroup>
-
-
 
 Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly set up the Agent. Let's build the `restaurant` Agent from above protocols and set the table availability information, by also to storing the `TABLES` information in the `restaurant` Agent storage:
 
@@ -1578,8 +1599,6 @@ The overall script would be as follows:
 </DocsCode>
 
 </CodeGroup>
-
-
 
 #### User Agent
 
@@ -1842,8 +1861,8 @@ Run the `restaurant` Agent and then the `user` Agent from different terminals. T
 
 We appreciate your active participation in our introductory course on Agents! The knowledge you've acquired here forms a robust basis for your future Agents development endeavors.
 
-Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of Agents by exploring our dedicated [Agents ↗️](/concepts/agents/agents) documentation and [GitHub ↗️](https://github.com/fetchai/uAgents) repository. Also, do not forget to check out our full list of [Agents guides ↗️](/guides) diving into the development of Agents and concepts explained in this introductory course, but in a more detailed manner.
+We invite you to delve deeper into the world of Agents by exploring our dedicated [Agents ↗️](/guides/agents/getting-started/whats-an-agent) documentation, [GitHub ↗️](https://github.com/fetchai/uAgents) and [uAgents Examples ↗️](https://github.com/fetchai/uAgent-Examples) repositories. Also, do not forget to checkout our full list of [Agents guides ↗️](/guides) diving into the development of Agents and concepts explained in this introductory course, but in a more detailed manner. 
 
-Join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun!
-
-There, you can not only star the project but also access valuable resources that will enhance your Agents development journey. We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and Agent-based systems.
+Also, check out the [Agents 101 for AI Engine ↗️](/guides/agents/getting-started/whats-an-agent) to understand how to integrate the [AI Engine ↗️](/guides/agent-courses/agents-for-ai) within your Agents project.
+    
+Join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun! There, you can not only star the project but also access valuable resources that will enhance your agent development journey. We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.

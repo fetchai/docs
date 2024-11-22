@@ -4,18 +4,15 @@ import { CodeGroup, DocsCode } from "../../../components/code"
 
 ## Introduction
 
-
 This example shows how to run an Agent using the uAgents library inside a Docker container with Docker Compose. It walks you through setting up everything you need so you can easily build and run the Agent.
 
-
 ### Supporting Documents
-   
+
     - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
     - [How to create an Agent ↗️](../../guides/agents/create-a-uagent).
     - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
     - [Creating an interval task ↗️](/guides/agents/interval-task)
     - [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
-
 
 ## Pre-requisites
 
@@ -45,20 +42,17 @@ This example demonstrates a simple Agent-based communication system using the uA
 
 <CodeGroup hasCopy isLocalHostedFile>
 
-    <DocsCode local={true}>
+<DocsCode local={true}>
 
 ```py copy filename="agent.py"
 
 from uagents import Agent, Bureau, Context, Model
 
-
 class DataPacket(Model):
     message: str
 
-
 data_sender = Agent(name="data_sender", seed="data_sender recovery phrase")
 data_receiver = Agent(name="data_receiver", seed="data_receiver recovery phrase")
-
 
 @data_sender.on_interval(period=4.0)
 async def send_data_packet(ctx: Context):
@@ -75,7 +69,6 @@ async def send_data_packet(ctx: Context):
         data_receiver.address, DataPacket(message="Initiating data transfer")
     )
 
-
 @data_sender.on_message(model=DataPacket)
 async def data_sender_message_handler(ctx: Context, sender: str, msg: DataPacket):
     """
@@ -90,7 +83,6 @@ async def data_sender_message_handler(ctx: Context, sender: str, msg: DataPacket
     None: This function does not return any value but logs the received message.
     """
     ctx.logger.info(f"Data Sender received a message from {sender}: {msg.message}")
-
 
 @data_receiver.on_message(model=DataPacket)
 async def data_receiver_message_handler(ctx: Context, sender: str, msg: DataPacket):
@@ -109,7 +101,6 @@ async def data_receiver_message_handler(ctx: Context, sender: str, msg: DataPack
     await ctx.send(
         data_sender.address, DataPacket(message="Acknowledging data transfer")
     )
-
 
 bureau = Bureau()
 bureau.add(data_sender)

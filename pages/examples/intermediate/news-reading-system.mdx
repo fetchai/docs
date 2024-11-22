@@ -52,7 +52,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(news_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {news_agent.address}")
 
@@ -69,7 +69,6 @@ This file can be run on any platform supporting Python, with the necessary insta
         ctx.logger.info(f"Received news request from {sender} with prompt: {final_news}")
         #sending final response to the DeltaV GUI
         await ctx.send(sender, UAgentResponse(message = final_news, type = UAgentResponseType.FINAL))
-
 
     # Include the Generate News protocol in your Agent
     news_agent.include(news_protocol)
@@ -109,12 +108,12 @@ This file can be run on any platform supporting Python, with the necessary insta
         #sending final response to the DeltaV GUI
         await ctx.send(sender, UAgentResponse(message = final_news, type = UAgentResponseType.FINAL))
 
-
     # Include the Generate News protocol in your Agent
     agent.include(news_protocol)
     ```
     </DocsCode>
 </CodeGroup>
+
 #### News Generating Agent
 
 <CodeGroup hasCopy isLocalHostedFile>
@@ -151,13 +150,12 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(generate_news_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {generate_news_agent.address}")
 
     # Define Generate news protocol.
     generate_news_protocol = Protocol("Generate News")
-
 
     # Define a handler for the News generation protocol
     @generate_news_protocol.on_message(model=GenerateNews, replies=UAgentResponse)
@@ -218,7 +216,6 @@ This file can be run on any platform supporting Python, with the necessary insta
 
     # Define Generate news protocol.
     generate_news_protocol = Protocol("Generate News")
-
 
     # Define a handler for the News generation protocol
     @generate_news_protocol.on_message(model=GenerateNews, replies=UAgentResponse)
@@ -295,7 +292,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(generate_cat_news_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {generate_cat_news_agent.address}")
 
@@ -339,7 +336,6 @@ This file can be run on any platform supporting Python, with the necessary insta
                     type=UAgentResponseType.ERROR
                 )
             )
-
 
     # Include the Generate News protocol in your Agent.
     generate_cat_news_agent.include(generate_cat_news_protocol)
@@ -405,8 +401,8 @@ This file can be run on any platform supporting Python, with the necessary insta
                 )
             )
 
-
     # Include the Generate News protocol in your Agent.
+
     agent.include(generate_cat_news_protocol)
     ```
     </DocsCode>
@@ -444,7 +440,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     # Define the Generate News model
     class GenerateNews(Model):
         country: str
-    
+
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
     
@@ -460,7 +456,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(generate_news_reg_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {generate_news_reg_agent.address}")
 
@@ -503,7 +499,6 @@ This file can be run on any platform supporting Python, with the necessary insta
                     type=UAgentResponseType.ERROR
                 )
             )
-
 
     # Include the Generate Regional News protocol in your Agent
     generate_news_reg_agent.include(generate_news_protocol)
@@ -581,7 +576,6 @@ This file can be run on any platform supporting Python, with the necessary insta
                 )
             )
 
-
     # Include the Generate Regional News protocol in your Agent
     agent.include(generate_news_protocol)
     ```
@@ -603,7 +597,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     # Define the Generate News model
     class GenerateNews(Model):
         keyword: str
-    
+
     # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
     SEED_PHRASE = "put_your_seed_phrase_here"
     
@@ -619,7 +613,7 @@ This file can be run on any platform supporting Python, with the necessary insta
     )
 
     fund_agent_if_low(generate_news_keyw_agent.wallet.address())
-    
+
     # Copy the address shown below
     print(f"Your agent's address is: {generate_news_keyw_agent.address}")
 

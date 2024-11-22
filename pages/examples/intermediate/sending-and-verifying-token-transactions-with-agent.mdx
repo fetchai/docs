@@ -7,13 +7,12 @@ import { CodeGroup, DocsCode } from "../../../components/code"
 This example demonstrates the integration of uAgents with Web3.py to interact with Ethereum smart contracts and manage Agent systems. It highlights the process of initiating a USDC transfer, processing the transaction, and verifying the transaction status using the Agent system. The example also shows how uAgents can facilitate token transfers to smart contracts and enable seamless fund transfers.
 
 ### Supporting Documents
-   
+
     - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
     - [How to create an Agent ↗️](../../guides/agents/create-a-uagent).
     - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
     - [Creating an interval task ↗️](/guides/agents/interval-task)
     - [Communicating with other Agents ↗️](/guides/agents/communicating-with-other-agents)
-
 
 ## Pre-requisites
 
@@ -21,7 +20,6 @@ This example demonstrates the integration of uAgents with Web3.py to interact wi
 - **Poetry:** Install by following the instructions on [Poetry's official website ↗️](https://python-poetry.org/docs/#installation).
 - A running Ethereum node (or a provider like Infura) on [Infura official website ↗️](https://www.infura.io/).
 - **Contract ABI:** USDC smart contract ABI (in abi.json file) on [sepolia.etherscan.io official website ↗️](https://sepolia.etherscan.io/address/0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238#code).
-
 
 ## Project Structure
 
@@ -38,7 +36,6 @@ This example demonstrates the integration of uAgents with Web3.py to interact wi
 ## Sending and Verifying Token Transactions with Agents
 
 This example demonstrates how to build a simple Agent-based system for transferring USDC (USD Coin) using the uAgents library. The system consists of three Agents: `transaction_initiator`, `transaction_processor`, and `verification_agent`. These Agents work together to initiate, process, and verify a USDC transaction on the Ethereum blockchain.
-
 
 ### Get the Infura API Key and Endpoints
 
@@ -72,7 +69,6 @@ This example demonstrates how to build a simple Agent-based system for transferr
 - Role : Verifies the transaction status using the transaction hash.
 - Handles : Verification requests from `transaction_initiator` and stores the verification receipt.
 
-
 ### Workflow
 
 #### 1. Transaction Initiation:
@@ -103,34 +99,28 @@ sender_private_key = os.getenv("SENDER_PRIVATE_KEY")
 usdc_contract_address = os.getenv("USDC_CONTRACT_ADDRESS")
 amount = os.getenv("AMOUNT")
 
-
 class TransactionRequest(Model):
     message: str
     action: str
     transaction_hash: Optional[str] = None
-
 
 class TransactionResponse(Model):
     message: str
     balance: Optional[int] = 0
     transaction_receipt: Optional[Dict] = None
 
-
 class VerificationRequest(Model):
     transaction_hash: str
-
 
 class VerificationResponse(Model):
     status: str
     receipt: Optional[Dict] = None
-
 
 with open("abi.json") as abi_file:
     proxy_abi = json.load(abi_file)
 
 w3 = Web3(Web3.HTTPProvider(provider_url))
 proxy_contract = w3.eth.contract(address=usdc_contract_address, abi=proxy_abi)
-
 
 transaction_initiator = Agent(
     name="transaction_initiator", seed="transaction_initiator recovery phrase"
@@ -144,7 +134,6 @@ verification_agent = Agent(
     name="verification_agent", seed="verification_agent recovery phrase"
 )
 
-
 @transaction_initiator.on_event("startup")
 async def initiate_transaction(ctx: Context):
     """
@@ -156,7 +145,6 @@ async def initiate_transaction(ctx: Context):
         transaction_processor.address,
         TransactionRequest(message="Requesting transaction", action="send_usdc"),
     )
-
 
 @transaction_initiator.on_message(
     model=TransactionResponse, replies=VerificationRequest
@@ -179,7 +167,6 @@ async def transaction_initiator_response_handler(
             verification_agent.address,
             VerificationRequest(transaction_hash=transaction_hash),
         )
-
 
 @transaction_processor.on_message(model=TransactionRequest, replies=TransactionResponse)
 async def transaction_processor_request_handler(
@@ -237,7 +224,6 @@ async def transaction_processor_request_handler(
             ),
         )
 
-
 @verification_agent.on_message(model=VerificationRequest, replies=VerificationResponse)
 async def verification_request_handler(
     ctx: Context, sender: str, msg: VerificationRequest
@@ -269,7 +255,6 @@ async def verification_request_handler(
             ctx.logger.info(f"*** Transaction not found: {msg.transaction_hash} ***")
     except Exception as e:
         ctx.logger.error(f"*** Error during verification: {e} ***")
-
 
 bureau = Bureau()
 bureau.add(transaction_initiator)

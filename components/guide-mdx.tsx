@@ -185,12 +185,12 @@ const GuidesMdx = ({ content }: GuidesData) => {
         }
         if (filterState.evt === "input" && filterState.inputVal !== "") {
           return (
-            item.title
-              .toLowerCase()
-              .includes(filterState.inputVal.toLowerCase()) ||
-            item.description
-              .toLowerCase()
-              .includes(filterState.inputVal.toLowerCase())
+            item?.title
+              ?.toLowerCase()
+              ?.includes(filterState.inputVal.toLowerCase()) ||
+            item?.description
+              ?.toLowerCase()
+              ?.includes(filterState.inputVal.toLowerCase())
           );
         }
         return true;

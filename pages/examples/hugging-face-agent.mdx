@@ -38,7 +38,7 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
         # Define a model class for the Hugging Face Agent's expected message format.
         class HF(Model):
             response : str # This class has a single attribute 'response' that holds the string response from the subtask.
-        
+
         # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
         SEED_PHRASE = "put_your_seed_phrase_here"
         
@@ -54,7 +54,7 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
         )
 
         fund_agent_if_low(hf_agent.wallet.address())
-        
+
         # Copy the address shown below
         print(f"Your agent's address is: {hf_agent.address}")
 
@@ -151,7 +151,7 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
             # Make request to hugging face API with model_id and query.
             response = requests.post(API_URL, headers=headers, json=query).json()
             return response
-        
+
         # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
         SEED_PHRASE = "put_your_seed_phrase_here"
         
@@ -167,7 +167,7 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
         )
 
         fund_agent_if_low(hf_request_agent.wallet.address())
-        
+
         # Copy the address shown below
         print(f"Your agent's address is: {hf_request_agent.address}")
 
@@ -263,7 +263,7 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
         # Define a model class for the Model List Agent's expected message format.
         class Search(Model):
             search : str # This is a keyword for which user wants to search model
-        
+
         # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
         SEED_PHRASE = "put_your_seed_phrase_here"
         
@@ -279,7 +279,7 @@ This system shows how to integrate the Hugging Face API with an Agentverse Agent
         )
 
         fund_agent_if_low(model_list_agent.wallet.address())
-        
+
         # Copy the address shown below
         print(f"Your Agent's address is: {model_list_agent.address}")
 

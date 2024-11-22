@@ -28,14 +28,13 @@ To enable this on [DeltaV ↗️](/concepts/ai-engine/deltav) you will need to c
 ### The Agent
 
 <CodeGroup hasCopy isLocalHostedFile>
-    
+
 <DocsCode local={true}>
 ```python copy filename="agent.py"
 import random
 from uagents import Agent, Context, Model, Field, Protocol
 from uagents.setup import fund_agent_if_low
 from ai_engine import UAgentResponse, UAgentResponseType
-
 
 class CoinToss(Model):
     choice: str = Field(description="The choice. Must be heads or tails.")
@@ -46,7 +45,7 @@ SEED_PHRASE = "put_your_seed_phrase_here"
 # Now go to https://agentverse.ai, register your Agent in the Mailroom by providing the address you just copied.
 # Then, copy the Agent's mailbox key and insert it here below inline
 AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
- 
+
 # Now your agent is ready to join the agentverse!
 coin_toss_agent = Agent(
     name="coin_toss_agent",
@@ -55,12 +54,11 @@ coin_toss_agent = Agent(
 )
 
 fund_agent_if_low(coin_toss_agent.wallet.address())
- 
+
 # Copy the address shown below
 print(f"Your agent's address is: {coin_toss_agent.address}")
 
 coin_toss_protocol = Protocol("CoinToss")
-
 
 @coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
 async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
@@ -92,12 +90,10 @@ import random
 from uagents import Field
 from ai_engine import UAgentResponse, UAgentResponseType
 
-
 class CoinToss(Model):
     choice: str = Field(description="The choice. Must be heads or tails.")
 
 coin_toss_protocol = Protocol("CoinToss")
-
 
 @coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
 async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
