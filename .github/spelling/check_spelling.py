@@ -53,11 +53,11 @@ def extract_text_from_mdx(file_path):
 
     def traverse(node):
         nonlocal in_code_block
-        if node.type == 'fence':
+        if node.type == 'fence':  # For fenced code blocks (```code```)
             if not in_code_block:
                 code_blocks.append(node.content)  # Capture code block content
             in_code_block = not in_code_block
-        elif node.type == 'code_inline' and not in_code_block:
+        elif node.type == 'code_inline' and not in_code_block:  # Skip inline code
             return
         elif node.type == 'text' and not in_code_block:
             text.append(node.content)
