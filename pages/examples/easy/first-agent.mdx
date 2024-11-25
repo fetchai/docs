@@ -1,0 +1,62 @@
+import { CodeGroup, DocsCode } from "../../../components/code"
+
+# Create your first Agent
+
+## Introduction
+
+Welcome to your journey into the world of AI Agents! This example will equip you with the tools to create your very first intelligent agent using the uAgents Python library.
+
+**Ready to get started?**
+
+The code provided in this example can be run on any platform which supports Python with the necessary install permissions. As you progress throughout the examples, you'll get to understand topics in an increasingly difficult way.
+
+Let's get started and explore the basic concepts you need to develop your first Agent!
+
+## Guide
+
+- [Agents - uAgents Framework ↗️](/guides/agents/getting-started/whats-an-agent)
+- [Installing the uAgents Framework ↗️](/guides/agents/getting-started/installing-uagent)
+- [Creating your first agent ↗️](/guides/agents/create-a-uagent)
+- [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+
+## The agent
+
+<CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
+        ```py copy filename="agent.py"
+        # Import necessary classes from the uAgents library
+        from uagents import Agent, Context
+
+        # Create an agent named alice
+        agent = Agent(name="alice")
+
+        # Function to be called when the agent is started
+        @agent.on_event("startup")
+        async def introduce_agent(ctx: Context):
+            # Print a greeting message with the agent's name and its address
+            print(f"Hello, I'm agent {ctx.name} and my address is {agent.address}.")
+
+        # Run the agent only when the script is executed directly
+        if __name__ == "__main__":
+            agent.run()
+        ```
+        </DocsCode>
+
+        <DocsCode local={false}>
+        ```py copy filename="agent.py"
+        # Import necessary classes from the uAgents library
+        from uagents import Agent, Context
+        # Function to be called when the agent is started
+        @agent.on_event("startup")
+        async def introduce_agent(ctx: Context):
+            # Print a greeting message with the agent's name and its address
+            print(f"Hello, I'm agent {ctx.name} and my address is {agent.address}.")
+        ```
+        </DocsCode>
+</CodeGroup>
+
+## Expected Output
+
+```
+Hello, I'm agent alice and my address is agent1qtx288pfqm9e5qausyzdy6zmmn65ytwygqdq2h7d4g0q80ft04rygg96jtt.
+```

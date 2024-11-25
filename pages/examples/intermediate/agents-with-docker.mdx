@@ -1,20 +1,18 @@
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # Running an Agent with Docker
 
 ## Introduction
 
-
 This example shows how to run an agent using the uAgents library inside a Docker container with Docker Compose. It walks you through setting up everything you need so you can easily build and run the agent.
 
-
 ### Supporting Documents
-   
+
     - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
     - [How to create an agent ↗️](../../guides/agents/create-a-uagent).
     - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
     - [Creating an interval task ↗️](/guides/agents/interval-task)
     - [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
-
 
 ## Pre-requisites
 
@@ -42,19 +40,19 @@ This example shows how to run an agent using the uAgents library inside a Docker
 
 This example demonstrates a simple agent-based communication system using the uAgents library. The `data_sender` agent sends a `DataPacket` message to the `data_receiver` agent every 4 seconds. Upon receiving the message, `data_receiver` logs it and sends an acknowledgment back to data_sender. Both agents log the messages they receive. The agents are running with Docker Compose using Docker.
 
+<CodeGroup hasCopy isLocalHostedFile>
+
+    <DocsCode local={true}>
 
 ```py copy filename="agent.py"
 
 from uagents import Agent, Bureau, Context, Model
 
-
 class DataPacket(Model):
     message: str
 
-
 data_sender = Agent(name="data_sender", seed="data_sender recovery phrase")
 data_receiver = Agent(name="data_receiver", seed="data_receiver recovery phrase")
-
 
 @data_sender.on_interval(period=4.0)
 async def send_data_packet(ctx: Context):
@@ -71,7 +69,6 @@ async def send_data_packet(ctx: Context):
         data_receiver.address, DataPacket(message="Initiating data transfer")
     )
 
-
 @data_sender.on_message(model=DataPacket)
 async def data_sender_message_handler(ctx: Context, sender: str, msg: DataPacket):
     """
@@ -86,7 +83,6 @@ async def data_sender_message_handler(ctx: Context, sender: str, msg: DataPacket
     None: This function does not return any value but logs the received message.
     """
     ctx.logger.info(f"Data Sender received a message from {sender}: {msg.message}")
-
 
 @data_receiver.on_message(model=DataPacket)
 async def data_receiver_message_handler(ctx: Context, sender: str, msg: DataPacket):
@@ -106,7 +102,6 @@ async def data_receiver_message_handler(ctx: Context, sender: str, msg: DataPack
         data_sender.address, DataPacket(message="Acknowledging data transfer")
     )
 
-
 bureau = Bureau()
 bureau.add(data_sender)
 bureau.add(data_receiver)
@@ -114,6 +109,8 @@ bureau.add(data_receiver)
 if __name__ == "__main__":
     bureau.run()
 ```
+</DocsCode>
+</CodeGroup>
 
 ### `Dockerfile`
 

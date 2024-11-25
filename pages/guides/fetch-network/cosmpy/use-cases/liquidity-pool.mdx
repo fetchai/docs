@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../../components/code";
 
 # Liquidity pool
 
@@ -10,61 +10,101 @@ This Liquidity pool interaction guide provides a practical demonstration of inte
 
 1. Let's start by creating a Python script for this and name it:
 
-    <CodeGroup isOSFile>
+   <CodeGroup hasCopy isOSFile>
+   <DocsCode mac={true}>
+      ```py copy filename="mac"
+      touch aerial_liquidity_pool.py
+      ```
+   </DocsCode>
 
-        ```py copy filename="mac"
-        touch aerial_liquidity_pool.py
-        ```
+   <DocsCode windows={true}>
+       ```py copy filename="windows"
+       echo. > aerial_liquidity_pool.py
+       ```
+       </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > aerial_liquidity_pool.py
-        ```
+   <DocsCode ubuntu={true}>
+       ```py copy filename="ubuntu"
+       touch aerial_liquidity_pool.py
+       ```
+       </DocsCode>
+   </CodeGroup>
 
-        ```py copy filename="ubuntu"
-        touch aerial_liquidity_pool.py
-        ```
-
-    </CodeGroup>
-   
 2. Let's then import the needed modules:
 
-    ```py copy
-    import argparse
-    import base64
-    from cosmpy.aerial.client import LedgerClient, NetworkConfig
-    from cosmpy.aerial.contract import LedgerContract
-    from cosmpy.aerial.faucet import FaucetApi
-    from cosmpy.aerial.wallet import LocalWallet
-    ```
+<GithubCodeSegment digest="a7dcc92511013740eeea38c6796456f7">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/liquidity-pool/aerial_liquidity_pool.py"
+        lineStart={1}
+        lineEnd={6}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a7dcc92511013740eeea38c6796456f7'>
+
+<DocsCode local={true}>
+	```py copy filename="aerial_liquidity_pool.py"
+
+	import argparse
+	import base64
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig
+	from cosmpy.aerial.contract import LedgerContract
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.wallet import LocalWallet
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 3. We need to define a `_parse_commandline()` function:
 
-    ```py copy
-    def _parse_commandline():
-        parser = argparse.ArgumentParser()
-        parser.add_argument(
-            "swap_amount",
-            type=int,
-            nargs="?",
-            default=10000,
-            help="atestfet swap amount to get some cw20 tokens on wallet's address",
-        )
-        parser.add_argument(
-            "cw20_liquidity_amount",
-            type=int,
-            nargs="?",
-            default=100,
-            help="amount of cw20 tokens that will be provided to LP",
-        )
-        parser.add_argument(
-            "native_liquidity_amount",
-            type=int,
-            nargs="?",
-            default=2470,
-            help="amount of atestfet tokens that will be provided to LP",
-        )
-        return parser.parse_args()
-    ```
+<GithubCodeSegment digest="9cb95eb54c5768efa3c5a181a8fc1ea8">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/liquidity-pool/aerial_liquidity_pool.py"
+        lineStart={9}
+        lineEnd={32}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9cb95eb54c5768efa3c5a181a8fc1ea8'>
+
+<DocsCode local={true}>
+	```py copy filename="aerial_liquidity_pool.py"
+
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument(
+	        "swap_amount",
+	        type=int,
+	        nargs="?",
+	        default=10000,
+	        help="atestfet swap amount to get some cw20 tokens on wallet's address",
+	    )
+	    parser.add_argument(
+	        "cw20_liquidity_amount",
+	        type=int,
+	        nargs="?",
+	        default=100,
+	        help="amount of cw20 tokens that will be provided to LP",
+	    )
+	    parser.add_argument(
+	        "native_liquidity_amount",
+	        type=int,
+	        nargs="?",
+	        default=2470,
+	        help="amount of atestfet tokens that will be provided to LP",
+	    )
+	    return parser.parse_args()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
 
     The function expects and processes three command-line arguments:
 
@@ -76,156 +116,210 @@ This Liquidity pool interaction guide provides a practical demonstration of inte
 
 4. We are now ready to define our `main()` function, which orchestrates the interaction with a liquidity pool using the provided command-line arguments. We define it in multiple parts, as follows:
 
-    ```py copy
-    def main():
-        """Run main."""
-        args = _parse_commandline()
+<GithubCodeSegment digest="49cd29a4af8417e7e6f9c576e18cb90c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/liquidity-pool/aerial_liquidity_pool.py"
+        lineStart={35}
+        lineEnd={71}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='49cd29a4af8417e7e6f9c576e18cb90c'>
 
-        # Define any wallet
-        wallet = LocalWallet.generate()
+<DocsCode local={true}>
+	```py copy filename="aerial_liquidity_pool.py"
 
-        # Network configuration
-        ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
+	def main():
+	    """Run main."""
+	    args = _parse_commandline()
+	
+	    # Define any wallet
+	    wallet = LocalWallet.generate()
+	
+	    # Network configuration
+	    ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
+	
+	    # Add tokens to wallet
+	    faucet_api = FaucetApi(NetworkConfig.latest_stable_testnet())
+	    faucet_api.get_wealth(wallet.address())
+	
+	    # Define cw20, pair and liquidity token contracts
+	    token_contract_address = (
+	        "fetch1qr8ysysnfxmqzu7cu7cq7dsq5g2r0kvkg5e2wl2fnlkqss60hcjsxtljxl"
+	    )
+	    pair_contract_address = (
+	        "fetch1vgnx2d46uvyxrg9pc5mktkcvkp4uflyp3j86v68pq4jxdc8j4y0s6ulf2a"
+	    )
+	    liq_token_contract_address = (
+	        "fetch1alzhf9yhghud3qhucdjs895f3aek2egfq44qm0mfvahkv4jukx4qd0ltxx"
+	    )
+	
+	    token_contract = LedgerContract(
+	        path=None, client=ledger, address=token_contract_address
+	    )
+	    pair_contract = LedgerContract(
+	        path=None, client=ledger, address=pair_contract_address
+	    )
+	    liq_token_contract = LedgerContract(
+	        path=None, client=ledger, address=liq_token_contract_address
+	    )
+	
+	    print("Pool (initial state): ")
+	    print(pair_contract.query({"pool": {}}), "\n")
 
-        # Add tokens to wallet
-        faucet_api = FaucetApi(NetworkConfig.latest_stable_testnet())
-        faucet_api.get_wealth(wallet.address())
+```
+</DocsCode>
 
-        # Define cw20, pair and liquidity token contracts
-        token_contract_address = (
-            "fetch1qr8ysysnfxmqzu7cu7cq7dsq5g2r0kvkg5e2wl2fnlkqss60hcjsxtljxl"
-        )
-        pair_contract_address = (
-            "fetch1vgnx2d46uvyxrg9pc5mktkcvkp4uflyp3j86v68pq4jxdc8j4y0s6ulf2a"
-        )
-        liq_token_contract_address = (
-            "fetch1alzhf9yhghud3qhucdjs895f3aek2egfq44qm0mfvahkv4jukx4qd0ltxx"
-        )
+</CodeGroup>
 
-        token_contract = LedgerContract(
-            path=None, client=ledger, address=token_contract_address
-        )
-        pair_contract = LedgerContract(
-            path=None, client=ledger, address=pair_contract_address
-        )
-        liq_token_contract = LedgerContract(
-            path=None, client=ledger, address=liq_token_contract_address
-        )
 
-        print("Pool (initial state): ")
-        print(pair_contract.query({"pool": {}}), "\n")
-    ```
 
     It starts by calling `_parse_commandline()` to retrieve the command-line arguments. These arguments control various aspects of the liquidity pool interaction, like swap amounts and liquidity provision. We then create new wallet called `wallet`. This wallet will be used for conducting transactions. We proceed and set the network configuration to the latest stable testnet. Through the `faucet_api` we add tokens to the wallet. This simulates the process of acquiring tokens from an external source. We go on and define the contract addresses. In the part, addresses of three different contracts (CW20 token, pair, and liquidity token contracts) are defined. These contracts are essential for interacting with the liquidity pool. Finally we print the initial pool state. This provides an initial snapshot of the liquidity pool before any actions are taken.
 
-    ```py copy
-        # Swap atestfet for CW20 tokens
-        swap_amount = str(args.swap_amount)
-        native_denom = "atestfet"
+<GithubCodeSegment digest="57d38f36555826461e56174e44d4e50d">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/liquidity-pool/aerial_liquidity_pool.py"
+        lineStart={73}
+        lineEnd={112}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='57d38f36555826461e56174e44d4e50d'>
 
-        tx = pair_contract.execute(
-            {
-                "swap": {
-                    "offer_asset": {
-                        "info": {"native_token": {"denom": native_denom}},
-                        "amount": swap_amount,
-                    }
-                }
-            },
-            sender=wallet,
-            funds=swap_amount + native_denom,
-        )
+<DocsCode local={true}>
+	```py copy filename="aerial_liquidity_pool.py"
 
-        print(f"Swapping {swap_amount + native_denom} for CW20 Tokens...")
-        tx.wait_to_complete()
+	    # Swap atestfet for CW20 tokens
+	    swap_amount = str(args.swap_amount)
+	    native_denom = "atestfet"
+	
+	    tx = pair_contract.execute(
+	        {
+	            "swap": {
+	                "offer_asset": {
+	                    "info": {"native_token": {"denom": native_denom}},
+	                    "amount": swap_amount,
+	                }
+	            }
+	        },
+	        sender=wallet,
+	        funds=swap_amount + native_denom,
+	    )
+	
+	    print(f"Swapping {swap_amount + native_denom} for CW20 Tokens...")
+	    tx.wait_to_complete()
+	
+	    print("Pool (after swap): ")
+	    print(pair_contract.query({"pool": {}}), "\n")
+	
+	    # To provide cw20 token to LP, increase your allowance first
+	    cw20_liquidity_amount = str(args.cw20_liquidity_amount)
+	    native_liquidity_amount = str(args.native_liquidity_amount)
+	
+	    tx = token_contract.execute(
+	        {
+	            "increase_allowance": {
+	                "spender": pair_contract_address,
+	                "amount": cw20_liquidity_amount,
+	                "expires": {"never": {}},
+	            }
+	        },
+	        wallet,
+	    )
+	
+	    print("Increasing Allowance...")
+	    tx.wait_to_complete()
 
-        print("Pool (after swap): ")
-        print(pair_contract.query({"pool": {}}), "\n")
+```
+</DocsCode>
 
-        # To provide cw20 token to LP, increase your allowance first
-        cw20_liquidity_amount = str(args.cw20_liquidity_amount)
-        native_liquidity_amount = str(args.native_liquidity_amount)
+</CodeGroup>
 
-        tx = token_contract.execute(
-            {
-                "increase_allowance": {
-                    "spender": pair_contract_address,
-                    "amount": cw20_liquidity_amount,
-                    "expires": {"never": {}},
-                }
-            },
-            wallet,
-        )
 
-        print("Increasing Allowance...")
-        tx.wait_to_complete()
-
-    ```
 
     In this part of the main() function, the script swaps a specified amount of atestfet tokens for CW20 tokens using the `pair_contract`. This is done by constructing a transaction with the `"swap"` operation. `swap_amount` is the amount of atestfet tokens to swap, retrieved from the command-line arguments. `native_denom` is set to `"atestfet"` which is the native token denomination. The transaction is executed with the `execute()` method, specifying the `"swap"` operation. The `sender` parameter is set to the user's `wallet`, and the `funds` parameter is set to the amount being swapped in addition to the native denomination. The script then waits for the transaction to complete, and after this, a message is printed to indicate the swap operation has occurred. Within the function, we then provide CW20 tokens to the liquidity pool. The script first increases the allowance for the pair contract to spend CW20 tokens from the user's wallet. The `cw20_liquidity_amount` is the amount of CW20 tokens to provide to the LP, retrieved from the command-line arguments. The `native_liquidity_amount` is the amount of atestfet tokens to provide to the LP, also retrieved from the command-line arguments. A transaction is created with the `"increase_allowance"` operation using the `execute()` method. The transaction specifies the `spender` (`pair_contract_address`), the `amount `to allow spending (`cw20_liquidity_amount`), and an `expires` parameter set to `never`. The script waits for the transaction to complete, and after this, a message is printed to indicate that the allowance has been increased.
 
-    ```py copy
-        # Provide Liquidity
-        # Liquidity should be added so that the slippage tolerance parameter isn't exceeded
+<GithubCodeSegment digest="1b39c76b00120184d06a4a7f3c147eda">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/liquidity-pool/aerial_liquidity_pool.py"
+        lineStart={114}
+        lineEnd={174}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='1b39c76b00120184d06a4a7f3c147eda'>
 
-        tx = pair_contract.execute(
-            {
-                "provide_liquidity": {
-                    "assets": [
-                        {
-                            "info": {"token": {"contract_addr": token_contract_address}},
-                            "amount": cw20_liquidity_amount,
-                        },
-                        {
-                            "info": {"native_token": {"denom": native_denom}},
-                            "amount": native_liquidity_amount,
-                        },
-                    ],
-                    "slippage_tolerance": "0.1",
-                }
-            },
-            sender=wallet,
-            funds=native_liquidity_amount + native_denom,
-        )
+<DocsCode local={true}>
+	```py copy filename="aerial_liquidity_pool.py"
 
-        print(
-            f"Providing {native_liquidity_amount + native_denom} and {cw20_liquidity_amount} CW20 tokens to Liquidity Pool..."
-        )
-        tx.wait_to_complete()
+	    # Provide Liquidity
+	    # Liquidity should be added so that the slippage tolerance parameter isn't exceeded
+	
+	    tx = pair_contract.execute(
+	        {
+	            "provide_liquidity": {
+	                "assets": [
+	                    {
+	                        "info": {"token": {"contract_addr": token_contract_address}},
+	                        "amount": cw20_liquidity_amount,
+	                    },
+	                    {
+	                        "info": {"native_token": {"denom": native_denom}},
+	                        "amount": native_liquidity_amount,
+	                    },
+	                ],
+	                "slippage_tolerance": "0.1",
+	            }
+	        },
+	        sender=wallet,
+	        funds=native_liquidity_amount + native_denom,
+	    )
+	
+	    print(
+	        f"Providing {native_liquidity_amount + native_denom} and {cw20_liquidity_amount}CW20 tokens to Liquidity Pool..."
+	    )
+	    tx.wait_to_complete()
+	
+	    print("Pool (after providing liquidity): ")
+	    print(pair_contract.query({"pool": {}}), "\n")
+	
+	    # Withdraw Liquidity
+	    LP_token_balance = liq_token_contract.query(
+	        {"balance": {"address": str(wallet.address())}}
+	    )["balance"]
+	
+	    withdraw_msg = '{"withdraw_liquidity": {}}'
+	    withdraw_msg_bytes = withdraw_msg.encode("ascii")
+	    withdraw_msg_base64 = base64.b64encode(withdraw_msg_bytes)
+	    msg = str(withdraw_msg_base64)[2:-1]
+	
+	    tx = liq_token_contract.execute(
+	        {
+	            "send": {
+	                "contract": pair_contract_address,
+	                "amount": LP_token_balance,
+	                "msg": msg,
+	            }
+	        },
+	        sender=wallet,
+	    )
+	
+	    print(f"Withdrawing {LP_token_balance} from pool's total share...")
+	    tx.wait_to_complete()
+	
+	    print("Pool (after withdrawing liquidity): ")
+	    print(pair_contract.query({"pool": {}}), "\n")
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-        print("Pool (after providing liquidity): ")
-        print(pair_contract.query({"pool": {}}), "\n")
+```
+</DocsCode>
 
-        # Withdraw Liquidity
-        LP_token_balance = liq_token_contract.query(
-            {"balance": {"address": str(wallet.address())}}
-        )["balance"]
+</CodeGroup>
 
-        withdraw_msg = '{"withdraw_liquidity": {}}'
-        withdraw_msg_bytes = withdraw_msg.encode("ascii")
-        withdraw_msg_base64 = base64.b64encode(withdraw_msg_bytes)
-        msg = str(withdraw_msg_base64)[2:-1]
 
-        tx = liq_token_contract.execute(
-            {
-                "send": {
-                    "contract": pair_contract_address,
-                    "amount": LP_token_balance,
-                    "msg": msg,
-                }
-            },
-            sender=wallet,
-        )
-
-        print(f"Withdrawing {LP_token_balance} from pool's total share...")
-        tx.wait_to_complete()
-
-        print("Pool (after withdrawing liquidity): ")
-        print(pair_contract.query({"pool": {}}), "\n")
-
-    if __name__ == "__main__":
-        main()
-    ```
 
     Within the `main()` script we would need to provide liquidity to the pool, ensuring that the slippage tolerance parameter isn't exceeded. Liquidity is added by creating a transaction with the `"provide_liquidity"` operation. The assets being provided include CW20 tokens and atestfet tokens. These are specified in a list within the `"assets"` field of the operation. The script also sets a slippage tolerance of `0.1`, meaning that the price impact of the liquidity provision must be within 10% of the expected value. The transaction is executed with `execute()` method, specifying the `"provide_liquidity"` operation. The `sender` parameter is set to the user's wallet, and the `funds` parameter includes the amount of atestfet tokens being provided. A message is printed indicating the amount of CW20 and atestfet tokens being provided to the liquidity pool.
 
@@ -237,176 +331,198 @@ This Liquidity pool interaction guide provides a practical demonstration of inte
 
 The overall script should be as follows:
 
-```py copy filename="aerial_liquidity_pool.py"
-import argparse
-import base64
-from cosmpy.aerial.client import LedgerClient, NetworkConfig
-from cosmpy.aerial.contract import LedgerContract
-from cosmpy.aerial.faucet import FaucetApi
-from cosmpy.aerial.wallet import LocalWallet
+<GithubCodeSegment digest="eb3f95c530ed93d0621ecec9e999c892">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/fetch-network/cosmpy/use-cases/liquidity-pool/aerial_liquidity_pool.py"
+        lineStart={1}
+        lineEnd={174}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='eb3f95c530ed93d0621ecec9e999c892'>
 
-def _parse_commandline():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "swap_amount",
-        type=int,
-        nargs="?",
-        default=10000,
-        help="atestfet swap amount to get some cw20 tokens on wallet's address",
-    )
-    parser.add_argument(
-        "cw20_liquidity_amount",
-        type=int,
-        nargs="?",
-        default=100,
-        help="amount of cw20 tokens that will be provided to LP",
-    )
-    parser.add_argument(
-        "native_liquidity_amount",
-        type=int,
-        nargs="?",
-        default=2470,
-        help="amount of atestfet tokens that will be provided to LP",
-    )
-    return parser.parse_args()
+<DocsCode local={true}>
+	```py copy filename="aerial_liquidity_pool.py"
 
-def main():
-    """Run main."""
-    args = _parse_commandline()
+	import argparse
+	import base64
+	from cosmpy.aerial.client import LedgerClient, NetworkConfig
+	from cosmpy.aerial.contract import LedgerContract
+	from cosmpy.aerial.faucet import FaucetApi
+	from cosmpy.aerial.wallet import LocalWallet
+	
+	
+	def _parse_commandline():
+	    parser = argparse.ArgumentParser()
+	    parser.add_argument(
+	        "swap_amount",
+	        type=int,
+	        nargs="?",
+	        default=10000,
+	        help="atestfet swap amount to get some cw20 tokens on wallet's address",
+	    )
+	    parser.add_argument(
+	        "cw20_liquidity_amount",
+	        type=int,
+	        nargs="?",
+	        default=100,
+	        help="amount of cw20 tokens that will be provided to LP",
+	    )
+	    parser.add_argument(
+	        "native_liquidity_amount",
+	        type=int,
+	        nargs="?",
+	        default=2470,
+	        help="amount of atestfet tokens that will be provided to LP",
+	    )
+	    return parser.parse_args()
+	
+	
+	def main():
+	    """Run main."""
+	    args = _parse_commandline()
+	
+	    # Define any wallet
+	    wallet = LocalWallet.generate()
+	
+	    # Network configuration
+	    ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
+	
+	    # Add tokens to wallet
+	    faucet_api = FaucetApi(NetworkConfig.latest_stable_testnet())
+	    faucet_api.get_wealth(wallet.address())
+	
+	    # Define cw20, pair and liquidity token contracts
+	    token_contract_address = (
+	        "fetch1qr8ysysnfxmqzu7cu7cq7dsq5g2r0kvkg5e2wl2fnlkqss60hcjsxtljxl"
+	    )
+	    pair_contract_address = (
+	        "fetch1vgnx2d46uvyxrg9pc5mktkcvkp4uflyp3j86v68pq4jxdc8j4y0s6ulf2a"
+	    )
+	    liq_token_contract_address = (
+	        "fetch1alzhf9yhghud3qhucdjs895f3aek2egfq44qm0mfvahkv4jukx4qd0ltxx"
+	    )
+	
+	    token_contract = LedgerContract(
+	        path=None, client=ledger, address=token_contract_address
+	    )
+	    pair_contract = LedgerContract(
+	        path=None, client=ledger, address=pair_contract_address
+	    )
+	    liq_token_contract = LedgerContract(
+	        path=None, client=ledger, address=liq_token_contract_address
+	    )
+	
+	    print("Pool (initial state): ")
+	    print(pair_contract.query({"pool": {}}), "\n")
+	
+	    # Swap atestfet for CW20 tokens
+	    swap_amount = str(args.swap_amount)
+	    native_denom = "atestfet"
+	
+	    tx = pair_contract.execute(
+	        {
+	            "swap": {
+	                "offer_asset": {
+	                    "info": {"native_token": {"denom": native_denom}},
+	                    "amount": swap_amount,
+	                }
+	            }
+	        },
+	        sender=wallet,
+	        funds=swap_amount + native_denom,
+	    )
+	
+	    print(f"Swapping {swap_amount + native_denom} for CW20 Tokens...")
+	    tx.wait_to_complete()
+	
+	    print("Pool (after swap): ")
+	    print(pair_contract.query({"pool": {}}), "\n")
+	
+	    # To provide cw20 token to LP, increase your allowance first
+	    cw20_liquidity_amount = str(args.cw20_liquidity_amount)
+	    native_liquidity_amount = str(args.native_liquidity_amount)
+	
+	    tx = token_contract.execute(
+	        {
+	            "increase_allowance": {
+	                "spender": pair_contract_address,
+	                "amount": cw20_liquidity_amount,
+	                "expires": {"never": {}},
+	            }
+	        },
+	        wallet,
+	    )
+	
+	    print("Increasing Allowance...")
+	    tx.wait_to_complete()
+	
+	    # Provide Liquidity
+	    # Liquidity should be added so that the slippage tolerance parameter isn't exceeded
+	
+	    tx = pair_contract.execute(
+	        {
+	            "provide_liquidity": {
+	                "assets": [
+	                    {
+	                        "info": {"token": {"contract_addr": token_contract_address}},
+	                        "amount": cw20_liquidity_amount,
+	                    },
+	                    {
+	                        "info": {"native_token": {"denom": native_denom}},
+	                        "amount": native_liquidity_amount,
+	                    },
+	                ],
+	                "slippage_tolerance": "0.1",
+	            }
+	        },
+	        sender=wallet,
+	        funds=native_liquidity_amount + native_denom,
+	    )
+	
+	    print(
+	        f"Providing {native_liquidity_amount + native_denom} and {cw20_liquidity_amount}CW20 tokens to Liquidity Pool..."
+	    )
+	    tx.wait_to_complete()
+	
+	    print("Pool (after providing liquidity): ")
+	    print(pair_contract.query({"pool": {}}), "\n")
+	
+	    # Withdraw Liquidity
+	    LP_token_balance = liq_token_contract.query(
+	        {"balance": {"address": str(wallet.address())}}
+	    )["balance"]
+	
+	    withdraw_msg = '{"withdraw_liquidity": {}}'
+	    withdraw_msg_bytes = withdraw_msg.encode("ascii")
+	    withdraw_msg_base64 = base64.b64encode(withdraw_msg_bytes)
+	    msg = str(withdraw_msg_base64)[2:-1]
+	
+	    tx = liq_token_contract.execute(
+	        {
+	            "send": {
+	                "contract": pair_contract_address,
+	                "amount": LP_token_balance,
+	                "msg": msg,
+	            }
+	        },
+	        sender=wallet,
+	    )
+	
+	    print(f"Withdrawing {LP_token_balance} from pool's total share...")
+	    tx.wait_to_complete()
+	
+	    print("Pool (after withdrawing liquidity): ")
+	    print(pair_contract.query({"pool": {}}), "\n")
+	
+	
+	if __name__ == "__main__":
+	    main()
 
-    # Define any wallet
-    wallet = LocalWallet.generate()
-
-    # Network configuration
-    ledger = LedgerClient(NetworkConfig.latest_stable_testnet())
-
-    # Add tokens to wallet
-    faucet_api = FaucetApi(NetworkConfig.latest_stable_testnet())
-    faucet_api.get_wealth(wallet.address())
-
-    # Define cw20, pair and liquidity token contracts
-    token_contract_address = (
-        "fetch1qr8ysysnfxmqzu7cu7cq7dsq5g2r0kvkg5e2wl2fnlkqss60hcjsxtljxl"
-    )
-    pair_contract_address = (
-        "fetch1vgnx2d46uvyxrg9pc5mktkcvkp4uflyp3j86v68pq4jxdc8j4y0s6ulf2a"
-    )
-    liq_token_contract_address = (
-        "fetch1alzhf9yhghud3qhucdjs895f3aek2egfq44qm0mfvahkv4jukx4qd0ltxx"
-    )
-
-    token_contract = LedgerContract(
-        path=None, client=ledger, address=token_contract_address
-    )
-    pair_contract = LedgerContract(
-        path=None, client=ledger, address=pair_contract_address
-    )
-    liq_token_contract = LedgerContract(
-        path=None, client=ledger, address=liq_token_contract_address
-    )
-
-    print("Pool (initial state): ")
-    print(pair_contract.query({"pool": {}}), "\n")
-
-    # Swap atestfet for CW20 tokens
-    swap_amount = str(args.swap_amount)
-    native_denom = "atestfet"
-
-    tx = pair_contract.execute(
-        {
-            "swap": {
-                "offer_asset": {
-                    "info": {"native_token": {"denom": native_denom}},
-                    "amount": swap_amount,
-                }
-            }
-        },
-        sender=wallet,
-        funds=swap_amount + native_denom,
-    )
-
-    print(f"Swapping {swap_amount + native_denom} for CW20 Tokens...")
-    tx.wait_to_complete()
-
-    print("Pool (after swap): ")
-    print(pair_contract.query({"pool": {}}), "\n")
-
-    # To provide cw20 token to LP, increase your allowance first
-    cw20_liquidity_amount = str(args.cw20_liquidity_amount)
-    native_liquidity_amount = str(args.native_liquidity_amount)
-
-    tx = token_contract.execute(
-        {
-            "increase_allowance": {
-                "spender": pair_contract_address,
-                "amount": cw20_liquidity_amount,
-                "expires": {"never": {}},
-            }
-        },
-        wallet,
-    )
-
-    print("Increasing Allowance...")
-    tx.wait_to_complete()
-
-    # Provide Liquidity
-    # Liquidity should be added so that the slippage tolerance parameter isn't exceeded
-
-    tx = pair_contract.execute(
-        {
-            "provide_liquidity": {
-                "assets": [
-                    {
-                        "info": {"token": {"contract_addr": token_contract_address}},
-                        "amount": cw20_liquidity_amount,
-                    },
-                    {
-                        "info": {"native_token": {"denom": native_denom}},
-                        "amount": native_liquidity_amount,
-                    },
-                ],
-                "slippage_tolerance": "0.1",
-            }
-        },
-        sender=wallet,
-        funds=native_liquidity_amount + native_denom,
-    )
-
-    print(
-        f"Providing {native_liquidity_amount + native_denom} and {cw20_liquidity_amount}CW20 tokens to Liquidity Pool..."
-    )
-    tx.wait_to_complete()
-
-    print("Pool (after providing liquidity): ")
-    print(pair_contract.query({"pool": {}}), "\n")
-
-    # Withdraw Liquidity
-    LP_token_balance = liq_token_contract.query(
-        {"balance": {"address": str(wallet.address())}}
-    )["balance"]
-
-    withdraw_msg = '{"withdraw_liquidity": {}}'
-    withdraw_msg_bytes = withdraw_msg.encode("ascii")
-    withdraw_msg_base64 = base64.b64encode(withdraw_msg_bytes)
-    msg = str(withdraw_msg_base64)[2:-1]
-
-    tx = liq_token_contract.execute(
-        {
-            "send": {
-                "contract": pair_contract_address,
-                "amount": LP_token_balance,
-                "msg": msg,
-            }
-        },
-        sender=wallet,
-    )
-
-    print(f"Withdrawing {LP_token_balance} from pool's total share...")
-    tx.wait_to_complete()
-
-    print("Pool (after withdrawing liquidity): ")
-    print(pair_contract.query({"pool": {}}), "\n")
-
-if __name__ == "__main__":
-    main()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
+

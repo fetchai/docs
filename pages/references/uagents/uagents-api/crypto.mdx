@@ -2,7 +2,6 @@
 
 # Cryptography
 
-
 ## Identity Objects
 
 ```python
@@ -11,8 +10,6 @@ class Identity()
 
 An identity is a cryptographic keypair that can be used to sign messages.
 
-
-
 #### `__`init`__`
 
 ```python
@@ -20,8 +17,6 @@ def __init__(signing_key: ecdsa.SigningKey)
 ```
 
 Create a new identity from a signing key.
-
-
 
 #### from`_`seed
 
@@ -32,8 +27,6 @@ def from_seed(seed: str, index: int) -> "Identity"
 
 Create a new identity from a seed and index.
 
-
-
 #### generate
 
 ```python
@@ -42,8 +35,6 @@ def generate() -> "Identity"
 ```
 
 Generate a random new identity.
-
-
 
 #### from`_`string
 
@@ -54,8 +45,6 @@ def from_string(private_key_hex: str) -> "Identity"
 
 Create a new identity from a private key.
 
-
-
 #### private`_`key
 
 ```python
@@ -64,8 +53,6 @@ def private_key() -> str
 ```
 
 Property to access the private key of the identity.
-
-
 
 #### address
 
@@ -76,8 +63,6 @@ def address() -> str
 
 Property to access the address of the identity.
 
-
-
 #### sign
 
 ```python
@@ -85,8 +70,6 @@ def sign(data: bytes) -> str
 ```
 
 Sign the provided data.
-
-
 
 #### sign`_`digest
 
@@ -96,8 +79,6 @@ def sign_digest(digest: bytes) -> str
 
 Sign the provided digest.
 
-
-
 #### sign`_`registration
 
 ```python
@@ -105,8 +86,6 @@ def sign_registration(contract_address: str, sequence: int) -> str
 ```
 
 Sign the registration data for the Almanac contract.
-
-
 
 #### verify`_`digest
 

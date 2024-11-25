@@ -2,6 +2,9 @@ import React, { ReactNode, useState, useEffect, useRef } from "react";
 import { Tab as HeadlessTab } from "@headlessui/react";
 import { DropDownArrow, Tickicon } from "src/icons/shared-icons";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import { ThemeMode } from "theme/fetch-ai-docs/helpers";
 
 function InfoIcon(properties) {
   return (
@@ -74,27 +77,27 @@ export function Property({
   children: ReactNode;
 }) {
   return (
-    <li className="nx-m-0 nx-px-0 nx-py-4 nx-first:pt-0 nx-last:pb-0">
+    <li className="nx-m-0 nx-px-0 nx-py-4 nx-first:pt-0 nx-last:pb-0 dark-border">
       <dl className="nx-m-0 nx-flex nx-flex-wrap nx-items-center nx-gap-x-3 nx-gap-y-2">
         <dt className="nx-sr-only">Name</dt>
         <dd>
           <code>{name}</code>
         </dd>
         <dt className="nx-sr-only">Type</dt>
-        <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 nx-dark:text-zinc-500">
+        <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 dark:nx-text-white-40">
           {type}
         </dd>
         {required !== undefined && (
           <>
             <dt className="nx-sr-only">Required</dt>
-            <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 nx-dark:text-zinc-500">
+            <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 dark:nx-text-white-40">
               {required ? `required` : `optional`}
             </dd>
           </>
         )}
 
         <dt className="nx-sr-only">Description</dt>
-        <dd className="nx-w-full nx-flex-none [&gt;:first-child]:nx-mt-0 [&gt;:last-child]:nx-mb-0">
+        <dd className="nx-w-full nx-flex-none [&gt;:first-child]:nx-mt-0 [&gt;:last-child]:nx-mb-0 dark:nx-text-white-60">
           {children}
         </dd>
       </dl>
@@ -257,7 +260,9 @@ export function Section({ children }: { children: ReactNode }) {
 }
 
 export function ApiIntro({ children }: { children: ReactNode }) {
-  return <div className="nx-pb-4 nx-pr-4">{children}</div>;
+  return (
+    <div className="nx-pb-4 nx-pr-4 dark:nx-text-white-60">{children}</div>
+  );
 }
 
 export function Tag({ children }: { children: ReactNode }) {
@@ -287,3 +292,40 @@ export function Grid2({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+interface ImageByThemePropsTypes {
+  darkSrc: string;
+  lightSrc: string;
+  alt: string;
+  width?: number | `${number}`;
+  height?: number | `${number}`;
+}
+
+export const ImageByTheme = ({
+  darkSrc,
+  lightSrc,
+  alt,
+  width,
+  height,
+}: ImageByThemePropsTypes) => {
+  const { resolvedTheme } = useTheme();
+  const src = resolvedTheme === ThemeMode.Dark ? darkSrc : lightSrc;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      layout="responsive"
+      className="nx-my-6 nx-rounded-lg"
+    />
+  );
+};

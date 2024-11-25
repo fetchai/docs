@@ -1,3 +1,5 @@
+import { CodeGroup, DocsCode } from "../../../components/code"
+
 # Register a coin toss agent as a Function
 
 ## Introduction
@@ -25,18 +27,73 @@ To enable this on [DeltaV ↗️](/concepts/ai-engine/deltav) you will need to c
 
 ### The agent
 
+<CodeGroup hasCopy isLocalHostedFile>
+
+<DocsCode local={true}>
 ```python copy filename="agent.py"
+import random
+from uagents import Agent, Context, Model, Field, Protocol
+from uagents.setup import fund_agent_if_low
+from ai_engine import UAgentResponse, UAgentResponseType
+
+class CoinToss(Model):
+    choice: str = Field(description="The choice. Must be heads or tails.")
+
+# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+SEED_PHRASE = "put_your_seed_phrase_here"
+
+# Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+# Then, copy the agent's mailbox key and insert it here below inline
+AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+
+# Now your agent is ready to join the agentverse!
+coin_toss_agent = Agent(
+    name="coin_toss_agent",
+    seed=SEED_PHRASE,
+    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+)
+
+fund_agent_if_low(coin_toss_agent.wallet.address())
+
+# Copy the address shown below
+print(f"Your agent's address is: {coin_toss_agent.address}")
+
+coin_toss_protocol = Protocol("CoinToss")
+
+@coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
+async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
+    random_number = random.randint(0, 1)
+    if random_number == 0:
+        coin_tossed = "heads"
+    else:
+        coin_tossed = "tails"
+    if coin_tossed == msg.choice:
+        message = "You won!"
+    else:
+        message = "You lost!"
+    await ctx.send(
+        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+)
+
+coin_toss_agent.include(coin_toss_protocol, publish_manifest=True)
+
+if __name__ == "__main__":
+    coin_toss_agent.run()
+```
+</DocsCode>
+
+<DocsCode local={false}>
+
+```python copy filename="hosted-agent.py"
 import random
 # third party modules used in this example
 from uagents import Field
 from ai_engine import UAgentResponse, UAgentResponseType
 
-
 class CoinToss(Model):
     choice: str = Field(description="The choice. Must be heads or tails.")
 
 coin_toss_protocol = Protocol("CoinToss")
-
 
 @coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
 async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
@@ -55,3 +112,5 @@ async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
 
 agent.include(coin_toss_protocol, publish_manifest=True)
 ```
+</DocsCode>
+</CodeGroup>

@@ -1,3 +1,5 @@
+import { CodeGroup, DocsCode } from "../../../components/code"
+
 # Communicating with other agents wallet
 
 ## Introduction
@@ -86,7 +88,9 @@ In this example we will create two agents locally using `uagents` library and ma
 
 This section presents the entire script in one block, allowing users to easily copy and paste it for testing or deployment.
 
-    ```py filename=wallet_messaging.py
+<CodeGroup hasCopy isLocalHostedFile>
+     <DocsCode local={true}>
+    ```py filename="wallet_messaging.py"
     from uagents import Agent, Bureau, Context
     from uagents.wallet_messaging import WalletMessage
 
@@ -95,7 +99,6 @@ This section presents the entire script in one block, allowing users to easily c
 
     alice = Agent(name="alice", seed=ALICE_SEED, enable_wallet_messaging = True)
     bob = Agent(name="bob", seed=BOB_SEED, enable_wallet_messaging = True)
-
 
     @alice.on_wallet_message()
     async def reply(ctx: Context, msg: WalletMessage):
@@ -116,7 +119,8 @@ This section presents the entire script in one block, allowing users to easily c
     bureau.add(bob)
     bureau.run()
     ```
-
+    </DocsCode>
+</CodeGroup>
 ### Script Execution
 
     - Open terminal and navigate to the folder where `wallet_messaging.py` is stored.

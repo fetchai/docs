@@ -1,3 +1,5 @@
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+
 # Utilizing the Agentverse Mailroom feature
 
 ## Introduction
@@ -38,36 +40,58 @@ Make sure you have read the following resources before going on with this guide:
 
 Let's now start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
 
-    ```py copy filename="agent_1.py"
-    from uagents import Agent, Context, Model
+<GithubCodeSegment digest="40cf2f46e466f542ff704d0b88910ca1">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/agentverse-mailbox/utilising-the-mailbox/local_agent_setup.py"
+        lineStart={1}
+        lineEnd={32}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='40cf2f46e466f542ff704d0b88910ca1'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="local_agent_setup.py"
 
-    # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
-    SEED_PHRASE = "put_your_seed_phrase_here"
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	
+	# Copy the address shown below
+	print(f"Your agent's address is: {agent.address}")
+	
+	# Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+	# Then, copy the agent's mailbox key and insert it here below inline
+	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+	
+	# Now your agent is ready to join the agentverse!
+	agent = Agent(
+	    name="alice",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	
+	
+	@agent.on_message(model=Message, replies={Message})
+	async def handle_message(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-    # Copy the address shown below
-    print(f"Your agent's address is: {agent.address}")
+```
+</DocsCode>
 
-    # Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-    # Then, copy the agent's mailbox key and insert it here below inline
-    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+</CodeGroup>
 
-    # Now your agent is ready to join the agentverse!
-    agent = Agent(
-        name="alice",
-        seed=SEED_PHRASE,
-        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-    )
 
-    @agent.on_message(model=Message, replies={Message})
-    async def handle_message(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    if __name__ == "__main__":
-        agent.run()
-   ```
 
 You can then restart your agent; now your agent doesn't need to run all the time as their messages will be waiting for them for when they come back online.
 
@@ -75,37 +99,60 @@ You can then restart your agent; now your agent doesn't need to run all the time
 
 Now create an Agentverse agent `bob` by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, select a blank script and add the following code into it:
 
-    ```py copy filename="agent_2.py"
-    from uagents import Agent, Context, Model
+<GithubCodeSegment digest="67e279e499e6f8439af7445668f0c418">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/agentverse-mailbox/utilising-the-mailbox/agentverse_agent_setup.py"
+        lineStart={1}
+        lineEnd={34}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='67e279e499e6f8439af7445668f0c418'>
 
-    class Message(Model):
-        message: str
+<DocsCode local={true}>
+	```py copy filename="agentverse_agent_setup.py"
 
-    # Copy ALICE_ADDRESS generated in agent_1.py
-    ALICE_ADDRESS = "agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf"
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	# Copy ALICE_ADDRESS generated in mailbox_agent.py
+	ALICE_ADDRESS = "agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf"
+	
+	# Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	
+	# Now let's create the Agentverse agent
+	agent = Agent(
+	    name="bob",
+	    seed=SEED_PHRASE,
+	    endpoint="http://127.0.0.1:8001/submit",
+	)
+	
+	
+	@agent.on_interval(period=2.0)
+	async def send_message(ctx: Context):
+	    ctx.logger.info("Sending message to alice")
+	    await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
+	
+	
+	@agent.on_message(model=Message, replies=set())
+	async def on_message(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-    # Generate a second seed phrase (e.g. https://pypi.org/project/mnemonic/)
-    SEED_PHRASE = "put_your_seed_phrase_here"
+```
+</DocsCode>
 
-    # Now let's create the Agentverse agent
-    agent = Agent(
-        name="bob",
-        seed=SEED_PHRASE,
-        endpoint="http://127.0.0.1:8001/submit",
-    )
+</CodeGroup>
 
-    @agent.on_interval(period=2.0)
-    async def send_message(ctx: Context):
-        ctx.logger.info("Sending message to alice")
-        await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
 
-    @agent.on_message(model=Message, replies=set())
-    async def on_message(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-    if __name__ == "__main__":
-        agent.run()
-   ```
 
 Next, run **bob** on the Agentverse.
 
@@ -115,14 +162,36 @@ You will see something like the following depending on the agent considered:
 
 1. Agentverse Agent output:
 
-    ```
-    2024-06-27 11:20:19	Info	Agent	[INFO]: Sending message to alice
-    2024-06-27 11:20:19	Info	Agent	[INFO]: Received message from agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf: hello there bob
-    ```
+   ```
+   2024-11-21 13:03:05	Info	Agent	Creating wrapper for preloaded 'agent' instance (Ignoring kwargs={'name': 'bob', 'seed': 'put_your_seed_phrase_here', 'endpoint': 'http://127.0.0.1:8001/submit'})
+   2024-11-21 13:03:05	Debug	System	Starting agent...
+   2024-11-21 13:03:05	Info	Agent	Sending message to alice
+   2024-11-21 13:03:06	Debug	System	Registered to Almanac api fast track
+   2024-11-21 13:03:06	Debug	System	Successfully started agent
+   2024-11-21 13:03:06	Info	System	Interval 0 period set to 5
+   2024-11-21 13:03:06	Debug	System	Registered to Almanac api fast track
+   2024-11-21 13:03:06	Debug	System	Envelope sent to agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+   2024-11-21 13:03:06	Debug	System	Almanac contract registration queued for processing
+   2024-11-21 13:03:10	Info	Agent	Sending message to alice
+   2024-11-21 13:03:11	Debug	System	Envelope sent to agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+   2024-11-21 13:03:15	Info	Agent	Sending message to alice
+   2024-11-21 13:03:16	Debug	System	Envelope sent to agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+   2024-11-21 13:03:20	Info	Agent	Sending message to alice
+   2024-11-21 13:03:21	Debug	System	Successfully registered agent on Almanac contract
+   ```
 
 2. Local Agent output:
 
-    ```
-    INFO:     [ALICE]: Received message from agent1qd3hd6peaejavk3uredlxz05e8tcx6purl5gpuamk22xduj7e37k2sqetaa: hello there alice
-    INFO:     [ALICE]: Sending message to bob
-    ```
+   ```
+   Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+   INFO:     [alice]: Registration on Almanac API successful
+   INFO:     [alice]: Registering on almanac contract...
+   INFO:     [alice]: Registering on almanac contract...complete
+   INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+   INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     [alice]: Connecting to mailbox server at agentverse.ai
+   INFO:     [alice]: Mailbox access token acquired
+   INFO:     [alice]: Received message from agent1qtr082cy3677lvrd86wzwgc3ltlmk24y5eqsu7fy946y6quh49hp2lqd5pw: hello there alice
+   INFO:     [alice]: Received message from agent1qtr082cy3677lvrd86wzwgc3ltlmk24y5eqsu7fy946y6quh49hp2lqd5pw: hello there alice
+   INFO:     [alice]: Received message from agent1qtr082cy3677lvrd86wzwgc3ltlmk24y5eqsu7fy946y6quh49hp2lqd5pw: hello there alice
+   ```

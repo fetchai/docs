@@ -15,7 +15,9 @@ import remarkHTML from "remark-html";
 import type { Item as NormalItem } from "nextra/normalize-pages";
 import { Input } from "./input";
 import Modal from "./search-model";
-import { Shortcut } from "src/icons/shared-icons";
+import { DarkShortcut, Shortcut } from "src/icons/shared-icons";
+import { useTheme } from "next-themes";
+import { ThemeMode } from "../helpers";
 
 type MyItem = NormalItem & {
   tags?: string[];
@@ -41,7 +43,7 @@ export const InstantAlgoliaSearch = ({
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const inputRef = useRef(null);
   const modalInputRef = useRef(null);
-
+  const { resolvedTheme } = useTheme();
   const onClickSearchResult = async (path) => {
     const searchInput =
       document.querySelector<HTMLInputElement>("#search-input");
@@ -83,7 +85,7 @@ export const InstantAlgoliaSearch = ({
           value={currentRefinement}
           onChange={(event) => refine(event.currentTarget.value)}
           placeholder="Search in documentation"
-          className="nx-bg-white main-search-bar"
+          className="main-search-bar dark:nx-bg-dark-main"
           autoComplete="off"
           ref={modalInputRef}
         />
@@ -100,7 +102,7 @@ export const InstantAlgoliaSearch = ({
   const NoResultsBoundary = ({ fallback }: { fallback: string }) => {
     return (
       <div className="nx-mt-2 nx-absolute nx-w-full nx-h-full">
-        <div className="nx-flex nx-p-4 nx-font-normal nx-text-fetch-main nx-justify-center">{`${fallback}`}</div>
+        <div className="nx-flex nx-p-4 nx-font-normal nx-justify-center">{`${fallback}`}</div>
       </div>
     );
   };
@@ -136,11 +138,11 @@ export const InstantAlgoliaSearch = ({
     ];
 
     return (
-      <div className="nextra-scrollbar nx-border nx-border-gray-200 nx-bg-white dark:nx-border-neutral-800 dark:nx-bg-neutral-900 nx-absolute nx-top-full nx-z-20 nx-mt-2 nx-overflow-auto nx-overscroll-contain nx-rounded-xl nx-py-2.5 nx-shadow-xl small-screen-height  sm:nx-max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] md:nx-max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] nx-inset-x-0 ltr:md:nx-left-auto rtl:md:nx-right-auto contrast-more:nx-border contrast-more:nx-border-gray-900 contrast-more:dark:nx-border-gray-50 nx-max-w-full">
+      <div className="nextra-scrollbar nx-border nx-border-gray-200 nx-bg-white dark:nx-bg-dark-main dark:nx-border-none nx-absolute nx-top-full nx-z-20 nx-mt-2 nx-overflow-auto nx-overscroll-contain nx-rounded-xl nx-py-2.5 nx-shadow-xl small-screen-height  sm:nx-max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] md:nx-max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] nx-inset-x-0 ltr:md:nx-left-auto rtl:md:nx-right-auto contrast-more:nx-border contrast-more:nx-border-gray-900 contrast-more:dark:nx-border-gray-50 nx-max-w-full">
         {Object.entries(groupedHits).map(([route, hitsForRoute]) => (
           <div key={route}>
-            <div className="nx-py-2 nx-bg-grey-200 nx-text-sm nx-text-grey-600 nx-font-semibold nx-tracking-loose nx-uppercase">
-              <span className="nx-px-4 nx-text-sm nx-flex nx-gap-4">
+            <div className="nx-py-2 nx-bg-grey-200 nx-text-sm nx-text-grey-600 nx-font-semibold nx-tracking-loose nx-uppercase dark:nx-bg-dark-mode-white-2">
+              <span className="nx-px-4 nx-text-sm nx-flex nx-gap-4 dark:nx-text-white-90">
                 <div className="nx-my-1">{route.split("/").pop()}</div>
                 {directoriesWithTags.map((directory) => {
                   if (route.includes(directory.route)) {
@@ -173,15 +175,15 @@ export const InstantAlgoliaSearch = ({
                   <li
                     role="option"
                     aria-selected="false"
-                    className="nx-relative nx-border-grey-200 nx-bg-search-result"
+                    className="nx-relative nx-border-grey-200 nx-bg-search-result nx-cursor-pointer"
                     key={hit.objectId}
                   >
                     <div
-                      className="nx-flex nx-justify-between nx-items-center nx-leading-normal nx-py-2 nx-px-6 nx-transition-colors nx-duration-5 nx-ease-out nx-overflow-hidden nx-text-grey-900 nx-bg-transparent"
+                      className="nx-flex nx-justify-between nx-items-center nx-leading-normal nx-py-2 nx-px-6 nx-transition-colors nx-duration-5 nx-ease-out nx-overflow-hidden nx-text-grey-900 nx-bg-transparent dark:nx-bg-dark-main"
                       onClick={() => onClickSearchResult(hit.path)}
                     >
                       <div className="w-full nx-flex nx-flex-col nx-relative">
-                        <div className="nx-text-base nx-font-semibold nx-text-fetch-main">
+                        <div className="nx-text-base nx-font-semibold nx-text-fetch-main dark:nx-text-white-80">
                           {hit.title.replaceAll("#", "")}
                         </div>
 
@@ -194,7 +196,7 @@ export const InstantAlgoliaSearch = ({
                               })}
                             >
                               <div
-                                className="nx-flex-grow-1 nx-text-fetch-content nx-font-normal nx-text-fetch-main nx-text-sm"
+                                className="nx-flex-grow-1 nx-text-fetch-content nx-font-normal nx-text-fetch-main nx-text-sm dark:nx-text-white-60 dark:nx-bg-dark-main"
                                 dangerouslySetInnerHTML={{
                                   __html: `${markdownToHTML(hit.content).slice(
                                     0,
@@ -205,7 +207,7 @@ export const InstantAlgoliaSearch = ({
                             </MDXProvider>
                           </div>
                         )}
-                        <div className="nx-text-sm nx-text-grey-600">
+                        <div className="nx-text-sm nx-text-grey-600 dark:nx-text-indigo-250">
                           {hit.path
                             .replace(/^\/docs\//, "")
                             .split("/")
@@ -271,7 +273,11 @@ export const InstantAlgoliaSearch = ({
             ref={inputRef}
           />
           <div className="nx-p-1">
-            <Shortcut />
+            {resolvedTheme === ThemeMode.Light ? (
+              <Shortcut />
+            ) : (
+              <DarkShortcut />
+            )}
           </div>
         </div>
       </div>

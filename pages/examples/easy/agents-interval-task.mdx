@@ -1,0 +1,44 @@
+import { CodeGroup, DocsCode } from "../../../components/code"
+
+# Interval task with Agents
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions.
+This example shows how to use the uAgents Framework library to set up an interval task using the `on_interval()` decorator.
+
+### Guide
+
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+
+### The agent
+
+<CodeGroup hasCopy isLocalHostedFile>
+ <DocsCode local={true}>
+    ```py copy filename="interval-task.py"
+    from uagents import Agent, Context
+
+    alice = Agent(name="alice", seed="alice recovery phrase")
+
+    @alice.on_interval(period=2.0)
+    async def say_hello(ctx: Context):
+        ctx.logger.info(f'hello, my name is {ctx.name}')
+
+    if __name__ == "__main__":
+        alice.run()
+    ```
+    </DocsCode>
+     <DocsCode local={false}>
+    ```py copy filename="interval-task.py"
+    from uagents import Agent, Context
+
+    @agent.on_interval(period=2.0)
+    async def say_hello(ctx: Context):
+        ctx.logger.info(f'hello, my name is {ctx.name}')
+    ```
+    </DocsCode>
+</CodeGroup>

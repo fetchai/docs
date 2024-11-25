@@ -1,16 +1,8 @@
-import { Code } from "nextra/components";
-import { CustomPre } from "./code";
+import { Code, Pre } from "nextra/components";
+import { CodeBlock } from "./code";
 
 import React, { useState } from "react";
-import {
-  ApiIntro,
-  Col,
-  Properties,
-  Property,
-  Row,
-  Tab,
-  DropDownTabs,
-} from "./mdx";
+import { ApiIntro, Col, Properties, Property, Row } from "./mdx";
 import Tooltip from "./tooltip";
 import Link from "next/link";
 
@@ -76,11 +68,11 @@ requests.${method.toLowerCase()}("${actualUrl}", headers={
     `;
 
   return (
-    <CustomPre filename="python" dataLanguage="python" hasCopyCode={true}>
+    <Pre>
       <Code data-lanuage="python" data-theme="default">
         {code}
       </Code>
-    </CustomPre>
+    </Pre>
   );
 };
 
@@ -127,11 +119,7 @@ await fetch("${actualUrl}", {
 })`;
 
   return (
-    <CustomPre
-      hasCopyCode={true}
-      dataLanguage="javascript"
-      filename="javascript"
-    >
+    <Pre>
       <Code
         data-lanuage="javascript"
         data-theme="default"
@@ -139,7 +127,7 @@ await fetch("${actualUrl}", {
       >
         {code}
       </Code>
-    </CustomPre>
+    </Pre>
   );
 };
 
@@ -168,7 +156,7 @@ ${
   }
 
   return (
-    <CustomPre hasCopyCode={true} dataLanguage="Curl" filename="Curl">
+    <Pre>
       <Code data-lanuage="bash" data-theme="default">
         {code.split("\n").map((line) => {
           return (
@@ -179,7 +167,7 @@ ${
           );
         })}
       </Code>
-    </CustomPre>
+    </Pre>
   );
 };
 
@@ -188,11 +176,7 @@ const JsonCodeTab: React.FC<{
 }> = ({ samplePayload }) => {
   const formattedJson = JSON.stringify(samplePayload, undefined, 2);
 
-  return (
-    <CustomPre filename="json" hasCopyCode={true}>
-      {formattedJson}
-    </CustomPre>
-  );
+  return <Pre>{formattedJson}</Pre>;
 };
 
 export const ApiResponses: React.FC<{
@@ -203,7 +187,7 @@ export const ApiResponses: React.FC<{
   return (
     <>
       <Row>
-        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl">
+        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-mt-8 nx-text-2xl">
           Responses
         </h1>
       </Row>
@@ -231,11 +215,17 @@ export const ApiResponses: React.FC<{
           ) : undefined}
         </Col>
         <Col>
-          <DropDownTabs>
-            <Tab heading="HTTP 200">
-              <JsonCodeTab samplePayload={properties.samplePayload} />
-            </Tab>
-          </DropDownTabs>
+          <CodeBlock
+            hasCopy={true}
+            codeBlocks={[
+              {
+                filename: "HTTP 200",
+                component: (
+                  <JsonCodeTab samplePayload={properties.samplePayload} />
+                ),
+              },
+            ]}
+          />
         </Col>
       </Row>
     </>
@@ -255,7 +245,7 @@ export const ApiRequest: React.FC<{
   return (
     <>
       <Row>
-        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-8 nx-text-2xl">
+        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-mt-8 nx-text-2xl">
           Request
         </h1>
       </Row>
@@ -282,32 +272,44 @@ export const ApiRequest: React.FC<{
           ) : undefined}
         </Col>
         <Col>
-          <DropDownTabs>
-            <Tab heading="Curl">
-              <CurlCodeTab
-                method={properties.method}
-                url={properties.apiUrl + properties.path}
-                samplePayload={properties.samplePayload}
-                isBearerTokenRequired={properties.isBearerTokenRequired}
-              />
-            </Tab>
-            <Tab heading="Python">
-              <PythonCodeTab
-                method={properties.method}
-                url={properties.apiUrl + properties.path}
-                samplePayload={properties.samplePayload}
-                pathParameters={properties.pathParameters}
-              />
-            </Tab>
-            <Tab heading="Javascript">
-              <JavascriptCodeTab
-                method={properties.method}
-                url={properties.apiUrl + properties.path}
-                samplePayload={properties.samplePayload}
-                pathParameters={properties.pathParameters}
-              />
-            </Tab>
-          </DropDownTabs>
+          <CodeBlock
+            hasCopy={true}
+            codeBlocks={[
+              {
+                filename: "Curl",
+                component: (
+                  <CurlCodeTab
+                    method={properties.method}
+                    url={properties.apiUrl + properties.path}
+                    samplePayload={properties.samplePayload}
+                    isBearerTokenRequired={properties.isBearerTokenRequired}
+                  />
+                ),
+              },
+              {
+                filename: "Python",
+                component: (
+                  <PythonCodeTab
+                    method={properties.method}
+                    url={properties.apiUrl + properties.path}
+                    samplePayload={properties.samplePayload}
+                    pathParameters={properties.pathParameters}
+                  />
+                ),
+              },
+              {
+                filename: "JavaScript",
+                component: (
+                  <JavascriptCodeTab
+                    method={properties.method}
+                    url={properties.apiUrl + properties.path}
+                    samplePayload={properties.samplePayload}
+                    pathParameters={properties.pathParameters}
+                  />
+                ),
+              },
+            ]}
+          />
         </Col>
       </Row>
     </>
@@ -388,23 +390,25 @@ export const ApiEndpointRequestResponse: React.FC<{
     <>
       <Row>
         <p className="nx-endpoint nx-text-base">
-          <span className="nextra-content nx-font-medium">Endpoint: </span>
-          <span className="nx-endpoint-method nx-text-fetch-main">
+          <span className="nextra-content nx-font-medium dark:nx-text-white-60">
+            Endpoint:
+          </span>
+          <span className="nx-endpoint-method nx-text-fetch-main dark:nx-text-white-90 dark:nx-bg-green-700">
             {properties.method}
-          </span>{" "}
-          <span className="nx-text-purple nx-font-normal">
+          </span>
+          <span className="nx-text-purple nx-font-normal dark:nx-text-indigo-250">
             {properties.path}
           </span>
           {isModalOpen ? (
             <button
-              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl"
+              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl dark:nx-text-white dark:nx-bg-indigo-500"
               onClick={closeModal}
             >
               Cancel
             </button>
           ) : (
             <button
-              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl"
+              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl dark:nx-text-white dark:nx-bg-indigo-500"
               onClick={openModal}
             >
               Run Code
@@ -414,33 +418,37 @@ export const ApiEndpointRequestResponse: React.FC<{
       </Row>
 
       {isModalOpen && (
-        <div className="nx-bg-grey nx-px-6 nx-py-8 nx-rounded nx-mt-12">
-          <div className="nx-bg-white nextra-content nx-py-2 nx-px-4 nx-rounded">
+        <div className="nx-bg-grey nx-px-6 nx-py-8 nx-rounded nx-mt-12 dark:nx-bg-dark-mode-white-2">
+          <div className="nx-bg-white nextra-content nx-py-2 nx-px-4 nx-rounded dark:nx-bg-dark-mode-white-5">
             Parameters
           </div>
 
           <div className="nx-flex nx-flex-col nx-text-sm">
             <div className="nx-flex nx-mt-4 nx-ml-4">
               <div className="nx-w-1/4">
-                <p className="nextra-content nx-text-sm">Name</p>
+                <p className="nextra-content nx-text-sm dark:nx-text-white-60">
+                  Name
+                </p>
               </div>
               <div className="nx-w-3/4">
-                <p className="nextra-content nx-text-sm">Description</p>
+                <p className="nextra-content nx-text-sm dark:nx-text-white-60">
+                  Description
+                </p>
               </div>
             </div>
             <div className="nx-mt-2 nx-mb-4 nx-border-t nx-border-gray-300" />
             {isBearerTokenRequired && (
               <div className="md:nx-flex nx-block nx-items-center nx-ml-4">
                 <div className="nx-flex nx-gap-2 nx-w-1/4">
-                  <p className="nextra-content nx-text-sm">
+                  <p className="nextra-content nx-text-sm dark:nx-text-white-60">
                     Bearer Token required
                   </p>
                   <Tooltip>
-                    <p className="nx-text-sm nx-font-bold nx-text-gray-800 nx-pb-1">
+                    <p className="nx-text-sm nx-font-bold nx-text-gray-800 dark:nx-text-white-90 nx-pb-1">
                       To access your Agentverse API key, please follow these
                       steps:
                     </p>
-                    <ol className="nx-text-xs nx-leading-4 nx-text-gray-600 nx-pb-3 nx-list-decimal nx-mt-2 nx-p-[10px]">
+                    <ol className="nx-text-xs nx-leading-4 nx-text-gray-600 dark:nx-text-white-60 nx-pb-3 nx-list-decimal nx-mt-2 nx-p-[10px]">
                       <li>
                         Log in to your{" "}
                         <Link
@@ -474,7 +482,7 @@ export const ApiEndpointRequestResponse: React.FC<{
                     placeholder="Bearer Token"
                     value={bearerToken}
                     onChange={(e) => setBearerToken(e.target.value)}
-                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nx-mt-2 nx-w-full"
+                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nx-mt-2 nx-w-full dark:nx-bg-dark-mode-white-10 dark:nx-border-none"
                   />
                 </div>
               </div>
@@ -499,7 +507,7 @@ export const ApiEndpointRequestResponse: React.FC<{
                       updatedPathParameters[paramName] = e.target.value;
                       setPathParameters(updatedPathParameters);
                     }}
-                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nx-mt-2 nx-w-full"
+                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nx-mt-2 nx-w-full dark:nx-bg-dark-mode-white-10 dark:nx-border-none"
                   />
                 </div>
               </div>
@@ -517,7 +525,8 @@ export const ApiEndpointRequestResponse: React.FC<{
                   <textarea
                     value={requestPayload}
                     onChange={(e) => setRequestPayload(e.target.value)}
-                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nextra-content nx-mt-2 nx-h-24 nx-w-full"
+                    style={{ resize: "none" }}
+                    className="nx-p-2 nx-rounded nx-border nx-border-gray-300 nextra-content nx-mt-2 nx-h-24 nx-w-full dark:nx-bg-dark-mode-white-10 dark:nx-border-none"
                   />
                 </div>
               </div>
@@ -544,11 +553,13 @@ export const ApiEndpointRequestResponse: React.FC<{
             {/* Display Actual Response */}
             {actualResponse && (
               <div className="nx-mt-6">
-                <div className="nx-bg-white nextra-content nx-text-base nx-py-2 nx-px-4 nx-rounded">
+                <div className="nx-bg-white nextra-content nx-text-base nx-py-2 nx-px-4 nx-rounded dark:nx-bg-dark-mode-white-5">
                   Actual Response
                 </div>
-                <div className="nx-bg-white nx-rounded nx-p-2 nx-mt-4">
-                  <pre className="nx-whitespace-pre-wrap">{actualResponse}</pre>
+                <div className="nx-bg-white nx-rounded nx-p-2 nx-mt-4 dark:nx-bg-dark-mode-white-10">
+                  <pre className="nx-whitespace-pre-wrap dark:nx-bg-dark-mode-white-10">
+                    {actualResponse}
+                  </pre>
                 </div>
               </div>
             )}
@@ -556,11 +567,11 @@ export const ApiEndpointRequestResponse: React.FC<{
             {/* Display Sample Response if Available */}
             {!actualResponse && properties.responses && (
               <div className="nx-mt-6">
-                <div className="nx-bg-white nextra-content nx-text-base nx-py-2 nx-px-4 nx-rounded">
+                <div className="nx-bg-white nextra-content nx-text-base nx-py-2 nx-px-4 nx-rounded dark:nx-bg-dark-mode-white-5">
                   Sample Response
                 </div>
-                <div className="nx-bg-white nx-rounded nx-p-2 nx-mt-4">
-                  <pre className="nx-whitespace-pre-wrap">
+                <div className="nx-bg-white nx-rounded nx-p-2 nx-mt-4 dark:nx-bg-dark-mode-white-5">
+                  <pre className="nx-whitespace-pre-wrap dark:nx-bg-dark-mode-white-5">
                     {JSON.stringify(properties.responses, null, 2)}
                   </pre>
                 </div>

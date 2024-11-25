@@ -1,3 +1,5 @@
+import { CodeGroup, DocsCode } from "../../../components/code"
+
 # Table booking service with Agents
 
 ## Introduction
@@ -19,6 +21,8 @@ This example shows how to use Agents to create a table booking service at a rest
 
 #### Query table
 
+<CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
     ```py copy filename="query.py"
     from typing import List
 
@@ -72,9 +76,70 @@ This example shows how to use Agents to create a table booking service at a rest
         total_queries = int(ctx.storage.get("total_queries") or 0)
         await ctx.send(sender, TotalQueries(total_queries=total_queries))
     ```
+</DocsCode>
+
+<DocsCode local={false}>
+    ```py copy filename="query.py"
+    from typing import List
+
+    from uagents import Context, Model, Protocol
+
+    class TableStatus(Model):
+        seats: int
+        time_start: int
+        time_end: int
+
+    class QueryTableRequest(Model):
+        guests: int
+        time_start: int
+        duration: int
+
+    class QueryTableResponse(Model):
+        tables: List[int]
+
+    class GetTotalQueries(Model):
+        pass
+
+    class TotalQueries(Model):
+        total_queries: int
+    query_proto = Protocol()
+
+    @query_proto.on_message(model=QueryTableRequest, replies=QueryTableResponse)
+    async def handle_query_request(ctx: Context, sender: str, msg: QueryTableRequest):
+        tables = {
+            int(num): TableStatus(**status)
+            for (
+                num,
+                status,
+            ) in ctx.storage.items()
+            if isinstance(num, int)
+        }
+        available_tables = []
+        for number, status in tables.items():
+            if (
+                status.seats >= msg.guests
+                and status.time_start <= msg.time_start
+                and status.time_end >= msg.time_start + msg.duration
+            ):
+                available_tables.append(int(number))
+        ctx.logger.info(f"Query: {msg}. Available tables: {available_tables}.")
+        await ctx.send(sender, QueryTableResponse(tables=available_tables))
+        total_queries = int(ctx.storage.get("total_queries") or 0)
+        ctx.storage.set("total_queries", total_queries + 1)
+
+    @query_proto.on_query(model=GetTotalQueries, replies=TotalQueries)
+    async def handle_get_total_queries(ctx: Context, sender: str, _msg: GetTotalQueries):
+        total_queries = int(ctx.storage.get("total_queries") or 0)
+        await ctx.send(sender, TotalQueries(total_queries=total_queries))
+    ```
+    </DocsCode>
+</CodeGroup>
 
 #### Book table
 
+<CodeGroup hasCopy isLocalHostedFile>
+
+<DocsCode local={true}>
     ```py copy filename="book.py"
     from uagents import Context, Model, Protocol
     from .query import TableStatus
@@ -111,11 +176,54 @@ This example shows how to use Agents to create a table booking service at a rest
         # send the response
         await ctx.send(sender, BookTableResponse(success=success))
     ```
+    </DocsCode>
+
+<DocsCode local={false}>
+    ```py copy filename="book.py"
+    from uagents import Context, Model, Protocol
+    from query import TableStatus
+
+    class BookTableRequest(Model):
+        table_number: int
+        time_start: int
+        duration: int
+
+    class BookTableResponse(Model):
+        success: bool
+
+    book_proto = Protocol()
+    @book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
+    async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
+        tables = {
+            int(num): TableStatus(**status)
+            for (
+                num,
+                status,
+            ) in ctx.storage.items()
+            if isinstance(num, int)
+        }
+        table = tables[msg.table_number]
+        if (
+            table.time_start <= msg.time_start
+            and table.time_end >= msg.time_start + msg.duration
+        ):
+            success = True
+            table.time_start = msg.time_start + msg.duration
+            ctx.storage.set(msg.table_number, table.dict())
+        else:
+            success = False
+        # send the response
+        await ctx.send(sender, BookTableResponse(success=success))
+    ```
+    </DocsCode>
+</CodeGroup>
 
 ### The Agents
 
 #### Restaurant
 
+<CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
     ```py copy filename="restaurant.py"
     from uagents import Agent, Context
     from uagents.setup import fund_agent_if_low
@@ -147,9 +255,36 @@ This example shows how to use Agents to create a table booking service at a rest
     if __name__ == "__main__":
         restaurant.run()
     ```
+</DocsCode>
+
+<DocsCode local={false}>
+    ```py copy filename="restaurant.py"
+    from uagents import Agent, Context
+    from book import book_proto
+    from query import query_proto, TableStatus
+
+    # build the restaurant agent from stock protocols
+    agent.include(query_proto)
+    agent.include(book_proto)
+
+    TABLES = {
+        1: TableStatus(seats=2, time_start=16, time_end=22),
+        2: TableStatus(seats=4, time_start=19, time_end=21),
+        3: TableStatus(seats=4, time_start=17, time_end=19),
+    }
+
+    # set the table availability information in the restaurant protocols
+    for (number, status) in TABLES.items():
+        agent._storage.set(number, status.dict())
+    ```
+    </DocsCode>
+</CodeGroup>
 
 #### Customer/user
 
+<CodeGroup hasCopy isLocalHostedFile>
+
+<DocsCode local={true}>
     ```py copy filename="user.py"
     from protocols.book import BookTableRequest, BookTableResponse
     from protocols.query import (
@@ -217,7 +352,65 @@ This example shows how to use Agents to create a table booking service at a rest
     if __name__ == "__main__":
         user.run()
     ```
+</DocsCode>
 
+<DocsCode local={false}>
+    ```py copy filename="user.py"
+    from book import BookTableRequest, BookTableResponse
+    from query import (
+        QueryTableRequest,
+        QueryTableResponse,
+    )
+    from uagents import Agent, Context
+
+    RESTAURANT_ADDRESS = "agent1qw50wcs4nd723ya9j8mwxglnhs2kzzhh0et0yl34vr75hualsyqvqdzl990"
+
+    table_query = QueryTableRequest(
+        guests=3,
+        time_start=19,
+        duration=2,
+    )
+
+    # This on_interval agent function performs a request on a defined period
+    @agent.on_interval(period=3.0, messages=QueryTableRequest)
+    async def interval(ctx: Context):
+        completed = ctx.storage.get("completed")
+
+        if not completed:
+            await ctx.send(RESTAURANT_ADDRESS, table_query)
+
+    @agent.on_message(QueryTableResponse, replies={BookTableRequest})
+    async def handle_query_response(ctx: Context, sender: str, msg: QueryTableResponse):
+        if len(msg.tables) > 0:
+            ctx.logger.info("There is a free table, attempting to book one now")
+
+            table_number = msg.tables[0]
+
+            request = BookTableRequest(
+                table_number=table_number,
+                time_start=table_query.time_start,
+                duration=table_query.duration,
+            )
+
+            await ctx.send(sender, request)
+
+        else:
+
+            ctx.logger.info("No free tables - nothing more to do")
+            ctx.storage.set("completed", True)
+
+    @agent.on_message(BookTableResponse, replies=set())
+    async def handle_book_response(ctx: Context, _sender: str, msg: BookTableResponse):
+        if msg.success:
+            ctx.logger.info("Table reservation was successful")
+
+        else:
+            ctx.logger.info("Table reservation was UNSUCCESSFUL")
+
+        ctx.storage.set("completed", True)
+    ```
+    </DocsCode>
+</CodeGroup>
 ### Expected output
 
 - Restaurant:

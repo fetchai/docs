@@ -1,6 +1,8 @@
-import React, { ChangeEvent, useState } from "react";
-import { GuideBox } from "./feature-guide-tabs";
-import { Grid3 } from "./mdx";
+import React, { ReactNode, useState, ChangeEvent } from "react";
+import { SearchIcon, DropDownArrow } from "src/icons/shared-icons";
+import styles from "./components.module.css";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface Guide {
   title: string;
@@ -13,42 +15,182 @@ interface GuideCategory {
   description?: string;
   subSection?: boolean;
   data: Guide[];
+  icon?: () => React.JSX.Element;
 }
 
 interface GuidesData {
   content: GuideCategory[];
 }
 
-const GuideMdx = ({ content }: GuidesData) => {
-  const [value, setValue] = useState<string>("");
-  const [inputVal, setInputVal] = useState<string>("");
-  const [evt, setEvt] = useState<string>("");
+const pathLabels = new Map<RegExp, string>([
+  [/\/.*?(quickstart|getting-started|easy).*?\//i, "Beginner"],
+  [/\/.*?intermediate.*?\//i, "Intermediate"],
+  [/\/.*?advanced.*?\//i, "Advanced"],
+]);
 
-  const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setEvt(event.target.name);
-    setValue(event.target.value);
+const getPathLabel = (path: string): string => {
+  for (const [regex, label] of pathLabels) {
+    if (regex.test(path)) {
+      return label;
+    }
+  }
+  return "";
+};
+
+const SectionHeading = ({
+  heading,
+  icon,
+}: {
+  heading: string;
+  icon?: () => React.JSX.Element;
+}) => (
+  <div className="nx-flex nx-flex-col nx-gap-6">
+    {icon && icon()}
+    <span className={styles.heading}>{heading}</span>
+  </div>
+);
+
+const SectionDetails = ({
+  children,
+  path,
+}: {
+  children: ReactNode;
+  path: string;
+}) => {
+  const label = getPathLabel(path);
+  return (
+    <div className={styles.sectionDetails}>
+      {children}
+      {label && <div className={`${styles.label}`}>{label}</div>}
+    </div>
+  );
+};
+
+const GridBox = ({ children }: { children: ReactNode }) => (
+  <div className="nx-grid nx-grid-cols-1 md:nx-grid-cols-2 nx-my-12 nx-items-start nx-gap-12">
+    {children}
+  </div>
+);
+
+const FilterDropdown = ({
+  content,
+  value,
+  onSelectChange,
+  isOpen,
+  toggleDropdown,
+  activeType,
+}: {
+  content: GuideCategory[];
+  value: string;
+  onSelectChange: (selectedType: string) => void;
+  isOpen: boolean;
+  toggleDropdown: () => void;
+  activeType: string;
+}) => (
+  <div>
+    <div onClick={toggleDropdown} className={styles.dropDownGuide}>
+      <span className={styles.dropdownActive}>{value}</span>
+      <DropDownArrow isActive={isOpen} />
+    </div>
+    {isOpen && (
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: "auto", opacity: 1 }}
+        transition={{ duration: 0.1 }}
+        className="nx-z-50 nx-mt-2 nx-absolute dropDownGuide"
+        style={{ overflow: "hidden" }}
+      >
+        <div className="nx-flex-col nx-p-2 nx-w-full !nx-items-start nx-justify-between nx-cursor-pointer">
+          <div
+            className={`nx-text-lg nx-cursor-pointer ${styles.tab}`}
+            onClick={() => onSelectChange("All Types")}
+          >
+            All Types
+          </div>
+          {content
+            .map((item) => item.type)
+            .map((type) => (
+              <div
+                key={type}
+                className={`nx-text-lg ${styles.tab} ${
+                  activeType === type && styles.active
+                } nx-cursor-pointer`}
+                onClick={() => onSelectChange(type)}
+              >
+                {type}
+              </div>
+            ))}
+        </div>
+      </motion.div>
+    )}
+  </div>
+);
+
+const SearchInput = ({
+  inputVal,
+  onInputChange,
+}: {
+  inputVal: string;
+  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}) => (
+  <div className={styles.inputBoxGuide}>
+    <SearchIcon />
+    <input
+      value={inputVal}
+      onChange={onInputChange}
+      className={styles.inputGuide}
+      name="input"
+      placeholder="Search...."
+    />
+  </div>
+);
+
+const GuidesMdx = ({ content }: GuidesData) => {
+  const [filterState, setFilterState] = useState({
+    value: "All Types",
+    inputVal: "",
+    evt: "",
+    activeType: "All Types",
+    openDropdown: false,
+  });
+
+  const toggleDropdown = () =>
+    setFilterState((prev) => ({ ...prev, openDropdown: !prev.openDropdown }));
+
+  const onSelectChange = (selectedType: string) => {
+    setFilterState((prev) => ({
+      ...prev,
+      value: selectedType,
+      activeType: selectedType,
+      openDropdown: false,
+      evt: "select",
+    }));
   };
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setEvt(event.target.name);
-    setInputVal(event.target.value);
-    if (event.target.value === "") {
-      setEvt("select");
-      setValue(value);
-    }
+    const { value } = event.target;
+    setFilterState((prev) => ({
+      ...prev,
+      inputVal: value,
+      evt: value === "" ? "select" : "input",
+    }));
   };
 
   const filteredContent = content
     .map((con) => ({
       ...con,
       data: con.data.filter((item) => {
-        if (value !== "" && evt === "select") {
-          return con.type === value;
+        if (filterState.evt === "select" && filterState.value !== "All Types") {
+          return con.type === filterState.value;
         }
-        if (inputVal !== "" && evt === "input") {
+        if (filterState.evt === "input" && filterState.inputVal !== "") {
           return (
-            item.title.toLowerCase().includes(inputVal.toLowerCase()) ||
-            item.description.toLowerCase().includes(inputVal.toLowerCase())
+            item?.title
+              ?.toLowerCase()
+              ?.includes(filterState.inputVal.toLowerCase()) ||
+            item?.description
+              ?.toLowerCase()
+              ?.includes(filterState.inputVal.toLowerCase())
           );
         }
         return true;
@@ -57,77 +199,48 @@ const GuideMdx = ({ content }: GuidesData) => {
     .filter((con) => con.data.length > 0);
 
   return (
-    <div className="nx-flex nx-flex-col nx-w-full nx-items-end nx-justify-end">
-      <div className="md:nx-flex nx-block nx-gap-5">
-        <select
-          name="select"
-          onChange={onSelectChange}
-          className="nx-rounded-[10px] nx-outline-none nx-cursor-pointer nx-border nx-border-solid nx-px-3 nx-py-2"
-        >
-          <option value="">All Types</option>
-          {content
-            .map((item) => item.type)
-            .map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-        </select>
-        <input
-          name="input"
-          value={inputVal}
-          onChange={onInputChange}
-          placeholder="Search...."
-          className="nx-font-normal nx-mt-5 md:nx-mt-0 nx-bg-transparent nx-rounded-full nx-border nx-border-solid nx-border-purple nx-px-6 nx-py-2"
+    <>
+      <div className="md:nx-flex-row nx-flex-col nx-flex nx-mt-6 nx-gap-3">
+        <FilterDropdown
+          content={content}
+          value={filterState.value}
+          onSelectChange={onSelectChange}
+          isOpen={filterState.openDropdown}
+          toggleDropdown={toggleDropdown}
+          activeType={filterState.activeType}
+        />
+        <SearchInput
+          inputVal={filterState.inputVal}
+          onInputChange={onInputChange}
         />
       </div>
-      {filteredContent.map((con, index) => (
-        <div key={index}>
-          <h2
-            className={`nx-tracking-tight nx-text-slate-900 dark:nx-text-slate-100 nx-mt-10 nx-pb-1 ${
-              con.subSection ? `nx-text-2xl` : `nx-text-3xl nx-border-b`
-            } nx-border-neutral-200/70 contrast-more:nx-border-neutral-400 dark:nx-border-primary-100/10 contrast-more:dark:nx-border-neutral-400`}
-          >
-            {con.type}
-            <span
-              className="nx-absolute -nx-mt-20"
-              id={con.type.toLowerCase()}
-            ></span>
-            <a
-              href={`#${con.type.toLowerCase()}`}
-              className="subheading-anchor"
-              aria-label="Permalink for this section"
-            ></a>
-          </h2>
-          <div className="nx-text-fetch-content">{con.description}</div>
-          <Grid3>
-            {con.data
-              .filter((item) => {
-                if (inputVal !== "") {
-                  return (
-                    item.title.toLowerCase().includes(inputVal.toLowerCase()) ||
-                    item.description
-                      .toLowerCase()
-                      .includes(inputVal.toLowerCase())
-                  );
-                }
-                return true;
-              })
-              .map((guide, index) => (
-                <GuideBox
-                  key={index}
-                  content={{
-                    title: guide.title,
-                    description: guide.description,
-                    path: guide.path,
-                  }}
-                />
-              ))}
-          </Grid3>
-        </div>
-      ))}
-    </div>
+      <div>
+        <GridBox>
+          {filteredContent.map((items, index) => (
+            <div
+              key={index}
+              className="nx-flex nx-flex-col nx-items-start nx-gap-4"
+            >
+              <SectionHeading icon={items.icon} heading={items.type} />
+              <div className="nx-flex nx-flex-col nx-w-full nx-items-start nx-gap-4">
+                {items.data.map((item, itemIndex) => (
+                  <Link
+                    key={itemIndex}
+                    className="nx-text-blue-500 nx-w-full"
+                    href={item.path}
+                  >
+                    <SectionDetails path={item.path}>
+                      {item.title}
+                    </SectionDetails>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+        </GridBox>
+      </div>
+    </>
   );
 };
 
-export default GuideMdx;
+export default GuidesMdx;

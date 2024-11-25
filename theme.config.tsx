@@ -1,8 +1,7 @@
 import React from "react";
-// eslint-disable-next-line unicorn/prevent-abbreviations
 import { DocsThemeConfig } from "./theme/fetch-ai-docs";
 import Footer from "./components/footer";
-import Logo from "./components/logo";
+import Logo from "components/logo";
 
 const config: DocsThemeConfig = {
   logo: <Logo />,

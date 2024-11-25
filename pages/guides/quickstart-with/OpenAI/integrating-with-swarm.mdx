@@ -1,0 +1,506 @@
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+import { Callout } from 'nextra/components'
+import diagram from 'src/images/guides/quickstart-with/OPENAI/SWARM_UML.png';
+import { ImageByTheme } from "components/mdx";
+
+<Callout type="info" emoji="ℹ️">
+This article is a work-in-progress and will be subject to change.
+</Callout>
+
+# Getting started with Fetch.ai and Swarm
+
+Fetch.ai creates a dynamic communication layer that allows you to abstract away components into individual [Agents ↗️](/guides/agents/getting-started/whats-an-agent). Agents are microservices programmed to communicate with other agents, and or humans. Written in python, agents are designed to run independently across many and any device.
+
+By using **Agents** to integrate with **Swarm**, you add a layer which can control a narrative and introduce Swarm Agents to a wider ecosystem. 
+
+Let's take a look at a simple Swarm example, then see how we can extend this with the uAgents Framework and the `Bureau` class. 
+
+## A simple Swarm example
+
+### Installation
+
+    `pip install git+ssh://git@github.com/openai/swarm.git`
+
+### Code
+
+From the Swarm docs, we are going to extend their example: 
+
+    ```python copy
+    from swarm import Swarm, Agent
+
+    client = Swarm()
+
+    def transfer_to_agent_b():
+        return agent_b
+
+    agent_a = Agent(
+        name="Agent A",
+        instructions="You are a helpful agent.",
+        functions=[transfer_to_agent_b],
+    )
+
+    agent_b = Agent(
+        name="Agent B",
+        instructions="Only speak in Haikus.",
+    )
+
+    response = client.run(
+        agent=agent_a,
+        messages=[{"role": "user", "content": "I want to talk to agent B."}],
+    )
+
+    print(response.messages[-1]["content"])
+
+    ```
+
+There's a few really nice concepts here, `functions` and `instructions`. **Functions** allow the Agent to call another function or act on the data being sent in `client.run()`, this function can also return an agent which passes the message chat to that new agent. **Instructions** are the prompts; we'll use Agents to update these in the future. 
+
+## A simple communication with agents
+
+In many other places in our documentation, we have Agent examples for creation, communication and beginner guides. If you've never built using the uAgents Framework before, please have a look at these guides to get yourself started:
+
+    - [Agents - uAgents Framework ↗️](/guides/agents/getting-started/whats-an-agent)
+    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [nstalling the uAgents Framework ↗️](/guides/agents/getting-started/installing-uagent)
+    - [Agents 101 ↗️](/guides/agent-courses/introductory-course)
+
+You can read more about Agents and Agent Functions communication in our [guides ↗️](https://fetch.ai/docs/guides)
+
+The integration with Swarm below is quite simple, so we can skip over a lot of Agents information, for brevity. 
+
+## Swarm x uAgents Framework
+
+We use `Bureau` for this example, our multi-agent runner that works very similarly to Swarm loop examples. For us, `Bureau` is a great way of running many Agents on one single device. Our plan here is fairly simple, we want Agents to control the narrative of the Swarm by creating the questions best suited to the response. 
+
+So let's extend it. 
+
+<GithubCodeSegment digest="a7a9f23fce86d64ce98230bc889f1c18">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/OpenAi/swarm-uagent/swarm_bureau.py"
+        lineStart={1}
+        lineEnd={122}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a7a9f23fce86d64ce98230bc889f1c18'>
+
+<DocsCode local={true}>
+	```py copy filename="swarm_bureau.py"
+
+	from swarm import Swarm, Agent
+	from swarm import Agent as SwarmAgent
+	from uagents import Agent, Model, Bureau, Context
+	
+	client = Swarm()
+	
+	
+	def transfer_to_agent_b():
+	    return swarm_agent_b
+	
+	
+	def transfer_to_agent_c():
+	    return swarm_agent_c
+	
+	
+	def helpful(context_variables):
+	    resp = "You are a quizzical agent. Answer their question in a riddle. Do not answer in a Haiku."
+	    ctx = context_variables["personality"] if context_variables["personality"] else ""
+	    print(ctx)
+	    if "friendly" in ctx:
+	        return f"{resp} be sure to give them lots of clues, make the riddle not too difficult to answer"
+	    else:
+	        return f"{resp}"
+	
+	
+	swarm_agent_a = SwarmAgent(
+	    name="Agent A",
+	    instructions="You are a helpful agent.",
+	    functions=[transfer_to_agent_b],
+	)
+	
+	swarm_agent_b = SwarmAgent(
+	    name="Agent B",
+	    instructions="Only speak in Haikus. Find out what they want",
+	    functions=[transfer_to_agent_c]
+	)
+	
+	swarm_agent_c = SwarmAgent(
+	    name="Agent C",
+	    instructions=helpful,
+	)
+	
+	swarm_agent_d = SwarmAgent(
+	    name="Question generator",
+	    instructions="Create a random question to ask someone about any animal"
+	)
+	
+	
+	class Request(Model):
+	    text: str
+	
+	
+	class Response(Model):
+	    text: str
+	
+	
+	class QuestionCreation(Model):
+	    text: str
+	
+	
+	class QuestionCreated(Model):
+	    text: str
+	
+	
+	swarm_uagent = Agent(name='Swarm')
+	trigger_uagent = Agent(name='Trigger')
+	question_uagent = Agent(name='Question')
+	
+	
+	@swarm_uagent.on_message(Request)
+	async def handle_request(ctx: Context, sender: str, request: Request):
+	    response = client.run(
+	        agent=swarm_agent_a,
+	        messages=[{"role": "user", "content": request.text}],
+	    )
+	
+	    await ctx.send(sender, Response(text=response.messages[-1]["content"]))
+	
+	
+	@trigger_uagent.on_event('startup')
+	async def trigger_request(ctx: Context):
+	    await ctx.send(swarm_uagent.address, Request(text="I want to talk to agent B."))
+	
+	
+	@trigger_uagent.on_message(Response)
+	async def handle_response(ctx: Context, sender: str, response: Response):
+	    print(f"Response from on_message : {response.text}")
+	    await ctx.send(question_uagent.address, QuestionCreation(text=""))
+	
+	
+	@trigger_uagent.on_message(QuestionCreated)
+	async def handle_response(ctx: Context, sender: str, response: Response):
+	    print(f"Response from on_message :", response.text)
+	
+	    response = client.run(
+	        agent=swarm_agent_c,
+	        messages=[{"role": "user", "content": response.text}],
+	        context_variables={"user": "Jessica", "personality": "friendly, kind"}
+	    )
+	
+	    print(response.messages[-1]["content"])
+	
+	
+	@question_uagent.on_message(QuestionCreation)
+	async def create_question(ctx: Context, sender: str, question: QuestionCreation):
+	    print("creating question...")
+	
+	    response = client.run(
+	        agent=swarm_agent_d,
+	        messages=[{"role": "user", "content": "Create a random question about any animal"}],
+	    )
+	
+	    print(response.messages[-1]["content"])
+	
+	    await ctx.send(sender, QuestionCreated(text=response.messages[-1]["content"]))
+	
+	
+	bureau = Bureau()
+	bureau.add(swarm_uagent)
+	bureau.add(trigger_uagent)
+	bureau.add(question_uagent)
+	bureau.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+There's a lot of code there, but so let's cover the Agent specific bits first:
+
+We imported `uagents` first: 
+
+<GithubCodeSegment digest="2a2f7307aaee88f4a25ec568b8f65901">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/OpenAi/swarm-uagent/swarm_bureau.py"
+        lineStart={3}
+        lineEnd={4}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2a2f7307aaee88f4a25ec568b8f65901'>
+
+<DocsCode local={true}>
+	```py copy filename="swarm_bureau.py"
+
+	from uagents import Agent, Model, Bureau, Context
+	
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+We defined our message structures: 
+
+<GithubCodeSegment digest="5717e60985b56a5306e3a4fc6c8a6ac1">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/OpenAi/swarm-uagent/swarm_bureau.py"
+        lineStart={49}
+        lineEnd={63}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5717e60985b56a5306e3a4fc6c8a6ac1'>
+
+<DocsCode local={true}>
+	```py copy filename="swarm_bureau.py"
+
+	class Request(Model):
+	    text: str
+	
+	
+	class Response(Model):
+	    text: str
+	
+	
+	class QuestionCreation(Model):
+	    text: str
+	
+	
+	class QuestionCreated(Model):
+	    text: str
+	
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+Within the uAgents Framework this is pretty important, and can be much more complex than the above. We treat `Message` classes as our rules of communication, generally in a Request/Response format. It also enforces type that helps keep Agents resilient. For additional information on how Agents do communicate, have a look at the following [resource ↗️](/guides/agents/intermediate/communicating-with-other-agents).
+
+Next, we instantiate our Agents and create [message handling functions ↗️](/guides/agents/intermediate/handlers#handle-messages-using-the-on_message-handler): 
+
+<GithubCodeSegment digest="174fa9e1965ce337e47bde9b7be4bfe9">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/OpenAi/swarm-uagent/swarm_bureau.py"
+        lineStart={65}
+        lineEnd={122}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='174fa9e1965ce337e47bde9b7be4bfe9'>
+
+<DocsCode local={true}>
+	```py copy filename="swarm_bureau.py"
+
+	swarm_uagent = Agent(name='Swarm')
+	trigger_uagent = Agent(name='Trigger')
+	question_uagent = Agent(name='Question')
+	
+	
+	@swarm_uagent.on_message(Request)
+	async def handle_request(ctx: Context, sender: str, request: Request):
+	    response = client.run(
+	        agent=swarm_agent_a,
+	        messages=[{"role": "user", "content": request.text}],
+	    )
+	
+	    await ctx.send(sender, Response(text=response.messages[-1]["content"]))
+	
+	
+	@trigger_uagent.on_event('startup')
+	async def trigger_request(ctx: Context):
+	    await ctx.send(swarm_uagent.address, Request(text="I want to talk to agent B."))
+	
+	
+	@trigger_uagent.on_message(Response)
+	async def handle_response(ctx: Context, sender: str, response: Response):
+	    print(f"Response from on_message : {response.text}")
+	    await ctx.send(question_uagent.address, QuestionCreation(text=""))
+	
+	
+	@trigger_uagent.on_message(QuestionCreated)
+	async def handle_response(ctx: Context, sender: str, response: Response):
+	    print(f"Response from on_message :", response.text)
+	
+	    response = client.run(
+	        agent=swarm_agent_c,
+	        messages=[{"role": "user", "content": response.text}],
+	        context_variables={"user": "Jessica", "personality": "friendly, kind"}
+	    )
+	
+	    print(response.messages[-1]["content"])
+	
+	
+	@question_uagent.on_message(QuestionCreation)
+	async def create_question(ctx: Context, sender: str, question: QuestionCreation):
+	    print("creating question...")
+	
+	    response = client.run(
+	        agent=swarm_agent_d,
+	        messages=[{"role": "user", "content": "Create a random question about any animal"}],
+	    )
+	
+	    print(response.messages[-1]["content"])
+	
+	    await ctx.send(sender, QuestionCreated(text=response.messages[-1]["content"]))
+	
+	
+	bureau = Bureau()
+	bureau.add(swarm_uagent)
+	bureau.add(trigger_uagent)
+	bureau.add(question_uagent)
+	bureau.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+The important thing to note is that Agents have specific functions to handle different message objects being received; the uAgents library in the background calls the correct function based on decorator and args. When an Agent calls `await ctx.send(sender, Message())` that effectively calls another Agent's function to act on the sent data. 
+
+We have extended the Swarm example slightly; we want to use context variables but also use an Agent to generate the question on our behalf. 
+
+<GithubCodeSegment digest="e4430722d7cae295c449590933d9a70e">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/OpenAi/swarm-uagent/swarm_bureau.py"
+        lineStart={15}
+        lineEnd={23}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='e4430722d7cae295c449590933d9a70e'>
+
+<DocsCode local={true}>
+	```py copy filename="swarm_bureau.py"
+
+	
+	def helpful(context_variables):
+	    resp = "You are a quizzical agent. Answer their question in a riddle. Do not answer in a Haiku."
+	    ctx = context_variables["personality"] if context_variables["personality"] else ""
+	    print(ctx)
+	    if "friendly" in ctx:
+	        return f"{resp} be sure to give them lots of clues, make the riddle not too difficult to answer"
+	    else:
+	        return f"{resp}"
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+<GithubCodeSegment digest="9026f8f124c55d34de38f9b9000d635e">
+<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/OpenAi/swarm-uagent/swarm_bureau.py"
+        lineStart={38}
+        lineEnd={46}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9026f8f124c55d34de38f9b9000d635e'>
+
+<DocsCode local={true}>
+	```py copy filename="swarm_bureau.py"
+
+	swarm_agent_c = SwarmAgent(
+	    name="Agent C",
+	    instructions=helpful,
+	)
+	
+	swarm_agent_d = SwarmAgent(
+	    name="Question generator",
+	    instructions="Create a random question to ask someone about any animal"
+	)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+The `context_variable` was set in an Agent message handler:
+
+<GithubCodeSegment digest="e9a77d0cd6e7887ef97658e548ad4a51">
+<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/quickstart-with/OpenAi/swarm-uagent/swarm_bureau.py"
+        lineStart={91}
+        lineEnd={101}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='e9a77d0cd6e7887ef97658e548ad4a51'>
+
+<DocsCode local={true}>
+	```py copy filename="swarm_bureau.py"
+
+	@trigger_uagent.on_message(QuestionCreated)
+	async def handle_response(ctx: Context, sender: str, response: Response):
+	    print(f"Response from on_message :", response.text)
+	
+	    response = client.run(
+	        agent=swarm_agent_c,
+	        messages=[{"role": "user", "content": response.text}],
+	        context_variables={"user": "Jessica", "personality": "friendly, kind"}
+	    )
+	
+	    print(response.messages[-1]["content"])
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+Let's now recap the flow: 
+
+<ImageByTheme
+  darkSrc={diagram}
+  lightSrc={diagram}
+  alt="swarm-fetchai"
+/>
+
+### Expected Output
+
+Run `poetry run python langchain_agent_two.py` first and then `poetry run python langchain_agent_one.py`.
+
+You should get something similar to the following for the bureau:
+
+    ```
+		INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+		Response from on_message : To have a chat with Agent B,  
+		Look to the hive with golden key.  
+		If none can find, then change the tone,  
+		And talk to shadows made of stone.
+		creating question...
+		INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+		If you could transform into any animal for a day, which one would you choose and why?
+		INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+		Response from on_message : If you could transform into any animal for a day, which one would you choose and why?
+		friendly, kind
+		INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+		In the sky so high, I soar with might,  
+		With wings so vast, I dance with light.  
+		I see the world in colors bright,  
+		A fish below, a mouse in flight.  
+		Majestic, noble, called king of skies,  
+		Which creature would I be in disguise?  
+
+    ```
+
+## Next steps
+
+This has been a brief introduction into **Swarm** and **Fetch.ai**.
+
+For further reading on how and where we use other OpenAI, technology take a look at the following resource for [RAG Agents](https://fetch.ai/docs/guides/agents/intermediate/langchain-rag-agent).

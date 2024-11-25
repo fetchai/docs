@@ -1,5 +1,5 @@
 import { Callout } from 'nextra/components'
-import { CodeGroup } from "../../../components/code";
+import { CodeGroup, DocsCode } from "../../../components/code";
 
 # Predefined Dialogue Chit-Chat
 
@@ -25,22 +25,26 @@ This example illustrates an automated dialogue scenario using a hardcoded dialog
 - Open a terminal and create a directory using `mkdir Dialogues` and navigate into it with `cd Dialogues`.
 - Create a python file `hardcoded_chitchat.py` in `Dialogues` directory:
 
-    <CodeGroup isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch chitchat.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > chitchat.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch chitchat.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch chitchat.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > chitchat.py
-        ```
+</CodeGroup>
 
-        ```py copy filename="ubuntu"
-        touch chitchat.py
-        ```
-
-    </CodeGroup>
-  
 - Import required libraries.
 
     ```python
@@ -233,13 +237,16 @@ Include all the above mentioned script sections into a single script and save it
 ## Step 2: setting up the agents
 
 These two agents use the `hardcoded_chitchat` dialogue system to automate the interaction with minimal intervention. The dialogue is mostly automated, with `agent3` configured to respond to initiation and continue based on predefined rules, and `agent4` automatically initiating the conversation.
-    
+
 ### Setting up `agent1`
 
 `agent1` is designed to receive and respond to messages according to hardcoded rules within the ChitChatDialogue class.
 
     - Navigate to your working directory and create a Python script named `agent1.py`.
     - Copy the following script into `agent1.py`:
+
+<CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
 
         ```python copy filename="agent1.py"
         # Import required libraries
@@ -289,7 +296,6 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
             except EOFError:
                 await ctx.send(sender, ConcludeChitChatDialogue())
 
-
         agent.include(chitchat_dialogue)  # Including dialogue in agent
 
         if __name__ == "__main__":
@@ -297,7 +303,8 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
             agent.run()  # Running agent
 
         ```
-
+        </DocsCode>
+</CodeGroup>
 ### Setting up `agent2`
 
 `agent2` is configured to automatically initiate a dialogue with `agent1` using the predefined dialogue system.
@@ -305,6 +312,8 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
     - Create a new Python script named `agent2.py` in the same directory.
     - Paste the following code into `agent2.py`:
 
+<CodeGroup hasCopy isLocalHostedFile>
+    <DocsCode local={true}>
         ```python copy filename="agent2.py"
         """Chit chat dialogue example"""
 
@@ -325,7 +334,6 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
             endpoint="http://127.0.0.1:8002/submit",
         )
 
-
         # Instantiate the dialogues
         chitchat_dialogue = ChitChatDialogue(
             version="0.1",
@@ -341,7 +349,6 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
             ctx.logger.info(f"Returning: {msg.text}")
             await ctx.send(sender, ChitChatDialogueMessage(text=msg.text))
 
-
         # Initiate dialogue after 5 seconds
         @agent.on_event("startup")
         async def start_cycle(ctx: Context):
@@ -350,17 +357,19 @@ These two agents use the `hardcoded_chitchat` dialogue system to automate the in
                 ctx, CHIT_AGENT_ADDRESS, InitiateChitChatDialogue()
             )
 
-
         agent.include(chitchat_dialogue)
 
         if __name__ == "__main__":
             print(f"Agent address: {agent.address}")
             agent.run()
         ```
+        </DocsCode>
 
     <Callout type="info" emoji="ℹ️">
       Remember to update the agent's address to communicate to each other and seed phrase of own choice. 
     </Callout>
+
+</CodeGroup>
 
 ## Step 3: Run the Dialogue
 

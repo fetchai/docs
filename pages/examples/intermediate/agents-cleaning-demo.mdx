@@ -1,3 +1,5 @@
+import { CodeGroup, DocsCode } from "../../../components/code"
+
 # Cleaning service with Agents
 
 ## Introduction
@@ -27,6 +29,8 @@ The protocol ensures the provider's services are available to the user's locatio
 
 Here is the full code:
 
+<CodeGroup hasCopy isLocalHostedFile>
+<DocsCode local={true}>
 ```py copy filename="__init__.py"
 from datetime import datetime, timedelta
 from typing import List
@@ -39,7 +43,6 @@ from .models import Availability, Provider, User
 
 PROTOCOL_NAME = "cleaning"
 PROTOCOL_VERSION = "0.1.0"
-
 
 class ServiceRequest(Model):
     user: str
@@ -140,6 +143,8 @@ async def handle_book_request(ctx: Context, sender: str, msg: ServiceBooking):
     # send the response
     await ctx.send(sender, BookingResponse(success=success))
 ```
+</DocsCode>
+</CodeGroup>
 
 #### models.py
 
@@ -152,7 +157,8 @@ We now need to define the data structure for the cleaning service application. W
 * `Availability`: to define the provider's service schedule, including maximum service distance, start and end times, and minimum hourly price.
 
 Here is the full code:
-
+<CodeGroup hasCopy isLocalHostedFile>
+<DocsCode local={true}>
 ```py copy filename="models.py"
 from enum import IntEnum
 
@@ -192,10 +198,13 @@ class Availability(models.Model):
     time_end = fields.DatetimeField()
     min_hourly_price = fields.FloatField(default=0.0)
 ```
+</DocsCode>
+</CodeGroup>
 
 ### Agents
 #### The Cleaner Agent
-
+<CodeGroup hasCopy isLocalHostedFile>
+<DocsCode local={true}>
 ```py copy filename="cleaner.py"
 from datetime import datetime
 
@@ -249,9 +258,13 @@ async def shutdown(_ctx: Context):
 if __name__ == "__main__":
     cleaner.run()
 ```
+</DocsCode>
+</CodeGroup>
 
 #### User
 
+<CodeGroup hasCopy isLocalHostedFile>
+<DocsCode local={true}>
 ```py copy filename="user.py"
 from datetime import datetime, timedelta
 
@@ -277,7 +290,6 @@ user = Agent(
         "http://127.0.0.1:8000/submit": {},
     },
 )
-
 
 request = ServiceRequest(
     user=user.name,
@@ -328,3 +340,5 @@ async def handle_book_response(ctx: Context, _sender: str, msg: BookingResponse)
 if __name__ == "__main__":
     user.run()
 ```
+</DocsCode>
+</CodeGroup>

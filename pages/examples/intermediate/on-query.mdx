@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup, DocsCode } from "../../../components/code"
 
 # On Query decorator example
 
@@ -22,6 +23,8 @@ This documentation outlines the steps to set up and enable communication between
 
 This agent handles queries related to job searches using SerpAPI. It provides information about available jobs for a job title specified by the user.
 
+<CodeGroup hasCopy isLocalHostedFile>
+  <DocsCode local={true}>
 ```py copy filename="JobSearchAgent.py"
 # import required libraries
 import json
@@ -30,15 +33,12 @@ import aiohttp
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
 
-
 # Define Request and Response Data Models
 class Request(Model):
     query: str
 
-
 class Response(Model):
     response: str
-
 
 # Define asynchronous function to handle job search queries using a serpapi url
 async def get_job_summary(query: str, location: str, api_key: str):
@@ -82,7 +82,6 @@ async def get_job_summary(query: str, location: str, api_key: str):
             else:
                 return f"Failed to fetch data: {response.status}"
 
-
 # Define Search Agent
 SearchAgent = Agent(
     name="SearchAgent",
@@ -94,12 +93,10 @@ SearchAgent = Agent(
 # Registering agent on Almanac and funding it
 fund_agent_if_low(SearchAgent.wallet.address())
 
-
 # On agent startup printing address
 @SearchAgent.on_event("startup")
 async def agent_details(ctx: Context):
     ctx.logger.info(f"Search Agent Address is {SearchAgent.address}")
-
 
 # On_query decorator to handle jobs request
 @SearchAgent.on_query(model=Request, replies={Response})
@@ -117,11 +114,11 @@ async def query_handler(ctx: Context, sender: str, msg: Request):
         ctx.logger.error(error_message)
         await ctx.send(sender, Response(response=str(error_message)))
 
-
 if __name__ == "__main__":
     SearchAgent.run()
 ```
-
+</DocsCode>
+</CodeGroup>
 Please update agent's secret phrase and serpapi API key. You can find serpapi API key on [SerpAPI API key ↗️](https://serpapi.com/)
 
 ### Flask App Script
@@ -140,11 +137,9 @@ app = Flask(__name__)
 # Define the address of your agent to send requests to
 AGENT_ADDRESS = "<YOUR_AGENT_ADDRESS_HERE>"  # Update your agent address here
 
-
 # Define a data model for incoming requests
 class Request(Model):
     query: str
-
 
 # Define a route to handle job search queries
 @app.route("/search-jobs")
@@ -167,7 +162,6 @@ async def search_jobs():
         # Handle JSON decoding error
         return jsonify({"error": "Invalid response format", "status": "error"}), 500
 
-
 # Function to send a query to the agent
 async def agent_query(req):
     try:
@@ -179,12 +173,10 @@ async def agent_query(req):
         # Return a formatted error message if the agent call fails
         return f"Unsuccessful agent call - {str(e)}"
 
-
 # Function to initiate an agent call
 async def make_agent_call(req: Request):
     response = await agent_query(req)
     return response
-
 
 # Main function to run the Flask application
 if __name__ == "__main__":

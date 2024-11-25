@@ -1,4 +1,4 @@
-import { CodeGroup } from "../../../../components/code";
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Agent Asynchronous Loops
 
@@ -25,72 +25,93 @@ The first script depicts how to **attach an agent to an external event loop** an
 
 First of all, let's create a Python script:
 
-    <CodeGroup isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch external_loop_attach.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > external_loop_attach.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch external_loop_attach.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch external_loop_attach.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > external_loop_attach.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch external_loop_attach.py
-        ```
-
-    </CodeGroup>
+</CodeGroup>
 
 Now, paste the below code into it:
 
-    ```py copy filename="external_loop_attach.py"
-    import asyncio
-    import contextlib
+<GithubCodeSegment digest="cc2ad7d371dc8cf31e730b9cb6d9ef26">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/agents-async-loops/external_loop_attach.py"
+        lineStart={1}
+        lineEnd={45}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='cc2ad7d371dc8cf31e730b9cb6d9ef26'>
 
-    from uagents import Agent, Bureau, Context
+<DocsCode local={true}>
+	```py copy filename="external_loop_attach.py"
 
-    loop = asyncio.get_event_loop()
+	import asyncio
+	import contextlib
+	
+	from uagents import Agent, Bureau, Context
+	
+	loop = asyncio.get_event_loop()
+	
+	agent = Agent(
+	    name="looper",
+	    seed="<YOUR_SEED>",
+	    port=8001,
+	    endpoint=["http://127.0.0.1:8001/submit"],
+	)
+	
+	bureau = Bureau(
+	    agents=[agent],
+	)
+	
+	
+	@agent.on_event("startup")
+	async def startup(ctx: Context):
+	    ctx.logger.info(">>> Looper is starting up.")
+	
+	
+	@agent.on_event("shutdown")
+	async def shutdown(ctx: Context):
+	    ctx.logger.info(">>> Looper is shutting down.")
+	
+	
+	async def coro():
+	    while True:
+	        print("doing hard work...")
+	        await asyncio.sleep(1)
+	
+	
+	if __name__ == "__main__":
+	    print("Attaching the agent or bureau to the external loop...")
+	    loop.create_task(coro())
+	
+	    # > when attaching the agent to the external loop
+	    loop.create_task(agent.run_async())
+	
+	    # > when attaching a bureau to the external loop
+	    # loop.create_task(bureau.run_async())
+	
+
+```
+</DocsCode>
+
+</CodeGroup>
 
 
-    agent = Agent(
-        name="looper",
-        seed="<YOUR_SEED>",
-    )
-
-    bureau = Bureau(
-        agents=[agent],
-    )
-
-
-    @agent.on_event("startup")
-    async def startup(ctx: Context):
-        ctx.logger.info(">>> Looper is starting up.")
-
-
-    @agent.on_event("shutdown")
-    async def shutdown(ctx: Context):
-        ctx.logger.info(">>> Looper is shutting down.")
-
-
-    async def coro():
-        while True:
-            print("doing hard work...")
-            await asyncio.sleep(1)
-
-
-    if __name__ == "__main__":
-        print("Attaching the agent or bureau to the external loop...")
-        loop.create_task(coro())
-
-        # > when attaching the agent to the external loop
-        loop.create_task(agent.run_async())
-
-        # > when attaching a bureau to the external loop
-        # loop.create_task(bureau.run_async())
-
-        with contextlib.suppress(KeyboardInterrupt):
-            loop.run_forever()
-    ```
 
     This script is for an agent using an external event loop. We first import the required libraries for this script to be run correctly. We then proceed and instantiate an agent called `looper` using a `seed`. Remember that you need to provide a seed within the `<YOUR_SEED>` field parameter. We then need to create a `bureau` to manage the agents. We can now add the `looper` agent into the `bureau`.
 
@@ -110,65 +131,91 @@ The goal of the second script is to create an agent that runs tasks inside an ex
 
 Let's start by creating a Python script:
 
-    <CodeGroup isOSFile>
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch external_loop_run.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > external_loop_run.py
+    ```
+</DocsCode>
 
-        ```py copy filename="mac"
-        touch external_loop_run.py
-        ```
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch external_loop_run.py
+    ```
+    </DocsCode>
 
-        ```py copy filename="windows"
-        echo. > external_loop_run.py
-        ```
-
-        ```py copy filename="ubuntu"
-        touch external_loop_run.py
-        ```
-
-    </CodeGroup>
+</CodeGroup>
 
 Then, let's paste the below code into it:
 
-    ```py copy filename="external_loop_run.py"
-    import asyncio
+<GithubCodeSegment digest="9cca4ae94c3da8faa8d2f451879925ed">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/advanced/agents-async-loops/external_loop_run.py"
+        lineStart={1}
+        lineEnd={43}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9cca4ae94c3da8faa8d2f451879925ed'>
 
-    from uagents import Agent, Bureau, Context
+<DocsCode local={true}>
+	```py copy filename="external_loop_run.py"
 
-    loop = asyncio.get_event_loop()
+	import asyncio
+	
+	from uagents import Agent, Bureau, Context
+	
+	loop = asyncio.get_event_loop()
+	
+	agent = Agent(
+	    name="looper",
+	    seed="<YOUR_SEED>",
+	    loop=loop,
+	    port = 8000,
+	    endpoint = ["http://127.0.0.1:8000/submit"],
+	)
+	
+	bureau = Bureau(
+	    agents=[agent],
+	    loop=loop,
+	)
+	
+	
+	@agent.on_event("startup")
+	async def startup(ctx: Context):
+	    ctx.logger.info(">>> Looper is starting up.")
+	
+	
+	@agent.on_event("shutdown")
+	async def shutdown(ctx: Context):
+	    ctx.logger.info(">>> Looper is shutting down.")
+	
+	
+	async def coro():
+	    while True:
+	        print("doing hard work...")
+	        await asyncio.sleep(1)
+	
+	
+	if __name__ == "__main__":
+	    print("Starting the external loop from the agent or bureau...")
+	    loop.create_task(coro())
+	
+	    # > when starting the external loop from the agent
+	    agent.run()
+	
 
-    agent = Agent(
-        name="looper",
-        seed="<YOUR_SEED>",
-        loop=loop,
-    )
+```
+</DocsCode>
 
-    bureau = Bureau(
-        agents=[agent],
-        loop=loop,
-    )
+</CodeGroup>
 
-    @agent.on_event("startup")
-    async def startup(ctx: Context):
-        ctx.logger.info(">>> Looper is starting up.")
 
-    @agent.on_event("shutdown")
-    async def shutdown(ctx: Context):
-        ctx.logger.info(">>> Looper is shutting down.")
-
-    async def coro():
-        while True:
-            print("doing hard work...")
-            await asyncio.sleep(1)
-
-    if __name__ == "__main__":
-        print("Starting the external loop from the agent or bureau...")
-        loop.create_task(coro())
-
-        # > when starting the external loop from the agent
-        agent.run()
-
-        # > when starting the external loop from the bureau
-        # bureau.run()
-    ```
 
     We start by importing the required libraries to correctly run this script. We then create an asynchronous event loop using `asyncio.get_event_loop()`. This loop is used to handle all asynchronous operations, such as the agent's actions and background tasks.
 
@@ -193,18 +240,18 @@ The output should be similar to the following:
 
     ```
     Attaching the agent or bureau to the external loop...
-    Doing hard work...
-    Doing hard work...
-    Doing hard work...
-    >>> Looper is starting up.
     ```
 
 - Script 2:
 
     ```
     Starting the external loop from the agent or bureau...
-    Doing hard work...
-    Doing hard work...
-    Doing hard work...
-    >>> Looper is starting up.
+    INFO:     [looper]: >>> Looper is starting up.
+    INFO:     [looper]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qwep424538eh7fcruqcnx8la3q3tgl4tgksrcdtahqs7dqgs4rewsx4jefu
+    INFO:     [looper]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    doing hard work...
+    doing hard work...
+    doing hard work...
+    doing hard work...
+    doing hard work...
     ```
