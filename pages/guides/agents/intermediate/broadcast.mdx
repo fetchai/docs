@@ -143,9 +143,9 @@ The overall script for this example should look as follows:
     ```py filename="broadcast-agent.py"
     from uagents import Agent, Bureau, Context, Model, Protocol
 
-    ethan = Agent(name="ethan", seed="ethan recovery phrase")
-    olivia = Agent(name="olivia", seed="olivia recovery phrase")
-    liam = Agent(name="liam", seed="liam recovery phrase")
+    ethan = Agent(name="ethan", seed="ethan recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
+    olivia = Agent(name="olivia", seed="olivia recovery phrase", port=8001, endpoint=["http://127.0.0.1:8001/submit"])
+    liam = Agent(name="liam", seed="liam recovery phrase", port=8002, endpoint=["http://127.0.0.1:8002/submit"])
 
     class BroadcastExampleRequest(Model):
         pass

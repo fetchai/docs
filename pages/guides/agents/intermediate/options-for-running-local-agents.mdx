@@ -19,7 +19,7 @@ Make sure you have read the following resources before going on with this guide:
     - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Agents protocols ↗️](/guides/agents/intermediate/protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
     - [Agent Mailboxes ↗️](/guides/agents/intermediate/mailbox)
@@ -93,11 +93,11 @@ Consider the following Agent:
 
 
 
-To correctly run this code, you need to provide the `name`, `seed`, `port` and `endpoint` parameters.
+To correctly run this code, you need to provide the `name`, `seed`, `port` and `endpoint` parameters. Also, mae sure your Agent has enough funds to register in Almanac contract.
 
 You'll need to be running this agent on infrastructure that allows you to **open a port**; in our example, we run on port `6145`.
 
-The agent is initialized with an endpoint, and a port; this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an `int` as seen in the `Request` object.
+The agent is initialized with an endpoint, and a port; this is so that we can receive messages, and other agents know where to send them. And we define our protocol, which is just an `int` as seen in the `Request` object.
 
 Our `on_message()` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of `UAgentResponse` which is essential to communicate with [DeltaV ↗️](/concepts/ai-engine/deltav).
 
