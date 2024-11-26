@@ -23,9 +23,6 @@ guidebox_pattern = re.compile(r'<GuideBox[\s\S]*?/>', re.IGNORECASE)
 # Corrected word pattern to allow apostrophes in valid words
 word_pattern = re.compile(r"\b\w+(?:'\w+)?\b")
 
-# Pattern to exclude words containing escape sequences (\n, \u, etc.)
-escape_sequence_pattern = re.compile(r'\\[nu][0-9a-fA-F]+|u[0-9a-fA-F]{4}')
-
 # Function to extract text while ignoring specified components and skipping code blocks
 def extract_text_from_mdx(file_path):
     with open(file_path, 'r') as file:
@@ -78,22 +75,20 @@ def check_spelling(text):
         else:
             processed_words.append(word)
 
+    # Debugging: Print all extracted words
+    print("Extracted words for debugging:", processed_words)
+
     # Patterns to exclude
-    n_prefix_pattern = re.compile(r'\bn\w+')
     css_value_pattern = re.compile(r'^\d+(px|%|em|rem|vh|vw|pt|cm|mm|in|s|ms|deg)?$')  # CSS values
     hex_color_pattern = re.compile(r'^(#?[A-Fa-f0-9]{3}|#?[A-Fa-f0-9]{6})$')  # Hex colors
     eth_address_pattern = re.compile(r'^0x[a-fA-F0-9]{40}$')  # Ethereum addresses
     hash_pattern = re.compile(r'^[a-f0-9]{40}$')  # Hash-like strings (40 hex characters)
 
-    # Filter out custom words, valid words with apostrophes,
-    # words matching escape sequences, "n-prefixed" words, CSS values, hex colors, ETH addresses, and hash strings
+    # Filter out custom words, valid words, and patterns to exclude
     reduced_words = [
         i.lower() for i in processed_words
         if (
             i.lower() not in custom_words
-            and not escape_sequence_pattern.search(i)
-            and "'" not in i  # Exclude words with apostrophes for misspelling check
-            and not n_prefix_pattern.match(i)  # Exclude "n-prefixed" words
             and not css_value_pattern.match(i)  # Exclude CSS values
             and not hex_color_pattern.match(i)  # Exclude hex colors
             and not eth_address_pattern.match(i)  # Exclude Ethereum addresses
@@ -101,9 +96,14 @@ def check_spelling(text):
             and i.strip()  # Exclude empty strings
         )
     ]
+
+    # Identify misspelled words
     misspelled = spell.unknown(reduced_words)
 
-    # Return misspelled words
+    # Debugging: Print filtered words and misspelled words
+    print("Filtered words:", reduced_words)
+    print("Misspelled words:", misspelled)
+
     return misspelled
 
 # Function to check all .mdx files in a directory
@@ -133,5 +133,5 @@ def check_directory(directory):
 directory_path = 'pages'
 has_errors = check_directory(directory_path)
 
-# Return False if errors were found
+# Exit with status code
 sys.exit(1 if has_errors else 0)
