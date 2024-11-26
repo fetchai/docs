@@ -310,6 +310,8 @@ We are now ready to run the script: `python agents_communication.py`
 The output would be:
 
     ```
+    WARNING:  [sigmar]: No endpoints provided. Skipping registration: Agent won't be reachable.
+    WARNING:  [slaanesh]: No endpoints provided. Skipping registration: Agent won't be reachable.
     INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
     INFO:     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
     INFO:     [slaanesh]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there slaanesh
@@ -318,7 +320,7 @@ The output would be:
     INFO:     [sigmar]: Received message from agent1q0mau8vkmg78xx0sh8cyl4tpl4ktx94pqp2e94cylu6haugt2hd7j9vequ7: hello there sigmar
     ```
 
-However these agents can only communicate with eachother on their local network, let's next see how we can register these agents to be able to commmunicate with many other agents in the open network.
+However, these agents can only communicate with each other on their local network, let's next see how we can register these agents to be able to communicate with many other agents in the open network.
 
 ## Agents Remote Communication: the Almanac Contract
 
@@ -345,13 +347,13 @@ The first step would be to create two different Python scripts for this task, ea
        ```py copy filename="windows"
        echo. > remote_agents_slaanesh.py
        ```
-       </DocsCode>
+    </DocsCode>
 
    <DocsCode ubuntu={true}>
        ```py copy filename="ubuntu"
        touch remote_agents_slaanesh.py
        ```
-       </DocsCode>
+    </DocsCode>
    </CodeGroup>
 
     Sigmar:
@@ -367,13 +369,13 @@ The first step would be to create two different Python scripts for this task, ea
        ```py copy filename="windows"
        echo. > remote_agents_sigmar.py
        ```
-       </DocsCode>
+    </DocsCode>
 
    <DocsCode ubuntu={true}>
        ```py copy filename="ubuntu"
        touch remote_agents_sigmar.py
        ```
-       </DocsCode>
+    </DocsCode>
    </CodeGroup>
 
 Let's start by defining the script for **sigmar**.
@@ -420,18 +422,18 @@ Let's start by defining the script for **sigmar**.
         hosted={true}
     />
 </GithubCodeSegment>
+
 <CodeGroup dynamic hasCopy isLocalHostedFile digest='18b0a8b3adee413ce50a3de150def57f'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_sigmar.py"
 
-	sigmar = Agent(
 	    name="sigmar",
 	    port=8000,
 	    seed="sigmar secret phrase",
 	    endpoint=["http://127.0.0.1:8000/submit"],
 	)
-
+	
 ```
 </DocsCode>
 
@@ -444,50 +446,49 @@ Let's start by defining the script for **sigmar**.
 <GithubCodeSegment digest="52445c05caeb48b4b18cb26611b76b58">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_sigmar.py"
-        lineStart={14}
-        lineEnd={22}
+        lineStart={15}
+        lineEnd={18}
         hosted={true}
     />
 </GithubCodeSegment>
+
+
 <CodeGroup dynamic hasCopy isLocalHostedFile digest='52445c05caeb48b4b18cb26611b76b58'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_sigmar.py"
-
-	
 	@sigmar.on_interval(period=2.0)
 	async def send_message(ctx: Context):
 	    await ctx.send(RECIPIENT_ADDRESS, Message(message="hello there slaanesh"))
-	
-	@sigmar.on_message(model=Message)
-	async def message_handler(ctx: Context, sender: str, msg: Message):
-	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-	
 
 ```
 </DocsCode>
 
 </CodeGroup>
 
-
-
     Here, the `.on_interval()` decorator schedules the `send_message()` function to be run every 2 seconds. Inside the function, there is an asynchronous call indicated by the `ctx.send()` method. This call sends a message with the content `"hello there slaanesh"` to the `RECIPIENT_ADDRESS`.
 
 4. We then need to define a function for `sigmar` to handle incoming messages from other agents:
 
+
 <GithubCodeSegment digest="12eda6de83f3848d2cb9101d87f0d47d">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_sigmar.py"
-        lineStart={23}
+        lineStart={19}
         lineEnd={24}
         hosted={true}
     />
 </GithubCodeSegment>
+
 <CodeGroup dynamic hasCopy isLocalHostedFile digest='12eda6de83f3848d2cb9101d87f0d47d'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_sigmar.py"
 
+    @sigmar.on_message(model=Message)
+    async def message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        
 	if __name__ == "__main__":
 	    sigmar.run()
 
@@ -495,7 +496,6 @@ Let's start by defining the script for **sigmar**.
 </DocsCode>
 
 </CodeGroup>
-
 
 
     Here, we have used the `.on_message()` decorator to register the `message_handler()` coroutine function as a handler for incoming messages of type `Message`.
@@ -567,6 +567,7 @@ We can now proceed by writing the script for agent `slaanesh`.
         hosted={true}
     />
 </GithubCodeSegment>
+
 <CodeGroup dynamic hasCopy isLocalHostedFile digest='3aa3a8ef9ea364e8454aa4105e0deb18'>
 
 <DocsCode local={true}>
@@ -583,18 +584,15 @@ We can now proceed by writing the script for agent `slaanesh`.
 	    seed="slaanesh secret phrase",
 	    endpoint=["http://127.0.0.1:8001/submit"],
 	)
-	
 
 ```
 </DocsCode>
 
 </CodeGroup>
 
-
-
 2. Let's now define a function for `slaanesh` to handle incoming messages and answering back to the sender:
 
-<GithubCodeSegment digest="70a3805cc51a661eafd6ffc8724c9f7e">
+<GithubCodeSegment digest="2a68547795d2b49b70b975507e9c5441">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/communicating-with-other-agents/remote_agents_slaanesh.py"
         lineStart={13}
@@ -602,26 +600,24 @@ We can now proceed by writing the script for agent `slaanesh`.
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='70a3805cc51a661eafd6ffc8724c9f7e'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2a68547795d2b49b70b975507e9c5441'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_agents_slaanesh.py"
-
-	@slaanesh.on_message(model=Message)
-	async def message_handler(ctx: Context, sender: str, msg: Message):
-	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 	
-	    await ctx.send(sender, Message(message="hello there sigmar"))
-	
-	if __name__ == "__main__":
-	    slaanesh.run()
+    @slaanesh.on_message(model=Message)
+    async def message_handler(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    
+        await ctx.send(sender, Message(message="hello there sigmar"))
+    
+    if __name__ == "__main__":
+        slaanesh.run()
 
 ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
     Here, we have defined an asynchronous `message_handler()` function for slaanesh to handle incoming messages from other uAgents. The function is decorated with `.on_message()`, and it is triggered whenever a message of type `Message` is received by `slaanesh`. When a message is received, the handler function logs the sender's address and the content of the message. It then sends a response back to the sender using the `ctx.send()` with a new message. The response message contains the `Message` data model with a `"hello there sigmar"` message.
 
@@ -685,6 +681,7 @@ The output will depend on the terminal:
 - **Sigmar**:
 
     ```
+    INFO:     [sigmar]: Registration on Almanac API successful
     INFO:     [sigmar]: Registering on almanac contract...
     INFO:     [sigmar]: Registering on almanac contract...complete
     INFO:     [sigmar]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qvwqu6a0km09mq4f6j6kmke9smswmgcergmml9a54av9449rqtmmxy4qwe6
@@ -697,6 +694,7 @@ The output will depend on the terminal:
 - **Slaanesh**:
 
     ```
+    INFO:     [slaanesh]: Registration on Almanac API successful
     INFO:     [slaanesh]: Registering on almanac contract...
     INFO:     [slaanesh]: Registering on almanac contract...complete
     INFO:     [slaanesh]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8001&address=agent1qvm7v76zs6w2x90xvq99yc5xh7c2thjtm44zc09me556zxnra627gkf4zum

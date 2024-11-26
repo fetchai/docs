@@ -26,16 +26,19 @@ word_pattern = re.compile(r"\b\w+(?:'\w+)?\b")
 # Pattern to exclude words containing escape sequences (\n, \u, etc.)
 escape_sequence_pattern = re.compile(r'\\[nu][0-9a-fA-F]+|u[0-9a-fA-F]{4}')
 
-
 # Function to extract text while ignoring specified components and skipping code blocks
 def extract_text_from_mdx(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
 
-    # Remove import statements, paths, GuideBox components, and JSX components
+    # Remove import statements
     content = import_pattern.sub('', content)
+
+    # Remove paths and GuideBox components
     content = path_pattern.sub('', content)
     content = guidebox_pattern.sub('', content)
+
+    # Remove JSX components and JSX-like tags
     content = jsx_like_tags_pattern.sub('', content)
 
     # Initialize the Markdown parser
@@ -60,7 +63,6 @@ def extract_text_from_mdx(file_path):
         traverse(node)
 
     return '\n'.join(text)
-
 
 # Function to check for spelling errors
 def check_spelling(text):
@@ -88,24 +90,21 @@ def check_spelling(text):
     reduced_words = [
         i.lower() for i in processed_words
         if (
-                i.lower() not in custom_words
-                and not escape_sequence_pattern.search(i)
-                and "'" not in i  # Exclude words with apostrophes for misspelling check
-                and not n_prefix_pattern.match(i)  # Exclude "n-prefixed" words
-                and not css_value_pattern.match(i)  # Exclude CSS values
-                and not hex_color_pattern.match(i)  # Exclude hex colors
-                and not eth_address_pattern.match(i)  # Exclude Ethereum addresses
-                and not hash_pattern.match(i)  # Exclude hash-like strings
-                and i.strip()  # Exclude empty strings
+            i.lower() not in custom_words
+            and not escape_sequence_pattern.search(i)
+            and "'" not in i  # Exclude words with apostrophes for misspelling check
+            and not n_prefix_pattern.match(i)  # Exclude "n-prefixed" words
+            and not css_value_pattern.match(i)  # Exclude CSS values
+            and not hex_color_pattern.match(i)  # Exclude hex colors
+            and not eth_address_pattern.match(i)  # Exclude Ethereum addresses
+            and not hash_pattern.match(i)  # Exclude hash-like strings
+            and i.strip()  # Exclude empty strings
         )
     ]
-
-    # Identify misspelled words
     misspelled = spell.unknown(reduced_words)
 
     # Return misspelled words
     return misspelled
-
 
 # Function to check all .mdx files in a directory
 def check_directory(directory):
@@ -129,7 +128,6 @@ def check_directory(directory):
                     has_errors = True
 
     return has_errors
-
 
 # Directory to check
 directory_path = 'pages'
