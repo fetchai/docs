@@ -83,7 +83,7 @@ def check_spelling(text):
     css_value_pattern = re.compile(r'^\d+(px|%|em|rem|vh|vw|pt|cm|mm|in|s|ms|deg)?$')  # CSS values
     hex_color_pattern = re.compile(r'^(#?[A-Fa-f0-9]{3}|#?[A-Fa-f0-9]{6})$')  # Hex colors
     eth_address_pattern = re.compile(r'^0x[a-fA-F0-9]{40}$')  # Ethereum addresses
-    hash_pattern = re.compile(r'^[a-f0-9]{40}$')  # Hash-like strings (40 hex characters)
+    hash_pattern = re.compile(r'^[a-f0-9]{40}$')  # Hash-like strings
 
     # Filter out custom words, valid words with apostrophes,
     # words matching escape sequences, "n-prefixed" words, CSS values, hex colors, ETH addresses, and hash strings
