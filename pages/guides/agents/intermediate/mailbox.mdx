@@ -81,8 +81,11 @@ You should get something similar within your terminal output:
 
         ```
         Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cukd7gkegxcm5vx5pku7kf
+        INFO:     [alice]: Registration on Almanac API successful
         INFO:     [alice]: Registering on almanac contract...
         INFO:     [alice]: Registering on almanac contract...complete
+        INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+        INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
         INFO:     [alice]: Connecting to mailbox server at agentverse.ai
         INFO:     [alice]: Mailbox access token acquired
         ```
@@ -197,19 +200,42 @@ Let's create and run a second Agent to message Alice every 3 seconds. You need t
 
 ## Testing
 
-With both `alice` and `agent_2` running, stop `alice` and let `agent_2` run for a further 20 seconds, or so. After
-that period of time, restart `alice` and she should print out a bunch of messages from the mailbox, like so:
+With both `alice` and `agent_2` running, stop `alice` and let `agent_2` run for a further 20 seconds, or so.
 
-        ```
-            INFO:     [alice]: Registering on almanac contract...complete
-            INFO:     [alice]: Connecting to mailbox server at agentverse.ai
-            INFO:     [alice]: Mailbox access token acquired
-        ```
+The output should be similar to the following, depending on the terminal window:
+
+- Alice: 
+
+    ```
+    Your agent's address is: agent1qtpr2xgmml964v44sy78gxhsrvakcgj567tthxeyz5fj844hcft5ww2rwkn
+    INFO:     [Alice]: Registration on Almanac API successful
+    INFO:     [alice]: Registering on almanac contract...
+    INFO:     [alice]: Registering on almanac contract...complete
+    INFO:     [Alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qtpr2xgmml964v44sy78gxhsrvakcgj567tthxeyz5fj844hcft5ww2rwkn
+    INFO:     [Alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [Alice]: Connecting to mailbox server at agentverse.ai
+    INFO:     [Alice]: Mailbox access token acquired
+    INFO:     [Alice]: Received message from agent1qvfnlashfjq67fsczqfs82mmnxu4ffu3xftsc75w62mfskhdnavtq0cknv9: hello 2024-11-06
+    INFO:     [Alice]: Received message from agent1qvfnlashfjq67fsczqfs82mmnxu4ffu3xftsc75w62mfskhdnavtq0cknv9: hello 2024-11-06
+    INFO:     [Alice]: Received message from agent1qvfnlashfjq67fsczqfs82mmnxu4ffu3xftsc75w62mfskhdnavtq0cknv9: hello 2024-11-06
+    ```
+
+- Agent 2: 
+
+    ```
+    INFO:     [agent_2]: Registration on Almanac API successful
+    INFO:     [agent_2]: Registering on almanac contract...
+    INFO:     [agent_2]: Registering on almanac contract...complete
+    INFO:     [agent_2]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8001&address=agent1qvfnlashfjq67fsczqfs82mmnxu4ffu3xftsc75w62mfskhdnavtq0cknv9    
+    INFO:     [agent_2]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    ```
 
  **You can now restart your Agent!**
 
+You will see a bunch of messages being displayed by `alice` which are sent by `agent_2`.
+
     <Callout type="warning" emoji="⚠️">
-      Remember, each uAgent needs a different dedicated Mailbox!
+      Whenever working with mulitple local Agents, you need a different dedicated Mailbox for each one of them!
     </Callout>
 
 Now your Agent doesn't need to be running all the time as messages will be waiting when it comes back online.

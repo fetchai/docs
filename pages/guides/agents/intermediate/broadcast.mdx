@@ -143,9 +143,9 @@ The overall script for this example should look as follows:
     ```py filename="broadcast-agent.py"
     from uagents import Agent, Bureau, Context, Model, Protocol
 
-    ethan = Agent(name="ethan", seed="ethan recovery phrase")
-    olivia = Agent(name="olivia", seed="olivia recovery phrase")
-    liam = Agent(name="liam", seed="liam recovery phrase")
+    ethan = Agent(name="ethan", seed="ethan recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
+    olivia = Agent(name="olivia", seed="olivia recovery phrase", port=8001, endpoint=["http://127.0.0.1:8001/submit"])
+    liam = Agent(name="liam", seed="liam recovery phrase", port=8002, endpoint=["http://127.0.0.1:8002/submit"])
 
     class BroadcastExampleRequest(Model):
         pass
@@ -191,13 +191,16 @@ The output would be:
 
     ```
     INFO:     [ethan]: Registration on Almanac API successful
-    INFO:     [ethan]: Almanac contract registration is up to date!
+    INFO:     [ethan]: Registering on almanac contract...
+    INFO:     [ethan]: Registering on almanac contract...complete
     INFO:     [olivia]: Registration on Almanac API successful
-    INFO:     [olivia]: Almanac contract registration is up to date!
+    INFO:     [olivia]: Registering on almanac contract...
+    INFO:     [olivia]: Registering on almanac contract...complete
     INFO:     [ liam]: Registration on Almanac API successful
-    INFO:     [ liam]: Almanac contract registration is up to date!
+    INFO:     [ liam]: Registering on almanac contract...
+    INFO:     [ liam]: Registering on almanac contract...complete
     INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    INFO:     [ liam]: Trying to contact 4 agents.
+    INFO:     [ liam]: Trying to contact 2 agents.
     INFO:     [ liam]: Received response from agent1q2hdqe8hxa6g0awspktktgc5furywq5jur5q9whh9hzyffxsm9ka6c2dmhz: Hello from olivia
     INFO:     [ liam]: Received response from agent1qff9zl5cehj2z68zef7q68uw76jjslh2r8xda93avayedqajzjwwyce8pt9: Hello from ethan
 

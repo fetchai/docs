@@ -45,7 +45,7 @@ Make sure you have read the following resources before going on with this guide:
 
    </CodeGroup>
 
-2. Open your terminal and `registration.py` file in an editor of your choice. Let's start by importing the `Agent` class from the `uagents` library to create our agent, and the `fund_agent_if_low` class from the `uagents.setup` module. This function will check if you have enough tokens to register in the Almanac contract, if not it will add testnet tokens to your `Fetch Network address`. Then, create an agent, `alice`, you need to provide the `name`, `seed`, `port` and `endpoint` parameters to correctly run it! The code will look similar to the following:
+2. Open your terminal and `registration.py` file in an editor of your choice. Let's start by importing the `Agent` class from the `uagents` library to create our Agent. This function will check if you have enough tokens to register in the Almanac contract, if not it will add testnet tokens to your `Fetch Network address`. Then, create an agent, `alice`, you need to provide the `name`, `seed`, `port` and `endpoint` parameters to correctly run it! The code will look similar to the following:
 
 <GithubCodeSegment digest="5ce0153e7a3d445dd4f8945b30a2b473">
     <CodeSegment
@@ -87,6 +87,34 @@ There's a few things happening in this script; we initialize Alice with an endpo
 We also have to define `agent.run()`. This `.run()` function runs the Agent, but more importantly this registers the Agent to the Almanac when code is initialized.
 
 Once you run your script, your Agent will start the registration process automatically, the balance of the Agent's wallet will be checked and funded if needed. Finally, it will try to register on the Almanac contract. Then, we will be ready to start to a remote communication with other Agents registered within the Almanac contract.
+
+The output should be similar to:
+
+   ```
+   INFO:     [Alice]: Registration on Almanac API successful
+   INFO:     [Alice]: Registering on almanac contract...
+   INFO:     [Alice]: Registering on almanac contract...complete
+   INFO:     [Alice]: Hello
+   INFO:     [Alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qfccl7xc2hrwzntx9rxgf56lh80kuf5av6h4nyk3ywvxyu846zqwyl3g0jf
+   INFO:     [Alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     [Alice]: Hello
+   INFO:     [Alice]: Hello
+   INFO:     [Alice]: Hello
+   ```
+
+The output for the above code would be similar to the following:
+
+   ```
+   INFO:     [alice]: Registration on Almanac API successful
+   INFO:     [alice]: Registering on almanac contract...
+   INFO:     [alice]: Registering on almanac contract...complete
+   INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1q0c5m0ugjml6rwa05fwe8wecqnxjc8vk6grqwlylpp9h4nfzxm4cyaha7r8
+   INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     [alice]: Hello
+   INFO:     [alice]: Hello
+   INFO:     [alice]: Hello
+   ```
+>>>>>>> b5104299a61d2592a3e0f38e70e1b50f1c7b7e0d
 
     <Callout type="info" emoji="ℹ️">
         For further information on how to set up your Agents and register them into the Almanac to allow for remote

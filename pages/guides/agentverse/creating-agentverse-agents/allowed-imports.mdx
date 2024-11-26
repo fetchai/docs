@@ -4,45 +4,55 @@
 
 In the [Agentverse ↗️](https://agentverse.ai/) code editor, you have the freedom to import and utilize a selected set of modules to create your code, while maintaining security and control. These pre-approved modules offer a diverse range of functionalities, allowing you to build complex uAgents.
 
-**The modules available on the Agentverse are**:
+**The Agentverse now provides full Python support!** This means that all Hosted Agents will now support the full Python built-in library plus the following packages:
 
     - [`uagents` ↗️](/guides/agentverse/allowed-imports#uagents).
-
-    - [`json` ↗️](/guides/agentverse/allowed-imports#json).
 
     - [`requests` ↗️](/guides/agentverse/allowed-imports#requests).
 
     - [`cosmpy` ↗️](/guides/agentverse/allowed-imports#cosmpy).
 
-    - [`datetime` ↗️](/guides/agentverse/allowed-imports#datetime).
-
-    - [`enum` ↗️](/guides/agentverse/allowed-imports#datetime).
-
     - [`pydantic` ↗️](/guides/agentverse/allowed-imports#datetime).
 
-    - [`math` ↗️](/guides/agentverse/allowed-imports#math).
-
-    - [`time` ↗️](/guides/agentverse/allowed-imports#time).
-
-    - [`uuid` ↗️](/guides/agentverse/allowed-imports#uuid).
-
-    - [`ai_engine` ↗️](/guides/agentverse/allowed-imports#ai_engine).
-
-    - [`random` ↗️](/guides/agentverse/allowed-imports#random).
+    - [`uagents-ai-engine` ↗️](/guides/agentverse/allowed-imports#ai_engine).
 
     - [`MySQLdb` ↗️](/guides/agentverse/allowed-imports#mysqldb).
 
     - [`pymongo` ↗️](/guides/agentverse/allowed-imports#pymongo).
 
-    - [`_strptime` ↗️](/guides/agentverse/allowed-imports#_strptime).
+    - [`bs64` ↗️](/guides/agentverse/allowed-imports#bs4-beautifulsoup).
 
-    - [`hashlib` ↗️](/guides/agentverse/allowed-imports#hashlib).
+    - [`faiss-cpu` ↗️](/guides/agentverse/allowed-imports#faiss-cpu).
 
-    - [`hmac` ↗️](/guides/agentverse/allowed-imports#hmac).
+    - [`fetchai-babble` ↗️](/guides/agentverse/allowed-imports#fetchai-babble).
 
-    - [`base64` ↗️](/guides/agentverse/allowed-imports#base64).
+    - [`google-generativeai` ↗️](/guides/agentverse/allowed-imports#google-generativeai).
 
-    - [`re` ↗️](/guides/agentverse/allowed-imports#re).
+    - [`langchain-anthropic` ↗️](/guides/agentverse/allowed-imports#langchain-anthropic).
+
+    - [`langchain-community` ↗️](/guides/agentverse/allowed-imports#langchain-community).
+
+    - [`langchain-core` ↗️](/guides/agentverse/allowed-imports#langchain-core).
+
+    - [`langchain-google-genai` ↗️](/guides/agentverse/allowed-imports#langchain-google-genai).
+
+    - [`langchain-google-vertexai` ↗️](/guides/agentverse/allowed-imports#langchain-google-vertexai).
+
+    - [`langchain-openai` ↗️](/guides/agentverse/allowed-imports#langchain-openai).
+
+    - [`langchain-text-splitters` ↗️](/guides/agentverse/allowed-imports#langchain-text-splitters).
+
+    - [`langchain` ↗️](/guides/agentverse/allowed-imports#langchain).
+
+    - [`nltk` ↗️](/guides/agentverse/allowed-imports#nltk).
+
+    - [`openai` ↗️](/guides/agentverse/allowed-imports#openai).
+
+    - [`tenacity` ↗️](/guides/agentverse/allowed-imports#tenacity).
+
+    - [`unstructured` ↗️](/guides/agentverse/allowed-imports#unstructured).
+
+    - [`validators` ↗️](/guides/agentverse/allowed-imports#validators).
 
 ## Allowed imports
 
@@ -64,30 +74,6 @@ Build fast and lightweight for decentralized scenarios using the uAgents Framewo
           async def print_message(ctx: Context):
               msg = Message(text=f"Hello there my wallet address is {ctx.wallet}.")
               print(msg.text)
-          ```
-
-#### json
-
-Simply interact with JSON data structures. This package provides functionality for encoding and decoding JSON (JavaScript Object Notation) data.
-
-    - **Available functions**: `dumps`, `loads`.
-
-        **Example**:
-
-          ```py copy
-          import json
-
-          some_json =  '{ "agent":"Alice", "age":"1 day"}'
-
-          # JSON to python dictionary
-          python_dict = json.loads(some_json)
-          print(python_dict["age"])
-
-          # python dictionary to JSON:
-          some_json_2 = json.dumps(python_dict)
-
-          # the result is a JSON string equal to some_json:
-          print(some_json_2)
           ```
 
 #### requests
@@ -138,40 +124,6 @@ A Python library for interacting with Cosmos-based blockchains. Checkout the [Co
                   faucet_api.get_wealth(ctx.wallet)
           ```
 
-#### datetime
-
-A library allowing you to handle date and time operations with ease.
-
-  - **Full access to all functions and features**.
-
-        **Example**:
-
-          ```py copy
-          import datetime
-
-          today = datetime.datetime.now()
-          print(f"Today is: {today.year}:{today.month}:{today.day}")
-          ```
-
-#### enum
-
-A library to create enumerations with symbolic names and unique values.
-
-    - **Full access to all functions and features**.
-
-        **Example**:
-
-          ```py copy
-          from enum import Enum
-
-          class Agent(Enum):
-              alice = 1
-              bob = 2
-              carl = 3
-
-          print(Agent.bob.value)
-          ```
-
 #### pydantic
 
 A package to ensure data validation and settings management. It simplifies the process of defining and validating data models by providing a way to declare and enforce data types, constraints, and validation rules on Python data structures.
@@ -197,59 +149,6 @@ A package to ensure data validation and settings management. It simplifies the p
           print(user)
           ```
 
-#### math
-
-A library that provides access to various mathematical functions and constants for performing mathematical operations.
-
-    - **Full access to all functions and features**.
-
-        **Example**:
-
-          ```py copy
-          import math
-
-          # Basic mathematical operations
-          print(math.sqrt(25))  # Output: 5.0
-          print(math.pow(2, 3))  # Output: 8.0
-
-          # Trigonometric functions
-          print(math.cos(0))  # Output: 1.0
-
-          # Logarithmic and exponential functions
-          print(math.log(10))  # Output: 2.302585092994046
-          ```
-
-#### time
-
-This provides functions for working with time-related functions, including time measurement, manipulation, and conversions. It allows Python programs to handle time expressions, perform time-related calculations, and work with time values in different formats.
-
-    - **Full access to all functions and features**.
-
-        **Example**:
-
-          ```py copy
-          import time
-
-          current_time = time.strftime("%H:%M:%S")  # Get the current time in HH:MM:SS format
-          print("Current time is:", current_time)
-          ```
-
-#### uuid
-
-It stands for "Universally Unique Identifier". It is a Python library used for generating universally unique identifiers based on various algorithms. These identifiers are unique across space and time, making them highly suitable for various purposes where uniqueness is essential, such as database keys, identifiers in distributed systems, and more.
-
-    - **Full access to all functions and features**.
-
-        **Example**:
-
-          ```py copy
-          import uuid
-
-          # Generating a version 4 (random) UUID
-          unique_id = uuid.uuid4()
-          print(unique_id)
-          ```
-
 #### ai_engine
 
 Integrate uAgents with the AI Engine to perform a wide variety tasks, including in booking services, make reservations, and provide answers to different queries. Checkout the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) documentation and the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) for further information.
@@ -270,29 +169,6 @@ Integrate uAgents with the AI Engine to perform a wide variety tasks, including 
           @simples.on_message(model=Request, replies={UAgentResponse})
           async def handle_message(ctx: Context, sender: str, msg: Request):
               await ctx.send(sender, UAgentResponse(message="0", type=UAgentResponseType.FINAL))
-          ```
-
-#### random
-
-This package is used for generating random numbers, managing random selections, and handling random data. It provides various functions for generating random values, shuffling sequences, and making random selections.
-
-    - **Full access to all functions and features**.
-
-        **Example**:
-
-          ```py copy
-          # Generate a random integer within a specified range
-          random_integer = random.randint(1, 10)
-          print(random_integer)  # Output: (any integer between 1 and 10)
-
-          # Shuffle a list
-          my_list = [1, 2, 3, 4, 5]
-          random.shuffle(my_list)
-          print(my_list)  # Output: [3, 1, 4, 5, 2] (shuffled list)
-
-          # Select a random item from a list
-          my_item = random.choice(my_list)
-          print(my_item)  # Output: (any element from the list)
           ```
 
 #### MySQLdb
@@ -362,122 +238,413 @@ This package is used for generating random numbers, managing random selections, 
           client.close()
           ```
 
-#### _strptime
+#### bs4 (BeautifulSoup)
 
-`_strptime` is a method from the `datetime` module in Python, specifically used for parsing date and time strings into datetime objects.
-        **Example**:
-
-          ```py copy
-          from datetime import datetime
-
-          date_string = "2024-04-23"
-          format_string = "%Y-%m-%d"
-          date_object = datetime.strptime(date_string, format_string)
-          print(date_object)
-          ```
-
-#### hashlib
-
-`hashlib` is a Python library that provides interfaces to various secure hash and message digest algorithms. It's commonly used for generating hash values for data integrity verification, password hashing, digital signatures, and more.
-
-    - **Full access to all functions and features**.
+`bs4` make it easy to parse and interact with HTML and XML documents for web scraping or data extraction.
 
         **Example**:
 
-          ```py copy
-          import hashlib
+        ```py copy
+        from bs4 import BeautifulSoup
+        import requests
 
-          # String to hash
-          data = "Hello, world!"
+        # Fetch the content of a webpage
+        response = requests.get("https://example.com")
 
-          # Create a SHA-256 hash object
-          hash_object = hashlib.sha256()
+        # Parse the HTML content
+        soup = BeautifulSoup(response.content, "html.parser")
 
-          # Update the hash object with the data
-          hash_object.update(data.encode())
+        # Extract and print the page title
+        print(soup.title.string)
 
-          # Get the hexadecimal digest (hash value) of the data
-          hash_value = hash_object.hexdigest()
+        ```
 
-          print("SHA-256 Hash:", hash_value)
-          ```
+#### faiss-cpu
 
-#### hmac
-
-`hmac` stands for **Hash-based Message Authentication Code**. It's a Python module that implements the HMAC algorithm as described in RFC 2104. HMAC is a cryptographic hash function that adds a shared secret key to the hashing process, providing a way to verify both the integrity and authenticity of a message.
-
-    - **Full access to all functions and features**.
+`faiss-cpu` allow you to efficiently perform nearest neighbor search on high-dimensional dense vectors. It is used in machine learning for clustering and similarity search.
 
         **Example**:
 
-          ```py copy
-          import hmac
-          import hashlib
+        ```py copy
+        import faiss
+        import numpy as np
 
-          # Secret key (shared between sender and receiver)
-          secret_key = b'my_secret_key'
+        # Create a dataset of 128-dimensional vectors
+        data = np.random.random((100, 128)).astype('float32')
 
-          # Message to authenticate
-          message = b'Hello, world!'
+        # Create an index using L2 (Euclidean) distance
+        index = faiss.IndexFlatL2(128)
 
-          # Generate HMAC using SHA-256 hash function and secret key
-          hmac_digest = hmac.new(secret_key, message, hashlib.sha256).hexdigest()
+        # Add vectors to the index
+        index.add(data)
 
-          print("HMAC:", hmac_digest)
-          ```
+        # Perform a search to find the 5 nearest neighbors
+        query = np.random.random((1, 128)).astype('float32')
+        distances, indices = index.search(query, k=5)
+        print(indices)
 
-#### base64
+        ```
 
-`base64` is a Python module that provides functions for encoding and decoding binary data using the Base64 encoding scheme. Base64 encoding converts binary data into a ASCII string format, which is useful for transmitting binary data over protocols that require plain text, such as email or HTTP headers.
+#### fetchai-babble
 
-    - **Full access to all functions and features**.
-
-        **Example**:
-
-          ```py copy
-          import base64
-
-          # String to encode
-          data = "Hello, world!"
-
-          # Encode the string to Base64
-          encoded_data = base64.b64encode(data.encode())
-
-          print("Encoded:", encoded_data)
-
-          # Decode the Base64-encoded data
-          decoded_data = base64.b64decode(encoded_data).decode()
-
-          print("Decoded:", decoded_data)
-          ```
-
-#### re
-
-`re` is a Python module providing support for working with regular expressions. Regular expressions (often abbreviated as regex or regexp) are sequences of characters that define a search pattern, which is useful for finding, replacing, or manipulating strings based on specific patterns.
-
-    - **Full access to all functions and features**.
+`fetchai-babble` allows you to interact with the Fetch.ai messaging service (called Memorandum). Further reference [here ↗️](https://pypi.org/project/fetchai-babble/).
 
         **Example**:
 
-          ```py copy
-          import re
+        ```py copy
+        from babble import Client, Identity
 
-          # String containing a pattern
-          text = "The quick brown fox jumps over the lazy dog."
+        # create a set of agents with random identities
+        client1 = Client('agent1.....', Identity.generate())
+        client2 = Client('agent1.....', Identity.generate())
 
-          # Define a regular expression pattern
-          pattern = r'fox'
+        # send a message from one client to another
+        client1.send(client2.delegate_address, "why hello there")
 
-          # Search for the pattern in the string
-          match = re.search(pattern, text)
+        # receive the messages from the other client
+        for msg in client2.receive():
+            print(msg.text)
+        ```
 
-          if match:
-            print("Pattern found at index:", match.start())
+#### google-generativeai
 
-          else:
-            print("Pattern not found.")
-          ```
+`google-generativeai` allows you to build with the Gemini API. The Gemini API gives you access to Gemini models created by Google DeepMind. Gemini models are built from the ground up to be multimodal, so you can reason seamlessly across text, images, and code. Further reference [here ↗️](https://pypi.org/project/google-generativeai/).
 
-Explore the [Agentverse guides ↗️](/guides#agentverse) and [Agentverse concepts ↗️](/concepts#agentverse) for additional guides and documentation resources!
+        **Example**:
 
-For additional information on Functions, head over to [uAgent Functions ↗️](/guides/agents/intermediate/agent-functions) and [Register uAgent Functions ↗️](/guides/agentverse/agentverse-functions/registering-agent-services).
+        ```py copy
+        import google.generativeai as genai
+        import os
+
+        genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content("The opposite of hot is")
+        print(response.text)
+        ```
+
+#### langchain-anthropic
+
+`langchain-anthropic` contains the LangChain integration for Anthropic's generative models. Further reference [here ↗️](https://pypi.org/project/langchain-anthropic/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_anthropic import ChatAnthropic
+        from langchain_core.messages import AIMessage, HumanMessage
+
+        model = ChatAnthropic(model="claude-3-opus-20240229", temperature=0, max_tokens=1024)
+
+        message = HumanMessage(content="What is the capital of France?")
+
+        response = model.invoke([message])
+
+        ```
+
+#### langchain-community
+
+`langchain-community` contains third-party integrations that implement the base interfaces defined in LangChain Core, making them ready-to-use in any LangChain application. It is automatically installed by langchain, but can also be used separately. Further reference [here ↗️](https://pypi.org/project/langchain-community/).
+
+        **Example**:
+
+        ```py copy
+        import bs4
+        from langchain_community.document_loaders import WebBaseLoader
+
+        # Only keep post title, headers, and content from the full HTML.
+        bs4_strainer = bs4.SoupStrainer(class_=("post-title", "post-header", "post-content"))
+        loader = WebBaseLoader(
+            web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+            bs_kwargs={"parse_only": bs4_strainer},
+        )
+        docs = loader.load()
+
+        len(docs[0].page_content)
+        ```
+#### langchain-core
+
+`langchain-core` contains the base abstractions that power the rest of the LangChain ecosystem. Further reference [here ↗️](https://pypi.org/project/langchain-core/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_core.messages import HumanMessage
+        from langchain_google_genai import ChatGoogleGenerativeAI
+
+        llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+        # example
+        message = HumanMessage(
+            content=[
+                {
+                    "type": "text",
+                    "text": "What's in this image?",
+                },  # You can optionally provide text parts
+                {"type": "image_url", "image_url": "https://picsum.photos/seed/picsum/200/300"},
+            ]
+        )
+        llm.invoke([message])
+
+        ```
+
+#### langchain-google-genai
+
+`langchain-google-genai` contains the LangChain integrations for Gemini through their generative-ai SDK. Further reference [here ↗️](https://pypi.org/project/langchain-google-genai/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_core.messages import HumanMessage
+        from langchain_google_genai import ChatGoogleGenerativeAI
+
+        llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+        # example
+        message = HumanMessage(
+            content=[
+                {
+                    "type": "text",
+                    "text": "What's in this image?",
+                },  # You can optionally provide text parts
+                {"type": "image_url", "image_url": "https://picsum.photos/seed/picsum/200/300"},
+            ]
+        )
+        llm.invoke([message])
+
+        ```
+
+#### langchain-google-vertexai
+
+`langchain-google-vertexai` contains the LangChain integrations for Google Cloud generative models. Further reference [here ↗️](https://pypi.org/project/langchain-google-vertexai/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_core.messages import HumanMessage
+        from langchain_google_vertexai import ChatVertexAI
+
+        llm = ChatVertexAI(model_name="gemini-pro-vision")
+        # example
+        message = HumanMessage(
+            content=[
+                {
+                    "type": "text",
+                    "text": "What's in this image?",
+                },  # You can optionally provide text parts
+                {"type": "image_url", "image_url": {"url": "https://picsum.photos/seed/picsum/200/300"}},
+            ]
+        )
+        llm.invoke([message])
+
+        ```
+
+#### langchain-openai
+
+`langchain-openai` contains the LangChain integrations for OpenAI through their `openai` SDK. Further reference [here ↗️](https://pypi.org/project/langchain-openai/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_openai import ChatOpenAI
+
+        llm = ChatOpenAI(
+            model="gpt-4o",
+            temperature=0,
+            max_tokens=None,
+            timeout=None,
+            max_retries=2,
+            # api_key="...",  # if you prefer to pass api key in directly instaed of using env vars
+            # base_url="...",
+            # organization="...",
+            # other params...
+        )
+        ```
+
+#### langchain-text-splitters
+
+`langchain-text-splitters` contains utilities for splitting into chunks a wide variety of text documents. Further reference [here ↗️](https://pypi.org/project/langchain-text-splitters/).
+
+        **Example**:
+
+        ```py copy
+        from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000, chunk_overlap=200, add_start_index=True
+        )
+        all_splits = text_splitter.split_documents(docs)
+
+        len(all_splits)
+        ```
+
+#### langchain
+
+`langchain` assists in the development of applications integrating with LLMs. Further reference [here ↗️](https://pypi.org/project/langchain/).
+
+        **Example**:
+
+        ```py copy
+        import bs4
+        from langchain import hub
+        from langchain_chroma import Chroma
+        from langchain_community.document_loaders import WebBaseLoader
+        from langchain_core.output_parsers import StrOutputParser
+        from langchain_core.runnables import RunnablePassthrough
+        from langchain_openai import OpenAIEmbeddings
+        from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+        # Load, chunk and index the contents of the blog.
+        loader = WebBaseLoader(
+            web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+            bs_kwargs=dict(
+                parse_only=bs4.SoupStrainer(
+                    class_=("post-content", "post-title", "post-header")
+                )
+            ),
+        )
+        docs = loader.load()
+
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        splits = text_splitter.split_documents(docs)
+        vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
+
+        # Retrieve and generate using the relevant snippets of the blog.
+        retriever = vectorstore.as_retriever()
+        prompt = hub.pull("rlm/rag-prompt")
+
+        def format_docs(docs):
+            return "\n\n".join(doc.page_content for doc in docs)
+
+        rag_chain = (
+            {"context": retriever | format_docs, "question": RunnablePassthrough()}
+            | prompt
+            | llm
+            | StrOutputParser()
+        )
+
+        rag_chain.invoke("What is Task Decomposition?")
+        ```
+
+#### nltk
+
+`nltk` is a package for natural language processing.
+
+        **Example**:
+
+        ```py copy
+        import nltk
+        nltk.download('punkt')
+
+        from nltk.tokenize import word_tokenize
+
+        text = "This is an example sentence, showing off the tokenization process."
+
+        tokens = word_tokenize(text)
+
+        print(tokens)
+
+        # ['This', 'is', 'an', 'example', 'sentence', ',', 'showing', 'off', 'the', 'tokenization', 'process', '.']
+        ```
+
+#### openai
+
+`openai` provides easy access to the OpenAI REST API. The library includes type definitions for all request params and response fields, and offers both synchronous and asynchronous clients powered by httpx.
+
+        **Example**:
+
+        ```py copy
+        import os
+        from openai import OpenAI
+
+        client = OpenAI(
+            # This is the default and can be omitted
+            api_key=os.environ.get("OPENAI_API_KEY"),
+        )
+
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": "Say this is a test",
+                }
+            ],
+            model="gpt-3.5-turbo",
+        )  
+        ```
+
+#### tenacity
+
+`tenacity` is a general-purpose retrying library to simplify the task of adding retry behavior to just about anything.
+
+        **Example**:
+
+        ```py copy
+        import random
+        from tenacity import retry
+
+        @retry
+        def do_something_unreliable():
+            if random.randint(0, 10) > 1:
+                raise IOError("Broken sauce, everything is hosed!!!111one")
+            else:
+                return "Awesome sauce!"
+
+        print(do_something_unreliable())
+        ```
+
+#### unstructured
+
+`unstructured` is a library for processing and extracting data from unstructured file formats such as PDFs, Word documents, and more.
+
+        **Example**:
+
+        ```py copy
+        from unstructured.partition.auto import partition
+
+        elements = partition(filename="example-docs/fake-email.eml")
+        print("\n\n".join([str(el) for el in elements]))
+        ```
+
+#### validators
+
+`validators` is a Python library designed for data validation. It provides simple functions to verify the validity of various types of data. Further reference [here ↗️](https://pypi.org/project/validators/).
+
+        **Example**:
+
+        ```py copy
+        import validators
+        print(validators.email('someone@example.com'))  # True
+        print(validators.email('invalid-email'))  # ValidationFailure
+
+        ```
+## Multi-file Support
+
+The Agentverse Code Editor enhances your agent development experience with multi-file support, enabling you to tackle complex projects with ease. Leverage this feature to:
+
+    - **Interact between files**: simply import functions, classes, and variables from one file to another.
+    - **Modular development**: divide your projects into manageable components for streamlined creation.
+    - **Code reuse**: utilize modules across various sections of your project for efficient development.
+    - **Enhanced organization**: maintain a structured and organized codebase for easier maintenance.
+
+If you want to create **new files** you just need to click on **+ New File** on [Agentverse ↗️](https://agentverse.ai/) inside your managed agent.
+
+You can create a Python message file with the following `Model` class:
+
+    ```py copy
+    from uagents import Model
+
+    class Sentence(Model):
+        text: str
+    ```
+
+Then, you can just import the `Sentence` data model to your `agent.py` file and make use of it:
+
+    ```py copy
+    from uagents import Context
+    from message import Sentence
+
+    @agent.on_interval(period=2.0)
+    async def print_message(ctx: Context):
+        msg = Sentence(text=f"Hello there my wallet address is {ctx.wallet}.")
+        print(msg.text)
+    ```
+
+For additional information on Functions, head over to [Agent Functions ↗️](/guides/agents/intermediate/agent-functions) and [Register Agent Functions ↗️](/guides/agentverse/agentverse-functions/registering-agent-services) resources.

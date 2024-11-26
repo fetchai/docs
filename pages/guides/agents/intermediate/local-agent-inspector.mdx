@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
 # Local Agent Inspector
 
@@ -9,21 +10,19 @@ The **Local Agent Inspector** is a developer tool on Agentverse that enhances th
 
             - [Agent Mailbox ↗️](/guides/agents/intermediate/mailbox).  
             - [Options for running local Agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
-            - [Agent Functions  ↗️](/guides/agents/intermediate/agent-functions). 
+            - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions). 
             - [Agentverse Functions: register your Agents Functions on the Agentverse! ↗️](/guides/agentverse/agentverse-functions/registering-agent-services). 
     </Callout>
 
 The Inspector tool provides developers with multiple key insights, including the agent’s address, details about its local and external endpoints, the types of messages sent and received, and comprehensive data about the sender and recipient of each message. This functionality makes it easier to monitor communication flows, troubleshoot issues, and analyze performance in real-time.
 
-By visualizing this information, the Local Agent Inspector allows you to maintain real-time oversight of how your Agent interacts with other Agents and systems, facilitating easier troubleshooting, performance analysis, and optimizing communication flows. This functionality is particularly valuable for complex applications where local agents are responsible for processing real-time tasks, interacting with other agents, or managing resources directly. It provides a way to see how your agent is performing within a networked environment, while still retaining the benefits of local execution and control.
+By visualizing this information, the Local Agent Inspector allows you to maintain real-time oversight of how your Agent interacts with other Agents and systems, facilitating easier troubleshooting, performance analysis, and optimizing communication flows. This functionality is particularly valuable for complex applications where local Agents are responsible for processing real-time tasks, interacting with other Agents, or managing resources directly. It provides a way to see how your Agent is performing within a networked environment, while still retaining the benefits of local execution and control.
 
 All messages data regarding a particular local agent are then presented as a list through which it is also possible to access the payload for the message being examined.
 
-while agents running in a bureau are not supported in the initial version, we will be adding support for this very soon
+If you're managing multiple local agents, the Inspector will show a complete list of all running agents. While support for agents managed through a `Bureau` is not available in the initial version, it will be added soon. This way, you will have a complete view of your Agents running locally alongside with the relevant details.
 
-If you're managing multiple local agents, the Inspector will show a complete list of all running agents. While support for agents managed through a `Bureau` is not available in the initial version, it will be added soon. This way, yo will have a complete view of your Agents running locally alongside with the relevant details.
-
-In the near future, developers will also have the option to connect their local agents directly to Agentverse through the Inspector, making it even easier to manage and monitor agent interactions.
+In the near future, developers will also have the option to connect their local Agents directly to Agentverse through the Inspector, making it even easier to manage and monitor each Agent interactions.
 
 ## How to access the Local Agent Inspector
 
@@ -31,54 +30,65 @@ You can access the Local Agent Inspector by first coding and defining your Agent
 
 For instance, consider the following simple local agent:
 
-    ```py copy filename="agent_inspector_example.py"
-    from uagents import Agent, Context, Model
-    from uagents.setup import fund_agent_if_low
+<GithubCodeSegment digest="36661e2d104e8d5150bdb124abcbb17c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/local-agent-inspector/agent_inspector_example.py"
+        lineStart={1}
+        lineEnd={25}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='36661e2d104e8d5150bdb124abcbb17c'>
+<DocsCode local={true}>
+	```py copy filename="agent_inspector_example.py"
 
-    class Message(Model):
-        message: str 
+	from uagents import Agent, Context, Model
+	
+	class Message(Model):
+	    message: str
+	
+	
+	bob = Agent(
+	    name="Bob",
+	    port=8001,
+	    seed="BobSecretPhrase",
+	    endpoint=["http://127.0.0.1:8001/submit"],
+	)
+	
+	print(f"Your agent's address is: {bob.address}")
+	
+	
+	@bob.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f'Received message from {sender}: {msg.message}')
+	
+	    await ctx.send(sender, Message(message="Hello There!"))
+	
+	
+	if __name__ == "__main__":
+	    bob.run()
 
-    bob = Agent(
-        name="Bob",
-        port=8001,
-        seed="BobSecretPhrase",
-        endpoint=["http://127.0.0.1/:8001/submit"],
-        )
+```
+</DocsCode>
 
-    fund_agent_if_low(bob.wallet.address())
+</CodeGroup>
 
-    print(f"Your agent's address is: {bob.address}")
-
-    @bob.on_message(model=Message)
-    async def message_handler(ctx: Context, sender: str, msg: Message):
-        ctx.logger.info(f'Received message from {sender}: {msg.message}') 
-
-        await ctx.send(sender, Message(message="Hello There!"))
-
-    if __name__ == "__main__":
-        bob.run()
-    ```
-
-Once you successfully run your local agent and register it into the Almanac, you will be able to access the Inspector via the terminal log, which provides a dedicated link to the Inspector page.
+Once you successfully run your local agent and register it into the Almanac (**Make sure your Agent has enough funds to do so!**), you will be able to access the Inspector via the terminal log, which provides a dedicated link to the Inspector page. 
 
 By running the above Agent, the output you get should be similar to the following:
 
     ```
     Your agent's address is: agent1qvrapvpxltu54tt3qnud5mlkul9y9d9tfn7xfpq4ec74cq4mkym6yl3jkdw
     INFO:     [  Bob]: Registration on Almanac API successful
-    INFO:     [  Bob]: Registering on Almanac API successful
     INFO:     [  Bob]: Registering on almanac contract...
     INFO:     [  Bob]: Registering on almanac contract...complete
-    INFO:     [  Bob]: Agent inspector available at https://agentverse.ai/inspect/?uri=http://127.0.0.1:8001
+    INFO:     [  Bob]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8001&address=agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50
     INFO:     [  Bob]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
     ```
 
-By clicking on the dedicated link depicted here, you will then be redirected to the **Inspector Dashboard**.
-
-![](src/images/guides/inspector/inspector_1.png)
-
-As you can see, here your local Agent will be listed and a pop-up message will appear saying that your Agent was added to the list. By clicking the dedicated **Connect Agent** button, you are able to connect Agents to the inspector by providing the Agent Address. 
-
-Instead, by clicking on the Agent box, you can enter the Inspector Dashboard and check out all details about your Local Agent and its messages:
+By clicking on the dedicated link depicted here, you will then be redirected to the **Inspector Dashboard**. A pop-up message will appear saying that your Agent was connected successfully. 
 
 ![](src/images/guides/inspector/inspector_2.png)
+
+Here you can view all the information about your local Agent, including details about all messaged sent and received by the Agent.
+
