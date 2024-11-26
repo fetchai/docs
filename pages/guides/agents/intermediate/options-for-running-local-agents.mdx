@@ -93,7 +93,7 @@ Consider the following Agent:
 
 
 
-To correctly run this code, you need to provide the `name`, `seed`, `port` and `endpoint` parameters. Also, mae sure your Agent has enough funds to register in Almanac contract.
+To correctly run this code, you need to provide the `name`, `seed`, `port` and `endpoint` parameters. Also, make sure your Agent has enough funds to register in Almanac contract.
 
 You'll need to be running this agent on infrastructure that allows you to **open a port**; in our example, we run on port `6145`.
 
@@ -109,9 +109,10 @@ Finally, we  run our agent as follows: `python agent_endpoint.py`
 
     ```
     INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
+    INFO:     [dungeonsanddragonsdiceroll]: Registration on Almanac API successful
     INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
     INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
-    INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
+    INFO:     [dungeonsanddragonsdiceroll]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A6145&address=agent1qvwk0ntr38yyghccrg530hnnm88r5uske4hdcalsa7gqp7sjgx42k4mp62r
     INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
     ```
 
@@ -181,7 +182,17 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
 
 
 
-To correctly run this code, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters.
+To correctly run this code, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters. The output should look similarly to the following:
+
+    ```
+    INFO:     [alice]: Registration on Almanac API successful
+    INFO:     [alice]: Registering on almanac contract...
+    INFO:     [alice]: Registering on almanac contract...complete
+    INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [alice]: Connecting to mailbox server at agentverse.ai
+    INFO:     [alice]: Mailbox access token acquired
+    ```
 
 You can easily create a Mailbox by first retrieving your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**.
 
