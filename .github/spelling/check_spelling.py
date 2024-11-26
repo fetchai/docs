@@ -59,10 +59,7 @@ def extract_text_from_mdx(file_path):
         for child in node.children or []:
             traverse(child)
 
-    for node in parsed:
-        traverse(node)
-
-    # Join and return the extracted text
+    # Return the extracted text
     return '\n'.join(text)
 
 # Function to check for spelling errors
@@ -113,18 +110,16 @@ def check_directory(directory):
         for file in files:
             if file.endswith('.mdx'):
                 file_path = os.path.join(root, file)
-                print(f'========== Checking file: {file_path} ==========')
 
                 # Extract text from the MDX file
                 text = extract_text_from_mdx(file_path)
-                print("Extracted text:", text)  # Debug log
 
                 # Check for spelling errors in text
                 errors = check_spelling(text)
                 if errors:
-                    print(f'Spelling errors in {file_path}:')
-                    for error in errors:
-                        print(f'  - {error}')
+                    print(f"::error file={file_path}::Misspelled words found:")
+                    for error in sorted(errors):
+                        print(f"  - {error}")
                     has_errors = True
 
     return has_errors
