@@ -62,6 +62,7 @@ def extract_text_from_mdx(file_path):
     for node in parsed:
         traverse(node)
 
+    # Join and return the extracted text
     return '\n'.join(text)
 
 # Function to check for spelling errors
@@ -69,7 +70,7 @@ def check_spelling(text):
     def split_underscore_words(word):
         return re.split(r'[_\s]+', word)
 
-    # Use the updated word pattern to find words
+    # Find words using the updated pattern
     words = word_pattern.findall(text)
     processed_words = []
     for word in words:
@@ -79,28 +80,26 @@ def check_spelling(text):
             processed_words.append(word)
 
     # Patterns to exclude
-    n_prefix_pattern = re.compile(r'\bn\w+')
     css_value_pattern = re.compile(r'^\d+(px|%|em|rem|vh|vw|pt|cm|mm|in|s|ms|deg)?$')  # CSS values
     hex_color_pattern = re.compile(r'^(#?[A-Fa-f0-9]{3}|#?[A-Fa-f0-9]{6})$')  # Hex colors
     eth_address_pattern = re.compile(r'^0x[a-fA-F0-9]{40}$')  # Ethereum addresses
     hash_pattern = re.compile(r'^[a-f0-9]{40}$')  # Hash-like strings (40 hex characters)
 
-    # Filter out custom words, valid words with apostrophes,
-    # words matching escape sequences, "n-prefixed" words, CSS values, hex colors, ETH addresses, and hash strings
+    # Filter out known exclusions
     reduced_words = [
-        i.lower() for i in processed_words
+        word.lower() for word in processed_words
         if (
-            i.lower() not in custom_words
-            and not escape_sequence_pattern.search(i)
-            and "'" not in i  # Exclude words with apostrophes for misspelling check
-            and not n_prefix_pattern.match(i)  # Exclude "n-prefixed" words
-            and not css_value_pattern.match(i)  # Exclude CSS values
-            and not hex_color_pattern.match(i)  # Exclude hex colors
-            and not eth_address_pattern.match(i)  # Exclude Ethereum addresses
-            and not hash_pattern.match(i)  # Exclude hash-like strings
-            and i.strip()  # Exclude empty strings
+            word.lower() not in custom_words
+            and not escape_sequence_pattern.search(word)
+            and not css_value_pattern.match(word)
+            and not hex_color_pattern.match(word)
+            and not eth_address_pattern.match(word)
+            and not hash_pattern.match(word)
+            and word.strip()  # Exclude empty strings
         )
     ]
+
+    # Identify misspelled words
     misspelled = spell.unknown(reduced_words)
 
     # Return misspelled words
@@ -118,6 +117,7 @@ def check_directory(directory):
 
                 # Extract text from the MDX file
                 text = extract_text_from_mdx(file_path)
+                print("Extracted text:", text)  # Debug log
 
                 # Check for spelling errors in text
                 errors = check_spelling(text)
@@ -133,5 +133,5 @@ def check_directory(directory):
 directory_path = 'pages'
 has_errors = check_directory(directory_path)
 
-# Return False if errors were found
+# Exit with status code
 sys.exit(1 if has_errors else 0)
