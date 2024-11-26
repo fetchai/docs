@@ -7,19 +7,16 @@ import { CodeGroup, DocsCode } from "../../../components/code"
 
 This example creates a shopping assistant agent using FastAPI and uagents. The agent handles shopping questions, utilizes the OpenAI API to generate responses, and sends personalized shopping advice back to the user. The `on_query` method is key to processing and responding to these queries.
 
-
 ### Supporting Documents
-   
+
     - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
     - [How to create an agent ↗️](../../guides/agents/create-a-uagent).
     - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
     - [How to use on_query decorator ↗️](../../guides/agents/intermediate/handlers).
-    
 
 ## Pre-requisites
 
     - **Python :** Download and install from [Python official website ↗️](https://www.python.org/downloads/).
-
 
 # Shopping Assistance Agent
 
@@ -28,10 +25,8 @@ This example creates a shopping assistant agent using FastAPI and uagents. The a
 ```py copy filename="models.py"
 from uagents import Model
 
-
 class ShoppingRequest(Model):
     question: str
-
 
 class ShoppingAssistResponse(Model):
     answer: str
@@ -49,7 +44,6 @@ from models import ShoppingAssistResponse, ShoppingRequest
 import requests
 import json
 
-
 agent = Agent(
     name="Shopping Assistant",
     seed="shopping_assistant_seed_phrase",
@@ -60,7 +54,6 @@ agent = Agent(
 fund_agent_if_low(agent.wallet.address())
 
 YOUR_OPEN_AI_API_KEY = "PASTE_YOUR_OPEN_AI_API_KEY"
-
 
 def get_chat_response(messages):
     """
@@ -100,7 +93,6 @@ def get_chat_response(messages):
         return result["choices"][0]["message"]["content"].strip()
     else:
         return f"Error: {response.status_code} - {response.text}"
-
 
 @agent.on_query(model=ShoppingRequest, replies=ShoppingAssistResponse)
 async def handler(ctx: Context, sender: str, msg: ShoppingRequest):
@@ -129,7 +121,6 @@ async def handler(ctx: Context, sender: str, msg: ShoppingRequest):
     ctx.logger.info(f"Question: {msg.question}\nAnswer: {response}")
     await ctx.send(sender, ShoppingAssistResponse(answer=response))
 
-
 if __name__ == "__main__":
     agent.run()
 
@@ -147,7 +138,6 @@ YOUR_OPEN_AI_API_KEY = "PASTE_YOUR_OPEN_AI_API_KEY"
 
 class ShoppingRequest(Model):
     question: str
-
 
 class ShoppingAssistResponse(Model):
     answer: str
@@ -190,7 +180,6 @@ def get_chat_response(messages):
         return result["choices"][0]["message"]["content"].strip()
     else:
         return f"Error: {response.status_code} - {response.text}"
-
 
 @agent.on_query(model=ShoppingRequest, replies=ShoppingAssistResponse)
 async def handler(ctx: Context, sender: str, msg: ShoppingRequest):
@@ -238,7 +227,6 @@ app = FastAPI()
 
 DESTINATION = "agent1qg9p5xppsdv6067lg570g8t3lzens32fg6d0fe88jawd2v0lsh8f6ru9ntc"
 
-
 @app.get("/api/question-answer")
 async def question_answering(
     message: str = Query(..., description="The message or question you want to ask")
@@ -262,7 +250,6 @@ async def question_answering(
     response_data = json.loads(answer.decode_payload())
     return {"response": response_data.get("answer")}
 
-
 @app.get("/")
 async def root():
     """
@@ -277,7 +264,6 @@ async def root():
     return {"message": "Hello World"}
 
 ```
-
 
  - **pyproject.toml :** Poetry Dependencies
 
@@ -304,7 +290,7 @@ To get started with this example, follow these steps:
  - **Start the FastAPI Server**
 
    Navigate to the src directory and start the FastAPI server using uvicorn:
- 
+
    ```bash
     cd src
     uvicorn main:app
@@ -346,6 +332,4 @@ Answer: Great choice! MacBooks are known for their sleek design, impressive perf
 
 3. **Budget**: Mac
 ```
-
-
 

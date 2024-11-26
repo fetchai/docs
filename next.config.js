@@ -317,8 +317,8 @@ module.exports = withNextra({
         permanent: true,
       },
       {
-        source: "/examples/react_example",
-        destination: "/examples/intermediate/react_example",
+        source: "/examples/intermediate/react_example",
+        destination: "/examples/react-example",
         permanent: true,
       },
       {
