@@ -759,9 +759,9 @@ Checkout the following documentation and resources for a better understanding of
 
 ### Registering your Agents to the Open Marketplace
 
-Agent registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is a key feature enabling Agents discoverability as well as remote Agents communication. When Agents registering the Almanac, they become part of the Open Marketplace and become available for interactions with other users and Agents registered in the contract. To register, Agents must pay a small fee. Therefore, your agents need to have funds available in their Fetch wallet address.
+Agent registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract enables Agents discoverability and remote Agent communication. When Agents register to the Almanac, they become part of the Open Marketplace and become available for interactions with other users and Agents registered in the contract. To register, Agents must pay a small fee (not currently implemented) that covers the cost of Almanac use. 
 
-Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an Agent at registration.
+Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient Agent. Therefore, we need to specify the service endpoints when defining an Agent at registration.
 
     <Callout type="info" emoji="ℹ️">
       HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. These endpoints define the entry points for various operations or functions offered by a web service or application.
@@ -864,7 +864,7 @@ We can start with `alice` agent. Let's create a Python script for it:
 
 </CodeGroup>
 
-We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our agents. We also need to provide Bob's address as a recipient address for reference. We can then create our agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. Remember that you need to provide the `RECIPIENT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent and code.
+We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our Agents. We also need to provide Bob's address as a recipient address for reference. We can then create our Agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. Remember that you need to provide the `RECIPIENT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this Agent and code.
 
 The script would be as follows:
 
@@ -920,8 +920,7 @@ The script would be as follows:
 </CodeGroup>
 
 
-
-Similarly, we need to define a script for `bob` so to create a remote communication with `alice` agent. Let's create a Python script for it:
+Similarly, we need to define a script for `bob` so to create a remote communication with `alice` Agent. Let's create a Python script for `bob`:
 
 <CodeGroup hasCopy isOSFile>
 <DocsCode mac={true}>
@@ -943,7 +942,7 @@ Similarly, we need to define a script for `bob` so to create a remote communicat
 
 </CodeGroup>
 
-Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
+Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the Agent's `name`, `seed`, `port`, decorator as well as the message content:
 
 <GithubCodeSegment digest="26fe31b518db52d424c41a9c87c5ecf2">
     <CodeSegment
@@ -990,9 +989,9 @@ Instead of creating and manually writing out the same script we can copy and ren
 
 
 
-Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent!
+Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this Agent!
 
-In different terminal windows, first run `remote_bob.py` and then `remote_alice.py`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two agents in parallel terminals use the `poetry run python remote_alice.py` and `poetry run python remote_bob.py`. The expected output would be:
+In different terminal windows, first run `remote_bob.py` and then `remote_alice.py`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two Agents in parallel terminals use the `poetry run python remote_alice.py` and `poetry run python remote_bob.py`. The expected output would be:
 
     **Alice**:
 
