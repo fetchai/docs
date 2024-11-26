@@ -20,6 +20,10 @@ jsx_like_tags_pattern = re.compile(r'<[^>]*>[\s\S]*?<\/[^>]*>|<[^>]*?/>', re.DOT
 path_pattern = re.compile(r'path:\s*"/[^"]*"')
 guidebox_pattern = re.compile(r'<GuideBox[\s\S]*?/>', re.IGNORECASE)
 
+# New patterns to remove content inside <GithubCodeSegment> and <CodeGroup> tags
+github_code_segment_pattern = re.compile(r'<GithubCodeSegment[\s\S]*?</GithubCodeSegment>', re.IGNORECASE)
+code_group_pattern = re.compile(r'<CodeGroup[\s\S]*?</CodeGroup>', re.IGNORECASE)
+
 # Corrected word pattern to allow apostrophes in valid words
 word_pattern = re.compile(r"\b\w+(?:'\w+)?\b")
 
@@ -30,6 +34,10 @@ escape_sequence_pattern = re.compile(r'\\[nu][0-9a-fA-F]+|u[0-9a-fA-F]{4}')
 def extract_text_from_mdx(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
+
+    # Remove content inside <GithubCodeSegment> and <CodeGroup> tags
+    content = github_code_segment_pattern.sub('', content)
+    content = code_group_pattern.sub('', content)
 
     # Remove import statements
     content = import_pattern.sub('', content)
