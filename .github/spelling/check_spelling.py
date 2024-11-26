@@ -26,19 +26,16 @@ word_pattern = re.compile(r"\b\w+(?:'\w+)?\b")
 # Pattern to exclude words containing escape sequences (\n, \u, etc.)
 escape_sequence_pattern = re.compile(r'\\[nu][0-9a-fA-F]+|u[0-9a-fA-F]{4}')
 
+
 # Function to extract text while ignoring specified components and skipping code blocks
 def extract_text_from_mdx(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
 
-    # Remove import statements
+    # Remove import statements, paths, GuideBox components, and JSX components
     content = import_pattern.sub('', content)
-
-    # Remove paths and GuideBox components
     content = path_pattern.sub('', content)
     content = guidebox_pattern.sub('', content)
-
-    # Remove JSX components and JSX-like tags
     content = jsx_like_tags_pattern.sub('', content)
 
     # Initialize the Markdown parser
@@ -63,6 +60,7 @@ def extract_text_from_mdx(file_path):
         traverse(node)
 
     return '\n'.join(text)
+
 
 # Function to check for spelling errors
 def check_spelling(text):
@@ -101,10 +99,13 @@ def check_spelling(text):
                 and i.strip()  # Exclude empty strings
         )
     ]
+
+    # Identify misspelled words
     misspelled = spell.unknown(reduced_words)
 
     # Return misspelled words
     return misspelled
+
 
 # Function to check all .mdx files in a directory
 def check_directory(directory):
@@ -128,6 +129,7 @@ def check_directory(directory):
                     has_errors = True
 
     return has_errors
+
 
 # Directory to check
 directory_path = 'pages'
