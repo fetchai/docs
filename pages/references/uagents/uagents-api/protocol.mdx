@@ -4,9 +4,9 @@
 
 ## Protocol Objects
 
-```python
-class Protocol()
-```
+    ```python
+    class Protocol()
+    ```
 
 The Protocol class encapsulates a particular set of functionalities for an Agent.
 It typically relates to the exchange of messages between Agents for executing some task.
@@ -15,9 +15,9 @@ interval message handlers that define the logic of the protocol.
 
 #### `__`init`__`
 
-```python
-def __init__(name: Optional[str] = None, version: Optional[str] = None)
-```
+    ```python
+    def __init__(name: Optional[str] = None, version: Optional[str] = None)
+    ```
 
 Initialize a Protocol instance.
 
@@ -28,10 +28,10 @@ Initialize a Protocol instance.
 
 #### intervals
 
-```python
-@property
-def intervals()
-```
+    ```python
+    @property
+    def intervals()
+    ```
 
 Property to access the interval handlers.
 
@@ -41,10 +41,10 @@ Property to access the interval handlers.
 
 #### models
 
-```python
-@property
-def models()
-```
+    ```python
+    @property
+    def models()
+    ```
 
 Property to access the registered models.
 
@@ -54,10 +54,10 @@ Property to access the registered models.
 
 #### replies
 
-```python
-@property
-def replies()
-```
+    ```python
+    @property
+    def replies()
+    ```
 
 Property to access the registered replies.
 
@@ -68,10 +68,10 @@ Property to access the registered replies.
 
 #### interval`_`messages
 
-```python
-@property
-def interval_messages()
-```
+    ```python
+    @property
+    def interval_messages()
+    ```
 
 Property to access the interval message digests.
 
@@ -81,10 +81,10 @@ Property to access the interval message digests.
 
 #### signed`_`message`_`handlers
 
-```python
-@property
-def signed_message_handlers()
-```
+    ```python
+    @property
+    def signed_message_handlers()
+    ```
 
 Property to access the signed message handlers.
 
@@ -94,10 +94,10 @@ Property to access the signed message handlers.
 
 #### unsigned`_`message`_`handlers
 
-```python
-@property
-def unsigned_message_handlers()
-```
+    ```python
+    @property
+    def unsigned_message_handlers()
+    ```
 
 Property to access the unsigned message handlers.
 
@@ -107,10 +107,10 @@ Property to access the unsigned message handlers.
 
 #### name
 
-```python
-@property
-def name()
-```
+    ```python
+    @property
+    def name()
+    ```
 
 Property to access the protocol name.
 
@@ -120,10 +120,10 @@ Property to access the protocol name.
 
 #### version
 
-```python
-@property
-def version()
-```
+    ```python
+    @property
+    def version()
+    ```
 
 Property to access the protocol version.
 
@@ -133,10 +133,10 @@ Property to access the protocol version.
 
 #### canonical`_`name
 
-```python
-@property
-def canonical_name()
-```
+    ```python
+    @property
+    def canonical_name()
+    ```
 
 Property to access the canonical name of the protocol ('name:version').
 
@@ -145,11 +145,11 @@ Property to access the canonical name of the protocol ('name:version').
 - `str` - The canonical name of the protocol.
 
 #### digest
-
-```python
-@property
-def digest()
-```
+    
+    ```python
+    @property
+    def digest()
+    ```
 
 Property to access the digest of the protocol's manifest.
 
@@ -159,11 +159,11 @@ Property to access the digest of the protocol's manifest.
 
 #### on`_`interval
 
-```python
-def on_interval(period: float,
-                messages: Optional[Union[Type[Model],
-                                         Set[Type[Model]]]] = None)
-```
+    ```python
+    def on_interval(period: float,
+                    messages: Optional[Union[Type[Model],
+                                             Set[Type[Model]]]] = None)
+    ```
 
 Decorator to register an interval handler for the protocol.
 
@@ -179,10 +179,10 @@ Decorator to register an interval handler for the protocol.
 
 #### on`_`query
 
-```python
-def on_query(model: Type[Model],
-             replies: Optional[Union[Type[Model], Set[Type[Model]]]] = None)
-```
+    ```python
+    def on_query(model: Type[Model],
+                 replies: Optional[Union[Type[Model], Set[Type[Model]]]] = None)
+    ```
 
 Decorator to register a query handler for the protocol.
 
@@ -198,11 +198,11 @@ Decorator to register a query handler for the protocol.
 
 #### on`_`message
 
-```python
-def on_message(model: Type[Model],
-               replies: Optional[Union[Type[Model], Set[Type[Model]]]] = None,
-               allow_unverified: Optional[bool] = False)
-```
+    ```python
+    def on_message(model: Type[Model],
+                   replies: Optional[Union[Type[Model], Set[Type[Model]]]] = None,
+                   allow_unverified: Optional[bool] = False)
+    ```
 
 Decorator to register a message handler for the protocol.
 
@@ -219,10 +219,10 @@ Decorator to register a message handler for the protocol.
 - `Callable` - The decorator to register the message handler.
 
 #### manifest
-
-```python
-def manifest() -> Dict[str, Any]
-```
+    
+    ```python
+    def manifest() -> Dict[str, Any]
+    ```
 
 Generate the protocol's manifest, a long-form machine readable description of the
 protocol details and interface.
@@ -232,11 +232,11 @@ protocol details and interface.
   Dict[str, Any]: The protocol's manifest.
 
 #### compute`_`digest
-
-```python
-@staticmethod
-def compute_digest(manifest: Dict[str, Any]) -> str
-```
+    
+    ```python
+    @staticmethod
+    def compute_digest(manifest: Dict[str, Any]) -> str
+    ```
 
 Compute the digest of a given manifest.
 
