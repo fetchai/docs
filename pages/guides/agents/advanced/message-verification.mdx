@@ -1,6 +1,6 @@
 import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
-# How to use agents to verify messages
+# How to use Agents to verify messages
 
 ## Introduction
 
@@ -11,7 +11,7 @@ The emergence of decentralized technologies has introduced new possibilities for
 Make sure you have read the following resources before going on with this guide:
 
     - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Creating your first Agents ↗️](/guides/agents/getting-started/create-a-uagent)
     - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
@@ -42,7 +42,7 @@ Make sure you have read the following resources before going on with this guide:
        ```py copy filename="ubuntu"
        touch message_verification.py
        ```
-       </DocsCode>
+   </DocsCode>
 
    </CodeGroup>
 
@@ -113,7 +113,7 @@ Make sure you have read the following resources before going on with this guide:
 
    This function is used to hash a string message using the SHA-256 algorithm and return the resulting digest as bytes.
 
-5. We can now proceed and create our agents using the `Agent` class:
+5. We can now proceed and create our Agents using the `Agent` class:
 
 <GithubCodeSegment digest="826a5160dfd289a192e8dec347b380c9">
     <CodeSegment
@@ -250,7 +250,7 @@ Make sure you have read the following resources before going on with this guide:
 
    The function first verifies the authenticity of the message using the `Identity.verify_digest()` function. If the message cannot be verified, the function raises an assertion error. On the other hand, if the message is verified, the function logs a message indicating that the message was verified and another message indicating the contents of the message using the `ctx.logger.info()` method. It then creates a response message, `msg`, and computes its digest using the `encode()` function. The response message is then sent to `alice` using the `ctx.send()` method.
 
-9. We can now create a `bureau` object from the `Bureau` class and then add both agents to it so for them to be run together.
+9. We can now create a `bureau` object from the `Bureau` class and then add both Agents to it so for them to be run together.
 
 <GithubCodeSegment digest="de19cedfebb41d0078930daab497ca92">
     <CodeSegment

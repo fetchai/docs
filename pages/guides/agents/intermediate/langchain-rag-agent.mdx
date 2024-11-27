@@ -15,10 +15,10 @@ In this guide, we'll walk through how to create [Agents ↗️](/guides/agents/g
 The uAgents and AI Engine libraries offer a decentralized and modular framework for creating RAG Agents, improving the process of creating them. These tools streamline the integration of AI models like OpenAI and Cohere, enabling more efficient and scalable development of intelligent Agents. With enhanced interoperability, security, and resource management, this framework allows developers to quickly build and deploy sophisticated Agents that can effectively answer questions based on any provided document, making the entire process faster and more robust.
 
     <Callout type="info" emoji="ℹ️"> 
-      Check out the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) and [uAgents ↗️](https://pypi.org/project/uagents/) packages to download them and start integrating this tools within your Agents project!
+      Check out the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) and [`uagents ↗️](https://pypi.org/project/uagents/) packages to download them and start integrating this tools within your Agents project!
 
       Current version of the AI Engine package is <PackageVersion packageName="uagents-ai-engine" packageType="pypi" />.
-      Current version of the uAgents package is <PackageVersion packageName="uagents" packageType="pypi" />.
+      Current version of the `uagents` package is <PackageVersion packageName="uagents" packageType="pypi" />.
     </Callout>
 
 
@@ -222,7 +222,12 @@ The script looks like the following:
 
 This step involves setting up the **LangChain Retrieval-Augmented Generation (RAG) Agent** which can scrape web content, retrieve relevant documents, and generate answers to user queries based on the retrieved content. 
 
-Let's start by creating the file within the `agents` directory, under `src` directory of our project, and name it `langchain_rag_agent.py` by using the following command:
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch langchain_rag_agent.py
+    ```
+</DocsCode>
 
     <CodeGroup hasCopy isOSFile>
     <DocsCode mac={true}>
@@ -244,7 +249,14 @@ Let's start by creating the file within the `agents` directory, under `src` dire
     </DocsCode>
     </CodeGroup>
 
-The Agent is defined as a [local agent with a Mailbox ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) and it can answer questions by fetching and summarizing information from a given website URL.
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch langchain_rag_agent.py
+    ```
+</DocsCode>
+</CodeGroup>
+
+The Agent is defined as a [local Agent with a Mailbox ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) and it is able to answer questions by fetching and summarizing information from a given website URL.
 
 The script for this Agent looks as follows:
 
@@ -403,8 +415,6 @@ The script for this Agent looks as follows:
 </DocsCode>
 
 </CodeGroup>
-
-
 
     The Agent fetches and processes information from specified URLs to answer users' questions. 
 
@@ -591,13 +601,9 @@ It will look as follows:
 
 </CodeGroup>
 
-
-
-Cool! All scripts are now set up! You will need to [connect the local Agent to the Agentverse using a Mailbox ↗️](/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox). The Mailbox enables your Agents to be retrievable for communication and interaction with any other registered Agent on the Almanac contract and Fetch Network. In this example, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox). The `langchain_rag_user` Agent is used as a testing Agent for the RAG Agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
+Cool! All scripts are now set up! You will need to [connect the local Agent to the Agentverse using a Mailbox ↗️](/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox). The Mailbox enables your Agents to be retrievable for communication and interaction with any other registered Agent on the Almanac contract and Fetch Network. In this example, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox). The `langchain_rag_user` Agent is used as a testing agent for the RAG Agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
 
 By creating an [Agent Function ↗️](https://fetch.ai/docs/guides/agents/intermediate/agent-functions) and [registering it ↗️](https://fetch.ai/docs/guides/agentverse/agentverse-functions/registering-agent-services) via the Agentverse, you will make it retrievable to the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) for interaction with users via natural language queries made on [DeltaV ↗️](/concepts/ai-engine/deltav).
-
-The `langchain_rag_user` Agent is used as a testing Agent for the RAG Agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
 
 ### Expected output
 

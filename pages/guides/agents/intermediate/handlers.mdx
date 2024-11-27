@@ -16,7 +16,7 @@ Below, we show how to use the following different event handlers:
 
 ## Creating an interval task with `on_interval()` handler
 
-Sometimes an agent will need to perform a task periodically. To do this we can use the `on_interval()` decorator which periodically repeats a given function for the agent. For instance, an agent could send a message every 2 seconds to another agent.
+Sometimes an Agent will need to perform a task periodically. To do this we can use the `on_interval()` decorator which periodically repeats a given function for the Agent. For instance, an Agent could send a message every 2 seconds to another Agent.
 
 **Let's get started and create our first interval task!**
 
@@ -25,9 +25,9 @@ Sometimes an agent will need to perform a task periodically. To do this we can u
 Make sure you have read the following resources before going on with this guide:
 
     - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
     - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
-    - [Communicating with other agents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
+    - [Communicating with other Agents ↗️](/guides/agents/intermediate/communicating-with-other-agents)
 
 ## Imports needed
 
@@ -41,19 +41,19 @@ Make sure you have read the following resources before going on with this guide:
    <CodeGroup hasCopy isOSFile>
    <DocsCode mac={true}>
       ```py copy filename="mac"
-      touch interval_task.py
+      touch interval-task.py
       ```
    </DocsCode>
 
    <DocsCode windows={true}>
        ```py copy filename="windows"
-       echo. > interval_task.py
+       echo. > interval-task.py
        ```
        </DocsCode>
 
    <DocsCode ubuntu={true}>
        ```py copy filename="ubuntu"
-       touch interval_task.py
+       touch interval-task.py
        ```
        </DocsCode>
    </CodeGroup>
@@ -84,7 +84,7 @@ Make sure you have read the following resources before going on with this guide:
 
 
 
-3. Create a function to handle the startup event, which will introduce the agent:
+3. Create a function to handle the startup event, which will introduce the uAgent:
 
 <GithubCodeSegment digest="dc15c1506a6195fdb61ca5c320eb3253">
     <CodeSegment
@@ -110,7 +110,7 @@ Make sure you have read the following resources before going on with this guide:
 
 
 
-4. We can now define our agent's interval behavior. We want our agent to log a message every 2 seconds using the `on_interval` decorator:
+4. We can now define our Agent's interval behavior. We want our Agent to log a message every 2 seconds using the `on_interval` decorator:
 
 <GithubCodeSegment digest="7a158c3a59212c6d7566ffb9837999c7">
     <CodeSegment
@@ -182,7 +182,7 @@ The overall script should look as follows:
 
 ### Run the script
 
-Run the script: `python interval_task.py`
+Run the script: `python interval-task.py`
 
 The output should be as follows:
 
@@ -200,7 +200,7 @@ The output should be as follows:
 
 ## Handle messages using the `on_message()` handler
 
-We now showcase a scenario where three agents, named `alice`, `bob`, and `charles`, use a custom [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all agents using the protocol. Agents use the `on_message()` handler which allows them to handle messages matching specific data models.
+We now showcase a scenario where three Agents, named `alice`, `bob`, and `charles`, use a custom [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols) to communicate. In the example, Alice and Bob support the protocol, whereas Charles attempts to send broadcast messages to all Agents using the protocol. Agents use the `on_message()` handler which allows them to handle messages matching specific data models.
 
 **Let's get started!**
 
@@ -210,9 +210,9 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
    <CodeGroup hasCopy isOSFile>
    <DocsCode mac={true}>
-      ```py copy filename="mac"
-      touch broadcast.py
-      ```
+       ```py copy filename="mac"
+       touch broadcast.py
+       ```
    </DocsCode>
 
    <DocsCode windows={true}>
@@ -259,9 +259,9 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
 
 
-   It is optional but useful to include a `seed` parameter when creating an agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the agent.
+   It is optional but useful to include a `seed` parameter when creating an Agent to set fixed [addresses ↗️](/guides/agents/getting-uagent-address). Otherwise, random addresses will be generated every time you run the Agent.
 
-3. Let's then define the message data models to specify the type of messages being handled and exchanged by the agents. We define a `BroadcastExampleRequest` and a `BroadcastExampleResponse` data models. Finally, create a `protocol` named `proto` with version `1.0`:
+3. Let's then define the message data models to specify the type of messages being handled and exchanged by the Agents. We define a `BroadcastExampleRequest` and a `BroadcastExampleResponse` data models. Finally, create a `protocol` named `proto` with version `1.0`:
 
 <GithubCodeSegment digest="adfcd86c76024038e6abd0785266b842">
     <CodeSegment
@@ -322,9 +322,9 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
 
 
-    Here we defined a `handle_request()` function which is used whenever a request is received. This sends a response back to the sender. This function is decorated with the `.on_message()` decorator indicating that this function is triggered whenever a message of type `BroadcastExampleRequest` is received. The function sends a response containing a greeting message with the name of the agent that sent the request in the first place.
+    Here we defined a `handle_request()` function which is used whenever a request is received. This sends a response back to the sender. This function is decorated with the `.on_message()` decorator indicating that this function is triggered whenever a message of type `BroadcastExampleRequest` is received. The function sends a response containing a greeting message with the name of the Agent that sent the request in the first place.
 
-5. Now, we need to include the `protocol` into the agents. Specifically, the protocol is included in both `alice` and `bob` agents. This means they will follow the rules defined in the protocol when communicating:
+5. Now, we need to include the `protocol` into the Agents. Specifically, the protocol is included in both `alice` and `bob` Agents. This means they will follow the rules defined in the protocol when communicating:
 
 <GithubCodeSegment digest="42d2a1938c3e3268e4d2f81adeca4c8c">
     <CodeSegment
@@ -350,10 +350,10 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
 
     <Callout type="info" emoji="ℹ️">
-      After the first registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) smart contract, it will take about 5 minutes before the agents can be found through the protocol.
+      After the first registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) smart contract, it will take about 5 minutes before the Agents can be found through the protocol.
     </Callout>
 
-6. It is now time to define the behavior and function of `charles` agent:
+6. It is now time to define the behavior and function of `charles` Agent:
 
 <GithubCodeSegment digest="91a57d668d9edd0b231db4b58fdcedd8">
     <CodeSegment
@@ -385,11 +385,11 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
 
 
-   In the first part, we use the `.on_interval()` decorator to define an interval behavior for this agent when the script is being run. In this case, the agent will execute the `say_hello()` function every 5 seconds. The `Context` object is a collection of data and functions related to the agent. Inside the `say_hello()` function, the agent uses the `ctx.broadcast()` method to send a broadcast message. The message is of type `BroadcastExampleRequest()` and it is being sent using the protocol's digest (`proto.digest`).
+   In the first part, we use the `.on_interval()` decorator to define an interval behavior for this Agent when the script is being run. In this case, the Agent will execute the `say_hello()` function every 5 seconds. The `Context` object is a collection of data and functions related to the Agent. Inside the `say_hello()` function, the Agent uses the `ctx.broadcast()` method to send a broadcast message. The message is of type `BroadcastExampleRequest()` and it is being sent using the protocol's digest (`proto.digest`).
 
-    Then, we defined a `.on_message()` decorator which decorates `handle_response()` function. This function handles all incoming messages of type `BroadcastExampleResponse` from other agents. When a response is received, it logs the information. Inside the `handle_response()` function, the agent logs an informational message using `ctx.logger.info()` method to print the sender and the content of the message. The message includes the sender's name and the text content of the response message.
+    Then, we defined a `.on_message()` decorator which decorates `handle_response()` function. This function handles all incoming messages of type `BroadcastExampleResponse` from other Agents. When a response is received, it logs the information. Inside the `handle_response()` function, the Agent logs an informational message using `ctx.logger.info()` method to print the sender and the content of the message. The message includes the sender's name and the text content of the response message.
 
-7. We are now ready to set up a `Bureau` object for agents to be run together at the same time, and we add `alice`, `bob`, and `charles` to it using the `bureau.add()` method:
+7. We are now ready to set up a `Bureau` object for Agents to be run together at the same time, and we add `alice`, `bob`, and `charles` to it using the `bureau.add()` method:
 
 <GithubCodeSegment digest="3ec667f21db4a5d5a5b3a6fb75be0b03">
     <CodeSegment
@@ -527,13 +527,13 @@ The output would be:
 
 ## Answer queries with `on_query()` handler
 
-The `on_query()` handler is used to register a [Function ↗️](/guides/agents/intermediate/agent-functions) as a handler for incoming queries that match a specified `Model`. This decorator enables the agent to respond to queries in an event-driven manner.
+The `on_query()` handler is used to register a [Function ↗️](/guides/agents/intermediate/agent-functions) as a handler for incoming queries that match a specified `Model`. This decorator enables the Agent to respond to queries in an event-driven manner.
 
 ### Walk-through
 
 #### Agent's script
 
-For the agent, the script sets up an agent to handle incoming queries. It defines two models: `TestRequest` and `Response`. Upon startup, it logs the agent's details. The core functionality lies in the `query_handler`, decorated with `@agent.on_query()`, which processes received queries and sends back a predefined response. This demonstrates creating responsive agents within the `uagents` Framework, showcasing how they can interact with other agents or functions in an asynchronous, event-driven architecture.
+For the Agent, the script sets up an Agent to handle incoming queries. It defines two models: `TestRequest` and `Response`. Upon startup, it logs the Agent's details. The core functionality lies in the `query_handler`, decorated with `@agent.on_query()`, which processes received queries and sends back a predefined response. This demonstrates creating responsive Agents within the `uagents` Framework, showcasing how they can interact with other Agents or functions in an asynchronous, event-driven architecture.
 
 <GithubCodeSegment digest="0ead5b0ce3c12f95c619c8a9e7808286">
     <CodeSegment
@@ -591,35 +591,36 @@ For the agent, the script sets up an agent to handle incoming queries. It define
 
 
 
-The agent is created using the `Agent` class from `uagents` library. You can initialize it by providing it with a `name`, `seed`, `port`, and `endpoint`. It defines an `on_event()` handler for the `startup` event, where it logs information about the agent's initialization. It defines an `on_query()` handler for handling queries of type `TestRequest`. Upon receiving a query, it processes it and sends back a `Response`. The agent is then set to run.
+
+The Agent is created using the `Agent` class from `uagents` library. You can initialize it by providing it with a `name`, `seed`, `port`, and `endpoint`. It defines an `on_event()` handler for the `startup` event, where it logs information about the Agent's initialization. It defines an `on_query()` handler for handling queries of type `TestRequest`. Upon receiving a query, it processes it and sends back a `Response`. The Agent is then set to run.
 
 #### Proxy
 
-The proxy is implemented using `FastAPI`. It sets up two routes: `"/"` for a simple root message and `"/endpoint"` for receiving requests. When a `POST` request is made to `"/endpoint"` with a JSON payload containing a `TestRequest`, it triggers the `make_agent_call` function. Inside `make_agent_call`, it calls `agent_query` to communicate with the agent. The agent receives the query, processes it, and sends back a response. The proxy receives the response from the agent and sends back a success message along with the response text.
+The proxy is implemented using `FastAPI`. It sets up two routes: `"/"` for a simple root message and `"/endpoint"` for receiving requests. When a `POST` request is made to `"/endpoint"` with a JSON payload containing a `TestRequest`, it triggers the `make_agent_call` function. Inside `make_agent_call`, it calls `agent_query` to communicate with the Agent. The Agent receives the query, processes it, and sends back a response. The proxy receives the response from the Agent and sends back a success message along with the response text.
 
 Let's explore the Proxy code script step-by-step:
 
 1. First of all navigate to directory where you want to create your project.
-2. Create a Python script name `on_query.py` by running:
+2. Create a Python script named `on_query.py` by running:
 
    <CodeGroup hasCopy isOSFile>
    <DocsCode mac={true}>
-   ```py copy filename="mac"
-   touch on_query.py
-   ```
+      ```py copy filename="mac"
+      touch on_query.py
+      ```
    </DocsCode>
 
    <DocsCode windows={true}>
        ```py copy filename="windows"
        echo. > on_query.py
        ```
-       </DocsCode>
+   </DocsCode>
 
    <DocsCode ubuntu={true}>
        ```py copy filename="ubuntu"
        touch on_query.py
        ```
-       </DocsCode>
+   </DocsCode>
    </CodeGroup>
 
 3. We need to import `json`, `fastapi`, `uagent`'s `Model` and `query`. Then we would need to define the query format using the `TestRequest` class as a subclass of `Model`:
@@ -656,7 +657,7 @@ Let's explore the Proxy code script step-by-step:
 
 
 
-4. Create `agent_query()` function to send query to agent and decode the response received.
+4. Create `agent_query()` function to send query to Agent and decode the response received.
 
 <GithubCodeSegment digest="5f61686f599181ddfba7204d2304de75">
     <CodeSegment
@@ -735,7 +736,7 @@ Let's explore the Proxy code script step-by-step:
 
 
 
-7. Define an endpoint to make agent calls:
+7. Define an endpoint to make Agent calls:
 
 <GithubCodeSegment digest="f67d9b78fcce83e53826526764155879">
     <CodeSegment
@@ -831,33 +832,32 @@ In separate terminals:
 
 1. Run the **FastAPI proxy**: `uvicorn proxy:app`
 
-2. Run the **agent**: `python agent.py`
+2. Run the **uAgent**: `python agent.py`
 
-3. Query the agent via the proxy: `curl -d '{"message": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/endpoint`
+3. Query the Agent via the proxy: `curl -d '{"message": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/endpoint`
 
 ## Catching events with  `on_event()` handler
 
-During startup, and shutdown there are two events that are caught by the uAgents library, `startup` and `shutdown`. 
+During startup, and shutdown there are two events that are caught by the `uagents` library, `startup` and `shutdown`. 
 
 Here's an example: 
 
 ### on_event("startup")
 
-```python copy
-    @agent.on_event("startup")
-    async def introduce_agent(ctx: Context):
-        ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
-        ...
+    ```python copy
+        @agent.on_event("startup")
+        async def introduce_agent(ctx: Context):
+            ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+            ...
 
-```
+    ```
 
 ### on_event("shutdown")
 
-```python copy
-    @agent.on_event("shutdown")
-    async def introduce_agent(ctx: Context):
-        ctx.logger.info(f"Hello, I'm agent {agent.name} and I am shutting down")
-        ...
+    ```python copy
+        @agent.on_event("shutdown")
+        async def introduce_agent(ctx: Context):
+            ctx.logger.info(f"Hello, I'm agent {agent.name} and I am shutting down")
+            ...
 
-```
-
+    ```
