@@ -468,7 +468,7 @@ export const ModifiedPre = ({
   };
 
   return (
-    <Pre className={`pre-normal`}>
+    <Pre className={`pre-normal pre-normal-background`}>
       <div
         className={`nx-p-2 nx-flex ${
           filename ? "nx-justify-between nx-items-center" : "nx-justify-end"

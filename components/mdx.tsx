@@ -246,9 +246,7 @@ export function Tab(properties) {
 }
 
 export function Row({ children }: { children: ReactNode }) {
-  return (
-    <div className="nx-pt-4 nx-gap-8 row-width nx-flex-mdx">{children}</div>
-  );
+  return <div className="nx-gap-8 row-width nx-flex-mdx">{children}</div>;
 }
 
 export function Col({ children }: { children: ReactNode }) {
@@ -329,3 +327,20 @@ export const ImageByTheme = ({
     />
   );
 };
+
+export const ApisFullRow = ({ children }: { children: ReactNode }) => {
+  return (
+    <div className="nx-gap-8 row-width nx-flex-mdx">
+      <div className="nx-w-1/2-mdx nx-w-full-mdx">{children}</div>
+      <div className="nx-w-1/2-mdx nx-w-full-mdx">{""}</div>
+    </div>
+  );
+};
+
+export function RowForCards({ children }: { children: ReactNode }) {
+  return (
+    <div className="nx-pt-4 nx-gap-8 row-width-cards nx-flex-mdx-cards">
+      {children}
+    </div>
+  );
+}
