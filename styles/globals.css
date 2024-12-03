@@ -1017,6 +1017,17 @@ video {
   }
 }
 
+.nx-flex-mdx-cards {
+  display: flex;
+}
+
+@media (max-width: 1393px) {
+  .nx-flex-mdx-cards {
+    display: flex;
+    flex-direction: column; /* Change to block display for mobile */
+  }
+}
+
 /* Define styles for non-mobile screens */
 .nx-flex-mdx {
   display: flex;
@@ -1027,7 +1038,7 @@ video {
 }
 
 /* Define styles for mobile screens */
-@media (max-width: 1393px) {
+@media (max-width: 1024px) {
   .nx-flex-mdx {
     display: flex;
     flex-direction: column; /* Change to block display for mobile */
@@ -2361,11 +2372,44 @@ pre code {
 
 .nx-endpoint {
   border-radius: 12px;
-  background: rgba(239, 244, 255, 1);
+  background: #eff4ff;
   display: flex;
-  padding: 12px 24px;
+  padding: 12px 12px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--12, 12px);
+  align-self: stretch;
+}
+
+.nx-endpoint-btn {
+  display: flex;
+  height: 44px;
+  padding: 0px 16px;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid var(--Grey-Grey-200, #dce2ea);
+  background: #fff;
+}
+
+.nx-endpoint-max-w {
+  max-width: 321px;
+}
+
+@media (max-width: 1450px) {
+  .nx-endpoint-flex-mobile {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .nx-endpoint-flex-mobile {
+    flex-direction: row;
+  }
 }
 
 :is(html[class~="dark"] .nx-endpoint) {
@@ -2635,6 +2679,19 @@ span:target + .subheading-anchor:after {
   max-width: 58.5rem;
   padding: 64px 32px 0px 32px;
   margin-inline: auto;
+}
+
+.nextra-body-full-container-apis {
+  display: flex;
+  width: 100%;
+  padding: 0px 0px 0px 32px;
+  margin-inline: auto;
+}
+
+@media (max-width: 1024px) {
+  .nextra-body-full-container-apis {
+    padding: 0px 32px 0px 32px;
+  }
 }
 
 .nextra-scrollbar:hover::-webkit-scrollbar-thumb {
@@ -3120,7 +3177,7 @@ article details > summary::-webkit-details-marker {
 
 article details > summary:before {
   vertical-align: -4px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clip-rule='evenodd' /%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='w-5 h-5' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clip-rule='evenodd' /%3E%3C/svg%3E");
   width: 1.2em;
   height: 1.2em;
 }
@@ -4923,7 +4980,47 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 .row-width {
   max-width: 100%;
 }
-@media (max-width: 1387px) {
+
+.row-width-cards {
+  max-width: 100%;
+}
+
+.row-width > *:first-child {
+  max-width: 500px;
+  margin-top: 24px;
+}
+
+@media (max-width: 1450px) {
+  .row-width > *:first-child {
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 1103px) {
+  .row-width > *:first-child {
+    max-width: 450px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .row-width > *:first-child {
+    max-width: 100%;
+  }
+}
+
+.row-width > *:not(:first-child) {
+  background-color: #efefef;
+  margin-left: auto;
+}
+
+@media (max-width: 1024px) {
+  .row-width > *:not(:first-child) {
+    border-radius: 12px;
+    border: 0.5px solid rgba(255, 255, 255, 0.7);
+  }
+}
+
+@media (max-width: 1024px) {
   .row-width {
     max-width: 600px;
   }
@@ -5234,15 +5331,17 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 
 .pre-out-code {
   display: flex;
-  max-width: 532px;
   padding: var(--24, 24px);
   flex-direction: column;
   align-items: flex-start;
   gap: var(--16, 16px);
-  border-radius: 12px;
-  border: 0.5px solid rgba(255, 255, 255, 0.7);
-  background: rgba(52, 52, 52, 0.08);
-  box-shadow: 10px 20px 100px 0px rgba(243, 245, 248, 0.3) inset;
+}
+
+@media (max-width: 1024px) {
+  .pre-out-code {
+    border-radius: 12px;
+    border: 0.5px solid rgba(255, 255, 255, 0.7);
+  }
 }
 
 :is(html[class~="dark"] .pre-out-code) {
@@ -5269,9 +5368,12 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
   flex-direction: column;
   align-items: flex-start;
   border-radius: 12px;
-  background: rgba(52, 52, 52, 0.08);
   box-shadow: 10px 20px 100px 0px rgba(243, 245, 248, 0.3) inset;
   padding: 24px;
+}
+
+.pre-normal-background {
+  background-color: #efefef;
 }
 
 :is(html[class~="dark"] .pre-normal) {

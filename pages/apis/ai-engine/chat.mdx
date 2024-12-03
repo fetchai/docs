@@ -1,10 +1,14 @@
-import { Row, Col } from "../../../components/mdx";
+import { Row, Col, ApisFullRow } from "../../../components/mdx";
 import {
   ApiEndpointRequestResponse,
 } from "../../../components/api-endpoint";
 
-# AI Engine Chat API
 
+<ApisFullRow>
+# AI Engine Chat API
+</ApisFullRow>
+
+<ApisFullRow>
 <div className="nx-text-fetch-content">
   Most of the endpoints depends on various instances and are considered parameters for the actual endpoint, but these are not meant to be passed directly by the user.
 
@@ -13,8 +17,11 @@ Instead, these instance-dependent elements are integrated and managed directly b
 Mind that: to access these APIs, user must be **authenticated** and have the **correct permissions**.
 
 </div>
+</ApisFullRow>
 
+<ApisFullRow>
 ## Overview
+</ApisFullRow>
 
 <Row>
     <Col>
@@ -45,7 +52,9 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
 
 </Row>
 
+<ApisFullRow>
 ## Starting your session
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -96,7 +105,9 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
   responseDescription="Returns the newly created Session object"
 />
 
+<ApisFullRow>
 ## Get all sessions for a user
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -128,8 +139,11 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
   responseDescription="Returns a list of Session objects associated with the user"
 />
 
+<ApisFullRow>
 ## Sending a new message
+</ApisFullRow>
 
+<ApisFullRow>
 There are 4 types of messages that can be sent to the backend:
 
 - `start`: This is the first message that should be sent to the AI Engine for full session (search + execution). It contains the objective and context of the conversation. The objective and context are used to determine which agent to use for the conversation.
@@ -139,7 +153,11 @@ There are 4 types of messages that can be sent to the backend:
 - `stop`: This is the last message that should be sent to the backend. It indicates that the conversation has ended.
 
 IMPORTANT: you need to either send `start` or `execute_functions`. These two can't be combined.
+</ApisFullRow>
+
+<ApisFullRow>
 ### Sending start message
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -197,7 +215,9 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
   responseDescription="On a successful request, there is no response"
 />
 
+<ApisFullRow>
 ### Sending execute functions message
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -255,7 +275,9 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
   responseDescription="On a successful request, there is no response"
 />
 
+<ApisFullRow>
 ### Sending user message
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -299,7 +321,9 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
   responseDescription="On a successful request, there is no response"
 />
 
+<ApisFullRow>
 ### Sending user json message
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -360,7 +384,9 @@ samplePayload={{
 responseDescription="On a successful request, there is no response"
 />
 
+<ApisFullRow>
 ### Sending stop message
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -398,7 +424,9 @@ responseDescription="On a successful request, there is no response"
   responseDescription="On a successful request, there is no response"
 />
 
+<ApisFullRow>
 ## Delete a session for a user
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -411,8 +439,9 @@ responseDescription="On a successful request, there is no response"
   }}
 />
 
+<ApisFullRow>
 ## ~~Fetch new messages sent by agent~~ **Deprecated**
-
+</ApisFullRow>
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
@@ -431,7 +460,9 @@ responseDescription="On a successful request, there is no response"
   responseDescription="Return an agent_response object containing the agent response in JSON format, which can be parsed to retrieve the agent message. It can be an AgentMessage or an AgentJsonMessage. They are almost similar to user_message and user_json_message, but they are sent by the agent."
 />
 
+<ApisFullRow>
 ## ~~Fetch recent messages given a timestamp~~ **Deprecated**
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -493,7 +524,9 @@ responseDescription="On a successful request, there is no response"
   ]}
   responseDescription="Return the most recent list of agent messages given a timestamp. The timestamp is in ISO 8601 format."
 />
+<ApisFullRow>
 ## Fetch all messages sent by agent in a session
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -567,7 +600,9 @@ responseDescription="On a successful request, there is no response"
   responseDescription="Return all the messages sent by the agent for a specific session."
 />
 
+<ApisFullRow>
 ## Retrieve new messages sent by agent (with possible duplicate or missed messages)
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -664,7 +699,9 @@ responseDescription="On a successful request, there is no response"
   responseDescription="Returns a list of new messages for the session, if specified then returns the messages since the last checked message. If there are no new messages, an empty list is returned. If the session is not found, a 404 error with a descriptive message is returned."
 />
 
+<ApisFullRow>
 ## Provide feedback for a session
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -706,7 +743,9 @@ responseDescription="On a successful request, there is no response"
   responseDescription="On a successful request returns the remaining tokens for the models that have been queried"
 />
 
+<ApisFullRow>
 ## Retrieve remaining tokens
+</ApisFullRow>
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"

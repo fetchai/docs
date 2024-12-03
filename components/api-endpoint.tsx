@@ -187,9 +187,12 @@ export const ApiResponses: React.FC<{
   return (
     <>
       <Row>
-        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-mt-8 nx-text-2xl">
-          Responses
-        </h1>
+        <Col>
+          <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-mt-8 nx-text-2xl">
+            Responses
+          </h1>
+        </Col>
+        <Col>{""}</Col>
       </Row>
       <Row>
         <Col>
@@ -245,9 +248,12 @@ export const ApiRequest: React.FC<{
   return (
     <>
       <Row>
-        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-mt-8 nx-text-2xl">
-          Request
-        </h1>
+        <Col>
+          <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-mt-8 nx-text-2xl">
+            Request
+          </h1>
+        </Col>
+        <Col>{""}</Col>
       </Row>
       <Row>
         <Col>
@@ -389,32 +395,34 @@ export const ApiEndpointRequestResponse: React.FC<{
   return (
     <>
       <Row>
-        <p className="nx-endpoint nx-text-base">
-          <span className="nextra-content nx-font-medium dark:nx-text-white-60">
-            Endpoint:
-          </span>
-          <span className="nx-endpoint-method nx-text-fetch-main dark:nx-text-white-90 dark:nx-bg-green-700">
-            {properties.method}
-          </span>
-          <span className="nx-text-purple nx-font-normal dark:nx-text-indigo-250">
-            {properties.path}
-          </span>
-          {isModalOpen ? (
-            <button
-              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl dark:nx-text-white dark:nx-bg-indigo-500"
-              onClick={closeModal}
-            >
-              Cancel
-            </button>
-          ) : (
-            <button
-              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl dark:nx-text-white dark:nx-bg-indigo-500"
-              onClick={openModal}
-            >
-              Run Code
-            </button>
-          )}
-        </p>
+        <Col>
+          <div className="nx-endpoint nx-text-base">
+            <div className="nx-flex nx-justify-center nx-items-baseline nx-gap-2 nx-endpoint-flex-mobile">
+              <div className="nx-flex nx-justify-center nx-items-baseline nx-gap-2">
+                <span className="nextra-content nx-font-medium dark:nx-text-white-60">
+                  Endpoint:
+                </span>
+                <span className="nx-endpoint-method nx-text-fetch-main dark:nx-text-white-90 dark:nx-bg-green-700">
+                  {properties.method}
+                </span>
+              </div>
+              <span className="nx-text-purple nx-font-normal nx-endpoint-max-w dark:nx-text-indigo-250">
+                {properties.path}
+              </span>
+            </div>
+
+            {isModalOpen ? (
+              <button className="nx-endpoint-btn" onClick={closeModal}>
+                Cancel
+              </button>
+            ) : (
+              <button className="nx-endpoint-btn" onClick={openModal}>
+                Run Code
+              </button>
+            )}
+          </div>
+        </Col>
+        <Col>{""}</Col>
       </Row>
 
       {isModalOpen && (
