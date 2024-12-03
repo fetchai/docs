@@ -7,7 +7,7 @@ import { CodeGroup, DocsCode } from "../../../components/code"
 This file can be run on any platform supporting Python, with the necessary install permissions.
 This example shows how to use Agents to create a table booking service at a restaurant.
 
-### Supporting documentation
+## Supporting documentation
 
 - [Creating an agent ↗️](/guides/agents/create-a-uagent)
 - [Creating an interval task ↗️](/guides/agents/interval-task)
@@ -16,6 +16,22 @@ This example shows how to use Agents to create a table booking service at a rest
 - [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
 - [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
 - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+
+## Project Structure
+
+Outline of basic structure of the project:
+
+```
+table-booking-demo/
+.
+├── protocols/
+│   ├── query.py
+│   └── book.py
+│ 
+└── agents/
+    ├── restaurant.py
+    └── user.py 
+```
 
 ### The Protocols
 
@@ -416,8 +432,10 @@ This example shows how to use Agents to create a table booking service at a rest
 - Restaurant:
 
     ```
+    INFO:     [restaurant]: Registration on Almanac API successful
     INFO:     [restaurant]: Registering on almanac contract...
     INFO:     [restaurant]: Registering on almanac contract...complete
+    INFO:     [cleaner]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8001&address=agent1qdfdx6952trs028fxyug7elgcktam9f896ayu9art4uaf75hwy2j9m87w
     INFO:     [restaurant]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
     INFO:     [restaurant]: Query: guests=3 time_start=19 duration=2. Available tables: [2].
     ```
@@ -425,8 +443,10 @@ This example shows how to use Agents to create a table booking service at a rest
 - User:
 
     ```
+    INFO:     [ user]: Registration on Almanac API successful
     INFO:     [ user]: Registering on almanac contract...
     INFO:     [ user]: Registering on almanac contract...complete
+    INFO:     [ user]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qvrskj36y7urk2j9g4gujgwvgr8v6jegm5druawmrpztmjjnep6ssn45p
     INFO:     [ user]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
     INFO:     [ user]: There is a free table, attempting to book one now
     INFO:     [ user]: Table reservation was successful
