@@ -5,9 +5,57 @@
 </div>
 
 import GuidesMdx from "../components/guide-mdx"
+import {FeaturedGuides} from "../components/feature-guide-tabs"
 import { AgentsIcon, AgentverseIcon, CliIcon,FetchNetwork, AsiIcon, LedgerIcon } from "src/icons/main-page-icons";
 
-<GuidesMdx content={ [
+<GuidesMdx
+ components={
+  {
+    featuredGuides : <FeaturedGuides featuredGuidesData={[
+      {
+        type: "Agent",
+        title : "Installing the uAgents Framework",
+        path: "/guides/agents/getting-started/installing-uagent",
+        label : "Beginner"
+      },
+       {
+        type: "Agentverse",
+        title : "Creating an Agentverse hosted agent",
+        path: "/guides/agentverse/creating-a-hosted-agent",
+        label : "Beginner"
+      },
+       {
+        type: "Agentverse",
+        title : "Agentverse Functions: register agent Functions on the Agentverse",
+        path: "/guides/agentverse/agentverse-functions/registering-agent-services",
+        label : "Intermediate"
+      }
+      ,
+       {
+        type: "Fetch network",
+        title : "How to convert Native FET to and from ERC-20 FET",
+        path: "guides/fetch-network/how-to-convert-fet-to-and-from-erc20",
+        label : "Intermediate"
+      }
+      ,
+       {
+        type: "ASI Alliance Wallet",
+        title : "How to stake with Fetch Web Wallet",
+        path: "/guides/fetch-network/fetch-wallet/web-wallet/stake",
+        label : "Intermediate"
+      }
+      ,
+       {
+        type: "Agents",
+        title : "How to use agents to send tokens",
+        path: "/guides/agents/intermediate/send-tokens",
+        label : "Intermediate"
+      }
+    ]} />
+  }
+ }
+ mainHeading={"Explore all guides"}
+ content={ [
   {
     type: "Agents",
     icon: AgentsIcon,
