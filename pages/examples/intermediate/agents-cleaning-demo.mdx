@@ -18,6 +18,11 @@ This example shows how to set up a cleaning service using the uAgents library to
 - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
 - [How to use agents to send tokens ↗️](/guides/agents/intermediate/send-tokens)
 
+## Pre-requisites
+
+- **Python:** Download and install from [Python official website ↗️](https://www.python.org/downloads/).
+- **Poetry:** Install by following the instructions on [Poetry's official website ↗️](https://python-poetry.org/docs/#installation).
+
 ## Project Structure
 
 Outline of basic structure of the project:
@@ -367,6 +372,23 @@ if __name__ == "__main__":
 ```
 </DocsCode>
 </CodeGroup>
+
+### Poetry Dependencies
+
+```pyproject.toml copy filename="pyproject.toml"
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+uagents = "^0.17.1"
+tortoise-orm = "^0.22.1"
+geopy = "^2.4.1"
+```
+
+#### Instructions to execute the example.
+
+- Navigate to the root folder of the example.
+- Install dependencies by running `poetry install`.
+- Run the cleaner agent with `python cleaner.py`.
+- Run the user agent with `python user.py`.
 
 ### Expected Output
 
