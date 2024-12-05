@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./tab.module.css";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export const GuideBox = ({
   content,
@@ -39,6 +40,50 @@ export const GuideBox = ({
         {content.description}
       </p>
     </section>
+  );
+};
+
+const FeaturedGuidesTab = ({
+  item,
+}: {
+  item: { type: string; title: string; path: string; label: string };
+}) => {
+  return (
+    <div className={styles.featuredGuidesTab}>
+      <div className=" nx-flex nx-flex-col">
+        <span className={styles.tabHeading}>{item.type}</span>
+        <span>{item.title}</span>
+      </div>
+      <div className={styles.featuredGuidesTablabel}>{item.label}</div>
+    </div>
+  );
+};
+
+export const FeaturedGuides = ({
+  featuredGuidesData,
+}: {
+  featuredGuidesData: {
+    type: string;
+    title: string;
+    path: string;
+    label: string;
+  }[];
+}) => {
+  return (
+    <div className={styles.featureBox}>
+      <div className={styles.featureGuideHeading}>Featured guides</div>
+      <div className="nx-grid nx-w-full nx-grid-cols-2 nx-gap-y-3 nx-gap-x-6">
+        {featuredGuidesData?.map((item, index) => (
+          <Link
+            key={index}
+            className="nx-text-blue-500 nx-w-full"
+            href={item.path}
+          >
+            <FeaturedGuidesTab item={item} />
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 };
 
