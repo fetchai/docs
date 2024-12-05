@@ -9,6 +9,11 @@ This documentation outlines the steps to set up and enable communication between
 
 - [How to use on_query decorator ↗️](../../guides/agents/intermediate/handlers#answer-queries-with-on_query-handler)
 
+## Pre-requisites
+
+- **Python:** Download and install from [Python official website ↗️](https://www.python.org/downloads/).
+- **Poetry:** Install by following the instructions on [Poetry's official website ↗️](https://python-poetry.org/docs/#installation).
+
 ## Supporting documentation
 
 - [Creating an agent ↗️](/guides/agents/getting-started/create-a-uagent)
@@ -119,7 +124,13 @@ if __name__ == "__main__":
 ```
 </DocsCode>
 </CodeGroup>
-Please update agent's secret phrase and serpapi API key. You can find serpapi API key on [SerpAPI API key ↗️](https://serpapi.com/)
+
+<Callout type="info" emoji="ℹ️">
+    Please update agent's secret phrase and serpapi API key. You can find serpapi API key on [SerpAPI API key ↗️](https://serpapi.com/)
+</Callout>
+
+
+
 
 ### Flask App Script
 
@@ -183,10 +194,23 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
+### Poetry Dependencies
+
+```pyproject.toml copy filename="pyproject.toml"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+uagents = "^0.17.1"
+flask = {extras = ["async"], version = "^3.1.0"}
+```
+
 ## Steps to run the app
+
+- Navigate to the root folder of the example.
+- Install dependencies by running `poetry install`.
 - Update `Agent Address` in `jobsearchapp.py` and [`serpapi_api_key`](https://serpapi.com/google-jobs-api) in `JobSearchAgent.py`.
-- Run both the script `JobSearchAgent.py` and update the agents address in `jobsearchapp.py`.
-- Rerun `JobSearchAgent.py` and `jobsearchapp.py` together
+- Run the JobSearchAgent with `python jobSearchAgent.py`
+- Run the Flask server with `python jobsearchapp.py`
 - Open new terminal window and run `curl "http://127.0.0.1:5000/search-jobs?q=<your_job_serach_query>"`
 - Replace `your_job_search_query` with your query in above command.
 
