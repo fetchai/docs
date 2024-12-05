@@ -1,8 +1,4 @@
-
-
-# src.uagents.storage.__init__
-
-
+# src.uagents.storage.**init**
 
 ## StorageAPI Objects [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/storage/__init__.py#L11)
 
@@ -11,8 +7,6 @@ class StorageAPI(ABC)
 ```
 
 Interface for a key-value like storage system.
-
-
 
 ## KeyValueStore Objects [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/storage/__init__.py#L35)
 
@@ -27,7 +21,6 @@ A simple key-value store implementation for data storage.
 - `_data` _dict_ - The internal data storage dictionary.
 - `_name` _str_ - The name associated with the store.
 - `_path` _str_ - The file path where the store data is stored.
-  
 
 **Methods**:
 
@@ -40,9 +33,8 @@ A simple key-value store implementation for data storage.
 - `_load` - Load data from the file into the store.
 - `_save` - Save the store data to the file.
 
+#### **init** [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/storage/__init__.py#L56)
 
-
-#### __init__ [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/storage/__init__.py#L56)
 ```python
 def __init__(name: str, cwd: Optional[str] = None)
 ```
@@ -54,9 +46,8 @@ Initialize the KeyValueStore instance.
 - `name` _str_ - The name associated with the store.
 - `cwd` _str, optional_ - The current working directory. Defaults to None.
 
-
-
 #### load_all_keys [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/storage/__init__.py#L102)
+
 ```python
 def load_all_keys() -> dict
 ```
@@ -67,9 +58,8 @@ Load all private keys from the private keys file.
 
 - `dict` - A dictionary containing loaded private keys.
 
-
-
 #### save_private_keys [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/storage/__init__.py#L117)
+
 ```python
 def save_private_keys(name: str, identity_key: str, wallet_key: str)
 ```
@@ -82,9 +72,8 @@ Save private keys to the private keys file.
 - `identity_key` _str_ - The identity private key.
 - `wallet_key` _str_ - The wallet private key.
 
-
-
 #### get_or_create_private_keys [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/storage/__init__.py#L135)
+
 ```python
 def get_or_create_private_keys(name: str) -> Tuple[str, str]
 ```
@@ -94,9 +83,7 @@ Get or create private keys associated with a name.
 **Arguments**:
 
 - `name` _str_ - The name associated with the private keys.
-  
 
 **Returns**:
 
-  Tuple[str, str]: A tuple containing the identity key and wallet key.
-
+Tuple[str, str]: A tuple containing the identity key and wallet key.

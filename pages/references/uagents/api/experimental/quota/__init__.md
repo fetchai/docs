@@ -1,6 +1,4 @@
-
-
-# src.uagents.experimental.quota.__init__
+# src.uagents.experimental.quota.**init**
 
 This Protocol class can be used to rate limit `on_message` message handlers.
 
@@ -17,7 +15,6 @@ The default access control rule can be set to allow or block all agents.
 
 Both rules can work together to provide a secure and rate-limited environment for
 message handlers.
-
 
 Usage examples:
 
@@ -59,6 +56,7 @@ agent.include(quota_protocol)
 Tip: The `AccessControlList` object can be used to set access control rules during
 runtime. This can be useful for dynamic access control rules based on the state of the
 agent or the network.
+
 ```python
 acl = AccessControlList(default=True)
 
@@ -69,17 +67,14 @@ async def message_handler(ctx: Context, sender: str, msg: Message):
     ctx.logger.info(f"Received message from {sender}: {msg.text}")
 ```
 
-
-
 ## QuotaProtocol Objects [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/quota/__init__.py#L105)
 
 ```python
 class QuotaProtocol(Protocol)
 ```
 
+#### **init** [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/quota/__init__.py#L106)
 
-
-#### __init__ [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/quota/__init__.py#L106)
 ```python
 def __init__(storage_reference: StorageAPI,
              name: Optional[str] = None,
@@ -100,9 +95,8 @@ Initialize a QuotaProtocol instance.
 - `default_acl` _Optional[AccessControlList], optional_ - The access control list.
   Defaults to None.
 
-
-
 #### on_message [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/quota/__init__.py#L131)
+
 ```python
 def on_message(model: Type[Model],
                replies: Optional[Union[Type[Model], Set[Type[Model]]]] = None,
@@ -124,15 +118,13 @@ including rate limiting.
 - `rate_limit` _Optional[RateLimit], optional_ - The rate limit to apply. Defaults to None.
 - `access_control_list` _Optional[AccessControlList], optional_ - The access control list to
   apply.
-  
 
 **Returns**:
 
 - `Callable` - The decorator to register the message handler.
 
-
-
 #### wrap [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/quota/__init__.py#L164)
+
 ```python
 def wrap(func: MessageCallback,
          rate_limit: Optional[RateLimit] = None,
@@ -146,15 +138,13 @@ Decorator to wrap a function with rate limiting.
 - `func` - The function to wrap with rate limiting
 - `rate_limit` - The rate limit to apply
 - `acl` - The access control list to apply
-  
 
 **Returns**:
 
 - `Callable` - The decorated
 
-
-
 #### add_request [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/quota/__init__.py#L232)
+
 ```python
 def add_request(agent_address: str, function_name: str,
                 window_size_minutes: int, max_requests: int) -> bool
@@ -167,9 +157,7 @@ reset the time window and add the request.
 **Arguments**:
 
 - `agent_address` - The address of the agent making the request
-  
 
 **Returns**:
 
-  False if the maximum number of requests has been exceeded, True otherwise
-
+False if the maximum number of requests has been exceeded, True otherwise

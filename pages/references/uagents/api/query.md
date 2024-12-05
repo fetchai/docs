@@ -1,12 +1,9 @@
-
-
 # src.uagents.query
 
 Query Envelopes.
 
-
-
 #### query [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/query.py#L12)
+
 ```python
 async def query(destination: str,
                 message: Model,
@@ -23,9 +20,7 @@ Query a remote agent with a message and retrieve the response envelope.
 - `resolver` _Optional[Resolver], optional_ - The resolver to use for endpoint resolution.
   Defaults to GlobalResolver.
 - `timeout` _int_ - The timeout for the query in seconds. Defaults to 30.
-  
 
 **Returns**:
 
-  Union[MsgStatus, Envelope]: The response envelope if successful, otherwise MsgStatus.
-
+Union[MsgStatus, Envelope]: The response envelope if successful, otherwise MsgStatus.
