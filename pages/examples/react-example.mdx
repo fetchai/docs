@@ -5,7 +5,7 @@ import { CodeGroup, DocsCode } from "../../components/code"
 
 ## Introduction
 
-This example shows how to build a react application integrated with a flask backend, using various agents to perform tasks such as fetching news, scrapping webpage data and also getting the sentiment of news using hugging face finbert model of [HF inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
+This example shows how to build a React application integrated with a flask backend, using various Agents to perform tasks such as fetching news, scrapping webpage data and also getting the sentiment of news using hugging face FinBERT model of [HF inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
 
 Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-agents/web/react-web-with-flask-and-agents) to run this locally.
 
@@ -13,7 +13,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 ### Supporting Documents
 
     - [How to use on_query decorator ↗️](../../guides/agents/intermediate/handlers).
-    - [How to create an agent ↗️](../../guides/agents/create-a-uagent).
+    - [How to create an Agent ↗️](../../guides/agents/create-a-uagent).
     - [Registering in the Almanac Contract ↗️](../../guides/agents/register-in-almanac).
     - [Almanac contract overview ↗️](../../references/contracts/uagents-almanac/almanac-overview).
 
@@ -30,8 +30,8 @@ Please check out the example code in our [examples repo ↗️](https://github.c
     - **React :** Setup a news project
 
     ```
-    npx create-react-app FinBERT-News-Sentiment-Analysis
-    cd FinBERT-News-Sentiment-Analysis
+    npx create-react-app finbert-news-sentiment-analysis
+    cd finbert-news-sentiment-analysis
     npm start
     ```
 
@@ -40,16 +40,16 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 Outline of basic structure of the project:
 
     ```
-    FinBERT-News-Sentiment-Analysis/
+    finbert-news-sentiment-analysis/
     ├── frontend/
     │   ├── public/
     │   │   └── index.html
     │   ├── src/
     │   │   ├── components/
-    │   │   │   ├── NewsFeed.js
-    │   │   │   ├── SearchComponent.js
+    │   │   │   ├── NewsFeed.jsx
+    │   │   │   ├── SearchComponent.jsx
     │   │   │   └── SearchComponent.css
-    │   │   ├── App.css
+    │   │   ├── app.css
     │   │   └── index.js
     │   ├── package.json
     │   └── package-lock.json
@@ -68,12 +68,12 @@ Outline of basic structure of the project:
 
 ## Backend Setup
 
-In this section we will setup agents and as well as flask app which will respond to different endpoints.
+In this section we will set up Agents and as well as flask app which will respond to different endpoints.
 
 1. Flask Application ('app.py'):
 
-   - Define routes for fetching news_urls, scrapping news content and get finbert sentiments.
-   - Utilise agents to handle specific tasks.
+   - Define routes for fetching news_urls, scrapping news content and get FinBERT sentiments.
+   - Utilize Agents to handle specific tasks.
 
    ```python copy filename="app.py"
    from flask import Flask
@@ -167,7 +167,7 @@ In this section we will setup agents and as well as flask app which will respond
 
 <CodeGroup hasCopy isLocalHostedFile>
 
-    <DocsCode local={true}>
+<DocsCode local={true}>
 
    ```python copy filename="news_agent.py"
    # Import Required libraries
@@ -294,10 +294,10 @@ In this section we will setup agents and as well as flask app which will respond
    if __name__ == "__main__":
        NewsAgent.run() 
    ```
-   </DocsCode>
+</DocsCode>
 
 <DocsCode local={false}>
-    ```python copy filename="news_agent.py"
+   ```python copy filename="news_agent.py"
    # Import Required libraries
    import requests
    from uagents import Agent, Context, Model
@@ -406,13 +406,14 @@ In this section we will setup agents and as well as flask app which will respond
            # Ensure the error message is sent as a string
            await ctx.send(sender, ErrorResponse(error=str(error_message)))
    ```
-   </DocsCode>
+</DocsCode>
 </CodeGroup>
+
    <Callout type="info" emoji="ℹ️">
        Get your [Alphavantage ↗️](https://www.alphavantage.co/) and [Gnews ↗️](https://gnews.io/) API keys and update it in the virtual environment.
    </Callout>
 
-   - **WebScraper agent:** Scraps the webpage content for the given url.
+   - **WebScraper Agent:** Scraps the webpage content for the given URL.
 
 <CodeGroup hasCopy isLocalHostedFile>
 <DocsCode local={true}>
@@ -494,10 +495,10 @@ In this section we will setup agents and as well as flask app which will respond
       if __name__ == "__main__":
           webScraperAgent.run()
       ```
-      </DocsCode>
+</DocsCode>
 </CodeGroup>
 
-   - **Sentiment agent:** Provides sentiment of news content provided using HF API and finBERT model.
+   - **Sentiment Agent:** Provides sentiment of news content provided using HF API and FinBERT model.
 
 <CodeGroup hasCopy isLocalHostedFile>
 <DocsCode local={true}>
@@ -577,14 +578,14 @@ In this section we will setup agents and as well as flask app which will respond
       if __name__ == "__main__":
           SentimentAgent.run()
       ```
-      </DocsCode>
+</DocsCode>
 </CodeGroup>
 
     <Callout type="info" emoji="ℹ️">
         Get your [Hugging Face Inference API ↗️](https://huggingface.co/docs/api-inference/en/index).
     </Callout>
 
-3. Requirement.txt:
+3. requirements.txt:
 
    ```
    aiohttp==3.9.5
@@ -614,7 +615,7 @@ In this section we will setup agents and as well as flask app which will respond
 
     - `NewsFeed.jsx`:
 
-   ```
+   ```py copy
    import React from 'react';
 
    function NewsFeed({ news }) {
@@ -705,7 +706,7 @@ In this section we will setup agents and as well as flask app which will respond
            }
    ```
 
-2. App.css:
+2. `app.css`:
 
    ```
        .App {
@@ -793,7 +794,7 @@ In this section we will setup agents and as well as flask app which will respond
            }
    ```
 
-3. App.js:
+3. `app.js`:
 
    ```
        // Import necessary React libraries and components
@@ -862,11 +863,13 @@ In this section we will setup agents and as well as flask app which will respond
     ```
     cd path/to/your/backend
     ```
+   
     - Create a virtual environment:
 
     ```
     python -m venv venv
     ```
+   
     - Activate the virtual environment:
 
     ```
@@ -878,7 +881,7 @@ In this section we will setup agents and as well as flask app which will respond
 
 2. Install Dependencies:
 
-        - Ensure requirements.txt is in the backend directory and contains all the necessary packages.
+        - Ensure `requirements.txt` is in the backend directory and contains all the necessary packages.
         - Install the required packages:
 
     ```
@@ -887,7 +890,7 @@ In this section we will setup agents and as well as flask app which will respond
 
 3. Start the Flask Application:
 
-    - Make sure the Flask app (app.py) is configured correctly with routes and agent interactions.
+    - Make sure the Flask app (`app.py`) is configured correctly with routes and agent interactions.
     - Run the Flask app:
 
     ```
