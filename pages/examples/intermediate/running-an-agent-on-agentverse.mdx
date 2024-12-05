@@ -1,4 +1,4 @@
-import { CodeGroup, DocsCode } from "../../../components/code"
+import { CodeGroup, DocsCode, GithubCodeSegment,CodeSegment } from "../../../components/code"
 
 # Run Agents on Agentverse
 
@@ -7,6 +7,8 @@ import { CodeGroup, DocsCode } from "../../../components/code"
 You can create, host and run any type of agent you want to create within the [Agentverse ↗️](/concepts/agent-services/agentverse-intro). There are multiple ways you can do so. You can decide to either **create your agent directly on the Agentverse** platform using its functionalities and allowed imports, or you can **create your agents locally** and then enrol them within the Agentverse by using an **Endpoint** or a **Mailbox** to make them retrievable by any other agent registered on the Fetch Network.
 
 Let's get started!
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/examples/intermediate/running-an-agent-on-agentverse) to run this locally.
 
 ## Supporting documentation
 
@@ -58,38 +60,49 @@ Whenever you create a local agent, you can either run a it on the Agentverse by 
 
 Let's consider the following local agent code:
 
-<CodeGroup hasCopy isLocalHostedFile>
-    <DocsCode local={true}>
+<GithubCodeSegment digest="44dbd167b548001e4f95b6b985df819c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/running-an-agent-on-agentverse/agent.py"
+        lineStart={1}
+        lineEnd={26}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='44dbd167b548001e4f95b6b985df819c'>
 
-    ```py copy filename="agent.py"
-    from uagents.setup import fund_agent_if_low
-    from uagents import Agent, Context, Protocol, Model
+<DocsCode local={true}>
+	```py copy filename="agent.py"
 
-    class Message(Model):
-        message: str
+	from uagents.setup import fund_agent_if_low
+	from uagents import Agent, Context, Protocol, Model
+	 
+	class Message(Model):
+	    message: str
+	 
+	agent = Agent(
+	    name="TestAgent",
+	    port=6145,
+	    seed="RANDOM STRINGS",
+	    endpoint=["http://YOUR_IP:6145/submit"],
+	)
+	 
+	fund_agent_if_low(agent.wallet.address())
+	 
+	@agent.on_event("startup")
+	async def hi(ctx: Context):
+	    ctx.logger.info(agent.address)
+	 
+	test_protocol = Protocol("TestProtocol")
+	 
+	# Define your agent protocols
+	# Include the protocols within your agent
+	agent.include(test_protocol, publish_manifest=True)
+	 
+	agent.run()
 
-    agent = Agent(
-        name="TestAgent",
-        port=6145,
-        seed="RANDOM STRINGS",
-        endpoint=["http://YOUR_IP:6145/submit"],
-    )
+```
+</DocsCode>
 
-    fund_agent_if_low(agent.wallet.address())
-
-    @agent.on_event("startup")
-    async def hi(ctx: Context):
-        ctx.logger.info(agent.address)
-
-    test_protocol = Protocol("TestProtocol")
-
-    # Define your agent protocols
-    # Include the protocols within your agent
-    agent.include(test_protocol, publish_manifest=True)
-
-    agent.run()
-    ```
-    </DocsCode>
 </CodeGroup>
 
 The agent is initialized with an **endpoint** and a **port** so that it can receive messages, and other agents know where to send them.
@@ -116,37 +129,47 @@ When running the above local agent, you will see something like this in your ter
 
 Let's consider the following local agent example:
 
-<CodeGroup hasCopy isLocalHostedFile>
+<GithubCodeSegment digest="d54a8bfbd4a02b4a5a23101c992f3333">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/running-an-agent-on-agentverse/mailbox-agent.py"
+        lineStart={1}
+        lineEnd={24}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d54a8bfbd4a02b4a5a23101c992f3333'>
 
-    <DocsCode local={true}>
+<DocsCode local={true}>
+	```py copy filename="mailbox-agent.py"
 
-    ```py copy filename="agent.py"
-    from uagents import Agent, Context, Model, Protocol
+	from uagents import Agent, Context, Model, Protocol
+	 
+	class Message(Model):
+	    message: str
+	 
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	 
+	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+	 
+	agent = Agent(
+	    name="MailboxTestAgent",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	 
+	print(f"Your agent's address is: {agent.address}")
+	 
+	test_protocol = Protocol("TestProtocol")
+	 
+	# Define your agent protocols and behaviour
+	# Include the protocols within your agent
+	 
+	if __name__ == "__main__":
+	    agent.run()
 
-    class Message(Model):
-        message: str
+```
+</DocsCode>
 
-    SEED_PHRASE = "put_your_seed_phrase_here"
-
-    AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-
-    agent = Agent(
-        name="MailboxTestAgent",
-        seed=SEED_PHRASE,
-        mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-    )
-
-    print(f"Your agent's address is: {agent.address}")
-
-    test_protocol = Protocol("TestProtocol")
-
-    # Define your agent protocols and behaviour
-    # Include the protocols within your agent
-
-    if __name__ == "__main__":
-        agent.run()
-    ```
-    </DocsCode>
 </CodeGroup>
 You can create a Mailbox by retrieving your **local agent address** and head over to the **Agentverse: My Agents** tab. Click on **Local Agents** and click on **Connect Local Agent** button. Provide the address and name of the local agent you wish to retrieve and wait for confirmation. You will then be able to see a **Mailbox API Key**. Copy and paste it within your local agent code by filling up the `AGENT_MAILBOX_KEY` field inline and restart the agent.
 
