@@ -1,23 +1,28 @@
 
 
-# Exchange Protocol
+# src.uagents.protocol
 
-## Protocol Objects
+Exchange Protocol
 
-    ```python
-    class Protocol()
-    ```
+
+
+## Protocol Objects [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L17)
+
+```python
+class Protocol()
+```
 
 The Protocol class encapsulates a particular set of functionalities for an agent.
 It typically relates to the exchange of messages between agents for executing some task.
 It includes the message (model) types it supports, the allowed replies, and the
 interval message handlers that define the logic of the protocol.
 
-#### `__`init`__`
 
-    ```python
-    def __init__(name: Optional[str] = None, version: Optional[str] = None)
-    ```
+
+#### __init__ [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L26)
+```python
+def __init__(name: Optional[str] = None, version: Optional[str] = None)
+```
 
 Initialize a Protocol instance.
 
@@ -26,12 +31,13 @@ Initialize a Protocol instance.
 - `name` _Optional[str], optional_ - The name of the protocol. Defaults to None.
 - `version` _Optional[str], optional_ - The version of the protocol. Defaults to None.
 
-#### intervals
 
-    ```python
-    @property
-    def intervals()
-    ```
+
+#### intervals [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L51)
+```python
+@property
+def intervals()
+```
 
 Property to access the interval handlers.
 
@@ -39,12 +45,13 @@ Property to access the interval handlers.
 
   List[Tuple[IntervalCallback, float]]: List of interval handlers and their periods.
 
-#### models
 
-    ```python
-    @property
-    def models()
-    ```
+
+#### models [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L61)
+```python
+@property
+def models()
+```
 
 Property to access the registered models.
 
@@ -52,12 +59,13 @@ Property to access the registered models.
 
   Dict[str, Type[Model]]: Dictionary of registered models with schema digests as keys.
 
-#### replies
 
-    ```python
-    @property
-    def replies()
-    ```
+
+#### replies [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L71)
+```python
+@property
+def replies()
+```
 
 Property to access the registered replies.
 
@@ -66,12 +74,13 @@ Property to access the registered replies.
   Dict[str, Dict[str, Type[Model]]]: Dictionary mapping message schema digests to their
   allowed replies.
 
-#### interval`_`messages
 
-    ```python
-    @property
-    def interval_messages()
-    ```
+
+#### interval_messages [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L82)
+```python
+@property
+def interval_messages()
+```
 
 Property to access the interval message digests.
 
@@ -79,12 +88,13 @@ Property to access the interval message digests.
 
 - `Set[str]` - Set of message digests that may be sent by interval handlers.
 
-#### signed`_`message`_`handlers
 
-    ```python
-    @property
-    def signed_message_handlers()
-    ```
+
+#### signed_message_handlers [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L92)
+```python
+@property
+def signed_message_handlers()
+```
 
 Property to access the signed message handlers.
 
@@ -92,12 +102,13 @@ Property to access the signed message handlers.
 
   Dict[str, MessageCallback]: Dictionary mapping message schema digests to their handlers.
 
-#### unsigned`_`message`_`handlers
 
-    ```python
-    @property
-    def unsigned_message_handlers()
-    ```
+
+#### unsigned_message_handlers [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L102)
+```python
+@property
+def unsigned_message_handlers()
+```
 
 Property to access the unsigned message handlers.
 
@@ -105,12 +116,13 @@ Property to access the unsigned message handlers.
 
   Dict[str, MessageCallback]: Dictionary mapping message schema digests to their handlers.
 
-#### name
 
-    ```python
-    @property
-    def name()
-    ```
+
+#### name [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L112)
+```python
+@property
+def name()
+```
 
 Property to access the protocol name.
 
@@ -118,12 +130,13 @@ Property to access the protocol name.
 
 - `str` - The protocol name.
 
-#### version
 
-    ```python
-    @property
-    def version()
-    ```
+
+#### version [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L122)
+```python
+@property
+def version()
+```
 
 Property to access the protocol version.
 
@@ -131,12 +144,13 @@ Property to access the protocol version.
 
 - `str` - The protocol version.
 
-#### canonical`_`name
 
-    ```python
-    @property
-    def canonical_name()
-    ```
+
+#### canonical_name [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L132)
+```python
+@property
+def canonical_name()
+```
 
 Property to access the canonical name of the protocol ('name:version').
 
@@ -144,12 +158,13 @@ Property to access the canonical name of the protocol ('name:version').
 
 - `str` - The canonical name of the protocol.
 
-#### digest
-    
-    ```python
-    @property
-    def digest()
-    ```
+
+
+#### digest [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L142)
+```python
+@property
+def digest()
+```
 
 Property to access the digest of the protocol's manifest.
 
@@ -157,13 +172,14 @@ Property to access the digest of the protocol's manifest.
 
 - `str` - The digest of the protocol's manifest.
 
-#### on`_`interval
 
-    ```python
-    def on_interval(period: float,
-                    messages: Optional[Union[Type[Model],
-                                             Set[Type[Model]]]] = None)
-    ```
+
+#### on_interval [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L152)
+```python
+def on_interval(period: float,
+                messages: Optional[Union[Type[Model],
+                                         Set[Type[Model]]]] = None)
+```
 
 Decorator to register an interval handler for the protocol.
 
@@ -172,17 +188,19 @@ Decorator to register an interval handler for the protocol.
 - `period` _float_ - The interval period in seconds.
 - `messages` _Optional[Union[Type[Model], Set[Type[Model]]]], optional_ - The associated
   message types. Defaults to None.
+  
 
 **Returns**:
 
 - `Callable` - The decorator to register the interval handler.
 
-#### on`_`query
 
-    ```python
-    def on_query(model: Type[Model],
-                 replies: Optional[Union[Type[Model], Set[Type[Model]]]] = None)
-    ```
+
+#### on_query [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L205)
+```python
+def on_query(model: Type[Model],
+             replies: Optional[Union[Type[Model], Set[Type[Model]]]] = None)
+```
 
 Decorator to register a query handler for the protocol.
 
@@ -191,18 +209,20 @@ Decorator to register a query handler for the protocol.
 - `model` _Type[Model]_ - The message model type.
 - `replies` _Optional[Union[Type[Model], Set[Type[Model]]]], optional_ - The associated
   reply types. Defaults to None.
+  
 
 **Returns**:
 
 - `Callable` - The decorator to register the query handler.
 
-#### on`_`message
 
-    ```python
-    def on_message(model: Type[Model],
-                   replies: Optional[Union[Type[Model], Set[Type[Model]]]] = None,
-                   allow_unverified: Optional[bool] = False)
-    ```
+
+#### on_message [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L223)
+```python
+def on_message(model: Type[Model],
+               replies: Optional[Union[Type[Model], Set[Type[Model]]]] = None,
+               allow_unverified: Optional[bool] = False)
+```
 
 Decorator to register a message handler for the protocol.
 
@@ -213,16 +233,18 @@ Decorator to register a message handler for the protocol.
   reply types. Defaults to None.
 - `allow_unverified` _Optional[bool], optional_ - Whether to allow unverified messages.
   Defaults to False.
+  
 
 **Returns**:
 
 - `Callable` - The decorator to register the message handler.
 
-#### manifest
-    
-    ```python
-    def manifest() -> Dict[str, Any]
-    ```
+
+
+#### manifest [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L286)
+```python
+def manifest() -> Dict[str, Any]
+```
 
 Generate the protocol's manifest, a long-form machine readable description of the
 protocol details and interface.
@@ -231,19 +253,22 @@ protocol details and interface.
 
   Dict[str, Any]: The protocol's manifest.
 
-#### compute`_`digest
-    
-    ```python
-    @staticmethod
-    def compute_digest(manifest: Dict[str, Any]) -> str
-    ```
+
+
+#### compute_digest [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L346)
+```python
+@staticmethod
+def compute_digest(manifest: Dict[str, Any]) -> str
+```
 
 Compute the digest of a given manifest.
 
 **Arguments**:
 
 - `manifest` _Dict[str, Any]_ - The manifest to compute the digest for.
+  
 
 **Returns**:
 
 - `str` - The computed digest.
+
