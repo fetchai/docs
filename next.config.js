@@ -368,6 +368,13 @@ module.exports = withNextra({
         destination: "/examples/intermediate/agents-cleaning-demo",
         permanent: true,
       },
+      {
+        source:
+          "/guides/fetch-network/fetch-wallet/fetch-wallet-hardware-connection-guide",
+        destination:
+          "/guides/fetch-network/asi-wallet/asi-wallet-hardware-connection-guide",
+        permanent: true,
+      },
     ];
   },
 });
