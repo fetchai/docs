@@ -99,11 +99,11 @@ TIMESTAMP                   LOG ENTRY
 2024-01-23T16:10:51.459000  [INFO]: Received message from <agent_address>, session: <session_id>
 ```
 
-    - `avctl hosting secrets add <secret_name>` - Add a secret
+    - `avctl hosting add secrets <secret_name>` - Add a secret
 
-    - `avctl hosting secrets delete <secret_name>` - Delete a secret
+    - `avctl hosting delete secrets <secret_name>` - Delete a secret
 
-    - `avctl hosting secrets get` - Retrieve names of all secrets.
+    - `avctl hosting get secrets` - Retrieve names of all secrets.
 
 ```
 abc@xyz-MacBook-Pro myagents % avctl hosting secrets add secret
@@ -133,10 +133,10 @@ Supported Packages:
 abc@xyz-MacBook-Pro myagents % 
 ```
 
-    - `avctl hosting delete` - Deletes an agent from agentverse.
+    - `avctl hosting delete agents -a <agent_address>` - Deletes an agent from agentverse.
 
 ```
-abc@xyz-MacBook-Pro myagents % avctl hosting delete -a <agent_address>
+abc@xyz-MacBook-Pro myagents % avctl hosting delete agents -a <agent_address>
 NAME                                 ADDRESS                                                            COMPILED  DOMAIN  REVISION  RUNNING  WALLET ADDRESS
 name                                 <agent_address>                                                    true              4         true     <fetch_wallet_address>
 
