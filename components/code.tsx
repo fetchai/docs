@@ -429,6 +429,7 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
         </div>
         <div className="nx-gap-4 nx-flex nx-flex-col">
           <div
+            id="code-block-outer"
             className="code-style-outer"
             style={{ overflowX: "scroll", width: "100%" }}
             ref={codeRef}
@@ -477,6 +478,7 @@ export const ModifiedPre = ({
         {filename && <span className="filename">{filename}</span>}
         {hasCopyCode && (
           <div
+            id="modified-copy"
             onClick={handleCopy}
             className="nx-cursor-pointer nx-ml-auto nx-flex nx-gap-2 nx-items-center"
           >
@@ -497,8 +499,7 @@ export const ModifiedPre = ({
                 </span>
               </>
             ) : (
-              // <CopyIcon />
-              <></>
+              <CopyIcon />
             )}
           </div>
         )}
