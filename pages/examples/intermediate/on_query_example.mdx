@@ -1,11 +1,13 @@
 import { Callout } from 'nextra/components' 
-import { CodeGroup, DocsCode } from "../../../components/code"
+import { CodeGroup, DocsCode, GithubCodeSegment, CodeSegment } from "../../../components/code"
 
 ##  Shopping Assistance Agent using `on_query`
 
 ## Introduction
 
 This example creates a shopping assistant agent using FastAPI and uagents. The agent handles shopping questions, utilizes the OpenAI API to generate responses, and sends personalized shopping advice back to the user. The `on_query` method is key to processing and responding to these queries.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/examples/intermediate/on_query_example) to run this locally.
 
 ### Supporting Documents
 
@@ -22,107 +24,140 @@ This example creates a shopping assistant agent using FastAPI and uagents. The a
 
  - **models :** This code defines two data models, `ShoppingRequest` and `ShoppingAssistResponse`, using the uAgents library, each with a single string attribute (question and answer, respectively).
 
-```py copy filename="models.py"
-from uagents import Model
+ <GithubCodeSegment digest="9a48f495122d3caa46e7fc6574efeae6">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on_query_example/src/models.py"
+        lineStart={1}
+        lineEnd={10}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9a48f495122d3caa46e7fc6574efeae6'>
 
-class ShoppingRequest(Model):
-    question: str
+<DocsCode local={true}>
+	```py copy filename="models.py"
 
-class ShoppingAssistResponse(Model):
-    answer: str
+	from uagents import Model
+	 
+	 
+	class ShoppingRequest(Model):
+	    question: str
+	 
+	 
+	class ShoppingAssistResponse(Model):
+	    answer: str
+	 
 
 ```
+</DocsCode>
+
+</CodeGroup>
 
  - **Shopping Assistance Agent :** This code defines a shopping assistant agent using the uAgents framework. The agent listens for incoming `ShoppingRequest` messages, processes them by sending the user's question to OpenAI's GPT-4 API for a response, and then sends the generated response back to the sender as a `ShoppingAssistResponse`.
 
-<CodeGroup hasCopy isLocalHostedFile>
+ <GithubCodeSegment digest="0663da1c17b4bc8abaf646c118f53690">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on_query_example/src/agent.py"
+        lineStart={1}
+        lineEnd={90}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='0663da1c17b4bc8abaf646c118f53690'>
+
 <DocsCode local={true}>
-```py copy filename="agent.py"
-from uagents import Agent, Context
-from uagents.setup import fund_agent_if_low
-from models import ShoppingAssistResponse, ShoppingRequest
-import requests
-import json
+	```py copy filename="agent.py"
 
-agent = Agent(
-    name="Shopping Assistant",
-    seed="shopping_assistant_seed_phrase",
-    port=8001,
-    endpoint="http://localhost:8001/submit",
-)
-
-fund_agent_if_low(agent.wallet.address())
-
-YOUR_OPEN_AI_API_KEY = "PASTE_YOUR_OPEN_AI_API_KEY"
-
-def get_chat_response(messages):
-    """
-    Sends a request to the OpenAI GPT-4 API to generate a chat response.
-
-    Accepts:
-        - messages: A list of dictionaries representing the conversation history,
-                    where each dictionary contains a 'role' (e.g., 'system' or 'user')
-                    and 'content' (the message text).
-
-    What it does:
-        - Sends a POST request to the OpenAI API with the conversation history.
-        - Handles the API response, returning the generated response from the model
-          or an error message if the request fails.
-
-    Returns:
-        - A string containing the model's response if the request is successful.
-        - An error message string if the request fails.
-    """
-    api_url = "https://api.openai.com/v1/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {YOUR_OPEN_AI_API_KEY}",
-        "Content-Type": "application/json",
-    }
-
-    data = {
-        "model": "gpt-4",
-        "messages": messages,
-        "max_tokens": 150,
-        "temperature": 0.7,
-    }
-
-    response = requests.post(api_url, headers=headers, data=json.dumps(data))
-
-    if response.status_code == 200:
-        result = response.json()
-        return result["choices"][0]["message"]["content"].strip()
-    else:
-        return f"Error: {response.status_code} - {response.text}"
-
-@agent.on_query(model=ShoppingRequest, replies=ShoppingAssistResponse)
-async def handler(ctx: Context, sender: str, msg: ShoppingRequest):
-    """
-    Handles incoming queries from other agents, specifically ShoppingRequest messages.
-
-    Accepts:
-        - ctx: The context object, used for logging and communication.
-        - sender: A string representing the address of the agent that sent the message.
-        - msg: A ShoppingRequest object containing the question from the user.
-
-    What it does:
-        - Logs the received question.
-        - Prepares a conversation history for the chat model with the role of the assistant and user.
-        - Sends the conversation history to the get_chat_response function to generate a response.
-        - Logs the generated response.
-        - Sends the response back to the sender as a ShoppingAssistResponse.
-
-    Returns:
-        - None (asynchronous function).
-    """
-    ctx.logger.info(f"Received message from {sender} with question: {msg.question}")
-    messages = [{"role": "system", "content": "You are a helpful shopping assistant."}]
-    messages.append({"role": "user", "content": msg.question})
-    response = get_chat_response(messages)
-    ctx.logger.info(f"Question: {msg.question}\nAnswer: {response}")
-    await ctx.send(sender, ShoppingAssistResponse(answer=response))
-
-if __name__ == "__main__":
-    agent.run()
+	from uagents import Agent, Context
+	from uagents.setup import fund_agent_if_low
+	from models import ShoppingAssistResponse, ShoppingRequest
+	import requests
+	import json
+	 
+	 
+	agent = Agent(
+	    name="Shopping Assistant",
+	    seed="shopping_assistant_seed_phrase",
+	    port=8001,
+	    endpoint="http://localhost:8001/submit",
+	)
+	 
+	fund_agent_if_low(agent.wallet.address())
+	 
+	YOUR_OPEN_AI_API_KEY = "PASTE_YOUR_OPEN_AI_API_KEY"
+	 
+	 
+	def get_chat_response(messages):
+	    """
+	    Sends a request to the OpenAI GPT-4 API to generate a chat response.
+	 
+	    Accepts:
+	        - messages: A list of dictionaries representing the conversation history,
+	                    where each dictionary contains a 'role' (e.g., 'system' or 'user')
+	                    and 'content' (the message text).
+	 
+	    What it does:
+	        - Sends a POST request to the OpenAI API with the conversation history.
+	        - Handles the API response, returning the generated response from the model
+	          or an error message if the request fails.
+	 
+	    Returns:
+	        - A string containing the model's response if the request is successful.
+	        - An error message string if the request fails.
+	    """
+	    api_url = "https://api.openai.com/v1/chat/completions"
+	    headers = {
+	        "Authorization": f"Bearer {YOUR_OPEN_AI_API_KEY}",
+	        "Content-Type": "application/json",
+	    }
+	 
+	    data = {
+	        "model": "gpt-4",
+	        "messages": messages,
+	        "max_tokens": 150,
+	        "temperature": 0.7,
+	    }
+	 
+	    response = requests.post(api_url, headers=headers, data=json.dumps(data))
+	 
+	    if response.status_code == 200:
+	        result = response.json()
+	        return result["choices"][0]["message"]["content"].strip()
+	    else:
+	        return f"Error: {response.status_code} - {response.text}"
+	 
+	 
+	@agent.on_query(model=ShoppingRequest, replies=ShoppingAssistResponse)
+	async def handler(ctx: Context, sender: str, msg: ShoppingRequest):
+	    """
+	    Handles incoming queries from other agents, specifically ShoppingRequest messages.
+	 
+	    Accepts:
+	        - ctx: The context object, used for logging and communication.
+	        - sender: A string representing the address of the agent that sent the message.
+	        - msg: A ShoppingRequest object containing the question from the user.
+	 
+	    What it does:
+	        - Logs the received question.
+	        - Prepares a conversation history for the chat model with the role of the assistant and user.
+	        - Sends the conversation history to the get_chat_response function to generate a response.
+	        - Logs the generated response.
+	        - Sends the response back to the sender as a ShoppingAssistResponse.
+	 
+	    Returns:
+	        - None (asynchronous function).
+	    """
+	    ctx.logger.info(f"Received message from {sender} with question: {msg.question}")
+	    messages = [{"role": "system", "content": "You are a helpful shopping assistant."}]
+	    messages.append({"role": "user", "content": msg.question})
+	    response = get_chat_response(messages)
+	    ctx.logger.info(f"Question: {msg.question}\nAnswer: {response}")
+	    await ctx.send(sender, ShoppingAssistResponse(answer=response))
+	 
+	 
+	if __name__ == "__main__":
+	    agent.run()
+	 
 
 ```
 </DocsCode>
@@ -217,53 +252,70 @@ async def handler(ctx: Context, sender: str, msg: ShoppingRequest):
 
  - **main.py :** This FastAPI code starts by defining an endpoint `/api/question-answer` that accepts a query parameter message, sends it to an agent for processing, and returns the agent's response.
 
-```py copy filename="main.py"
-from fastapi import FastAPI, Query
-from uagents.query import query
-from models import ShoppingRequest
-import json
+ <GithubCodeSegment digest="88af601bdca5e69d5df9bc8aeb384efa">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on_query_example/src/main.py"
+        lineStart={1}
+        lineEnd={46}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='88af601bdca5e69d5df9bc8aeb384efa'>
 
-app = FastAPI()
+<DocsCode local={true}>
+	```py copy filename="main.py"
 
-DESTINATION = "agent1qg9p5xppsdv6067lg570g8t3lzens32fg6d0fe88jawd2v0lsh8f6ru9ntc"
-
-@app.get("/api/question-answer")
-async def question_answering(
-    message: str = Query(..., description="The message or question you want to ask")
-):
-    """
-    Handles GET requests to the /api/question-answer endpoint.
-
-    Accepts:
-        - message: A string query parameter representing the message or question that you want to ask.
-
-    What it does:
-        - Creates a ShoppingRequest object using the provided message.
-        - Sends the ShoppingRequest object to the specified agent (DESTINATION) using the query function.
-        - Decodes the response payload received from the agent and parses it as JSON.
-
-    Returns:
-        - A dictionary containing the "response" with the answer retrieved from the agent.
-    """
-    shopping_request = ShoppingRequest(question=message)
-    answer = await query(destination=DESTINATION, message=shopping_request)
-    response_data = json.loads(answer.decode_payload())
-    return {"response": response_data.get("answer")}
-
-@app.get("/")
-async def root():
-    """
-    Handles GET requests to the root endpoint ("/").
-
-    What it does:
-        - Returns a simple "Hello World" message.
-
-    Returns:
-        - A dictionary containing a "message" key with the value "Hello World".
-    """
-    return {"message": "Hello World"}
+	from fastapi import FastAPI, Query
+	from uagents.query import query
+	from models import ShoppingRequest
+	import json
+	 
+	app = FastAPI()
+	 
+	DESTINATION = "agent1qg9p5xppsdv6067lg570g8t3lzens32fg6d0fe88jawd2v0lsh8f6ru9ntc"
+	 
+	 
+	@app.get("/api/question-answer")
+	async def question_answering(
+	    message: str = Query(..., description="The message or question you want to ask")
+	):
+	    """
+	    Handles GET requests to the /api/question-answer endpoint.
+	 
+	    Accepts:
+	        - message: A string query parameter representing the message or question that you want to ask.
+	 
+	    What it does:
+	        - Creates a ShoppingRequest object using the provided message.
+	        - Sends the ShoppingRequest object to the specified agent (DESTINATION) using the query function.
+	        - Decodes the response payload received from the agent and parses it as JSON.
+	 
+	    Returns:
+	        - A dictionary containing the "response" with the answer retrieved from the agent.
+	    """
+	    shopping_request = ShoppingRequest(question=message)
+	    answer = await query(destination=DESTINATION, message=shopping_request)
+	    response_data = json.loads(answer.decode_payload())
+	    return {"response": response_data.get("answer")}
+	 
+	 
+	@app.get("/")
+	async def root():
+	    """
+	    Handles GET requests to the root endpoint ("/").
+	 
+	    What it does:
+	        - Returns a simple "Hello World" message.
+	 
+	    Returns:
+	        - A dictionary containing a "message" key with the value "Hello World".
+	    """
+	    return {"message": "Hello World"}
 
 ```
+</DocsCode>
+
+</CodeGroup>
 
  - **pyproject.toml :** Poetry Dependencies
 

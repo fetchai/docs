@@ -1,10 +1,12 @@
-import { CodeGroup, DocsCode } from "../../../components/code"
+import { CodeGroup, DocsCode, GithubCodeSegment, CodeSegment } from "../../../components/code"
 
 # Agents broadcast
 
 ## Introduction
 
 This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to use a custom protocol to enable multiple agents communication.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/broadcast/broadcast.py) to run this locally.
 
 ### Supporting documentation
 
@@ -18,61 +20,72 @@ This file can be run on any platform supporting Python, with the necessary insta
 
 ### The script
 
-<CodeGroup hasCopy isLocalHostedFile>
+<GithubCodeSegment digest="0156a572fb0598cfb6d2ddfb5afa4ac4">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/broadcast/broadcast.py"
+        lineStart={1}
+        lineEnd={47}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='0156a572fb0598cfb6d2ddfb5afa4ac4'>
 
-    <DocsCode local={true}>
+<DocsCode local={true}>
+	```py copy filename="broadcast.py"
 
-```python copy filename="broadcast.py"
-from uagents import Agent, Bureau, Context, Model, Protocol
+	from uagents import Agent, Bureau, Context, Model, Protocol
+	 
+	# create agents
+	# alice and bob will support the protocol
+	# charles will try to reach all agents supporting the protocol
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	bob = Agent(name="bob", seed="bob recovery phrase")
+	charles = Agent(name="charles", seed="charles recovery phrase")
+	 
+	class BroadcastExampleRequest(Model):
+	    pass
+	 
+	class BroadcastExampleResponse(Model):
+	    text: str
+	 
+	# define protocol
+	proto = Protocol(name="proto", version="1.0")
+	 
+	@proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
+	async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
+	    await ctx.send(
+	        sender, BroadcastExampleResponse(text=f"Hello from {ctx.agent.name}")
+	    )
+	 
+	# include protocol
+	# Note: after the first registration on the almanac smart contract, it will
+	# take about 5 minutes before the agents can be found through the protocol
+	alice.include(proto)
+	bob.include(proto)
+	 
+	# let charles send the message to all agents supporting the protocol
+	@charles.on_interval(period=5)
+	async def say_hello(ctx: Context):
+	    status_list = await ctx.broadcast(proto.digest, message=BroadcastExampleRequest())
+	    ctx.logger.info(f"Trying to contact {len(status_list)} agents.")
+	 
+	@charles.on_message(model=BroadcastExampleResponse)
+	async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
+	    ctx.logger.info(f"Received response from {sender}: {msg.text}")
+	 
+	bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
+	bureau.add(alice)
+	bureau.add(bob)
+	bureau.add(charles)
+	 
+	if __name__ == "__main__":
+	    bureau.run()
 
-# create agents
-# alice and bob will support the protocol
-# charles will try to reach all agents supporting the protocol
-alice = Agent(name="alice", seed="alice recovery phrase")
-bob = Agent(name="bob", seed="bob recovery phrase")
-charles = Agent(name="charles", seed="charles recovery phrase")
-
-class BroadcastExampleRequest(Model):
-    pass
-
-class BroadcastExampleResponse(Model):
-    text: str
-
-# define protocol
-proto = Protocol(name="proto", version="1.0")
-
-@proto.on_message(model=BroadcastExampleRequest, replies=BroadcastExampleResponse)
-async def handle_request(ctx: Context, sender: str, _msg: BroadcastExampleRequest):
-    await ctx.send(
-        sender, BroadcastExampleResponse(text=f"Hello from {ctx.agent.name}")
-    )
-
-# include protocol
-# Note: after the first registration on the almanac smart contract, it will
-# take about 5 minutes before the agents can be found through the protocol
-alice.include(proto)
-bob.include(proto)
-
-# let charles send the message to all agents supporting the protocol
-@charles.on_interval(period=5)
-async def say_hello(ctx: Context):
-    status_list = await ctx.broadcast(proto.digest, message=BroadcastExampleRequest())
-    ctx.logger.info(f"Trying to contact {len(status_list)} agents.")
-
-@charles.on_message(model=BroadcastExampleResponse)
-async def handle_response(ctx: Context, sender: str, msg: BroadcastExampleResponse):
-    ctx.logger.info(f"Received response from {sender}: {msg.text}")
-
-bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
-bureau.add(alice)
-bureau.add(bob)
-bureau.add(charles)
-
-if __name__ == "__main__":
-    bureau.run()
 ```
 </DocsCode>
+
 </CodeGroup>
+
 ### Expected output
 
     ```

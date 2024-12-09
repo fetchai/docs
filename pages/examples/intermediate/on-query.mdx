@@ -1,13 +1,20 @@
 import { Callout } from 'nextra/components'
-import { CodeGroup, DocsCode } from "../../../components/code"
+import { CodeGroup, DocsCode, GithubCodeSegment,CodeSegment } from "../../../components/code"
 
 # On Query decorator example
 
 This documentation outlines the steps to set up and enable communication between Agent and flask app based webpage, using the uAgents framework. flask app sends a query to Agent, and Agent processes this query and responds. Both agent and app use a simple request-response model for communication.
 
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/examples/intermediate/on-query-decorator-example) to run this locally.
+
 ## Guide
 
 - [How to use on_query decorator ↗️](/guides/agents/intermediate/handlers#answer-queries-with-on_query-handler)
+
+## Pre-requisites
+
+- **Python:** Download and install from [Python official website ↗️](https://www.python.org/downloads/).
+- **Poetry:** Install by following the instructions on [Poetry's official website ↗️](https://python-poetry.org/docs/#installation).
 
 ## Supporting documentation
 
@@ -23,170 +30,228 @@ This documentation outlines the steps to set up and enable communication between
 
 This agent handles queries related to job searches using SerpAPI. It provides information about available jobs for a job title specified by the user.
 
-<CodeGroup hasCopy isLocalHostedFile>
-  <DocsCode local={true}>
-```py copy filename="JobSearchAgent.py"
-# import required libraries
-import json
+<GithubCodeSegment digest="290876dcc3e0d80c6e2cab18a5361e3e">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on-query-decorator-example/job-search-agent.py"
+        lineStart={1}
+        lineEnd={97}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='290876dcc3e0d80c6e2cab18a5361e3e'>
 
-import aiohttp
-from uagents import Agent, Context, Model
-from uagents.setup import fund_agent_if_low
+<DocsCode local={true}>
+	```py copy filename="job-search-agent.py"
 
-# Define Request and Response Data Models
-class Request(Model):
-    query: str
+	# import required libraries
+	import json
+	 
+	import aiohttp
+	from uagents import Agent, Context, Model
+	from uagents.setup import fund_agent_if_low
+	 
+	 
+	# Define Request and Response Data Models
+	class Request(Model):
+	    query: str
+	 
+	 
+	class Response(Model):
+	    response: str
+	 
+	 
+	# Define asynchronous function to handle job search queries using a serpapi url
+	async def get_job_summary(query: str, location: str, api_key: str):
+	 
+	    url = "https://serpapi.com/search.json"
+	    params = {
+	        "q": query + " careers",
+	        "location": location,
+	        "engine": "google_jobs",
+	        "api_key": api_key,
+	    }
+	 
+	    async with aiohttp.ClientSession() as session:
+	        async with session.get(url, params=params) as response:
+	            if response.status == 200:
+	                data = await response.json()
+	                jobs = data.get("jobs_results", [])
+	                if jobs:
+	                    job = jobs[0] if jobs else None  # Ensuring there is a job to report
+	                    if not job:
+	                        return "No job details available."
+	                    res_str = json.dumps(
+	                        {
+	                            "Title": job.get("title", "N/A"),
+	                            "Company": job.get("company_name", "N/A"),
+	                            "Location": job.get("location", "N/A"),
+	                            "Link": job.get("link", "N/A"),
+	                            "Posted": job.get("detected_extensions", {}).get(
+	                                "posted_at", "N/A"
+	                            ),
+	                            "Type": job.get("detected_extensions", {}).get(
+	                                "schedule_type", "N/A"
+	                            ),
+	                            "Description": job.get("description", "N/A"),
+	                        },
+	                        indent=2,
+	                    )
+	                    return res_str
+	                else:
+	                    return "No job results found."
+	            else:
+	                return f"Failed to fetch data: {response.status}"
+	 
+	 
+	# Define Search Agent
+	SearchAgent = Agent(
+	    name="SearchAgent",
+	    port=8000,
+	    seed="<YOUR_AGENT_SECRET_PHRASE>",
+	    endpoint=["http://127.0.0.1:8000/submit"],
+	)  # Update your agent's secret phrase
+	 
+	# Registering agent on Almanac and funding it
+	fund_agent_if_low(SearchAgent.wallet.address())
+	 
+	 
+	# On agent startup printing address
+	@SearchAgent.on_event("startup")
+	async def agent_details(ctx: Context):
+	    ctx.logger.info(f"Search Agent Address is {SearchAgent.address}")
+	 
+	 
+	# On_query decorator to handle jobs request
+	@SearchAgent.on_query(model=Request, replies={Response})
+	async def query_handler(ctx: Context, sender: str, msg: Request):
+	    ctx.logger.info("Query received")
+	    try:
+	        ctx.logger.info(f"Fetching job details for query: {msg.query}")
+	        response = await get_job_summary(
+	            msg.query, "United Kingdom", "<YOUR_SERPAPI_API_KEY_HERE>" # Update your serpapi API key
+	        )  # Replace your serpAPI key.
+	        ctx.logger.info(f"Response: {response}")
+	        await ctx.send(sender, Response(response=response))
+	    except Exception as e:
+	        error_message = f"Error fetching job details: {str(e)}"
+	        ctx.logger.error(error_message)
+	        await ctx.send(sender, Response(response=str(error_message)))
+	 
+	 
+	if __name__ == "__main__":
+	    SearchAgent.run()
 
-class Response(Model):
-    response: str
-
-# Define asynchronous function to handle job search queries using a serpapi url
-async def get_job_summary(query: str, location: str, api_key: str):
-
-    url = "https://serpapi.com/search.json"
-    params = {
-        "q": query + " careers",
-        "location": location,
-        "engine": "google_jobs",
-        "api_key": api_key,
-    }
-
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, params=params) as response:
-            if response.status == 200:
-                data = await response.json()
-                jobs = data.get("jobs_results", [])
-                if jobs:
-                    job = jobs[0] if jobs else None  # Ensuring there is a job to report
-                    if not job:
-                        return "No job details available."
-                    res_str = json.dumps(
-                        {
-                            "Title": job.get("title", "N/A"),
-                            "Company": job.get("company_name", "N/A"),
-                            "Location": job.get("location", "N/A"),
-                            "Link": job.get("link", "N/A"),
-                            "Posted": job.get("detected_extensions", {}).get(
-                                "posted_at", "N/A"
-                            ),
-                            "Type": job.get("detected_extensions", {}).get(
-                                "schedule_type", "N/A"
-                            ),
-                            "Description": job.get("description", "N/A"),
-                        },
-                        indent=2,
-                    )
-                    return res_str
-                else:
-                    return "No job results found."
-            else:
-                return f"Failed to fetch data: {response.status}"
-
-# Define Search Agent
-SearchAgent = Agent(
-    name="SearchAgent",
-    port=8000,
-    seed="<YOUR_AGENT_SECRET_PHRASE>",
-    endpoint=["http://127.0.0.1:8000/submit"],
-)  # Update your agent's secret phrase
-
-# Registering agent on Almanac and funding it
-fund_agent_if_low(SearchAgent.wallet.address())
-
-# On agent startup printing address
-@SearchAgent.on_event("startup")
-async def agent_details(ctx: Context):
-    ctx.logger.info(f"Search Agent Address is {SearchAgent.address}")
-
-# On_query decorator to handle jobs request
-@SearchAgent.on_query(model=Request, replies={Response})
-async def query_handler(ctx: Context, sender: str, msg: Request):
-    ctx.logger.info("Query received")
-    try:
-        ctx.logger.info(f"Fetching job details for query: {msg.query}")
-        response = await get_job_summary(
-            msg.query, "United Kingdom", "<YOUR_SERPAPI_API_KEY_HERE>" # Update your serpapi API key
-        )  # Replace your serpAPI key.
-        ctx.logger.info(f"Response: {response}")
-        await ctx.send(sender, Response(response=response))
-    except Exception as e:
-        error_message = f"Error fetching job details: {str(e)}"
-        ctx.logger.error(error_message)
-        await ctx.send(sender, Response(response=str(error_message)))
-
-if __name__ == "__main__":
-    SearchAgent.run()
 ```
 </DocsCode>
 </CodeGroup>
-Please update agent's secret phrase and serpapi API key. You can find serpapi API key on [SerpAPI API key ↗️](https://serpapi.com/)
+
+<Callout type="info" emoji="ℹ️">
+    Please update agent's secret phrase and serpapi API key. You can find serpapi API key on [SerpAPI API key ↗️](https://serpapi.com/)
+</Callout>
+
+
+
 
 ### Flask App Script
 
 Async Agent-Based Flask App for Keyword base Job Search Results Retrieval.
 
-```py copy filename="jobsearchapp.py"
-import json
+<GithubCodeSegment digest="6275234f233f32bcb598e997139441e8">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on-query-decorator-example/job-search-app.py"
+        lineStart={1}
+        lineEnd={60}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6275234f233f32bcb598e997139441e8'>
 
-from flask import Flask, jsonify, request
-from uagents import Model
-from uagents.query import query
+<DocsCode local={true}>
+	```py copy filename="job-search-app.py"
 
-app = Flask(__name__)
+	import json
+	 
+	from flask import Flask, jsonify, request
+	from uagents import Model
+	from uagents.query import query
+	 
+	app = Flask(__name__)
+	 
+	# Define the address of your agent to send requests to
+	AGENT_ADDRESS = "<YOUR_AGENT_ADDRESS_HERE>"  # Update your agent address here
+	 
+	 
+	# Define a data model for incoming requests
+	class Request(Model):
+	    query: str
+	 
+	 
+	# Define a route to handle job search queries
+	@app.route("/search-jobs")
+	async def search_jobs():
+	    keyword = request.args.get("q")
+	    if not keyword:
+	        return jsonify({"error": "No query provided.", "status": "error"}), 400
+	    # Make a call to the agent with the request and handle the response
+	    response = await make_agent_call(Request(query=keyword))
+	    # Check if the response indicates an unsuccessful agent call
+	    if isinstance(response, str) and response.startswith("Unsuccessful"):
+	        return jsonify({"error": response, "status": "failed"}), 500
+	 
+	    try:
+	        # Parse the response to a Python dictionary
+	        job_data = json.loads(response)
+	        # Return the job data in a structured format
+	        return jsonify({"results": job_data, "status": "success"})
+	    except json.JSONDecodeError:
+	        # Handle JSON decoding error
+	        return jsonify({"error": "Invalid response format", "status": "error"}), 500
+	 
+	 
+	# Function to send a query to the agent
+	async def agent_query(req):
+	    try:
+	        response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
+	        # Decode the response and extract data
+	        data = json.loads(response.decode_payload())
+	        return data.get("response", "No data found")
+	    except Exception as e:
+	        # Return a formatted error message if the agent call fails
+	        return f"Unsuccessful agent call - {str(e)}"
+	 
+	 
+	# Function to initiate an agent call
+	async def make_agent_call(req: Request):
+	    response = await agent_query(req)
+	    return response
+	 
+	 
+	# Main function to run the Flask application
+	if __name__ == "__main__":
+	    app.run(debug=True)
 
-# Define the address of your agent to send requests to
-AGENT_ADDRESS = "<YOUR_AGENT_ADDRESS_HERE>"  # Update your agent address here
+```
+</DocsCode>
 
-# Define a data model for incoming requests
-class Request(Model):
-    query: str
+</CodeGroup>
 
-# Define a route to handle job search queries
-@app.route("/search-jobs")
-async def search_jobs():
-    keyword = request.args.get("q")
-    if not keyword:
-        return jsonify({"error": "No query provided.", "status": "error"}), 400
-    # Make a call to the agent with the request and handle the response
-    response = await make_agent_call(Request(query=keyword))
-    # Check if the response indicates an unsuccessful agent call
-    if isinstance(response, str) and response.startswith("Unsuccessful"):
-        return jsonify({"error": response, "status": "failed"}), 500
+### Poetry Dependencies
 
-    try:
-        # Parse the response to a Python dictionary
-        job_data = json.loads(response)
-        # Return the job data in a structured format
-        return jsonify({"results": job_data, "status": "success"})
-    except json.JSONDecodeError:
-        # Handle JSON decoding error
-        return jsonify({"error": "Invalid response format", "status": "error"}), 500
+```pyproject.toml copy filename="pyproject.toml"
 
-# Function to send a query to the agent
-async def agent_query(req):
-    try:
-        response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
-        # Decode the response and extract data
-        data = json.loads(response.decode_payload())
-        return data.get("response", "No data found")
-    except Exception as e:
-        # Return a formatted error message if the agent call fails
-        return f"Unsuccessful agent call - {str(e)}"
-
-# Function to initiate an agent call
-async def make_agent_call(req: Request):
-    response = await agent_query(req)
-    return response
-
-# Main function to run the Flask application
-if __name__ == "__main__":
-    app.run(debug=True)
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+uagents = "^0.17.1"
+flask = {extras = ["async"], version = "^3.1.0"}
 ```
 
 ## Steps to run the app
+
+- Navigate to the root folder of the example.
+- Install dependencies by running `poetry install`.
 - Update `Agent Address` in `jobsearchapp.py` and [`serpapi_api_key`](https://serpapi.com/google-jobs-api) in `JobSearchAgent.py`.
-- Run both the script `JobSearchAgent.py` and update the agents address in `jobsearchapp.py`.
-- Rerun `JobSearchAgent.py` and `jobsearchapp.py` together
+- Run the JobSearchAgent with `python jobSearchAgent.py`
+- Run the Flask server with `python jobsearchapp.py`
 - Open new terminal window and run `curl "http://127.0.0.1:5000/search-jobs?q=<your_job_serach_query>"`
 - Replace `your_job_search_query` with your query in above command.
 
