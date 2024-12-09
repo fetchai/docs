@@ -368,6 +368,87 @@ module.exports = withNextra({
         destination: "/examples/intermediate/agents-cleaning-demo",
         permanent: true,
       },
+      {
+        source:
+          "/guides/fetch-network/fetch-wallet/fetch-wallet-hardware-connection-guide",
+        destination:
+          "/guides/fetch-network/asi-wallet/asi-wallet-hardware-connection-guide",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/get-started",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/get-started",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/home-screen",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/home-screen",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/stake",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/stake",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/send-receive",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/send-receive",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/activity",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/activity",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/more",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/more",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/gov-proposal",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/gov-proposal",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/get-started",
+        destination:
+          "/guides/fetch-network/asi-wallet/mobile-wallet/get-started",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/home-screen",
+        destination:
+          "/guides/fetch-network/asi-wallet/mobile-wallet/home-screen",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/stake",
+        destination: "/guides/fetch-network/asi-wallet/mobile-wallet/stake",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/send-receive",
+        destination:
+          "/guides/fetch-network/asi-wallet/mobile-wallet/send-receive",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/activity",
+        destination: "/guides/fetch-network/asi-wallet/mobile-wallet/activity",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/more",
+        destination: "/guides/fetch-network/asi-wallet/mobile-wallet/more",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/gov-proposal",
+        destination:
+          "/guides/fetch-network/asi-wallet/mobile-wallet/gov-proposal",
+        permanent: true,
+      },
     ];
   },
 });
