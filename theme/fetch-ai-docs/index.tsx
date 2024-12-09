@@ -117,6 +117,12 @@ const Body = ({
   const [route] = routeOriginal.split("#");
   const editUrl = useGitEditUrl(routeOriginal);
   const pagesUrl = editUrl.split("/pages/")[1];
+
+  const containerClass =
+    route === "/apis" || !route.startsWith("/apis/")
+      ? "nextra-body-full-container"
+      : "nextra-body-full-container-apis";
+
   const content = (
     <>
       {tagsComponent}
@@ -165,7 +171,7 @@ const Body = ({
             "nextra-body-typesetting-article",
         )}
       >
-        <main className="nextra-body-full-container nx-flex-col">
+        <main className={`${containerClass} nx-flex-col`}>
           {!matchingTagRoute && breadcrumb}
           {body}
         </main>
