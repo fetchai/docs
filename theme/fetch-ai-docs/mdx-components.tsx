@@ -12,6 +12,7 @@ import React from "react";
 import Image from "next/image";
 import LinkImage from "../../src/svgs/external-link.svg";
 import { ModifiedPre } from "components/code";
+
 // Anchor links
 function HeadingLink({
   tag: Tag,
@@ -162,7 +163,23 @@ export const Link = ({ href = "", className, ...props }: AnchorProps) => {
     typeof child === "string" ? child.split("↗️")[0] : child,
   );
 
-  return (
+  return "↗" == splitChildren[0] ? (
+    <>
+      <span className="nx-inline-flex nx-gap-1">
+        <Anchor
+          href={href}
+          newWindow={EXTERNAL_HREF_REGEX.test(href)}
+          className={cn(
+            "nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]",
+            className,
+          )}
+          {...props}
+        >
+          {splitChildren}
+        </Anchor>
+      </span>
+    </>
+  ) : (
     <>
       <span className="nx-inline-flex nx-gap-1">
         <Anchor
