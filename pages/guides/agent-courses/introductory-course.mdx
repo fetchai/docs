@@ -8,129 +8,14 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../co
 
 Welcome to **Agents 101**! This course is designed to introduce you to the development of Agents, providing a comprehensive guide from foundational concepts to practical implementation. Whether you're a beginner in programming or an experienced developer, this course caters to various skill levels, offering a pathway to create increasingly sophisticated Agents and explore diverse use cases.
 
+Make sure you satisfied the requirements in [Set up your development environment ↗️](/guides/agent-courses/setup-your-env) before going on with this course.
+
 If you encounter uncertainties or have questions about specific terms or topics throughout the course, our support team is available on [Discord ↗️](https://discord.gg/fetchai) to assist you.
 
 ## Introduction to Agents
 
 In this course, you'll delve into the world of Agents using the [uAgents Framework ↗️](/concepts/agents/agents). Agents are  programs able to operate autonomously within decentralized landscapes, aligned with user-defined objectives. These agents have the ability to connect, search, transact, establish dynamic markets and so on. By leveraging artificial intelligence, API calls, blockchain technology, and business logic, Agents automate multiple workflows. The aim is to facilitate interactions with their environment and other networked agents without human intervention.
 
-## Set up your development environment 🛠️
-### Prerequisites
-
-Before embarking on this course, ensure your machine meets the following requirements:
-
-    1. **Python 3.8+**: download and install Python from [Python's official website ↗️](https://www.python.org/downloads/)
-    2. **Preferred IDE**: Visual Studio Code or PyCharm (alternative options like Notepad are feasible).
-
-### Set up development tools
-#### Installing Homebrew
-
-**Homebrew** streamlines software installations on MacOS via the command line. To install and update Homebrew, execute the following commands:
-
-    ```
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    ```
-
-You can verify it [here ↗️](https://brew.sh/). Let's then ensure Homebrew is updated:
-
-    ```
-    brew update
-    ```
-
-    <Callout type="info" emoji="ℹ️">
-      For more information on Homebrew explore their [website ↗️](https://brew.sh/).
-    </Callout>
-
-#### Installing PyEnv
-
-Now, you need to install **PyEnv**. It is a simple tool to manage multiple versions of Python. Run:
-
-    ```
-    brew install pyenv
-    ```
-
-Once you have installed PyEnv you can configure the shell environment:
-
-    ```
-    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
-    echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
-    echo 'eval "$(pyenv init -)"' >> ~/.zshrc
-    ```
-
-    <Callout type="info" emoji="ℹ️">
-      These commands configure your shell environment (specifically the **Zsh shell**) to work with PyEnv. These commands set up environment variables, modify the PATH, and initialize PyEnv so that you can easily manage and switch between different Python versions. You can verify all steps [here ↗️](https://github.com/pyenv/pyenv#installation).
-    </Callout>
-
-You are now ready to **install Python** if you haven't done it yet. You need to install a version of Python 3.8 or above (for this example, we use version 3.10):
-
-    ```
-    pyenv install 3.10
-    ```
-
-You can get help or check a command insights by running:
-
-    ```
-    pyenv help
-    ```
-
-Let's now ensure the **global version of Python** you are working with is not the default one in the system. Run:
-
-    ```
-    pyenv global 3.10 # this sets the global interpreter
-    pyenv versions # this verifies if it is set up correctly
-    ```
-
-#### Installing Poetry
-
-You now need to install **Poetry**. Poetry is used for managing Python project dependencies, handling virtual environments, packaging, and publishing Python libraries or applications.
-
-You can install Poetry by running the following command:
-
-    ```
-    curl -sSL https://install.python-poetry.org | python3 -
-    ```
-
-    <Callout type="info" emoji="ℹ️">
-      If you would like to learn more about Poetry, visit the [website ↗️](https://python-poetry.org/docs/#installation) for further information.
-    </Callout>
-
-#### Initialize your project with Poetry
-
-You now have all necessary tools installed. You are ready to initialize your project! Let's create a working directory and initialize Poetry 🎉.
-
-First, you need to create a working directory for your project using `mkdir` command. Then, you will need to change directory to this one, using `cd` command:
-
-    ```
-    mkdir development/agent-demo
-    cd development/agent-demo
-    ```
-
-You can ensure you are in the correct directory by checking your current path:
-
-    ```
-    pwd
-    # Example output: /Users/Jessica/Documents
-    ```
-
-If you are happy with the install location for the project, go ahead and **initialize Poetry**:
-
-    ```
-    poetry init
-    ```
-
-    <Callout type="info" emoji="ℹ️">
-      Follow the setup wizard to provide details including project name, version, author, license, and select dependencies (e.g., `uagents`).
-    </Callout>
-
-Once you complete the initialization, run:
-
-    ```
-    poetry install
-    ```
-
-This command will install the dependencies specified in the **pyproject.toml** file.
-
-**Congratulations! You've completed the installation process. You're now all set to embark on creating your first AI Agent!**
 
 ## Overview of the uAgents Framework
 
