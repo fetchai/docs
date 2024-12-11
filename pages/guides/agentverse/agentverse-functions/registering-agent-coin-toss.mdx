@@ -49,15 +49,15 @@ A new agent will be created for you:
 
 After clicking on the row of your newly created agent, you should be able to see the source code of your coin toss agent in the editor view:
 
-<GithubCodeSegment digest="e4685fe0651540fa7f29213abfab566d">
+<GithubCodeSegment digest="95dbbdeb98a11364a42a50a3374a76d9">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/agentverse-functions/registering-agent-coin-toss/agent.py"
         lineStart={1}
-        lineEnd={30}
+        lineEnd={40}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='e4685fe0651540fa7f29213abfab566d'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='95dbbdeb98a11364a42a50a3374a76d9'>
 
 <DocsCode local={true}>
 	```py copy filename="agent.py"
@@ -92,6 +92,16 @@ After clicking on the row of your newly created agent, you should be able to see
 	        message = "You won!"
 	    else:
 	        message = "You lost!"
+	    await ctx.send(
+	        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+	    )
+	
+	
+	# Include protocol in agent
+	agent.include(coin_toss_protocol, publish_manifest=True)
+	
+	if __name__ == "__main__":
+	    agent.run()
 
 ```
 </DocsCode>
