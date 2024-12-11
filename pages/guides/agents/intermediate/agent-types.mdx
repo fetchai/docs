@@ -2,15 +2,15 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 
 # Hosted, Local, and Mailbox Agents
 
-Agents can operate in multiple environments based on how they are created and deployed within the network. Understanding the difference between **Hosted**, **Local**, and **Mailbox Agents** is helpful for developers to correctly choose the right setup for their use cases and applications.
+Agents operate in various environments depending on how they are created and deployed. 
+
+Understanding the difference between **Hosted**, **Local**, and **Mailbox Agents** helps developers choose the right setup for their needs.
 
 ## Hosted Agents
 
-[Hosted Agents ↗️](/guides/agentverse/creating-agentverse-agents/creating-a-hosted-agent) are cloud-based agents managed within the [Agentverse ↗️](https://agentverse.ai/), enabling developers to build, deploy, and run Agents without managing infrastructure. These Agents operate as functions, executing tasks and responding to triggers efficiently, keeping operational costs low for users. Hosted Agents manage their state differently: global variables reset after each function call. To maintain state across calls, developers must use Agent Storage, which is essential for creating Agents with stateful behavior.
+[Hosted Agents ↗️](/guides/agentverse/creating-agentverse-agents/creating-a-hosted-agent) are cloud-based Agents managed within the [Agentverse ↗️](https://agentverse.ai/),enabling developers to deploy and manage Agents without handling infrastructure. These Agents function as lightweight, efficient tasks, resetting global variables after each call. To maintain state across calls, developers must use Agent Storage for stateful behavior.
 
-Developers can start with a blank script or leverage predefined templates for common use cases, such as retrieving stock prices or finding nearby restaurants. These templates offer a quick start while allowing customization for specific needs.
-
-A significant advantage of hosted Agents is their accessibility, as they eliminate the need for local dependencies. With an integrated `agent.py` file and support for a restricted set of imports, developers can still craft robust and versatile solutions. For a better reference to these topics, check out the following resources:
+Developers can start with blank scripts or use customizable templates for common use cases like retrieving stock prices or finding nearby restaurants. Hosted Agents are highly accessible, requiring no local dependencies, and include an `agent.py` file from which you can develop them straightforwardly. For a better reference to these topics, check out the following resources:
 
     - [Creating Hosted Agents ↗️](/guides/agentverse/creating-agentverse-agents/creating-a-hosted-agent).
     - [Agentverse: Allowed Imports ↗️](/guides/agentverse/creating-agentverse-agents/allowed-imports).
@@ -18,11 +18,11 @@ A significant advantage of hosted Agents is their accessibility, as they elimina
 
 ## Local Agents
 
-Local Agents run directly on your machine or infrastructure, offering full control over environment, configuration, and execution. Unlike hosted Agents, they continuously handle real-time events, messages, and tasks without requiring an orchestrator, making them ideal for use cases needing persistent state and direct access to local resources.
+Local Agents run on your machine or infrastructure, providing complete control over their environment, configuration, and execution. Unlike hosted Agents, they handle real-time events, messages, and tasks continuously, making them ideal for persistent state and direct access to local resources.
 
-With the uAgents Framework, local Agents support advanced integrations using any Python package or custom module, enabling flexibility in design and powerful capabilities like machine learning and data processing. They maintain persistent state across function executions, unlike hosted Agents, where global variables reset with each call. Running a local Agent involves setting up a Python environment, installing dependencies, and executing the Agent script. They can run continuously or within Docker containers for scalable deployment and process isolation.
+Using the uAgents Framework, Local Agents integrate with any Python package or custom module, supporting advanced capabilities like machine learning and data processing. They maintain persistent state across function executions, unlike hosted Agents, where state resets after each call. Setting up a Local Agent requires a Python environment, dependencies, and running the Agent script. They can operate continuously or within Docker containers for scalability and isolation.
 
-Local Agents excel in high-performance applications, offering deep customization, resource management, and direct integration with local services, making them the go-to choice for complex, real-time solutions.
+Local Agents are perfect for high-performance, real-time applications requiring deep customization, resource management, and seamless integration with local services.
 
 Head over to the following resource for a better understanding of Agents and their applications:
 
