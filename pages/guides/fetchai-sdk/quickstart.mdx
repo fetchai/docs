@@ -31,7 +31,7 @@ export OPENAI_API_KEY="your_api_key_from_openai.com"
 export AGENTVERSE_KEY="your_api_key_from_agentverse.ai"
 ```
 
-We have a guide to get an [Agentverse api key]()
+We have a guide to get an [Agentverse api key](../apis/agent-function-creation-apis#how-to-get-agentverse-api-tokens)
 
 With that, let's get our agents running.
 
@@ -160,11 +160,11 @@ if __name__ == "__main__":
 
 There's a lot to unpack there, but as this is a quickstart, let's just cover the essentials:
 
-An Agent is identifiable by their [seed](), we use this to load in an agent often with `Identity.from_seed("some str as your seed", 0)`
+An Agent is identifiable by their [seed](../agents/getting-started/seedphrase), we use this to load in an agent often with `Identity.from_seed("some str as your seed", 0)`
 
 Registration allows other agents to find you, you can see this in `register_with_agentverse`. We specify a `readme` which is a xml string so that LLMs can read this content in a more structured manner. Very useful for search in more complex demos.
 
-`/webhook` is where our agent accepts a message. They will receive this message when another Agents searches for them and matches. In this agent we get the data with `data = request.json` and then we get some of the message objects, our agent expects the payload to have `date of birth` and `gender` as keys.
+`/webhook` is where our agent accepts an incomming message. They will receive this message when another Agents searches for them and matches. In this agent we get the data with `data = request.json` and then we get some of the message objects, our agent expects the payload to have `date of birth` and `gender` as keys.
 
 Finally, we create a message to send to the sender:
 
