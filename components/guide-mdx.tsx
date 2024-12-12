@@ -20,6 +20,10 @@ interface GuideCategory {
 
 interface GuidesData {
   content: GuideCategory[];
+  components?: {
+    featuredGuides?: ReactNode;
+  };
+  mainHeading?: string;
 }
 
 const pathLabels = new Map<RegExp, string>([
@@ -37,7 +41,7 @@ const getPathLabel = (path: string): string => {
   return "";
 };
 
-const SectionHeading = ({
+export const SectionHeading = ({
   heading,
   icon,
 }: {
@@ -145,7 +149,7 @@ const SearchInput = ({
   </div>
 );
 
-const GuidesMdx = ({ content }: GuidesData) => {
+const GuidesMdx = ({ content, components, mainHeading }: GuidesData) => {
   const [filterState, setFilterState] = useState({
     value: "All Types",
     inputVal: "",
@@ -185,12 +189,12 @@ const GuidesMdx = ({ content }: GuidesData) => {
         }
         if (filterState.evt === "input" && filterState.inputVal !== "") {
           return (
-            item.title
-              .toLowerCase()
-              .includes(filterState.inputVal.toLowerCase()) ||
-            item.description
-              .toLowerCase()
-              .includes(filterState.inputVal.toLowerCase())
+            item?.title
+              ?.toLowerCase()
+              ?.includes(filterState.inputVal.toLowerCase()) ||
+            item?.description
+              ?.toLowerCase()
+              ?.includes(filterState.inputVal.toLowerCase())
           );
         }
         return true;
@@ -214,7 +218,11 @@ const GuidesMdx = ({ content }: GuidesData) => {
           onInputChange={onInputChange}
         />
       </div>
+      {components && components.featuredGuides}
       <div>
+        <span className={styles.mainTitleHeading}>
+          {mainHeading && mainHeading}
+        </span>
         <GridBox>
           {filteredContent.map((items, index) => (
             <div

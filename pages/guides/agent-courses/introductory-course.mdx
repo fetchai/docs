@@ -142,6 +142,8 @@ The [uAgents Framework ↗️](/concepts/agents/agents) provides the essential i
       Current version of the uAgents package is <PackageVersion packageName="uagents" packageType="pypi" />.
     </Callout>
 
+Check out the [uAgents Framework installation guide ↗️](/guides/agents/getting-started/installing-uagent) if you wish to get started immediately with Agents creation using the uAgents toolset! 
+
 ### Core concepts
 #### Addresses
 
@@ -152,7 +154,7 @@ Agents are identified by **two types of addresses**, serving as identifiers for 
     2. **Fetch Address**: this cryptographic public address is linked to the agent and its wallet on the Fetch.ai blockchain; it enables various functionalities, including interacting with the [Fetch ledger ↗️](/concepts/fetch-network/ledger/intro), registering in the Almanac contract and performing operations, including token or asset transfers on the blockchain.
 
     <Callout type="info" emoji="ℹ️">
-      Check out the [Getting an agent addresses ↗️](/guides/agents/getting-uagent-address) guide to learn more on this topic.
+      Check out the following [guide ↗️](/guides/agents/getting-uagent-address) to learn more on Agents' addresses.
     </Callout>
 
 #### Storage
@@ -226,15 +228,15 @@ Creating your first agent is a straightforward process. First of all, we need to
 
 We can now code our agent. Let's start by importing the required modules. In our case, we would need to import the `Agent` module from the `uagents` library, and proceed to instantiate the agent by providing a `name`. The following code exemplifies the creation of the simplest possible agent:
 
-<GithubCodeSegment digest="5fa833350ab46b034749c41f60ea21e7">
+<GithubCodeSegment digest="59d410505a8d50829ab2dd32d53689a5">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/alice_agent.py"
         lineStart={1}
-        lineEnd={4}
+        lineEnd={15}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='5fa833350ab46b034749c41f60ea21e7'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='59d410505a8d50829ab2dd32d53689a5'>
 
 <DocsCode local={true}>
 	```py copy filename="alice_agent.py"
@@ -243,8 +245,19 @@ We can now code our agent. Let's start by importing the required modules. In our
 	from uagents import Agent, Context
 	
 	agent = Agent(name="alice", seed="alice recovery phrase")
+	
+	
+	# Provide your Agent with a job
+	@agent.on_event("startup")
+	async def introduce_agent(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
+	
+	
+	# This constructor simply ensure that only this script is running
+	if __name__ == "__main__":
+	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -257,9 +270,11 @@ You can run this with `poetry run python alice_agent.py` but it won't do much, y
       If you're not too familiar with classes in Python, take a look [w3schools Python classes ↗️](https://www.w3schools.com/python/python_classes.asp).
     </Callout>
 
+Check out this [guide ↗️](/guides/agents/getting-started/create-a-uagent) here for a more in-depth overview of all parts of the code provided above.
+
 ### Create a second agent and start an interaction
 
-Let's get Alice to do something! We're going to get Alice, on start up, to introduce itself and provide its address by printing both, on the terminal window. We can add a `on_event("startup")` decorator to make the agent run the defined function when it is run.
+Let's get Alice to do something! We're going to get Alice, on start up, to introduce itself and provide its address by printing both, on the terminal window. We can add a `on_event("startup")` decorator to make the Agent run the defined function when it is run.
 
 Let's update `alice_agent.py` with the code snippet below:
 
@@ -292,18 +307,13 @@ Let's update `alice_agent.py` with the code snippet below:
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
 
 
-
-Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the agent knows how to act on the declared decorated functions.
-
-    <Callout type="info" emoji="ℹ️">
-      To find out more about decorators, take a look at [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/).
-    </Callout>
+Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the agent knows how to act on the declared decorated functions. For additional information on decorators, check out the following resources: [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/) and [Agent Handlers ↗️](/guides/agents/intermediate/handlers) for additional information on decorators within the uAgents Framework.
 
 In our example above, the `on_event()` decorator specifies that the agent should run an `introduce_agent()` function when the agent starts up. This function will then return a message presenting the agent with its name and address by using the `Context` class, which is used to retrieve the agent's related name and address using the `agent.name` and `agent.address` methods.
 
@@ -339,7 +349,7 @@ Sometimes, we just need to see what a value looks like. We can quickly do so in 
 	print("uAgent address: ", agent.address)
 	print("Fetch network address: ", agent.wallet.address())
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -359,9 +369,11 @@ The output of the above would look similar to:
 
 ### Agents and interval tasks
 
-**Interval tasks** are tasks or set of instructions executed at predefined time intervals. These are useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more.
+**Interval tasks** are tasks or set of instructions executed at predefined time intervals. These are useful for automating repetitive tasks, scheduling background processes, or managing periodic activities in applications. Setting up interval tasks for agents is a great way to harness their potential and streamline processes including bidding, searching, data processing, job scheduling and more. 
 
-If you want to create an interval task, you need to use an `on_interval()` decorator to set up an interval with a timer that triggers the task repetition. As an introductory example, we can consider an agent periodically printing hello and its name on the console. In this case, we apply the decorator to a `say_hello()` function which will be repeated at the specified time interval:
+If you want to create an interval task, you need to use an `on_interval()` decorator to set up an interval with a timer that triggers the task repetition. As an introductory example, we can consider an agent periodically printing hello and its name on the console. Check out the following [resource ↗️](/guides/agents/intermediate/handlers) for a better understanding of **Agent handlers and decorators** in the uAgents Framework.
+
+In this case, we apply the decorator to a `say_hello()` function which will be repeated at the specified time interval:
 
 <GithubCodeSegment digest="8ef86b74899f070756d97a06654ed2c6">
     <CodeSegment
@@ -389,7 +401,7 @@ If you want to create an interval task, you need to use an `on_interval()` decor
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -432,21 +444,21 @@ Let's create a new Python file for these agents:
     ```py copy filename="ubuntu"
     touch duo_agent.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
 The script will look as follows:
 
-<GithubCodeSegment digest="a71bf5f04e4a7628e3058c607dc6e8b5">
+<GithubCodeSegment digest="89370dfbe71b6ad72fc72ebf66e62d8c">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/duo_agent.py"
         lineStart={1}
-        lineEnd={12}
+        lineEnd={22}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='a71bf5f04e4a7628e3058c607dc6e8b5'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='89370dfbe71b6ad72fc72ebf66e62d8c'>
 
 <DocsCode local={true}>
 	```py copy filename="duo_agent.py"
@@ -463,8 +475,18 @@ The script will look as follows:
 	
 	
 	@bob.on_interval(period=2.0)
+	async def say_hello(ctx: Context):
+	    ctx.logger.info(f'Hello, my name is {bob.name}')
+	
+	
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	
+	if __name__ == "__main__":
+	    bureau.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -483,6 +505,14 @@ The output would look as follows:
     [alice] Hello, my name is alice
     [  bob] Hello, my name is bob
     ```
+
+Check out the following guides for a better understanding of all above topics:
+
+    -  [What's an Agent ↗️](/guides/agents/getting-started/whats-an-agent)
+    -  [Create your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    -  [Agent Addresses ↗️](/guides/agents/getting-started/getting-uagent-address)
+    -  [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
+    -  [Bureau ↗️](/guides/agents/intermediate/bureau)
 
 ### Agent communication
 
@@ -506,7 +536,7 @@ Let's create a new script for this example:
     ```py copy filename="ubuntu"
     touch agent_communication.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
@@ -535,7 +565,7 @@ We can now define the `Message` data model and our two agents:
 	alice = Agent(name="alice", seed="alice recovery phrase")
 	bob = Agent(name="bob", seed="bob recovery phrase")
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -561,7 +591,7 @@ We need to define a function for `alice` to send messages to `bob` periodically.
 	async def send_message(ctx: Context):
 	    await ctx.send(bob.address, Message(message="hello there bob"))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -588,7 +618,7 @@ We then need a way for `bob` to receive these messages. We can do this by creati
 	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 	    await ctx.send(alice.address, Message(message="hello there alice"))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -614,7 +644,7 @@ We then need to define a message handler function for `alice` to handle response
 	async def alice_message_handler(ctx: Context, sender: str, msg: Message):
 	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -643,7 +673,7 @@ Finally, we need to add both agents to the `Bureau` in order to run them from th
 	if __name__ == "__main__":
 	    bureau.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -699,7 +729,7 @@ The overall script would be:
 	if __name__ == "__main__":
 	    bureau.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -719,15 +749,19 @@ The output would look as follows:
     [ bob]: Received message from agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t: hello there bob
     ```
 
-### Enabling search and discovery for your Agent (Almanac registration)
+Checkout the following documentation and resources for a better understanding of the above topics:
 
-Agent registration in the Almanac contract is a key feature which enables discoverability of agents as well enabled remote agent communication. To register, agents must pay a small fee. Therefore your agents need to have funds available in their Fetch wallet address. Luckily in this demo we utilize the testnet environment to simulate real world transactions.
+    -  [What's an Agent ↗️](/guides/agents/getting-started/whats-an-agent)
+    -  [Create your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    -  [Agent Addresses ↗️](/guides/agents/getting-started/getting-uagent-address)
+    -  [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
+    -  [Bureau ↗️](/guides/agents/intermediate/bureau)
 
-    <Callout type="info" emoji="ℹ️">
-      When using the testnet, you can use the function `fund_agent_if_low()` to fund your agent.
-    </Callout>
+### Registering your Agents to the Open Marketplace
 
-We first import modules, then initialize our agents and include a function ensuring that agents have non-zero balances in their wallets. This function will check if you have enough tokens to register in the Almanac. If not, it will add tokens to your Fetch wallet address. Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient agent. Therefore, we need to specify the service endpoints when defining an agent at registration.
+Agent registration in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract enables Agents discoverability and remote Agent communication. When Agents register to the Almanac, they become part of the Open Marketplace and become available for interactions with other users and Agents registered in the contract. To register, Agents must pay a small fee (not currently implemented) that covers the cost of Almanac use. 
+
+Agents can communicate by querying the Almanac and retrieving an HTTP [endpoint ↗️](/references/contracts/uagents-almanac/endpoints) from the recipient Agent. Therefore, we need to specify the service endpoints when defining an Agent at registration.
 
     <Callout type="info" emoji="ℹ️">
       HTTP (Hypertext Transfer Protocol) service endpoints are specific locations or URLs (Uniform Resource Locators) on a web server where clients can send HTTP requests to interact with resources or services provided by the server. These endpoints define the entry points for various operations or functions offered by a web service or application.
@@ -751,13 +785,13 @@ Let's create a Python script for this example:
     ```py copy filename="ubuntu"
     touch almanac_registration.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
 We will have what follows:
 
-<GithubCodeSegment digest="9e27f7c429b54464db493c6417ccf02a">
+<GithubCodeSegment digest="6ae779e605343536a4618ccc0a03be1b">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/almanac_registration.py"
         lineStart={1}
@@ -765,12 +799,11 @@ We will have what follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='9e27f7c429b54464db493c6417ccf02a'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6ae779e605343536a4618ccc0a03be1b'>
 
 <DocsCode local={true}>
 	```py copy filename="almanac_registration.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Protocol
 	
 	agent = Agent(
@@ -780,9 +813,6 @@ We will have what follows:
 	    endpoint=["http://127.0.0.1:8000/submit"],
 	)
 	
-	fund_agent_if_low(agent.wallet.address())
-	
-	
 	@agent.on_interval(period=3)
 	async def hi(ctx: Context):
 	    ctx.logger.info(f"Hello")
@@ -790,14 +820,13 @@ We will have what follows:
 	
 	agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
 
 
-
-Here, we defined a local http address but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your agent so you don't have to fund different addresses each time you run your agent.
+Here, we defined a local http address, but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your Agent, so you don't have to fund different addresses each time you run your agent. The `fund_agent_if_low` is used on the Testnet to make sure your Agent has enough funds in its wallet to register and operate correctly.
 
     <Callout type="info" emoji="ℹ️">
       A seed phrase is a series of random words (typically 12 or 24) that provide the data needed to recover a lost or broken crypto wallet. It is also known as a mnemonic phrase and is best understood as a security measure for self-custody of digital assets. Agents have a crypto wallet address, and having the seed phrase enables the restoration of an agent's wallet address.
@@ -805,11 +834,13 @@ Here, we defined a local http address but you could also define a remote address
 
 To run the script use the `poetry run python almanac_registration.py` command.
 
-### Remote agent communication
+Check out the following [guide ↗️](/guides/agents/advanced/register-in-almanac) for an in-depth overview of the Almanac registration process.
 
-Agents can also interact **remotely**. To achieve a remote communication, we simply need an agent's address and query the rest of its information in the Almanac contract. You can create two agents operating on separate ports and terminals within the same device; this mirrors a real-world scenario in which agents communicate across different geographic locations.
+### Remote Agent communication
 
-In this example, we provide scripts for two agents. To establish a line of remote communication, both agents need to be registered on the Almanac contract and need to have non-zero balances in their Fetch wallet addresses.
+Agents can also interact **remotely**. To achieve a remote communication, we simply need an Agent's address and query the rest of its information in the Almanac contract. You can create two agents operating on separate ports and terminals within the same device; this mirrors a real-world scenario in which agents communicate across different geographic locations.
+
+In this example, we provide scripts for two agents. To establish a line of remote communication, both agents need to be registered on the Almanac contract and need to have non-zero balances in their wallet addresses.
 
 We can start with `alice` agent. Let's create a Python script for it:
 
@@ -829,11 +860,11 @@ We can start with `alice` agent. Let's create a Python script for it:
     ```py copy filename="ubuntu"
     touch remote_alice.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
-We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our agents. We also need to provide Bob's address as a recipient address for reference. We can then create our agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. Remember that you need to provide the `RECIPIENT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent and code.
+We first import the required modules. We then use the `Model` class to define a `Message` data model for messages to be exchanged between our Agents. We also need to provide Bob's address as a recipient address for reference. We can then create our Agent `alice`, by providing the needed information for registration. We need to make sure it has enough balance in its wallet. We then proceed and define its functions. Remember that you need to provide the `RECIPIENT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly run this Agent and code.
 
 The script would be as follows:
 
@@ -883,14 +914,13 @@ The script would be as follows:
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
 
 
-
-Similarly, we need to define a script for `bob` so to create a remote communication with `alice` agent. Let's create a Python script for it:
+Similarly, we need to define a script for `bob` so to create a remote communication with `alice` Agent. Let's create a Python script for `bob`:
 
 <CodeGroup hasCopy isOSFile>
 <DocsCode mac={true}>
@@ -908,13 +938,13 @@ Similarly, we need to define a script for `bob` so to create a remote communicat
     ```py copy filename="ubuntu"
     touch remote_bob.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
-Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the agent's `name`, `seed`, `port`, decorator as well as the message content:
+Instead of creating and manually writing out the same script we can copy and rename Alice's script and modify the Agent's `name`, `seed`, `port`, decorator as well as the message content:
 
-<GithubCodeSegment digest="f17ca35602044b49164c4c102142e6a9">
+<GithubCodeSegment digest="26fe31b518db52d424c41a9c87c5ecf2">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/remote_bob.py"
         lineStart={1}
@@ -922,12 +952,11 @@ Instead of creating and manually writing out the same script we can copy and ren
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='f17ca35602044b49164c4c102142e6a9'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='26fe31b518db52d424c41a9c87c5ecf2'>
 
 <DocsCode local={true}>
 	```py copy filename="remote_bob.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Model
 	
 	
@@ -942,8 +971,6 @@ Instead of creating and manually writing out the same script we can copy and ren
 	    endpoint=["http://127.0.0.1:8001/submit"],
 	)
 	
-	fund_agent_if_low(agent.wallet.address())
-	
 	
 	@agent.on_message(model=Message)
 	async def message_handler(ctx: Context, sender: str, msg: Message):
@@ -955,16 +982,16 @@ Instead of creating and manually writing out the same script we can copy and ren
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
 
 
 
-Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this agent!
+Remember that you need to provide the `name`, `port`, `seed` and `endpoint` parameters to correctly run this Agent!
 
-In different terminal windows, first run `remote_bob.py` and then `remote_alice.py`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two agents in parallel terminals use the `poetry run python remote_alice.py` and `poetry run python remote_bob.py`. The expected output would be:
+In different terminal windows, first run `remote_bob.py` and then `remote_alice.py`. They will register automatically in the Almanac contract using their funds. The received messages will print out in each terminal. In order to run the two Agents in parallel terminals use the `poetry run python remote_alice.py` and `poetry run python remote_bob.py`. The expected output would be:
 
     **Alice**:
 
@@ -983,14 +1010,15 @@ In different terminal windows, first run `remote_bob.py` and then `remote_alice.
         ```
 
     <Callout type="info" emoji="ℹ️">
-      Checkout our [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding Agents communication both locally and remotely.
+      Checkout our [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents) guide for a deeper explanation of the concepts surrounding Agents communication both **locally** and **remotely**.
+
     </Callout>
 
 ### Agents and storage
 
 Agents within the uAgents Framework have the ability to store information locally within a JSON file. This ensures data retrieval as needed. This storage functionality serves as a fundamental component for agents to maintain a state, recollect prior interactions, and base decisions on historical data.
 
-The aim behind integrating storage features is to empower agents to preserve and leverage information over time, facilitating the recollection of past interactions and context for more informed decision-making. This capacity to learn from past experiences enables agents to adapt and refine their behavior and decision processes.
+The aim behind integrating storage features is to empower agents to preserve and leverage information over time, facilitating the recollection of past interactions and context for more informed decision-making. This capacity to learn from experiences enables agents to adapt and refine their behavior and decision processes.
 
 Retrieving or setting storage information within the Framework is achieved through two methods:
 
@@ -1017,7 +1045,7 @@ We first create the Python file containing the script. Run:
     ```py copy filename="ubuntu"
     touch storage.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
@@ -1053,7 +1081,7 @@ The script for this example is:
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1074,9 +1102,11 @@ The output would be:
 
 We now want to show how to set up the code to create a **restaurant booking service with two **Agents**: a `restaurant` with tables available and a `user` requesting a table availability.
 
-We can do this by defining 2 specific **protocols**: one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). We then need to define two agents, `restaurant` and `user`, which will make use of the protocols to query and book a table.
+We can do this by defining 2 specific **Protocols**: one for table querying (i.e., `Table querying protocol`) and one for table booking (i.e., `Table booking protocol`). We then need to define two agents, `restaurant` and `user`, which will make use of the protocols to query and book a table.
 
-We can start by writing the code for our two protocols.
+Check out the following [resource ↗️](/guides/agents/intermediate/protocols) for a better understanding of Agents Protocols.
+
+We can start by writing the code for our two Protocols.
 
 #### Table querying protocol
 
@@ -1123,7 +1153,7 @@ Let's start by defining the protocol for querying availability of tables at the 
 	class TotalQueries(Model):
 	    total_queries: int
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1189,7 +1219,7 @@ Let's then define the message handlers for the `query_proto` protocol:
 	    total_queries = int(ctx.storage.get("total_queries") or 0)
 	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1282,7 +1312,7 @@ The overall script should look as follows:
 	    total_queries = int(ctx.storage.get("total_queries") or 0)
 	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1322,7 +1352,7 @@ We can now proceed by writing the booking protocol script for booking the table 
 	
 	book_proto = Protocol(name="RestaurantBookingProtocolExample", version="0.1.0")
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1345,7 +1375,7 @@ Let's now define the message handler function:
 <CodeGroup dynamic hasCopy isLocalHostedFile digest='76e4a2f95f71b5830393d340d2f9cfde'>
 
 <DocsCode local={true}>
-	```py copy filename="book.py"
+    ```py copy filename="book.py"
 
 	@book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
 	async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
@@ -1372,12 +1402,10 @@ Let's now define the message handler function:
 	    # send the response
 	    await ctx.send(sender, BookTableResponse(success=success))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
     The `handle_book_request()` handler first retrieves table statuses from the agent's storage and converts them into a dictionary with integer keys (table numbers) and `TableStatus` values. The `TableStatus` class is imported from the query module. Next, the handler gets the table associated with the requested `table_number` from the tables dictionary. The handler checks if the requested time_start falls within the availability period of the table. If the table is available for the requested booking duration, the handler sets success to `True`, updates the table's `time_start` to reflect the end of the booking, and saves the updated table information in the agent's storage using `ctx.storage.set()`. If the table is not available for the requested booking, the handler sets success to `False`. The handler sends a `BookTableResponse` message back to the sender with the success status of the booking using the `ctx.send()` method.
 
@@ -1438,7 +1466,7 @@ The overall script should be:
 	    # send the response
 	    await ctx.send(sender, BookTableResponse(success=success))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1475,7 +1503,7 @@ Let's now move forward and create our restaurant agent in a separate file. In th
 	    },
 	)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1513,7 +1541,7 @@ Remember that you need to provide the `name`, `port`, `seed` and `endpoint` para
 	if __name__ == "__main__":
 	    restaurant.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1566,7 +1594,7 @@ The overall script would be as follows:
 	if __name__ == "__main__":
 	    restaurant.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1612,7 +1640,7 @@ Once we've imported the necessary classes from the `uagents` library and the two
 	    },
 	)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1648,7 +1676,7 @@ Remember that you need to provide the `RESTAURANT_ADDRESS`, `name`, `port`, `see
 	    if not completed:
 	        await ctx.send(RESTAURANT_ADDRESS, table_query)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1685,7 +1713,7 @@ We then need to define the message handler function for incoming `QueryTableResp
 	        ctx.logger.info("No free tables - nothing more to do")
 	        ctx.storage.set("completed", True)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1720,7 +1748,7 @@ Let's then define a function which will handle messages from the `restaurant` ag
 	if __name__ == "__main__":
 	    user.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1806,7 +1834,7 @@ The overall script would be:
 	if __name__ == "__main__":
 	    user.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1834,8 +1862,8 @@ Run the `restaurant` agent and then the `user` agent from different terminals. T
 
 We appreciate your active participation in our introductory course on Agents! The knowledge you've acquired here forms a robust basis for your future Agents development endeavors.
 
-Now, it's time to put your newfound skills to work. We invite you to delve deeper into the world of Agents by exploring our dedicated [Agents ↗️](/concepts/agents/agents) documentation and [GitHub ↗️](https://github.com/fetchai/uAgents) repository. Also, do not forget to checkout our full list of [Agents guides ↗️](/guides) diving into the development of Agents and concepts explained in this introductory course, but in a more detailed manner.
+We invite you to delve deeper into the world of Agents by exploring our dedicated [Agents ↗️](/guides/agents/getting-started/whats-an-agent) documentation, [GitHub ↗️](https://github.com/fetchai/uAgents) and [uAgents Examples ↗️](https://github.com/fetchai/uAgent-Examples) repositories. Also, do not forget to checkout our full list of [Agents guides ↗️](/guides) diving into the development of Agents and concepts explained in this introductory course, but in a more detailed manner. 
 
-Join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun!
+Also, check out the [Agents 101 for AI Engine ↗️](/guides/agents/getting-started/whats-an-agent) to understand how to integrate the [AI Engine ↗️](/guides/agent-courses/agents-for-ai) within your Agents project.
 
-There, you can not only star the project but also access valuable resources that will enhance your agent development journey. We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.
+Join our [Discord ↗️](https://discord.gg/fetchai) and team up with other developers in order to participate in hackathons, collectively build projects, or simply have fun! There, you can not only star the project but also access valuable resources that will enhance your agent development journey. We look forward to seeing your contributions and witnessing your continued growth in the realm of AI and agent-based systems.

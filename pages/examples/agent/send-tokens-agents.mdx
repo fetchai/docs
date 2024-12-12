@@ -1,4 +1,4 @@
-import { CodeGroup, DocsCode } from "../../../components/code"
+import { CodeGroup, DocsCode, GithubCodeSegment,CodeSegment } from "../../../components/code"
 
 # Send tokens with Agents
 
@@ -6,6 +6,8 @@ import { CodeGroup, DocsCode } from "../../../components/code"
 
 This file can be run on any platform supporting Python, with the necessary install permissions.
 This example shows how to use Agents to make them send tokens to each other.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/send-tokens-agents/local-sending_tokens.py) to run this locally.
 
 ### Supporting documentation
 
@@ -19,69 +21,81 @@ This example shows how to use Agents to make them send tokens to each other.
 
 ### The agent
 
-<CodeGroup hasCopy isLocalHostedFile>
-    <DocsCode local={true}>
-    ```py copy filename="local-sending_tokens.py"
-    from uagents import Agent, Bureau, Context, Model
-    from uagents.network import wait_for_tx_to_complete
-    from uagents.setup import fund_agent_if_low
+<GithubCodeSegment digest="d74246360203e6d70f5286dc083d8c83">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/send-tokens-agents/local-sending_tokens.py"
+        lineStart={1}
+        lineEnd={58}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='d74246360203e6d70f5286dc083d8c83'>
 
-    class PaymentRequest(Model):
-        wallet_address: str
-        amount: int
-        denom: str
+<DocsCode local={true}>
+	```py copy filename="local-sending_tokens.py"
 
-    class TransactionInfo(Model):
-        tx_hash: str
+	from uagents import Agent, Bureau, Context, Model
+	from uagents.network import wait_for_tx_to_complete
+	from uagents.setup import fund_agent_if_low
+	 
+	class PaymentRequest(Model):
+	    wallet_address: str
+	    amount: int
+	    denom: str
+	 
+	class TransactionInfo(Model):
+	    tx_hash: str
+	 
+	AMOUNT = 100
+	DENOM = "atestfet"
+	 
+	alice = Agent(name="alice", seed="alice secret phrase")
+	bob = Agent(name="bob", seed="bob secret phrase")
+	 
+	fund_agent_if_low(alice.wallet.address())
+	fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
+	 
+	@alice.on_interval(period=10.0)
+	async def request_funds(ctx: Context):
+	    await ctx.send(
+	        bob.address,
+	        PaymentRequest(
+	            wallet_address=str(alice.wallet.address()), amount=AMOUNT, denom=DENOM
+	        ),
+	    )
+	 
+	@alice.on_message(model=TransactionInfo)
+	async def confirm_transaction(ctx: Context, sender: str, msg: TransactionInfo):
+	    ctx.logger.info(f"Received transaction info from {sender}: {msg}")
+	 
+	    tx_resp = await wait_for_tx_to_complete(msg.tx_hash, ctx.ledger)
+	    coin_received = tx_resp.events["coin_received"]
+	 
+	    if (
+	        coin_received["receiver"] == str(alice.wallet.address())
+	        and coin_received["amount"] == f"{AMOUNT}{DENOM}"
+	    ):
+	        ctx.logger.info(f"Transaction was successful: {coin_received}")
+	 
+	@bob.on_message(model=PaymentRequest, replies=TransactionInfo)
+	async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
+	    ctx.logger.info(f"Received payment request from {sender}: {msg}")
+	    transaction = ctx.ledger.send_tokens(
+	        msg.wallet_address, msg.amount, msg.denom, bob.wallet
+	    )
+	 
+	    await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
+	 
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	 
+	if __name__ == "__main__":
+	    bureau.run()
 
-    AMOUNT = 100
-    DENOM = "atestfet"
+```
+</DocsCode>
 
-    alice = Agent(name="alice", seed="alice secret phrase")
-    bob = Agent(name="bob", seed="bob secret phrase")
-
-    fund_agent_if_low(alice.wallet.address())
-    fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
-
-    @alice.on_interval(period=10.0)
-    async def request_funds(ctx: Context):
-        await ctx.send(
-            bob.address,
-            PaymentRequest(
-                wallet_address=str(alice.wallet.address()), amount=AMOUNT, denom=DENOM
-            ),
-        )
-
-    @alice.on_message(model=TransactionInfo)
-    async def confirm_transaction(ctx: Context, sender: str, msg: TransactionInfo):
-        ctx.logger.info(f"Received transaction info from {sender}: {msg}")
-
-        tx_resp = await wait_for_tx_to_complete(msg.tx_hash, ctx.ledger)
-        coin_received = tx_resp.events["coin_received"]
-
-        if (
-            coin_received["receiver"] == str(alice.wallet.address())
-            and coin_received["amount"] == f"{AMOUNT}{DENOM}"
-        ):
-            ctx.logger.info(f"Transaction was successful: {coin_received}")
-
-    @bob.on_message(model=PaymentRequest, replies=TransactionInfo)
-    async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
-        ctx.logger.info(f"Received payment request from {sender}: {msg}")
-        transaction = ctx.ledger.send_tokens(
-            msg.wallet_address, msg.amount, msg.denom, bob.wallet
-        )
-
-        await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
-
-    bureau = Bureau()
-    bureau.add(alice)
-    bureau.add(bob)
-
-    if __name__ == "__main__":
-        bureau.run()
-    ```
-    </DocsCode>
 </CodeGroup>
 
 ### Expected output

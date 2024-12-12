@@ -5,9 +5,57 @@
 </div>
 
 import GuidesMdx from "../components/guide-mdx"
+import {FeaturedGuides} from "../components/feature-guide-tabs"
 import { AgentsIcon, AgentverseIcon, CliIcon,FetchNetwork, AsiIcon, LedgerIcon } from "src/icons/main-page-icons";
 
-<GuidesMdx content={ [
+<GuidesMdx
+ components={
+  {
+    featuredGuides : <FeaturedGuides featuredGuidesData={[
+      {
+        type: "Agent",
+        title : "Communicating with other agents",
+        path: "/guides/agents/intermediate/communicating-with-other-agents",
+        label : "Intermediate"
+      },
+       {
+        type: "Agent",
+        title : "Build a RAG Agent with uAgents and Langchain",
+        path: "/guides/agents/intermediate/langchain-rag-agent",
+        label : "Intermediate"
+      },
+       {
+        type: "Agent",
+        title : "Custom REST endpoints",
+        path: "/guides/agents/intermediate/rest-endpoints",
+        label : "Intermediate"
+      }
+      ,
+       {
+        type: "Agentverse",
+        title : "Agents and Functions Creation using APIs",
+        path: "/guides/apis/agent-function-creation-apis",
+        label : "Intermediate"
+      }
+      ,
+       {
+        type: "Fetch network",
+        title : "How to stake FET with the ASI Alliance Wallet",
+        path: "/guides/fetch-network/how-to-stake",
+        label : "Intermediate"
+      }
+      ,
+       {
+        type: "Fetch network",
+        title : "Setting up a Multisig Account",
+        path: "/guides/fetch-network/setting-up-a-multisig",
+        label : "Intermediate"
+      }
+    ]} />
+  }
+ }
+ mainHeading={"Explore all guides"}
+ content={ [
   {
     type: "Agents",
     icon: AgentsIcon,
@@ -245,63 +293,63 @@ import { AgentsIcon, AgentverseIcon, CliIcon,FetchNetwork, AsiIcon, LedgerIcon }
     data: [
       {
         title: "ASI Alliance Wallet",
-        path: "/guides/fetch-network/fetch-wallet/web-wallet/get-started"
+        path: "/guides/fetch-network/asi-wallet/web-wallet/get-started"
       },
       {
         title: "Home Screen",
-        path: "/guides/fetch-network/fetch-wallet/web-wallet/home-screen"
+        path: "/guides/fetch-network/asi-wallet/web-wallet/home-screen"
       },
       {
         title: "Stake",
-        path: "/guides/fetch-network/fetch-wallet/web-wallet/stake"
+        path: "/guides/fetch-network/asi-wallet/web-wallet/stake"
       },
         {
         title: "Send Receive",
-        path: "/guides/fetch-network/fetch-wallet/web-wallet/send-receive"
+        path: "/guides/fetch-network/asi-wallet/web-wallet/send-receive"
       },
         {
         title: "Activity",
-        path: "/guides/fetch-network/fetch-wallet/web-wallet/activity"
+        path: "/guides/fetch-network/asi-wallet/web-wallet/activity"
       },
        {
         title: "More Options",
-        path: "/guides/fetch-network/fetch-wallet/web-wallet/more"
+        path: "/guides/fetch-network/asi-wallet/web-wallet/more"
       },
        {
         title: "Gov Proposal",
-        path: "/guides/fetch-network/fetch-wallet/web-wallet/gov-proposal"
+        path: "/guides/fetch-network/asi-wallet/web-wallet/gov-proposal"
       },
        {
         title: "ASI Alliance Wallet : Mobile",
-        path: "/guides/fetch-network/fetch-wallet/mobile-wallet/get-started"
+        path: "/guides/fetch-network/asi-wallet/mobile-wallet/get-started"
       },
        {
         title: "Home Screen : Mobile",
-        path: "/guides/fetch-network/fetch-wallet/mobile-wallet/home-screen"
+        path: "/guides/fetch-network/asi-wallet/mobile-wallet/home-screen"
       },
        {
         title: "Stake : Mobile",
-        path: "/guides/fetch-network/fetch-wallet/mobile-wallet/stake"
+        path: "/guides/fetch-network/asi-wallet/mobile-wallet/stake"
       },
       {
         title: "Send Receive: Mobile",
-        path: "/guides/fetch-network/fetch-wallet/mobile-wallet/send-receive"
+        path: "/guides/fetch-network/asi-wallet/mobile-wallet/send-receive"
       },
        {
         title: "Activity: Mobile",
-        path: "/guides/fetch-network/fetch-wallet/mobile-wallet/activity"
+        path: "/guides/fetch-network/asi-wallet/mobile-wallet/activity"
       },
       {
         title: "More Options: Mobile",
-        path: "/guides/fetch-network/fetch-wallet/mobile-wallet/more"
+        path: "/guides/fetch-network/asi-wallet/mobile-wallet/more"
       },
        {
         title: "Gov Proposal: Mobile",
-        path: "/guides/fetch-network/fetch-wallet/mobile-wallet/gov-proposal"
+        path: "/guides/fetch-network/asi-wallet/mobile-wallet/gov-proposal"
       },
       {
-        title: "Fetch Wallet Hardware Connection Guide",
-        path: "/guides/fetch-network/fetch-wallet/fetch-wallet-hardware-connection-guide"
+        title: "ASI Alliance Wallet Hardware Connection Guide",
+        path: "/guides/fetch-network/asi-wallet/asi-wallet-hardware-connection-guide"
       }
     ]
   },

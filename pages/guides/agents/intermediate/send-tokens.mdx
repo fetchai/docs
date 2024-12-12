@@ -90,7 +90,7 @@ Make sure you have read the following resources before going on with this guide:
 
 3. Let's now define our agents, `alice` and `bob`. Ensure they have enough funds in their wallets to carry out transactions:
 
-<GithubCodeSegment digest="a456e900b5f350052212d2bb637d23ec">
+<GithubCodeSegment digest="aeb5a1ee70cf3ea6a020dadf7833d766">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/send-tokens/sending_tokens.py"
         lineStart={16}
@@ -98,13 +98,13 @@ Make sure you have read the following resources before going on with this guide:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='a456e900b5f350052212d2bb637d23ec'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='aeb5a1ee70cf3ea6a020dadf7833d766'>
 
 <DocsCode local={true}>
 	```py copy filename="sending_tokens.py"
 
-	alice = Agent(name="alice", seed="alice secret phrase")
-	bob = Agent(name="bob", seed="bob secret phrase")
+	alice = Agent(name="alice", seed="alice secret phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
+	bob = Agent(name="bob", seed="bob secret phrase", port=8001, endpoint=["http://127.0.0.1:8001/submit"])
 	
 	fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
 
@@ -259,7 +259,7 @@ Make sure you have read the following resources before going on with this guide:
 
 The overall script for this example should look as follows:
 
-<GithubCodeSegment digest="7923911bc3b4175b33253b5bb283280a">
+<GithubCodeSegment digest="8f77ebc625ca623deed10f12129d120a">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/send-tokens/sending_tokens.py"
         lineStart={1}
@@ -267,7 +267,7 @@ The overall script for this example should look as follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='7923911bc3b4175b33253b5bb283280a'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='8f77ebc625ca623deed10f12129d120a'>
 
 <DocsCode local={true}>
 	```py copy filename="sending_tokens.py"
@@ -287,8 +287,8 @@ The overall script for this example should look as follows:
 	AMOUNT = 100
 	DENOM = "atestfet"
 	
-	alice = Agent(name="alice", seed="alice secret phrase")
-	bob = Agent(name="bob", seed="bob secret phrase")
+	alice = Agent(name="alice", seed="alice secret phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
+	bob = Agent(name="bob", seed="bob secret phrase", port=8001, endpoint=["http://127.0.0.1:8001/submit"])
 	
 	fund_agent_if_low(bob.wallet.address(), min_balance=AMOUNT)
 	
@@ -348,6 +348,8 @@ Run the script: `python sending_tokens.py`
 The output should be as follows:
 
     ```
+    WARNING:  [Alice]: No endpoints provided. Skipping registration: Agent won't be reachable.
+    WARNING:  [  Bob]: No endpoints provided. Skipping registration: Agent won't be reachable.
     INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
     INFO:     [  bob]: Received payment request from agent1qdp9j2ev86k3h5acaayjm8tpx36zv4mjxn05pa2kwesspstzj697xy5vk2a: wallet_address='fetch1967p3vkp0yngdfturv4ypq2p4g760ml705wcxy' amount=100 denom='atestfet'
     INFO:     [alice]: Received transaction info from agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50: tx_hash='DB662CCF415C7B0C9A02928967BE1817506D02A041AA05CA48DCE5CF87D5A638'

@@ -8,7 +8,7 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 
 In some scenarios, you may want to run an agent on your own hardware or infrastructure; luckily this is very easy to do on any system that support **Python 3.10**.
 
-This system is pretty simple, as to get you started as quickly as possible. We're going to run this agent on any device you'd like, in this scenario we're running on a VM but you could run this on your laptop, raspberry pi or tweak for Agentverse. On startup our script will register our agent to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), and then our agent will be available to communicate with other agents.
+This system is pretty simple, as to get you started as quickly as possible. We're going to run this agent on any device you'd like, in this scenario we're running on a VM, but you could run this on your laptop, raspberry pi or tweak for Agentverse. On startup our script will register our agent to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), and then our agent will be available to communicate with other agents.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ Make sure you have read the following resources before going on with this guide:
     - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Agents protocols ↗️](/guides/agents/intermediate/protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
     - [Agent Mailboxes ↗️](/guides/agents/intermediate/mailbox)
@@ -34,7 +34,7 @@ Make sure you have read the following resources before going on with this guide:
 
 Consider the following Agent:
 
-<GithubCodeSegment digest="6eac33a85ad67e40a66214bc554ca0e9">
+<GithubCodeSegment digest="a07d83b0ed210be19d88a188bb065df5">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/options-for-running-local-agents/agent_endpoint.py"
         lineStart={1}
@@ -42,12 +42,11 @@ Consider the following Agent:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='6eac33a85ad67e40a66214bc554ca0e9'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='a07d83b0ed210be19d88a188bb065df5'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_endpoint.py"
 
-	from uagents.setup import fund_agent_if_low
 	from uagents import Agent, Context, Protocol, Model
 	import random
 	from uagents import Field
@@ -60,8 +59,6 @@ Consider the following Agent:
 	    seed="RANDOM STRINGS",
 	    endpoint=["http://YOUR_IP:6145/submit"],
 	)
-	
-	fund_agent_if_low(agent.wallet.address())
 	
 	
 	@agent.on_event("startup")
@@ -96,11 +93,11 @@ Consider the following Agent:
 
 
 
-To correctly run this code, you need to provide the `name`, `seed`, `port` and `endpoint` parameters.
+To correctly run this code, you need to provide the `name`, `seed`, `port` and `endpoint` parameters. Also, make sure your Agent has enough funds to register in Almanac contract.
 
 You'll need to be running this agent on infrastructure that allows you to **open a port**; in our example, we run on port `6145`.
 
-The agent is initialized with an endpoint, and a port; this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an `int` as seen in the `Request` object.
+The agent is initialized with an endpoint, and a port; this is so that we can receive messages, and other agents know where to send them. And we define our protocol, which is just an `int` as seen in the `Request` object.
 
 Our `on_message()` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of `UAgentResponse` which is essential to communicate with [DeltaV ↗️](/concepts/ai-engine/deltav).
 
@@ -112,9 +109,10 @@ Finally, we  run our agent as follows: `python agent_endpoint.py`
 
     ```
     INFO:     [dungeonsanddragonsdiceroll]: Manifest published successfully: DungeonsAndDragonsDiceRoll
+    INFO:     [dungeonsanddragonsdiceroll]: Registration on Almanac API successful
     INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...
     INFO:     [dungeonsanddragonsdiceroll]: Registering on almanac contract...complete
-    INFO:     [dungeonsanddragonsdiceroll]: agent1qvh76795enwgnzkrjpedlnqxwv83d8wxnkkcszs9z46zc3qpfs3yvzc5kuw
+    INFO:     [dungeonsanddragonsdiceroll]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A6145&address=agent1qvwk0ntr38yyghccrg530hnnm88r5uske4hdcalsa7gqp7sjgx42k4mp62r
     INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
     ```
 
@@ -132,7 +130,7 @@ Through the **Agentverse** you can set up [Mailboxes ↗️](/guides/agents/inte
 
 Let's start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
 
-<GithubCodeSegment digest="ff888f486c91b5abc9116c419091a018">
+<GithubCodeSegment digest="6f746d8a2a6a98c302b05243a56544ed">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/options-for-running-local-agents/agent_mailbox.py"
         lineStart={1}
@@ -140,7 +138,7 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='ff888f486c91b5abc9116c419091a018'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6f746d8a2a6a98c302b05243a56544ed'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_mailbox.py"
@@ -155,9 +153,6 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
 	# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
 	SEED_PHRASE = "put_your_seed_phrase_here"
 	
-	# Copy the address shown below
-	print(f"Your agent's address is: {agent.address}")
-	
 	# Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
 	# Then, copy the agent's utilising-the-mailbox key and insert it here below inline
 	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
@@ -169,6 +164,8 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
 	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
 	)
 	
+	# Copy the address shown below
+	print(f"Your agent's address is: {agent.address}")
 	
 	@agent.on_message(model=Message, replies={Message})
 	async def handle_message(ctx: Context, sender: str, msg: Message):
@@ -185,7 +182,17 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
 
 
 
-To correctly run this code, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters.
+To correctly run this code, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters. The output should look similarly to the following:
+
+    ```
+    INFO:     [alice]: Registration on Almanac API successful
+    INFO:     [alice]: Registering on almanac contract...
+    INFO:     [alice]: Registering on almanac contract...complete
+    INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+    INFO:     [alice]: Connecting to mailbox server at agentverse.ai
+    INFO:     [alice]: Mailbox access token acquired
+    ```
 
 You can easily create a Mailbox by first retrieving your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**.
 

@@ -22,7 +22,7 @@ Make sure you have read the following resources before going on with this guide:
     - [Using agents storage function ↗️](/guides/agents/intermediate/storage-function)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Agents protocols ↗️](/guides/agents/intermediate/protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
     - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
@@ -45,7 +45,7 @@ For setting up Hugging Face function we need to create different agents as liste
 
 ### Hugging Face System Agent
 
-This Agent helps users with their queries for a text-classification model of their choosing. The agent always prioritizes Hugging Face request secondary function. Below is the script for creating our agent on [Agentverse ↗️](https://agentverse.ai/agents) using the **+New Agent** button.
+This Agent helps users with their queries for a text-classification model of their choosing. The agent always prioritizes Hugging Face request secondary function. Below is the script for creating our agent on [Agentverse ↗️](https://agentverse.ai/) using the **+New Agent** button.
 
 <GithubCodeSegment digest="a5a18b6cea7a34043525508675836ff0">
     <CodeSegment
@@ -97,6 +97,7 @@ This Agent helps users with their queries for a text-classification model of the
 </DocsCode>
 
 </CodeGroup>
+
 
 
 Within the above code snippet, we defined an Agent which is able to handle specific message types and respond to them accordingly. First, the `requests` library and classes from `ai_engine` are imported to manage Agent responses. The `HF` model class is then defined, with a single attribute response that stores the response string expected from Hugging Face.
@@ -175,6 +176,8 @@ This Agent helps Hugging Face system to handle hugging face request to user and 
 </DocsCode>
 
 </CodeGroup>
+
+
 
 Within this code snippet, we create a Hugging Face request Agent that can interact with DeltaV and which can be registered on the Agentverse using the Agent's address. The code first imports the necessary libraries: 
 
@@ -278,6 +281,8 @@ This agent helps user to look for specific model with search keyword. The Agent 
 
 </CodeGroup>
 
+
+
 In the above, we defined a Model List Agent compatible with DeltaV, which, after being run, can be registered on Agentverse  using the Agent's address. 
 
 We begin by importing the necessary libraries: 
@@ -301,8 +306,7 @@ The properties of function for each Agent are listed below.
 
 ### Hugging Face System
 
-![](../../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-System-1.png)
-![](../../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-System-2.png)
+![](../../../../src/images/guides/services/service-guide/hugging_face_1.png)
 
     - **Function title**: just the name of your function - in this example let's call it **Hugging Face System**.
     - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function helps user to give any query to the selected model and gets the response to their query. Always go for hugging face request secondary function for this objective.**
@@ -314,8 +318,7 @@ The properties of function for each Agent are listed below.
 
 ### Hugging Face Request
 
-![](../../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-Request-1.png)
-![](../../../../src/images/guides/agentverse/Hugging-Face-System/Hugging-Face-Request-2.png)
+![](../../../../src/images/guides/services/service-guide/hugging_face_2.png)
 
     - **Function title**: just the name of your function - in this example let's call it **Hugging Face Request**.
     - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists secondary function**.
@@ -327,8 +330,7 @@ The properties of function for each Agent are listed below.
 
 ### Model List
 
-![](../../../../src/images/guides/agentverse/Hugging-Face-System/Model-List-1.png)
-![](../../../../src/images/guides/agentverse/Hugging-Face-System/Model-List-2.png)
+![](../../../../src/images/guides/services/service-guide/hugging_face_3.png)
 
     - **Function title**: just the name of your function - in this example let's call it **Model List**.
     - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option.**
