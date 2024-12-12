@@ -2,28 +2,82 @@ import { Callout } from 'nextra/components'
 
 # Reconciliation service
 
-During the stake migration from ETH to the Fetch Mainnet on September 14th, 2021, the staked funds were all migrated from the Ethereum staking contract to the Fetch.ai Mainnet. In this process, some users decided to wait for reconciliation to access their funds after the auto-migration was complete.
+The [Reconciliation service ↗️](https://companion.fetch.ai/fetchhub-4/reconciliation) has been built to restore access of the migrated funds for users after the stake migration from ETH to the Fetch Mainnet.
 
-The [Reconciliation service ↗️](https://browse-fetchhub.fetch.ai/reconciliation) has been built to restore access of the migrated funds for these users.
+## Requirements
 
-    <Callout type="info" emoji="ℹ️">
-      Importantly, the reconciliation service is specifically for those users who opted to not use the guides to gain access to their staked funds during the stake migration. If you are unable to access your funds for any other reason, for example you were hacked, then the reconciliation service is not applicable to you!**
-    </Callout>
+First, make sure you have an [ASI Alliance Wallet ↗️](/guides/fetch-network/asi-wallet/web-wallet/get-started) set up and that you have some funds in it to pay the transaction fee associated with the reconciliation tool. You can buy FET from different centralized or decentralized exchanges.
 
-## Instructions
+Secondly, you also need to make sure you have the [Metamask wallet ↗️](https://metamask.io/) you originally used for staking your FET tokens and that it is correctly configured with the address you used in the original staking platform.
 
-First, make sure the following conditions are satisfied:
-
-    1. Your [ASI Alliance Wallet ↗️](/guides/fetch-network/asi-wallet/web-wallet/get-started) is set up and you have access to it. The address of the account on your ASI Alliance Wallet must have recorded at least one transaction on the network. **If you have never made a transaction using this address before, the reconciliation tool and the network have no way of knowing your wallet exists and will not allow you to complete the final submission**.
-
-    2. You have **at least 1 Native FET token** in your wallet to pay the transaction fee associated with the reconciliation tool. You can buy FET from different centralized or decentralized exchanges.
-
-    3. You have the [Metamask wallet ↗️](https://metamask.io/)set up and configured with the address you used in the original staking platform.
-
-If the above conditions are satisfied, head over to the [reconciliation service ↗️](https://browse-fetchhub.fetch.ai/reconciliation) and follow the instructions.
+Once you satisfy these two requirement, head over to the [Reconciliation page ↗️](https://companion.fetch.ai/fetchhub-4/reconciliation) and follow the instructions step-by-step.
 
     <Callout type="info" emoji="ℹ️">
-      The reconciliation service is activated at certain times so users can register with it. For economic safety, the fund transfers only happen during network upgrades.
+      It is important to remember that your Metamask Wallet is connected to the **ETH Mainnet** whereas your ASI Alliance Wallet needs to be connected to **Fetch Mainnet (fetchhub-4)**.
     </Callout>
 
-Once your registered transaction is successful and your reconciliation request is deemed valid, the funds will be automatically released to the mainnet address on your ASI Alliance Wallet.
+## Walk-through
+
+Head over to the [Reconciliation page ↗️](https://companion.fetch.ai/fetchhub-4/reconciliation) and click on **Next**.
+
+![](src/images/reconciliation/reconciliation_1.png)
+
+### Step 1
+
+You need to connect your ASI Alliance Wallet in order to retrieve the **Recovery Address** where your reconciled funds will be sent to. Click the **Connect Wallet** button and provide the data needed to log in your ASI Alliance Wallet.
+
+      ![](src/images/reconciliation/reconciliation_2.png)
+
+A pop-up will show up; click **Approve**.
+
+      ![](src/images/reconciliation/reconciliation_2a.png)
+
+You will then be able to see the **Recovery Address** towards which your reconciled funds will be sent to. You can change the Address at any point via the ASI Alliance Wallet extension, by choosing any other account of choice. The Recovery Address field will be automatically populated in any case.
+
+      ![](src/images/reconciliation/reconciliation_2b.png)
+
+You can then click on **Next**.
+
+### Step 2
+
+You now need to select the Ethereum Wallet address you originally used for staking on Ethereum Mainnet. **Importantly, the address needs to be the exact one you used for staking FET prior migration**; moreover, the address you will choose does not need to be one that you already used for reconciliation. Else, you won't be able to carry on with the Reconciliation tool!
+
+Open your Metamask extension and click on **Connect**
+
+      ![](src/images/reconciliation/reconciliation_3.png)
+
+Once you do so, you will see that the fields in the page will be automatically populated based on your Metamask Account. You can switch between any of your Metamask Accounts. The fields will change automatically based on your Account of choice. Importantly, remember that you need to connect your Metamask Account directly from within your Metamask extension, otherwise you will see a red error message.
+
+      ![](src/images/reconciliation/reconciliation_3d.png)
+
+Once you successfully connect your Account to companion.fetch.ai, you will be able to see details about the **Staking Address** and the **Amount to Restore**. Review the details and press the **Create Signature** button. This will create a signature based on both your Recovery and Original staking addresses and this serves as an authentication method to ensure that you have control over the Recovery Address towards which your funds will be sent.
+
+      ![](src/images/reconciliation/reconciliation_3e.png)
+
+The Metamask pop-up will appear. Click **Confirm**.
+
+      ![](src/images/reconciliation/reconciliation_3b.png)
+
+Great! You will see all the fields populated with full details.
+
+      ![](src/images/reconciliation/reconciliation_3c.png)
+
+    <Callout type="info" emoji="ℹ️">
+      Note that at the moment, funds are presented as afet. To get the total amount of funds in FET tokens, you need to remove 18 zeros from the overall amount shown in Amount to Restore. In the example above, it would be 30 FET tokens to be reconciled.
+    </Callout>
+
+Click **Next**.
+
+### Step 3
+
+You will be redirected towards a summary page where you can view all details about the transaction. You can change any of the details you see, but you will be prompted back at the previous steps to reconnect your wallet/accounts. Make sure all details are correct and click **Submit**.
+
+      ![](src/images/reconciliation/reconciliation_4.png)
+
+A pop-up will appear for your ASI Alliance Wallet extension. Click **Approve Transaction**.
+
+      ![](src/images/reconciliation/reconciliation_4a.png)
+
+Great! You successfully completed all the steps required. You now should be able to see your reconciled funds at the Recovery Address provided similarly to what depicted below:
+
+      ![](src/images/reconciliation/reconciliation_4b.png)
