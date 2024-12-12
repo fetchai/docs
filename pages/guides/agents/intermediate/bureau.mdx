@@ -8,7 +8,6 @@ The `Bureau` is a powerful orchestration component that allows multiple agents t
 
 Let's get started!
 
-
 ## Prerequisites
 
 Make sure you have read the following resources before going on with this guide:
@@ -23,15 +22,13 @@ Make sure you have read the following resources before going on with this guide:
 
     - [uAgents ↗️](https://pypi.org/project/uagents/)
 
-## Bureau Walkthrough
+## Walk-through
 
-This walkthrough will guide you through the process of setting up and running agents using the Bureau, demonstrating its key functionalities, including agent management, message handling, and external communication via endpoints.
-
+This walk-through will guide you through the process of setting up and running agents using the Bureau, demonstrating its key functionalities, including agent management, message handling, and external communication via endpoints.
 
 ### Step 1: Setting Up Agents
 
 To begin, you need to create and define your agents. Each agent will have specific tasks and behaviors that can be scheduled or triggered by messages.
-
 
 ```py copy filename="agent-bureau.py"
 
@@ -111,11 +108,9 @@ if __name__ == "__main__":
 
 ```
 
-
 Step 5: Message Handling and Communication
 
 In this setup, `agent_a` sends a message to `agent_b` every 3 seconds. When `agent_b` receives the message, it replies back to `agent_a`. The Bureau handles the coordination and message passing between the agents. You’ll see logs indicating the messages sent and received by each agent.
-
 
 The overall script for this example should look as follows:
 
@@ -123,17 +118,17 @@ The overall script for this example should look as follows:
 <DocsCode local={true}>
 	```py filename="agent-bureau.py"
     from uagents import Agent, Bureau, Context, Model
- 
+
     class Message(Model):
         message: str
-    
+
     agent_a = Agent(name="agent_a", seed="agent_a recovery phrase")
     agent_b = Agent(name="agent_b", seed="agent_b recovery phrase")
-    
+
     @agent_a.on_interval(period=3.0)
     async def send_message(ctx: Context):
         await ctx.send(agent_b.address, Message(message="Hello from agent_a"))
-    
+
     @agent_a.on_message(model=Message)
     async def agent_a_message_handler(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
@@ -142,7 +137,7 @@ The overall script for this example should look as follows:
     async def agent_b_message_handler(ctx: Context, sender: str, msg: Message):
         ctx.logger.info(f"Received message from {sender}: {msg.message}")
         await ctx.send(agent_a.address, Message(message="Reply from agent_b"))
-    
+
     bureau = Bureau()
 
     # if we want our bureau agents to receive messages from external agents:
@@ -150,14 +145,13 @@ The overall script for this example should look as follows:
 
     bureau.add(agent_a)
     bureau.add(agent_b)
-    
+
     if __name__ == "__main__":
         bureau.run()
 
     ```
 </DocsCode>
 </CodeGroup>
-
 
 We are now ready to run the script: `python agent-bureau.py`
 

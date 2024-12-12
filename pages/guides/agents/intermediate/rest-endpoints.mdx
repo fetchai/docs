@@ -17,7 +17,7 @@ Make sure you have read the following resources before going on with this guide:
     - [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
-    - [Agents protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+    - [Agents protocols ↗️](/guides/agents/intermediate/protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Options for running your Agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
 
@@ -64,7 +64,7 @@ Use the `@on_rest_post()` decorator to define a custom POST endpoint. You need t
 
 ### Example of custom GET and POST Routes
 
-<GithubCodeSegment digest="5810c0229db935fa9b2df1d7d8901013">
+<GithubCodeSegment digest="34cb0b274486557e16e50ae075279e52">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/rest-endpoints/agent.py"
         lineStart={1}
@@ -72,7 +72,7 @@ Use the `@on_rest_post()` decorator to define a custom POST endpoint. You need t
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='5810c0229db935fa9b2df1d7d8901013'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='34cb0b274486557e16e50ae075279e52'>
 
 <DocsCode local={true}>
 	```py copy filename="agent.py"
@@ -94,7 +94,7 @@ Use the `@on_rest_post()` decorator to define a custom POST endpoint. You need t
 	class EmptyMessage(Model):
 	    pass
 	
-	agent = Agent(name="Rest API")
+	agent = Agent(name="Rest API", seed="your_seed_phrase", port=8000, endpoint=["http://localhost:8000/submit"])
 	
 	@agent.on_rest_get("/rest/get", Response)
 	async def handle_get(ctx: Context) -> Dict[str, Any]:

@@ -1,11 +1,8 @@
+# src.uagents.protocol
 
+Exchange Protocol
 
-# Exchange Protocol
-
-
-
-
-## Protocol Objects
+## Protocol Objects [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L17)
 
 ```python
 class Protocol()
@@ -16,9 +13,7 @@ It typically relates to the exchange of messages between agents for executing so
 It includes the message (model) types it supports, the allowed replies, and the
 interval message handlers that define the logic of the protocol.
 
-
-
-#### `__`init`__`
+#### **init** [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L26)
 
 ```python
 def __init__(name: Optional[str] = None, version: Optional[str] = None)
@@ -31,9 +26,7 @@ Initialize a Protocol instance.
 - `name` _Optional[str], optional_ - The name of the protocol. Defaults to None.
 - `version` _Optional[str], optional_ - The version of the protocol. Defaults to None.
 
-
-
-#### intervals
+#### intervals [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L51)
 
 ```python
 @property
@@ -44,11 +37,9 @@ Property to access the interval handlers.
 
 **Returns**:
 
-  List[Tuple[IntervalCallback, float]]: List of interval handlers and their periods.
+List[Tuple[IntervalCallback, float]]: List of interval handlers and their periods.
 
-
-
-#### models
+#### models [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L61)
 
 ```python
 @property
@@ -59,11 +50,9 @@ Property to access the registered models.
 
 **Returns**:
 
-  Dict[str, Type[Model]]: Dictionary of registered models with schema digests as keys.
+Dict[str, Type[Model]]: Dictionary of registered models with schema digests as keys.
 
-
-
-#### replies
+#### replies [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L71)
 
 ```python
 @property
@@ -74,12 +63,10 @@ Property to access the registered replies.
 
 **Returns**:
 
-  Dict[str, Dict[str, Type[Model]]]: Dictionary mapping message schema digests to their
-  allowed replies.
+Dict[str, Dict[str, Type[Model]]]: Dictionary mapping message schema digests to their
+allowed replies.
 
-
-
-#### interval`_`messages
+#### interval_messages [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L82)
 
 ```python
 @property
@@ -92,9 +79,7 @@ Property to access the interval message digests.
 
 - `Set[str]` - Set of message digests that may be sent by interval handlers.
 
-
-
-#### signed`_`message`_`handlers
+#### signed_message_handlers [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L92)
 
 ```python
 @property
@@ -105,11 +90,9 @@ Property to access the signed message handlers.
 
 **Returns**:
 
-  Dict[str, MessageCallback]: Dictionary mapping message schema digests to their handlers.
+Dict[str, MessageCallback]: Dictionary mapping message schema digests to their handlers.
 
-
-
-#### unsigned`_`message`_`handlers
+#### unsigned_message_handlers [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L102)
 
 ```python
 @property
@@ -120,11 +103,9 @@ Property to access the unsigned message handlers.
 
 **Returns**:
 
-  Dict[str, MessageCallback]: Dictionary mapping message schema digests to their handlers.
+Dict[str, MessageCallback]: Dictionary mapping message schema digests to their handlers.
 
-
-
-#### name
+#### name [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L112)
 
 ```python
 @property
@@ -137,9 +118,7 @@ Property to access the protocol name.
 
 - `str` - The protocol name.
 
-
-
-#### version
+#### version [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L122)
 
 ```python
 @property
@@ -152,9 +131,7 @@ Property to access the protocol version.
 
 - `str` - The protocol version.
 
-
-
-#### canonical`_`name
+#### canonical_name [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L132)
 
 ```python
 @property
@@ -167,9 +144,7 @@ Property to access the canonical name of the protocol ('name:version').
 
 - `str` - The canonical name of the protocol.
 
-
-
-#### digest
+#### digest [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L142)
 
 ```python
 @property
@@ -182,9 +157,7 @@ Property to access the digest of the protocol's manifest.
 
 - `str` - The digest of the protocol's manifest.
 
-
-
-#### on`_`interval
+#### on_interval [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L152)
 
 ```python
 def on_interval(period: float,
@@ -199,15 +172,12 @@ Decorator to register an interval handler for the protocol.
 - `period` _float_ - The interval period in seconds.
 - `messages` _Optional[Union[Type[Model], Set[Type[Model]]]], optional_ - The associated
   message types. Defaults to None.
-  
 
 **Returns**:
 
 - `Callable` - The decorator to register the interval handler.
 
-
-
-#### on`_`query
+#### on_query [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L205)
 
 ```python
 def on_query(model: Type[Model],
@@ -221,15 +191,12 @@ Decorator to register a query handler for the protocol.
 - `model` _Type[Model]_ - The message model type.
 - `replies` _Optional[Union[Type[Model], Set[Type[Model]]]], optional_ - The associated
   reply types. Defaults to None.
-  
 
 **Returns**:
 
 - `Callable` - The decorator to register the query handler.
 
-
-
-#### on`_`message
+#### on_message [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L223)
 
 ```python
 def on_message(model: Type[Model],
@@ -246,15 +213,12 @@ Decorator to register a message handler for the protocol.
   reply types. Defaults to None.
 - `allow_unverified` _Optional[bool], optional_ - Whether to allow unverified messages.
   Defaults to False.
-  
 
 **Returns**:
 
 - `Callable` - The decorator to register the message handler.
 
-
-
-#### manifest
+#### manifest [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L286)
 
 ```python
 def manifest() -> Dict[str, Any]
@@ -265,11 +229,9 @@ protocol details and interface.
 
 **Returns**:
 
-  Dict[str, Any]: The protocol's manifest.
+Dict[str, Any]: The protocol's manifest.
 
-
-
-#### compute`_`digest
+#### compute_digest [↗](https://github.com/fetchai/uAgents/blob/main/python/src/uagents/protocol.py#L346)
 
 ```python
 @staticmethod
@@ -281,7 +243,6 @@ Compute the digest of a given manifest.
 **Arguments**:
 
 - `manifest` _Dict[str, Any]_ - The manifest to compute the digest for.
-  
 
 **Returns**:
 

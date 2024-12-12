@@ -317,8 +317,8 @@ module.exports = withNextra({
         permanent: true,
       },
       {
-        source: "/examples/react_example",
-        destination: "/examples/intermediate/react_example",
+        source: "/examples/intermediate/react_example",
+        destination: "/examples/react-example",
         permanent: true,
       },
       {
@@ -366,6 +366,274 @@ module.exports = withNextra({
       {
         source: "/guides/agents/cleaning-demo",
         destination: "/examples/intermediate/agents-cleaning-demo",
+        permanent: true,
+      },
+      {
+        source:
+          "/guides/fetch-network/fetch-wallet/fetch-wallet-hardware-connection-guide",
+        destination:
+          "/guides/fetch-network/asi-wallet/asi-wallet-hardware-connection-guide",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/get-started",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/get-started",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/home-screen",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/home-screen",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/stake",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/stake",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/send-receive",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/send-receive",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/activity",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/activity",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/more",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/more",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/web-wallet/gov-proposal",
+        destination: "/guides/fetch-network/asi-wallet/web-wallet/gov-proposal",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/get-started",
+        destination:
+          "/guides/fetch-network/asi-wallet/mobile-wallet/get-started",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/home-screen",
+        destination:
+          "/guides/fetch-network/asi-wallet/mobile-wallet/home-screen",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/stake",
+        destination: "/guides/fetch-network/asi-wallet/mobile-wallet/stake",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/send-receive",
+        destination:
+          "/guides/fetch-network/asi-wallet/mobile-wallet/send-receive",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/activity",
+        destination: "/guides/fetch-network/asi-wallet/mobile-wallet/activity",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/more",
+        destination: "/guides/fetch-network/asi-wallet/mobile-wallet/more",
+        permanent: true,
+      },
+      {
+        source: "/guides/fetch-network/fetch-wallet/mobile-wallet/gov-proposal",
+        destination:
+          "/guides/fetch-network/asi-wallet/mobile-wallet/gov-proposal",
+        permanent: true,
+      },
+      {
+        source: "/examples/easy/first-agent",
+        destination: "/examples/agent/first-agent",
+        permanent: true,
+      },
+      {
+        source: "/examples/easy/agents-interval-task",
+        destination: "/examples/agent/agents-interval-task",
+        permanent: true,
+      },
+      {
+        source: "/examples/easy/local-communication",
+        destination: "/examples/agent/local-communication",
+        permanent: true,
+      },
+      {
+        source: "/examples/easy/simple-agent-communication-with-bureau",
+        destination: "/examples/agent/simple-agent-communication-with-bureau",
+        permanent: true,
+      },
+      {
+        source: "/examples/easy/storage",
+        destination: "/examples/agent/storage",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/broadcast",
+        destination: "/examples/agent/broadcast",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/multiple-agents",
+        destination: "/examples/agent/multiple-agents",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/mailbox-agents",
+        destination: "/examples/agentverse/mailbox-agents",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/on-query-proxy",
+        destination: "/examples/agentverse/on-query-proxy",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/dice-roll",
+        destination: "/examples/DeltaV/dice-roll",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/coin-toss",
+        destination: "/examples/DeltaV/coin-toss",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/on_query_example",
+        destination: "/examples/agent/on_query_example",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/agents-with-docker",
+        destination: "/examples/agent/agents-with-docker",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/local-agent-registration",
+        destination: "/examples/DeltaV/local-agent-registration",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/table-booking-demo",
+        destination: "/examples/agent/table-booking-demo",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/agents-cleaning-demo",
+        destination: "/examples/agent/agents-cleaning-demo",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/send-tokens-agents",
+        destination: "/examples/agent/send-tokens-agents",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/verify-messages",
+        destination: "/examples/agent/verify-messages",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/wallet-messaging",
+        destination: "/examples/agent/wallet-messaging",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/name-service",
+        destination: "/examples/agentverse/name-service",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/news-reading-system",
+        destination: "/examples/DeltaV/news-reading-system",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/local-agent-langchain",
+        destination: "/examples/DeltaV/local-agent-langchain",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/on-query",
+        destination: "/examples/agent/on-query",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/agent-and-function-api",
+        destination: "/examples/agentverse-api/agent-and-function-api",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/running-an-agent-on-agentverse",
+        destination: "/examples/agentverse/running-an-agent-on-agentverse",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/agent-secret-api",
+        destination: "/examples/agentverse-api/agent-secret-api",
+        permanent: true,
+      },
+      {
+        source: "/examples/intermediate/langchain-rag",
+        destination: "/examples/rag/langchain-rag",
+        permanent: true,
+      },
+      {
+        source:
+          "/examples/intermediate/sending-and-verifying-token-transactions-with-agent",
+        destination:
+          "/examples/agent/sending-and-verifying-token-transactions-with-agent",
+        permanent: true,
+      },
+      {
+        source: "/examples/advanced/open-dialogue-chitchat",
+        destination: "/examples/dialogues/open-dialogue-chitchat",
+        permanent: true,
+      },
+      {
+        source: "/examples/advanced/predefined-dialogue-chitchat",
+        destination: "/examples/dialogues/predefined-dialogue-chitchat",
+        permanent: true,
+      },
+      {
+        source: "/examples/advanced/async-loops",
+        destination: "/examples/agent/async-loops",
+        permanent: true,
+      },
+      {
+        source: "/examples/advanced/chat_api_example",
+        destination: "/examples/ai-engine-api/chat_api_example",
+        permanent: true,
+      },
+      {
+        source: "/examples/advanced/deltaV-dialogues",
+        destination: "/examples/dialogues/deltaV-dialogues",
+        permanent: true,
+      },
+      {
+        source: "/examples/postgres-database-with-an-agent",
+        destination: "/examples/examplestech/postgres-database-with-an-agent",
+        permanent: true,
+      },
+      {
+        source: "/examples/react-example",
+        destination: "/examples/examplestech/react-example",
+        permanent: true,
+      },
+      {
+        source: "/examples/hugging-face-agent",
+        destination: "/examples/examplestech/hugging-face-agent",
+        permanent: true,
+      },
+      {
+        source: "/examples/jupyter-agent",
+        destination: "/examples/examplestech/jupyter-agent",
         permanent: true,
       },
     ];
