@@ -230,7 +230,7 @@ const items: { [key: string]: Item[] } = {
       title: "Wallet",
       description: <>Get started with the ASI Alliance Wallet.</>,
       icon: walletIcon,
-      path: "/guides/fetch-network/fetch-wallet/web-wallet/get-started",
+      path: "/guides/fetch-network/asi-wallet/web-wallet/get-started",
     },
     {
       title: "Ledger",
