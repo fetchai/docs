@@ -37,8 +37,7 @@ With that, let's get our agents running.
 
 ## The Tarot agent
 
-The Tarot agent is registers and listens on a webhook within a Flask app. This agent using openai to create a Tarot
-reading from the received messages.
+The Tarot agent is registers and listens on a webhook within a Flask app. This agent using openai to create a Tarot reading from the received messages.
 
 First, create a file and copy the following code in:
 
@@ -161,16 +160,11 @@ if __name__ == "__main__":
 
 There's a lot to unpack there, but as this is a quickstart, let's just cover the essentials:
 
-An Agent is identifiable by their [seed](), we use this to load in an agent often with `Identity.from_seed("some str
-as your seed", 0)`
+An Agent is identifiable by their [seed](), we use this to load in an agent often with `Identity.from_seed("some str as your seed", 0)`
 
-Registration allows other agents to find you, you can see this in `register_with_agentverse`. We specify a `readme`
-which is a xml string so that LLMs can read this content in a more structured manner. Very useful for search in more
-complex demos.
+Registration allows other agents to find you, you can see this in `register_with_agentverse`. We specify a `readme` which is a xml string so that LLMs can read this content in a more structured manner. Very useful for search in more complex demos.
 
-`/webhook` is where our agent accepts a message. They will receive this message when another Agents searches for
-them and matches. In this agent we get the data with `data = request.json` and then we get some of the message
-objects, our agent expects the payload to have `date of birth` and `gender` as keys.
+`/webhook` is where our agent accepts a message. They will receive this message when another Agents searches for them and matches. In this agent we get the data with `data = request.json` and then we get some of the message objects, our agent expects the payload to have `date of birth` and `gender` as keys.
 
 Finally, we create a message to send to the sender:
 
@@ -183,9 +177,7 @@ send_message_to_agent(
     )
 ```
 
-Sending messages to agents is really simple. Depending on the other agent your payload may not need any structure at
-all. `session` is optional, and only useful for dialogues between agents that require tracing, or are there are many
-steps in the dialogue.
+Sending messages to agents is really simple. Depending on the other agent your payload may not need any structure at all. `session` is optional, and only useful for dialogues between agents that require tracing, or are there are many steps in the dialogue.
 
 
 ## The Search agent
@@ -289,10 +281,7 @@ if __name__ == "__main__":
 
 ```
 
-The main difference in the search agent is that we define a `/search` endpoint. This is very interesting, with `fetch.
-ai(query)` we can find any agent in the marketplace. Then we can send a message to all of them asking for a tarot
-reading. The search is a combination of Elastic search and multi-layered llms, meaning natural language queries can
-find you accurate results.
+The main difference in the search agent is that we define a `/search` endpoint. This is very interesting, with `fetch.ai(query)` we can find any agent in the marketplace. Then we can send a message to all of them asking for a tarot reading. The search is a combination of Elastic search and multi-layered llms, meaning natural language queries canfind you accurate results.
 
 ```
 @app.route('/search', methods=['GET'])
@@ -312,17 +301,25 @@ We run these agents with the following commands, they will need to be run in sep
 
 ```python tarot_search_agent.py```
 
-
-Then, you can send a GET request to the tarot_search_agent, and it should then go and find you an agent which will
-return a tarot reading.
+Now they're running, let's get them registered. In a new terminal window:
 
 ```
-curl --location '127.0.0.2:5002/search'
+curl --location '127.0.0.1:5000/register'
+curl --location '127.0.0.1:5002/register'
+```
+
+
+Then, you can send another GET request to the tarot_search_agent, and it should then go and find you an agent which will return a tarot reading.
+
+Let's open a terminal window and curl our tarot_search_agent's ip to start the search process:
+
+```
+curl --location '127.0.0.1:5002/search'
 ```
 
 ### output
 
-tarot_search:
+expected output from the tarot_search_agent:
 
 ``` bash
 
