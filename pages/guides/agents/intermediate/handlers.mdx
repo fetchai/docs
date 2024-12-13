@@ -230,7 +230,7 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
 2. We then need to import the `Agent`, `Bureau`, `Context`, `Model`, and `Protocol` classes from the `uagents` library. Then, let's create the 3 different agents using the class `Agent`. Each agent is initialized with a unique name and a seed phrase for wallet recovery.
 
-<GithubCodeSegment digest="4b21b0bf628200d653d4edf46d10a7b8">
+<GithubCodeSegment digest="b0b84f768f6281f35cf0db9bc2b6dd38">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/broadcast.py"
         lineStart={1}
@@ -238,7 +238,7 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='4b21b0bf628200d653d4edf46d10a7b8'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='b0b84f768f6281f35cf0db9bc2b6dd38'>
 
 <DocsCode local={true}>
 	```py copy filename="broadcast.py"
@@ -248,9 +248,9 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 	# create agents
 	# alice and bob will support the protocol
 	# charles will try to reach all agents supporting the protocol
-	alice = Agent(name="alice", seed="alice recovery phrase")
-	bob = Agent(name="bob", seed="bob recovery phrase")
-	charles = Agent(name="charles", seed="charles recovery phrase")
+	alice = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
+	bob = Agent(name="bob", seed="bob recovery phrase", port=8001, endpoint=["http://127.0.0.1:8001/submit"])
+	charles = Agent(name="charles", seed="charles recovery phrase", port=8002, endpoint=["http://127.0.0.1:8002/submit"])
 
 ```
 </DocsCode>
@@ -425,7 +425,7 @@ We now showcase a scenario where three agents, named `alice`, `bob`, and `charle
 
 The overall script should look as follows:
 
-<GithubCodeSegment digest="45fc7b683cc120b2455e658fb70c7a4f">
+<GithubCodeSegment digest="fa7674939b2fea04b3439557cc61bcf8">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/handlers/broadcast.py"
         lineStart={1}
@@ -433,7 +433,7 @@ The overall script should look as follows:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='45fc7b683cc120b2455e658fb70c7a4f'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='fa7674939b2fea04b3439557cc61bcf8'>
 
 <DocsCode local={true}>
 	```py copy filename="broadcast.py"
@@ -443,9 +443,9 @@ The overall script should look as follows:
 	# create agents
 	# alice and bob will support the protocol
 	# charles will try to reach all agents supporting the protocol
-	alice = Agent(name="alice", seed="alice recovery phrase")
-	bob = Agent(name="bob", seed="bob recovery phrase")
-	charles = Agent(name="charles", seed="charles recovery phrase")
+	alice = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
+	bob = Agent(name="bob", seed="bob recovery phrase", port=8001, endpoint=["http://127.0.0.1:8001/submit"])
+	charles = Agent(name="charles", seed="charles recovery phrase", port=8002, endpoint=["http://127.0.0.1:8002/submit"])
 	
 	
 	class BroadcastExampleRequest(Model):
