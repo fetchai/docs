@@ -87,35 +87,40 @@ in Metamask.
       ![](src/images/reconciliation/reconciliation_3d.png)
 
 Once you connected the correct Ethereum account to companion.fetch.ai, you will be able to see details about the
-**Staking Address** and the **Amount to Restore**.\
-Review the details and press the **Create Signature** button.\
+**Staking Address** and the **Amount to Restore**.
+
+Review the details and press the **Create Signature** button.
+
 That will create Ethereum message associating destination target address on Fetch mainnet with original Ethereum source
 address, and sends it to the **Metamask** wallet for signing.
 
     <Callout type="info" emoji="ℹ️">
-       This does **not** require any ETH gas, since all what is being done is producing ethereum signature.
+       This does **not** require any ETH gas, since all what is being done is generating ethereum signature for the
+       message.
     </Callout>
 
       ![](src/images/reconciliation/reconciliation_3e.png)
+
+    <Callout type="info" emoji="ℹ️">
+      Note that amount of tokens displayed in the `Amount to Restore [afet]` box is presented in the `afet` denomination.
+
+      In order to get the amount in `FET` denomination, it is necessary to shift the decimal point by 18 orders of
+      magnitude to the left, what means **dividing** the amount displayed by **10<sup>18</sup>**.
+
+      In the example above, the `30000000000000000000` amount displayed there represents `30 [FET]` tokens.
+    </Callout>
 
 The Metamask pop-up will appear. Click **Confirm**.
 
       ![](src/images/reconciliation/reconciliation_3b.png)
 
-Great! You will see all the fields populated with full details.
+Great! Now you will see all the fields fully populated:
 
       ![](src/images/reconciliation/reconciliation_3c.png)
 
 The resulting signature serves dual purpose:
 - primarily it is the proof of ownership of funds associated with original Ethereum address,
 - secondarily it is proof of association between fetch destination recovery address and ethereum source address.
-
-    <Callout type="info" emoji="ℹ️">
-      Note that amount of tokens is presented in `afet` denomination. In order to get the amount of tokens in `FET`
-      denomination, it is necessary to shift decimal point by 18 orders of magnitude to the left, what means
-      **dividing** the number displayed in the `Amount to Restore` by **10<sup>18</sup>**.\
-      In the example above, it would be 30 FET tokens to be reconciled.
-    </Callout>
 
 Click **Next**.
 
