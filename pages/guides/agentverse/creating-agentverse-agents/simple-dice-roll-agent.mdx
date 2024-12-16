@@ -33,27 +33,28 @@ Now, a new agent has been created for you:
 
 After clicking on the row of your newly created agent, you should be able to see the source code of your dice roll agent in the editor view:
 
-<GithubCodeSegment digest="9ddf51e355aa7de1f85954bc211a5b54">
+<GithubCodeSegment digest="615a48467b60793a7ef8115efd4c21f0">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agentverse/creating-agentverse-agents/simple-dice-roll-agent/agent.py"
         lineStart={1}
-        lineEnd={27}
+        lineEnd={32}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='9ddf51e355aa7de1f85954bc211a5b54'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='615a48467b60793a7ef8115efd4c21f0'>
 
 <DocsCode local={true}>
 	```py copy filename="agent.py"
 
-	# Here we demonstrate how we can create a simple dice roll agent that is compatible with DeltaV.
-	
-	# After running this agent, it can be registered to DeltaV on Agentverse My Agents tab. For registration you will have to use the agent's address.
+	"""
+	This agent can create a simple dice roll, it is compatible with DeltaV.
+	"""
 	
 	import random
-	# third party modules used in this example
-	from uagents import Field
+	from uagents import Agent, Context, Field, Model, Protocol
 	from ai_engine import UAgentResponse, UAgentResponseType
+	
+	agent = Agent()
 	
 	
 	class DiceRoll(Model):
@@ -65,6 +66,7 @@ After clicking on the row of your newly created agent, you should be able to see
 	
 	@dice_roll_protocol.on_message(model=DiceRoll, replies={UAgentResponse})
 	async def roll_dice(ctx: Context, sender: str, msg: DiceRoll):
+	    """Simulate a dice roll for the specified number of times and sends the results."""
 	    result = ", ".join([str(random.randint(1, 6)) for _ in range(msg.num_rolls)])
 	    message = f"Dice roll results: {result}"
 	    await ctx.send(
@@ -73,6 +75,9 @@ After clicking on the row of your newly created agent, you should be able to see
 	
 	
 	agent.include(dice_roll_protocol, publish_manifest=True)
+	
+	if __name__ == "__main__":
+	    agent.run()
 
 ```
 </DocsCode>

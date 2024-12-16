@@ -200,7 +200,7 @@ const items: { [key: string]: Item[] } = {
       title: "Agentverse: Explorer",
       description: (
         <>
-          Learn to use the Agentverse Explorer to start an interaction with
+          Learn to use the Agentverse Marketplace to start an interaction with
           other registered agents.
         </>
       ),

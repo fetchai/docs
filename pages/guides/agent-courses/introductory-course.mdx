@@ -257,7 +257,7 @@ We can now code our agent. Let's start by importing the required modules. In our
 	if __name__ == "__main__":
 	    agent.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -307,10 +307,11 @@ Let's update `alice_agent.py` with the code snippet below:
 	if __name__ == "__main__":
 	    agent.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
+
 
 
 Decorators are moderately advanced in Python, but in this guide all you need to know is that they're there so that the agent knows how to act on the declared decorated functions. For additional information on decorators, check out the following resources: [Primer on Python decorators ↗️](https://realpython.com/primer-on-python-decorators/) and [Agent Handlers ↗️](/guides/agents/intermediate/handlers) for additional information on decorators within the uAgents Framework.
@@ -349,7 +350,7 @@ Sometimes, we just need to see what a value looks like. We can quickly do so in 
 	print("uAgent address: ", agent.address)
 	print("Fetch network address: ", agent.wallet.address())
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -401,7 +402,7 @@ In this case, we apply the decorator to a `say_hello()` function which will be r
 	if __name__ == "__main__":
 	    agent.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -486,7 +487,7 @@ The script will look as follows:
 	if __name__ == "__main__":
 	    bureau.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -565,7 +566,7 @@ We can now define the `Message` data model and our two agents:
 	alice = Agent(name="alice", seed="alice recovery phrase")
 	bob = Agent(name="bob", seed="bob recovery phrase")
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -591,7 +592,7 @@ We need to define a function for `alice` to send messages to `bob` periodically.
 	async def send_message(ctx: Context):
 	    await ctx.send(bob.address, Message(message="hello there bob"))
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -618,7 +619,7 @@ We then need a way for `bob` to receive these messages. We can do this by creati
 	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 	    await ctx.send(alice.address, Message(message="hello there alice"))
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -644,7 +645,7 @@ We then need to define a message handler function for `alice` to handle response
 	async def alice_message_handler(ctx: Context, sender: str, msg: Message):
 	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -673,7 +674,7 @@ Finally, we need to add both agents to the `Bureau` in order to run them from th
 	if __name__ == "__main__":
 	    bureau.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -729,7 +730,7 @@ The overall script would be:
 	if __name__ == "__main__":
 	    bureau.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -820,10 +821,11 @@ We will have what follows:
 	
 	agent.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
+
 
 
 Here, we defined a local http address, but you could also define a remote address to allow agent communication over different machines through the internet. Importantly, make sure to add a seed phrase to your Agent, so you don't have to fund different addresses each time you run your agent. The `fund_agent_if_low` is used on the Testnet to make sure your Agent has enough funds in its wallet to register and operate correctly.
@@ -914,10 +916,11 @@ The script would be as follows:
 	if __name__ == "__main__":
 	    agent.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
+
 
 
 Similarly, we need to define a script for `bob` so to create a remote communication with `alice` Agent. Let's create a Python script for `bob`:
@@ -982,7 +985,7 @@ Instead of creating and manually writing out the same script we can copy and ren
 	if __name__ == "__main__":
 	    agent.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1081,7 +1084,7 @@ The script for this example is:
 	if __name__ == "__main__":
 	    agent.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1153,7 +1156,7 @@ Let's start by defining the protocol for querying availability of tables at the 
 	class TotalQueries(Model):
 	    total_queries: int
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1219,7 +1222,7 @@ Let's then define the message handlers for the `query_proto` protocol:
 	    total_queries = int(ctx.storage.get("total_queries") or 0)
 	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1312,7 +1315,7 @@ The overall script should look as follows:
 	    total_queries = int(ctx.storage.get("total_queries") or 0)
 	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1352,7 +1355,7 @@ We can now proceed by writing the booking protocol script for booking the table 
 	
 	book_proto = Protocol(name="RestaurantBookingProtocolExample", version="0.1.0")
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1375,7 +1378,7 @@ Let's now define the message handler function:
 <CodeGroup dynamic hasCopy isLocalHostedFile digest='76e4a2f95f71b5830393d340d2f9cfde'>
 
 <DocsCode local={true}>
-    ```py copy filename="book.py"
+	```py copy filename="book.py"
 
 	@book_proto.on_message(model=BookTableRequest, replies=BookTableResponse)
 	async def handle_book_request(ctx: Context, sender: str, msg: BookTableRequest):
@@ -1402,10 +1405,12 @@ Let's now define the message handler function:
 	    # send the response
 	    await ctx.send(sender, BookTableResponse(success=success))
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
+
+
 
     The `handle_book_request()` handler first retrieves table statuses from the agent's storage and converts them into a dictionary with integer keys (table numbers) and `TableStatus` values. The `TableStatus` class is imported from the query module. Next, the handler gets the table associated with the requested `table_number` from the tables dictionary. The handler checks if the requested time_start falls within the availability period of the table. If the table is available for the requested booking duration, the handler sets success to `True`, updates the table's `time_start` to reflect the end of the booking, and saves the updated table information in the agent's storage using `ctx.storage.set()`. If the table is not available for the requested booking, the handler sets success to `False`. The handler sends a `BookTableResponse` message back to the sender with the success status of the booking using the `ctx.send()` method.
 
@@ -1466,7 +1471,7 @@ The overall script should be:
 	    # send the response
 	    await ctx.send(sender, BookTableResponse(success=success))
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1503,7 +1508,7 @@ Let's now move forward and create our restaurant agent in a separate file. In th
 	    },
 	)
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1541,7 +1546,7 @@ Remember that you need to provide the `name`, `port`, `seed` and `endpoint` para
 	if __name__ == "__main__":
 	    restaurant.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1594,7 +1599,7 @@ The overall script would be as follows:
 	if __name__ == "__main__":
 	    restaurant.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1640,7 +1645,7 @@ Once we've imported the necessary classes from the `uagents` library and the two
 	    },
 	)
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1676,7 +1681,7 @@ Remember that you need to provide the `RESTAURANT_ADDRESS`, `name`, `port`, `see
 	    if not completed:
 	        await ctx.send(RESTAURANT_ADDRESS, table_query)
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1713,7 +1718,7 @@ We then need to define the message handler function for incoming `QueryTableResp
 	        ctx.logger.info("No free tables - nothing more to do")
 	        ctx.storage.set("completed", True)
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1748,7 +1753,7 @@ Let's then define a function which will handle messages from the `restaurant` ag
 	if __name__ == "__main__":
 	    user.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
@@ -1834,7 +1839,7 @@ The overall script would be:
 	if __name__ == "__main__":
 	    user.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
