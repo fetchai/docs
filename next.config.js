@@ -627,7 +627,7 @@ module.exports = withNextra({
         permanent: true,
       },
       {
-        source: "/examples/hugging-face-agent",
+        source: "/examples/intermediate/hugging-face-agent",
         destination: "/examples/examplestech/hugging-face-agent",
         permanent: true,
       },
