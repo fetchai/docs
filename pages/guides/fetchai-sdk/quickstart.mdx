@@ -1,21 +1,22 @@
-# Quickstart with Fetchai-sdk
+# Quickstart with Fetch.ai SDK
 
-The fetchai sdk gives you easy access to the core components of the uAgents library.
-Allowing you to create Agents outside the asynchronous library of uAgents. This is really great if you want to build synchronous programs but still have agentic functionality.
+The Fetch.ai SDK gives you easy access to the core components of the uAgents library.
 
-Let's build a simple two agent system using Flask, and openai.
+Allowing you to create Agents outside the asynchronous library of uAgents. This is really great if you want to build synchronous programs but still have agentic functionalities.
+
+Let's build two simple [Agent ↗️](/guides/agents/getting-started/whats-an-agent) system using Flask, and OpenAI.
 
 ## Installation
 
 With Python installed, let's set up our environment.
 
-Create a new folder, let's call it fetchai-tarot
+Create a new folder; let's call it `fetchai-tarot`:
 
 ```
-    mkdir fetchai-tarot && cd fetchai-tarot
+mkdir fetchai-tarot && cd fetchai-tarot
 ```
 
-now, let's install our required libraries.
+Then, let's install our required libraries:
 
 ```
 pip install flask openai fetchai
@@ -23,21 +24,21 @@ pip install flask openai fetchai
 
 We'll also need to set a couple of environment variables. In terminal export the following:
 
-``` bash
+```bash
 export OPENAI_API_KEY="your_api_key_from_openai.com"
 ```
 
-``` bash
+```bash
 export AGENTVERSE_KEY="your_api_key_from_agentverse.ai"
 ```
 
-We have a guide to get an [Agentverse api key](../apis/agent-function-creation-apis#how-to-get-agentverse-api-tokens)
+We have a guide to get an [Agentverse api key ↗️](../apis/agent-function-creation-apis#how-to-get-agentverse-api-tokens)
 
-With that, let's get our agents running.
+With that, let's get our Agents running.
 
 ## The Tarot agent
 
-The Tarot agent is registers and listens on a webhook within a Flask app. This agent using openai to create a Tarot reading from the received messages.
+The Tarot Agent is registers and listens on a webhook within a Flask app. This Agent uses OpenAI to create a Tarot reading from the received messages.
 
 First, create a file and copy the following code in:
 
@@ -160,13 +161,13 @@ if __name__ == "__main__":
 
 There's a lot to unpack there, but as this is a quickstart, let's just cover the essentials:
 
-An Agent is identifiable by their [seed](../agents/getting-started/seedphrase), we use this to load in an agent often with `Identity.from_seed("some str as your seed", 0)`
+An Agent is identifiable by their [seed ↗️](../agents/getting-started/seedphrase); we use this to load in an Agent often with `Identity.from_seed("some str as your seed", 0)`
 
-Registration allows other agents to find you, you can see this in `register_with_agentverse`. We specify a `readme` which is a xml string so that LLMs can read this content in a more structured manner. Very useful for search in more complex demos.
+Registration allows other Agents to find you, you can see this in `register_with_agentverse`. We specify a `readme` which is a xml string so that LLMs can read this content in a more structured manner. Very useful for search in more complex demos.
 
-`/webhook` is where our agent accepts an incomming message. They will receive this message when another Agents searches for them and matches. In this agent we get the data with `data = request.json` and then we get some of the message objects, our agent expects the payload to have `date of birth` and `gender` as keys.
+`/webhook` is where our Agent accepts an incoming message. They will receive this message when another Agents search for it and match. Within this Agent, we get the data with `data = request.json` and then we get some of the message objects, our Agent expects the payload to have `date of birth` and `gender` as keys.
 
-Finally, we create a message to send to the sender:
+Finally, we create a message to be sent back to the sender:
 
 ```
 send_message_to_agent(
@@ -177,14 +178,14 @@ send_message_to_agent(
     )
 ```
 
-Sending messages to agents is really simple. Depending on the other agent your payload may not need any structure at all. `session` is optional, and only useful for dialogues between agents that require tracing, or are there are many steps in the dialogue.
+Sending messages to Agents is really simple. Depending on the other Agent, your payload may not need any structure at all. `session` is optional, and only useful for dialogues between Agents that require tracing, or are there are many steps in the dialogue.
 
 
 ## The Search agent
 
-The Search agent searches for Tarot agents and sends them a payload of `gender` and `date of birth` and expects their tarot to be returned.
+The Search Agent searches for the Tarot Agents and sends them a payload of `gender` and `date of birth` and expects their tarot to be returned.
 
-``` python
+```python copy
 
 import json, os, sys
 from flask import Flask, request
@@ -280,7 +281,7 @@ if __name__ == "__main__":
 
 ```
 
-The main difference in the search agent is that we define a `/search` endpoint. This is very interesting, with `fetch.ai(query)` we can find any agent in the marketplace. Then we can send a message to all of them asking for a tarot reading. The search is a combination of Elastic search and multi-layered llms, meaning natural language queries can find you accurate results.
+The main difference in the search Agent is that we define a `/search` [endpoint ↗️](/references/contracts/uagents-almanac/endpoints). This is very interesting, with `fetch.ai(query)` we can find any Agent in the [marketplace ↗️](/concepts/agent-services/agent-explorer). Then we can send a message to all of them asking for a tarot reading. The search is a combination of Elastic search and multi-layered LLMs, meaning natural language queries can find you accurate results.
 
 ```
 @app.route('/search', methods=['GET'])
@@ -296,32 +297,38 @@ def search():
 
 We run these agents with the following commands, they will need to be run in separate terminals.
 
-```python tarot_agent.py```
+Run the following commands in each terminal window:
+```
+python tarot_agent.py
+```
 
-```python tarot_search_agent.py```
+and
 
-Now they're running, let's get them registered. In a new terminal window:
+```
+python tarot_search_agent.py
+```
+
+Now, they're running. Let's get them registered. 
+In a new terminal window:
 
 ```
 curl --location '127.0.0.1:5000/register'
 curl --location '127.0.0.1:5002/register'
 ```
 
+Then, you can send another GET request to the `tarot_search_agent`, and it should then go and find you an Agent which will return a tarot reading.
 
-Then, you can send another GET request to the tarot_search_agent, and it should then go and find you an agent which will return a tarot reading.
-
-Let's open a terminal window and curl our tarot_search_agent's ip to start the search process:
+Let's open a terminal window and curl our `tarot_search_agent`'s IP to start the search process:
 
 ```
 curl --location '127.0.0.1:5002/search'
 ```
 
-### output
+### Expected output
 
-expected output from the tarot_search_agent:
+The expected output from the `tarot_search_agent` should be similar to the following:
 
-``` bash
-
+```bash
 Serving Flask app 'tarot_search'
  * Debug mode: on
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
