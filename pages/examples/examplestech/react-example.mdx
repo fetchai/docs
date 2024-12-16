@@ -9,7 +9,6 @@ This example shows how to build a React application integrated with a flask back
 
 Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-agents/web/react-web-with-flask-and-agents) to run this locally.
 
-
 ### Supporting Documents
 
     - [How to use on_query decorator ↗️](../../guides/agents/intermediate/handlers).
@@ -63,7 +62,7 @@ Outline of basic structure of the project:
     │       └── sentiment_agent.py  # Handles sentiment analysis
     │
     └── README.md  # Project documentation
-    
+
     ```
 
 ## Backend Setup
@@ -680,18 +679,18 @@ In this section we will set up Agents and as well as flask app which will respon
            height: 100px; /* Approx 1 inch */
            background-color: #007BFF; /* Blue background */
            }
-    
+
        .search-area form {
            display: flex;
            gap: 20px;
            }
-    
+
        .search-area input {
            padding: 8px;
            border-radius: 4px;
            border: 1px solid #ccc;
            }
-    
+
        .search-area button {
            background-color: #0056b3;
            color: white;
@@ -700,7 +699,7 @@ In this section we will set up Agents and as well as flask app which will respon
            padding: 8px 16px;
            cursor: pointer;
            }
-    
+
        .search-area button:hover {
            background-color: #004494;
            }
@@ -712,20 +711,20 @@ In this section we will set up Agents and as well as flask app which will respon
        .App {
            text-align: center;
            }
-    
+
        .search-container, .news-feed, .stock-info {
            margin: 20px;
            padding: 10px;
            }
-    
+
        input[type="text"] {
            margin-right: 10px;
            }
-    
+
        .news-feed div {
            margin: 5px;
            }
-    
+
        button {
            background-color: red;
            color: white;
@@ -733,11 +732,11 @@ In this section we will set up Agents and as well as flask app which will respon
            padding: 10px 20px;
            cursor: pointer;
            }
-    
+
        button:hover {
            opacity: 0.8;
            }
-    
+
        .news-feed {
            margin-top: 20px;
            padding: 10px;
@@ -746,17 +745,17 @@ In this section we will set up Agents and as well as flask app which will respon
            color: black;
            text-decoration: none;
            }
-    
+
        .news-feed a:hover {
            color: black; 
            text-decoration: underline;
            } 
-    
+
        .news-feed ul {
            list-style-type: none;
            padding: 0;
            }
-    
+
        .news-feed li {
            margin-bottom: 10px;
            padding: 5px;
@@ -765,7 +764,7 @@ In this section we will set up Agents and as well as flask app which will respon
            color: black; /* Black color for text */
            text-align: left;
            }
-    
+
        .sentiment-block {
            margin-top: 30px;
            padding: 10px;
@@ -775,17 +774,17 @@ In this section we will set up Agents and as well as flask app which will respon
            font-size: 20px;
            text-align: center;
            }
-    
+
        .sentiment-block.neutral {
            background-color: #fcf8e3;
            color: #8a6d3b; 
            }
-    
+
        .sentiment-block.negative {
            background-color: #f2dede; 
            color: #a94442; 
            }
-    
+
        .title-bar {
            background-color: #007BFF; 
            color: white;
@@ -802,14 +801,14 @@ In this section we will set up Agents and as well as flask app which will respon
        import SearchComponent from './components/SearchComponent';
        import NewsFeed from './components/NewsFeed';
        import './App.css';  // Import CSS for styling
-    
+
        // Define the main React functional component
        function App() {
          // State hooks to manage news data, sentiment, and type of sentiment
          const [news, setNews] = useState([]);
          const [sentiment, setSentiment] = useState('');
          const [sentimentType, setSentimentType] = useState('');
-    
+
          // Function to handle search operations
          const handleSearch = async (searchTerm) => {
            try {
@@ -818,7 +817,7 @@ In this section we will set up Agents and as well as flask app which will respon
              const newsData = await newsResponse.json();  // Convert response to JSON
              setNews(newsData);  // Update the news state
              console.log('Fetched news:', newsData);  // Log the fetched news data
-    
+
              // API request to fetch sentiment analysis for the search term
              const sentimentResponse = await fetch(`http://127.0.0.1:5000/api/sentiment/${searchTerm}`);
              const sentimentData = await sentimentResponse.text();  // Get response as text
@@ -831,7 +830,7 @@ In this section we will set up Agents and as well as flask app which will respon
              setSentimentType('');  // Reset sentiment type state on error
            }
          };
-    
+
          // Helper function to process the sentiment text and update state
          const processSentiment = (sentimentText) => {
            const parts = sentimentText.split(':');  // Split sentiment text by colon
@@ -839,7 +838,7 @@ In this section we will set up Agents and as well as flask app which will respon
            setSentiment(sentimentText);  // Update sentiment state
            setSentimentType(sentimentValue);  // Update sentiment type state
          };
-    
+
          // Render the application UI
          return (
            <div className="App">
@@ -849,7 +848,7 @@ In this section we will set up Agents and as well as flask app which will respon
            </div>
          );
        }
-    
+
        export default App;  // Export the App component for use in other parts of the application
    ```
 
@@ -863,13 +862,13 @@ In this section we will set up Agents and as well as flask app which will respon
     ```
     cd path/to/your/backend
     ```
-   
+
     - Create a virtual environment:
 
     ```
     python -m venv venv
     ```
-   
+
     - Activate the virtual environment:
 
     ```
