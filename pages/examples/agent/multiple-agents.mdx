@@ -1,0 +1,58 @@
+import { CodeGroup, DocsCode, GithubCodeSegment, CodeSegment } from "../../../components/code"
+
+# Multiple agents communication
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to create two different agents and make them communicate using the uAgents Python library.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/multiple-agents/agents.py) to run this locally.
+
+#### Supporting documentation
+
+- [Creating your first agent ↗️](/guides/agents/create-a-uagent)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+
+#### The agent
+
+<GithubCodeSegment digest="650f839f70eadf2b34c6dd966514576a">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/multiple-agents/agents.py"
+        lineStart={1}
+        lineEnd={19}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='650f839f70eadf2b34c6dd966514576a'>
+
+<DocsCode local={true}>
+	```py copy filename="agents.py"
+
+	from uagents import Agent, Bureau, Context
+	 
+	alice = Agent(name="alice")
+	bob = Agent(name="bob")
+	 
+	@alice.on_interval(period=2.0)
+	async def introduce_alice(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {alice.name}.")
+	 
+	@bob.on_interval(period=2.0)
+	async def introduce_bob(ctx: Context):
+	    ctx.logger.info(f"Hello, I'm agent {bob.name}.")
+	 
+	bureau = Bureau()
+	bureau.add(alice)
+	bureau.add(bob)
+	 
+	if __name__ == "__main__":
+	    bureau.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+

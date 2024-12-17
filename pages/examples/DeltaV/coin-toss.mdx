@@ -1,0 +1,102 @@
+import { CodeGroup, DocsCode, GithubCodeSegment, CodeSegment } from "../../../components/code"
+
+# Register a coin toss agent as a Function
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions.
+To enable this on [DeltaV ↗️](/concepts/ai-engine/deltav) you will need to create and register a Function. You will need to run this file on a device you are able to open a port on.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/coin-toss/agent.py) to run this locally.
+
+### Guide
+
+- [Register a coin toss agent as a Function ↗️](/guides/agentverse/agentverse-functions/registering-agent-coin-toss)
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+- [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+
+- [Agentverse Functions ↗️](/concepts/agent-services/services)
+
+- [Register an Agent Function on the Agentverse ↗️](/guides/agentverse/registering-agent-services)
+
+### The agent
+
+<GithubCodeSegment digest="ef3cf99234e4bf7fc2731735663bd261">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/coin-toss/agent.py"
+        lineStart={1}
+        lineEnd={50}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ef3cf99234e4bf7fc2731735663bd261'>
+
+<DocsCode local={true}>
+	```py copy filename="agent.py"
+
+	import random
+	from uagents import Agent, Context, Model, Field, Protocol
+	from uagents.setup import fund_agent_if_low
+	from ai_engine import UAgentResponse, UAgentResponseType
+	 
+	 
+	class CoinToss(Model):
+	    choice: str = Field(description="The choice. Must be heads or tails.")
+	 
+	# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+	SEED_PHRASE = "put_your_seed_phrase_here"
+	 
+	# Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
+	# Then, copy the agent's mailbox key and insert it here below inline
+	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
+	 
+	# Now your agent is ready to join the agentverse!
+	coin_toss_agent = Agent(
+	    name="coin_toss_agent",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	 
+	fund_agent_if_low(coin_toss_agent.wallet.address())
+	 
+	# Copy the address shown below
+	print(f"Your agent's address is: {coin_toss_agent.address}")
+	 
+	coin_toss_protocol = Protocol("CoinToss")
+	 
+	 
+	@coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
+	async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
+	    random_number = random.randint(0, 1)
+	    if random_number == 0:
+	        coin_tossed = "heads"
+	    else:
+	        coin_tossed = "tails"
+	    if coin_tossed == msg.choice:
+	        message = "You won!"
+	    else:
+	        message = "You lost!"
+	    await ctx.send(
+	        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+	)
+	 
+	coin_toss_agent.include(coin_toss_protocol, publish_manifest=True)
+	 
+	if __name__ == "__main__":
+	    coin_toss_agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+

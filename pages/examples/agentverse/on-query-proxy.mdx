@@ -1,0 +1,145 @@
+import { CodeGroup, DocsCode,GithubCodeSegment,CodeSegment } from "../../../components/code"
+
+# Query an agent using a proxy API
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions.
+This example shows how to query an agent using a proxy API.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/examples/intermediate/on-query-proxy) to run this locally.
+
+#### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+- [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+
+#### The agent
+
+<GithubCodeSegment digest="f568933e5827fd374a32761ca3ceff98">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on-query-proxy/agent.py"
+        lineStart={1}
+        lineEnd={32}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='f568933e5827fd374a32761ca3ceff98'>
+
+<DocsCode local={true}>
+	```py copy filename="agent.py"
+
+	from uagents import Agent, Context, Model
+	 
+	class TestRequest(Model):
+	    message: str
+	 
+	class Response(Model):
+	    text: str
+	 
+	agent = Agent(
+	    name="your_agent_name_here",
+	    seed="your_agent_seed_here",
+	    port=8001,
+	    endpoint="http://localhost:8001/submit",
+	)
+	 
+	@agent.on_event("startup")
+	async def startup(ctx: Context):
+	    ctx.logger.info(f"Starting up {agent.name}")
+	    ctx.logger.info(f"With address: {agent.address}")
+	    ctx.logger.info(f"And wallet address: {agent.wallet.address()}")
+	 
+	@agent.on_query(model=TestRequest, replies={Response})
+	async def query_handler(ctx: Context, sender: str, _query: TestRequest):
+	    ctx.logger.info("Query received")
+	    try:
+	        # do something here
+	        await ctx.send(sender, Response(text="success"))
+	    except Exception:
+	        await ctx.send(sender, Response(text="fail"))
+	 
+	if __name__ == "__main__":
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+The agent is created using the `Agent` class from `uagents` library. It is initialized with a `name`, `seed`, `port`, and `endpoint`.
+It defines an `on_event` handler for the "startup" event, where it logs information about the agent's initialization.
+It defines an `on_query` handler for handling queries of type `TestRequest`. Upon receiving a query, it processes it and sends back a `Response`.
+The agent is then set to run.
+
+#### Proxy
+
+<GithubCodeSegment digest="ec884aefe9e995eb6197816bc8a38a11">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on-query-proxy/proxy.py"
+        lineStart={1}
+        lineEnd={29}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='ec884aefe9e995eb6197816bc8a38a11'>
+
+<DocsCode local={true}>
+	```py copy filename="proxy.py"
+
+	import json
+	 
+	from fastapi import FastAPI
+	from pydantic import BaseModel
+	from uagents.query import query
+	 
+	AGENT_ADDRESS = "agent1qt6ehs6kqdgtrsduuzslqnrzwkrcn3z0cfvwsdj22s27kvatrxu8sy3vag0"
+	 
+	class TestRequest(BaseModel):
+	    message: str
+	 
+	async def agent_query(req):
+	    response = await query(destination=AGENT_ADDRESS, message=req, timeout=15.0)
+	    data = json.loads(response.decode_payload())
+	    return data["text"]
+	 
+	app = FastAPI()
+	 
+	@app.get("/")
+	def read_root():
+	    return "Hello from the Agent controller"
+	 
+	@app.post("/endpoint")
+	async def make_agent_call(req: TestRequest):
+	    try:
+	        res = await agent_query(req)
+	        return f"successful call - agent response: {res}"
+	    except Exception:
+	        return "unsuccessful agent call"
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+The proxy is implemented using `FastAPI`. It sets up two routes: `"/"` for a simple root message and `"/endpoint"` for receiving requests.
+When a `POST` request is made to `"/endpoint"` with a JSON payload containing a `TestRequest`, it triggers the `make_agent_call` function.
+Inside make_agent_call, it calls `agent_query` to communicate with the agent. The `agent` receives the query, processes it, and sends back a response.
+The proxy receives the response from the agent and sends back a success message along with the response text.
+
+#### Run the example
+
+In separate terminals:
+
+1. Run the FastAPI proxy: `uvicorn proxy:app`
+
+2. Run the agent: `python agent.py`
+
+3. Query the agent via the proxy: `curl -d '{"message": "test"}' -H "Content-Type: application/json" -X POST http://localhost:8000/endpoint`

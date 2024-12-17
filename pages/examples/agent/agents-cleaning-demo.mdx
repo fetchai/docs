@@ -1,0 +1,481 @@
+import { CodeGroup, DocsCode, GithubCodeSegment, CodeSegment } from "../../../components/code"
+
+# Cleaning service with Agents
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions.
+This example shows how to set up a cleaning service using the uAgents library tools.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/examples/intermediate/agents-cleaning-demo) to run this locally.
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+- [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+- [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+- [How to use agents to send tokens ↗️](/guides/agents/intermediate/send-tokens)
+
+## Pre-requisites
+
+- **Python:** Download and install from [Python official website ↗️](https://www.python.org/downloads/).
+- **Poetry:** Install by following the instructions on [Poetry's official website ↗️](https://python-poetry.org/docs/#installation).
+
+## Project Structure
+
+Outline of basic structure of the project:
+
+```
+cleaning-demo/
+.
+├── protocols/
+│   └── cleaning/
+│       ├── __init__.py
+│       └── models.py
+│ 
+└── agents/
+    ├── cleaner.py
+    └── user.py 
+```
+
+### The Protocols
+#### __init__.py
+
+This protocol acts as a bridge between cleaning service providers and users requesting cleaning services.
+
+The protocol defines the format for messages exchanged between the two parties. Users send `ServiceRequest` messages specifying details about their desired cleaning service, including location, time, duration, types of services needed, and their maximum budget. Providers respond with `ServiceResponse` messages indicating whether they can accept the request and, if so, their proposed price. Once a user confirms the booking with a `ServiceBooking` message containing all the agreed-upon details and price, the provider sends a `BookingResponse` message to confirm success or failure.
+
+The protocol ensures the provider's services are available to the user's location. It uses the `geopy` library to calculate the distance between the user and the provider. Additionally, it verifies if the requested cleaning services are offered by the provider and if the desired cleaning time falls within the provider's pre-defined availability schedule. Finally, it compares the user's budget with the provider's minimum hourly price multiplied by the cleaning duration to ensure affordability.
+
+Here is the full code:
+
+<GithubCodeSegment digest="1897aff927d7db468ca78d5deb3b1336">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/agents-cleaning-demo/protocols/cleaning/__init__.py"
+        lineStart={1}
+        lineEnd={119}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='1897aff927d7db468ca78d5deb3b1336'>
+
+<DocsCode local={true}>
+	```py copy filename="__init__.py"
+
+	from datetime import datetime, timedelta
+	from typing import List
+	
+	from geopy.distance import geodesic
+	from geopy.geocoders import Nominatim
+	from uagents import Context, Model, Protocol
+	
+	from .models import Availability, Provider, User
+	
+	PROTOCOL_NAME = "cleaning"
+	PROTOCOL_VERSION = "0.1.0"
+	
+	
+	class ServiceRequest(Model):
+	    user: str
+	    location: str
+	    time_start: datetime
+	    duration: timedelta
+	    services: List[int]
+	    max_price: float
+	
+	
+	class ServiceResponse(Model):
+	    accept: bool
+	    price: float
+	
+	
+	class ServiceBooking(Model):
+	    location: str
+	    time_start: datetime
+	    duration: timedelta
+	    services: List[int]
+	    price: float
+	
+	
+	class BookingResponse(Model):
+	    success: bool
+	
+	
+	cleaning_proto = Protocol(name=PROTOCOL_NAME, version=PROTOCOL_VERSION)
+	
+	
+	def in_service_region(
+	    location: str, availability: Availability, provider: Provider
+	) -> bool:
+	    geolocator = Nominatim(user_agent="micro_agents")
+	
+	    user_location = geolocator.geocode(location)
+	    cleaner_location = geolocator.geocode(provider.location)
+	
+	    if user_location is None:
+	        raise RuntimeError(f"user location {location} not found")
+	
+	    if cleaner_location is None:
+	        raise RuntimeError(f"provider location {provider.location} not found")
+	
+	    cleaner_coordinates = (cleaner_location.latitude, cleaner_location.longitude)
+	    user_coordinates = (user_location.latitude, user_location.longitude)
+	
+	    service_distance = geodesic(user_coordinates, cleaner_coordinates).miles
+	    in_range = service_distance <= availability.max_distance
+	
+	    return in_range
+	
+	
+	@cleaning_proto.on_message(model=ServiceRequest, replies=ServiceResponse)
+	async def handle_query_request(ctx: Context, sender: str, msg: ServiceRequest):
+	    provider = await Provider.filter(name=ctx.agent.name).first()
+	    availability = await Availability.get(provider=provider)
+	    services = [int(service.type) for service in await provider.services]
+	    markup = provider.markup
+	
+	    user, _ = await User.get_or_create(name=msg.user, address=sender)
+	    msg_duration_hours: float = msg.duration.total_seconds() / 3600
+	    ctx.logger.info(f"Received service request from user `{user.name}`")
+	
+	    if (
+	            set(msg.services) <= set(services)
+	            and in_service_region(msg.location, availability, provider)
+	            and availability.time_start <= msg.time_start
+	            and availability.time_end >= msg.time_start + msg.duration
+	            and availability.min_hourly_price * msg_duration_hours < msg.max_price
+	    ):
+	        accept = True
+	        price = markup * availability.min_hourly_price * msg_duration_hours
+	        ctx.logger.info(f"I am available! Proposing price: {price}.")
+	    else:
+	        accept = False
+	        price = 0
+	        ctx.logger.info("I am not available. Declining request.")
+	
+	    await ctx.send(sender, ServiceResponse(accept=accept, price=price))
+	
+	
+	@cleaning_proto.on_message(model=ServiceBooking, replies=BookingResponse)
+	async def handle_book_request(ctx: Context, sender: str, msg: ServiceBooking):
+	    provider = await Provider.filter(name=ctx.agent.name).first()
+	    availability = await Availability.get(provider=provider)
+	    services = [int(service.type) for service in await provider.services]
+	
+	    user = await User.get(address=sender)
+	    msg_duration_hours: float = msg.duration.total_seconds() / 3600
+	    ctx.logger.info(f"Received booking request from user `{user.name}`")
+	
+	    success = (
+	            set(msg.services) <= set(services)
+	            and availability.time_start <= msg.time_start
+	            and availability.time_end >= msg.time_start + msg.duration
+	            and msg.price <= availability.min_hourly_price * msg_duration_hours
+	    )
+	
+	    if success:
+	        availability.time_start = msg.time_start + msg.duration
+	        await availability.save()
+	        ctx.logger.info("Accepted task and updated availability.")
+	
+	    # send the response
+	    await ctx.send(sender, BookingResponse(success=success))
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+#### models.py
+
+We now need to define the data structure for the cleaning service application. We account for the following `Models`:
+
+* `ServiceTypes`: to represent different cleaning services (floor, window, laundry, etc.).
+* `Users`: for information like name, address, and creation time.
+* `Service`: for cleaning service type offered.
+* `Provider`: for details like name, location, creation time, and links to their availability and offered services.
+* `Availability`: to define the provider's service schedule, including maximum service distance, start and end times, and minimum hourly price.
+
+Here is the full code:
+
+<GithubCodeSegment digest="53b657bdc1b87b66944f22fd514499d8">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/agents-cleaning-demo/protocols/cleaning/models.py"
+        lineStart={1}
+        lineEnd={37}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='53b657bdc1b87b66944f22fd514499d8'>
+
+<DocsCode local={true}>
+	```py copy filename="models.py"
+
+	from enum import IntEnum
+	 
+	from tortoise import fields, models
+	 
+	class ServiceType(IntEnum):
+	    FLOOR = 1
+	    WINDOW = 2
+	    LAUNDRY = 3
+	    IRON = 4
+	    BATHROOM = 5
+	 
+	class User(models.Model):
+	    id = fields.IntField(pk=True)
+	    name = fields.CharField(max_length=64)
+	    address = fields.CharField(max_length=100)
+	    created_at = fields.DatetimeField(auto_now_add=True)
+	 
+	class Service(models.Model):
+	    id = fields.IntField(pk=True)
+	    type = fields.IntEnumField(ServiceType)
+	 
+	class Provider(models.Model):
+	    id = fields.IntField(pk=True)
+	    name = fields.CharField(max_length=64)
+	    location = fields.CharField(max_length=64)
+	    created_at = fields.DatetimeField(auto_now_add=True)
+	    availability = fields.ReverseRelation["Availability"]
+	    services = fields.ManyToManyField("models.Service")
+	    markup = fields.FloatField(default=1.1)
+	 
+	class Availability(models.Model):
+	    id = fields.IntField(pk=True)
+	    provider = fields.OneToOneField("models.Provider", related_name="availability")
+	    max_distance = fields.IntField(default=10)
+	    time_start = fields.DatetimeField()
+	    time_end = fields.DatetimeField()
+	    min_hourly_price = fields.FloatField(default=0.0)
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+### Agents
+#### The Cleaner Agent
+
+<GithubCodeSegment digest="8af672726abfddbf59bd32cc00b56cb0">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/agents-cleaning-demo/cleaner.py"
+        lineStart={1}
+        lineEnd={51}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='8af672726abfddbf59bd32cc00b56cb0'>
+
+<DocsCode local={true}>
+	```py copy filename="cleaner.py"
+
+	from datetime import datetime
+	 
+	from protocols.cleaning import cleaning_proto
+	from protocols.cleaning.models import Availability, Provider, Service, ServiceType
+	from pytz import utc
+	from tortoise import Tortoise
+	from uagents import Agent, Context
+	 
+	cleaner = Agent(
+	    name="cleaner",
+	    port=8001,
+	    seed="cleaner secret phrase",
+	    endpoint={
+	        "http://127.0.0.1:8001/submit": {},
+	    },
+	)
+	 
+	# build the cleaning service agent from the cleaning protocol
+	cleaner.include(cleaning_proto)
+	 
+	@cleaner.on_event("startup")
+	async def startup(_ctx: Context):
+	    await Tortoise.init(
+	        db_url="sqlite://db.sqlite3", modules={"models": ["protocols.cleaning.models"]}
+	    )
+	    await Tortoise.generate_schemas()
+	 
+	    provider = await Provider.create(name=cleaner.name, location="London Kings Cross")
+	 
+	    floor = await Service.create(type=ServiceType.FLOOR)
+	    window = await Service.create(type=ServiceType.WINDOW)
+	    laundry = await Service.create(type=ServiceType.LAUNDRY)
+	 
+	    await provider.services.add(floor)
+	    await provider.services.add(window)
+	    await provider.services.add(laundry)
+	 
+	    await Availability.create(
+	        provider=provider,
+	        time_start=utc.localize(datetime.fromisoformat("2022-01-31 00:00:00")),
+	        time_end=utc.localize(datetime.fromisoformat("2023-05-01 00:00:00")),
+	        max_distance=10,
+	        min_hourly_price=5,
+	    )
+	 
+	@cleaner.on_event("shutdown")
+	async def shutdown(_ctx: Context):
+	    await Tortoise.close_connections()
+	 
+	if __name__ == "__main__":
+	    cleaner.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+#### User
+
+<GithubCodeSegment digest="98cd9acf7cfbcffee5c7f802b5b0304d">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/agents-cleaning-demo/user.py"
+        lineStart={1}
+        lineEnd={74}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='98cd9acf7cfbcffee5c7f802b5b0304d'>
+
+<DocsCode local={true}>
+	```py copy filename="user.py"
+
+	from datetime import datetime, timedelta
+	 
+	from protocols.cleaning import (
+	    BookingResponse,
+	    ServiceBooking,
+	    ServiceRequest,
+	    ServiceResponse,
+	)
+	from protocols.cleaning.models import ServiceType
+	from pytz import utc
+	from uagents import Agent, Context
+	 
+	CLEANER_ADDRESS = (
+	    "test-agent://agent1qdfdx6952trs028fxyug7elgcktam9f896ays6u9art4uaf75hwy2j9m87w"
+	)
+	 
+	user = Agent(
+	    name="user",
+	    port=8000,
+	    seed="cleaning user recovery phrase",
+	    endpoint={
+	        "http://127.0.0.1:8000/submit": {},
+	    },
+	)
+	 
+	 
+	request = ServiceRequest(
+	    user=user.name,
+	    location="London Kings Cross",
+	    time_start=utc.localize(datetime.fromisoformat("2023-04-10 16:00:00")),
+	    duration=timedelta(hours=4),
+	    services=[ServiceType.WINDOW, ServiceType.LAUNDRY],
+	    max_price=60,
+	)
+	 
+	MARKDOWN = 0.8
+	 
+	@user.on_interval(period=3.0, messages=ServiceRequest)
+	async def interval(ctx: Context):
+	    ctx.storage.set("markdown", MARKDOWN)
+	    completed = ctx.storage.get("completed")
+	 
+	    if not completed:
+	        ctx.logger.info(f"Requesting cleaning service: {request}")
+	        await ctx.send(CLEANER_ADDRESS, request)
+	 
+	@user.on_message(ServiceResponse, replies=ServiceBooking)
+	async def handle_query_response(ctx: Context, sender: str, msg: ServiceResponse):
+	    markdown = ctx.storage.get("markdown")
+	    if msg.accept:
+	        ctx.logger.info("Cleaner is available, attempting to book now")
+	        booking = ServiceBooking(
+	            location=request.location,
+	            time_start=request.time_start,
+	            duration=request.duration,
+	            services=request.services,
+	            price=markdown * msg.price,
+	        )
+	        await ctx.send(sender, booking)
+	    else:
+	        ctx.logger.info("Cleaner is not available - nothing more to do")
+	        ctx.storage.set("completed", True)
+	 
+	@user.on_message(BookingResponse, replies=set())
+	async def handle_book_response(ctx: Context, _sender: str, msg: BookingResponse):
+	    if msg.success:
+	        ctx.logger.info("Booking was successful")
+	    else:
+	        ctx.logger.info("Booking was UNSUCCESSFUL")
+	 
+	    ctx.storage.set("completed", True)
+	 
+	if __name__ == "__main__":
+	    user.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+### Poetry Dependencies
+
+```pyproject.toml copy filename="pyproject.toml"
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+uagents = "^0.17.1"
+tortoise-orm = "^0.22.1"
+geopy = "^2.4.1"
+```
+
+#### How to execute the example
+
+- Navigate to the root folder of the example.
+- Install dependencies by running `poetry install`.
+- Run the cleaner Agent with `python cleaner.py`.
+- Run the user Agent with `python user.py`.
+
+### Expected Output
+
+- Cleaner Agent
+
+```
+INFO:     [cleaner]: Registration on Almanac API successful
+INFO:     [cleaner]: Registering on almanac contract...
+INFO:     [cleaner]: Registering on almanac contract...complete
+INFO:     [cleaner]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8001&address=agent1qdfdx6952trs028fxyug7elgcktam9f896ays6u9art4uaf75hwy2j9m87w
+INFO:     [cleaner]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     [cleaner]: Received service request from user `user`
+INFO:     [cleaner]: I am available! Proposing price: 22.0.
+INFO:     [cleaner]: Received booking request from user `user`
+INFO:     [cleaner]: Accepted task and updated availability.
+```
+
+- User Agent:
+
+```
+INFO:     [ user]: Registration on Almanac API successful
+INFO:     [ user]: Registering on almanac contract...
+INFO:     [ user]: Registering on almanac contract...complete
+INFO:     [ user]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qvrskj36y7urk2j9g4gu5hjgwvgr8v6jegm5druawmrpztmjjnep6ssn45p
+INFO:     [ user]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     [ user]: Requesting cleaning service: user='user' location='London Kings Cross' time_start=datetime.datetime(2023, 4, 10, 16, 0, tzinfo=<UTC>) duration=datetime.timedelta(seconds=14400) services=[<ServiceType.WINDOW: 2>, <ServiceType.LAUNDRY: 3>] max_price=60.0
+INFO:     [ user]: Cleaner is available, attempting to book now
+INFO:     [ user]: Booking was successful
+```
