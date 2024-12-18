@@ -4,18 +4,15 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 # Agent Mailboxes
 
 ## Introduction
+
 Agents can't always be online; internet loss will cut your agent off from the network, or perhaps your agent is
 behind a firewall meaning you cannot accept inbound requests. To get around online requirements we created
-the
-**Mailbox** feature on [Agentverse ↗️](https://agentverse.ai). A Mailbox is a
+the **Mailbox** feature on [Agentverse ↗️](https://agentverse.ai). A Mailbox is a
 middleman that acts as a mailbox for all communication to your agent. Messages are stored within the mailbox and your
 agents will collect them (calls for these in [uAgents library ↗️](https://github.com/fetchai/uAgents/blob/55fd0f1bd14d4d5fdaaa3dae82e4d6c6c5b9a3cd/python/src/uagents/mailbox.py#L65)) when they're online
 again.
 
-Let's get an agent using mailbox, and testing this logic. To begin we need our agents address, we use this to
-register the agent on the Mailbox.
-
-## Get your agents address
+Let's create a local Agent and connect it to the Agentverse via a Mailbox.
 
 ## Prerequisites
 
@@ -52,14 +49,14 @@ Make sure you have read the following resources before going on with this guide:
 	class Message(Model):
 	    message: str
 	
-	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
 	SEED_PHRASE = "put_your_seed_phrase_here"
 	
 	# Now your agent is ready to join the agentverse!
 	agent = Agent(
 	    name="alice",
 	    seed=SEED_PHRASE,
-	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+        port=8000,
+        mailbox=True
 	)
 	
 	# Copy the address shown below
@@ -73,89 +70,81 @@ Make sure you have read the following resources before going on with this guide:
 
 </CodeGroup>
 
-
-
-Importantly, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters to correctly run this example.
+Importantly, you need to provide the `SEED_PHRASE`, `name`, `seed` and `port` parameters to correctly run this example. You also need to set `mailbox=True` to correctly connect your Agent to the Agentverse through the Mailbox.
 
 You should get something similar within your terminal output:
 
         ```
-        Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cukd7gkegxcm5vx5pku7kf
-        INFO:     [alice]: Registration on Almanac API successful
-        INFO:     [alice]: Registering on almanac contract...
-        INFO:     [alice]: Registering on almanac contract...complete
-        INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
-        INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-        INFO:     [alice]: Connecting to mailbox server at agentverse.ai
-        INFO:     [alice]: Mailbox access token acquired
+        INFO:     [Alice]: Starting agent with address: agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+        INFO:     [Alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8002&address=agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+        INFO:     [Alice]: Starting server on http://0.0.0.0:8002 (Press CTRL+C to quit)
+        INFO:     [Alice]: Starting mailbox client for https://agentverse.ai
+        INFO:     [Alice]: Mailbox access token acquired
+        INFO:     [Alice]: Registration on Almanac API successful
+        INFO:     [Alice]: Registering on almanac contract...
+        INFO:     [Alice]: Registering on almanac contract...complete
+
         ```
-
-Now that you have correctly retrieved your agent's address, let's head over to the [Agentverse ↗️](https://agentverse.ai)!
-
+        
 ## Create a Mailbox in Agentverse
 
-Make sure that you are signed in to the [Agentverse ↗️](https://agentverse.ai) platform. We will now create a Mailbox for our local agent above. To do so, copy the [local agent address ↗️](/guides/agents/getting-started/getting-uagent-address#print-uagent-address) available within your terminal and head over to the **Agentverse: My Agents** tab. Once there, click on the **Local Agents** tab and click on **Connect Local Agent** button.
+Now that we defined our local Agent and have successfully run it, we can go on and connect it to the [Agentverse ↗️](https://agentverse.ai) via a Mailbox. To do so, make sure your Agent is running. Then, click on the [Local Agent Inspector ↗️](/guides/agents/intermediate/local-agent-inspector) URL provided in your terminal output. You will be redirected towards the Inspector UI and will be able to see multiple details about this local Agent. 
 
-![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1.png)
+Here, click the **Connect** button.
 
-You will need to paste the **address of the local agent** you wish to retrieve and wait for confirmation. _Note that it may take some time in order for your agent to be retrieved correctly_. Make sure your agent is running on your end otherwise the agent won't be retrievable!
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1a.png)
 
-![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2.png)
+You will be presented with 3 different choices: **Mailbox**, **Proxy** and **Custom**. Select **Mailbox**.
 
-Once the agent is correctly retrieved, you will have to give it a **name**. When you do so and confirm, you will see a **Mailbox API Key** showing up. Copy and paste it within your local agent code by filling up the `AGENT_MAILBOX_KEY` field inline.
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2a.png)
 
-![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3.png)
+You will then see some code details available for the Agent. You do not need to do anything, just click on **Finish**.
 
-## Updating your agent
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3a.png)
 
-Let's update `alice` agent; `alice` will now print to console any message it receives, provided the message is of type `Message`. Remember that you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`,  `name`, `seed`  and `mailbox` parameters to correctly run this code:
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_4a.png)
 
-<GithubCodeSegment digest="d5c56bbef4f96985c0ad5565cd24fe76">
-    <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/mailbox/mailbox_agent_updated.py"
-        lineStart={1}
-        lineEnd={22}
-        hosted={true}
-    />
-</GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='d5c56bbef4f96985c0ad5565cd24fe76'>
+You should now be able to see an additional line within your terminal output like shown below:
 
-<DocsCode local={true}>
-	```py copy filename="mailbox_agent_updated.py"
+        ```
+        INFO:     [Alice]: Starting agent with address: agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+        INFO:     [Alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8002&address=agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+        INFO:     [Alice]: Starting server on http://0.0.0.0:8002 (Press CTRL+C to quit)
+        INFO:     [Alice]: Starting mailbox client for https://agentverse.ai
+        INFO:     [Alice]: Mailbox access token acquired
+        INFO:     [Alice]: Registration on Almanac API successful
+        INFO:     [Alice]: Registering on almanac contract...
+        INFO:     [Alice]: Registering on almanac contract...complete
+        INFO:     [mailbox]: Successfully registered as mailbox agent in Agentverse
+        ```
 
-	from uagents import Agent, Context, Model
+You can view your recently connected local Agent by heading to the **Agentvere My Agents** tab and by clicking on **Local Agents**.
+You will see a box for the local Agent recently connected.
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_5a.png)
+
+Cool! You have correctly set up a mailbox for the Agent. You can additionally add some further details to the local Agent such as the `README.md` file. To do so, create a file in your local Agent folder and name it `README.md`. In it, add all the needed details and save it. Then, add the following bits to your local Agent code:
+
+	```py copy
+
+    agent = Agent(
+        name="Alice",
+        seed=SEED_PHRASE,
+        port=8002,
+        mailbox=True,
+        readme_path="README.md",
+        publish_agent_details=True
+    )
 	
-	class Message(Model):
-	    message: str
-	
-	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-	SEED_PHRASE = "put_your_seed_phrase_here"
-	
-	# Now your agent is ready to join the agentverse!
-	agent = Agent(
-	    name="alice",
-	    seed=SEED_PHRASE,
-	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
-	)
-	
-	print(f"Your agent's address is: {agent.address}")
-	
-	@agent.on_message(model=Message, replies={Message})
-	async def handle_message(ctx: Context, sender: str, msg: Message):
-	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-	
-	
+    ```
 
-```
-</DocsCode>
+Then, run the Agent once again and head over to the Inspector UI and connect the Agent again through the Mailbox as we previously showed. Once you do so, you can the head over to the **Local Agents tab** under Agentverse My Agents page and click on the local Agent box. You should be able to see the `README.md` file opening up with the content you provided locally:
 
-</CodeGroup>
-
-
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_6a.png)
 
 ## Creating a second agent
 
-Let's create and run a second agent to message Alice every 3 seconds. You need to provide the `ALICE_ADDRESS`, `name` and `seed` parameters to correctly run this code:
+Let's create and run a second Agent to message Alice every 3 seconds. You need to provide the `ALICE_ADDRESS`, `name` and `seed` parameters to correctly run this code:
 
 <GithubCodeSegment digest="03eb3122058ee19a17748a48cae5dc13">
     <CodeSegment
@@ -196,8 +185,6 @@ Let's create and run a second agent to message Alice every 3 seconds. You need t
 
 </CodeGroup>
 
-
-
 ## Testing
 
 With both `alice` and `agent_2` running, stop `alice` and let `agent_2` run for a further 20 seconds, or so.
@@ -206,29 +193,30 @@ The output should be similar to the following, depending on the terminal window:
 
 - Alice: 
 
-    ```
-    Your agent's address is: agent1qtpr2xgmml964v44sy78gxhsrvakcgj567tthxeyz5fj844hcft5ww2rwkn
-    INFO:     [Alice]: Registration on Almanac API successful
-    INFO:     [alice]: Registering on almanac contract...
-    INFO:     [alice]: Registering on almanac contract...complete
-    INFO:     [Alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qtpr2xgmml964v44sy78gxhsrvakcgj567tthxeyz5fj844hcft5ww2rwkn
-    INFO:     [Alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    INFO:     [Alice]: Connecting to mailbox server at agentverse.ai
-    INFO:     [Alice]: Mailbox access token acquired
-    INFO:     [Alice]: Received message from agent1qvfnlashfjq67fsczqfs82mmnxu4ffu3xftsc75w62mfskhdnavtq0cknv9: hello 2024-11-06
-    INFO:     [Alice]: Received message from agent1qvfnlashfjq67fsczqfs82mmnxu4ffu3xftsc75w62mfskhdnavtq0cknv9: hello 2024-11-06
-    INFO:     [Alice]: Received message from agent1qvfnlashfjq67fsczqfs82mmnxu4ffu3xftsc75w62mfskhdnavtq0cknv9: hello 2024-11-06
-    ```
+  ```
+  Your agent's address is: agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+  INFO:     [Alice]: Starting agent with address: agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+  INFO:     [Alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8002&address=agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+  INFO:     [Alice]: Starting server on http://0.0.0.0:8002 (Press CTRL+C to quit)
+  INFO:     [Alice]: Starting mailbox client for https://agentverse.ai
+  INFO:     [Alice]: Registration on Almanac API successful
+  INFO:     [Alice]: Registering on almanac contract...
+  INFO:     [Alice]: Mailbox access token acquired
+  INFO:     [Alice]: Received message from agent1qvzc3svtjv6dt9pql8ec7sfeuwfjmdg6ptafs9zc55ppvdwl5fe82j5m70v: hello 2024-12-18
+  INFO:     [Alice]: Sending message to bob
+  INFO:     [Alice]: Received message from agent1qvzc3svtjv6dt9pql8ec7sfeuwfjmdg6ptafs9zc55ppvdwl5fe82j5m70v: hello 2024-12-18
+  INFO:     [Alice]: Sending message to bob
+  INFO:     [Alice]: Received message from agent1qvzc3svtjv6dt9pql8ec7sfeuwfjmdg6ptafs9zc55ppvdwl5fe82j5m70v: hello 2024-12-18
+  INFO:     [Alice]: Sending message to bob
+  ```
 
 - Agent 2: 
 
-    ```
-    INFO:     [agent_2]: Registration on Almanac API successful
-    INFO:     [agent_2]: Registering on almanac contract...
-    INFO:     [agent_2]: Registering on almanac contract...complete
-    INFO:     [agent_2]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8001&address=agent1qvfnlashfjq67fsczqfs82mmnxu4ffu3xftsc75w62mfskhdnavtq0cknv9    
-    INFO:     [agent_2]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
-    ```
+  ```
+  2024-12-18 16:16:38	Info	System	Interval 0 period set to 5
+  2024-12-18 16:16:38	Debug	System	Envelope sent to agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+  2024-12-18 16:16:40	Debug	System	Processing envelope from agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx...
+  ```
 
  **You can now restart your agent!**
 

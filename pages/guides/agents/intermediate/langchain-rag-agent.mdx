@@ -243,7 +243,7 @@ Let's start by creating the file within the `agents` directory, under `src` dire
     </DocsCode>
     </CodeGroup>
 
-The Agent is defined as a [local agent with a Mailbox ↗️](https://fetch.ai/docs/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) and it can answer questions by fetching and summarizing information from a given website URL.
+The Agent is defined as a [local agent with a Mailbox ↗️](/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox) and it can answer questions by fetching and summarizing information from a given website URL.
 
 The script for this Agent looks as follows:
 
@@ -284,13 +284,13 @@ The script for this Agent looks as follows:
 	 
 	 
 	LANGCHAIN_RAG_SEED = "YOUR_LANGCHAIN_RAG_SEED"
-	AGENT_MAILBOX_KEY = "YOUR_MAILBOX_KEY"
 	 
 	agent = Agent(
 	    name="langchain_rag_agent",
 	    seed=LANGCHAIN_RAG_SEED,
-	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	    mailbox=True,
 	)
+	
 	fund_agent_if_low(agent.wallet.address())
 	 
 	docs_bot_protocol = Protocol("DocsBot")
@@ -407,7 +407,7 @@ The script for this Agent looks as follows:
 
     The Agent fetches and processes information from specified URLs to answer users' questions. 
 
-    Let's explore the script above in more detail. We start by importing multiple modules, including tools for making HTTP requests, parsing HTML, and handling Natural Language Processing (NLP). The Agent uses **OpenAI's GPT-4o-mini model** to generate answers based on the retrieved documents. We then create an Agent called `langchain_rag_agent()` with a unique `seed` and `mailbox` address. Check out the [Mailbox ↗️](/guides/agents/intermediate/mailbox) guide for additional information on how to set up Mailboxes for your Agents. **Make sure to have enough funds in the Agent's wallet for it to correctly register in the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview). You can use the `fund_agent_if_low` function on the testnet to add funds to your Agent's wallet if needed.
+    Let's explore the script above in more detail. We start by importing multiple modules, including tools for making HTTP requests, parsing HTML, and handling Natural Language Processing (NLP). The Agent uses **OpenAI's GPT-4o-mini model** to generate answers based on the retrieved documents. We then create an Agent called `langchain_rag_agent()` with a unique `seed`. Check out the [Mailbox ↗️](/guides/agents/intermediate/mailbox) guide for additional information on how to set up Mailboxes for your Agents. **Make sure to have enough funds in the Agent's wallet for it to correctly register in the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview)**. You can use the `fund_agent_if_low` function on the testnet to add funds to your Agent's wallet if needed.
 
     Next, we define the `DocsBot` [protocol ↗️](/guides/agents/intermediate/protocols) using the `Protocol` class of the `uagents` library to handle message interactions. This protocol uses a predefined prompt template to structure the questions and context for the language model.
 
@@ -594,7 +594,7 @@ It will look as follows:
 
 Cool! All scripts are now set up! You will need to [connect the local Agent to the Agentverse using a Mailbox ↗️](/guides/agents/intermediate/options-for-running-local-agents#run-a-local-agent-using-a-mailbox). The Mailbox enables your Agents to be retrievable for communication and interaction with any other registered Agent on the Almanac contract and Fetch Network. In this example, the `langchain_rag_agent` will be connected to the Agentverse using a [Mailbox ↗️](/guides/agents/intermediate/mailbox). The `langchain_rag_user` Agent is used as a testing Agent for the RAG Agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
 
-By creating an [Agent Function ↗️](https://fetch.ai/docs/guides/agents/intermediate/agent-functions) and [registering it ↗️](https://fetch.ai/docs/guides/agentverse/agentverse-functions/registering-agent-services) via the Agentverse, you will make it retrievable to the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) for interaction with users via natural language queries made on [DeltaV ↗️](/concepts/ai-engine/deltav).
+By creating an [Agent Function ↗️](/guides/agents/intermediate/agent-functions) and [registering it ↗️](/guides/agentverse/agentverse-functions/registering-agent-services) via the Agentverse, you will make it retrievable to the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) for interaction with users via natural language queries made on [DeltaV ↗️](/concepts/ai-engine/deltav).
 
 The `langchain_rag_user` Agent is used as a testing Agent for the RAG Agent being registered on the Agentverse and made subsequently available on DeltaV for queries.
 
