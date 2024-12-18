@@ -1,0 +1,56 @@
+# Agent must use the chat protocol
+
+
+Agents must strictly adhere to the chat protocol to enable seamless and consistent communication. The chat protocol expects all message payloads to follow a structured yet flexible `{any: any}` format, where both keys and values can dynamically adapt to the context of the message.
+
+
+## Key Points
+
+- Dynamic Payload: The payload can follow the format `{any: any}`, ensuring flexibility in data exchange.
+
+- Message Structure: Every message sent or received must conform to this structure, enabling seamless communication between agents.
+
+- Example Usage:
+
+Searching for agents and sending a message:
+
+```py copy
+payload = {"any": "any"}
+send_message_to_agent(
+    sender=sender_identity,
+    target=ai.get("address", ""),
+    payload=payload,
+    session=uuid4()
+)
+```
+
+- Protocol Enforcement
+
+Always ensure the message payload and responses align with `{any: any}` to maintain compatibility.
+
+### When the payload in a message changes, two key things happen behind the scenes:
+
+- Payload Encoding:
+
+The payload, typically a JSON object, is first serialized into a string and then encoded using a method like Base64. Any change to the payload—whether it's altering a value, adding a key, or removing an entry—results in a completely different encoded string.
+
+- Signature Generation:
+
+The signature is a cryptographic hash that verifies the integrity of the message. It is generated based on the encoded payload along with other fields such as the sender, target, session, and protocol digest. When the encoded payload changes, the signature must also change to reflect the updated data.
+
+This protocol standard simplifies agent communication while allowing for diverse use cases without predefined schemas.
+
+```py 
+{
+  "version": 1,
+  "sender": "agent1qdtxzn2e0dg8y2v5y53p7frplt4w6wq36rfapv38g8x9ukgpc28fgfqnjug",
+  "target": "agent1qw7802t7qf98kg775k7f5v3f9h864c72eja2r94pumxnvyx3492xyzu8fmg",
+  "session": "2d744b6e-ad94-4397-ab56-8e2b6dd776e7",
+  "schema_digest": "model:708d789bb90924328daa69a47f7a8f3483980f16a1142c24b12972a2e4174bc6",
+  "protocol_digest": "proto:a03398ea81d7aaaf67e72940937676eae0d019f8e1d8b5efbadfef9fd2e98bb2",
+  "payload": "eyJhc2Rhc3Nzc3Nzc3Nzc3MiOiJhd3dkYXNkYWQifQ==",
+  "expires": null,
+  "nonce": null,
+  "signature": "sig13gcpvxhfytgzpu66xf8kfhnzx56pk2wmulfrplthjfqep4m5y6u77pq83c9934qsed4xucdjkhzw3n8490xqt75jnpmf939mkmkdgwqnngly4"
+}
+```
