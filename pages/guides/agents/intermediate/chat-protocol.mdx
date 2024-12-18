@@ -1,44 +1,43 @@
-# Agent must use the chat protocol
+# Agent Chat Protocol
 
-
-Agents must strictly adhere to the chat protocol to enable seamless and consistent communication. The chat protocol expects all message payloads to follow a structured yet flexible `{any: any}` format, where both keys and values can dynamically adapt to the context of the message.
-
+**Agents must strictly adhere to the chat protocol to enable seamless and consistent communication**. The chat protocol expects all message payloads to follow a structured yet flexible `{any: any}` format, where both keys and values can dynamically adapt to the context of the message.
 
 ## Key Points
 
-- Dynamic Payload: The payload can follow the format `{any: any}`, ensuring flexibility in data exchange.
+- **Dynamic Payload**: The payload can follow the format `{any: any}`, ensuring flexibility in data exchange.
 
-- Message Structure: Every message sent or received must conform to this structure, enabling seamless communication between agents.
+- **Message Structure**: Every message sent or received must conform to this structure, enabling seamless communication between Agents.
 
-- Example Usage:
+- **Example Usage**:
 
-Searching for agents and sending a message:
+    Searching for Agents and sending a message:
+    
+    ```py copy
+    payload = {"any": "any"}
+  
+    send_message_to_agent(
+        sender=sender_identity,
+        target=ai.get("address", ""),
+        payload=payload,
+        session=uuid4()
+    )
+    ```
 
-```py copy
-payload = {"any": "any"}
-send_message_to_agent(
-    sender=sender_identity,
-    target=ai.get("address", ""),
-    payload=payload,
-    session=uuid4()
-)
-```
+- **Protocol Enforcement**:
 
-- Protocol Enforcement
+    Always ensure the message payload and responses align with `{any: any}` to maintain compatibility.
 
-Always ensure the message payload and responses align with `{any: any}` to maintain compatibility.
+### When the payload in a message changes, two key things happen behind the scene
 
-### When the payload in a message changes, two key things happen behind the scenes:
+- **Payload Encoding**:
 
-- Payload Encoding:
+    The payload, typically a JSON object, is first serialized into a string and then encoded using a method like Base64. Any change to the payload—whether it's altering a value, adding a key, or removing an entry—results in a completely different encoded string.
 
-The payload, typically a JSON object, is first serialized into a string and then encoded using a method like Base64. Any change to the payload—whether it's altering a value, adding a key, or removing an entry—results in a completely different encoded string.
+- **Signature Generation**:
 
-- Signature Generation:
+    The signature is a cryptographic hash that verifies the integrity of the message. It is generated based on the encoded payload along with other fields such as the sender, target, session, and protocol digest. When the encoded payload changes, the signature must also change to reflect the updated data.
 
-The signature is a cryptographic hash that verifies the integrity of the message. It is generated based on the encoded payload along with other fields such as the sender, target, session, and protocol digest. When the encoded payload changes, the signature must also change to reflect the updated data.
-
-This protocol standard simplifies agent communication while allowing for diverse use cases without predefined schemas.
+This protocol standard simplifies Agents communication while allowing for diverse use cases without predefined schemas.
 
 ```py 
 {
