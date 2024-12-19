@@ -4,35 +4,7 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 
 ## Introduction
 
-The **Agentverse** assists you in setting up mailboxes for local and Agentverse agents, allowing them to have a two-way communication with each other without the need to be constantly online and without requiring your constant presence to operate.
-
-To create a Mailbox, first of all, set up your local Agent. Then, run it and click on the [local Agent Inspector](/guides/agents/intermediate/local-agent-inspector) URL provided within your terminal output. You will be redirected towards the Inspector UI. Here, you will be able to see multiple details about your local Agent. To connect the local Agent with a Mailbox, click the **Connect** button.
-
-![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1a.png)
-
-Then, select **Mailbox** and move on:
-
-![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2a.png)
-
-At this point, you do not need to do anything. Just click on **Finish**:
-
-![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3a.png)
-
-Great! You successfully connected the local Agent via a Mailbox to the Agentverse!
-
-You can then restart your local agent. You will see a similar terminal output on your end:
-
-        ```
-        INFO:     [Alice]: Starting agent with address: agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
-        INFO:     [Alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8002&address=agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
-        INFO:     [Alice]: Starting server on http://0.0.0.0:8002 (Press CTRL+C to quit)
-        INFO:     [Alice]: Starting mailbox client for https://agentverse.ai
-        INFO:     [Alice]: Mailbox access token acquired
-        INFO:     [Alice]: Registration on Almanac API successful
-        INFO:     [Alice]: Registering on almanac contract...
-        INFO:     [Alice]: Registering on almanac contract...complete
-        INFO:     [mailbox]: Successfully registered as mailbox agent in Agentverse
-        ```
+The **Agentverse** assists you in setting up mailboxes for [local ↗️](/guides/agents/intermediate/agent-types#local-agents) and [Hosted Agents ↗️](/guides/agents/intermediate/agent-types#hosted-agents), allowing them to have a two-way communication with each other without the need to be constantly online and without requiring your constant presence to operate.
 
 ## Prerequisites
 
@@ -48,7 +20,7 @@ Make sure you have read the following resources before going on with this guide:
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Agent Mailboxes ↗️](/guides/agents/intermediate/mailbox)
 
-### Local agent setup
+### Local Agent setup
 
 Let's now start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
 
@@ -98,12 +70,41 @@ Let's now start by creating a local agent named `alice` with a `handle_message()
 </CodeGroup>
 
 
+To create a Mailbox for your local Agent, you first need to run it and click on the [local Agent Inspector ↗️](/guides/agents/intermediate/local-agent-inspector) URL provided within the terminal output. You will be redirected towards the Inspector UI. Here, you will be able to see multiple details about your local Agent. 
 
-You can then restart your Agent; now your agent doesn't need to run all the time as their messages will be waiting for them for when they come back online.
+To connect the local Agent with a Mailbox, click the **Connect** button.
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1a.png)
+
+Then, select **Mailbox** and move on:
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2a.png)
+
+At this point, you do not need to do anything. Just click on **Finish**:
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3a.png)
+
+Great! You successfully connected the local Agent via a Mailbox to the Agentverse!
+
+You can then restart your local Agent. You will see a similar terminal output on your end:
+
+        ```
+        INFO:     [Alice]: Starting agent with address: agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+        INFO:     [Alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8002&address=agent1qw8jn3nfl2fyyhe7v4x8pfmsge4hs9zqrqw9eq7h7hluzmd0da8z7j0uacx
+        INFO:     [Alice]: Starting server on http://0.0.0.0:8002 (Press CTRL+C to quit)
+        INFO:     [Alice]: Starting mailbox client for https://agentverse.ai
+        INFO:     [Alice]: Mailbox access token acquired
+        INFO:     [Alice]: Registration on Almanac API successful
+        INFO:     [Alice]: Registering on almanac contract...
+        INFO:     [Alice]: Registering on almanac contract...complete
+        INFO:     [mailbox]: Successfully registered as mailbox agent in Agentverse
+        ```
+
+You can then restart your Agent; now your Agent doesn't need to run all the time as their messages will be waiting for them for when they come back online.
 
 ### Agentverse Agent setup
 
-Now create an Agentverse agent `bob` by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, select a blank script and add the following code into it:
+Now create an Agentverse Hosted Agent, `bob`, by selecting **+ New Agent** in the **My Agents** tab in the [Agentverse ↗️](https://agentverse.ai/). Then, select a blank script and add the following code into it:
 
 <GithubCodeSegment digest="67e279e499e6f8439af7445668f0c418">
     <CodeSegment
