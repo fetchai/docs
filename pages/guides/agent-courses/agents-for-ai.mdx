@@ -147,12 +147,11 @@ We can do this by running:
 	
 	
 	SEED_PHRASE = ""
-	AGENT_MAILBOX_KEY = ""
 	
 	sentimentagent = Agent(
 	    name="SentimentAgent",  # or any name
 	    seed=SEED_PHRASE,
-	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	    mailbox=True,
 	)
 	
 	print(sentimentAgent.address)
@@ -190,7 +189,7 @@ We can do this by running:
 
 
     <Callout type="warning" emoji="⚠️">
-      Remember that you need to provide the `SEED_PHRASE`, `AGENT_MAILBOX_KEY`, `name`, `seed` and `mailbox` parameters to correctly run this example.
+      Remember that you need to provide the `SEED_PHRASE`, `name`, `seed` and `mailbox` parameters to correctly run this example.
     </Callout>
 
 Okay, we've got the whole code block above for our first agent. Have a look at list of available packages on the Agentverse [here ↗️](/guides/agentverse/allowed-imports) to get started with Agents development on the Agentverse.
@@ -239,18 +238,16 @@ There are a lot of really cool, neat things you need to know from code above. Le
 
     - `SEED_PHRASE` is our agents unique seed.
 
-    - `AGENT_MAILBOX_KEY` mailbox key is our ID of our mailbox hosted on Agentverse.
-
     - `OPENAI_API_KEY` is our API key to OpenAI's APIs.
 
 We can now initialize the Agent and define the [Protocol ↗️](/references/uagents/uagents-protocols/agent-protocols). To read more about **Agent objects**, please check out [the reference docs ↗️](/references/uagents/uagents-api/agent#agent-objects).
 
-Then, we have the **on_message()** [handler ↗️](/guides/agents/intermediate/handlers):
+Then, we have the `on_message()` [handler ↗️](/guides/agents/intermediate/handlers):
 
 <GithubCodeSegment digest="4062beca9a7cafff6002e8e8ff9c7a28">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/agents-for-ai/sentiment_agent.py"
-        lineStart={35}
+        lineStart={34}
         lineEnd={40}
         hosted={true}
     />
@@ -285,7 +282,7 @@ We can finally run the Agent at the bottom of the script:
 <GithubCodeSegment digest="669ae61db8d1e79422c0db593b959609">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/agents-for-ai/sentiment_agent.py"
-        lineStart={43}
+        lineStart={42}
         lineEnd={44}
         hosted={true}
     />
@@ -414,7 +411,7 @@ The next agent in the chain is the **Summary agent**. Let's name the script `web
     ```py copy filename="ubuntu"
     touch web_sentiment_agent.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
@@ -449,13 +446,12 @@ Let's take a look.
 	
 	
 	SEED_PHRASE = "<your_seed_phrase>"
-	AGENT_MAILBOX_KEY = "<your_mailbox_key>"
 	OPENAI_API_KEY = "<your_open_ai_key>"
 	
 	summaryAgent = Agent(
 	    name="SummaryAgent",
 	    seed=SEED_PHRASE,
-	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	    mailbox=True,
 	)
 	
 	summary_protocol = Protocol("Text Summariser")
@@ -511,7 +507,7 @@ Let's take a look.
 
 
     <Callout type="warning" emoji="⚠️">
-      Remember that you need to provide the `SEED_PHRASE`, `AGENT_MAILBOX_KEY`, `OPENAI_API_KEY`, `name`, `seed` and `mailbox` parameters to correctly run this example.
+      Remember that you need to provide the `SEED_PHRASE`, `OPENAI_API_KEY`, `name`, `seed` and `mailbox` parameters to correctly run this example.
     </Callout>
 
 This Agent is simple again, hopefully you're seeing a pattern here. These Agents while independent of each other can
@@ -523,7 +519,7 @@ compliment one another.
 
 Aside from the different logic, the primary difference in `web_summary_agent.py` is that this agent does not rely on a separate function, and wraps the whole logic in the message handler.
 
-Let's run this one too. Again, follow the steps for the previous Agent and go and register a Mailbox and update this agent with the new Mailbox. Each agent must have a unique [Mailbox ↗️](/guides/agents/intermediate/mailbox).
+Let's run this one too. Again, follow the steps for the previous Agent and go and connect it via a Mailbox Each agent must have a unique [Mailbox ↗️](/guides/agents/intermediate/mailbox)!
 
 ## One more Agent Function 🎵
 
