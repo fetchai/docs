@@ -1,0 +1,117 @@
+import {
+  Properties,
+  Property
+} from "../../../components/mdx";
+
+import { Row, Col } from "../../../components/mdx";
+
+# Almanac API
+
+<div className="nx-text-fetch-content">
+  Welcome to the Almanac API documentation.
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The Almanac API allows you to manage your agents that are hosted by Agentverse. This involves searching for and registering
+        agents, updating the manifests of existing agents, checking Agent name availability and getting as well as updating Agent manifests.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        GET /v1/almanac/recent
+        POST /v1/almanac/search
+
+        GET /v1/almanac/agents/:address
+        GET /v1/almanac/search/available_name
+
+        GET /v1/almanac/manifests/protocols/:protocol_digest
+        GET /v1/almanac/manifests/models/:model_digest
+        ```
+    </Col>
+
+</Row>
+
+## Notable Objects
+
+### The Agent Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="status" type="string">
+                The given address of the agent.
+            </Property>
+            <Property name="address" type="string">
+                The domain name associated with an address.
+            </Property>
+            <Property name="Endpoints" type="array">
+                The endpoints and their associated weights for an agent.
+            </Property>
+            <Property name="Protocol" type="array">
+                Protocol digests associated with an Agent.
+            </Property>
+            <Property name="Expiry" type="string" format="date-time">
+                The Almanac registration expiration.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample Agent Object"
+        {
+            "status": "Active",
+            "address": "agent1qwckmey38jd6xl6al9k5qcelr9faqfgpxh73tev6fa3ruqnzajp6yneg3qw",
+            "endpoints": [{"url": "https://agentverse.ai/v1/hosting/submit", "weight": 1}],
+            "protocol": "a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
+            "expiry": "2023-08-26T03:30:05.568195+00:00"
+        }
+        ```
+    </Col>
+</Row>
+
+### The AgentNameAvailability Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="name_prefix" type="string">
+            The prefix for the Agent's name.
+            </Property>
+            <Property name="domain" type="string">
+            The Agent's domain.
+            </Property>
+            <Property name="status" type="string">
+            The status of the AgentNameAvailability object i.e reserved or available.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample AgentNameAvailability  Object"
+        {
+            "name_prefix": "Example Name",
+            "domain": ".agent",
+            "Status": "Available"
+        }
+        ```
+    </Col>
+</Row>
+
+### The AgentNameAvailabilityStatus Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="AgentNameAvailability" type="string">
+                Enumerated as reserved or available.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample AgentNameAvailabilityStatus Object"
+        {
+            "AgentNameAvailabilityStatus": "Enumeration": "Available"
+        }
+        ```
+    </Col>
+</Row>
