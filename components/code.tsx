@@ -77,10 +77,12 @@ export const OsDropDown: React.FC<OsDropDownProps> = ({
   const handleOptionSelect = (option: string) => {
     onOptionSelect(option);
     setIsOpen(false);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("storedOsOption", JSON.stringify(option));
+    }
   };
 
   const selectedOptionData = options.find((opt) => opt.name === selectedOption);
-
   return (
     <div className="os-dropdown">
       <div
@@ -158,9 +160,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
         <span className="dropdown-text dark:nx-text-white-80">
           {selectedOption || placeholder}
         </span>
-        <DropDownArrow />
+        {options?.length > 1 && <DropDownArrow />}
       </div>
-      {isDropdownOpen && (
+      {options?.length > 1 && isDropdownOpen && (
         <motion.div
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
@@ -272,6 +274,18 @@ const agentType = [
   { name: "Agentverse", label: "hosted" },
 ];
 
+const safeParse = (key: string) => {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const storedData = localStorage.getItem(key);
+    return storedData ? JSON.parse(storedData) : null;
+  } catch (error) {
+    console.error(`Error parsing value for key "${key}":`, error);
+    return null;
+  }
+};
+
 export const CustomPre: React.FC<CodeBoxProps> = ({
   hasCopyCode,
   isLocalHostedFile,
@@ -296,8 +310,13 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
     child?.length === 1 && !child[0]?.props?.local
       ? agentType[1].name
       : agentType[0].name;
+
   const [selectedType, setSelectedType] = useState(localHostdType);
-  const [selectedOS, setSelectedOS] = useState("windows");
+  const [selectedOS, setSelectedOS] = useState<string>("windows");
+  useEffect(() => {
+    const osFromStorage = safeParse("storedOsOption");
+    setSelectedOS(osFromStorage || "windows");
+  }, []);
 
   const filteredAgentType =
     child?.length === 2
