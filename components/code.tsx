@@ -4,6 +4,7 @@ import { CopyIcon, DropDownArrow } from "src/icons/shared-icons";
 import { Windows, Mac, Ubuntu, OSProps } from "src/icons/os-icons";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { useOSContext } from "theme/fetch-ai-docs/contexts/os-provider";
 
 interface CodeGroupProps {
   children: ReactNode;
@@ -14,6 +15,8 @@ interface CodeGroupProps {
   codeBlocks: ReactNode;
   dynamic?: boolean;
   digest?: string;
+  selectedOs: string;
+  handleOSChange: (newOs: string) => void;
 }
 
 interface CodeBlockProps {
@@ -35,6 +38,8 @@ type CodeBoxProps = {
   isLocalHostedFile?: boolean;
   osBlocks: ReactNode;
   codeBlocks: ReactNode;
+  selectedOs: string;
+  handleOSChange: (newOs: string) => void;
 };
 
 type CodeBlock = {
@@ -77,9 +82,6 @@ export const OsDropDown: React.FC<OsDropDownProps> = ({
   const handleOptionSelect = (option: string) => {
     onOptionSelect(option);
     setIsOpen(false);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("storedOsOption", JSON.stringify(option));
-    }
   };
 
   const selectedOptionData = options.find((opt) => opt.name === selectedOption);
@@ -274,24 +276,14 @@ const agentType = [
   { name: "Agentverse", label: "hosted" },
 ];
 
-const safeParse = (key: string) => {
-  if (typeof window === "undefined") return null;
-
-  try {
-    const storedData = localStorage.getItem(key);
-    return storedData ? JSON.parse(storedData) : null;
-  } catch (error) {
-    console.error(`Error parsing value for key "${key}":`, error);
-    return null;
-  }
-};
-
 export const CustomPre: React.FC<CodeBoxProps> = ({
   hasCopyCode,
   isLocalHostedFile,
   isOSFile,
   codeBlocks,
   osBlocks,
+  selectedOs,
+  handleOSChange,
 }) => {
   const [isCopied, setIsCopied] = useState(false);
   const codeRef = useRef<HTMLDivElement>(null);
@@ -312,11 +304,6 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
       : agentType[0].name;
 
   const [selectedType, setSelectedType] = useState(localHostdType);
-  const [selectedOS, setSelectedOS] = useState<string>("windows");
-  useEffect(() => {
-    const osFromStorage = safeParse("storedOsOption");
-    setSelectedOS(osFromStorage || "windows");
-  }, []);
 
   const filteredAgentType =
     child?.length === 2
@@ -343,11 +330,11 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
   const renderOsBlock = () => {
     return React.Children.map(osBlocks, (child) => {
       if (React.isValidElement<CodeBlockProps>(child)) {
-        if (selectedOS === "windows" && child?.props?.windows) {
+        if (selectedOs === "windows" && child?.props?.windows) {
           return codeBlocks && child?.props?.children;
-        } else if (selectedOS === "mac" && child?.props?.mac) {
+        } else if (selectedOs === "mac" && child?.props?.mac) {
           return codeBlocks && child?.props?.children;
-        } else if (selectedOS === "ubuntu" && child?.props?.ubuntu) {
+        } else if (selectedOs === "ubuntu" && child?.props?.ubuntu) {
           return codeBlocks && child?.props?.children;
         }
       }
@@ -369,7 +356,7 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
         }
       }
     }
-  }, [isLocalHostedFile, selectedType, codeBlocks, isOSFile, selectedOS]);
+  }, [isLocalHostedFile, selectedType, codeBlocks, isOSFile, selectedOs]);
 
   const handleCopy = () => {
     const codeElements = codeRef.current?.querySelectorAll("code");
@@ -408,8 +395,8 @@ export const CustomPre: React.FC<CodeBoxProps> = ({
             )}
             {isOSFile && (
               <OsDropDown
-                selectedOption={selectedOS}
-                onOptionSelect={setSelectedOS}
+                selectedOption={selectedOs}
+                onOptionSelect={handleOSChange}
                 placeholder="Select Language"
                 options={osmenu as []}
               />
@@ -540,6 +527,13 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
     },
   );
 
+  const { selectedOS, setSelectedOS } = useOSContext();
+
+  const handleOSChange = (newOS: string) => {
+    setSelectedOS(newOS);
+    localStorage.setItem("storedOsOption", newOS);
+  };
+
   const osBlocks = React.Children.toArray(children).filter(
     (child): child is React.ReactElement<CodeBlockProps> => {
       if (!React.isValidElement(child)) return false;
@@ -559,6 +553,8 @@ export const CodeGroup: React.FC<CodeGroupProps> = ({
         hasCopy,
         codeBlocks,
         osBlocks,
+        selectedOs: selectedOS,
+        handleOSChange,
       },
     );
 
@@ -574,11 +570,15 @@ export const DocsCode: React.FC<CodeGroupProps> = ({
   isOSFile,
   hasCopy,
   osBlocks,
+  selectedOs,
+  handleOSChange,
 }) => {
   return (
     <div className="nx-mt-3">
       <CustomPre
         isLocalHostedFile={isLocalHostedFile}
+        handleOSChange={handleOSChange}
+        selectedOs={selectedOs}
         isOSFile={isOSFile}
         hasCopyCode={hasCopy}
         codeBlocks={codeBlocks}
