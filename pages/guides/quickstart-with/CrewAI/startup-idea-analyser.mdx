@@ -112,13 +112,12 @@ This system defines an Agent called **startup idea analyzer** that interacts wit
 	
 	from crew_ai import MarketResearchProcess
 	
-	AGENT_MAILBOX_KEY = os.environ.get("AGENT_MAILBOX_KEY")
 	SEED_PHRASE = "YOUR_SEED_PHRASE"
 	
 	agent = Agent(
 	    name="startup idea analyzer",
 	    seed=SEED_PHRASE,
-	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	    mailbox=True,
 	)
 	
 	protocol = Protocol("Startup idea Analyzer version", version="0.1.2")
@@ -155,7 +154,7 @@ This system defines an Agent called **startup idea analyzer** that interacts wit
 
 
 
-    The `Agent` is defined using a seed phrase for wallet generation and a mailbox for message exchanges. Then, a protocol named `Startup idea Analyzer version` (`version 0.1.2`) defines how the agent processes incoming messages. The agent uses this protocol to respond to requests containing startup idea descriptions. The agent relies on a component called `MarketResearchProcess` from an external module `crew_ai` to conduct market research on the provided startup idea. This research process is triggered upon receiving a startup idea description. The `StartUpIdeaAnalyzer` class defines a data model for startup idea descriptions; this model expects a field `description` that holds the string of text describing the startup idea provided by the user.
+    The `Agent` is defined using a seed phrase for wallet generation and a [Mailbox ↗️](/guides/agents/intermediate/mailbox) for message exchanges. Then, a protocol named `Startup idea Analyzer version` (`version 0.1.2`) defines how the agent processes incoming messages. The agent uses this protocol to respond to requests containing startup idea descriptions. The agent relies on a component called `MarketResearchProcess` from an external module `crew_ai` to conduct market research on the provided startup idea. This research process is triggered upon receiving a startup idea description. The `StartUpIdeaAnalyzer` class defines a data model for startup idea descriptions; this model expects a field `description` that holds the string of text describing the startup idea provided by the user.
 
     Whenever the agent receives a message matching the `StartUpIdeaAnalyzer` model, it logs the incoming message, sends the startup description to the `MarketResearchProcess`, and then responds to the sender with the result. The agent is set to include this `protocol`, publish a manifest of its functionalities, and run continuously to process incoming requests.
 

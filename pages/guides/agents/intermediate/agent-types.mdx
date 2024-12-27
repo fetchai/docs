@@ -37,7 +37,7 @@ The [Agentverse Mailbox feature ↗️](/guides/agents/intermediate/mailbox) mak
 
 **Local Agents can use a Mailbox to ensure that no messages are lost when they are temporarily disconnected from the network**; the Mailbox acts as a message buffer, storing communications until the Agent comes back online and ready to process them. Indeed, this feature enables interaction with other Agents or functions without the Agent being online continuously.
 
-In order to set up a mailbox for a local Agent, you first need to create and configure a local Agent. The Agent's address is used to register it on the Agentverse, and then to generate a **Mailbox API key** for your Agent. For instance, consider the following basic Agent:
+In order to set up a mailbox for a local Agent, you first need to create and configure the local Agent. For instance, consider the following basic Agent:
 
 <GithubCodeSegment digest="67d527d8ecb6cc3ea76fdce279b2a78a">
     <CodeSegment
@@ -58,15 +58,13 @@ In order to set up a mailbox for a local Agent, you first need to create and con
 	class Message(Model):
 	    message: str
 	
-	
-	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-	SEED_PHRASE = "put_your_seed_phrase_here"
+    SEED_PHRASE = "put_your_seed_phrase_here"
 	
 	# Now your agent is ready to join the agentverse!
 	agent = Agent(
 	    name="alice",
-	    seed=SEED_PHRASE,
-	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai"
+        port=8000,
+        mailbox=True
 	)
 	
 	# Copy the address shown below
@@ -80,8 +78,10 @@ In order to set up a mailbox for a local Agent, you first need to create and con
 
 </CodeGroup>
 
+Now, run this Agent. You will be able to see a link in your terminal output redirecting you towards the [Local Agent Inspector ↗️](/guides/agents/intermediate/local-agent-inspector) for this specific Agent on the [Agentverse ↗️](https://agentverse.ai/). Click on this URL. You will be redirected to the Inspector UI where you can check multiple details about the local Agent you have just run.
 
+![](src/images/guides/inspector/local_agent_inspector.png)
 
-Then, head over to the [Agentverse ↗️](https://agentverse.ai/) and navigate to the **My Agents** tab. Here, select **Local Agents** and click on **Connect Local Agent**. Paste your Agent's address retrieved from running your local Agent and follow the steps until you get a **Mailbox API Key**, which you will use to update your Agent's configuration above. To test your Mailbox setup, you can create another Agent (on Agentverse for instance) that sends messages to the Mailbox while the first Agent is offline. When the first agent comes back online, it will retrieve and process the stored messages. For a complete example, check out this [guide ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox).
+Now, click on **Connect** and then on **Mailbox** options and follow the steps closely in order to correctly set up a mailbox for your local Agent. To test your Mailbox setup, you can create another Agent (on Agentverse for instance) that sends messages to the Mailbox while the first Agent is offline. When the first agent comes back online, it will retrieve and process the stored messages. 
 
-For a more complex example of an Agent using a Mailbox, check out the following [guide ↗️](/guides/agents/intermediate/langchain-rag-agent).
+For a complete example, check out this [guide ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox). For a more complex example of an Agent using a Mailbox, check out the following [guide ↗️](/guides/agents/intermediate/langchain-rag-agent).
