@@ -4,18 +4,18 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 
 # Options for running your Agents
 
-## Run a local agent with an endpoint
+## Run a local Agent with an endpoint
 
 In some scenarios, you may want to run an agent on your own hardware or infrastructure; luckily this is very easy to do on any system that support **Python 3.10**.
 
-This system is pretty simple, as to get you started as quickly as possible. We're going to run this agent on any device you'd like, in this scenario we're running on a VM, but you could run this on your laptop, raspberry pi or tweak for Agentverse. On startup our script will register our agent to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), and then our agent will be available to communicate with other agents.
+This system is pretty simple, as to get you started as quickly as possible. We're going to run this Agent on any device you'd like, in this scenario we're running on a VM, but you could run this on your laptop, raspberry pi or tweak for Agentverse. On startup our script will register our Agent to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), and then our Agent will be available to communicate with other Agents.
 
 ## Prerequisites
 
 Make sure you have read the following resources before going on with this guide:
 
     - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
     - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
@@ -23,14 +23,14 @@ Make sure you have read the following resources before going on with this guide:
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
     - [Agent Mailboxes ↗️](/guides/agents/intermediate/mailbox)
-    - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+    - [Make your Agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
 
 ## Imports needed
 
     - [uAgents ↗️](https://pypi.org/project/uagents/)
     - [AI Engine ↗️](https://pypi.org/project/uagents-ai-engine/)
 
-### The agent
+### The Agent
 
 Consider the following Agent:
 
@@ -93,17 +93,17 @@ Consider the following Agent:
 
 
 
-To correctly run this code, you need to provide the `name`, `seed`, `port` and `endpoint` parameters. Also, make sure your Agent has enough funds to register in Almanac contract.
+To correctly run this code, you must provide the `name`, `seed`, `port`, and `endpoint` parameters. Ensure the Agent has sufficient funds to register with the Almanac contract.
 
-You'll need to be running this agent on infrastructure that allows you to **open a port**; in our example, we run on port `6145`.
+The Agent must run on infrastructure that allows opening a `port`. In this example, we use port `6145` and an `endpoint`.
 
-The agent is initialized with an endpoint, and a port; this is so that we can receive messages, and other agents know where to send them. And we define our protocol, which is just an `int` as seen in the `Request` object.
+The Agent is initialized with an endpoint and a port to receive messages and allow other Agents to communicate with it. The `protocol`, defined as an `int`, is specified in the `Request` object.
 
-Our `on_message()` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of `UAgentResponse` which is essential to communicate with [DeltaV ↗️](/concepts/ai-engine/deltav).
+The `on_message()` function processes incoming messages and returns a random number between 1 and the specified `dice_sides` from the message. The response must use the `UAgentResponse` type, which is essential for communication with [DeltaV ↗️](/concepts/ai-engine/deltav). Check out this guide [here ↗️](/guides/agents/intermediate/ai-engine-compatible-agent) to understand how to make your Agents AI Engine compatible.
 
-`.run()` initializes the agent.
+Finally, `.run()` starts the Agent.
 
-Finally, we  run our agent as follows: `python agent_endpoint.py`
+We can now run our Agent with the following command: `python agent_endpoint.py`
 
 **Expected output**:
 
@@ -122,19 +122,19 @@ Finally, we  run our agent as follows: `python agent_endpoint.py`
       Current version of the package is <PackageVersion packageName="uagents-ai-engine" packageType="pypi" />.
     </Callout>
 
-## Run a local agent using a Mailbox
+## Run a local Agent using a Mailbox
 
-Through the **Agentverse** you can set up [Mailboxes ↗️](/guides/agents/intermediate/mailbox) for your local Agents, allowing them to communicate with other agents registered on the Fetch Network without the need to be constantly online and without requiring your constant presence to operate.
+Through the **Agentverse** you can set up [Mailboxes ↗️](/guides/agents/intermediate/mailbox) for your local Agents, allowing them to communicate with other Agents registered on the Fetch Network without the need to be constantly online and without requiring your constant presence to operate.
 
-### Local agent setup
+### Local Agent setup
 
-Let's start by creating a local agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other agents and matching the `Message` class:
+Let's start by creating a local Agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other Agents and matching the `Message` class:
 
 <GithubCodeSegment digest="6f746d8a2a6a98c302b05243a56544ed">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/options-for-running-local-agents/agent_mailbox.py"
         lineStart={1}
-        lineEnd={32}
+        lineEnd={30}
         hosted={true}
     />
 </GithubCodeSegment>
@@ -153,15 +153,12 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
 	# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
 	SEED_PHRASE = "put_your_seed_phrase_here"
 	
-	# Now go to https://agentverse.ai, register your agent in the Mailroom by providing the address you just copied.
-	# Then, copy the agent's utilising-the-mailbox key and insert it here below inline
-	AGENT_MAILBOX_KEY = "put_your_AGENT_MAILBOX_KEY_here"
-	
 	# Now your agent is ready to join the agentverse!
 	agent = Agent(
 	    name="alice",
 	    seed=SEED_PHRASE,
-	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	    port=8000,
+	    mailbox=True
 	)
 	
 	# Copy the address shown below
@@ -181,33 +178,34 @@ Let's start by creating a local agent named `alice` with a `handle_message()` fu
 </CodeGroup>
 
 
+To correctly run this code, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters.
 
-To correctly run this code, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters. The output should look similarly to the following:
+You can now connect your local Agent to the Agentverse using a **Mailbox**. To do so, run the local Agent and head over to the Inspector UI by clicking the dedicated link showing up within your terminal output.
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1a.png)
+
+Then, click the **Connect** button and follow the steps required. Choose **Mailbox**:
+
+![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2a.png)
+
+Move on until you reach the end. Once you finalize the steps required, you should be seeing something similar to the following in your terminal output:
 
     ```
-    INFO:     [alice]: Registration on Almanac API successful
-    INFO:     [alice]: Registering on almanac contract...
-    INFO:     [alice]: Registering on almanac contract...complete
+    Your agent's address is: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
+    INFO:     [alice]: Starting agent with address: agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
     INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf
     INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
-    INFO:     [alice]: Connecting to mailbox server at agentverse.ai
-    INFO:     [alice]: Mailbox access token acquired
+    INFO:     [alice]: Starting mailbox client for https://agentverse.ai
+    INFO:     [Alice]: Mailbox access token acquired
+    INFO:     [Alice]: Registration on Almanac API successful
+    INFO:     [Alice]: Registering on almanac contract...
+    INFO:     [Alice]: Registering on almanac contract...complete
+    INFO:     [mailbox]: Successfully registered as mailbox agent in Agentverse
     ```
 
-You can easily create a Mailbox by first retrieving your local agent address and head over to the **Agentverse: My Agents** tab. Here, click on **Local Agents** and click on **Connect Local Agent**.
 
-![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_1.png)
-
-You will need to provide the address of the local agent you wish to retrieve and wait for confirmation. You will then need to provide a **name** for the agent.
-
-![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_2.png)
-
-Once you do so and confirm, you will see a **Mailbox API Key** showing up. Paste it within your local agent code above by filling up the `AGENT_MAILBOX_KEY` field inline.
-
-![](src/images/guides/agentverse/mailbox/agentverse:mailbox/mailbox_3.png)
-
-You can then restart your agent, now your agent doesn't need to run all the time as their messages will be waiting for them for when they come back online!
+Now your Agent doesn't need to run all the time as their messages will be waiting for them for when they come back online!
 
     <Callout type="info" emoji="ℹ️">
-      You can find additional information on the Agentverse Mailbox feature [here ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox). This resource shows how to setup two agents: one locally and one on the Agentverse and create a two-way communication line between these two agents with both agents sending a message to one another on an interval.
+      You can find additional information on the Agentverse Mailbox feature [here ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox). This resource shows how to setup two Agents, one locally and one on the Agentverse, and make them establish a two-way communication line between both Agents sending a message to one another on an interval.
     </Callout>
