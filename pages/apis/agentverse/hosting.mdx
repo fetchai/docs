@@ -19,211 +19,22 @@ import {
 # Hosting API
 
 <div className="nx-text-fetch-content">
-  Welcome to the Hosting API documentation.
+  The Hosting API empowers users to manage their Agents on Agentverse. From creating and updating Agents to control their states and access detailed logs, this API offers comprehensive tools for efficient Agents management. Users can also retrieve usage statistics, monitor individual Agent performance, and ensure that their Agents operate as intended with up-to-date code.
+
+  This documentation provides an in-depth overview of available endpoints, notable objects, and practical examples, enabling developers to interact with the API effectively. Whether you're creating new Agents or managing existing ones, this guide will help you unlock the full potential of the Hosting API. 
+  
+  You can see our dedicated object reference documentation [here ↗️](/references/agentverse/hosting).
 </div>
-
-## Overview
-
-<Row>
-    <Col>
-        The hosting API allows you to manage your agents that are hosted by Agentverse. This involves creating new
-        agents, updating the code of existing agents, starting and stopping agents, and getting logs of agents.
-    </Col>
-    <Col>
-        ```bash filename="Endpoints"
-        GET /v1/hosting/agents
-        POST /v1/hosting/agents
-
-        GET /v1/hosting/agents/:agentAddress
-        DELETE /v1/hosting/agents/:agentAddress
-
-        GET /v1/hosting/agents/:agentAddress/code
-        PUT /v1/hosting/agents/:agentAddress/code
-
-        POST /v1/hosting/agents/:agentAddress/start
-        POST /v1/hosting/agents/:agentAddress/stop
-
-        GET /v1/hosting/agents/:agentAddress/logs/latest
-        DELETE /v1/hosting/agents/:agentAddress/logs
-
-        GET /v1/hosting/usage/current
-        GET /v1/hosting/usage/:year/:month
-
-        GET /v1/hosting/usage/agents/:address/current
-        GET /v1/hosting/usage/agents/:address/:year/:month
-        ```
-    </Col>
-
-</Row>
-
-## Notable Objects
-
-### The Agent Object
-
-<Row>
-    <Col>
-        <Properties>
-            <Property name="name" type="string">
-                The given name of the agent. This is only a label that is used internally so users can keep track of
-                their agents.
-            </Property>
-            <Property name="address" type="string">
-                The address of the agent. This is also the current public key of the agent.
-            </Property>
-            <Property name="running" type="boolean">
-                The current state of the agent. `true` if the agent is currently running, `false` otherwise.
-            </Property>
-            <Property name="compiled" type="boolean | null">
-                The current code compilation status for the agent. `true` if the agent is compiled, `false` if the
-                compilation failed, `null` if the agent has not been compiled yet.
-            </Property>
-            <Property name="revision" type="integer">
-                The current revision of the agent. Everytime an update is made to the agent, the revision is incremented.
-            </Property>
-            <Property name="code_digest" type="string | null">
-                The current digest of the code of the agent. Useful for determining if there have been code changes that
-                need to be applied to the agent.
-
-                This value can be `null` if the agent has not been compiled yet.
-            </Property>
-            <Property name="wallet_address" type="string | null">
-                The wallet address that is associated with the agent. If a wallet address is not associated with the
-                agent, this value will be `null`.
-            </Property>
-        </Properties>
-    </Col>
-    <Col>
-        ```json filename="Sample Agent Object"
-        {
-            "name": "My first agent",
-            "address": "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
-            "running": false,
-            "compiled": true,
-            "revision": 7,
-            "code_digest": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
-            "wallet_address": "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk"
-        }
-        ```
-    </Col>
-
-</Row>
-
-### The AgentCode Object
-
-<Row>
-    <Col>
-        <Properties>
-            <Property name="digest" type="string">
-                Digest of the Agent's code.
-            </Property>
-            <Property name="code" type="string">
-                The Agent's code. 
-            </Property>
-            <Property name="timestamp" type="string, date-time">
-                Timestamp of when the code was updated. 
-            </Property>
-        </Properties>
-    </Col>
-    <Col>
-        ```json filename="Sample AgentCode Object"
-        {
-            "digest": "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530",
-            "code": "alice = Agent(name="alice", seed="sample seed")",
-            "timestamp": "2023-08-22T14:09:48.259000"
-        }
-        ```
-    </Col>
-</Row>
-
-### The AgentCodeDigest Object
-
-<Row>
-    <Col>
-        <Properties>
-            <Property name="digest" type="string">
-                Digest of the Agent's code.
-            </Property>
-        </Properties>
-    </Col>
-    <Col>
-        ```json filename="Sample AgentCodeDigest Object"
-        {
-            "digest": "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530"
-        }
-        ```
-    </Col>
-</Row>
-
-### The AgentLog Object
-
-<Row>
-    <Col>
-        <Properties>
-            <Property name="log_timestamp" type="string, date-time">
-                Timestamp of the log entry. 
-            </Property>
-            <Property name="log_entry" type="string">
-               Log entry text. 
-            </Property>
-        </Properties>
-    </Col>
-    <Col>
-        ```json filename="Sample AgentLog Object"
-        {
-            "log_timestamp": "2023-08-22T14:09:48.259000", 
-            "log_entry": "[INFO]: My count is: 0"
-        }
-        ```
-    </Col>
-</Row>
-
-### The NewAgent Object
-
-<Row>
-    <Col>
-        <Properties>
-            <Property name="NewAgent" type="string">
-                Name of the new Agent.
-            </Property>
-        </Properties>
-    </Col>
-    <Col>
-        ```json filename="Sample NewAgent Object"
-        {
-            "name": "My first agent"
-        }
-        ```
-    </Col>
-</Row>
-
-### The UpdateAgentCode Object
-
-<Row>
-    <Col>
-        <Properties>
-            <Property name="Code" type="string">
-                The code for the new Agent. 
-            </Property>
-        </Properties>
-    </Col>
-    <Col>
-        ```json filename="Sample UpdateAgentCode Object"
-        {
-            "code": "alice = Agent(name="alice", seed="sample seed")"
-        }
-        ```
-    </Col>
-</Row>
 
 ## Request and response library
 
-### Getting a list of your agents
+### Getting a list of your Agents
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents"
-  description="Request for listing all of your agents at once"
+  description="Request for listing all of your Agents at once"
   responses={[
     {
       name: "My first agent",
@@ -240,7 +51,7 @@ import {
   responseDescription="On a success the response will be an array of Agent Object properties."
 />
 
-### Creating a new agent
+### Creating a new Agent
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -278,7 +89,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents/{agentAddress}"
-  description="Looks up a specific agent by address on the hosting platform"
+  description="Looks up a specific Agent by address on the hosting platform"
   properties={[
     {
       name: "address",
@@ -313,7 +124,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="DELETE"
   path="/v1/hosting/agents/{agentAddress}"
-  description="Delete a specific agent, identified by address"
+  description="Delete a specific Agent, identified by address"
   properties={[
     {
       name: "address",
@@ -336,7 +147,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents/{agentAddress}/code"
-  description="Looks up the code for an agent, specified by address."
+  description="Looks up the code for an Agent, specified by address."
   properties={[
     {
       name: "address",
@@ -366,7 +177,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="PUT"
   path="/v1/hosting/agents/{agentAddress}/code"
-  description="Updates the code for a specific agent, identified by address."
+  description="Updates the code for a specific Agent, identified by address."
   properties={[
     {
       name: "address",
@@ -411,13 +222,13 @@ import {
   responseDescription="On success, the response will be a JSON object with the updated digest."
 />
 
-### Start a specific agent, identified by address.
+### Start a specific Agent, identified by address
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/hosting/agents/{address}/start"
-  description="Starts a specific agent, identified by address"
+  description="Starts a specific Agent, identified by address"
   properties={[
     {
       name: "address",
@@ -447,13 +258,13 @@ import {
   responseDescription="On success, the agent selected by address will start, and the API will return an array with the Agent's properties."
 />
 
-### Stop a specific agent, identified by address.
+### Stop a specific Agent, identified by address
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/hosting/agents/{address}/stop"
-  description="Stops a specific agent, identified by address"
+  description="Stops a specific Agent, identified by address"
   properties={[
     {
       name: "address",
