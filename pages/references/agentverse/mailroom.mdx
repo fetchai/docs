@@ -1,0 +1,71 @@
+import {
+  Properties,
+  Property
+} from "../../../components/mdx";
+
+import { Row, Col } from "../../../components/mdx";
+
+# Mailroom API Objects
+
+## Overview
+
+<Row>
+    <Col>
+        The Mailroom API ensures reliable communication for Agents in Agentverse, even when they are offline or restricted by firewalls. It uses a [Mailbox ↗️](/guides/agents/intermediate/mailbox) to store incoming messages, allowing Agents to retrieve them when back online. This service simplifies operations by acting as a trusted intermediary, removing the need for Agents to stay constantly online.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        POST /v1/auth/challenge
+
+        GET /v1/agents
+        POST /v1/agents
+
+        GET /v1/agents/:address
+        PUT /v1/agents/:address
+        DELETE /v1/agents/:address
+
+        GET /v1/api-keys
+        DELETE /v1/api-keys/:uuid
+
+        GET /v1/profile/usage
+        ```
+    </Col>
+
+</Row>
+
+## Notable Objects
+
+### The Agent Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="address" type="string">
+                The given address of the agent.
+            </Property>
+            <Property name="name" type="string">
+                The name of the Agent. 
+            </Property>
+            <Property name="Pending_messages" type="integer">
+                Pending message for an agent in the mailroom. 
+            </Property>
+            <Property name="Bytes_transferred" type="integer">
+                Bytes transferred over the mailroom. 
+            </Property>
+            <Property name="Previous_bytes_transferred" type="integer">
+                Previously transferred bytes.
+            </Property> 
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Example Agent Object"
+        {
+            "name": "Example Name", 
+            "address": "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg", 
+            "Pending_messages": 1, 
+            "Bytes_transferred": 1, 
+            "Previous_Bytes_transferred": 1
+        }
+        ```
+    </Col>
+</Row>
