@@ -21,6 +21,7 @@ import { useActiveAnchor, useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { Collapse } from "./collapse";
+import { WITH_INDEXED_PAGES } from "../constants";
 
 const TreeState: Record<string, boolean> = Object.create(null);
 
@@ -143,7 +144,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
     return (
       <>
         <li className={cn({ open, active }, "nx-w-full")}>
-          {(!isLink || ["Ledger", "Indexer"].includes(item.title)) && (
+          {(!isLink || WITH_INDEXED_PAGES.includes(item.title)) && (
             <ComponentToUse
               id={`sidebar${item.route?.split("/").join("-").toLowerCase()}`}
               href={isLink ? item.route : undefined}

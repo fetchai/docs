@@ -68,34 +68,9 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 ```
 </DocsCode>
 
-<DocsCode local={false}>
-
-```py copy filename="agent.py"
-from uagents import Agent, Context, Model
-
-class TestRequest(Model):
-    message: str
-
-class Response(Model):
-    text: str
-
-@agent.on_event("startup")
-async def startup(ctx: Context):
-    ctx.logger.info(f"Starting up {agent.name}")
-    ctx.logger.info(f"With address: {agent.address}")
-    ctx.logger.info(f"And wallet address: {agent.wallet.address()}")
-
-@agent.on_query(model=TestRequest, replies={Response})
-async def query_handler(ctx: Context, sender: str, _query: TestRequest):
-    ctx.logger.info("Query received")
-    try:
-        # do something here
-        await ctx.send(sender, Response(text="success"))
-    except Exception:
-        await ctx.send(sender, Response(text="fail"))
-```
-</DocsCode>
 </CodeGroup>
+
+
 
 The agent is created using the `Agent` class from `uagents` library. It is initialized with a `name`, `seed`, `port`, and `endpoint`.
 It defines an `on_event` handler for the "startup" event, where it logs information about the agent's initialization.
@@ -151,6 +126,9 @@ The agent is then set to run.
 </DocsCode>
 
 </CodeGroup>
+
+
+
 The proxy is implemented using `FastAPI`. It sets up two routes: `"/"` for a simple root message and `"/endpoint"` for receiving requests.
 When a `POST` request is made to `"/endpoint"` with a JSON payload containing a `TestRequest`, it triggers the `make_agent_call` function.
 Inside make_agent_call, it calls `agent_query` to communicate with the agent. The `agent` receives the query, processes it, and sends back a response.

@@ -138,6 +138,8 @@ The `RagRequest` model represents a request for retrieving an answer to a user's
 
 </CodeGroup>
 
+
+
 ### Langchain RAG agent
 
 This agent answers questions by fetching and summarizing information from a given website. It checks and scrapes URLs, uses LangChain to find important documents, and generates answers with OpenAI's GPT-40-mini model.
@@ -295,7 +297,10 @@ This agent answers questions by fetching and summarizing information from a give
 
 ```
 </DocsCode>
+
 </CodeGroup>
+
+
 
 ### Langchain user agent
 
@@ -361,50 +366,9 @@ The agent is designed to ask a predefined question to a RAG agent at regular int
 ```
 </DocsCode>
 
-<DocsCode local={false}>
-
-```python copy filename="langchain_rag_user.py"
-from uagents import Agent, Context, Protocol, Field
-from ai_engine import UAgentResponse
-
-QUESTION = "How to install uagents using pip"
-URL = "https://fetch.ai/docs/guides/agents/installing-uagent"
-DEEP_READ = (
-    "no"
-)
-
-class RagRequest(Model):
-    question: str = Field(
-        description="The question that the user wants to have an answer for."
-    )
-    url: str = Field(description="The url of the docs where the answer is.")
-    deep_read: Optional[str] = Field(
-        description="Specifies weather all nested pages referenced from the starting URL should be read or not. The value should be yes or no.",
-        default="no",
-    )
-
-RAG_AGENT_ADDRESS = "YOUR_LANGCHAIN_RAG_AGENT_ADDRESS"
-
-rag_user = Protocol("LangChain RAG user")
-
-@agent.on_interval(60, messages=RagRequest)
-async def ask_question(ctx: Context):
-    ctx.logger.info(
-        f"Asking RAG agent to answer {QUESTION} based on document located at {URL}, reading nested pages too: {DEEP_READ}"
-    )
-    await ctx.send(
-        RAG_AGENT_ADDRESS, RagRequest(question=QUESTION, url=URL, deep_read=DEEP_READ)
-    )
-
-@agent.on_message(model=UAgentResponse)
-async def handle_data(ctx: Context, sender: str, data: UAgentResponse):
-    ctx.logger.info(f"Got response from RAG agent: {data.message}")
-
-agent.include(rag_user)
-
-```
-</DocsCode>
 </CodeGroup>
+
+
 
 <GithubCodeSegment digest="9018aca08a2c6ffee127165c2cff6043">
     <CodeSegment
@@ -434,7 +398,10 @@ agent.include(rag_user)
 
 ```
 </DocsCode>
+
 </CodeGroup>
+
+
 
 ## Expected output
 ![](src/images/examples/rag_deltav_response.png)

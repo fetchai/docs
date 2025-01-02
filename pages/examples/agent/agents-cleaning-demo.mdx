@@ -53,7 +53,7 @@ The protocol ensures the provider's services are available to the user's locatio
 
 Here is the full code:
 
-<GithubCodeSegment digest="494dfa5df92d1a82a903c86cc1dc7ad3">
+<GithubCodeSegment digest="1897aff927d7db468ca78d5deb3b1336">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/agents-cleaning-demo/protocols/cleaning/__init__.py"
         lineStart={1}
@@ -61,7 +61,7 @@ Here is the full code:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='494dfa5df92d1a82a903c86cc1dc7ad3'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='1897aff927d7db468ca78d5deb3b1336'>
 
 <DocsCode local={true}>
 	```py copy filename="__init__.py"
@@ -71,7 +71,6 @@ Here is the full code:
 	
 	from geopy.distance import geodesic
 	from geopy.geocoders import Nominatim
-	
 	from uagents import Context, Model, Protocol
 	
 	from .models import Availability, Provider, User
@@ -144,11 +143,11 @@ Here is the full code:
 	    ctx.logger.info(f"Received service request from user `{user.name}`")
 	
 	    if (
-	        set(msg.services) <= set(services)
-	        and in_service_region(msg.location, availability, provider)
-	        and availability.time_start <= msg.time_start
-	        and availability.time_end >= msg.time_start + msg.duration
-	        and availability.min_hourly_price * msg_duration_hours < msg.max_price
+	            set(msg.services) <= set(services)
+	            and in_service_region(msg.location, availability, provider)
+	            and availability.time_start <= msg.time_start
+	            and availability.time_end >= msg.time_start + msg.duration
+	            and availability.min_hourly_price * msg_duration_hours < msg.max_price
 	    ):
 	        accept = True
 	        price = markup * availability.min_hourly_price * msg_duration_hours
@@ -172,10 +171,10 @@ Here is the full code:
 	    ctx.logger.info(f"Received booking request from user `{user.name}`")
 	
 	    success = (
-	        set(msg.services) <= set(services)
-	        and availability.time_start <= msg.time_start
-	        and availability.time_end >= msg.time_start + msg.duration
-	        and msg.price <= availability.min_hourly_price * msg_duration_hours
+	            set(msg.services) <= set(services)
+	            and availability.time_start <= msg.time_start
+	            and availability.time_end >= msg.time_start + msg.duration
+	            and msg.price <= availability.min_hourly_price * msg_duration_hours
 	    )
 	
 	    if success:
@@ -185,10 +184,13 @@ Here is the full code:
 	
 	    # send the response
 	    await ctx.send(sender, BookingResponse(success=success))
+
 ```
 </DocsCode>
 
 </CodeGroup>
+
+
 
 #### models.py
 
@@ -257,6 +259,8 @@ Here is the full code:
 </DocsCode>
 
 </CodeGroup>
+
+
 
 ### Agents
 #### The Cleaner Agent
@@ -330,6 +334,8 @@ Here is the full code:
 </DocsCode>
 
 </CodeGroup>
+
+
 
 #### User
 
@@ -426,6 +432,8 @@ Here is the full code:
 
 </CodeGroup>
 
+
+
 ### Poetry Dependencies
 
 ```pyproject.toml copy filename="pyproject.toml"
@@ -436,12 +444,12 @@ tortoise-orm = "^0.22.1"
 geopy = "^2.4.1"
 ```
 
-#### Instructions to execute the example.
+#### How to execute the example
 
 - Navigate to the root folder of the example.
 - Install dependencies by running `poetry install`.
-- Run the cleaner agent with `python cleaner.py`.
-- Run the user agent with `python user.py`.
+- Run the cleaner Agent with `python cleaner.py`.
+- Run the user Agent with `python user.py`.
 
 ### Expected Output
 
