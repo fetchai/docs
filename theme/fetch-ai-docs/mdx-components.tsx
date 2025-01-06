@@ -11,6 +11,8 @@ import { useIntersectionObserver, useSlugs } from "./contexts/active-anchor";
 import React from "react";
 import Image from "next/image";
 import LinkImage from "../../src/svgs/external-link.svg";
+import InternalLinkImage from "../../src/svgs/internal-link.svg";
+
 import { ModifiedPre } from "components/code";
 
 // Anchor links
@@ -193,7 +195,12 @@ export const Link = ({ href = "", className, ...props }: AnchorProps) => {
         >
           {splitChildren}
         </Anchor>
-        <Image src={LinkImage} alt="" width={20} height={20} />
+        <Image
+          src={EXTERNAL_HREF_REGEX.test(href) ? LinkImage : InternalLinkImage}
+          alt=""
+          width={20}
+          height={20}
+        />
       </span>
     </>
   );
