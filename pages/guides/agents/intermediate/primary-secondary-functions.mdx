@@ -19,13 +19,13 @@ Make sure you have read the following resources before going on with this guide:
     - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
     - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
     - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
-    - [Using agents storage function ↗️](/guides/agents/intermediate/storage-function)
+    - [Using Agents storage function ↗️](/guides/agents/intermediate/storage-function)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
     - [Agents protocols ↗️](/guides/agents/intermediate/protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
-    - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+    - [Make your Agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
     - [Field descriptions for DeltaV ↗️](/guides/agentverse/agentverse-functions/field-descriptions-for-deltav)
 
 ## Imports needed
@@ -41,7 +41,7 @@ Create news [access token ↗️](https://huggingface.co/settings/tokens) in set
 
 ## Setting up the agents
 
-For setting up Hugging Face function we need to create different agents as listed below.
+For setting up Hugging Face function we need to create different Agents as listed below.
 
 ### Hugging Face System Agent
 
@@ -306,37 +306,37 @@ The properties of function for each Agent are listed below.
 
 ### Hugging Face System
 
-![](../../../../src/images/guides/services/service-guide/hugging_face_1.png)
+![](/../src/images/guides/services/service-guide/hugging_face_1.png)
 
     - **Function title**: just the name of your function - in this example let's call it **Hugging Face System**.
-    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function helps user to give any query to the selected model and gets the response to their query. Always go for hugging face request secondary function for this objective.**
-                        **Secondary function chronology**
-                        **Hugging face system -> Hugging face request -> Model List**
+    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: _This function helps user to give any query to the selected model and gets the response to their query. Always go for hugging face request secondary function for this objective._
+                        _Secondary function chronology:_
+                        _Hugging face system -> Hugging face request -> Model List_
     - **Application**: Primary function.
     - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agents/intermediate/primary-secondary-functions#setting-up-the-agents).
-    - **Field descriptions**: This field is super important to be detailed and is responsible for triggering secondary function. - in this example we can specify something like: _**Describes the response to the user query. Always go for Hugging face request secondary function to get this field. Never ask this from user**_.
+    - **Field descriptions**: This field is super important to be detailed and is responsible for triggering secondary function. - in this example we can specify something like: _Describes the response to the user query. Always go for Hugging face request secondary function to get this field. Never ask this from user_.
 
 ### Hugging Face Request
 
-![](../../../../src/images/guides/services/service-guide/hugging_face_2.png)
+![](/../src/images/guides/services/service-guide/hugging_face_2.png)
 
     - **Function title**: just the name of your function - in this example let's call it **Hugging Face Request**.
-    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists secondary function**.
+    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: _This function handles the request to help user ask question to a selected model from hugging face. Model_id is always given by Model Lists secondary function_.
     - **Application**: Secondary function.
     - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agents/intermediate/primary-secondary-functions#hugging-face-request-agent).
     - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary functions. In this example we can specify something like:
-        - **Model_id**: **_Always go for model list secondary function. Never ask this field to user._**
-        - **query**: **_Describes the query user wants to ask to the model Always ask this to user after model_id is given by model list secondary function._**
+        - **Model_id**: _Always go for model list secondary function. Never ask this field to user._
+        - **query**: _Describes the query user wants to ask to the model Always ask this to user after model_id is given by model list secondary function._
 
 ### Model List
 
-![](../../../../src/images/guides/services/service-guide/hugging_face_3.png)
+![](/../src/images/guides/services/service-guide/hugging_face_3.png)
 
     - **Function title**: just the name of your function - in this example let's call it **Model List**.
-    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: **This function helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option.**
+    - **Description**: super important to be as detailed as you can, as reasoning AI Engine looks at descriptions to understand what your function does - in this example we can specify something like this: _This function helps user to select from different model options available. This always gives list of options to the user. make user select one from these options. Present list of strings as select from option._
     - **Application**: Secondary function.
     - **Protocol** and **Data Model** will be automatically populated based on the source code of [Hugging face system agent ↗️](/guides/agents/intermediate/primary-secondary-functions#model-list-agent)
-    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary function. In this example we can specify something like: _**This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options.**_
+    - **Field descriptions**: this field is super important to be detailed and is responsible for triggering secondary function. In this example we can specify something like: _This is the search keyword of model user wants to ask answer to. Always ask this to user. This always gives list of options to the user. make user select one from these options._
 
 ## Let's find our Function on DeltaV
 
