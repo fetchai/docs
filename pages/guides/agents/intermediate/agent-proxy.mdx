@@ -1,0 +1,94 @@
+# Agent with Proxy
+
+## Introduction
+
+A Proxy serves as a bridge between your Agent and the Agentverse, allowing the Agent to publish interaction data without the need of a [Mailbox ↗️](/guides/agents/intermediate/mailbox). This setup is particularly beneficial for Agents requiring continuous operation and visibility in the Agentverse Marketplace.
+
+## Prerequisites
+
+Make sure you have read the following resources before going on with this guide:
+
+    - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
+    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Agents address ↗️](/guides/agents/getting-started/getting-uagent-address)
+    - [Almanac contract ↗️](/concepts/fetch-network/almanac)
+    - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+    - [Agent Mailboxes ↗️](/guides/agents/intermediate/mailbox)
+    - [Local Agent Inspector ↗️](/guides/agents/intermediate/local-agent-inspector)
+
+## The Agent setup
+
+An Agent connected via a Proxy uses the Agentverse as an intermediary to record interactions relevant to the Marketplace, causing it to rank higher in the search index.
+
+The following code demonstrates how to connect a local Agent to the Agentverse using a Proxy:
+
+```py copy filename="agent-with-proxy.py"
+from uagents import Agent, Context, Model
+ 
+class Message(Model):
+    message: str
+  
+# Now your agent is ready to join the agentverse!
+agent = Agent(
+    name="alice",
+    seed="your_agent_seed_phrase",
+    proxy=True,
+)
+ 
+# Copy the address shown below
+print(f"Your agent's address is: {agent.address}")
+ 
+if __name__ == "__main__":
+    agent.run()
+```
+
+The Agent is initialized with multiple parameters: `name`, `seed` and `proxy`. Remember to correctly specify these parameters in order to successfully run the Agent. By running the above Agent code, you should be able to see the following output within your terminal:
+
+```
+INFO:     [alice]: Starting agent with address: agent1qtx288pfqm9e5qausyzdy6zmmn65ytwygqdq2h7d4g0q00ft04rygg96jtt
+INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qtx288pfqm9e5qausyzdy6zmmn65ytwygqdq2h7d4g0q00ft04rygg96jtt
+INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     [alice]: Registration on Almanac API successful
+INFO:     [alice]: Registering on almanac contract...
+INFO:     [alice]: Registering on almanac contract...complete
+```
+
+Now, you are ready to connect the Agent using a Proxy. To connect your Agent using a Proxy, obtain the IP address where your Agent is accessible. Use the Agent Inspector URL from the terminal output to access the Inspector UI. **Log in** to the Agentverse and click the **Connect** button. 
+
+![](src/images/guides/proxy/proxy_1.png)
+
+Then, select **Proxy** as your connection method, provide your Agent's **public URL** or **IP address** followed by `/submit`. Once it is being validated, click **Next**.
+
+![](src/images/guides/proxy/proxy_2.png)
+
+Now, you will need to provide a **public URL** or **IP address** for your Agent.
+
+_**Make sure you are running the latest [uagents package ↗️](https://pypi.org/project/uagents/) version on your end!**_
+
+![](src/images/guides/proxy/proxy_3.png)
+
+Once you do so, and the Agent's public URL or IP address is verified, you will be asked to verify your Agent configuration and finalize the setup process.
+
+![](src/images/guides/proxy/proxy_4.png)
+
+Great! You successfully set up a proxy for your local Agent! 
+
+You should be able to see the following updated output in your terminal:
+
+```
+INFO:     [alice]: Starting agent with address: agent1qtx288pfqm9e5qausyzdy6zmmn65ytwygqdq2h7d4g0q00ft04rygg96jtt
+INFO:     [alice]: Agent inspector available at https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qtx288pfqm9e5qausyzdy6zmmn65ytwygqdq2h7d4g0q00ft04rygg96jtt
+INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     [alice]: Registration on Almanac API successful
+INFO:     [alice]: Registering on almanac contract...
+INFO:     [alice]: Registering on almanac contract...complete
+INFO:     [mailbox]: Successfully registered as proxy agent in Agentverse
+```
+
+Now that your Agent is connected through the Proxy to the Agentverse, it is able to receive messages from any other Agents.
+
+Using a Proxy enables your Agent to seamlessly interact with the Agentverse, tracking interactions and displaying them on the  [Marketplace ↗️](/concepts/agent-services/agent-explorer). These interactions are showcased on the Agent's dedicated page within the [Agentverse My Agents ↗️](/concepts/agent-services/agent-hosting.) tab, providing visibility and engagement opportunities for users exploring the Marketplace.
+
+A Proxy differs from a [Mailbox ↗️](/guides/agents/intermediate/mailbox) in key ways. While a Mailbox stores messages for offline Agents, a Proxy requires the Agent to be online to process incoming messages in real-time. Messages sent to an offline Proxy Agent are dropped, making it suitable for Agents that are continuously running and accessible through a public endpoint.
+
+Setting up a Proxy benefits agents that require consistent operation and visibility in the Agentverse. It tracks interactions, showcases activity in the Marketplace, and ensures that Agents remain discoverable to other users, enhancing engagement and utility.
