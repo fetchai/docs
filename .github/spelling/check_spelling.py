@@ -19,6 +19,7 @@ import_pattern = re.compile(r'import\s*{\s*([\s\S]*?)\s*}\s*from\s*["\']([^"\']+
 jsx_like_tags_pattern = re.compile(r'<[^>]*>[\s\S]*?<\/[^>]*>|<[^>]*?/>', re.DOTALL)
 path_pattern = re.compile(r'path:\s*"/[^"]*"')
 guidebox_pattern = re.compile(r'<GuideBox[\s\S]*?/>', re.IGNORECASE)
+api_endpoint_pattern = re.compile(r'<ApiEndpointRequestResponse[\s\S]*?/>', re.IGNORECASE)
 
 # New patterns to remove content inside <GithubCodeSegment> and <CodeGroup> tags
 github_code_segment_pattern = re.compile(r'<GithubCodeSegment[\s\S]*?</GithubCodeSegment>', re.IGNORECASE)
@@ -35,18 +36,13 @@ def extract_text_from_mdx(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
 
-    # Remove content inside <GithubCodeSegment> and <CodeGroup> tags
+    # Remove ignored components
     content = github_code_segment_pattern.sub('', content)
     content = code_group_pattern.sub('', content)
-
-    # Remove import statements
+    content = api_endpoint_pattern.sub('', content)  # Ignore ApiEndpointRequestResponse blocks
     content = import_pattern.sub('', content)
-
-    # Remove paths and GuideBox components
     content = path_pattern.sub('', content)
     content = guidebox_pattern.sub('', content)
-
-    # Remove JSX components and JSX-like tags
     content = jsx_like_tags_pattern.sub('', content)
 
     # Initialize the Markdown parser
