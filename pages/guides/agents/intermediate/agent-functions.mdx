@@ -5,8 +5,8 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 # Agent Functions
 
 Agents can act as executable functions for the AI Engine. We can enable this by utilizing Agentverse and registering
-our agent's function on the platform. AI Engine then indexes the registered function and can then communicate with
-your agent. Checkout the [Agents 101 for AI Engine ↗️](/guides/agent-courses/agents-for-ai#agent-agentverse-ai-engine-and-deltav) for a wider explanation of how this works.
+our Agent's function on the platform. The AI Engine then indexes the registered function and can then communicate with
+your Agent. Checkout the [Agents 101 for AI Engine ↗️](/guides/agent-courses/agents-for-ai#agent-agentverse-ai-engine-and-deltav) for a wider explanation of how this works.
 
     <Callout type="info" emoji="ℹ️">
       Check out the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) to download it and start integrating your Agents with this tool!
@@ -19,15 +19,15 @@ your agent. Checkout the [Agents 101 for AI Engine ↗️](/guides/agent-courses
 Make sure you have read the following resources before going on with this guide:
 
     - [Quick Start Guide for uAgents Framework ↗️](/guides/agents/quickstart)
-    - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent)
+    - [Creating your first Agent ↗️](/guides/agents/getting-started/create-a-uagent)
     - [Agent Handlers ↗️](/guides/agents/intermediate/handlers)
-    - [Using agents storage function ↗️](/guides/agents/intermediate/storage-function)
+    - [Using Agents storage function ↗️](/guides/agents/intermediate/storage-function)
     - [Almanac contract ↗️](/concepts/fetch-network/almanac)
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
     - [Agents protocols ↗️](/guides/agents/intermediate/protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
     - [Options for running your Agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
-    - [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
+    - [Make your Agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
 
 ## Imports needed
 
@@ -36,11 +36,13 @@ Make sure you have read the following resources before going on with this guide:
 
 ## Local Agent Function registration
 
-Sometimes you'll want to run an agent on your own hardware or infrastructure; luckily this is very easy to do on any system that support **Python 3.10**.
+Sometimes you'll want to run an Agent on your own hardware or infrastructure; luckily this is very easy to do on any system that support **Python 3.10**.
 
 ### Overview
 
-This system is pretty simple and makes you get started as quickly as possible. You can run this agent on any device you'd like; in this scenario we're running on a VM but you could run this on your laptop, raspberry pi or tweak for [Agentverse ↗️](/concepts/agent-services/agentverse-intro). On startup our script will register our agent to the [Almanac ↗️](/concepts/fetch-network/almanac), and then our agent will be available to communicate with other agents. To get this agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible,  we will also go to Agentverse to create a new Function for the agent, to then allow this agent to be found in DeltaV.
+This system is pretty simple and makes you get started as quickly as possible. You can run this Agent on any device you'd like; in this scenario we're running on a VM, but you could run this on your laptop, raspberry pi or tweak for [Agentverse ↗️](/concepts/agent-services/agentverse-intro). 
+
+On startup our script will register our Agent to the [Almanac ↗️](/concepts/fetch-network/almanac), and then our Agent will be available to communicate with other Agents. To get this Agent to be [DeltaV ↗️](/concepts/ai-engine/deltav) accessible,  we will also go to Agentverse to create a new Function for the Agent, to then allow this Agent to be found in DeltaV.
 
 ### The agent
 
@@ -102,17 +104,15 @@ This system is pretty simple and makes you get started as quickly as possible. Y
 
 
 
-It is important that you provide the `name`, `port`, `seed` and `endpoint` for your agent to correctly run this code.
+It is important that you provide the `name`, `port`, `seed` and `endpoint` for your Agent to correctly run this code.
 
-A few things to note; you'll need to be running this agent on infrastructure that allows you to open a port, in our example we run on port `6145`.
+A few things to note; you'll need to be running this Agent on infrastructure that allows you to open a port, in our example we run on port `6145`. The agent is initialized with an `endpoint`, and a `port` - this is so that we can receive messages, and other Agents know where to send them. On the Testnet, you can use the `fund_agent_if_low` to get some funds, if you need them to register your Agent to the Almanac. We then define the protocol, which is just an `int` as seen in the `Request` object.
 
-The agent is initialized with an endpoint, and a port - this is so that we can receive messages, and other agents know where to send them. We call `fund_agent_if_low` to get some funds, if we need them. And we define our protocol, which is just an `int` as seen in the `Request` object.
+The `on_message` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of  `UAgentResponse` which is essential to communicate with DeltaV.
 
-Our `on_message` doesn't do much other than return a number between 1 and the defined `dice_sides` from the message inclusive. However, the response type is of  `UAgentResponse` which is essential to communicate with DeltaV.
+`.run()` initializes the Agent.
 
-`.run()` initializes the agent.
-
-Finally, we run our agent as follows: `python simple_function.py`
+Finally, we run our Agent as follows: `python simple_function.py`
 
 **Expected output**:
 
@@ -156,7 +156,7 @@ Here, you can now provide the needed details for your Agent Function in the dedi
 
 ![](src/images/guides/uagent/servicefordungeons_3.png)
 
-It's recommended you alter the contract slightly, and follow the above steps so that you can run an agent, create a function for the agent and then have that agent accessible by DeltaV.
+It's recommended you alter the contract slightly, and follow the above steps so that you can run an Agent, create a function for the Agent and then have that Agent accessible by DeltaV.
 
 ## Description of your Agent Function
 
@@ -181,6 +181,6 @@ Similarly, a **Secondary** function is an Agent Sub-function providing secondary
 For further information and examples on how to register an Agent Function make it discoverable on DeltaV, check out our dedicated resources:
 
    - [Register Agentverse Functions ↗️](/guides/agentverse/agentverse-functions/registering-agent-services).
-   - [Register a coin toss agent as a Function ↗️](/guides/agentverse/agentverse-functions/registering-agent-coin-toss).
+   - [Register a coin toss Agent as a Function ↗️](/guides/agentverse/agentverse-functions/registering-agent-coin-toss).
 
 For any additional questions, the Team is waiting for you on [Discord ↗️](https://discord.gg/fetchai) and [Telegram ↗️](https://t.me/fetch_ai) channels.
