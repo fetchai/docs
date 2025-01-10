@@ -1,55 +1,194 @@
 # Agent Chat Protocol
 
-**Agents must strictly adhere to the chat protocol to enable seamless and consistent communication**. The chat protocol expects all message payloads to follow a structured yet flexible `{any: any}` format, where both keys and values can dynamically adapt to the context of the message.
+This guide walks you through the implementation of agent-to-agent communication using protocols. It includes registering protocols in an Almanac contract and understanding their metadata, which is stored as manifests.
 
-## Key Points
+## Overview
 
-- **Dynamic Payload**: The payload can follow the format `{any: any}`, ensuring flexibility in data exchange.
+In this implementation, two agents `InitiatorAgent` and a `ResponderAgent` communicate using predefined protocols. The agents exchange messages, and their protocols and models are registered in an Almanac contract. The metadata is stored as a manifest describing the protocol, models, and interactions.
 
-- **Message Structure**: Every message sent or received must conform to this structure, enabling seamless communication between Agents.
+## What Are Chat Protocols?
+Agent chat protocols define the rules and structure for communication between agents. They ensure that messages exchanged between agents are well-structured, predictable, and interoperable. In the context of agent-based systems, chat protocols specify:
 
-- **Example Usage**:
+- The types of messages agents can send and receive.
+- The sequence of interactions between agents.
+- How messages are processed and responded to.
 
-    Searching for Agents and sending a message:
-    
-    ```py copy
-    payload = {"any": "any"}
-  
-    send_message_to_agent(
-        sender=sender_identity,
-        target=ai.get("address", ""),
-        payload=payload,
-        session=uuid4()
-    )
-    ```
 
-- **Protocol Enforcement**:
+By defining and registering chat protocols in systems like the Almanac contract, you ensure reliable and maintainable communication across a distributed agent ecosystem.
 
-    Always ensure the message payload and responses align with `{any: any}` to maintain compatibility.
+## Protocols and Communication
 
-### When the payload in a message changes, two key things happen behind the scene
+### Message Models
 
-- **Payload Encoding**:
+- `RequestMessage`: Represents the request initiated by the sender.
+- `ResponseMessage`: Represents the response sent back by the receiver.
+- Both models ensure structured and predictable data exchange.
 
-    The payload, typically a JSON object, is first serialized into a string and then encoded using a method like Base64. Any change to the payload—whether it's altering a value, adding a key, or removing an entry—results in a completely different encoded string.
+```py copy
+class RequestMessage(Model):
+    text: str
 
-- **Signature Generation**:
+class ResponseMessage(Model):
+    text: str
+```
 
-    The signature is a cryptographic hash that verifies the integrity of the message. It is generated based on the encoded payload along with other fields such as the sender, target, session, and protocol digest. When the encoded payload changes, the signature must also change to reflect the updated data.
+### Initialize Agents
 
-This protocol standard simplifies Agents communication while allowing for diverse use cases without predefined schemas.
+Two agents, `InitiatorAgent` and ResponderAgent, are created with unique seeds for identity.
 
-```py 
+```py copy
+initiator_agent = Agent(
+    name="InitiatorAgent", 
+    seed="initiator recovery phrase", 
+)
+
+responder_agent = Agent(
+    name="ResponderAgent", 
+    seed="responder recovery phrase", 
+)
+```
+
+### Define Chat Protocols
+
+Protocols specify how agents interact. The `SimpleProtocol_Initiator` is for the initiator, and `SimpleProtocol_Responder` is for the responder.
+
+```py copy
+initiator_protocol = Protocol(name="SimpleProtocol_Initiator", version="0.1.0")
+responder_protocol = Protocol(name="SimpleProtocol_Responder", version="0.1.0")
+```
+
+### Implement Protocol Handlers
+Handlers define the interaction logic:
+1. Initiator Sends a Message Periodically:
+   
+   ```py copy
+   @initiator_protocol.on_interval(period=3.0)
+   async def initiator_send_message(ctx: Context):
+       await ctx.send(responder_agent.address, RequestMessage(text="Hello there from Initiator!"))
+   ```
+
+2. Responder Handles the Request and Replies:
+
+   ```py copy
+   @responder_protocol.on_message(RequestMessage, replies=ResponseMessage)
+   async def responder_handle_message(ctx: Context, sender: str, msg: RequestMessage):
+       ctx.logger.info(f"Received message from {sender}: {msg.text}")
+       await ctx.send(sender, ResponseMessage(text="Hello there from Responder!"))
+   ```
+
+3. Initiator Handles the Response:
+
+   ```py copy
+   @initiator_protocol.on_message(model=ResponseMessage)
+   async def initiator_handle_response(ctx: Context, sender: str, msg: ResponseMessage):
+       ctx.logger.info(f"Received response from {sender}: {msg.text}")
+   ```
+
+### Bureau Initialization
+The `Bureau` facilitates the agents' execution and connects them via an endpoint.
+
+```py copy
+bureau = Bureau(endpoint=["http://127.0.0.1:8000/submit"])
+bureau.add(initiator_agent)
+bureau.add(responder_agent)
+```
+
+### Main Function
+Agents include their respective protocols and register their metadata manifest with the Almanac contract.
+
+```py copy
+if __name__ == '__main__':
+    initiator_agent.include(initiator_protocol, publish_manifest=True)
+    responder_agent.include(responder_protocol, publish_manifest=True)
+    bureau.run()
+```
+
+## Metadata Manifest
+This is a registered manifest for agents in the Almanic system, defining communication protocols between the initiator and responder. It specifies message models for both requests and responses.
+When protocols are registered, metadata is stored in the Almanac as a manifest , Published Protocol Manifest looks something like this
+
+- for `initiator_agent` published manifest looks like:
+```json
 {
-  "version": 1,
-  "sender": "agent1qdtxzn2e0dg8y2v5y53p7frplt4w6wq36rfapv38g8x9ukgpc28fgfqnjug",
-  "target": "agent1qw7802t7qf98kg775k7f5v3f9h864c72eja2r94pumxnvyx3492xyzu8fmg",
-  "session": "2d744b6e-ad94-4397-ab56-8e2b6dd776e7",
-  "schema_digest": "model:708d789bb90924328daa69a47f7a8f3483980f16a1142c24b12972a2e4174bc6",
-  "protocol_digest": "proto:a03398ea81d7aaaf67e72940937676eae0d019f8e1d8b5efbadfef9fd2e98bb2",
-  "payload": "eyJhc2Rhc3Nzc3Nzc3Nzc3MiOiJhd3dkYXNkYWQifQ==",
-  "expires": null,
-  "nonce": null,
-  "signature": "sig13gcpvxhfytgzpu66xf8kfhnzx56pk2wmulfrplthjfqep4m5y6u77pq83c9934qsed4xucdjkhzw3n8490xqt75jnpmf939mkmkdgwqnngly4"
+  "version": "1.0",
+  "metadata": {
+    "name": "SimpleProtocol_Initiator",
+    "version": "0.1.0",
+    "digest": "proto:2a34b5504c58f43b2932cdd73358cebe0b668ea10e6796abba3dec8a4c50f25b"
+  },
+  "models": [
+    {
+      "digest": "model:465d2d900b616bb4082d4d7fcd9cc558643bb1b9b45660a7f546d5b5b5c0aba5",
+      "schema": {
+        "properties": {
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "ResponseMessage",
+        "type": "object"
+      }
+    }
+  ],
+  "interactions": []
+}
+```
+- for `responder_agent` published manifest looks like:
+
+```json
+{
+  "version": "1.0",
+  "metadata": {
+    "name": "SimpleProtocol_Responder",
+    "version": "0.1.0",
+    "digest": "proto:c93ed21a1091272c178c4f6b05619405204e6458294b4a6ee080299bf20e619a"
+  },
+  "models": [
+    {
+      "digest": "model:ae2de187153cc7a80641a52927aa2852a820cd56bbbdb8671a0d1e643472f9b7",
+      "schema": {
+        "properties": {
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "RequestMessage",
+        "type": "object"
+      }
+    },
+    {
+      "digest": "model:465d2d900b616bb4082d4d7fcd9cc558643bb1b9b45660a7f546d5b5b5c0aba5",
+      "schema": {
+        "properties": {
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "ResponseMessage",
+        "type": "object"
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "type": "normal",
+      "request": "model:ae2de187153cc7a80641a52927aa2852a820cd56bbbdb8671a0d1e643472f9b7",
+      "responses": [
+        "model:465d2d900b616bb4082d4d7fcd9cc558643bb1b9b45660a7f546d5b5b5c0aba5"
+      ]
+    }
+  ]
 }
 ```
