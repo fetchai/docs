@@ -1,20 +1,34 @@
+import { Callout } from 'nextra/components'
+
 # Agent Chat Protocol
 
 This guide walks you through the implementation of agent-to-agent communication using protocols. It includes registering protocols in an Almanac contract and understanding their metadata, which is stored as manifests.
 
-## Overview
+## What is Protocol?
 
-In this implementation, two agents `InitiatorAgent` and a `ResponderAgent` communicate using predefined protocols. The agents exchange messages, and their protocols and models are registered in an Almanac contract. The metadata is stored as a manifest describing the protocol, models, and interactions.
+A protocol is a self-contained collection of message handlers. Its digest ensures that the protocol reliably supports the intended messages, serving as a unique identifier for the specific implementation.
+
+### When to Use Protocols  
+
+Protocols are designed for modular and reusable communication behavior. They are essential for scaling ecosystems by enabling interoperability.  
+
+- **Reusable Communication**: Support predefined message structures to connect with existing systems effortlessly.  
+- **Compatibility**: Following protocols ensures seamless communication between agents.  
+- **Scalability**: Standardized interactions allow the ecosystem to grow and integrate new agents easily.  
 
 ## What Are Chat Protocols?
+
 Agent chat protocols define the rules and structure for communication between agents. They ensure that messages exchanged between agents are well-structured, predictable, and interoperable. In the context of agent-based systems, chat protocols specify:
 
 - The types of messages agents can send and receive.
 - The sequence of interactions between agents.
 - How messages are processed and responded to.
 
+<Callout type="info" emoji="💡"> In a multi-agent system, agents are identified by their interactive behavior—what output they provide in response to given input. Code unrelated to interactions is irrelevant, as it does not affect observable behavior. Therefore, only protocols have manifests, not agents. </Callout>
 
-By defining and registering chat protocols in systems like the Almanac contract, you ensure reliable and maintainable communication across a distributed agent ecosystem.
+## Overview
+
+In this implementation, two agents, `InitiatorAgent` and a `ResponderAgent`, communicate using predefined protocols. The agents exchange messages, and their protocols and models are registered in an Almanac contract. The metadata is stored as a manifest describing the protocol, models, and interactions.
 
 ## Protocols and Communication
 
@@ -61,28 +75,28 @@ responder_protocol = Protocol(name="SimpleProtocol_Responder", version="0.1.0")
 Handlers define the interaction logic:
 1. Initiator Sends a Message Periodically:
    
-   ```py copy
-   @initiator_protocol.on_interval(period=3.0)
-   async def initiator_send_message(ctx: Context):
-       await ctx.send(responder_agent.address, RequestMessage(text="Hello there from Initiator!"))
-   ```
+```py copy
+@initiator_protocol.on_interval(period=3.0)
+async def initiator_send_message(ctx: Context):
+    await ctx.send(responder_agent.address, RequestMessage(text="Hello there from Initiator!"))
+```
 
 2. Responder Handles the Request and Replies:
 
-   ```py copy
-   @responder_protocol.on_message(RequestMessage, replies=ResponseMessage)
-   async def responder_handle_message(ctx: Context, sender: str, msg: RequestMessage):
-       ctx.logger.info(f"Received message from {sender}: {msg.text}")
-       await ctx.send(sender, ResponseMessage(text="Hello there from Responder!"))
-   ```
+```py copy
+@responder_protocol.on_message(RequestMessage, replies=ResponseMessage)
+async def responder_handle_message(ctx: Context, sender: str, msg: RequestMessage):
+    ctx.logger.info(f"Received message from {sender}: {msg.text}")
+    await ctx.send(sender, ResponseMessage(text="Hello there from Responder!"))
+```
 
 3. Initiator Handles the Response:
 
-   ```py copy
-   @initiator_protocol.on_message(model=ResponseMessage)
-   async def initiator_handle_response(ctx: Context, sender: str, msg: ResponseMessage):
-       ctx.logger.info(f"Received response from {sender}: {msg.text}")
-   ```
+```py copy
+@initiator_protocol.on_message(model=ResponseMessage)
+async def initiator_handle_response(ctx: Context, sender: str, msg: ResponseMessage):
+    ctx.logger.info(f"Received response from {sender}: {msg.text}")
+```
 
 ### Bureau Initialization
 The `Bureau` facilitates the agents' execution and connects them via an endpoint.
