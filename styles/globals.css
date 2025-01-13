@@ -1709,11 +1709,11 @@ video {
 }
 
 .nx-text-3xl {
-  font-size: 1.875rem;
+  font-size: 1.75rem;
 }
 
 .nx-text-4xl {
-  font-size: 2.25rem;
+  font-size: 2rem;
 }
 
 .nx-text-\[\.9em\] {
@@ -1725,7 +1725,7 @@ video {
 }
 
 .nx-text-base {
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .nx-text-lg {
@@ -4032,6 +4032,10 @@ input[type="search"]::-webkit-search-results-decoration {
   background-color: #5f38fb;
 }
 
+.nx-bg-chatwithus {
+  background-color: #5f38fb;
+}
+
 :is(html[class~="dark"] .dark\:nx-bg-dark-mode-white-10) {
   background-color: #363841;
 }
@@ -4802,7 +4806,7 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
   border-radius: 12px;
   color: #5f38fb;
   background: #efebff;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 :is(html[class~="dark"] .link-active) {
@@ -4816,7 +4820,7 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
   align-items: center;
   border-radius: 12px;
   background: #efebff;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 :is(html[class~="dark"] .link-hover) {
@@ -4827,7 +4831,7 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 .link-text {
   color: #5f38fb;
   font-weight: 400;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 :is(html[class~="dark"] .link-text) {
@@ -5412,4 +5416,84 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 
 #code-block-outer #modified-copy {
   display: none;
+}
+
+:is(html[class~="dark"] .chat-with-usInput) {
+  background-color: #363841;
+}
+
+.chat-with-usInput:focus-visible {
+  --tw-ring-shadow: none;
+  box-shadow: none;
+  --tw-ring-opacity: 1;
+  --tw-ring-color: none;
+  --tw-ring-offset-width: 0;
+  --tw-ring-offset-color: transparent;
+}
+
+.dot-animation {
+  width: 10px;
+  height: 12px;
+  background-color: #4b5563;
+  border-radius: 50%;
+  animation: dot-flash 1.5s infinite;
+  margin-right: 4px;
+}
+
+.dot-animation:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dot-animation:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot-animation:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dot-flash {
+  0%,
+  80%,
+  100% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+pre:not([data-theme]) {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+#code-single {
+  background-color: rgba(52, 52, 52, 0.08) !important;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 250px;
+  background-color: rgba(239, 244, 255, 1);
+  color: rgba(52, 55, 57, 1);
+  border-radius: 10px;
+  position: absolute;
+  bottom: 125%;
+  transform: translateX(-50%);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: small;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
