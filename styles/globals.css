@@ -5472,28 +5472,14 @@ pre:not([data-theme]) {
   background-color: rgba(52, 52, 52, 0.08) !important;
 }
 
-.tooltip {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
+@media (max-width: 768px) {
+  .show-on-small {
+    display: block !important;
+  }
 }
 
-.tooltip-text {
-  visibility: hidden;
-  width: 250px;
-  background-color: rgba(239, 244, 255, 1);
-  color: rgba(52, 55, 57, 1);
-  border-radius: 10px;
-  position: absolute;
-  bottom: 125%;
-  transform: translateX(-50%);
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-size: small;
-}
-
-.tooltip:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
+@media (min-width: 769px) {
+  .show-on-small {
+    display: none !important;
+  }
 }

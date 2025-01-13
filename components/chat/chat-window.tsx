@@ -51,16 +51,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
   return (
     <div className="nx-fixed nx-bottom-0 md:nx-bottom-3 nx-right-0 md:nx-right-3 nx-w-full nx-max-w-md dark:nx-bg-[#242630] nx-bg-[#F3F5F8] nx-shadow-xl nx-rounded-xl nx-z-[51] nx-pb-6">
-      <div className="nx-flex nx-justify-between nx-items-center dark:nx-bg-none nx-bg-gradient-to-b  nx-py-3 nx-from-[rgba(95,56,251,0.1)] nx-to-[rgba(208,234,255,0.1)] nx-rounded-xl nx-px-6">
-        <div className="tooltip">
-          <div className="nx-p-1 nx-bg-[#5f38fb] nx-font-normal nx-text-sm nx-rounded-md nx-text-white">
-            Beta
-          </div>
-          <div className="tooltip-text nx-p-2">
-            Our chat agent is in training, and results will improve with use
-          </div>
-        </div>
-        <button onClick={onClose} className="nx-text-[#000D3D]">
+      <div className="nx-flex nx-justify-between nx-items-center dark:nx-bg-none nx-bg-gradient-to-b nx-from-[rgba(95,56,251,0.1)] nx-to-[rgba(208,234,255,0.1)] nx-rounded-xl nx-px-6">
+        <h3 className="nx-text-lg nx-font-semibold"></h3>
+        <button onClick={onClose} className="nx-text-[#000D3D] nx-mt-6">
           &#x2715;
         </button>
       </div>

@@ -178,7 +178,9 @@ const Body = ({
             headings: structuredHeadings,
           })}
       </article>
-      <ChatWithUs />
+      <div className="nx-hidden md:nx-flex">
+        <ChatWithUs />
+      </div>
     </>
   );
 };
