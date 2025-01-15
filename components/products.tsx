@@ -71,7 +71,7 @@ const Item = ({
             className={
               hover
                 ? "nx-text-purple nx-text-base nx-font-medium nx-mb-2"
-                : "nx-text-black dark:nx-text-[#E9E9EA] nx-text-lg nx-font-medium nx-mb-2"
+                : "nx-text-black dark:nx-text-[#E9E9EA] nx-text-base nx-font-medium nx-mb-2"
             }
           >
             {item.title}
