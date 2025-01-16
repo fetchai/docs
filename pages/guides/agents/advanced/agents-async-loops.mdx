@@ -31,6 +31,7 @@ First of all, let's create a Python script:
     touch external_loop_attach.py
     ```
 </DocsCode>
+
 <DocsCode windows={true}>
     ```py copy filename="windows"
     echo. > external_loop_attach.py
@@ -41,7 +42,7 @@ First of all, let's create a Python script:
     ```py copy filename="ubuntu"
     touch external_loop_attach.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
@@ -111,19 +112,15 @@ Now, paste the below code into it:
 
 </CodeGroup>
 
-
-
-    This script is for an agent using an external event loop. We first import the required libraries for this script to be run correctly. We then proceed and instantiate an agent called `looper` using a `seed`. Remember that you need to provide a seed within the `<YOUR_SEED>` field parameter. We then need to create a `bureau` to manage the agents. We can now add the `looper` agent into the `bureau`.
-
-    We can proceed and define a `startup()` function decorated using the `.on_event("startup")` decorator. The function is triggered when the agent is started and it logs a message indicating the agent has started. Similarly, the `shutdown()` function is triggered when the agent shuts down, logging an appropriate message.
-
-    We go on and define a function `coro()` which simulates a separate, long-running task that will print `"Doing hard work..."` every second. This task runs independently of the agent and showcases the agents' ability to handle multiple simultaneous tasks. We now need to attach both the agent and the external task (`coro`) to the same event loop using `loop.create_task()`. This allows both the agent and other tasks to execute simultaneously in an asynchronous way.
-
-    In the `__main__` block, we define a message to be printed indicating that the process of attaching the agent or bureau to the asynchronous event loop has started. The `loop.create_task(coro())` adds a coroutine (`coro`) to the event loop. `coro` is the task performing `"doing hard work..."` asynchronously. This allows the task to run simultaneously with other tasks managed by the event loop without blocking the rest of the program.
-
-    The agent is attached to the external event loop by using `loop.create_task()` to schedule the agent's asynchronous operation. The method `agent.run_async()` is a non-blocking function that runs the agent within the event loop, allowing the agent to perform its tasks and handle events simultaneously.
-
-    Finally, in the last line we create a context manager that suppresses `KeyboardInterrupt` exceptions, which are typically raised when the user presses `Ctrl+C` to stop the program. This ensures that the program can shut down without printing a traceback or throwing an error when the user stops it manually.
+    This script demonstrates using an agent with an external event loop. We begin by importing the necessary libraries; we then proceed and instantiate an Agent named `looper` with a `seed` (`<YOUR_SEED>`). Then, we create a `bureau` to manage the Agent.
+    
+    The `startup()` function, marked with the `.on_event("startup")` decorator, logs a message when the Agent starts, while the `shutdown()` function logs a message when the Agent shuts down.
+    
+    A `coro()` function simulates a long-running task that prints `"Doing hard work..."` every second. This task runs independently, highlighting the Agent's ability to handle multiple simultaneous tasks. Both the Agent and the external task (`coro`) are attached to the event loop using `loop.create_task()`, allowing them to execute simultaneously.
+    
+    In the `__main__` block, a message indicates the process of attaching tasks to the event loop. The `loop.create_task(coro())` schedules the `coro` task, and `loop.create_task(agent.run_async())` schedules the Agent's operations, enabling both to run without blocking other tasks.
+    
+    Finally, a context manager suppresses `KeyboardInterrupt` exceptions (which are typically raised when the user presses `Ctrl+C` to stop the program) thus ensuring the program shuts down gracefully without errors or tracebacks.
 
 ### Script 2
 
