@@ -130,7 +130,7 @@ Through the **Agentverse** you can set up [Mailboxes ↗️](/guides/agents/inte
 
 Let's start by creating a local Agent named `alice` with a `handle_message()` function using an `@agent.on_message()` decorator to handle messages received by other Agents and matching the `Message` class:
 
-<GithubCodeSegment digest="6f746d8a2a6a98c302b05243a56544ed">
+<GithubCodeSegment digest="fa39f9f346729bcb34ef3fdcffbdb568">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/options-for-running-local-agents/agent_mailbox.py"
         lineStart={1}
@@ -138,47 +138,48 @@ Let's start by creating a local Agent named `alice` with a `handle_message()` fu
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='6f746d8a2a6a98c302b05243a56544ed'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='fa39f9f346729bcb34ef3fdcffbdb568'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_mailbox.py"
 
-	from uagents import Agent, Context, Model
-	
-	
-	class Message(Model):
-	    message: str
-	
-	
-	# First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
-	SEED_PHRASE = "put_your_seed_phrase_here"
-	
-	# Now your agent is ready to join the agentverse!
-	agent = Agent(
-	    name="alice",
-	    seed=SEED_PHRASE,
-	    port=8000,
-	    mailbox=True
-	)
-	
-	# Copy the address shown below
-	print(f"Your agent's address is: {agent.address}")
-	
-	@agent.on_message(model=Message, replies={Message})
-	async def handle_message(ctx: Context, sender: str, msg: Message):
-	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-	
-	
-	if __name__ == "__main__":
-	    agent.run()
-
-```
+    from uagents import Agent, Context, Model
+    
+    
+    class Message(Model):
+        message: str
+    
+    
+    # First generate a secure seed phrase (e.g. https://pypi.org/project/mnemonic/)
+    SEED_PHRASE = "put_your_seed_phrase_here"
+    
+    # Now your agent is ready to join the agentverse!
+    agent = Agent(
+        name="alice",
+        seed=SEED_PHRASE,
+        port=8000,
+        mailbox=True
+    )
+    
+    # Copy the address shown below
+    print(f"Your agent's address is: {agent.address}")
+    
+    
+    @agent.on_message(model=Message, replies={Message})
+    async def handle_message(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+    
+    
+    if __name__ == "__main__":
+        agent.run()
+    ```
 </DocsCode>
 
 </CodeGroup>
 
 
-To correctly run this code, you need to provide the `AGENT_MAILBOX_KEY`, `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters.
+
+To correctly run this code, you need to provide the `SEED_PHRASE`, `name`, `seed`  and `mailbox` parameters.
 
 You can now connect your local Agent to the Agentverse using a **Mailbox**. To do so, run the local Agent and head over to the Inspector UI by clicking the dedicated link showing up within your terminal output.
 
@@ -202,7 +203,6 @@ Move on until you reach the end. Once you finalize the steps required, you shoul
     INFO:     [Alice]: Registering on almanac contract...complete
     INFO:     [mailbox]: Successfully registered as mailbox agent in Agentverse
     ```
-
 
 Now your Agent doesn't need to run all the time as their messages will be waiting for them for when they come back online!
 

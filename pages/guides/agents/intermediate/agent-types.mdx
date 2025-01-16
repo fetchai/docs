@@ -48,31 +48,34 @@ In order to set up a mailbox for a local Agent, you first need to create and con
 <DocsCode local={true}>
 	```py copy filename="mailbox_agent.py"
 
-	from uagents import Agent, Context, Model
-	
-	
-	class Message(Model):
-	    message: str
-	
+    from uagents import Agent, Context, Model
+    
+    
+    class Message(Model):
+        message: str
+    
+    
     SEED_PHRASE = "put_your_seed_phrase_here"
-	
-	# Now your agent is ready to join the agentverse!
-	agent = Agent(
-	    name="alice",
+    
+    # Now your agent is ready to join the agentverse!
+    agent = Agent(
+        name="alice",
         port=8000,
         mailbox=True
-	)
-	
-	# Copy the address shown below
-	print(f"Your agent's address is: {agent.address}")
-	
-	if __name__ == "__main__":
-	    agent.run()
+    )
+    
+    # Copy the address shown below
+    print(f"Your agent's address is: {agent.address}")
+    
+    if __name__ == "__main__":
+        agent.run()
 
     ```
 </DocsCode>
 
 </CodeGroup>
+
+
 
 Once you run this Agent, you will be able to see a link in your terminal output redirecting you towards the [Local Agent Inspector ↗️](/guides/agents/intermediate/local-agent-inspector) for this specific Agent on the [Agentverse ↗️](https://agentverse.ai/).
 
@@ -88,25 +91,43 @@ A Proxy serves as a bridge between your Agent and the Agentverse, allowing the A
 
 Consider the following basic Agent with a proxy:
 
-```py copy filename="proxy_agent.py"
-from uagents import Agent, Context, Model
+<GithubCodeSegment digest="34a28178dacd61a4b26b04b2391d0ddc">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/agent-types/proxy_agent.py"
+        lineStart={1}
+        lineEnd={17}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='34a28178dacd61a4b26b04b2391d0ddc'>
 
-class Message(Model):
-    message: str
+<DocsCode local={true}>
+	```py copy filename="proxy_agent.py"
 
-# Initialize the agent
-agent = Agent(
-    name="alice",
-    seed="your_agent_seed_phrase",
-    proxy=True
-)
+	from uagents import Agent, Context, Model
+	
+	class Message(Model):
+	    message: str
+	
+	# Initialize the agent
+	agent = Agent(
+	    name="alice",
+	    seed="your_agent_seed_phrase",
+	    proxy=True
+	)
+	
+	# Display the agent's address
+	print(f"Your agent's address is: {agent.address}")
+	
+	if __name__ == "__main__":
+	    agent.run()
 
-# Display the agent's address
-print(f"Your agent's address is: {agent.address}")
-
-if __name__ == "__main__":
-    agent.run()
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 Run the Agent and access the Agent Inspector using the terminal output. Log in to the Agentverse and configure the Proxy connection by providing the public URL or IP address of your Agent. Verify and finalize the setup. Using a Proxy ensures that Agents remain discoverable and can interact with others in the Agentverse, enhancing engagement and visibility in the Marketplace. 
 

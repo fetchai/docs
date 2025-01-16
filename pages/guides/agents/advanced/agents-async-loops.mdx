@@ -112,14 +112,16 @@ Now, paste the below code into it:
 
 </CodeGroup>
 
+
+
     This script demonstrates using an agent with an external event loop. We begin by importing the necessary libraries; we then proceed and instantiate an Agent named `looper` with a `seed` (`<YOUR_SEED>`). Then, we create a `bureau` to manage the Agent.
-    
+
     The `startup()` function, marked with the `.on_event("startup")` decorator, logs a message when the Agent starts, while the `shutdown()` function logs a message when the Agent shuts down.
-    
+
     A `coro()` function simulates a long-running task that prints `"Doing hard work..."` every second. This task runs independently, highlighting the Agent's ability to handle multiple simultaneous tasks. Both the Agent and the external task (`coro`) are attached to the event loop using `loop.create_task()`, allowing them to execute simultaneously.
-    
+
     In the `__main__` block, a message indicates the process of attaching tasks to the event loop. The `loop.create_task(coro())` schedules the `coro` task, and `loop.create_task(agent.run_async())` schedules the Agent's operations, enabling both to run without blocking other tasks.
-    
+
     Finally, a context manager suppresses `KeyboardInterrupt` exceptions (which are typically raised when the user presses `Ctrl+C` to stop the program) thus ensuring the program shuts down gracefully without errors or tracebacks.
 
 ### Script 2
