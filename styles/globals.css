@@ -4049,9 +4049,9 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 :is(
-    html[class~="dark"]
-      .dark\:nx-bg-\[linear-gradient\(1deg\,\#383838\,\#212121\)\]
-  ) {
+  html[class~="dark"]
+    .dark\:nx-bg-\[linear-gradient\(1deg\,\#383838\,\#212121\)\]
+) {
   background-image: linear-gradient(1deg, #383838, #212121);
 }
 
@@ -4162,9 +4162,9 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 :is(
-    html[class~="dark"]
-      .dark\:nx-shadow-\[0_-1px_0_rgba\(255\,255\,255\,\.1\)_inset\]
-  ) {
+  html[class~="dark"]
+    .dark\:nx-shadow-\[0_-1px_0_rgba\(255\,255\,255\,\.1\)_inset\]
+) {
   --tw-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
   --tw-shadow-colored: inset 0 -1px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 transparent),
@@ -4390,8 +4390,8 @@ input[type="search"]::-webkit-search-results-decoration {
   }
 
   :is(
-      html[class~="dark"] .contrast-more\:dark\:hover\:nx-border-gray-50:hover
-    ) {
+    html[class~="dark"] .contrast-more\:dark\:hover\:nx-border-gray-50:hover
+  ) {
     --tw-border-opacity: 1;
     border-color: rgba(249, 250, 251, var(--tw-border-opacity));
   }
@@ -5472,28 +5472,14 @@ pre:not([data-theme]) {
   background-color: rgba(52, 52, 52, 0.08) !important;
 }
 
-.tooltip {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
+@media (max-width: 768px) {
+  .show-on-small {
+    display: block !important;
+  }
 }
 
-.tooltip-text {
-  visibility: hidden;
-  width: 250px;
-  background-color: rgba(239, 244, 255, 1);
-  color: rgba(52, 55, 57, 1);
-  border-radius: 10px;
-  position: absolute;
-  bottom: 125%;
-  transform: translateX(-50%);
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-size: small;
-}
-
-.tooltip:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
+@media (min-width: 769px) {
+  .show-on-small {
+    display: none !important;
+  }
 }
