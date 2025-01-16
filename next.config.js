@@ -658,7 +658,8 @@ module.exports = withNextra({
       },
       {
         source: "/concepts/agent-services/agent-explorer",
-        destination: "/guides/agentverse/creating-agentverse-agents/agent-explorer",
+        destination:
+          "/guides/agentverse/creating-agentverse-agents/agent-explorer",
         permanent: true,
       },
     ];
