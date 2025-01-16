@@ -315,7 +315,9 @@ function LandingPage() {
         </p>
         <Products />
       </section>
-      <ChatWithUs />
+      <div className="nx-hidden md:nx-flex">
+        <ChatWithUs />
+      </div>
     </section>
   );
 }
