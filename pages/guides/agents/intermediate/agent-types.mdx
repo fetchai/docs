@@ -1,10 +1,10 @@
 import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
 
-# Hosted, Local, and Mailbox Agents
+# Hosted, Local, Mailbox and Proxy Agents
 
 Agents operate in various environments depending on how they are created and deployed. 
 
-Understanding the difference between **Hosted**, **Local**, and **Mailbox Agents** helps developers choose the right setup for their needs.
+Understanding the difference between **Hosted**, **Local**, **Mailbox** and **Proxy** Agents helps developers choose the right setup for their needs.
 
 ## Hosted Agents
 
@@ -18,13 +18,9 @@ Developers can start with blank scripts or use customizable templates for common
 
 ## Local Agents
 
-Local Agents run on your machine or infrastructure, providing complete control over their environment, configuration, and execution. Unlike hosted Agents, they handle real-time events, messages, and tasks continuously, making them ideal for persistent state and direct access to local resources.
+Local Agents run on your machine or infrastructure, providing complete control over their environment, configuration, and execution. Unlike hosted Agents, they handle real-time events, messages, and tasks continuously, making them ideal for persistent state and direct access to local resources. Local Agents integrate with any Python package or custom module, supporting advanced capabilities like machine learning and data processing. They maintain persistent state across function executions, unlike hosted Agents, where state resets after each call. Setting up a Local Agent requires a Python environment, dependencies, and running the Agent script. They can operate continuously or within Docker containers for scalability and isolation.
 
-Using the uAgents Framework, Local Agents integrate with any Python package or custom module, supporting advanced capabilities like machine learning and data processing. They maintain persistent state across function executions, unlike hosted Agents, where state resets after each call. Setting up a Local Agent requires a Python environment, dependencies, and running the Agent script. They can operate continuously or within Docker containers for scalability and isolation.
-
-Local Agents are perfect for high-performance, real-time applications requiring deep customization, resource management, and seamless integration with local services.
-
-Head over to the following resource for a better understanding of Agents and their applications:
+Local Agents are perfect for high-performance, real-time applications requiring deep customization, resource management, and direct integration with local functions. Head over to the following resource for a better understanding of Agents and their applications:
 
     - [Agents - uAgents Framework ↗️](/guides/agents/getting-started/whats-an-agent).
     - [Creating your first agent ↗️](/guides/agents/getting-started/create-a-uagent).
@@ -73,15 +69,45 @@ In order to set up a mailbox for a local Agent, you first need to create and con
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
 
-Now, run this Agent. You will be able to see a link in your terminal output redirecting you towards the [Local Agent Inspector ↗️](/guides/agents/intermediate/local-agent-inspector) for this specific Agent on the [Agentverse ↗️](https://agentverse.ai/). Click on this URL. You will be redirected to the Inspector UI where you can check multiple details about the local Agent you have just run.
+Once you run this Agent, you will be able to see a link in your terminal output redirecting you towards the [Local Agent Inspector ↗️](/guides/agents/intermediate/local-agent-inspector) for this specific Agent on the [Agentverse ↗️](https://agentverse.ai/).
 
 ![](src/images/guides/inspector/local_agent_inspector.png)
 
-Now, click on **Connect** and then on **Mailbox** options and follow the steps closely in order to correctly set up a mailbox for your local Agent. To test your Mailbox setup, you can create another Agent (on Agentverse for instance) that sends messages to the Mailbox while the first Agent is offline. When the first agent comes back online, it will retrieve and process the stored messages. 
+By clicking the **Connect** button and then choosing **Mailbox** you will be guided into correctly setting up a mailbox for your local Agent. To test your Mailbox setup, you can create another Agent (on Agentverse for instance) that sends messages to the Mailbox while the first Agent is offline. When the first Agent comes back online, it will retrieve and process the stored messages. 
 
 For a complete example, check out this [guide ↗️](/guides/agentverse/agentverse-mailbox/utilising-the-mailbox). For a more complex example of an Agent using a Mailbox, check out the following [guide ↗️](/guides/agents/intermediate/langchain-rag-agent).
+
+## Proxy Agents
+
+A Proxy serves as a bridge between your Agent and the Agentverse, allowing the Agent to publish interaction data without needing a Mailbox. This setup is particularly beneficial for Agents requiring continuous operation and visibility in the [Agentverse Marketplace ↗️](/concepts/agent-services/agent-explorer).
+
+Consider the following basic Agent with a proxy:
+
+```py copy filename="proxy_agent.py"
+from uagents import Agent, Context, Model
+
+class Message(Model):
+    message: str
+
+# Initialize the agent
+agent = Agent(
+    name="alice",
+    seed="your_agent_seed_phrase",
+    proxy=True
+)
+
+# Display the agent's address
+print(f"Your agent's address is: {agent.address}")
+
+if __name__ == "__main__":
+    agent.run()
+```
+
+Run the Agent and access the Agent Inspector using the terminal output. Log in to the Agentverse and configure the Proxy connection by providing the public URL or IP address of your Agent. Verify and finalize the setup. Using a Proxy ensures that Agents remain discoverable and can interact with others in the Agentverse, enhancing engagement and visibility in the Marketplace. 
+
+For a complete overview of the PRoxy setup, check out this [guide ↗️](/guides/agents/intermediate/agent-proxy).
