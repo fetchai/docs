@@ -5,8 +5,9 @@ import { useRouter } from "next/router";
 import type { Heading } from "nextra";
 import { useFSRoute } from "nextra/hooks";
 import { ArrowRightIcon } from "nextra/icons";
-import type { Item, MenuItem, PageItem } from "nextra/normalize-pages";
+import type {MenuItem } from "nextra/normalize-pages";
 import type { ReactElement } from "react";
+import Image from 'next/image'
 import {
   createContext,
   memo,
@@ -23,6 +24,37 @@ import { Anchor } from "./anchor";
 import { Collapse } from "./collapse";
 import { WITH_INDEXED_PAGES } from "../constants";
 import ChatWithUs from "components/chat/chat-with-us";
+import { M as MdxFile, F as Folder } from 'nextra/dist/types-2e9b0ab5.js';
+import {z} from "zod";
+import {PageTheme} from "nextra/dist/normalize-pages";
+
+declare const displaySchema: z.ZodEnum<["normal", "hidden", "children"]>;
+type Display = z.infer<typeof displaySchema>;
+type FolderWithoutChildren = Omit<Folder, 'children'>;
+
+type Item = (MdxFile | FolderWithoutChildren) & {
+    title: string;
+    icon : string;
+    type: string;
+    children?: Item[];
+    display?: Display;
+    withIndexPage?: boolean;
+    theme?: PageTheme;
+    isUnderCurrentDocsTree?: boolean;
+};
+
+type PageItem = (MdxFile | FolderWithoutChildren) & {
+    title: string;
+    type: string;
+    icon : string;
+    href?: string;
+    newWindow?: boolean;
+    children?: PageItem[];
+    firstChildRoute?: string;
+    display?: Display;
+    withIndexPage?: boolean;
+    isUnderCurrentDocsTree?: boolean;
+};
 
 const TreeState: Record<string, boolean> = Object.create(null);
 
@@ -277,6 +309,7 @@ function File({
     return <Separator title={item.title} />;
   }
 
+  // @ts-ignore
   return (
     <li className={cn(classes.list, { active }, "nx-w-full")}>
       <Anchor
@@ -299,7 +332,7 @@ function File({
             filesVisited?.length > 0 &&
             filesVisited?.some((file) => file == item.title)
               ? `${item.title} ✅`
-              : item.title,
+                : <div className="nx-flex"><img src={item.icon} className="nx-mr-2 nx-w-9 nx-h-9" />{item.title}</div>,
           type: item.type,
           route: item.route,
         })}
