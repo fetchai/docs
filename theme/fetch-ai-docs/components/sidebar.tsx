@@ -309,7 +309,25 @@ function File({
     return <Separator title={item.title} />;
   }
 
-  // @ts-ignore
+  const [baseUrl, setBaseUrl] = useState('');
+
+  useEffect(() => {
+    // Ensure this runs only in the browser
+    if (typeof window !== 'undefined') {
+      const currentUrl = window.location.href;
+
+      // Create a URL object
+      const url = new URL(currentUrl);
+
+      // Extract the base URL (up to "docs/")
+      const basePath = url.pathname.split('/').slice(0, 2).join('/');
+      const base = `${url.origin}${basePath}/`;
+
+      setBaseUrl(base);
+    }
+  }, []);
+
+
   return (
     <li className={cn(classes.list, { active }, "nx-w-full")}>
       <Anchor
@@ -332,7 +350,7 @@ function File({
             filesVisited?.length > 0 &&
             filesVisited?.some((file) => file == item.title)
               ? `${item.title} ✅`
-                : <div className="nx-flex"><img src={item.icon} className="nx-mr-2 nx-w-9 nx-h-9" />{item.title}</div>,
+                : item.icon ? <div className="nx-flex"><img src={baseUrl + item.icon} className="nx-mr-2 nx-w-9 nx-h-9" />{item.title}</div>  : item.title,
           type: item.type,
           route: item.route,
         })}
