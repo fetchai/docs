@@ -62,8 +62,6 @@ AGENTVERSE_KEY = os.environ.get('AGENTVERSE_KEY', "")
 if AGENTVERSE_KEY == "":
     sys.exit("Environment variable AGENTVERSE_KEY not defined")
 
-
-
 # You wouldn't normally want to expose the registration logic like this,
 # but it works for a nice demo.
 @app.route('/register', methods=['GET'])
@@ -105,7 +103,6 @@ def register():
     )
 
     return {"status": "Agent registered"}
-
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -153,7 +150,6 @@ def webhook():
     )
     return {"status": "Agent message processed"}
 
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
 
@@ -179,7 +175,6 @@ send_message_to_agent(
 ```
 
 Sending messages to Agents is really simple. Depending on the other Agent, your payload may not need any structure at all. `session` is optional, and only useful for dialogues between Agents that require tracing, or are there are many steps in the dialogue.
-
 
 ## The Search agent
 
@@ -232,7 +227,6 @@ def register():
 
     return {"status": "Agent registered"}
 
-
 @app.route('/search', methods=['GET'])
 def search():
     query = "I want a tarot reading"
@@ -257,7 +251,6 @@ def search():
 
         return {"status": "Agent searched"}
 
-
 @app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
@@ -274,10 +267,8 @@ def webhook():
 
     return {"status": "Agent message processed"}
 
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5002, debug=True)
-
 
 ```
 
