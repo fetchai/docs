@@ -10,6 +10,7 @@ import "./polyfill";
 import type { PageTheme } from "nextra/normalize-pages";
 import { normalizePages } from "nextra/normalize-pages";
 import { ErrorBoundary } from "react-error-boundary";
+import ChatWithUs from "components/chat/chat-with-us";
 import {
   Banner,
   Breadcrumb,
@@ -177,6 +178,9 @@ const Body = ({
             headings: structuredHeadings,
           })}
       </article>
+      <div className="nx-hidden md:nx-flex">
+        <ChatWithUs />
+      </div>
     </>
   );
 };

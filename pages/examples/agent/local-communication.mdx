@@ -18,15 +18,21 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 ### Agent 1
 
-<GithubCodeSegment digest="f0f958fe26918f1100eb2e1a2cf98a1d">
+<GithubCodeSegment digest="60ee49a55d8fdad80b9cd0ba12bd9c27">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_1.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_1/local/agent_1.py"
         lineStart={1}
         lineEnd={23}
         hosted={true}
     />
+	<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_1/hosted/agent_1.py"
+        lineStart={1}
+        lineEnd={13}
+        hosted={false}
+    />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='f0f958fe26918f1100eb2e1a2cf98a1d'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='60ee49a55d8fdad80b9cd0ba12bd9c27'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_1.py"
@@ -58,21 +64,47 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 ```
 </DocsCode>
 
+<DocsCode local={false}>
+	```py copy filename="agent_1.py"
+
+	from uagents import Agent, Context, Model
+	 
+	# NOTE: Run agent1.py before running agent2.py
+	 
+	class Message(Model):
+	    message: str
+	 
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
+	 
+	    # send the response
+	    await ctx.send(sender, Message(message="Hello there alice."))
+
+```
+</DocsCode>
+
 </CodeGroup>
 
 
 
 ### Agent 2
 
-<GithubCodeSegment digest="2d389e050795854fd37df916b3c9bacb">
+<GithubCodeSegment digest="50ebda6a0eaa4915b5982621326579bc">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_2.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_2/local/agent_2.py"
         lineStart={1}
         lineEnd={26}
         hosted={true}
     />
+	<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_2/hosted/agent_2.py"
+        lineStart={1}
+        lineEnd={16}
+        hosted={false}
+    />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='2d389e050795854fd37df916b3c9bacb'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='50ebda6a0eaa4915b5982621326579bc'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_2.py"
@@ -103,6 +135,29 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	 
 	if __name__ == "__main__":
 	    alice.run()
+
+```
+</DocsCode>
+
+<DocsCode local={false}>
+	```py copy filename="agent_2.py"
+
+	from uagents import Agent, Context, Model
+	 
+	class Message(Model):
+	    message: str
+	 
+	RECIPIENT_ADDRESS = (
+	    "test-agent://agent1q2kxet3vh0scsf0sm7y2erzz33cve6tv5uk63x64upw5g68kr0chkv7hw50"
+	)
+	 
+	@agent.on_interval(period=2.0)
+	async def send_message(ctx: Context):
+	    await ctx.send(RECIPIENT_ADDRESS, Message(message="Hello there bob."))
+	 
+	@agent.on_message(model=Message)
+	async def message_handler(ctx: Context, sender: str, msg: Message):
+	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
 ```
 </DocsCode>

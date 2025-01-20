@@ -30,6 +30,7 @@ import {
 } from "src/icons/shared-icons";
 import { useTheme } from "next-themes";
 import { ThemeMode } from "theme/fetch-ai-docs/helpers";
+import ChatWithUs from "./chat/chat-with-us";
 
 const startingGuides = (theme) => [
   {
@@ -314,6 +315,9 @@ function LandingPage() {
         </p>
         <Products />
       </section>
+      <div className="nx-hidden md:nx-flex">
+        <ChatWithUs />
+      </div>
     </section>
   );
 }

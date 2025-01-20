@@ -636,6 +636,32 @@ module.exports = withNextra({
         destination: "/examples/examplestech/jupyter-agent",
         permanent: true,
       },
+      {
+        source: "/concepts/fetch-network/indexer",
+        destination: "/concepts/fetch-network/intro-fetch-network",
+        permanent: true,
+      },
+      {
+        source: "/concepts/fetch-network/indexer/:path*",
+        destination: "/concepts/fetch-network/intro-fetch-network",
+        permanent: true,
+      },
+      {
+        source: "/references/indexer",
+        destination: "/concepts/fetch-network/intro-fetch-network",
+        permanent: true,
+      },
+      {
+        source: "/references/indexer/:path*",
+        destination: "/concepts/fetch-network/intro-fetch-network",
+        permanent: true,
+      },
+      {
+        source: "/concepts/agent-services/agent-explorer",
+        destination:
+          "/guides/agentverse/creating-agentverse-agents/agent-explorer",
+        permanent: true,
+      },
     ];
   },
 });

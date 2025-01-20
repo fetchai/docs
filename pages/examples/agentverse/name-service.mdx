@@ -79,15 +79,21 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 ### Agent 2
 
-<GithubCodeSegment digest="57abe9dae080c1925223326505ef4d6f">
+<GithubCodeSegment digest="b4989ca1cb1d3acd01fce3c88dd04f11">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/name-service/agent_2.py"
         lineStart={1}
         lineEnd={23}
         hosted={true}
     />
+	<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/name-service/hosted/agent_2.py"
+        lineStart={1}
+        lineEnd={10}
+        hosted={false}
+    />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='57abe9dae080c1925223326505ef4d6f'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='b4989ca1cb1d3acd01fce3c88dd04f11'>
 
 <DocsCode local={true}>
 	```py copy filename="agent_2.py"
@@ -115,6 +121,23 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	 
 	if __name__ == "__main__":
 	    alice.run()
+
+```
+</DocsCode>
+
+<DocsCode local={false}>
+	```py copy filename="agent_2.py"
+
+	from uagents import Agent, Context, Model
+	 
+	class Message(Model):
+	    message: str
+	 
+	@agent.on_interval(period=5)
+	async def alice_interval_handler(ctx: Context):
+	    bob_name = "bob-0.agent"
+	    ctx.logger.info(f"Sending message to {bob_name}...")
+	    await ctx.send(bob_name, Message(message="Hello there bob."))
 
 ```
 </DocsCode>
