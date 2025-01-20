@@ -1,3 +1,5 @@
+import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../../components/code";
+
 # Agent with Proxy
 
 ## Introduction
@@ -18,29 +20,49 @@ Make sure you have read the following resources before going on with this guide:
 
 ## The Agent setup
 
-An Agent connected via a Proxy uses the Agentverse as an intermediary to record interactions relevant to the Marketplace, causing it to rank higher in the search index.
+An Agent connected via a Proxy uses the Agentverse as an intermediary to record interactions relevant to the [Agentverse Marketplace ↗️](/concepts/agent-services/agent-explorer), causing it to rank higher in the search index.
 
 The following code demonstrates how to connect a local Agent to the Agentverse using a Proxy:
 
-```py copy filename="agent-with-proxy.py"
-from uagents import Agent, Context, Model
- 
-class Message(Model):
-    message: str
-  
-# Now your agent is ready to join the agentverse!
-agent = Agent(
-    name="alice",
-    seed="your_agent_seed_phrase",
-    proxy=True,
-)
- 
-# Copy the address shown below
-print(f"Your agent's address is: {agent.address}")
- 
-if __name__ == "__main__":
-    agent.run()
+<GithubCodeSegment digest="89204a123cc792a2cbf173b2c8626dd5">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agents/intermediate/agent-proxy/agent_with_proxy.py"
+        lineStart={1}
+        lineEnd={19}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='89204a123cc792a2cbf173b2c8626dd5'>
+
+<DocsCode local={true}>
+	```py copy filename="agent_with_proxy.py"
+
+	from uagents import Agent, Context, Model
+	
+	
+	class Message(Model):
+	    message: str
+	
+	
+	# Now your agent is ready to join the agentverse!
+	agent = Agent(
+	    name="alice",
+	    seed="your_agent_seed_phrase",
+	    proxy=True,
+	)
+	
+	# Copy the address shown below
+	print(f"Your agent's address is: {agent.address}")
+	
+	if __name__ == "__main__":
+	    agent.run()
+
 ```
+</DocsCode>
+
+</CodeGroup>
+
+
 
 The Agent is initialized with multiple parameters: `name`, `seed` and `proxy`. Remember to correctly specify these parameters in order to successfully run the Agent. By running the above Agent code, you should be able to see the following output within your terminal:
 

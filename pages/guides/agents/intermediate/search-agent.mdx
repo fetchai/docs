@@ -51,23 +51,23 @@ from uuid import uuid4
 def search(query):
     # Search for agents matching the query
     available_ais = fetch.ai(query)
-    
+
     # Create sender identity for communication
     sender_identity = Identity.from_seed("search_sender_identity", 0)
-    
+
     for ai in available_ais.get('ais'):  # Iterate through discovered agents
 
         prompt = f"""
         you will take the following information: query={query}.
         You must return a results according to the query"""
-  
+
         completion = client.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {"role": "user", "content": prompt}
             ]
         )
-        
+
         payload = {
             "Response": completion.choices[0].message.content
         }
@@ -117,9 +117,8 @@ from fetchai.communication import (
 )
 
 from openai import OpenAI
- 
+
 client = OpenAI()
- 
 
 from uuid import uuid4
 from uagents import Agent, Bureau, Context, Model
@@ -135,33 +134,33 @@ def search(query):
     sender_identity = Identity.from_seed("whatever i want this to be, but i am searching", 0)
     print(f"[results] available ais : {available_ais} ")
     for ai in available_ais.get('ais'):
-        
+
         prompt = f"""
         you will take the following information: query={query}.
         You must return a results according to the query"""
-  
+
         completion = client.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {"role": "user", "content": prompt}
             ]
         )
-        
+
         payload = {
             "Response": completion.choices[0].message.content
         }
- 
+
         other_addr = ai.get("address", "")
- 
+
         print(f"[INFO] Sending message to AI at address: {other_addr}")
- 
+
         send_message_to_agent(
             sender=sender_identity,
             target=ai.get("address", ""),
             payload=payload,
             session=uuid4()
         )
-         
+
         return {"status": "Agent searched"}
 
 query_agent = Agent(name="query_agent", seed="query_agent recovery phrase")
