@@ -155,7 +155,6 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
     currentItemParentRoute[1] == parentLevelRoute[1] ||
     (parentLevelRoute[1] == "" && level == 1)
   ) {
-    console.log({ isMobile });
     return (
       <>
         <li className={cn({ open, active }, "nx-w-full")}>
