@@ -656,6 +656,12 @@ module.exports = withNextra({
         destination: "/concepts/fetch-network/intro-fetch-network",
         permanent: true,
       },
+      {
+        source: "/concepts/agent-services/agent-explorer",
+        destination:
+          "/guides/agentverse/creating-agentverse-agents/agent-explorer",
+        permanent: true,
+      },
     ];
   },
 });

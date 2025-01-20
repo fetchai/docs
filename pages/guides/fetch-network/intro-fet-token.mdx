@@ -29,7 +29,6 @@ Visit a trusted exchange such as Coinbase or Binance. You may need to create an 
 passing [KYC ↗️](https://www.gov.uk/government/publications/know-your-customer-guidance/know-your-customer-guidance-accessible-version). Once your account is enabled, you can buy FET token. You can buy this with most global
 currencies, just check on the exchange which currencies they accept.
 
-
 ## Storing FET
 
 Ideally you would be sending this FET to your agent to transact on the network. However, if you'd like greater
@@ -38,7 +37,6 @@ security or accessibility..
 For short-term storage goals, the ASI Wallet is an excellent choice; it provides direct functionalities for daily activities such as staking and interacting with Agents.
 
 For long-term storage goals, you can enhance security by integrating your ASI Wallet with a hardware wallet like Ledger, offering robust protection for your assets. Follow this guide [here ↗️](/guides/fetch-network/asi-wallet/asi-wallet-hardware-connection-guide) if you wish to set up the ASI Alliance extension wallet with a Ledger hardware wallet.
-
 
 ## How to transfer tokens to your Agents
 
@@ -57,11 +55,11 @@ The following Python script demonstrates how to create and initialize an Agent u
     ```py copy filename="agent_address_and_balance.py"
     from uagents import Agent, Context
     import cosmpy
-    
+
     from cosmpy.aerial.client import LedgerClient, NetworkConfig
-    
+
     agent = Agent(name="alice", seed="", port=8000, test=False,  endpoint=["http://localhost:8000/submit"])
-    
+
     @agent.on_event("startup")
     async def introduce_agent(ctx: Context):
         ctx.logger.info(f"ASI network address:{agent.wallet.address()}")
@@ -69,10 +67,10 @@ The following Python script demonstrates how to create and initialize an Agent u
         address: str = agent.wallet.address()
         balances = ledger_client.query_bank_all_balances(address)
         ctx.logger.info(f"Balance of addr: {balances}")
-    
+
     if __name__ == "__main__":
         agent.run()
-    
+
     ```
 
 **You must update the seed value, and store it safely. Losing this value will lose you your tokens.**
@@ -96,7 +94,6 @@ You can now use this address to transfer your purchased FET tokens from the exch
 should be as simple as withdrawing native FET, by selecting the Fetch.ai Mainnet network when withdrawing. Some
 exchanges do not support Native FET, and you will need to use the [token bridge](https://token-bridge.fetch.ai/),
 luckily we have [a guide for that too](/guides/fetch-network/how-to-convert-fet-to-and-from-erc20)
-
 
 Check out the following resources for more information on Agents and how these integrate within the Fetch Ecosystem and perform operations using FET tokens:
 
