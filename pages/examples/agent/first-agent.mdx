@@ -12,7 +12,7 @@ The code provided in this example can be run on any platform which supports Pyth
 
 Let's get started and explore the basic concepts you need to develop your first Agent!
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/examples/easy/create-your-first-agent/agent.py) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/examples/easy/create-your-first-agent) to run this locally.
 
 ## Guide
 
@@ -23,15 +23,21 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 ## The agent
 
-<GithubCodeSegment digest="66ab6d5e955972cf04d2ffeb0766a43c">
+<GithubCodeSegment digest="154d61cf5761da99b977c060603e9c66">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/create-your-first-agent/agent.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/create-your-first-agent/local/agent.py"
         lineStart={1}
         lineEnd={15}
         hosted={true}
     />
+	<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/create-your-first-agent/hosted/agent.py"
+        lineStart={1}
+        lineEnd={7}
+        hosted={false}
+    />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='66ab6d5e955972cf04d2ffeb0766a43c'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='154d61cf5761da99b977c060603e9c66'>
 
 <DocsCode local={true}>
 	```py copy filename="agent.py"
@@ -51,6 +57,20 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	# Run the agent only when the script is executed directly
 	if __name__ == "__main__":
 	    agent.run()
+
+```
+</DocsCode>
+
+<DocsCode local={false}>
+	```py copy filename="agent.py"
+
+	# Import necessary classes from the uAgents library
+	from uagents import Agent, Context
+	# Function to be called when the agent is started
+	@agent.on_event("startup")
+	async def introduce_agent(ctx: Context):
+	    # Print a greeting message with the agent's name and its address
+	    print(f"Hello, I'm agent {agent.name} and my address is {agent.address}.")
 
 ```
 </DocsCode>
