@@ -7,7 +7,7 @@ import { CodeGroup, DocsCode, GithubCodeSegment, CodeSegment } from "../../../co
 This file can be run on any platform supporting Python, with the necessary install permissions.
 To enable this on [DeltaV ↗️](/concepts/ai-engine/deltav) you will need to create and register a Function. You will need to run this file on a device you are able to open a port on.
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/coin-toss/agent.py) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/coin-toss) to run this locally.
 
 ### Guide
 
@@ -29,15 +29,21 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 ### The agent
 
-<GithubCodeSegment digest="ef3cf99234e4bf7fc2731735663bd261">
+<GithubCodeSegment digest="6e87c632e8a7afb03eba80662c32e853">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/coin-toss/local/agent.py"
         lineStart={1}
         lineEnd={50}
         hosted={true}
     />
+	<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/coin-toss/hosted/agent.py"
+        lineStart={1}
+        lineEnd={26}
+        hosted={false}
+    />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='ef3cf99234e4bf7fc2731735663bd261'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='6e87c632e8a7afb03eba80662c32e853'>
 
 <DocsCode local={true}>
 	```py copy filename="agent.py"
@@ -88,6 +94,39 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	 
 	if __name__ == "__main__":
 	    coin_toss_agent.run()
+
+```
+</DocsCode>
+
+<DocsCode local={false}>
+	```py copy filename="agent.py"
+
+	import random
+	# third party modules used in this example
+	from uagents import Field
+	from ai_engine import UAgentResponse, UAgentResponseType
+	 
+	class CoinToss(Model):
+	    choice: str = Field(description="The choice. Must be heads or tails.")
+	 
+	coin_toss_protocol = Protocol("CoinToss")
+	 
+	@coin_toss_protocol.on_message(model=CoinToss, replies={UAgentResponse})
+	async def toss_coin(ctx: Context, sender: str, msg: CoinToss):
+	    random_number = random.randint(0, 1)
+	    if random_number == 0:
+	        coin_tossed = "heads"
+	    else:
+	        coin_tossed = "tails"
+	    if coin_tossed == msg.choice:
+	        message = "You won!"
+	    else:
+	        message = "You lost!"
+	    await ctx.send(
+	        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+	)
+	 
+	agent.include(coin_toss_protocol, publish_manifest=True)
 
 ```
 </DocsCode>

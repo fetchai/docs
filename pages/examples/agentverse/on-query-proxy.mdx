@@ -19,15 +19,21 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 #### The agent
 
-<GithubCodeSegment digest="f568933e5827fd374a32761ca3ceff98">
+<GithubCodeSegment digest="f78ceebbcdebd6223178d114e61f8019">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on-query-proxy/agent/local/agent.py"
         lineStart={1}
         lineEnd={32}
         hosted={true}
     />
+	<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on-query-proxy/agent/hosted/agent.py"
+        lineStart={1}
+        lineEnd={22}
+        hosted={false}
+    />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='f568933e5827fd374a32761ca3ceff98'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='f78ceebbcdebd6223178d114e61f8019'>
 
 <DocsCode local={true}>
 	```py copy filename="agent.py"
@@ -64,6 +70,35 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	 
 	if __name__ == "__main__":
 	    agent.run()
+
+```
+</DocsCode>
+
+<DocsCode local={false}>
+	```py copy filename="agent.py"
+
+	from uagents import Agent, Context, Model
+	 
+	class TestRequest(Model):
+	    message: str
+	 
+	class Response(Model):
+	    text: str
+	 
+	@agent.on_event("startup")
+	async def startup(ctx: Context):
+	    ctx.logger.info(f"Starting up {agent.name}")
+	    ctx.logger.info(f"With address: {agent.address}")
+	    ctx.logger.info(f"And wallet address: {agent.wallet.address()}")
+	 
+	@agent.on_query(model=TestRequest, replies={Response})
+	async def query_handler(ctx: Context, sender: str, _query: TestRequest):
+	    ctx.logger.info("Query received")
+	    try:
+	        # do something here
+	        await ctx.send(sender, Response(text="success"))
+	    except Exception:
+	        await ctx.send(sender, Response(text="fail"))
 
 ```
 </DocsCode>

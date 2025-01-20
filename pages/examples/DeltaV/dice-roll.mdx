@@ -7,7 +7,7 @@ import { CodeGroup, DocsCode, GithubCodeSegment, CodeSegment } from "../../../co
 This file can be run on any platform supporting Python, with the necessary install permissions.
 To enable this on [DeltaV ↗️](/concepts/ai-engine/deltav) you will need to create and register a Function. You will need to run this file on a device that can open a port.
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/dice-roll/agent.py) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/dice-roll) to run this locally.
 
 ### Guide
 
@@ -29,15 +29,21 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 ### The agent
 
-<GithubCodeSegment digest="c7412bdd210b5a011b8fff2de305cb09">
+<GithubCodeSegment digest="8b9332c9b46b91042fce19b074a4ef90">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/dice-roll/local/agent.py"
         lineStart={1}
         lineEnd={43}
         hosted={true}
     />
+	<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/dice-roll/hosted/agent.py"
+        lineStart={1}
+        lineEnd={19}
+        hosted={false}
+    />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='c7412bdd210b5a011b8fff2de305cb09'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='8b9332c9b46b91042fce19b074a4ef90'>
 
 <DocsCode local={true}>
 	```py copy filename="agent.py"
@@ -81,6 +87,32 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	 
 	if __name__ == "__main__":
 	    dice_roll_agent.run()
+
+```
+</DocsCode>
+
+<DocsCode local={false}>
+	```py copy filename="agent.py"
+
+	import random
+	# third party modules used in this example
+	from uagents import Field
+	from ai_engine import UAgentResponse, UAgentResponseType
+	 
+	class DiceRoll(Model):
+	    num_rolls: int = Field(description="Number of rolls.")
+	 
+	dice_roll_protocol = Protocol("DiceRoll")
+	 
+	@dice_roll_protocol.on_message(model=DiceRoll, replies={UAgentResponse})
+	async def roll_dice(ctx: Context, sender: str, msg: DiceRoll):
+	    result = ", ".join([str(random.randint(1, 6)) for _ in range(msg.num_rolls)])
+	    message = f"Dice roll results: {result}"
+	    await ctx.send(
+	        sender, UAgentResponse(message=message, type=UAgentResponseType.FINAL)
+	)
+	 
+	agent.include(dice_roll_protocol, publish_manifest=True)
 
 ```
 </DocsCode>
