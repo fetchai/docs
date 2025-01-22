@@ -1,0 +1,314 @@
+import { Callout } from 'nextra/components'
+
+# PremAi RAG Agent
+
+This example demonstrates the use of uAgents with Prem.ai to build a Retrieval-Augmented Generation (RAG) system,  The agent handles health and wellness queries, providing informative responses. It integrates intelligent query handling with dynamic knowledge retrieval capabilities, making it a robust solution.
+
+### Supporting documentation
+
+- [Creating an agent↗️](/guides/agents/create-a-uagent)
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+## Prerequisites
+
+Before proceeding, ensure you have the following:
+
+    1. **Python Development Environment**:
+
+    - **Python:** Download and install from [Python official website ↗️](https://www.python.org/downloads/).
+    - **Poetry:** Install by following the instructions on [Poetry's official website ↗️](https://python-poetry.org/docs/#installation).
+    - Dependencies installed via `poetry add uagents` and other required libraries.
+
+    2. **PremAi Account**:
+
+   - Sign up at [PremAi](https://app.premai.io/accounts/signup/)
+   - Access the PremAi dashboard.
+
+
+## Steps to Obtain API Keys
+
+To get the required API key and other details, you need to follow these steps:
+
+    1. **Sign In and Generate an API Key**:
+
+    - Log in to your Prem account.
+    - Navigate to the API Keys section in your account settings.
+    - Generate a new `API key` and securely store it for future use.
+    
+    2. **Create a New Project**:
+   
+    -  In the Prem dashboard, go to the Projects section.
+    - Click on `Create New Project`.
+    - Provide a name and description for your project.
+    - After creation, note the `Project ID` associated with your new project.
+
+    3. **Set Up a Repository**:
+  
+    - Within your project, navigate to the Repositories section.
+    - Click on Create New Repository.
+    - Provide a name and description for your repository.
+    - Add the required document for your use case by clicking on the Add document button.
+    - After creation, note the `Repository ID` associated with your new repository.
+
+## Project Structure
+
+```
+premai-rag-agent/
+.
+├── poetry.lock
+├── premai-rag-agent.py
+├── pyproject.toml
+└── README.md
+```
+## Setting Up Environment Variables
+
+To load the environment variables, use the following command:
+
+- Navigate to the root directory and source the `.env` file by run `source .env`
+
+### Example `.env` File
+
+Here is an example of what your `.env` file might look like:
+
+```bash
+export API_KEY="YOUR_API_KEY"
+export PROJECT_ID="YOUR_PROJECT_ID"
+export REPO_ID="YOUR_REPO_ID"
+```
+
+## PremAi RAG Agent Setup
+
+### Overview of `query_prem_ai` function.
+
+The `query_prem_ai` function is responsible for querying the Prem.ai API with a user's health-related question. It formats the user's input as a message, then sends the query to the API, which searches a specific repository for relevant responses. The function then processes the API's response, extracting and cleaning the content by removing unnecessary references (like citation numbers). In case of an error, it raises a runtime exception with a descriptive error message. This function enables the system to retrieve tailored health advice based on the user's input.
+
+
+```py copy
+prem_client = Prem(api_key=API_KEY)
+
+def query_prem_ai(user_query):
+    """
+    Handles both initial and follow-up queries by calling Prem.ai API.
+    """
+    try:
+        messages = [{"role": "user", "content": user_query}]
+        repositories = dict(ids=[REPO_ID], similarity_threshold=0.25, limit=5)
+        response = prem_client.chat.completions.create(
+            project_id=PROJECT_ID,
+            messages=messages,
+            repositories=repositories,
+            stream=False,
+            model="gpt-4o",
+        )
+        final_response = response.choices[0].message.content
+        cleaned_response = re.sub(r'\[\d+\]', '', final_response)
+        return cleaned_response
+    except Exception as e:
+        raise RuntimeError(f"Error querying Prem.ai: {e}")
+
+```
+
+<Callout type="info" emoji="ℹ️">
+    You can obtain the `API_KEY`, `REPO_KEY` and `PROJECT_ID` from the [premAi dashboard ↗️](https://app.premai.io/projects/).
+</Callout>
+
+### PremAi agent mechanism
+
+#### 1. User Agent (`user_agent`)
+
+The `user_agent` is responsible for initiating the conversation and receiving the user's queries. It sends the query to the `prem_agent` for processing and displays the response back to the user. It also handles follow-up queries and the exit condition.
+
+```py copy
+user_agent = Agent(name="health_user_agent", seed="health_user_recovery")
+
+@user_agent.on_event("startup")
+async def send_health_query(ctx: Context):
+    ctx.logger.info("[health_user_agent]: Sending initial query.")
+    await ctx.send(prem_agent.address, HealthQuery(user_query=initial_query))
+
+@user_agent.on_message(model=HealthResponse, replies={HealthQuery, ExitMessage})
+async def handle_health_response(ctx: Context, sender: str, msg: HealthResponse):
+    ctx.logger.info(f"[health_user_agent]: Received response: {msg.response}")
+    follow_up_query = input("Ask your next question (or type 'exit' to quit): ").strip()
+    if follow_up_query.lower() in {"exit", "quit"}:
+        await ctx.send(sender, ExitMessage(message="Exiting chat. Goodbye!"))
+    else:
+        await ctx.send(sender, HealthQuery(user_query=follow_up_query))
+```
+
+#### Explanation of `user_agent`:
+
+- The agent listens for a startup event, where it sends the first health query to the `prem_agent`.
+- When it receives a response from `prem_agent`, it presents the answer to the user and asks if they have a follow-up question.
+- If the user chooses to exit, it sends an exit message to end the conversation.
+
+#### 2. Prem Agent (`prem_agent`)
+
+The `prem_agent` processes the queries by interacting with the Prem.ai API. It retrieves the response from the API and sends it back to the `user_agent`. It also handles errors and exit messages.
+
+```py copy
+prem_agent = Agent(name="health_prem_agent", seed="health_prem_recovery")
+
+@prem_agent.on_message(model=HealthQuery, replies={HealthResponse, ExitMessage})
+async def process_health_query(ctx: Context, sender: str, msg: HealthQuery):
+    ctx.logger.info(f"[health_prem_agent]: Processing query: {msg.user_query}")
+    try:
+        response = query_prem_ai(msg.user_query)
+        await ctx.send(sender, HealthResponse(response=response))
+    except RuntimeError as e:
+        await ctx.send(sender, ExitMessage(message="Failed to process query."))
+
+@prem_agent.on_message(model=ExitMessage)
+async def handle_exit_message(ctx: Context, sender: str, msg: ExitMessage):
+    ctx.logger.info(f"[health_prem_agent]: {msg.message}")
+
+```
+
+#### Explanation of `prem_agent`:
+
+- The `prem_agent` listens for `HealthQuery` messages from the `user_agent`. Upon receiving a query, it sends the query to the Prem.ai API for processing.
+- After getting the response, the prem_agent sends the answer back to the `user_agent`.
+- If an error occurs, the agent sends an exit message with the error notification.
+
+### Whole Script
+
+This section presents the entire script, allowing users to easily copy and paste it for testing or deployment.
+
+```py copy
+import re
+import os
+from uagents import Field, Model, Context, Agent, Bureau
+from premai import Prem
+
+REPO_ID = os.getenv("REPO_ID")
+PROJECT_ID = os.getenv("PROJECT_ID")
+API_KEY = os.getenv("API_KEY")
+
+prem_client = Prem(api_key=API_KEY)
+
+def query_prem_ai(user_query):
+    """
+    Handles both initial and follow-up queries by calling Prem.ai API.
+    """
+    try:
+        messages = [{"role": "user", "content": user_query}]
+        repositories = dict(ids=[REPO_ID], similarity_threshold=0.25, limit=5)
+        response = prem_client.chat.completions.create(
+            project_id=PROJECT_ID,
+            messages=messages,
+            repositories=repositories,
+            stream=False,
+            model="gpt-4o",
+        )
+        final_response = response.choices[0].message.content
+        cleaned_response = re.sub(r'\[\d+\]', '', final_response)
+        return cleaned_response
+    except Exception as e:
+        raise RuntimeError(f"Error querying Prem.ai: {e}")
+
+
+class HealthQuery(Model):
+    user_query: str = Field(description="The user's initial or follow-up query about health and wellness.")
+
+class HealthResponse(Model):
+    response: str = Field(description="The response text returned by the Prem.ai API.")
+
+class ExitMessage(Model):
+    message: str = Field(description="The exit message sent to the user when the chat session ends.")
+
+user_agent = Agent(name="health_user_agent", seed="health_user_recovery")
+prem_agent = Agent(name="health_prem_agent", seed="health_prem_recovery")
+
+initial_query = input("Ask your health and wellness question: ").strip()
+
+@user_agent.on_event("startup")
+async def send_health_query(ctx: Context):
+    ctx.logger.info("[health_user_agent]: Sending initial query.")
+    await ctx.send(prem_agent.address, HealthQuery(user_query=initial_query))
+
+@user_agent.on_message(model=HealthResponse, replies={HealthQuery, ExitMessage})
+async def handle_health_response(ctx: Context, sender: str, msg: HealthResponse):
+    ctx.logger.info(f"[health_user_agent]: Received response: {msg.response}")
+    follow_up_query = input("Ask your next question (or type 'exit' to quit): ").strip()
+    if follow_up_query.lower() in {"exit", "quit"}:
+        await ctx.send(sender, ExitMessage(message="Exiting chat. Goodbye!"))
+    else:
+        await ctx.send(sender, HealthQuery(user_query=follow_up_query))
+
+
+@prem_agent.on_message(model=HealthQuery, replies={HealthResponse, ExitMessage})
+async def process_health_query(ctx: Context, sender: str, msg: HealthQuery):
+    ctx.logger.info(f"[health_prem_agent]: Processing query: {msg.user_query}")
+    try:
+        response = query_prem_ai(msg.user_query)
+        await ctx.send(sender, HealthResponse(response=response))
+    except RuntimeError as e:
+        await ctx.send(sender, ExitMessage(message="Failed to process query."))
+
+@prem_agent.on_message(model=ExitMessage)
+async def handle_exit_message(ctx: Context, sender: str, msg: ExitMessage):
+    ctx.logger.info(f"[health_prem_agent]: {msg.message}")
+
+bureau = Bureau(port=8000, endpoint="http://localhost:8000/submit")
+bureau.add(user_agent)
+bureau.add(prem_agent)
+
+if __name__ == "__main__":
+    bureau.run()
+
+```
+
+### Poetry Dependencies:
+
+```py
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+uagents = "^0.18.1"
+python-dotenv = "^1.0.1"
+premai = "^0.3.79"
+```
+
+### Instructions to execute the example.
+
+- Navigate to the root folder of the example.
+- Update the `.env` file with require variables.
+- Install dependencies by running `poetry install`.
+- Execute the script with `python premai-rag-agent.py`.
+
+
+## Expected Output
+
+```
+Ask your health and wellness question: How does sleep affect overall wellness?
+INFO:     [health_user_agent]: Starting agent with address: agent1q02chts3w84vfa83t2egvt8tfg33h84na6mmut8rvmq5v5n9fyppjkx89yd
+INFO:     [health_user_agent]: [health_user_agent]: Sending initial query.
+INFO:     [health_prem_agent]: Starting agent with address: agent1qtpx9u4phc5vnt9mpt26x6p397wx89ymadkq2w9hrmtxse609g8py3k4e3y
+INFO:     [health_user_agent]: Registering on almanac contract...
+INFO:     [health_prem_agent]: Registering on almanac contract...
+INFO:     [health_prem_agent]: [health_prem_agent]: Processing query: How does sleep affect overall wellness?
+INFO:httpx:HTTP Request: POST https://app.premai.io/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     [health_user_agent]: [health_user_agent]: Received response: Sleep plays a crucial role in overall wellness, influencing various aspects of physical and mental health. Here are some key ways in which sleep affects wellness:
+
+1. **Physical Health**: Sleep is vital for maintaining physical health. It supports bodily functions such as tissue repair, muscle growth, and immune function. Lack of sleep has been linked to a higher risk of chronic conditions such as obesity, heart disease, and diabetes.
+
+2. **Cognitive Function**: Adequate sleep is essential for optimal brain function. It affects concentration, productivity, and performance. Sleep is also crucial for memory consolidation, allowing the brain to process and retain information.
+
+Overall, prioritizing good sleep hygiene and establishing a consistent sleep routine are foundational to maintaining overall wellness and enhancing quality of life.
+Ask your next question (or type 'exit' to quit): How can hydration improve overall health?
+INFO:     [health_prem_agent]: [health_prem_agent]: Processing query: How can hydration improve overall health?
+INFO:httpx:HTTP Request: POST https://app.premai.io/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     [health_user_agent]: Registering on almanac contract...complete
+INFO:     [health_prem_agent]: Registering on almanac contract...complete
+INFO:     [health_user_agent]: [health_user_agent]: Received response: Hydration significantly impacts overall health and well-being in various ways. Here are some key benefits:
+
+1. **Physical Performance**: Proper hydration is crucial for maintaining physical performance. It helps regulate body temperature, lubricates joints, and delivers nutrients to cells, which is essential for physical activities, both in everyday life and during exercise.
+
+2. **Cognitive Function**: Dehydration can affect cognitive functions such as attention, memory, and mood. Staying hydrated helps maintain cognitive performance and may reduce feelings of fatigue and confusion.
+
+Overall, maintaining proper hydration is a simple yet powerful way to promote health and prevent various physical and cognitive issues. It is generally recommended to drink an adequate amount of water daily, which can vary based on factors like age, climate, activity level, and individual health needs.
+Ask your next question (or type 'exit' to quit): 
+```
