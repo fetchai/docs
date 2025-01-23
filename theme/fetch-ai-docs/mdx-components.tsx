@@ -11,7 +11,10 @@ import { useIntersectionObserver, useSlugs } from "./contexts/active-anchor";
 import React from "react";
 import Image from "next/image";
 import LinkImage from "../../src/svgs/external-link.svg";
+import InternalLinkImage from "../../src/svgs/internal-link.svg";
+
 import { ModifiedPre } from "components/code";
+
 // Anchor links
 function HeadingLink({
   tag: Tag,
@@ -162,7 +165,7 @@ export const Link = ({ href = "", className, ...props }: AnchorProps) => {
     typeof child === "string" ? child.split("↗️")[0] : child,
   );
 
-  return (
+  return "↗" == splitChildren[0] ? (
     <>
       <span className="nx-inline-flex nx-gap-1">
         <Anchor
@@ -176,7 +179,28 @@ export const Link = ({ href = "", className, ...props }: AnchorProps) => {
         >
           {splitChildren}
         </Anchor>
-        <Image src={LinkImage} alt="" width={20} height={20} />
+      </span>
+    </>
+  ) : (
+    <>
+      <span className="nx-inline-flex nx-gap-1">
+        <Anchor
+          href={href}
+          newWindow={EXTERNAL_HREF_REGEX.test(href)}
+          className={cn(
+            "nx-text-primary-600 nx-underline nx-decoration-from-font [text-underline-position:from-font]",
+            className,
+          )}
+          {...props}
+        >
+          {splitChildren}
+        </Anchor>
+        <Image
+          src={EXTERNAL_HREF_REGEX.test(href) ? LinkImage : InternalLinkImage}
+          alt=""
+          width={20}
+          height={20}
+        />
       </span>
     </>
   );
@@ -250,7 +274,7 @@ export const getComponents = ({
     ),
     p: (props) => (
       <p
-        className="nx-mt-6 nx-leading-7 first:nx-mt-0 dark:nx-text-white-60"
+        className="nx-mt-6 nx-text-base nx-leading-7 first:nx-mt-0 dark:nx-text-white-60"
         {...props}
       />
     ),

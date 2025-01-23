@@ -1,0 +1,94 @@
+import { CodeGroup, DocsCode, GithubCodeSegment, CodeSegment } from "../../../components/code"
+
+# Locally Hosted Agent with LangChain Integration
+
+## Introduction
+
+This guide demonstrates how to run an agent on your own hardware or infrastructure, making it accessible over Agentverse and DeltaV using the Agentverse Mailroom. The example uses a locally hosted agent that utilizes LangChain's Wikipedia integration to process requests related to Wikipedia search.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/local-agent-langchain/agent.py) to run this locally.
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+- [Protocols ↗️](/references/uagents/uagents-protocols/agent-protocols)
+
+- [Agentverse Functions ↗️](/guides/agents/intermediate/agent-functions)
+
+- [Register an Agent Function on the Agentverse ↗️](/guides/agentverse/agentverse-functions/registering-agent-services)
+
+- [Options for running your local agents ↗️](/guides/agents/intermediate/options-for-running-local-agents)
+
+### The agent
+
+<GithubCodeSegment digest="2f26c73dacd7991e71b3d680d0cf76bd">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/local-agent-langchain/agent.py"
+        lineStart={1}
+        lineEnd={42}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2f26c73dacd7991e71b3d680d0cf76bd'>
+
+<DocsCode local={true}>
+	```py copy filename="agent.py"
+
+	from langchain_community.tools import WikipediaQueryRun
+	from langchain_community.utilities import WikipediaAPIWrapper
+	from uagents.setup import fund_agent_if_low
+	from uagents import Agent, Context, Protocol, Model
+	from uagents import Field
+	from ai_engine import UAgentResponse, UAgentResponseType
+	 
+	# Extend your protocol with Wikipedia data fetching
+	class WikiReq(Model):
+	    search_keyword: str = Field(description="This describes the keyword you want to search on wiki")
+	 
+	SEED_PHRASE = "<Secret Phrase for your agent>"
+	 
+	# Copy the address shown below
+	print(f"Your agent's address is: {Agent(seed=SEED_PHRASE).address}")
+	 
+	AGENT_MAILBOX_KEY = "Your_mailbox_address"
+	 
+	# Now your agent is ready to join the agentverse!
+	WikiAgent = Agent(
+	    name="Wiki Agent",
+	    seed=SEED_PHRASE,
+	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	)
+	fund_agent_if_low(WikiAgent.wallet.address()) #funding agent.
+	wiki_protocol = Protocol("Wiki Protocol")
+	 
+	@wiki_protocol.on_message(model=WikiReq, replies={UAgentResponse})
+	async def load_dalle(ctx: Context, sender: str, msg: WikiReq):
+	    wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+	    ctx.logger.info(msg.search_keyword)
+	    try:
+	        result = wikipedia.run(msg.search_keyword)
+	    except Exception as e:
+	        ctx.logger.info(f"Error generating response: {e}")
+	    # Send an error response back to the user
+	    await ctx.send(
+	        sender, UAgentResponse(message=str(result), type=UAgentResponseType.FINAL)
+	    )
+	 
+	WikiAgent.include(wiki_protocol, publish_manifest=True)
+	WikiAgent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+### Register Agent Function
+
+Head to this [guide ↗️](/guides/agentverse/agentverse-functions/registering-agent-services) for a detailed overview of the registration process of Agent Functions on the Agentverse.

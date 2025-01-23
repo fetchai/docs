@@ -7,5 +7,7 @@ export function useGitEditUrl(filePath = ""): string {
 
   if (!repo) throw new Error("Invalid `docsRepositoryBase` URL!");
 
-  return `${repo.href}/${filePath}.mdx`;
+  return filePath.includes("/references/uagents/api")
+    ? `${repo.href}/${filePath}.md`
+    : `${repo.href}/${filePath}.mdx`;
 }

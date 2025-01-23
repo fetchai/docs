@@ -13,27 +13,23 @@ jobs:
       matrix:
         python-version: [3.9]
     steps:
-      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y aspell aspell-en  # Install aspell and the English dictionary
+          sudo apt-get install -y aspell aspell-en
           python -m pip install --upgrade pip
           pip install spacy markdown-it-py pyspellchecker
-          python -m spacy download en_core_web_sm  # Install spaCy language model
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python -m spacy download en_core_web_sm
 
-      # Step 4: Run the custom Python spell-checking script
       - name: Run spell-check script
         run: |
-          python .github/spelling/check_spelling.py || exit 1
+          set -e
+          python .github/spelling/check_spelling.py

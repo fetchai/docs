@@ -10,6 +10,7 @@ import "./polyfill";
 import type { PageTheme } from "nextra/normalize-pages";
 import { normalizePages } from "nextra/normalize-pages";
 import { ErrorBoundary } from "react-error-boundary";
+import ChatWithUs from "components/chat/chat-with-us";
 import {
   Banner,
   Breadcrumb,
@@ -31,6 +32,7 @@ import { setCookie } from "cookies-next";
 import Error404 from "components/error-404";
 import LastUpdatedTime from "components/last-updated";
 import { ThemeDocProvider } from "./contexts/theme-provider";
+import { OSProvider } from "./contexts/os-provider";
 
 type MyItem = Item & {
   // Add or modify properties as needed
@@ -176,6 +178,9 @@ const Body = ({
             headings: structuredHeadings,
           })}
       </article>
+      <div className="nx-hidden md:nx-flex">
+        <ChatWithUs />
+      </div>
     </>
   );
 };
@@ -339,11 +344,13 @@ export default function Layout({
 }: NextraThemeLayoutProps): ReactElement {
   return (
     <ThemeDocProvider>
-      <ErrorBoundary FallbackComponent={Error404}>
-        <ConfigProvider value={context}>
-          <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
-        </ConfigProvider>
-      </ErrorBoundary>
+      <OSProvider>
+        <ErrorBoundary FallbackComponent={Error404}>
+          <ConfigProvider value={context}>
+            <InnerLayout {...context.pageOpts}>{children}</InnerLayout>
+          </ConfigProvider>
+        </ErrorBoundary>
+      </OSProvider>
     </ThemeDocProvider>
   );
 }

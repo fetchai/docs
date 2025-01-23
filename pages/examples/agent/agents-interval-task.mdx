@@ -1,0 +1,52 @@
+import { CodeGroup, DocsCode ,CodeSegment, GithubCodeSegment } from "../../../components/code"
+
+# Interval task with Agents
+
+## Introduction
+
+This file can be run on any platform supporting Python, with the necessary install permissions.
+This example shows how to use the uAgents Framework library to set up an interval task using the `on_interval()` decorator.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/examples/easy/agents-interval-task/interval-task.py) to run this locally.
+
+### Guide
+
+- [Creating an interval task ↗️](/guides/agents/interval-task)
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+
+### The agent
+
+<GithubCodeSegment digest="c5cc1c18a7e840134325a65533561c0e">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/agents-interval-task/interval-task.py"
+        lineStart={1}
+        lineEnd={10}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='c5cc1c18a7e840134325a65533561c0e'>
+
+<DocsCode local={true}>
+	```py copy filename="interval-task.py"
+
+	from uagents import Agent, Context
+	 
+	alice = Agent(name="alice", seed="alice recovery phrase")
+	 
+	@alice.on_interval(period=2.0)
+	async def say_hello(ctx: Context):
+	    ctx.logger.info(f'hello, my name is {alice.name}')
+	 
+	if __name__ == "__main__":
+	    alice.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+

@@ -21,6 +21,8 @@ import { useActiveAnchor, useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { Collapse } from "./collapse";
+import { WITH_INDEXED_PAGES } from "../constants";
+import ChatWithUs from "components/chat/chat-with-us";
 
 const TreeState: Record<string, boolean> = Object.create(null);
 
@@ -73,6 +75,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
   const [route] = routeOriginal.split("#");
   const active = [route, route + "/"].includes(item.route + "/");
   const activeRouteInside = active || route.startsWith(item.route + "/");
+  const [isMobile, setIsMobile] = useState(false);
 
   const parentLevelRoute = route.split("/");
   const currentItemParentRoute = item.route.split("/");
@@ -134,62 +137,80 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
       };
     });
   }
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1080);
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   const isLink = "withIndexPage" in item && item.withIndexPage;
   const ComponentToUse = isLink ? Anchor : "button";
   if (
     currentItemParentRoute[1] == parentLevelRoute[1] ||
     (parentLevelRoute[1] == "" && level == 1)
   ) {
+    console.log({ isMobile });
     return (
       <>
         <li className={cn({ open, active }, "nx-w-full")}>
-          <ComponentToUse
-            id={`sidebar${item.route?.split("/").join("-").toLowerCase()}`}
-            href={isLink ? item.route : undefined}
-            className={cn(
-              "nx-items-center  nx-w-full nx-justify-between nx-gap-2",
-              isLink ? "first-title" : "nx-text-left nx-w-full",
-              classes.link,
-              active ? classes.active : classes.inactive,
-              activeRouteInside ? "nextra-active-route" : "",
-            )}
-            onClick={(e) => {
-              const clickedToggleIcon = ["svg", "path"].includes(
-                (e.target as HTMLElement).tagName.toLowerCase(),
-              );
-              if (clickedToggleIcon) {
-                e.preventDefault();
-              }
-              if (isLink) {
-                if (active || clickedToggleIcon) {
+          {(isMobile || !isLink || WITH_INDEXED_PAGES.includes(item.title)) && (
+            <ComponentToUse
+              id={`sidebar${item.route?.split("/").join("-").toLowerCase()}`}
+              href={isLink ? item.route : undefined}
+              className={cn(
+                "nx-items-center  nx-w-full nx-justify-between nx-gap-2",
+                isLink ? "first-title" : "nx-text-left nx-w-full",
+                classes.link,
+                active ? classes.active : classes.inactive,
+                activeRouteInside ? "nextra-active-route" : "",
+              )}
+              onClick={(e) => {
+                const clickedToggleIcon = ["svg", "path"].includes(
+                  (e.target as HTMLElement).tagName.toLowerCase(),
+                );
+                if (clickedToggleIcon) {
+                  e.preventDefault();
+                }
+                if (isLink) {
+                  if (active || clickedToggleIcon) {
+                    TreeState[item.route] = !open;
+                  } else {
+                    TreeState[item.route] = true;
+                    setMenu(false);
+                  }
+                  rerender({});
+                  return;
+                }
+                if (active) return;
+                // removing menu toggle for collapsed content
+                if (!item.collapsed) {
                   TreeState[item.route] = !open;
-                } else {
-                  TreeState[item.route] = true;
-                  setMenu(false);
                 }
                 rerender({});
-                return;
-              }
-              if (active) return;
-              TreeState[item.route] = !open;
-              rerender({});
-            }}
-          >
-            {renderComponent(config.sidebar.titleComponent, {
-              title: item.title,
-              type: item.type,
-              route: item.route,
-            })}
-            {!config.sidebar.autoCollapse && !isLink && (
-              <ArrowRightIcon
-                className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
-                pathClassName={cn(
-                  "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
-                  open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
-                )}
-              />
-            )}
-          </ComponentToUse>
+              }}
+            >
+              {renderComponent(config.sidebar.titleComponent, {
+                title: item.title,
+                type: item.type,
+                route: item.route,
+              })}
+              {!config.sidebar.autoCollapse && !isLink && !item.collapsed && (
+                <ArrowRightIcon
+                  className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5 hover:nx-bg-gray-800/5 dark:hover:nx-bg-gray-100/5"
+                  pathClassName={cn(
+                    "nx-origin-center nx-transition-transform rtl:-nx-rotate-180",
+                    open && "ltr:nx-rotate-90 rtl:nx-rotate-[-270deg]",
+                  )}
+                />
+              )}
+            </ComponentToUse>
+          )}
           <Collapse
             className="ltr:nx-pr-0 rtl:nx-pl-0 nx-pt-1"
             isOpen={config.sidebar.autoCollapse || open}
@@ -473,6 +494,9 @@ export function Sidebar({
               </div>
             </OnFocusItemContext.Provider>
           </FocusedItemContext.Provider>
+          <div className="show-on-small">
+            <ChatWithUs />
+          </div>
         </aside>
       </div>
     </>

@@ -52,7 +52,7 @@ logging.info(f"Receiver Agent Address: {receiver_agent.address}")
 @receiver_agent.on_rest_post("/rendering_messages", Request, Response)
 async def handle_post(ctx: Context, req: Request) -> Response:
     logging.info(f"Received message by agent : {receiver_agent.address} from user: {req.text}")
-    
+
     # Process the message and render it
     if req.text:
         logging.info(f"Rendering message: {req.text}")
@@ -260,7 +260,6 @@ STREAMLIT_STYLE = """
 
 WARNING_TEXT = "⚠️ Security Alert: Never provide access to sensitive accounts or data, as malicious web content can hijack Claude's behavior"
 
-
 class Sender(StrEnum):
     USER = "user"
     BOT = "assistant"
@@ -268,10 +267,9 @@ class Sender(StrEnum):
 
 class Request(Model):
     text: str
- 
+
 class Response(Model):
     text: str
-
 
 def setup_state():
     if "messages" not in st.session_state:
@@ -302,12 +300,10 @@ def setup_state():
     if "hide_images" not in st.session_state:
         st.session_state.hide_images = False
 
-
 def _reset_model():
     st.session_state.model = PROVIDER_TO_DEFAULT_MODEL_NAME[
         cast(APIProvider, st.session_state.provider)
     ]
-
 
 async def initializing_messages(st, new_message):
     chat, http_logs = st.tabs(["Chat", "HTTP Exchange Logs"])
@@ -465,7 +461,6 @@ async def main():
 
     await initializing_messages(st, new_message)
 
-
 def validate_auth(provider: APIProvider, api_key: str | None):
     if provider == APIProvider.ANTHROPIC:
         if not api_key:
@@ -488,8 +483,6 @@ def validate_auth(provider: APIProvider, api_key: str | None):
         except DefaultCredentialsError:
             return "Your google cloud credentials are not set up correctly."
 
-
-
 def load_from_storage(filename: str) -> str | None:
     """Load data from a file in the storage directory."""
     try:
@@ -502,7 +495,6 @@ def load_from_storage(filename: str) -> str | None:
         st.write(f"Debug: Error loading {filename}: {e}")
     return None
 
-
 def save_to_storage(filename: str, data: str) -> None:
     """Save data to a file in the storage directory."""
     try:
@@ -513,7 +505,6 @@ def save_to_storage(filename: str, data: str) -> None:
         file_path.chmod(0o600)
     except Exception as e:
         st.write(f"Debug: Error saving {filename}: {e}")
-
 
 def _api_response_callback(
     request: httpx.Request,
@@ -531,14 +522,12 @@ def _api_response_callback(
         _render_error(error)
     _render_api_response(request, response, response_id, tab)
 
-
 def _tool_output_callback(
     tool_output: ToolResult, tool_id: str, tool_state: dict[str, ToolResult]
 ):
     """Handle a tool output by storing it to state and rendering it."""
     tool_state[tool_id] = tool_output
     _render_message(Sender.TOOL, tool_output)
-
 
 def _render_api_response(
     request: httpx.Request,
@@ -563,7 +552,6 @@ def _render_api_response(
             else:
                 st.write(response)
 
-
 def _render_error(error: Exception):
     if isinstance(error, RateLimitError):
         body = "You have been rate limited."
@@ -577,7 +565,6 @@ def _render_error(error: Exception):
         body += f"\n\n```{lines}```"
     save_to_storage(f"error_{datetime.now().timestamp()}.md", body)
     st.error(f"**{error.__class__.__name__}**\n\n{body}", icon=":material/error:")
-
 
 def _render_message(
     sender: Sender,
@@ -615,7 +602,6 @@ def _render_message(
                 raise Exception(f'Unexpected response type {message["type"]}')
         else:
             st.markdown(message)
-
 
 if __name__ == "__main__":
     asyncio.run(main())

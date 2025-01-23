@@ -27,30 +27,30 @@ From the Swarm docs, we are going to extend their example:
 
     ```python copy
     from swarm import Swarm, Agent
-    
+
     client = Swarm()
-    
+
     def transfer_to_agent_b():
         return agent_b
-    
+
     agent_a = Agent(
         name="Agent A",
         instructions="You are a helpful agent.",
         functions=[transfer_to_agent_b],
     )
-    
+
     agent_b = Agent(
         name="Agent B",
         instructions="Only speak in Haikus.",
     )
-    
+
     response = client.run(
         agent=agent_a,
         messages=[{"role": "user", "content": "I want to talk to agent B."}],
     )
-    
+
     print(response.messages[-1]["content"])
-    
+
     ```
 
 There's a few really nice concepts here, `functions` and `instructions`. **Functions** allow the Agent to call another function or act on the data being sent in `client.run()`, this function can also return an agent which passes the message chat to that new agent. **Instructions** are the prompts; we'll use Agents to update these in the future. 
@@ -210,10 +210,12 @@ So let's extend it.
 	bureau.add(question_uagent)
 	bureau.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
+
+
 
 There's a lot of code there, but so let's cover the Agent specific bits first:
 
@@ -235,10 +237,12 @@ We imported `uagents` first:
 	from uagents import Agent, Model, Bureau, Context
 	
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
+
+
 
 We defined our message structures: 
 
@@ -271,10 +275,11 @@ We defined our message structures:
 	    text: str
 	
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
+
 
 
 Within the uAgents Framework this is pretty important, and can be much more complex than the above. We treat `Message` classes as our rules of communication, generally in a Request/Response format. It also enforces type that helps keep Agents resilient. For additional information on how Agents do communicate, have a look at the following [resource ↗️](/guides/agents/intermediate/communicating-with-other-agents).
@@ -353,10 +358,12 @@ Next, we instantiate our Agents and create [message handling functions ↗️](/
 	bureau.add(question_uagent)
 	bureau.run()
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
+
+
 
 The important thing to note is that Agents have specific functions to handle different message objects being received; the uAgents library in the background calls the correct function based on decorator and args. When an Agent calls `await ctx.send(sender, Message())` that effectively calls another Agent's function to act on the sent data. 
 
@@ -385,10 +392,12 @@ We have extended the Swarm example slightly; we want to use context variables bu
 	    else:
 	        return f"{resp}"
 
-     ```
+```
 </DocsCode>
 
 </CodeGroup>
+
+
 
 <GithubCodeSegment digest="9026f8f124c55d34de38f9b9000d635e">
 <CodeSegment
@@ -413,10 +422,12 @@ We have extended the Swarm example slightly; we want to use context variables bu
 	    instructions="Create a random question to ask someone about any animal"
 	)
 
-    ```
+```
 </DocsCode>
 
 </CodeGroup>
+
+
 
 The `context_variable` was set in an Agent message handler:
 
@@ -445,10 +456,12 @@ The `context_variable` was set in an Agent message handler:
 	
 	    print(response.messages[-1]["content"])
 
-     ```
+```
 </DocsCode>
 
 </CodeGroup>
+
+
 
 Let's now recap the flow: 
 

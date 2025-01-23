@@ -1,0 +1,103 @@
+import { Callout } from 'nextra/components'
+
+# How to use ASI Alliance Wallet
+
+## Feature 3 - Send/Receive Function
+
+### Send/Receive Button
+
+This button allows the user to perform **Send** and **Receive** token operations. By using this feature, users can send and receive transactions seamlessly within the wallet.
+
+![](src/images/guides/wallet/send-web-wallet_01.png)
+
+## Send Option
+
+### Initiate Transfer
+
+If a user wants to send money to another user, they should start by locating the **Transaction** button.
+
+![](src/images/guides/wallet/send-web-wallet_11.png)
+
+### Select Send Option
+
+Once the **Transaction** button is found, the user selects the option to **Send** money.
+
+![](src/images/guides/wallet/send-web-wallet_10.png)
+
+### Enter Amount and Account
+
+After selecting the **Send** option, the user needs to enter the amount they wish to send and choose the account from which the money will be transferred. Be sure to select the correct account on your wallet.
+
+![](src/images/guides/wallet/send-web-wallet_02.png)
+
+### Add Recipient's Address
+
+Next, the user is prompted to add the recipient's address. This can be done in three ways: either by **manually entering it**, **scanning the address** or by using the **Add to contact** option.
+
+![](src/images/guides/wallet/send-web-wallet_03.png)
+
+### Optional: Add Memo
+
+If the user wishes to add a **Memo** to the transaction, they can do so at this stage.
+
+![](src/images/guides/wallet/send-web-wallet_04.png)
+
+    <Callout type="info" emoji="ℹ️">
+    **Fetch transaction memo limits and storage details**
+
+    1. **Character/size limitations**: the memo field is limited to _256 bytes_ by default. This is configurable and can be changed via a governance proposal if needed. To check the current value programmatically, you can query the `auth` module parameters [here ↗️](https://rpc-fetchhub.fetch.ai/abci_query?path=%22custom/auth/params%22) and decode the response by copy-pasting there inner content of `value` (without quotes). You'll receive a base64-encoded response containing the parameters, which you can decode to view the structure, including the `max_memo_characters`, `tx_sig_limit`, and `tx_size_cost_per_byte` parameters.
+
+    2. **Limitations**: while you can add any data within the 256-byte limit, the memo field is intended for _short text_. Adding structured or binary data (e.g., blob attachments) is technically possible within the size constraint, but it isn't recommended due to potential gas costs and inefficiency. If you wish to store larger or more complex data, consider using other data storage methods, as encoding this data in the memo could potentially exhaust gas and processing limits. The current **gas constraints** are set up:
+
+        - Each byte stored in a transaction costs 10 gas (as set by `tx_size_cost_per_byte`).
+        - The maximum gas per block is 3,000,000 gas, which limits the total data that can be stored in a block.
+        - While the block size limit is 300,000 bytes, the gas cost to store data near this size would max out the block's gas limit. Therefore, block gas constraints often restrict the size of a transaction more than the byte limit alone.
+
+    3. **On-chain storage and migrations**: once a transaction with a memo is added to a block, the memo data is stored permanently on-chain. During migrations, all transaction data, including the memo, should remain intact, as existing chain data should be preserved once migration is finalized.
+    </Callout>
+
+### Review Transaction
+
+After adding the recipient's address, the user should Review the transaction details to ensure accuracy.
+
+Then, the user will need to **Approve the Transaction**. Once the user has reviewed the transaction and made any necessary additions, they can proceed by clicking on the **Approve Transaction** button.
+
+![](src/images/guides/wallet/send-web-wallet_05.png)
+
+### Transaction Confirmation
+
+Upon approval, a **Transaction ID** is generated, confirming that the transaction has been successfully processed.
+
+![](src/images/guides/wallet/send-web-wallet_06.png)
+
+## Receive Option
+
+### Initiate Transaction
+
+If a user wants to **Receive** money from another user, they should start by locating the **Transaction** button.
+
+![](src/images/guides/wallet/send-web-wallet_01.png)
+
+### Select Receive Option
+
+Once the **Transaction** button is found, the user selects the option to **Receive** money.
+
+![](src/images/guides/wallet/send-web-wallet_07.png)
+
+{/* ### Choose Payment Method
+
+Determine the preferred method of payment, whether it's scanning a QR code or fetching the recipient's account address.
+*/}
+### QR Code and wallet address
+
+User is redirected to the Receive page, where their QR Code and wallet address can be accessed.
+    - QR Code can be scanned to send the tokens.
+    - Wallet address can be copied.
+
+![](src/images/guides/wallet/send-web-wallet_08.png)
+
+## Native Bridge
+
+If users want to **Native Bridge** tokens from another blockchain, then they will need to choose this option as shown below and follow the needed steps.
+
+![](src/images/guides/wallet/send-web-wallet_09.png)

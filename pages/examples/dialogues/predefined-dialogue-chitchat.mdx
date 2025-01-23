@@ -1,0 +1,642 @@
+import { Callout } from 'nextra/components'
+import { CodeGroup, DocsCode, CodeSegment, GithubCodeSegment } from "../../../components/code";
+
+# Predefined Dialogue Chit-Chat
+
+## Overview
+
+This example illustrates an automated dialogue scenario using a hardcoded dialogue management system between two agents. The dialogue flow is predefined, minimizing the need for manual intervention or dynamic decision-making during the dialogue process.
+
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/examples/advanced/predefined-dialogue-chitchat) to run this locally.
+
+### Guide
+
+- [How to use Dialogues ↗️](/guides/agents/dialogues)
+
+### Supporting documentation
+
+- [Creating an agent ↗️](/guides/agents/create-a-uagent)
+- [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents)
+- [Register in Almanac ↗️](/guides/agents/register-in-almanac)
+- [Almanac Contract ↗️](/references/contracts/uagents-almanac/almanac-overview)
+
+## Step 1: Define the Dialogue management
+
+`hardcoded_chitchat.py` sets up a structured dialogue system with predefined responses. This system includes nodes representing different states of the dialogue and edges defining possible transitions between these states.
+
+- Open a terminal and create a directory using `mkdir Dialogues` and navigate into it with `cd Dialogues`.
+- Create a python file `hardcoded_chitchat.py` in `Dialogues` directory:
+
+<CodeGroup hasCopy isOSFile>
+<DocsCode mac={true}>
+    ```py copy filename="mac"
+    touch chitchat.py
+    ```
+</DocsCode>
+<DocsCode windows={true}>
+    ```py copy filename="windows"
+    echo. > chitchat.py
+    ```
+</DocsCode>
+
+<DocsCode ubuntu={true}>
+    ```py copy filename="ubuntu"
+    touch chitchat.py
+    ```
+    </DocsCode>
+
+</CodeGroup>
+
+- Import required libraries.
+
+<GithubCodeSegment digest="8f26f6f2e5fe73526ceca7964aa8dd8e">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/predefined-dialogue-chitchat/dialogues/hardcoded_chitchat.py"
+        lineStart={1}
+        lineEnd={6}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='8f26f6f2e5fe73526ceca7964aa8dd8e'>
+
+<DocsCode local={true}>
+	```py copy filename="hardcoded_chitchat.py"
+
+	from typing import Type
+	from warnings import warn
+	from uagents import Model
+	from uagents.context import Context
+	from uagents.experimental.dialogues import Dialogue, Edge, Node
+	
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+- Define dialogue message models, each transition needs a separate message.
+
+<GithubCodeSegment digest="1cc6efef6a508235ff18e29c0f43900c">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/predefined-dialogue-chitchat/dialogues/hardcoded_chitchat.py"
+        lineStart={7}
+        lineEnd={22}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='1cc6efef6a508235ff18e29c0f43900c'>
+
+<DocsCode local={true}>
+	```py copy filename="hardcoded_chitchat.py"
+
+	# define dialogue messages; each transition needs a separate message
+	class InitiateChitChatDialogue(Model):
+	    pass
+	 
+	class AcceptChitChatDialogue(Model):
+	    pass
+	 
+	class ChitChatDialogueMessage(Model):
+	    text: str
+	 
+	class ConcludeChitChatDialogue(Model):
+	    pass
+	 
+	class RejectChitChatDialogue(Model):
+	    pass
+	
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+- Define `nodes` (state) of dialogues like default, initiate, chitchat and end state.
+
+<GithubCodeSegment digest="2510c8579859a20285609a0f7f58eb1b">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/predefined-dialogue-chitchat/dialogues/hardcoded_chitchat.py"
+        lineStart={23}
+        lineEnd={51}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='2510c8579859a20285609a0f7f58eb1b'>
+
+<DocsCode local={true}>
+	```py copy filename="hardcoded_chitchat.py"
+
+	# Node definition for the dialogue states
+	default_state = Node(
+	    name="Default State",
+	    description=(
+	        "This is the default state of the dialogue. Every session starts in "
+	        "this state and is automatically updated once ."
+	    ),
+	    initial=True,
+	)
+	 
+	# Currently not used as states are measured by the edges
+	init_state = Node(
+	    name="Initiated",
+	    description=(
+	        "This is the initial state of the dialogue that is only available at "
+	        "the receiving agent."
+	    )
+	)
+	 
+	chatting_state = Node(
+	    name="Chit Chatting",
+	    description="This is the state in which messages are exchanged.",
+	)
+	 
+	end_state = Node(
+	    name="Concluded",
+	    description="This is the state after the dialogue has been concluded.",
+	)
+	
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+- Define `edges` (transition) of dialogues like initiate session, start dialogue, continue dialogue and end session.
+
+<GithubCodeSegment digest="0f54444d0ca314e4d6ae1044bc473858">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/predefined-dialogue-chitchat/dialogues/hardcoded_chitchat.py"
+        lineStart={52}
+        lineEnd={83}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='0f54444d0ca314e4d6ae1044bc473858'>
+
+<DocsCode local={true}>
+	```py copy filename="hardcoded_chitchat.py"
+
+	# Edge definition for the dialogue transitions
+	init_session = Edge(
+	    name="initiate_session",
+	    description="Every dialogue starts with this transition.",
+	    parent=None,
+	    child=init_state,
+	)
+	 
+	start_dialogue = Edge(
+	    name="start_dialogue",
+	    description="This is the transition from initiated to chit chatting.",
+	    parent=init_state,
+	    child=chatting_state,
+	)
+	 
+	cont_dialogue = Edge(
+	    name="continue_dialogue",
+	    description=(
+	        "This is the transition from one dialogue message to the next, "
+	        "i.e. for when the dialogue continues."
+	    ),
+	    parent=chatting_state,
+	    child=chatting_state,
+	)
+	 
+	end_session = Edge(
+	    name="end_session",
+	    description="This is the transition for when the session is ended.",
+	    parent=chatting_state,
+	    child=end_state,
+	)
+	
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+- Define default behaviour for individual dialogue edges. Only the interaction that requires input from the user is exposed, making the other parts of the dialogue more robust and easier to maintain.
+
+<GithubCodeSegment digest="b41de0423911c47868c2becb1c79bb39">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/predefined-dialogue-chitchat/dialogues/hardcoded_chitchat.py"
+        lineStart={83}
+        lineEnd={109}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='b41de0423911c47868c2becb1c79bb39'>
+
+<DocsCode local={true}>
+	```py copy filename="hardcoded_chitchat.py"
+
+	
+	async def start_chitchat(ctx: Context,sender: str,_msg: Type[Model]):
+	    ctx.logger.info(f"Received init message from {sender}. Accepting Dialogue.")
+	    await ctx.send(sender, AcceptChitChatDialogue())
+	 
+	async def accept_chitchat(ctx: Context,sender: str,_msg: Type[Model],):
+	    ctx.logger.info(
+	        f"Dialogue session with {sender} was accepted. "
+	        "I'll say 'Hello!' to start the ChitChat"
+	    )
+	    await ctx.send(sender, ChitChatDialogueMessage(text="Hello!"))
+	 
+	async def conclude_chitchat(ctx: Context,sender: str,_msg: Type[Model],):
+	    ctx.logger.info(f"Received conclude message from: {sender}; accessing history:")
+	    ctx.logger.info(ctx.dialogue)
+	 
+	async def default(_ctx: Context,_sender: str,_msg: Type[Model],):
+	    warn(
+	        "There is no handler for this message, please add your own logic by "
+	        "using the `on_continue_dialogue` decorator.",
+	        RuntimeWarning,
+	        stacklevel=2,
+	    )
+	 
+	async def persisting_function(ctx: Context,_sender: str,_msg: Type[Model],):
+	    ctx.logger.info("I was not overwritten, hehe.")
+	
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+- In the provided code, specific message types associated with different dialogue states trigger predefined functions that manage the flow and actions of the dialogue, automating the transition between states and handling interactions within the dialogue system efficiently.
+
+<GithubCodeSegment digest="9e0ad0665618512c40a358c4df787e71">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/predefined-dialogue-chitchat/dialogues/hardcoded_chitchat.py"
+        lineStart={109}
+        lineEnd={116}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='9e0ad0665618512c40a358c4df787e71'>
+
+<DocsCode local={true}>
+	```py copy filename="hardcoded_chitchat.py"
+
+	
+	
+	init_session.set_message_handler(InitiateChitChatDialogue, start_chitchat)
+	start_dialogue.set_message_handler(AcceptChitChatDialogue, accept_chitchat)
+	cont_dialogue.set_message_handler(ChitChatDialogueMessage, default)
+	cont_dialogue.set_edge_handler(ChitChatDialogueMessage, persisting_function)
+	end_session.set_message_handler(ConcludeChitChatDialogue, conclude_chitchat)
+	
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+- Define `ChitChatDialogue` class and include nodes and edges into it. These acts as rule for chit chat dialogues.
+
+<GithubCodeSegment digest="add2548b39c9dd6cab855ba110308768">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/predefined-dialogue-chitchat/dialogues/hardcoded_chitchat.py"
+        lineStart={117}
+        lineEnd={158}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='add2548b39c9dd6cab855ba110308768'>
+
+<DocsCode local={true}>
+	```py copy filename="hardcoded_chitchat.py"
+
+	
+	class ChitChatDialogue(Dialogue):
+	    """
+	    This is the specific definition of the rules for the chit-chat dialogue
+	    The rules will be predefined and the actual messages will be passed into it.
+	 
+	    In this specific instance of the ChitChatDialogue, some parts of the dialogue
+	    are hardcoded, such as the initial message and the response to it.
+	    This is done to demonstrate that the dialogue can be defined in a way for
+	    developers to only focus on the parts that are relevant to them.
+	    """
+	    def __init__(
+	        self,
+	        version: str | None = None,
+	    ) -> None:
+	        super().__init__(
+	            name="ChitChatDialogue",
+	            version=version,
+	            nodes=[
+	                init_state,
+	                chatting_state,
+	                end_state,
+	            ],
+	            edges=[
+	                init_session,
+	                start_dialogue,
+	                cont_dialogue,
+	                end_session,
+	            ],
+	        )
+	 
+	    def on_continue_dialogue(self):
+	        """
+	        This handler is triggered for every incoming "chitchat" message
+	        once the session has been accepted.
+	        Any additional stateful information within a dialogue needs to be
+	        persisted explicitly to access it at a later point in the dialogue.
+	        """
+	        return super()._on_state_transition(
+	            cont_dialogue.name,
+	            ChitChatDialogueMessage,
+	        )
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+Include all the above mentioned script sections into a single script and save it as `hardcoded_chitchat.py`
+
+## Step 2: setting up the agents
+
+These two agents use the `hardcoded_chitchat` dialogue system to automate the interaction with minimal intervention. The dialogue is mostly automated, with `agent3` configured to respond to initiation and continue based on predefined rules, and `agent4` automatically initiating the conversation.
+
+### Setting up `agent1`
+
+`agent1` is designed to receive and respond to messages according to hardcoded rules within the ChitChatDialogue class.
+
+    - Navigate to your working directory and create a Python script named `agent1.py`.
+    - Copy the following script into `agent1.py`:
+
+<GithubCodeSegment digest="70ab3fc2f42ed9e515e99f5ff2c1f098">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/predefined-dialogue-chitchat/agent1.py"
+        lineStart={1}
+        lineEnd={52}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='70ab3fc2f42ed9e515e99f5ff2c1f098'>
+
+<DocsCode local={true}>
+	```py copy filename="agent1.py"
+
+	# Import required libraries
+	import json
+	 
+	from uagents import Agent
+	from uagents.context import Context
+	 
+	from dialogues.hardcoded_chitchat import (ChitChatDialogue,
+	                                          ChitChatDialogueMessage,
+	                                          ConcludeChitChatDialogue)
+	 
+	CHAT_AGENT_ADDRESS = "<your_agent_2_address>"
+	 
+	agent = Agent(
+	    name="chit_agent",
+	    seed="<random_string_of_choice>",
+	    port=8001,
+	    endpoint="http://127.0.0.1:8001/submit",
+	)
+	 
+	# Instantiate the dialogues
+	chitchat_dialogue = ChitChatDialogue(
+	    version="0.1",
+	)
+	 
+	# Get an overview of the dialogue structure
+	print("Dialogue overview:")
+	print(json.dumps(chitchat_dialogue.get_overview(), indent=4))
+	print("---")
+	 
+	# This is the only decorator that is needed to add to your agent with the
+	# hardcoded dialogue example. If you omit this decorator, the dialogue will
+	# emit a warning.
+	@chitchat_dialogue.on_continue_dialogue()
+	async def continue_chitchat(
+	    ctx: Context,
+	    sender: str,
+	    msg: ChitChatDialogueMessage,
+	):
+	    # Do something when the dialogue continues
+	    ctx.logger.info(f"Received message: {msg.text}")
+	    try:
+	        my_msg = input("Please enter your message:\n> ")
+	        await ctx.send(sender, ChitChatDialogueMessage(text=my_msg))
+	    except EOFError:
+	        await ctx.send(sender, ConcludeChitChatDialogue())
+	 
+	agent.include(chitchat_dialogue)  # Including dialogue in agent
+	 
+	if __name__ == "__main__":
+	    print(f"Agent address: {agent.address}")
+	    agent.run()  # Running agent
+	 
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+### Setting up `agent2`
+
+`agent2` is configured to automatically initiate a dialogue with `agent1` using the predefined dialogue system.
+
+    - Create a new Python script named `agent2.py` in the same directory.
+    - Paste the following code into `agent2.py`:
+
+<GithubCodeSegment digest="17b484acaab2c4ac907ad9ebe9b67ebb">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/predefined-dialogue-chitchat/agent2.py"
+        lineStart={1}
+        lineEnd={46}
+        hosted={true}
+    />
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='17b484acaab2c4ac907ad9ebe9b67ebb'>
+
+<DocsCode local={true}>
+	```py copy filename="agent2.py"
+
+	"""Chit chat dialogue example"""
+	 
+	from asyncio import sleep
+	 
+	from uagents import Agent, Context
+	 
+	from dialogues.hardcoded_chitchat import (ChitChatDialogue,
+	                                          ChitChatDialogueMessage,
+	                                          InitiateChitChatDialogue)
+	 
+	CHIT_AGENT_ADDRESS = "<your_agent_1_address>"
+	 
+	agent = Agent(
+	    name="chat_agent",
+	    seed="<random_string_of_choice>",
+	    port=8002,
+	    endpoint="http://127.0.0.1:8002/submit",
+	)
+	 
+	# Instantiate the dialogues
+	chitchat_dialogue = ChitChatDialogue(
+	    version="0.1",
+	)
+	 
+	@chitchat_dialogue.on_continue_dialogue()
+	async def continue_chitchat(
+	    ctx: Context,
+	    sender: str,
+	    msg: ChitChatDialogueMessage,
+	):
+	    ctx.logger.info(f"Returning: {msg.text}")
+	    await ctx.send(sender, ChitChatDialogueMessage(text=msg.text))
+	 
+	# Initiate dialogue after 5 seconds
+	@agent.on_event("startup")
+	async def start_cycle(ctx: Context):
+	    await sleep(5)
+	    await chitchat_dialogue.start_dialogue(
+	        ctx, CHIT_AGENT_ADDRESS, InitiateChitChatDialogue()
+	    )
+	 
+	agent.include(chitchat_dialogue)
+	 
+	if __name__ == "__main__":
+	    print(f"Agent address: {agent.address}")
+	    agent.run()
+
+```
+</DocsCode>
+
+</CodeGroup>
+
+
+
+ <Callout type="info" emoji="ℹ️">
+      Remember to update the agent's address to communicate to each other and seed phrase of own choice. 
+</Callout>
+
+## Step 3: Run the Dialogue
+
+    - Start `agent1`:
+        - Run `agent1` using `python agent1.py`
+        - `agent1` will respond based on the hardcoded rules within the `ChitChatDialogue`. The interaction will continue until a predefined conclusion condition is met, such as an "exit" message or similar.
+    <br></br>
+    - Start `agent2`:
+        - Run `agent2.py` using `python agent2.py`.
+        - `Agent4` will automatically initiate the conversation with `Agent3` after a five-second delay.
+
+## Expected output
+
+- `agent1` logger/terminal output:
+
+    ```
+    abc@xyz-MacBook-Pro dialogues % python3 agent1.py
+    Dialogue overview:
+    {
+        "nodes": [
+            {
+                "name": "Initiated",
+                "description": "This is the initial state of the dialogue that is only available at the receiving agent.",
+                "initial": false,
+                "final": false
+            },
+            {
+                "name": "Chit Chatting",
+                "description": "This is the state in which messages are exchanged.",
+                "initial": false,
+                "final": false
+            },
+            {
+                "name": "Concluded",
+                "description": "This is the state after the dialogue has been concluded.",
+                "initial": false,
+                "final": true
+            }
+        ],
+        "edges": [
+            {
+                "name": "initiate_session",
+                "description": "Every dialogue starts with this transition.",
+                "parent": null,
+                "child": "Initiated",
+                "model": "InitiateChitChatDialogue",
+                "starter": true,
+                "ender": false
+            },
+            {
+                "name": "start_dialogue",
+                "description": "This is the transition from initiated to chit chatting.",
+                "parent": "Initiated",
+                "child": "Chit Chatting",
+                "model": "AcceptChitChatDialogue",
+                "starter": false,
+                "ender": false
+            },
+            {
+                "name": "continue_dialogue",
+                "description": "This is the transition from one dialogue message to the next, i.e. for when the dialogue continues.",
+                "parent": "Chit Chatting",
+                "child": "Chit Chatting",
+                "model": "ChitChatDialogueMessage",
+                "starter": false,
+                "ender": false
+            },
+            {
+                "name": "end_session",
+                "description": "This is the transition for when the session is ended.",
+                "parent": "Chit Chatting",
+                "child": "Concluded",
+                "model": "ConcludeChitChatDialogue",
+                "starter": false,
+                "ender": true
+            }
+        ]
+    }
+    ---
+    Agent address: agent1qfjvt60h0kh573fzy9mvmlsr50vff8xmdfeclfgy3g9g6qq6jxkuxh4cu3w
+    INFO:     [chit_agent]: Almanac registration is up to date!
+    INFO:     [chit_agent]: Starting server on http://0.0.0.0:8001 (Press CTRL+C to quit)
+    INFO:     [chit_agent]: Received init message from agent1qwvecfwc255pfqqwtjznh9qqk6skl77xc6fzw8mr3ppfex32sr0kcad62n4. Accepting Dialogue.
+    INFO:     [chit_agent]: I was not overwritten, hehe.
+    INFO:     [chit_agent]: Received message: Hello!
+    Please enter your message:
+    > we are providing example for predefined dialogue
+    INFO:     [chit_agent]: I was not overwritten, hehe.
+    INFO:     [chit_agent]: Received message: we are providing example for predefined dialogue
+    Please enter your message:
+    > The message is sent but there is no functionality to get back
+    INFO:     [chit_agent]: I was not overwritten, hehe.
+    INFO:     [chit_agent]: Received message: The message is sent but there is no functionality to get back
+    Please enter your message:
+    ```
+
+- `agent2` logger/terminal output:
+
+    ```
+    abc@xyz dialogues % python3 agent2.py
+    Agent address: agent1qwvecfwc255pfqqwtjznh9qqk6skl77xc6fzw8mr3ppfex32sr0kcad62n4
+    INFO:     [chat_agent]: Almanac registration is up to date!
+    INFO:     [chat_agent]: Starting server on http://0.0.0.0:8002 (Press CTRL+C to quit)
+    INFO:     [chat_agent]: Dialogue session with agent1qfjvt60h0kh573fzy9mvmlsr50vff8xmdfeclfgy3g9g6qq6jxkuxh4cu3w was accepted. I'll say 'Hello!' to start the ChitChat
+    INFO:     [chat_agent]: I was not overwritten, hehe.
+    INFO:     [chat_agent]: Returning: we are providing example for predefined dialogue
+    INFO:     [chat_agent]: I was not overwritten, hehe.
+    INFO:     [chat_agent]: Returning: The message is sent but there is no functionality to get back
+    ```

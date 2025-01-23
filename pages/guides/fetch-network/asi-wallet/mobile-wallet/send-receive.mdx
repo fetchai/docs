@@ -1,0 +1,91 @@
+import { Callout } from 'nextra/components'
+
+# How to use ASI Alliance Wallet
+
+## Feature 3 - Send/Receive Functionalities
+
+### Send/Receive Button
+
+This button allows the user to perform transaction send and receive functions. By utilizing this feature, users can send and receive transactions seamlessly within the app.
+
+![](src/images/guides/wallet/mobile_42.png)
+
+## Send Option
+
+### Initiate Transfer
+
+If a user wants to send money to another user, they should start by locating the transaction button.
+
+### Select Send Option
+
+Once the transaction button is found, the user selects the option to send money.
+
+![](src/images/guides/wallet/mobile_43.png)
+
+### Enter Amount and Account
+
+After selecting the send option, the user needs to enter the amount they wish to send and choose the account from which the money will be transferred.
+
+![](src/images/guides/wallet/mobile_44.png)
+
+### Add Recipient's Address
+
+Next, the user is prompted to add the recipient's address. This can be done in two ways: either by **scanning the address** or by using the **Add to contact** option.
+
+![](src/images/guides/wallet/mobile_45.png)
+
+### Review Transaction
+
+After adding the recipient's address, the user should review the transaction details to ensure accuracy.
+
+![](src/images/guides/wallet/mobile_46.png)
+
+### Optional: Add Memo
+
+If the user wishes to add a memo to the transaction, they can do so at this stage.
+
+    <Callout type="info" emoji="ℹ️">
+    **Fetch transaction memo limits and storage details**
+
+    1. **Character/size limitations**: the memo field is limited to _256 bytes_ by default. This is configurable and can be changed via a governance proposal if needed. To check the current value programmatically, you can query the `auth` module parameters [here ↗️](https://rpc-fetchhub.fetch.ai/abci_query?path=%22custom/auth/params%22) and decode the response by copy-pasting there inner content of `value` (without quotes). You'll receive a base64-encoded response containing the parameters, which you can decode to view the structure, including the `max_memo_characters`, `tx_sig_limit`, and `tx_size_cost_per_byte` parameters.
+
+    2. **Limitations**: while you can add any data within the 256-byte limit, the memo field is intended for _short text_. Adding structured or binary data (e.g., blob attachments) is technically possible within the size constraint, but it isn't recommended due to potential gas costs and inefficiency. If you wish to store larger or more complex data, consider using other data storage methods, as encoding this data in the memo could potentially exhaust gas and processing limits. The current **gas constraints** are set up:
+
+        - Each byte stored in a transaction costs 10 gas (as set by `tx_size_cost_per_byte`).
+        - The maximum gas per block is 3,000,000 gas, which limits the total data that can be stored in a block.
+        - While the block size limit is 300,000 bytes, the gas cost to store data near this size would max out the block's gas limit. Therefore, block gas constraints often restrict the size of a transaction more than the byte limit alone.
+
+    3. **On-chain storage and migrations**: once a transaction with a memo is added to a block, the memo data is stored permanently on-chain. During migrations, all transaction data, including the memo, should remain intact, as existing chain data should be preserved once migration is finalized.
+    </Callout>
+
+**Approve Transaction**: once the user has reviewed the transaction and made any necessary additions, they can proceed by clicking on the **Approve transaction** button.
+
+![](src/images/guides/wallet/mobile_47.png)
+
+### Transaction Confirmation
+
+Upon approval, a transaction ID is generated, confirming that the transaction has been successfully processed.
+
+![](src/images/guides/wallet/mobile_48.png)
+
+## Receive Option
+
+### Initiate Transaction
+
+If a user wants to **Receive money** from another user, they should start by locating the transaction button.
+
+### Select Receive Option
+
+Once the transaction button is found, the user selects the option to Receive money.
+
+![](src/images/guides/wallet/mobile_43.png)
+
+### Choose Payment Method
+
+Determine the preferred method of payment, whether it's scanning a QR code or fetching the recipient's account address.
+
+### Complete Transaction
+
+Once the payment method is selected and the necessary details are provided, proceed to complete the transaction.
+
+![](src/images/guides/wallet/mobile_50.png)
