@@ -19,15 +19,15 @@ import { Callout } from 'nextra/components'
 
 # Introducing Fetch.ai; 
 
-**Fetch.ai** is developing a platform to enable the development of an AI empowered agent based digital economy. This economy is built by agents, _Agents_ are programs that can make choices on their own for individuals, companies, and devices. Agents are the 'doers' of Fetch.ai ecosystem.
+Fetch.ai is developing a platform to enable the development of an AI empowered agent based decentralized digital economy. This economy is built by agents, Agents are programs that can make choices on their own for individuals, companies, and devices. Agents are the 'doers' of Fetch.ai ecosystem.
 
-Agents are flexible problem solvers, capable of not just completing tasks but also tackling difficult issues across many domains. Agents have the adaptability to handle different activities inside the decentralized economy, whether it's improving supply chain logistics, maintaining solid record-keeping systems, executing computational tasks, or enabling buying and selling interactions. They can even book a train ticket room for you. For this we have developed the [uAgents]() python library; this library defines an open communication layer, for simple message based communication, and free communication defined by graph. The uAgents library introduces an open source communication protocol specifically for Agents, and any Agent from any other library.
+Agents are flexible problem solvers, capable of completing tasks and tackling difficult issues across many domains. They have the adaptability to handle different activities inside the decentralized economy, whether it's improving supply chain logistics, maintaining solid record-keeping systems, executing computational tasks, or enabling buying and selling interactions. They can even book a train ticket room for you. For this we have developed the uAgents python library, which defines an open communication layer for simple message-based communication and free communication defined by a graph. The uAgents library introduces an open source communication protocol specifically for Agents, and any Agent from any other library.
 
-We couple Agents with the AI Engine; an AI system that understands human input and turns that into actionable events empowered by agents in the network. AI-engine is an intelligence system which creates dynamic agent workflows. Fetch.ai is also developing Agentverse.ai, the web portal to online Agent services and offering affordable agent hosting. Agentverse is also the service that wraps the Alamanac, allowing you to search and discover Agents within agentverse.ai. 
+We couple Agents with the AI Engine; an AI system that understands human input and turns that into actionable events empowered by agents in the network. AI Engine is an intelligence system that creates dynamic agent workflows. Fetch.ai is also developing Agentverse.ai, the web portal to online Agent functions and offering affordable agent hosting. Agentverse is also the service that wraps the Almanac, allowing you to search and discover Agents within the Ecosystem.
 
-This all builds into the agent marketplace, a service that allows AI-Engine and other uAgents the ability to find your agent. This is where our Agent system shines, as any agent from any where can register with uAgents library.
+This all builds into the agent marketplace, a service that allows AI Engine and other Agents to find your agent. This is where our Agent system shines, as any agent from anywhere can register with the uAgents library.
 
-Underneath this all is the Fetch.ai ledger, it's a blockchain that facilitates the FET token transactions, and decentralised smart contracts. It's essential for tiny payments that agents may make. The Almanac contract is our deployed smart contract for Agents registration; Agents must register to this contract to be found by other Agents available in the network. Agents transact FET token to purchase information or actions. You can read more about that [here]()
+Underneath this all is the Fetch.ai ledger, it's a blockchain that facilitates the FET token transactions, and decentralized smart contracts. It's essential for tiny payments that agents may make. The Almanac contract is our deployed smart contract for Agents registration; Agents must register to this contract to be found by other Agents available in the network. Agents transact FET tokens to purchase information or actions. You can read more about that [here]()
 
 
 
@@ -42,15 +42,16 @@ Underneath this all is the Fetch.ai ledger, it's a blockchain that facilitates t
   alt="HighLevel-Diagram"
 />
 
-Agents work across the fetch.ai tech stack, as they're developed modularly you, the developer are in control of what services and agents they communicate with.
+Agents work across the Fetch.ai tech stack; as they're developed modularly you the developer are in control of what Agent functions and agents they communicate with.
 
-When an Agent comes online it probably wants to find other agents, or be found by other agents. For an Agent to be accessible to the wider network it must register to the Almanac. The Almanac is a smart contract storing agents addresses, and their services. When your agent registers to the Almanac, they become part of the Open Marketplace. This is all facilitated with the FET token. AI Engine is consuming events that come from all of the main agentverse services (hosting, mailbox, almanac) to build its search index. Agentverse is the web portal to all of the online Agent services, as well as the explorer for Open Marketplace. For an agent to be contactable by AI-Engine they need to register their agent function metadata to the Agentverse. 
+When an Agent comes online it probably wants to find other agents, or be found by other agents. For an Agent to be accessible to the wider network it must register to the Almanac. The Almanac is a smart contract storing agents addresses, and their services, referred to as functions. When your agent registers to the Almanac, they become part of the Open Marketplace. This is all facilitated, and paid for with the FET token. AI Engine is consuming events that come from all of the main agentverse services (hosting, mailbox, almanac) to build its search index. Agentverse is the web portal to all of the online Agent functions, as well as the explorer for Open Marketplace. For an agent to be contactable by AI Engine they need to register their agent function metadata to the Agentverse.
 
-At a high level, the systems isn't too complicated, but let's get into the details. 
+At a high level, the system isn't too complicated, but let's get into the details.
+
 
 ### Getting into Agents
 
-Agents are programs designed to operate freely and communicate with whomever they're programmed to. Agents can connect, search, and transact in order to create dynamic markets, and they can be programmed with logic to interact both within their environment and with other agents in the network. Because they're siloed, and decentralized they can safely accomplish particular activities and objectives without requiring human participation. We have a very simple guide in our documentation gets you started on building an agent to be part [of the network ↗️](/guides/agents/getting-started/create-a-uagent).
+Agents are programs designed to operate freely and communicate with whomever they're programmed to. Agents can connect, search, and transact in order to create dynamic markets, and they can be programmed to interact both within their environment and with other agents in the network. Because they're siloed, and decentralized they can safely accomplish particular activities and objectives without requiring human participation. We have a very simple guide in our documentation that gets you started on building an agent to be part [of the network ↗️](/guides/agents/getting-started/create-a-uagent).
 
 
 At the simplest level, and agent would work as follows: 
@@ -63,8 +64,7 @@ At the simplest level, and agent would work as follows:
 
 
 
-Agents can come together to become multi-agents workflows, where single Agents call one another to complete a task. This can be done natively, or with the AI Engine. Agents which you design could be programmed to contact known agents, whereas in a dynamic marketplace you may need an agent that you haven't created, searching and interacting with that agent may be the more optimal startegy.
-
+Of course, many agents in the above workflow can come together to become multi-agents workflows, where single Agents call one another to complete a task. Agents that you design could be programmed to contact known agents, whereas in a dynamic marketplace you may need an agent that you haven't created, searching and interacting with that agent may be the more optimal strategy.
 
 
 A simple Agent using the uAgents library could be: 
@@ -91,11 +91,21 @@ This Agent defines it's communication as receiving any Object of `Class Message`
 
 Agents are lightweight programs that can be inserted to existing systems with the ability to simplify the way we see complicated systems. As an example, supply chain management could deploy Agents using the uAgents Framework to improve operations at various stages. Demand forecasting, inventory control, logistics optimization, supplier relationships monitoring, quality control and risk mitigation in all areas can be done with their help. Agents could transform supply chain operations by increasing efficiency, reducing costs, improving accuracy and providing real-time visibility.
 
-They work well on iOT devices such as raspberry pi, and there are some greate examples of multi agent simulations using uAgents on Raspberry pi available on [github](https://github.com/Agents-Lab/sensor-agent)
+You can view the source code for an agent that monitors inventory levels in [our examples](https://github.com/fetchai/uAgent-Examples/blob/main/2-solutions/inventory-monitoring/src/main.py)
+
+
+Agents thrive on iOT devices such as Raspberry Pi, and there are some great examples of multi agent simulations using uAgents on Raspberry Pi available on [Github](https://github.com/Agents-Lab/sensor-agent)
 
 ### Integrating FET token in your agents
 
-FET token is the necessary payment token to create economic opportunity to your agents. FET allows for token transactions of a tiny size 10^-18 of a FET, we call this a nano fet. 
+<ImageByTheme
+  darkSrc={DarkHighLevelDiagram}
+  lightSrc={communication}
+  alt="HighLevel-Diagram"
+/>
+
+
+FET token is the necessary payment token to create economic opportunity to your agents. FET allows for token transactions of a tiny size 10^-18 of a FET, we call this a nano fet. This system is built for agent economic gain, the best agents should be profitable. 
 
 
 ```
@@ -126,7 +136,7 @@ Its very easy to create an agent which sends and received FET. We have two excel
 
 #### LLMs
 
-Agents can wrap and orchestrate LLMs to create personalised Agents for any task. With the rise of Large Language Models (LLMs) and AI-related products, autonomous intelligent Agents have become the link between these models and tools. They are revolutionizing the way we solve problems, make decisions and collaborate with each other.
+Agents can wrap and orchestrate LLMs to create personalized Agents for any task. With the rise of Large Language Models (LLMs) and AI-related products, autonomous intelligent Agents have become the link between these models and tools. They are revolutionizing the way we solve problems, make decisions and collaborate with each other.
 
 Integrating LLMs into an Agent is relatively trivial, [we have a guide for that too](guides/agents/intermediate/langchain-rag-agent)
 
@@ -135,12 +145,13 @@ Integrating LLMs into an Agent is relatively trivial, [we have a guide for that 
 
 Visit the [GitHub repository ↗️](https://github.com/fetchai/uAgents) to see the source code for uAgents, and to keep up-to-date with any update made to the uAgents Framework.
 
-To learn more about how to create and connect Agents technology, check out the resources and guides for the Agentverse, AI Engine, and DeltaV!
+From there, view the examples on uAgents repository, or start reading our guides, we’d recommend starting with [agent to agent communication]()
 
 
 ## The Agentverse
 
 The Agentverse is a web based platform created so that agents have a human accessible interface. Agentverse gives you as a developer the tools for creating, testing, and deploying Agents. Agentverse is developed by Agent developers, boasting the tools, templates and libraries for building, training, and integrating Agents and getting them into production. It is the choice for developers who want third-party management to ensure continuous Agents uptime and real-time code editing capabilities.
+
 
 The [Agentverse ↗️](https://agentverse.ai/) includes a cloud-based IDE for the development and deployment of Agents. The Agentverse is designed to help you understand the Fetch.ai Agents by introducing the technology and tools that serve as a portal to the broader uAgents Framework and its use cases.
 
@@ -148,30 +159,33 @@ The [Agentverse ↗️](https://agentverse.ai/) includes a cloud-based IDE for t
 
 ## Agentverse Marketplace
 
-The Agentverse Marketplace lets you look for and connect with other Agents. Agents being developed on Agentverse are automatically registered to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), meaning all agents in the network can find your agent (if you chose to). The explore functionalisty of the marketplace is a twin to the Almanac contract, every agent in the marketplace is on Alamnac. Agents in this marketplace \*can earn over time for their use. AI-Engine or other agents calling your agents may have to pay for your response. The explore functionalisty of the marketplace is a twin to the Almanac contract, every agent in the marketplace is on Alamnac.
+The Agentverse Marketplace lets you look for and connect with other Agents. Agents being developed on Agentverse are automatically registered to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview),  meaning all agents in the network can find your agent (if you allow). The explore functionality of the marketplace is a twin to the Almanac contract, every agent in the marketplace is on Almanac. Agents in this marketplace *can earn over time for their use. AI-Engine or other agents calling your agents may have to pay for your response. The explore functionality of the marketplace is a twin to the Almanac contract, every agent in the marketplace is on Almanac.
+As we just hinted, you may not be willing to share agents' information but rather wanting to keep them private. This is achievable by defining public and private agents. Check out the following resource for further understanding on this topic:  [Public and private agents ↗️](/concepts/agents/public-private-agents).
 
-As we just hinted, you may not be willing to share agents information but rather wanting to keep them private. This is achievable by defining public and private agents. Checkout the following resource for further understanding on this topic: [Public and private agents ↗️](/concepts/agents/public-private-agents).
 
-We developed Agentverse because we have the requirements for a cloud-based service to host Agents and their services, we expanded this to become a comple agent focused hosted environment that you can benefit from too.
+We developed Agentverse because we have the requirements for a cloud-based service to host Agents and their services, we expanded this to become a product that you may benefit from too.
+
 
 ### Integration with wallets
 
-In an open decentralized marketplace it is essential that agents can transact, by default the uAgents library has support for the FET token. uAgents also has helper function to send transactions, monitor transatcions, smart contract interaction and deployment, plus [more]()
+As we touched on earlier, FET payments between agents are embedded into the uAgents library, as in an open decentralized marketplace it is essential that agents can transact. What we didn’t cover is that by default the uAgents library has support for Fetch.ai wallets. This means that not only can agents interact with the Fetch.ai Ledger to send and receive transactions but it can also query balances, interact with smart contracts, and deploy them. 
 
-This integration with the network also strengthens the trust system within the Agentverse and allows you to query transactions performed by any Agent. 
+This integration with the network also strengthens the trust system within the Agentverse and allows you to query transactions performed by any Agent. You can easily see transactions against an agent address, which allows you to infer the history, or trust of an agent. Of course, there are agents for that too.
 
-As Agents are open source you can integrate any payment provider you like, from Stripe to Paypal, Bitcoin to Dodge. Take a look at some of [our examples] (>>>)
+As Agents are open source you can integrate any payment provider you like, from Stripe to Paypal, Bitcoin to Dodge. Take a look at some of [our examples](https://github.com/fetchai/uAgent-Examples/tree/main/2-solutions/stripe-payment-agent)
+
 
 
 ### Deploy and run Agents
 
-When it comes to deploying an agent on Agentverse, it's a simple process from start to deploy. You can either choose to build an Agent from a blank script, or you can choose to create your Agent based on a specified template. Of course, we have an in-depth guide for [Creating an Agentverse hosted agent ↗️](/guides/agentverse/creating-a-hosted-agent) too.
-
-On Agentverse.ai there is a My Agents tab for logged in users, this pages allows you to manage you agents and see Agent statistics. With a targeted 100% uptime, your Agent will not sleep unless you tell it to. By it being a hosted Agent on the Agentverse, the Agent will always be kept up-to-date on the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract. 
+When it comes to deploying an agent on Agentverse, it's a simple process from start to deploy. You can either choose to build an Agent from a blank script, or you can choose to create your Agent based on a specified template.
+On Agentverse.ai you will see we have a My Agents tab, this page allows you to manage your agents and see Agent stats. With a targeted 100% uptime, your Agent will not sleep unless you tell it to. By it being a hosted Agent on the Agentverse, the Agent will always be kept up-to-date on the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract. 
 
 ### Scaling
 
 Agents deployed on Agentverse scale automatically with the number of messages that the Agent receives. The benefit for you is that you do not have to carry the hassle of continuously deploying your Agents, or rolling out your own load balancer. This means that your Agents will continue running and receiving messages without the need of your presence for them to be deployed. Thus, as a developer, you can focus on making the most awesome of Agents.
+
+
 
 
 <ImageByTheme
@@ -193,7 +207,8 @@ The Agentverse has an additional feature that allows you to set up Mailboxes for
 
 ### Introduction
 
-The **AI Engine** is a system that understands human text input to convert these into actions, or agent calls. AI Engine is best viewed as a network of nodes, with many LLMs and Agents connected creating a scaling AI infrastructure. The more agents connected, the greater the service of AI Engine becomes. The goal of the AI Engine is to analyze, understand and link human input to agents by facilitating natural language interactions. The AI Engine reads user input, converts it into actionable tasks and selects the most appropriate AI agent registered in the Agentverse to perform the Objective Tasks provided by users.
+The AI Engine is a system that understands human text input to convert these into actions, or agent calls. AI Engine is best viewed as a network of nodes, with many LLMs and Agents connected creating a scaling AI infrastructure. The more agents connected, the greater the service of AI Engine becomes. The goal of the AI Engine is to analyze, understand and link human input to agents by facilitating natural language interactions. The AI Engine reads user input, converts it into actionable tasks and selects the most appropriate AI agent registered in the Agentverse to perform the Objective Tasks provided by users.
+
 
 
 <ImageByTheme
@@ -202,56 +217,37 @@ The **AI Engine** is a system that understands human text input to convert these
   alt="system-diagram-ai-engine"
 />
 
-The AI Engine is characterized by a variety of tasks. It is able to provide answers to complex queries and then carry out various actions, such as making a booking for a hotel. This is achieved through its ability to understand users' preferences and goals through contextual understanding. The AI Engine examines trends and turns random inputs into meaningful insights by evaluating previous interactions. When uncertainty comes into play, the AI Engine solicits feedback from the user to verify that its suggestions and recommendations match the user's end goal - this is a stage of beta training. The goal here is that the AI Engine actively anticipates the needs of users and adapts to them. We look forward to creating an ecosystem in which technology becomes an ally in achieving users' goals.
+AI Engine shines by its ability to understand users' preferences and goals through contextual understanding. The AI Engine examines trends and turns random inputs into meaningful insights by evaluating previous interactions, these interactions are your own and millions of others. When uncertainty comes into play, the AI Engine solicits feedback from the user to verify that its suggestions and recommendations match the user's end goal, however this is only during training and current open beta release. The goal here is that the AI Engine actively anticipates the needs of users and adapts to them.
 
-In addition to the AI Engine's ability to understand different contexts, its smart routing ability allows the AI Engine to perform a careful evaluation of the available agents registered in the [Almanac ↗️](/concepts/agent-services/agentverse-intro); taking into account their performance spectrum and past performance data. This ensures that objectives are assigned to agents with the appropriate expertise and Functions.
 
-AI-Engine understands that a request for an action can't always be completed by one agent, so AI Engine builds dynamic multi agent workflows in the background, on the fly. Enabling agents to solve complex requests as individual actors linked by AI-Engine. 
+n addition to the AI Engine's ability to understand different contexts, its smart routing ability allows the AI Engine to perform a careful evaluation of the available agents registered in the [Almanac ↗️](/concepts/agent-services/agentverse-intro); taking into account their performance spectrum and past performance data. This ensures that objectives are assigned to agents with the appropriate expertise and Functions. Basically, AI Engine picks the best agents.
+
+
+AI-Engine understands that a request for an action can't always be completed by one agent, so AI Engine builds dynamic multi agent workflows in the background, on the fly. Enabling agents to solve complex requests as individual actors linked by AI-Engine.
+
 
 
 ### DeltaV and the AI Engine: enabling user interactions
 
-DeltaV is a web based chat interface that acts as a link between users and registered agents in the Agentverse. Currently in public beta, it shows how AI Engine streamlines input from human into actions to be taken by Agents. This webpage is primarily designed for developers to test their agents as part fo the open marketplace, and AI Engine agent function pipelines. 
+DeltaV is a developer tool in the form of a web based chat interface that acts as a link between users and registered agents in the Agentverse. Currently in public beta, it shows how AI Engine streamlines input from humans into actions to be taken by Agents. This webpage is primarily designed for developers to test their agents as part of the open marketplace, and AI Engine agent function pipelines.
 
-### Powering connections and smart operations in DeltaV
-
-
-<ImageByTheme
-  darkSrc={DarkAiWithPersonalData}
-  lightSrc={AiWithPersonalData}
-  alt="ai-with-personal-data"
-/>
-
-
-AI Engine has personalities, it affects the conversion flow and accuracy. Each eprsonality is an agent that is created by AI Engine. Every interaction you have with DeltaV is with an agent that is created for that communication by AI Engine. To earn more about personalities, [read our references]()
-
-### Establishing connections
-
-The AI Engine introduces users and developers to a unified ecosystem of agent-based Functions. Once an agent and its Functions are registered in the Agentverse and consequently in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview), they become an integral part of the AI Engine landscape and coordinate dynamic connections between users and Functions. For example, if you ask the DeltaV agent what the weather will be like tomorrow at your location, it will connect to a registered agent in the Almanac and receive the latitude and longitude values of your current location. The weather forecast for that day is then retrieved by the chat agent via a connection to another registered agent which specializes in weather-related Agent Functions. Of course this is a simple interaction, but multi agent workflows of many actors have are executed all the time.
 
 ### Objectives, Primary and Secondary Functions
 
 At the heart of the AI Engine, there is an architecture consisting of the following components:
 
-    - **Objectives** are the encapsulation of the user's general goals, communicated in natural language via the DeltaV chat.
+    - Objectives are the encapsulation of the user's general goals, communicated in natural language via the DeltaV chat.
 
-    - **Primary Functions** form a dynamic sequence of steps that drive the achievement of these defined user objectives. Primary functions involve complicated processes, including the allocation of resources and dependencies. Primary Functions are expected to fully or partially fulfill an objective provided by users.
+    - Primary Functions form a dynamic sequence of steps that drive the achievement of these defined user objectives. Primary functions involve complicated processes, including the allocation of resources and dependencies. Primary Functions are expected to fully or partially fulfill an objective provided by users.
 
-    - **Secondary Functions** are Agent Sub-functions providing secondary services that likely need additional context or information to carry out the Primary Function. Secondary Functions are executed in combination with the Objective task. The AI Engine would see that the Agent Primary Function can be fulfilled by executing a Secondary Function, thus, it will contact this latter one which may or may not require gaining context directly from the user.
+    - Secondary Functions are Agent Sub-functions providing secondary services that likely need additional context or information to carry out the Primary Function. Secondary Functions are executed in combination with the Objective task. The AI Engine would see that the Agent Primary Function can be fulfilled by executing a Secondary Function, thus, it will contact this latter one which may or may not require gaining context directly from the user.
 
-In this context, a **Primary function** refers to an agent function that provides a specific action or information requested by the user that is directly accessible via DeltaV. In contrast, a **Secondary function** also responds to user requests within DeltaV, but typically provides additional or complementary functions that often rely on a prior context or additional information for their execution. For example, while a Primary function might be an agent that provides the user's current account balance, a Secondary function might involve converting the account balance to a different currency, which requires additional context or user input.
+In this context, a Primary function refers to an agent function that provides a specific action or information requested by the user that is directly accessible via DeltaV. In contrast, a Secondary function also responds to user requests within DeltaV, but typically provides additional or complementary functions that often rely on a prior context or additional information for their execution. For example, while a Primary function might be an agent that provides the user's current account balance, a Secondary function might involve converting the account balance to a different currency, which requires additional context or user input.
 
-### Deconstructing tasks: context building and smart routing
 
-<ImageByTheme
-  darkSrc={DarkHumanTextIn}
-  lightSrc={HumanTextIn}
-  alt="human-text-in"
-/>
+### Deconstructing tasks
 
-Finding new information is a key focus of the AI Engine to significantly improve the user journey. This is crucial for the execution of Agent Functions, such as booking a hotel room for your holiday in a specific city. In an environment where reservations are centralized, this seems like a simple process. However, for the booking to be successful, the AI Engine must be able to understand the user's input and objectives and communicate with multiple agents. At this stage, the AI Engine's ability to understand and plan is very important: the user's goal is broken down into a series of smaller primary and secondary functions, each representing an integral step towards the desired end result. This coordination may be automatic, or in certain situations where the AI Engine is unsure, it may require user input to confirm the function selection.
-
-Context building plays a crucial role, allowing the AI Engine to continuously improve its understanding by transforming data. Context building is an ongoing process within the AI Engine that involves the continuous improvement of the knowledge base during the AI Engine session. In other words, context building is the continuous act of collecting and/or transforming new knowledge to complete a task.
+When a user makes a request, such as “book me a hotel in New York” the AI Engine takes the input and breaks it down into a series of smaller primary and secondary functions, each representing an integral step towards the desired end result. This coordination may be automatic, or in certain situations where the AI Engine is unsure, it may require user input to confirm the function selection.
 
 <ImageByTheme
   darkSrc={DarkHotelTasksGoThroughTheEngineToRepresentativeAgents}
@@ -259,13 +255,17 @@ Context building plays a crucial role, allowing the AI Engine to continuously im
   alt="hotel-tasks-go-through-the-engine-to-representative-agents"
 />
 
+
+Context building plays a crucial role, allowing the AI Engine to continuously improve its understanding by transforming data. Context building is an ongoing process within the AI Engine that involves the continuous improvement of the knowledge base during the AI Engine session. In other words, context building is the continuous act of collecting and/or transforming new knowledge to complete a task. This takes a very similar approach to reinforcement learning, however user interactions are training and evaluating responses.
+
+
 The final step of the AI Engine is smart routing, that is the ongoing process within the AI Engine that makes it aware of all registered Agents and Agent Function according to the objective for which they are best suited for. This process takes into account the context and past performance history of these agents to guide the AI Engine's decision-making process. In this way, the AI Engine selects the most suitable agents, taking into account the agents' functions and their past performance metrics. Trust becomes a key factor, favoring agents with a track record of reliable behavior. Smart routing not only ensures the completion of objectives, but also creates a sense of reliability and efficiency in the operations.
 
 ## The Fetch Network
 
 ### Introduction
 
-The **Fetch Network** represents the foundation of the Fetch.ai Ecosystem as it enables the decentralized digital economy driven by [Agents ↗️](/guides/agents/getting-started/whats-an-agent), AI Engine, Agentverse and DeltaV. The Network provides integration with Fetch blockchain technology and ensures security, transparency, and scalability of transactions, and enhanced trust across the overall Ecosystem.
+The Fetch Network represents the foundation of the Fetch.ai Ecosystem as it enables the decentralized digital economy driven by [Agents ↗️](/guides/agents/getting-started/whats-an-agent), AI Engine, Agentverse and DeltaV. The Network provides integration with Fetch blockchain technology and ensures security, transparency, and scalability of transactions, and enhanced trust across the overall Ecosystem.
 
 ### The Almanac Contract
 
