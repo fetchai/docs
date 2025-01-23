@@ -24,7 +24,7 @@ Before proceeding, ensure you have the following:
 
     2. **PremAI Account**:
 
-   - Sign up at [PremAI](https://app.premai.io/accounts/signup/)
+   - Sign up at [PremAI ↗️](https://app.premai.io/accounts/signup/)
    - Access the PremAI dashboard.
 
 
@@ -52,6 +52,10 @@ To get the required API key and other details, you need to follow these steps:
     - Provide a name and description for your repository.
     - Add the required document for your use case by clicking on the `Add document` button.
     - After creation, note the `Repository ID` associated with your new repository.
+
+<Callout type="info" emoji="ℹ️">
+    You can obtain the `API_KEY`, `REPO_KEY` and `PROJECT_ID` from the [PremAI dashboard ↗️](https://app.premai.io/projects/).
+</Callout>
 
 ## Project Structure
 
@@ -111,10 +115,6 @@ def query_prem_ai(user_query):
 
 ```
 
-<Callout type="info" emoji="ℹ️">
-    You can obtain the `API_KEY`, `REPO_KEY` and `PROJECT_ID` from the [PremAI dashboard ↗️](https://app.premai.io/projects/).
-</Callout>
-
 ### PremAI agent mechanism
 
 #### 1. User Agent (`user_agent`)
@@ -139,7 +139,7 @@ async def handle_health_response(ctx: Context, sender: str, msg: HealthResponse)
         await ctx.send(sender, HealthQuery(user_query=follow_up_query))
 ```
 
-#### Explanation of `user_agent`:
+#### Explanation of `user_agent`
 
 - The agent listens for a startup event, where it sends the first health query to the `prem_agent`.
 - When it receives a response from `prem_agent`, it presents the answer to the user and asks if they have a follow-up question.
@@ -167,10 +167,10 @@ async def handle_exit_message(ctx: Context, sender: str, msg: ExitMessage):
 
 ```
 
-#### Explanation of `prem_agent`:
+#### Explanation of `prem_agent`
 
 - The `prem_agent` listens for `HealthQuery` messages from the `user_agent`. Upon receiving a query, it sends the query to the Prem.ai API for processing.
-- After getting the response, the prem_agent sends the answer back to the `user_agent`.
+- After getting the response, the `prem_agent` sends the answer back to the `user_agent`.
 - If an error occurs, the agent sends an exit message with the error notification.
 
 ### Whole Script
