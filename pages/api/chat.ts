@@ -6,19 +6,24 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === "POST") {
-    const { message } = req.body;
+    const { message, sessionId } = req.body;
 
     try {
       const response = await fetch(
-        "https://chat-with-docs-rzql.onrender.com/echo",
+        "https://chat-with-docs-staging.onrender.com/echo",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: message }),
+          body: JSON.stringify({
+            message: message,
+            session_id: sessionId || "",
+          }),
         },
       );
       const data = await response.json();
-      return res.status(200).json({ reply: data.message });
+      return res
+        .status(200)
+        .json({ reply: data.response, sessionId: data.session_id });
     } catch (error) {
       console.log("error", error);
       return res
