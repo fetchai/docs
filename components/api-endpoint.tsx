@@ -193,24 +193,26 @@ export const ApiRequestResponseCombined: React.FC<{
   responseProperties?: PropertyType[];
 }> = (properties) => {
   return (
-    <div className="nx-flex nx-justify-between nx-gap-6 nx-h-[200vh]">
-      <div className="nx-flex-grow nx-overflow-y-auto nx-pr-4">
+    <div className="nx-flex nx-col-container nx-justify-between nx-gap-6 nx-height-adjust">
+      <div className="nx-flex-grow">
         <Row>
-          <p className="nx-endpoint nx-text-base">
-            <span className="nextra-content nx-font-medium dark:nx-text-white-60">
-              Endpoint:
-            </span>
-            <span className="nx-endpoint-method nx-text-fetch-main dark:nx-text-white-90 dark:nx-bg-green-700">
-              {properties.method}
-            </span>
-            <span className="nx-text-purple nx-font-normal nx-text-path dark:nx-text-indigo-250">
+          <div className="nx-endpoint nx-flex nx-text-base">
+            <div className="nx-flex nx-items-center">
+              <span className="nextra-content nx-text-sm nx-font-medium dark:nx-text-white-60">
+                Endpoint:
+              </span>
+              <span className="nx-endpoint-method nx-ml-2 nx-text-sm nx-text-fetch-main dark:nx-text-white-90 dark:nx-bg-green-700">
+                {properties.method}
+              </span>
+            </div>
+            <span className="nx-text-purple nx-text-path nx-font-normal nx-text-sm dark:nx-text-indigo-250">
               {properties.path}
             </span>
-          </p>
+          </div>
         </Row>
 
-        <div className="nx-flex nx-flex-col nx-gap-20">
-          <div id="requestDesc">
+        <div className="nx-flex nx-flex-col nx-gap-12">
+          <div>
             <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-text-2xl">
               Request
             </h1>
@@ -235,11 +237,11 @@ export const ApiRequestResponseCombined: React.FC<{
               </Properties>
             ) : undefined}
           </div>
-          <div id="resdesc">
-            <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-mt-8 nx-text-2xl">
+          <div>
+            <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-text-2xl">
               Responses
             </h1>
-            <div className="nx-pt-4 nx-gap-8 row-width nx-flex-mdx">
+            <div className="nx-pt-4 nx-gap-8">
               {properties.responseDescription ? (
                 <ApiIntro>{properties.responseDescription}</ApiIntro>
               ) : undefined}
@@ -266,7 +268,7 @@ export const ApiRequestResponseCombined: React.FC<{
         </div>
       </div>
 
-      <div className="nx-flex nx-flex-col nx-gap-20 nx-sticky nx-top-24 nx-self-start">
+      <div className="nx-flex nx-flex-col nx-gap-12 nx-blocks-margin nx-sticky nx-top-24 nx-self-start">
         <CodeBlock
           hasCopy={true}
           codeBlocks={[

@@ -2363,14 +2363,19 @@ pre code {
   border-radius: 12px;
   background: rgba(239, 244, 255, 1);
   display: flex;
-  padding: 12px 24px;
+  padding: 10px 22px;
   align-items: center;
   gap: 10px;
-  max-width: 31.25rem;
 }
 
 .nx-text-path {
-  max-width: 304px;
+  max-width: 300px;
+}
+
+@media (max-width: 1440px) {
+  .nx-text-path {
+    max-width: none;
+  }
 }
 
 :is(html[class~="dark"] .nx-endpoint) {
@@ -5243,7 +5248,7 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
 
 .pre-out-code {
   display: flex;
-  max-width: 532px;
+  max-width: 376px;
   padding: var(--24, 24px);
   flex-direction: column;
   align-items: flex-start;
@@ -5252,6 +5257,18 @@ div:hover > .\[div\:hover\>\&\]\:nx-opacity-100 {
   border: 0.5px solid rgba(255, 255, 255, 0.7);
   background: rgba(52, 52, 52, 0.08);
   box-shadow: 10px 20px 100px 0px rgba(243, 245, 248, 0.3) inset;
+}
+
+@media (max-width: 1440px) {
+  .pre-out-code {
+    max-width: 30rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .pre-out-code {
+    max-width: 20rem;
+  }
 }
 
 :is(html[class~="dark"] .pre-out-code) {
@@ -5491,13 +5508,39 @@ pre:not([data-theme]) {
 
 .nextra-body-full-container-apis {
   display: flex;
-  width: 1088px;
+  width: 100%;
+  max-width: 68rem;
   padding: 0px 0px 0px 32px;
   margin-inline: auto;
 }
 
-@media (max-width: 1024px) {
-  .nextra-body-full-container-apis {
-    padding: 0px 32px 0px 32px;
+@media (max-width: 1440px) {
+  .nx-col-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nx-col-container {
+    width: 100%;
+  }
+}
+
+.nx-height-adjust {
+  height: 200vh;
+}
+
+@media (max-width: 1440px) {
+  .nx-height-adjust {
+    height: auto;
+  }
+}
+
+.nx-blocks-margin {
+  margin-top: 7.8rem;
+}
+
+@media (max-width: 1440px) {
+  .nx-blocks-margin {
+    margin-top: 0rem;
   }
 }

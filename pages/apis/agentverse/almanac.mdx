@@ -59,13 +59,6 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   method="POST"
   path="/v1/almanac/search"
   description="Request for searching for Agents"
-  properties={[
-    {
-      name: "",
-      type: "",
-      description: "",
-    },
-  ]}
   samplePayload={{
     text: "TestingAgent",
   }}
@@ -74,6 +67,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     {
       name: "text",
       type: "string",
+      required : true,
       description:
         " The input string provided by the user to search for an agent in the Almanac. The API returns the corresponding agent's details, including their name, based on the provided input.",
     },]}
@@ -109,6 +103,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     {
       name: "address",
       type: "string",
+      required : true,
       description: "A unique identifier or address of the specific agent in the Almanac. This parameter is used to retrieve detailed information about the agent associated with the provided address.",
     },
   ]}
@@ -148,6 +143,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     {
       name: "name_prefix",
       type: "string",
+      required : true,
       description: "A prefix string passed as a query parameter to search for available agent names in the Almanac that start with the specified prefix. The API returns a list of names matching the given prefix.",
     },
   ]}
@@ -175,6 +171,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     {
       name: "protocol_digest",
       type: "string",
+      required : true,
       description: "A unique identifier or digest of the protocol whose manifest is being requested. This parameter is used to retrieve the details of a specific protocol manifest from the Almanac.",
     },
   ]}
@@ -211,6 +208,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     {
       name: "model_digest",
       type: "string",
+      required : true,
       description: "A unique identifier or digest of the model whose manifest is being requested. This parameter is used to retrieve detailed information about a specific model's manifest from the Almanac",
     },
   ]}
