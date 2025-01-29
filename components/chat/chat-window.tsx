@@ -17,6 +17,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
 
   const handleSendMessage = async () => {
     if (!input.trim()) return;
@@ -27,11 +28,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
       const response = await fetch("/docs/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ message: input, sessionId: sessionId }),
       });
       const data = await response.json();
+      if (data.sessionId && !sessionId) {
+        setSessionId(data.sessionId);
+      }
       setTimeout(() => {
-        setMessages((prev) => [...prev, { type: "ai", text: data.reply }]);
+        setMessages((prev) => [
+          ...prev,
+          { type: "ai", text: data.reply || "Sorry, no response received." },
+        ]);
         setIsTyping(false);
       }, 1500);
     } catch (error) {

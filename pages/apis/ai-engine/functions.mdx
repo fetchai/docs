@@ -63,7 +63,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
   method="POST"
   path="/v1beta1/functions/"
   description="Create a new function for a user authenticated through JWT."
-properties={[
+  properties={[
     {
       name: "agent",
       type: "string",
@@ -101,7 +101,7 @@ properties={[
       name: "arguments",
       type: "JSON",
       description:
-        "Properties of all request model arguments as a list. Every element contains the name of the respective argument, the fact that the argument is required or not (true/false), the type of the argument, and the description.",
+        "List of all request model arguments, including name, required status (true/false), type, and description.",
     },
     {
       name: "type",
@@ -118,35 +118,23 @@ properties={[
       name: "metadata_properties",
       type: "JSON",
       description:
-        'Optional JSON object. Gives user the option to add additional metadata related to the function. Currently only geo-location data is supported. Structure is {"geo_location":{"location":{"lat":${lat},"lon":${lon}},"radius":${radius}}} - see details below.',
+        'Optional JSON object to add metadata, currently supporting geo-location in the format: {"geo_location":{"location":{"lat":${lat},"lon":${lon}},"radius":${radius}}}.',
       required: false,
     },
     {
-      name: "metadata_properties-geo_location",
-      type: "JSON",
-      description:
-        'JSON object. Currently this is the only metadata supported. Structure is {"location":{"lat":${lat},"lon":${lon}},"radius":${radius}} - see details below.',
-    },
-    {
-      name: "metadata_properties-geo_location-location",
-      type: "JSON",
-      description:
-        'JSON object. Latitude and longitude data relate. Structure is {"lat":${lat},"lon":${lon}} - see details below.',
-    },
-    {
-      name: "metadata_properties-geo_location-location-lat",
+      name: "metadata-geo-location-lat.",
       type: "float",
       description:
         'Latitude related to the function.',
     },
     {
-      name: "metadata_properties-geo_location-location-lon",
+      name: "metadata-geo_location-location-lon",
       type: "float",
       description:
         'Longitude related to the function.',
     },
     {
-      name: "metadata_properties-geo_location-radius",
+      name: "metadata-geo_location-radius",
       type: "float",
       description:
         'Optional radius related to the function.',
@@ -278,14 +266,22 @@ properties={[
     },
   ]}
   properties={[
+     {
+      name: "agent_address",
+      type: "string",
+      required : true,
+      description: "The unique address of the agent whose associated functions are being requested.",
+    },
     {
       name: "limit",
       type: "int",
+      required : false,
       description: "The number of functions to return.",
     },
     {
       name: "offset",
       type: "int",
+      required : false,
       description: "The number of functions to skip.",
     },
   ]}
@@ -326,6 +322,14 @@ properties={[
     }
   }
   pathParameters={{function_id:"your_function_id",}}
+   properties={[
+    {
+      name: "function_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier of the function whose details are being requested. ",
+    },]}
   responseDescription="Returns a function object identified by a specific function_id."
 />
 
@@ -374,7 +378,7 @@ properties={[
       name: "arguments",
       type: "Optional[[]JSON]",
       description:
-        "Optional - Properties of all request model arguments as a list. Every element contains the name of the respective argument, the fact that the argument is required or not (true/false), the type of the argument, and the description.",
+        "Optional - List of all request model arguments, including name, required status (true/false), type, and description.",
     },
     {
       name: "type",
@@ -391,38 +395,7 @@ properties={[
       name: "metadata_properties",
       type: "JSON",
       description:
-        'Optional JSON object. Gives user the option to add additional metadata related to the function. Currently only geo-location data is supported. Structure is {"geo_location":{"location":{"lat":${lat},"lon":${lon}},"radius":${radius}}} - see details below.',
-      required: false,
-    },
-    {
-      name: "metadata_properties-geo_location",
-      type: "JSON",
-      description:
-        'JSON object. Currently this is the only metadata supported. Structure is {"location":{"lat":${lat},"lon":${lon}},"radius":${radius}} - see details below.',
-    },
-    {
-      name: "metadata_properties-geo_location-location",
-      type: "JSON",
-      description:
-        'JSON object. Latitude and longitude data relate. Structure is {"lat":${lat},"lon":${lon}} - see details below.',
-    },
-    {
-      name: "metadata_properties-geo_location-location-lat",
-      type: "float",
-      description:
-        'Latitude related to the function.',
-    },
-    {
-      name: "metadata_properties-geo_location-location-lon",
-      type: "float",
-      description:
-        'Longitude related to the function.',
-    },
-    {
-      name: "metadata_properties-geo_location-radius",
-      type: "float",
-      description:
-        'Optional radius related to the function.',
+        'Optional JSON object to add metadata, currently supporting geo-location data in the structure: {"geo_location":{"location":{"lat":${lat},"lon":${lon}},"radius":${radius}}}.',
       required: false,
     },
   ]}
@@ -524,6 +497,14 @@ properties={[
     }
   }
   pathParameters={{function_id:"your_function_id",}}
+  properties={[
+    {
+      name: "function_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier of the function to be duplicated.",
+  },]}
   responseDescription="Returns a function (identified by function_id) which is a duplicate of the function."
 />
 
@@ -538,6 +519,14 @@ properties={[
     {}
   }
   pathParameters={{function_id:"your_function_id",}}
+  properties={[
+    {
+      name: "function_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier of the function to be deleted.",
+  },]}
   responseDescription="Returns an empty JSON object."
 />
 
@@ -574,6 +563,14 @@ properties={[
     }
   }
   pathParameters={{function_id:"your_function_id",}}
+  properties={[
+    {
+      name: "function_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier of the function to start the testing process for. This parameter specifies which function is being tested.",
+    },]}
   responseDescription="Returns the function object (identified by function_id) that we have just started to test."
 />
 
@@ -610,6 +607,14 @@ properties={[
     }
   }
   pathParameters={{function_id:"your_function_id",}}
+  properties={[
+    {
+      name: "function_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier of the function to be submitted for review.",
+    },]}
   responseDescription="Returns the function object (identified by function_id) that has just been submitted for review."
 />
 
@@ -646,6 +651,14 @@ properties={[
     }
   }
   pathParameters={{function_id:"your_function_id",}}
+   properties={[
+    {
+      name: "function_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier of the function to be unpublished. ",
+    },]}
   responseDescription="Returns the function object (identified by function_id) that we have just unpublished."
 />
 
@@ -657,6 +670,21 @@ properties={[
   path="/v1beta1/functions/add-to-function-group/{function_id}/{function_group_id}/"
   description="Add a function to a function group."
   pathParameters={{function_id:"your_function_id", function_group_id:"your_function_group_id"}}
+    properties={[
+    {
+      name: "function_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier of the function to be added to the group. This parameter specifies which function will be associated with the group.",
+    },
+      {
+      name: "function_group_id",
+      type: "string",
+      required : true,
+      description:
+        "he unique identifier of the function group to which the function will be added. This parameter specifies the target group for association.",
+    }]}
   responses={{
     "function": "be14fb4f-b7a5-4233-937d-cce29fb8a3ea",
     "functionGroup": "c02ed9ce-62df-46d1-bfaa-8c8b309a4a40"
@@ -672,6 +700,22 @@ properties={[
   path="/v1beta1/functions/remove-from-function-group/{function_id}/{function_group_id}/"
   description="Remove a function from a function group."
   pathParameters={{function_id:"your_function_id", function_group_id:"your_function_group_id"}}
+  properties={[
+    {
+      name: "function_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier of the function to be removed from the group. This value specifies the function to target.",
+    },
+      {
+      name: "function_group_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier of the function group from which the function is to be removed. This value identifies the target group.",
+    }
+    ]}
   responses={
     {}
   }
@@ -695,6 +739,14 @@ properties={[
     ]
   }
   pathParameters={{function_id:"your_function_id",}}
+   properties={[
+    {
+      name: "function_id",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier for the function whose associated groups are being fetched. This value is required to specify the function in the system and retrieve all groups it belongs to.",
+    },]}
   responseDescription="Returns all function groups that the function (identified by a specific function_id) belongs to."
 />
 
@@ -705,6 +757,14 @@ properties={[
   path="/v1beta1/functions/delete-functions-of-agent/{agent_address}/"
   description="Delete all functions of an agent."
   pathParameters={{agent_address:"your_agent_address"}}
+   properties={[
+    {
+      name: "agent_address",
+      type: "string",
+      required : true,
+      description:
+        "The unique address of the agent whose functions are to be deleted.",
+    },]}
   responses={
     {}
   }
