@@ -3,6 +3,7 @@ import { SearchIcon, DropDownArrow } from "src/icons/shared-icons";
 import styles from "./components.module.css";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface Guide {
   title: string;
@@ -158,6 +159,9 @@ const GuidesMdx = ({ content, components, mainHeading }: GuidesData) => {
     openDropdown: false,
   });
 
+  const router = useRouter();
+  const pageName = router.asPath.split("/").join("-");
+
   const toggleDropdown = () =>
     setFilterState((prev) => ({ ...prev, openDropdown: !prev.openDropdown }));
 
@@ -236,6 +240,7 @@ const GuidesMdx = ({ content, components, mainHeading }: GuidesData) => {
                     key={itemIndex}
                     className="nx-text-blue-500 nx-w-full"
                     href={item.path}
+                    id={`landing${pageName}-${item?.title?.toLowerCase().split(" ").join("-")}`}
                   >
                     <SectionDetails path={item.path}>
                       {item.title}

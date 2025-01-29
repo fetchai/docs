@@ -44,31 +44,34 @@ Make sure you have read the following resources before going on with this guide:
 <DocsCode local={true}>
 	```py copy filename="mailbox_agent.py"
 
-	from uagents import Agent, Context, Model
-	
-	class Message(Model):
-	    message: str
-	
-	SEED_PHRASE = "put_your_seed_phrase_here"
-	
-	# Now your agent is ready to join the agentverse!
-	agent = Agent(
-	    name="alice",
-	    seed=SEED_PHRASE,
+    from uagents import Agent, Context, Model
+    
+    
+    class Message(Model):
+        message: str
+    
+    
+    SEED_PHRASE = "put_your_seed_phrase_here"
+    
+    # Now your agent is ready to join the agentverse!
+    agent = Agent(
+        name="alice",
+        seed=SEED_PHRASE,
         port=8000,
         mailbox=True
-	)
-	
-	# Copy the address shown below
-	print(f"Your agent's address is: {agent.address}")
-	
-	if __name__ == "__main__":
-	    agent.run()
-
-```
+    )
+    
+    # Copy the address shown below
+    print(f"Your agent's address is: {agent.address}")
+    
+    if __name__ == "__main__":
+        agent.run()
+    ```
 </DocsCode>
 
 </CodeGroup>
+
+
 
 Importantly, you need to provide the `SEED_PHRASE`, `name`, `seed` and `port` parameters to correctly run this example. You also need to set `mailbox=True` to correctly connect your Agent to the Agentverse through the Mailbox.
 
@@ -85,7 +88,7 @@ You should get something similar within your terminal output:
         INFO:     [Alice]: Registering on almanac contract...complete
 
         ```
-        
+
 ## Create a Mailbox in Agentverse
 
 Now that we defined our local Agent and have successfully run it, we can go on and connect it to the [Agentverse ↗️](https://agentverse.ai) via a Mailbox. To do so, make sure your Agent is running. Then, click on the [Local Agent Inspector ↗️](/guides/agents/intermediate/local-agent-inspector) URL provided in your terminal output. You will be redirected towards the Inspector UI and will be able to see multiple details about this local Agent. 
@@ -135,7 +138,7 @@ Cool! You have correctly set up a mailbox for the Agent. You can additionally ad
         readme_path="README.md",
         publish_agent_details=True
     )
-	
+
     ```
 
 Then, run the Agent once again and head over to the Inspector UI and connect the Agent again through the Mailbox as we previously showed. Once you do so, you can the head over to the **Local Agents tab** under Agentverse My Agents page and click on the local Agent box. You should be able to see the `README.md` file opening up with the content you provided locally:
@@ -184,6 +187,8 @@ Let's create and run a second Agent to message Alice every 3 seconds. You need t
 </DocsCode>
 
 </CodeGroup>
+
+
 
 ## Testing
 

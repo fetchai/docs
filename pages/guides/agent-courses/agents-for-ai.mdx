@@ -151,7 +151,7 @@ We can do this by running:
 	sentimentagent = Agent(
 	    name="SentimentAgent",  # or any name
 	    seed=SEED_PHRASE,
-	    mailbox=True,
+	    mailbox=True
 	)
 	
 	print(sentimentAgent.address)
@@ -214,12 +214,11 @@ There are a lot of really cool, neat things you need to know from code above. Le
 	
 	
 	SEED_PHRASE = ""
-	AGENT_MAILBOX_KEY = ""
 	
 	sentimentagent = Agent(
 	    name="SentimentAgent",  # or any name
 	    seed=SEED_PHRASE,
-	    mailbox=f"{AGENT_MAILBOX_KEY}@https://agentverse.ai",
+	    mailbox=True
 	)
 	
 	print(sentimentAgent.address)
@@ -244,7 +243,7 @@ We can now initialize the Agent and define the [Protocol ↗️](/references/uag
 
 Then, we have the `on_message()` [handler ↗️](/guides/agents/intermediate/handlers):
 
-<GithubCodeSegment digest="4062beca9a7cafff6002e8e8ff9c7a28">
+<GithubCodeSegment digest="5135e29ec322055eeddb7d6155aafca8">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/agents-for-ai/sentiment_agent.py"
         lineStart={34}
@@ -252,11 +251,12 @@ Then, we have the `on_message()` [handler ↗️](/guides/agents/intermediate/ha
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='4062beca9a7cafff6002e8e8ff9c7a28'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='5135e29ec322055eeddb7d6155aafca8'>
 
 <DocsCode local={true}>
 	```py copy filename="sentiment_agent.py"
 
+	
 	@content_protocol.on_message(model=SentimentResponse, replies={UAgentResponse})
 	async def sentiment(ctx: Context, sender: str, msg: SentimentResponse):
 	    sentiment = get_sentiment(msg.text)
@@ -279,7 +279,7 @@ calling another function inside a decorated function is easy to do.
 
 We can finally run the Agent at the bottom of the script:
 
-<GithubCodeSegment digest="669ae61db8d1e79422c0db593b959609">
+<GithubCodeSegment digest="980d5f3ff7b8a99f2c38624f8b65b8c3">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/agents-for-ai/sentiment_agent.py"
         lineStart={42}
@@ -287,11 +287,12 @@ We can finally run the Agent at the bottom of the script:
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='669ae61db8d1e79422c0db593b959609'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest='980d5f3ff7b8a99f2c38624f8b65b8c3'>
 
 <DocsCode local={true}>
 	```py copy filename="sentiment_agent.py"
 
+	
 	sentimentAgent.include(content_protocol, publish_manifest=True)
 	sentimentAgent.run()
 
@@ -451,7 +452,7 @@ Let's take a look.
 	summaryAgent = Agent(
 	    name="SummaryAgent",
 	    seed=SEED_PHRASE,
-	    mailbox=True,
+	    mailbox=True
 	)
 	
 	summary_protocol = Protocol("Text Summariser")

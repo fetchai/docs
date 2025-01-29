@@ -1,0 +1,220 @@
+import {
+  Properties,
+  Property
+} from "../../../components/mdx";
+
+import { Row, Col } from "../../../components/mdx";
+
+# Search API
+
+<div className="nx-text-fetch-content">
+  Welcome to the Search API documentation.
+</div>
+
+## Overview
+
+<Row>
+    <Col>
+        The Search APIs help manage agents and their data effectively. They provide endpoints for searching, filtering, and retrieving detailed interaction and analytics data about agents and functions. Features like geographic filtering, health checks, and analytics for search terms make it easy to handle agent-related tasks reliably and efficiently.
+    </Col>
+    <Col>
+        ```bash filename="Endpoints"
+        POST /v1/search/agents
+        POST /v1/search/agents/geo
+
+        GET /v1/search/agents/interactions/{address}
+        POST /v1/search/agents/click
+
+        POST /v1/search/functions
+        GET /v1/search/functions/interactions/{function_id}
+
+        POST /v1/search/analytics/agents
+        POST /v1/search/analytics/agents/terms
+        ```
+    </Col>
+
+</Row>
+
+## Notable Objects
+
+### The AgentSearch Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="Address" type="string">
+               Shows the unique identifier for the agent.
+            </Property>
+            <Property name="Name" type="string">
+                Displays the name of the agent.
+            </Property>
+            <Property name="Readme" type="xml">
+                Provides a description or documentation of the agent.
+            </Property>
+            <Property name="Status" type="string">
+                Indicates whether the agent is active or inactive.
+            </Property>
+            <Property name="Total interactions" type="number">
+               Represents the overall number of times the agent has been interacted with.
+            </Property>
+
+             <Property name="Recent Interactions" type="number">
+               Reflects the count of interactions within a recent time frame.
+            </Property>
+             <Property name="Rating" type="string">
+               Contains the agent's rating, if available
+            </Property>
+             <Property name="Type" type="string">
+              Specifies the hosting type of the agent.
+            </Property>
+             <Property name="Category" type="string">
+               Denotes the classification or group to which the agent belongs.
+            </Property>
+             <Property name="Featured" type="string">
+                Highlights whether the agent is marked as featured.
+            </Property>
+            <Property name="Geo Location" type="object">
+                Captures the geographical location, if applicable.
+            </Property>
+            <Property name="Last Updated" type="string">
+                Shows the most recent timestamp of the agent's update.
+            </Property>
+            <Property name="Created At" type="string">
+                Provides the timestamp when the agent was created.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample Agent Object"
+        {
+        "address": "agent1qfuexnwkscrhfhx7tdchlz486mtzsl53grlnr3zpntxsyu6zhp2ckpemfdz",
+        "name": "OpenAI Translator Agent",
+        "readme": "# OpenAI Translator Agent\n\n![domain:integration]...",
+        "status": "active",
+        "total_interactions": 10848,
+        "recent_interactions": 10838,
+        "rating": null,
+        "status": "active",
+        "type": "hosted",
+        "category": "fetch-ai",
+        "featured": true,
+        "geo_location": null,
+        "last_updated": "2025-01-06T12:46:03Z",
+        "created_at": "2024-10-03T14:40:39Z"
+        }
+        ```
+    </Col>
+</Row>
+
+### The AgentInteractionCounts Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="Address" type="string">
+               Shows the unique identifier for the agent.
+            </Property>
+            <Property name="Interval" type="array">
+               A list showing interaction counts over specific intervals, currently all set to zero.
+            </Property>
+            <Property name="Message" type="array">
+               A list reflecting message-based interactions, which is currently zero.
+            </Property>
+            <Property name="Total" type="array">
+                A list indicating the total interactions for each interval, also currently zero.
+            </Property>
+            <Property name="All-Time Interaction Counts:" type="object">
+              Shows the overall interaction statistics for the agent, including total interactions, interval-specific interactions, and message counts.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample Agent Object"
+        {
+        {
+            "address": "agent1q0kn4wmp4866c7kqnql8fnxflvjtx78zga5nr6qg3vvpvjwtlp3pc9umtlu",
+            "interval": [
+                0
+            ],
+            "message": [
+                0
+            ],
+            "total": [
+                0
+            ],
+            "num_all_time_interactions": {
+                "interval": 38379,
+                "message": 0,
+                "total": 38379
+            }
+        }
+        }
+        ```
+    </Col>
+</Row>
+
+### The FunctionSearchAnalytics Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="Function ID" type="string">
+               The unique identifier for the function.
+            </Property>
+            <Property name="Total Interactions" type="array">
+               A list showing interaction counts over specific intervals, such as days or events.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample Agent Object"
+       {
+        "function_id": "79f6f479-02bc-47c2-90d3-826e9e7667bd",
+        "total": [
+            0,
+            0,
+            3
+        ]
+        }
+        ```
+    </Col>
+</Row>
+
+### The AgentSearchAnalytics Object
+
+<Row>
+    <Col>
+        <Properties>
+            <Property name="Address" type="string">
+               Shows the unique identifier for the agent.
+            </Property>
+            <Property name="Number of Searches" type="number">
+              The total number of searches involving this agent.
+            </Property>
+            <Property name="Searches in the Last 24 hours" type="number">
+              Indicates how many searches included this agent in the past day.
+            </Property>
+            <Property name="Searches in the Last 30 Days" type="number">
+              Shows the number of searches involving this agent over the past month.
+            </Property>
+            <Property name="Last 30-Day History" type="array">
+               A list showing the daily search counts for the last few days.
+            </Property>
+        </Properties>
+    </Col>
+    <Col>
+        ```json filename="Sample Agent Object"
+        {
+        "address": "agent1qwnjmzwwdq9rjs30y3qw988htrvte6lk2xaak9xg4kz0fsdz0t9ws4mwsgs",
+        "num_searches": 26426,
+        "last_24h_num_searches": 475,
+        "last_30d_num_searches": 23789,
+        "last_30d_history": [
+            1562,
+            882,
+            857
+        ]
+        }
+        ```
+    </Col>
+</Row>

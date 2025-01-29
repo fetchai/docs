@@ -22,6 +22,7 @@ import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { Collapse } from "./collapse";
 import { WITH_INDEXED_PAGES } from "../constants";
+import ChatWithUs from "components/chat/chat-with-us";
 
 const TreeState: Record<string, boolean> = Object.create(null);
 
@@ -74,6 +75,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
   const [route] = routeOriginal.split("#");
   const active = [route, route + "/"].includes(item.route + "/");
   const activeRouteInside = active || route.startsWith(item.route + "/");
+  const [isMobile, setIsMobile] = useState(false);
 
   const parentLevelRoute = route.split("/");
   const currentItemParentRoute = item.route.split("/");
@@ -135,6 +137,18 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
       };
     });
   }
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1080);
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   const isLink = "withIndexPage" in item && item.withIndexPage;
   const ComponentToUse = isLink ? Anchor : "button";
   if (
@@ -144,7 +158,7 @@ function FolderImpl({ item, anchors }: FolderProps): ReactElement {
     return (
       <>
         <li className={cn({ open, active }, "nx-w-full")}>
-          {(!isLink || WITH_INDEXED_PAGES.includes(item.title)) && (
+          {(isMobile || !isLink || WITH_INDEXED_PAGES.includes(item.title)) && (
             <ComponentToUse
               id={`sidebar${item.route?.split("/").join("-").toLowerCase()}`}
               href={isLink ? item.route : undefined}
@@ -479,6 +493,9 @@ export function Sidebar({
               </div>
             </OnFocusItemContext.Provider>
           </FocusedItemContext.Provider>
+          <div className="show-on-small">
+            <ChatWithUs />
+          </div>
         </aside>
       </div>
     </>
