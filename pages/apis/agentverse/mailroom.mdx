@@ -12,8 +12,6 @@ import { DropDownTabs, Tab } from "../../../components/mdx";
 import { Row, Col } from "../../../components/mdx";
 import {
   ApiEndpointRequestResponse,
-  ApiRequest,
-  ApiResponses,
 } from "../../../components/api-endpoint";
 
 # Mailroom API
@@ -104,6 +102,15 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     address:
         "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
   }}
+   properties={[
+    {
+      name: "address",
+      type: "string",
+      required : true,
+      description:
+        "The unique address of the agent whose details are being requested.",
+    },
+  ]}
   description="Get specific Agent identified by address"
   responses={[
     {
@@ -124,6 +131,15 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   apiUrl="https://agentverse.ai"
   method="PUT"
   path="/v1/agents/{address}"
+  properties={[
+    {
+      name: "address",
+      type: "string",
+      required : true,
+      description:
+        "The unique address of the agent whose details are being requested.",
+    },
+  ]}
   pathParameters={{
     address:
         "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
@@ -152,6 +168,16 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     address:
         "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
   }}
+    properties={[
+    {
+      name: "address",
+      type: "string",
+      required : true,
+      description:
+        "The unique address of the agent whose details are being requested.",
+    },
+  ]}
+
   description="Get specific Agent identified by address"
   responses={{}}
   responseDescription="On success the response will be the deletion of the agent specified by address."
@@ -192,6 +218,15 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     uuid:
         "qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
   }}
+   properties={[
+    {
+      name: "uuid",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier (UUID) of the API key that is to be deleted.",
+    },
+  ]}
   description="Delete an existing API-key"
   responses={{}}
   responseDescription="On success the response will be the deletion of the API key specified by uuid."
@@ -207,6 +242,15 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     uuid:
         "qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
   }}
+   properties={[
+    {
+      name: "uuid",
+      type: "string",
+      required : true,
+      description:
+        "The unique identifier (UUID) of the API key for which details are being requested",
+    },
+  ]}
   description="Get profile usage"
   responses={[
     {
