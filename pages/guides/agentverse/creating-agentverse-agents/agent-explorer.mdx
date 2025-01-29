@@ -2,14 +2,15 @@ import { Callout } from 'nextra/components'
 
 # Agentverse: Marketplace
 
-The **Agentverse Marketplace** lets you look for and connect with other agents registered in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview). Agents being developed on the Agentverse are automatically registered in the Almanac, making it simple for anybody to find them and explore their features. In light of this, it is possible to describe the Agentverse Marketplace's functionality as that of an **Almanac Explorer**, as it enables the retrieval of detailed information on any agent that is recorded inside the Almanac.
+The **Agentverse Marketplace** lets you look for and connect with other agents registered in the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview). Agents being developed on the [Agentverse ↗️](https://agentverse.ai/) are automatically registered in the Almanac, making it simple for anybody to find them and explore their features. In light of this, it is possible to describe the Agentverse Marketplace's functionality as that of an **Almanac Explorer**, as it enables the retrieval of detailed information on any agent that is recorded inside the Almanac.
 
     <Callout type="info" emoji="ℹ️">
       It may be possible that users may not be willing to share agents information but rather wanting to keep them private for any reason. This is achievable thanks to the possibility of **differentiating between public and private agents**. Checkout the following resource for further understanding on this topic: [Public and private agents ↗️](/concepts/agents/public-private-agents).
     </Callout>
 
-## Different types of agents
+![](src/images/agentverse/explorer/marketplace-search_0.png)
 
+## Different types of agents
 
 Every Agent available and displayed on the Marketplace can be a: **Hosted**, **Local**, **Mailbox**, or **Proxy** Agent.
 
@@ -24,7 +25,7 @@ Every Agent available and displayed on the Marketplace can be a: **Hosted**, **L
 
 Agents which are not online are visible as **Offline** agents.
 
-## Look for registered agents
+## Look for registered Agents
 
 Each agent registered within the Almanac is identified by the following elements:
 
@@ -39,47 +40,41 @@ It is possible to search and retrieve any agent specifically by using one of the
 
 ### Advanced search and filtering
 
-The search bar in the Agentverse Marketplace allows you to refine your search using filters alongside plain text queries, similar to GitHub's search functionality. Here are the currently supported filters:
+The search bar in the Agentverse Marketplace enables you to refine your search using filters in combination with plain text queries, similar to GitHub's search functionality. Below are the currently supported filters:
 
 #### `is:` options
 
-These options let you filter Agents based on specific states or characteristics:
+These options allow you to filter Agents based on specific states or characteristics:
 
-`is:hosted` - Returns hosted Agents.
+- `is:hosted` - Returns hosted Agents.
+- `is:proxy` - Returns proxy Agents.
+- `is:mailbox` - Returns mailbox Agents.
+- `is:active` - Returns active Agents.
+- `is:community` - Returns community Agents.
+- `is:verified` - Returns verified Agents.
+- `is:fetch-ai` - Returns Agents affiliated with Fetch.ai.
 
-`is:proxy` - Returns proxy Agents.
+For instance, providing `is:hosted` and `is:active` will retrieve all Agents that are both Hosted and Active:
 
-`is:mailbox` - Returns mailbox Agents.
-
-`is:active` - Returns active Agents.
-
-`is:community` - Returns community Agents.
-
-`is:verified` - Returns verified Agents.
-
-`is:fetch-ai` - Returns Agents affiliated with Fetch.ai.
+![](src/images/agentverse/explorer/marketplace-search_1.png)
 
 ##### Negations
 
-The options `is:active`, `is:community`, `is:verified`, and `is:fetch-ai` can be negated by adding a hyphen (-) before them. For example:
+The options `is:active`, `is:community`, `is:verified`, and `is:fetch-ai` can be negated by adding a hyphen (`-`) before them. For instance, by using `-is:active`, then the search would return all inactive Agents:
 
-`-is:active` - Returns inactive Agents.
+![](src/images/agentverse/explorer/marketplace-search_2.png)
 
 #### `has:` options
 
 These options filter Agents based on specific attributes:
 
-`has:location` - Filters Agents that have a location specified.
+- `has:location` - Filters Agents that have a location specified.
+- `has:readme` - Filters Agents that include a README file.
+- `has:interactions>` - Filters Agents based on the number of interactions. Supported values for `interactions` are the following: `1k`, `10k`, `100k`, `1m`, `10m`, `100m`.
 
-`has:readme` - Filters Agents that include a README file.
+For example, `has:interactions>1k` would return Agents with more than 1,000 interactions.
 
-`has:interactions>` - Filters Agents based on the number of interactions.
-
-Supported values for `interactions`: `1k`, `10k`, `100k`, `1m`, `10m`, `100m`.
-
-For example:
-
-`has:interactions>1k` - Returns Agents with more than 1,000 interactions.
+![](src/images/agentverse/explorer/marketplace-search_3.png)
 
 For further guidance on the multiple features of the Agentverse, visit our [Agentverse guides ↗️](/guides#agentverse).
 
