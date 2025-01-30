@@ -2,7 +2,7 @@ import { Code, Pre } from "nextra/components";
 import { CodeBlock } from "./code";
 
 import React, { useState } from "react";
-import { ApiIntro, Properties, Property, Row } from "./mdx";
+import { ApiIntro, Col, Properties, Property, Row } from "./mdx";
 import Tooltip from "./tooltip";
 import Link from "next/link";
 
@@ -179,7 +179,60 @@ const JsonCodeTab: React.FC<{
   return <Pre>{formattedJson}</Pre>;
 };
 
-export const ApiRequestResponseCombined: React.FC<{
+export const ApiResponses: React.FC<{
+  description?: string;
+  samplePayload: unknown;
+  properties?: PropertyType[];
+}> = (properties) => {
+  return (
+    <>
+      <Row>
+        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-mt-8 nx-text-2xl">
+          Responses
+        </h1>
+      </Row>
+      <Row>
+        <Col>
+          {properties.description ? (
+            <ApiIntro>{properties.description}</ApiIntro>
+          ) : undefined}
+
+          {properties.properties && properties.properties.length > 0 ? (
+            <Properties>
+              {properties.properties.map((property) => {
+                return (
+                  <Property
+                    key={property.name}
+                    name={property.name}
+                    required={property?.required}
+                    type={property.type}
+                  >
+                    {property.description}
+                  </Property>
+                );
+              })}
+            </Properties>
+          ) : undefined}
+        </Col>
+        <Col>
+          <CodeBlock
+            hasCopy={true}
+            codeBlocks={[
+              {
+                filename: "HTTP 200",
+                component: (
+                  <JsonCodeTab samplePayload={properties.samplePayload} />
+                ),
+              },
+            ]}
+          />
+        </Col>
+      </Row>
+    </>
+  );
+};
+
+export const ApiRequest: React.FC<{
   apiUrl: string;
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   path: string;
@@ -188,136 +241,78 @@ export const ApiRequestResponseCombined: React.FC<{
   properties?: PropertyType[];
   pathParameters?: Record<string, string>;
   isBearerTokenRequired?: boolean;
-  responseDescription?: string;
-  responses: unknown;
-  responseProperties?: PropertyType[];
 }> = (properties) => {
   return (
-    <div className="nx-flex nx-col-container nx-justify-between nx-gap-6 nx-height-adjust">
-      <div className="nx-flex-grow">
-        <Row>
-          <div className="nx-endpoint nx-flex nx-text-base">
-            <div className="nx-flex nx-items-center">
-              <span className="nextra-content nx-text-sm nx-font-medium dark:nx-text-white-60">
-                Endpoint:
-              </span>
-              <span className="nx-endpoint-method nx-ml-2 nx-text-sm nx-text-fetch-main dark:nx-text-white-90 dark:nx-bg-green-700">
-                {properties.method}
-              </span>
-            </div>
-            <span className="nx-text-purple nx-text-path nx-font-normal nx-text-sm dark:nx-text-indigo-250">
-              {properties.path}
-            </span>
-          </div>
-        </Row>
-
-        <div className="nx-flex nx-flex-col nx-gap-12">
-          <div>
-            <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-text-2xl">
-              Request
-            </h1>
-
-            {properties.description ? (
-              <ApiIntro>{properties.description}</ApiIntro>
-            ) : undefined}
-            {properties.properties && properties.properties.length > 0 ? (
-              <Properties>
-                {properties.properties.map((property) => {
-                  return (
-                    <Property
-                      key={property.name}
-                      name={property.name}
-                      required={property?.required}
-                      type={property.type}
-                    >
-                      {property.description}
-                    </Property>
-                  );
-                })}
-              </Properties>
-            ) : undefined}
-          </div>
-          <div>
-            <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-text-2xl">
-              Responses
-            </h1>
-            <div className="nx-pt-4 nx-gap-8">
-              {properties.responseDescription ? (
-                <ApiIntro>{properties.responseDescription}</ApiIntro>
-              ) : undefined}
-
-              {properties.responseProperties &&
-              properties.responseProperties.length > 0 ? (
-                <Properties>
-                  {properties.responseProperties.map((property) => {
-                    return (
-                      <Property
-                        key={property.name}
-                        name={property.name}
-                        required={property?.required}
-                        type={property.type}
-                      >
-                        {property.description}
-                      </Property>
-                    );
-                  })}
-                </Properties>
-              ) : undefined}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="nx-flex nx-flex-col nx-gap-12 nx-blocks-margin nx-sticky nx-top-24 nx-self-start">
-        <CodeBlock
-          hasCopy={true}
-          codeBlocks={[
-            {
-              filename: "Curl",
-              component: (
-                <CurlCodeTab
-                  method={properties.method}
-                  url={properties.apiUrl + properties.path}
-                  samplePayload={properties.samplePayload}
-                  isBearerTokenRequired={properties.isBearerTokenRequired}
-                />
-              ),
-            },
-            {
-              filename: "Python",
-              component: (
-                <PythonCodeTab
-                  method={properties.method}
-                  url={properties.apiUrl + properties.path}
-                  samplePayload={properties.samplePayload}
-                  pathParameters={properties.pathParameters}
-                />
-              ),
-            },
-            {
-              filename: "JavaScript",
-              component: (
-                <JavascriptCodeTab
-                  method={properties.method}
-                  url={properties.apiUrl + properties.path}
-                  samplePayload={properties.samplePayload}
-                  pathParameters={properties.pathParameters}
-                />
-              ),
-            },
-          ]}
-        />
-        <CodeBlock
-          hasCopy={true}
-          codeBlocks={[
-            {
-              filename: "HTTP 200",
-              component: <JsonCodeTab samplePayload={properties.responses} />,
-            },
-          ]}
-        />
-      </div>
-    </div>
+    <>
+      <Row>
+        <h1 className="nx-tracking-tight nx-text-slate-900 dark:nx-text-white-90 nx-mt-8 nx-text-2xl">
+          Request
+        </h1>
+      </Row>
+      <Row>
+        <Col>
+          {properties.description ? (
+            <ApiIntro>{properties.description}</ApiIntro>
+          ) : undefined}
+          {properties.properties && properties.properties.length > 0 ? (
+            <Properties>
+              {properties.properties.map((property) => {
+                return (
+                  <Property
+                    key={property.name}
+                    name={property.name}
+                    required={property?.required}
+                    type={property.type}
+                  >
+                    {property.description}
+                  </Property>
+                );
+              })}
+            </Properties>
+          ) : undefined}
+        </Col>
+        <Col>
+          <CodeBlock
+            hasCopy={true}
+            codeBlocks={[
+              {
+                filename: "Curl",
+                component: (
+                  <CurlCodeTab
+                    method={properties.method}
+                    url={properties.apiUrl + properties.path}
+                    samplePayload={properties.samplePayload}
+                    isBearerTokenRequired={properties.isBearerTokenRequired}
+                  />
+                ),
+              },
+              {
+                filename: "Python",
+                component: (
+                  <PythonCodeTab
+                    method={properties.method}
+                    url={properties.apiUrl + properties.path}
+                    samplePayload={properties.samplePayload}
+                    pathParameters={properties.pathParameters}
+                  />
+                ),
+              },
+              {
+                filename: "JavaScript",
+                component: (
+                  <JavascriptCodeTab
+                    method={properties.method}
+                    url={properties.apiUrl + properties.path}
+                    samplePayload={properties.samplePayload}
+                    pathParameters={properties.pathParameters}
+                  />
+                ),
+              },
+            ]}
+          />
+        </Col>
+      </Row>
+    </>
   );
 };
 
@@ -339,7 +334,7 @@ export const ApiEndpointRequestResponse: React.FC<{
   pathParameters?: Record<string, string>;
   isBearerTokenRequired?: boolean;
 }> = ({ isBearerTokenRequired = true, ...properties }) => {
-  const isModalOpen = false;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [requestPayload, setRequestPayload] = useState<string | null>(
     properties.samplePayload
       ? JSON.stringify(properties.samplePayload, null, 2)
@@ -354,11 +349,19 @@ export const ApiEndpointRequestResponse: React.FC<{
     properties.pathParameters || {},
   );
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const hitRequestWithoutLogin = async () => {
     try {
       setLoading(true);
       setError("");
-      const requestPayloadJSON = JSON.parse(requestPayload || "{ }");
+      const requestPayloadJSON = JSON.parse(requestPayload || "{}");
       const bodyPayload = properties.samplePayload?.code
         ? JSON.stringify({
             code: JSON.stringify(properties.samplePayload.code),
@@ -385,6 +388,35 @@ export const ApiEndpointRequestResponse: React.FC<{
   };
   return (
     <>
+      <Row>
+        <p className="nx-endpoint nx-text-base">
+          <span className="nextra-content nx-font-medium dark:nx-text-white-60">
+            Endpoint:
+          </span>
+          <span className="nx-endpoint-method nx-text-fetch-main dark:nx-text-white-90 dark:nx-bg-green-700">
+            {properties.method}
+          </span>
+          <span className="nx-text-purple nx-font-normal dark:nx-text-indigo-250">
+            {properties.path}
+          </span>
+          {isModalOpen ? (
+            <button
+              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl dark:nx-text-white dark:nx-bg-indigo-500"
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
+          ) : (
+            <button
+              className="nx-bg-white nx-text-fetch-main nx-py-2 nx-px-4 nx-rounded-xxl dark:nx-text-white dark:nx-bg-indigo-500"
+              onClick={openModal}
+            >
+              Run Code
+            </button>
+          )}
+        </p>
+      </Row>
+
       {isModalOpen && (
         <div className="nx-bg-grey nx-px-6 nx-py-8 nx-rounded nx-mt-12 dark:nx-bg-dark-mode-white-2">
           <div className="nx-bg-white nextra-content nx-py-2 nx-px-4 nx-rounded dark:nx-bg-dark-mode-white-5">
@@ -548,7 +580,7 @@ export const ApiEndpointRequestResponse: React.FC<{
           </div>
         </div>
       )}
-      <ApiRequestResponseCombined
+      <ApiRequest
         apiUrl={properties.apiUrl}
         method={properties.method}
         path={properties.path}
@@ -557,10 +589,14 @@ export const ApiEndpointRequestResponse: React.FC<{
         properties={properties.properties ?? undefined}
         pathParameters={properties.pathParameters ?? undefined}
         isBearerTokenRequired={isBearerTokenRequired}
-        responses={properties.responses ?? undefined}
-        responseProperties={properties.responseProperties ?? undefined}
-        responseDescription={properties.responseDescription ?? undefined}
       />
+      {properties.responses ? (
+        <ApiResponses
+          samplePayload={properties.responses ?? undefined}
+          properties={properties.responseProperties ?? undefined}
+          description={properties.responseDescription ?? undefined}
+        />
+      ) : undefined}
     </>
   );
 };
