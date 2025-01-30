@@ -88,7 +88,7 @@ export function TOC({ headings, filePath }: TOCProps): ReactElement {
                     "nx-inline-block",
                     activeAnchor[id]?.isActive
                       ? "active-toc nx-subpixel-antialiased contrast-more:!nx-text-primary-600"
-                      : "fetch-navy-toc hover:nx-text-primary-600 dark:nx-text-white-60 dark:hover:nx-text-gray-300",
+                      : "fetch-navy-toc hover:nx-bg-gray-800/5 dark:nx-text-white-60 dark:hover:nx-text-gray-300",
                     "contrast-more:nx-text-gray-900 contrast-more:nx-underline contrast-more:dark:nx-text-gray-50 nx-w-full nx-break-words",
                   )}
                 >
