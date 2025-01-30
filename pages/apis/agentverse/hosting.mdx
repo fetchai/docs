@@ -12,6 +12,8 @@ import { DropDownTabs, Tab } from "../../../components/mdx";
 import { Row, Col } from "../../../components/mdx";
 import {
   ApiEndpointRequestResponse,
+  ApiRequest,
+  ApiResponses,
 } from "../../../components/api-endpoint";
 
 # Hosting API
@@ -20,7 +22,7 @@ import {
   The Hosting API empowers users to manage their Agents on Agentverse. From creating and updating Agents to control their states and access detailed logs, this API offers comprehensive tools for efficient Agents management. Users can also retrieve usage statistics, monitor individual Agent performance, and ensure that their Agents operate as intended with up-to-date code.
 
   This documentation provides an in-depth overview of available endpoints, notable objects, and practical examples, enabling developers to interact with the API effectively. Whether you're creating new Agents or managing existing ones, this guide will help you unlock the full potential of the Hosting API. 
-
+  
   You can see our dedicated object reference documentation [here ↗️](/references/agentverse/hosting).
 </div>
 
@@ -60,7 +62,6 @@ import {
     {
       name: "name",
       type: "string",
-      required : true,
       description:
         "The given name of the agent. This is only a label that is used internally so users can keep track of their agents.",
     },
@@ -93,7 +94,6 @@ import {
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent",
     },
@@ -129,7 +129,6 @@ import {
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent",
     },
@@ -153,7 +152,6 @@ import {
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -184,14 +182,12 @@ import {
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
     {
       name: "code",
       type: "string",
-      required : true,
       description:
         "The code for a specific agent on the Agentverse, provided as a collection of files. Each file includes an id, name, value (the code content), and language.",
     },
@@ -237,7 +233,6 @@ import {
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -274,7 +269,6 @@ import {
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -311,7 +305,6 @@ import {
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -340,7 +333,6 @@ import {
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -366,7 +358,6 @@ responseDescription="On success, the response will be the deletion of the specif
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -403,20 +394,7 @@ responseDescription="On success, the response will be the deletion of the specif
     {
       name: "address",
       type: "string",
-      required : true,
-      description: "The unique address of the agent for which the hosting usage data is requested.",
-    },
-     {
-      name: "month",
-      type: "string",
-      required : true,
-      description: "The month for which the hosting usage data is requested.",
-    },
-     {
-      name: "year",
-      type: "string",
-      required : true,
-      description: "The year for which the hosting usage data is requested.",
+      description: "",
     },
   ]}
   samplePayload={{
@@ -444,7 +422,7 @@ responseDescription="On success, the response will be the deletion of the specif
   responseDescription="On success, the response will be a json array with properties containing data about the usage of the currently selected Agent for a selected year and month."
 />
 
-### Get Current Agent Usage by Address
+### Get Agent Usage for a specific year and month
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -455,7 +433,6 @@ responseDescription="On success, the response will be the deletion of the specif
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -487,23 +464,8 @@ responseDescription="On success, the response will be the deletion of the specif
     {
       name: "address",
       type: "string",
-      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
-    },
-    {
-      name: "month",
-      type: "string",
-      required : true,
-      description:
-        "The year for which the current agent usage data is requested.",
-    },
-      {
-      name: "year",
-      type: "string",
-      required : true,
-      description:
-        "The month for which the current agent  hosting usage data is requested.",
     },
   ]}
   pathParameters={{
