@@ -56,26 +56,22 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
     {
       name: "payload",
       type: "JSON",
-      required : true,
       description: "Contains the data for the type of payload being sent.",
     },
     {
       name: "email",
       type: "email",
-      required : true,
       description: "The email of the user",
     },
     {
       name: "requestModel",
       type: "string",
-      required : true,
       description:
         "The request model wherein the user wants to interact.",
     },
     {
       name: "functionGroup",
       type: "string",
-      required : true,
       description:
         "The function group that the user wants to interact with. Previously known as service_group. Defaults to Public group!",
     },
@@ -154,40 +150,34 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
     {
       name: "payload",
       type: "JSON",
-      required : true,
       description: "Contains the data for the type of message being sent.",
     },
     {
       name: "type",
       type: "string",
-      required : true,
       description: "The type of message being sent. For starting the session set it to 'start'.",
     },
     {
       name: "objective",
       type: "string",
-      required : true,
       description:
         "The objective of the conversation. This is used to determine which agent to use for the conversation.",
     },
     {
       name: "context",
       type: "string",
-      required : true,
       description:
         "The context of the conversation. This is used to give information about the user to the agent.",
     },
     {
       name: "recommend_only",
       type: "boolean",
-      required : true,
       description: 
         "Optional flag, if is set to true, AI Engine will only do search, it will match your objective to functions/agents and then stops. False by default. Only supported by Next Generation personality."
     },
     {
       name: "session_id",
       type: "string",
-      required : true,
       description:
         "The session ID, obtained from the Create Session API, uniquely identifies a session",
     },
@@ -217,41 +207,35 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
   properties={[
     {
       name: "payload",
-      required : true,
       type: "JSON",
       description: "Contains the data for the type of message being sent.",
     },
     {
       name: "type",
       type: "string",
-      required : true,
       description: "The type of message being sent. Set it to 'execute_functions'.",
     },
     {
       name: "functions",
       type: "string[]",
-      required : true,
       description:
         "List of function ids you want the system to execute.",
     },
     {
       name: "objective",
       type: "string",
-      required : true,
       description:
         "The objective of the conversation. This will guide context building.",
     },
     {
       name: "context",
       type: "string",
-      required : true,
       description:
         "The context of the conversation. This is used to give information about the user to the agent.",
     },
     {
       name: "session_id",
       type: "string",
-      required : true,
       description:
         "The session ID, obtained from the Create Session API, uniquely identifies a session",
     },
@@ -282,26 +266,22 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
     {
       name: "payload",
       type: "JSON",
-      required : true,
       description: "Contains the data for the type of message being sent.",
     },
     {
       name: "type",
       type: "string",
-      required : true,
       description: "The type of message being sent.",
     },
     {
       name: "user_message",
       type: "string",
-      required : true,
       description:
         "The user response to a question asked by the agent or to confirm the context",
     },
     {
       name: "session_id",
       type: "string",
-      required : true,
       description:
         "The session ID, obtained from the Create Session API, uniquely identifies a session",
     },
@@ -330,41 +310,35 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
     {
       name: "payload",
       type: "JSON",
-      required : true,
       description:
         "Contains the data for the type of message being sent. The payload is different for each type of message.",
     },
     {
       name: "type",
       type: "string",
-      required : true,
       description: "The type of message being sent.",
     },
     {
       name: "user_json",
       type: "JSON",
-      required : true,
       description:
         "The objective of the conversation. This is used to determine which agent to use for the conversation.",
     },
     {
       name: "user_json-type",
       type: "string",
-      required : true,
       description:
         "The context of the conversation. type: `task_list`, `options`. `task_list` is used to select a task pertaining to a specific agent. `options` is used to select a subtask pertaining to a specific agent or select an option from a list of suggestions given by the agent.",
     },
     {
       name: "user_json-selection",
       type: "array",
-      required : true,
       description:
         "The selection of the user from the list of options. The selection is an array of integers or UUID4",
     },
     {
       name: "session_id",
       type: "string",
-      required : true,
       description:
         "The session ID, obtained from the Create Session API, uniquely identifies a session",
     },
@@ -397,20 +371,17 @@ responseDescription="On a successful request, there is no response"
     {
       name: "payload",
       type: "JSON",
-      required : true,
       description:
         "Contains the data for the type of message being sent. The payload is different for each type of message.",
     },
     {
       name: "type",
       type: "string",
-      required : true,
       description: "The type of message being sent.",
     },
     {
       name: "session_id",
       type: "string",
-      required : true,
       description:
         "The session ID, obtained from the Create Session API, uniquely identifies a session",
     },
@@ -471,14 +442,12 @@ responseDescription="On a successful request, there is no response"
     {
       name: "from_timestamp",
       type: "datetime",
-      required : false,
       description:
         "The timestamp from which to fetch the agent messages. The timestamp is in ISO 8601 format.",
     },
     {
       name: "session_id",
       type: "string",
-      required : true,
       description:
         "The session ID, obtained from the Create Session API, uniquely identifies a session",
     },
@@ -535,14 +504,6 @@ responseDescription="On a successful request, there is no response"
     session_id:
       "your_session_id",
   }}
-   properties={[
-    {
-      name: "session_id",
-      type: "string",
-      required : true,
-      description:
-        "The unique identifier of the chat session for which all messages are being retrieved.",
-    },]}
   responses={[
     {
       session_id: "063fcfef-a3ec-46c4-aa8e-c9a51b6f24b7",
@@ -580,6 +541,26 @@ responseDescription="On a successful request, there is no response"
           agent_info:
             "I start building the context to execute 'TopActivities/TopActivities' task..",
         },
+        {
+          message_id: "2969efc7-4a8b-46e1-8c9e-fb86dbe3f5fb",
+          timestamp: "2023-08-31T13:26:51.744958",
+          score: 0.0,
+          type: "agent_json",
+          agent_json: {
+            type: "context_json",
+            text: "Can you confirm the following context?",
+            options: null,
+            context_json: {
+              digest:
+                "model:77dcd01525f6f2f58bc5035942725bd57be171a9af44d2f19b796a01bd52cd91",
+              args: {
+                city: "London",
+                date: "[date]",
+                preferred_activities: "",
+              },
+            },
+          },
+        },
       ],
     },
   ]}
@@ -597,7 +578,6 @@ responseDescription="On a successful request, there is no response"
     {
       name: "session_id",
       type: "UUID4",
-      required : true,
       description:
         "The unique identifier of the chat session. It must be a valid UUID4 string.",
     },
@@ -656,6 +636,25 @@ responseDescription="On a successful request, there is no response"
               "score": 0,
               "type": "agent_info",
               "agent_info": "I start building the context to execute 'TopActivities/TopActivities' task.."
+            },
+            {
+              "message_id": "2969efc7-4a8b-46e1-8c9e-fb86dbe3f5fb",
+              "timestamp": "2023-08-31T13:26:51.744958",
+              "score": 0,
+              "type": "agent_json",
+              "agent_json": {
+                "type": "context_json",
+                "text": "Can you confirm the following context?",
+                "options": null,
+                "context_json": {
+                  "digest": "model:77dcd01525f6f2f58bc5035942725bd57be171a9af44d2f19b796a01bd52cd91",
+                  "args": {
+                    "city": "London",
+                    "date": "[date]",
+                    "preferred_activities": ""
+                  }
+                }
+              }
             }
           ]
         }
@@ -683,20 +682,17 @@ responseDescription="On a successful request, there is no response"
     {
       name: "models",
       type: "array",
-      required : true,
       description:
         "Contains the list of models that the user wants to query for remaining tokens. It is an array of strings where each string is the name of the model.",
     },
     {
       name: "feedback",
-      required : true,
       type: "string",
       description: "The feedback of the user. It can be positive or negative.",
     },
     {
       name: "session_id",
       type: "string",
-      required : true,
       description:
         "The session ID, obtained from the Create Session API, uniquely identifies a session",
     },
@@ -721,14 +717,12 @@ responseDescription="On a successful request, there is no response"
     {
       name: "models",
       type: "array",
-      required : true,
       description:
         "Contains the list of models that the user wants to query for remaining tokens. It is an array of strings where each string is the name of the model.",
     },
     {
       name: "email",
       type: "string",
-      required : true,
       description: "The email of the user",
     },
   ]}
