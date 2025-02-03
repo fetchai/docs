@@ -118,7 +118,6 @@ const Body = ({
     depth: heading.depth,
   }));
 
-  console.log(api)
   api = api ?? false;
 
   const routeOriginal = useFSRoute();
@@ -173,12 +172,10 @@ const Body = ({
             "nextra-body-typesetting-article",
         )}
       >
-        {themeContext.toc &&
         <main className="nextra-body-full-container nx-flex-col">
           {!matchingTagRoute && breadcrumb}
           {body}
         </main>
-        }
 
         {api &&
             <main className="nextra-body-full-container-apis nx-flex-col">
