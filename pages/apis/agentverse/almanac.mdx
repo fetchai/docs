@@ -125,6 +125,8 @@ import {
     </Col>
 </Row>
 
+</div>
+
 ## Request and response library
 
 ### Get Recently Registered Agents
@@ -161,16 +163,18 @@ import {
   method="POST"
   path="/v1/almanac/search"
   description="Request for searching for Agents"
-  properties={[
-    {
-      name: "",
-      type: "",
-      description: "",
-    },
-  ]}
   samplePayload={{
     text: "TestingAgent",
   }}
+
+  properties={[
+    {
+      name: "text",
+      type: "string",
+      required : true,
+      description:
+        " The input string provided by the user to search for an agent in the Almanac. The API returns the corresponding agent's details, including their name, based on the provided input.",
+    },]}
   responses={[
     {
       status: "active",
@@ -201,9 +205,10 @@ import {
   description="Get a specific agent by address"
   properties={[
     {
-      name: "",
-      type: "",
-      description: "",
+      name: "address",
+      type: "string",
+      required : true,
+      description: "A unique identifier or address of the specific agent in the Almanac. This parameter is used to retrieve detailed information about the agent associated with the provided address.",
     },
   ]}
   pathParameters={{
@@ -236,16 +241,17 @@ import {
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
-  path="/v1/almanac/search/available_name"
+  path="/v1/almanac/search/available_name?name_prefix={name_prefix}"
   description="Search for an available name for your Agent"
   properties={[
     {
-      name: "",
-      type: "",
-      description: "",
+      name: "name_prefix",
+      type: "string",
+      required : true,
+      description: "A prefix string passed as a query parameter to search for available agent names in the Almanac that start with the specified prefix. The API returns a list of names matching the given prefix.",
     },
   ]}
-  samplePayload={{
+  pathParameters={{
     name_prefix: "Testing",
   }}
   responses={[
@@ -267,14 +273,15 @@ import {
   description="Get the protocol manifest."
   properties={[
     {
-      name: "",
-      type: "",
-      description: "",
+      name: "protocol_digest",
+      type: "string",
+      required : true,
+      description: "A unique identifier or digest of the protocol whose manifest is being requested. This parameter is used to retrieve the details of a specific protocol manifest from the Almanac.",
     },
   ]}
   pathParameters={{
     protocol_digest:
-      "proto:a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
+      "a98290009c0891bc431c5159357074527d10eff6b2e86a61fcf7721b472f1125",
   }}
   responses={[
     {
@@ -303,14 +310,15 @@ import {
   description="Get the protocol manifest"
   properties={[
     {
-      name: "",
-      type: "",
-      description: "",
+      name: "model_digest",
+      type: "string",
+      required : true,
+      description: "A unique identifier or digest of the model whose manifest is being requested. This parameter is used to retrieve detailed information about a specific model's manifest from the Almanac",
     },
   ]}
   pathParameters={{
     model_digest:
-      "model:1cf9335834e772996ecb5e4746c48b46e886b1d1c72a11725daee5d2aea8d682",
+      "1cf9335834e772996ecb5e4746c48b46e886b1d1c72a11725daee5d2aea8d682",
   }}
   responses={[
     {
