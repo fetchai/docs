@@ -37,6 +37,7 @@ import { OSProvider } from "./contexts/os-provider";
 type MyItem = Item & {
   // Add or modify properties as needed
   tags?: string[];
+  api? : boolean;
   permission: string[];
 };
 
@@ -52,6 +53,7 @@ interface BodyProps {
   headings: Heading[];
   timestamp?: number;
   navigation: ReactNode;
+  api : boolean | null;
   tags: string[] | null;
   children: ReactNode;
   directoriesWithTags: {
@@ -75,6 +77,7 @@ const Body = ({
   children,
   directoriesWithTags,
   headings,
+    api
 }: BodyProps): ReactElement => {
   const config = useConfig();
   const [matchingTagRoute, setMatchingTagRoute] =
@@ -114,6 +117,9 @@ const Body = ({
     id: heading.id,
     depth: heading.depth,
   }));
+
+  console.log(api)
+  api = api ?? false;
 
   const routeOriginal = useFSRoute();
   const [route] = routeOriginal.split("#");
@@ -167,15 +173,24 @@ const Body = ({
             "nextra-body-typesetting-article",
         )}
       >
+        {themeContext.toc &&
         <main className="nextra-body-full-container nx-flex-col">
           {!matchingTagRoute && breadcrumb}
           {body}
         </main>
+        }
+
+        {api &&
+            <main className="nextra-body-full-container-apis nx-flex-col">
+              {!matchingTagRoute && breadcrumb}
+              {body}
+            </main>
+        }
 
         {themeContext.toc &&
-          renderComponent(config.toc.component, {
-            filePath: routeOriginal,
-            headings: structuredHeadings,
+            renderComponent(config.toc.component, {
+              filePath: routeOriginal,
+              headings: structuredHeadings,
           })}
       </article>
       <div className="nx-hidden md:nx-flex">
@@ -200,6 +215,8 @@ const InnerLayout = ({
   const config = useConfig();
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   const fsPath = useFSRoute();
+
+  console.log(pageMap)
 
   useEffect(() => {
     setLastVisitedTimestamp();
@@ -227,6 +244,8 @@ const InnerLayout = ({
       // You may need to perform additional conversions here
       return item as MyItem;
     });
+
+    console.log(myActivePath.at(-1))
 
     return {
       activeType: normalized.activeType,
@@ -320,6 +339,7 @@ const InnerLayout = ({
             }
             tags={activePath.at(-1)?.tags ?? undefined}
             directoriesWithTags={directoriesWithTags}
+            api={activePath.at(-1)?.api ?? false}
           >
             <MDXProvider
               components={getComponents({
