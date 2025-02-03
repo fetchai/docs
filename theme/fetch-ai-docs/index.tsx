@@ -37,7 +37,7 @@ import { OSProvider } from "./contexts/os-provider";
 type MyItem = Item & {
   // Add or modify properties as needed
   tags?: string[];
-  api? : boolean;
+  api?: boolean;
   permission: string[];
 };
 
@@ -53,7 +53,7 @@ interface BodyProps {
   headings: Heading[];
   timestamp?: number;
   navigation: ReactNode;
-  api : boolean | null;
+  api: boolean | null;
   tags: string[] | null;
   children: ReactNode;
   directoriesWithTags: {
@@ -77,7 +77,7 @@ const Body = ({
   children,
   directoriesWithTags,
   headings,
-    api
+  api,
 }: BodyProps): ReactElement => {
   const config = useConfig();
   const [matchingTagRoute, setMatchingTagRoute] =
@@ -118,6 +118,7 @@ const Body = ({
     depth: heading.depth,
   }));
 
+  console.log(api);
   api = api ?? false;
 
   const routeOriginal = useFSRoute();
@@ -172,22 +173,22 @@ const Body = ({
             "nextra-body-typesetting-article",
         )}
       >
-        <main className="nextra-body-full-container nx-flex-col">
-          {!matchingTagRoute && breadcrumb}
-          {body}
-        </main>
-
-        {api &&
-            <main className="nextra-body-full-container-apis nx-flex-col">
-              {!matchingTagRoute && breadcrumb}
-              {body}
-            </main>
-        }
+        {api ? (
+          <main className="nextra-body-full-container-apis nx-flex-col">
+            {!matchingTagRoute && breadcrumb}
+            {body}
+          </main>
+        ) : (
+          <main className="nextra-body-full-container nx-flex-col">
+            {!matchingTagRoute && breadcrumb}
+            {body}
+          </main>
+        )}
 
         {themeContext.toc &&
-            renderComponent(config.toc.component, {
-              filePath: routeOriginal,
-              headings: structuredHeadings,
+          renderComponent(config.toc.component, {
+            filePath: routeOriginal,
+            headings: structuredHeadings,
           })}
       </article>
       <div className="nx-hidden md:nx-flex">
@@ -213,7 +214,7 @@ const InnerLayout = ({
   const { locale = DEFAULT_LOCALE, defaultLocale } = useRouter();
   const fsPath = useFSRoute();
 
-  console.log(pageMap)
+  console.log(pageMap);
 
   useEffect(() => {
     setLastVisitedTimestamp();
@@ -242,7 +243,7 @@ const InnerLayout = ({
       return item as MyItem;
     });
 
-    console.log(myActivePath.at(-1))
+    console.log(myActivePath.at(-1));
 
     return {
       activeType: normalized.activeType,
