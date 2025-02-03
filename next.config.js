@@ -684,34 +684,69 @@ module.exports = (phase, { defaultConfig }) => {
       ];
     },
     async headers() {
-      return [
-        {
-          source: "/(.*)",
-          headers: [
-            { key: "X-Frame-Options", value: "DENY" },
-            { key: "X-Content-Type-Options", value: "nosniff" },
-            { key: "Referrer-Policy", value: "origin-when-cross-origin" },
+      return isDev
+        ? [
             {
-              key: "Strict-Transport-Security",
-              value: "max-age=31536000; includeSubDomains; preload",
+              source: "/(.*)",
+              headers: [
+                // Prevent clickjacking
+                { key: "X-Frame-Options", value: "DENY" },
+                {
+                  // Prevent XSS attacks
+                  key: "X-Content-Type-Options",
+                  value: "nosniff",
+                },
+                {
+                  key: "Referrer-Policy",
+                  value: "origin-when-cross-origin",
+                },
+                {
+                  // todo: Kindly review these below. You can change to Content-Security-Policy when ready
+                  key: "Content-Security-Policy-Report-Only",
+                  value: `
+                    default-src 'none';
+                    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com;
+                    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                    img-src 'self' data: https://elegant-harmony-f8a4c00980.media.strapiapp.com https://cms.sandbox-london-b.fetch-ai.com;
+                    font-src 'self' https://fonts.gstatic.com;
+                    connect-src *;
+                    frame-ancestors 'none';
+                    base-uri 'self';
+                    `
+                    .replace(/\s{2,}/g, " ")
+                    .trim(),
+                },
+              ],
             },
-            { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
-            { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          ]
+        : [
             {
-              key: "Content-Security-Policy-Report-Only",
-              value:
-                `default-src 'none'; ` +
-                `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; ` +
-                `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; ` +
-                `img-src 'self' data: https://elegant-harmony-f8a4c00980.media.strapiapp.com https://cms.sandbox-london-b.fetch-ai.com; ` +
-                `font-src 'self' https://fonts.gstatic.com; ` +
-                `connect-src 'self' https://www.google-analytics.com; ` +
-                `frame-ancestors 'none'; ` +
-                `base-uri 'self';`,
+              source: "/(.*)",
+              headers: [
+                { key: "X-Frame-Options", value: "DENY" },
+                { key: "X-Content-Type-Options", value: "nosniff" },
+                { key: "Referrer-Policy", value: "origin-when-cross-origin" },
+                {
+                  key: "Strict-Transport-Security",
+                  value: "max-age=31536000; includeSubDomains; preload",
+                },
+                { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+                { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+                {
+                  key: "Content-Security-Policy-Report-Only",
+                  value:
+                    `default-src 'none'; ` +
+                    `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; ` +
+                    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; ` +
+                    `img-src 'self' data: https://elegant-harmony-f8a4c00980.media.strapiapp.com https://cms.sandbox-london-b.fetch-ai.com; ` +
+                    `font-src 'self' https://fonts.gstatic.com; ` +
+                    `connect-src 'self' https://www.google-analytics.com; ` +
+                    `frame-ancestors 'none'; ` +
+                    `base-uri 'self';`.replace(/\s{2,}/g, " ").trim(),
+                },
+              ],
             },
-          ],
-        },
-      ];
+          ];
     },
   });
   return nextConfig;
