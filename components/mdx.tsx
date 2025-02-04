@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { ThemeMode } from "theme/fetch-ai-docs/helpers";
+import { Link } from "theme/fetch-ai-docs";
 
 function InfoIcon(properties) {
   return (
@@ -259,9 +260,26 @@ export function Section({ children }: { children: ReactNode }) {
   return <div className="nx-my-32">{children}</div>;
 }
 
-export function ApiIntro({ children }: { children: ReactNode }) {
+export const renderContent = (text: string) => {
+  const regex = /(\[.*?]\(.*?\))/g;
+  return text.split(regex).map((part, index) => {
+    const match = part.match(/\[(.*?)]\((.*?)\)/);
+    if (match) {
+      return (
+        <Link key={index} href={match[2]}>
+          {match[1]}
+        </Link>
+      );
+    }
+    return part;
+  });
+};
+
+export function ApiIntro({ children }: { children: string }) {
   return (
-    <div className="nx-pb-4 nx-pr-4 dark:nx-text-white-60">{children}</div>
+    <div className="nx-pb-4 nx-pr-4 dark:nx-text-white-60">
+      {renderContent(children)}
+    </div>
   );
 }
 
