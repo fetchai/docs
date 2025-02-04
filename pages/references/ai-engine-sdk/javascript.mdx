@@ -1,0 +1,230 @@
+# src.index
+
+session
+
+## Session Objects [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L82)
+
+```python
+class Session()
+```
+The `Session` class represents an interaction session with the AI engine API, managing messages and function executions within a function group.
+
+**Attributes**
+
+- `_apiBaseUrl` _string_ - The base URL for the AI engine API.
+- `_apiKey` _string_ - The API key used for authentication.
+- `sessionId` _string_ - The unique identifier for the session.
+- `functionGroup` _string_ - The function group associated with the session.
+- `_messages` _ApiMessage[]_ - A list of messages associated with the session.
+- `_messageIds` _Set of string_ - A set to store unique message IDs to prevent duplication.
+
+**Methods**:
+
+#### Constructor [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L90)
+
+```javascript
+constructor(apiBaseUrl: string, apiKey: string, sessionId: string, functionGroup: string)
+```
+
+**Parameters**:
+- `apiBaseUrl` _string_ - The base URL for the API.
+- `apiKey` _string_ - The API key for authentication.
+- `sessionId` _string_ - The unique identifier for the session.
+- `functionGroup` _string_ - The function group associated with the session.
+
+#### _submitMessage [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L102)
+
+```javascript
+async _submitMessage(payload: ApiMessagePayload)
+```
+Submits a message to the API.
+
+**Parameters**:
+- `payload` _ApiMessagePayload_ - The message payload to be submitted.
+
+---
+
+#### start [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L114)
+
+```javascript
+async start(objective: string, context?: string)
+```
+Starts a new session by submitting an initial message.
+
+**Parameters**:
+- `objective` _string_ - The primary objective of the session.
+- `context` _string, optional_ - Additional context for the session.
+
+---
+
+#### submitTaskSelection [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L125)
+
+```javascript
+async submitTaskSelection(selection: TaskSelectionMessage, options: TaskOption[])
+```
+Submits a message with the selected task.
+
+**Parameters**:
+- `selection` _TaskSelectionMessage_ - The selected task message.
+- `options` _TaskOption[]_ - List of selected tasks.
+
+---
+
+#### submitResponse [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L141)
+
+```javascript
+async submitResponse(query: AgentMessage, response: string)
+```
+Sends a response to an agent's message.
+
+**Parameters**:
+- `query` _AgentMessage_ - The agent's message being responded to.
+- `response` _string_ - The user's response.
+
+---
+
+#### submitConfirmation [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L151)
+
+```javascript
+async submitConfirmation(confirmation: ConfirmationMessage): Promise<void>
+```
+Submits a confirmation message.
+
+**Parameters**:
+- `confirmation` _(ConfirmationMessage)_ - The confirmation message to be submitted.
+
+---
+
+#### rejectConfirmation [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L161)
+
+```javascript
+async rejectConfirmation(confirmation: ConfirmationMessage, reason: string): Promise<void>
+```
+Rejects a confirmation with a reason.
+
+**Parameters**:
+- `confirmation` _(ConfirmationMessage)_ - The confirmation message to be rejected.
+- `reason` _(string)_ - The reason for rejection.
+
+---
+
+#### getMessages [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L174)
+
+```javascript
+async getMessages(): Promise<Message[]>
+```
+Retrieves new messages from the chat session.
+
+**Returns**:
+- `Message[]` - A list of new messages.
+
+
+#### delete [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L254)
+
+```javascript
+async delete()
+```
+Deletes the session from the AI engine API.
+
+---
+
+#### execute_function  [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L264)
+
+```javascript
+async execute_function(functionIds: string[], objective: string, context: string): Promise<void>
+```
+Executes a set of functions within the AI engine.
+
+**Parameters**:
+- `functionIds` _string[]_ - A list of function IDs to execute.
+- `objective` _string_ - The objective or goal of executing these functions.
+- `context` _string_ - Additional context for execution.
+
+---
+
+## AiEngine Objects [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L278)
+
+```python
+class AiEngine()
+```
+
+The `AiEngine` class provides methods to interact with the AI engine API, such as retrieving function groups, credits, and models.
+
+**Methods**:
+
+#### Constructor  [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L282)
+
+```javascript
+constructor(apiKey: string, options?: { apiBaseUrl?: string })
+```
+
+**Parameters**:
+- `apiKey` _string_ - The API key for authentication.
+- `options.apiBaseUrl` _string, optional_ - The base URL for the API (defaults to `https://agentverse.ai`).
+
+---
+
+#### getFunctionGroups [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L287)
+
+```javascript
+async getFunctionGroups(): Promise<FunctionGroup[]>
+```
+Retrieves a list of available function groups.
+
+**Returns**:
+- `FunctionGroup[]` - A list of function groups.
+
+---
+
+#### createSession [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L378)
+
+```javascript
+async createSession(functionGroup: string, opts?: { email?: string; model?: KnownModelId | string }): Promise<Session>
+```
+Creates a new session.
+
+**Parameters**:
+- `functionGroup` _string_ - The function group to use.
+- `opts.email` _string, optional_ - User email.
+- `opts.model` _KnownModelId | string, optional_ - The model identifier.
+
+**Returns**:
+- `Session` - The created session instance.
+
+
+#### getCredits  [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L316)
+
+```javascript
+async getCredits(): Promise<CreditBalance>
+```
+Retrieves the credit balance information.
+
+**Returns**:
+- `CreditBalance` - The total, used, and available credits.
+
+---
+
+#### getModels [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L336)
+
+```javascript
+async getModels(): Promise<Model[]>
+```
+Retrieves a list of models and their associated credits.
+
+**Returns**:
+- `Model[]` - A list of available models with their credit balance.
+
+---
+
+#### getModelCredits [↗](https://github.com/fetchai/ai-engine-sdk-js/blob/main/src/index.ts#L364)
+
+```javascript
+async getModelCredits(model: KnownModelId | CustomModel): Promise<number>
+```
+Retrieves the remaining token balance for a specific model.
+
+**Parameters**:
+- `model` _(KnownModelId | CustomModel)_ - The model to retrieve credits for.
+
+**Returns**:
+- `number` - The remaining token balance for the model.
