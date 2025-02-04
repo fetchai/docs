@@ -93,7 +93,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
       function_group: "12c8601c-cccd-42de-a5f1-7eab76ae3121"
     },
   ]}
-  responseDescription="Returns the newly created Session object"
+  responseDescription="Returns the newly created Session object."
 />
 
 ## Get all sessions for a user
@@ -125,7 +125,7 @@ Mind that: to access these APIs, user must be **authenticated** and have the **c
       remaining_tokens: 9999099,
     },
   ]}
-  responseDescription="Returns a list of Session objects associated with the user"
+  responseDescription="Returns a list of Session objects associated with the user."
 />
 
 ## Sending a new message
@@ -139,6 +139,7 @@ There are 4 types of messages that can be sent to the backend:
 - `stop`: This is the last message that should be sent to the backend. It indicates that the conversation has ended.
 
 IMPORTANT: you need to either send `start` or `execute_functions`. These two can't be combined.
+
 ### Sending start message
 
 <ApiEndpointRequestResponse
@@ -194,7 +195,7 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
     session_id:
       "your_session_id",
   }}
-  responseDescription="On a successful request, there is no response"
+  responseDescription="If the request is successful, there will be no response."
 />
 
 ### Sending execute functions message
@@ -252,7 +253,7 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
     session_id:
       "your_session_id",
   }}
-  responseDescription="On a successful request, there is no response"
+  responseDescription="If request is successful, there will be no response."
 />
 
 ### Sending user message
@@ -296,7 +297,7 @@ IMPORTANT: you need to either send `start` or `execute_functions`. These two can
     session_id:
       "your_session_id",
   }}
-  responseDescription="On a successful request, there is no response"
+  responseDescription="If request is successful, there will be no response."
 />
 
 ### Sending user json message
@@ -357,7 +358,7 @@ samplePayload={{
     session_id:
       "your_session_id",
   }}
-responseDescription="On a successful request, there is no response"
+responseDescription="If request is successful, there will be no response."
 />
 
 ### Sending stop message
@@ -395,7 +396,7 @@ responseDescription="On a successful request, there is no response"
     session_id:
       "your_session_id",
   }}
-  responseDescription="On a successful request, there is no response"
+  responseDescription="If request is successful, there will be no response."
 />
 
 ## Delete a session for a user
@@ -428,7 +429,7 @@ responseDescription="On a successful request, there is no response"
     session_id:
       "your_session_id",
   }}
-  responseDescription="Return an agent_response object containing the agent response in JSON format, which can be parsed to retrieve the agent message. It can be an AgentMessage or an AgentJsonMessage. They are almost similar to user_message and user_json_message, but they are sent by the agent."
+  responseDescription="Return an agent_response object containing the Agent response in JSON format, which can be parsed to retrieve the agent message. It can be an AgentMessage or an AgentJsonMessage. They are almost similar to user_message and user_json_message, but they are sent by the agent."
 />
 
 ## ~~Fetch recent messages given a timestamp~~ **Deprecated**
@@ -493,7 +494,7 @@ responseDescription="On a successful request, there is no response"
   ]}
   responseDescription="Return the most recent list of agent messages given a timestamp. The timestamp is in ISO 8601 format."
 />
-## Fetch all messages sent by agent in a session
+## Fetch all messages sent by an Agent in a session
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -564,10 +565,10 @@ responseDescription="On a successful request, there is no response"
       ],
     },
   ]}
-  responseDescription="Return all the messages sent by the agent for a specific session."
+  responseDescription="Returns all messages sent by the Agent for a specific session."
 />
 
-## Retrieve new messages sent by agent (with possible duplicate or missed messages)
+## Retrieve new messages sent by Agent (with possible duplicate or missed messages)
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -661,7 +662,7 @@ responseDescription="On a successful request, there is no response"
       ],
     },
   ]}
-  responseDescription="Returns a list of new messages for the session, if specified then returns the messages since the last checked message. If there are no new messages, an empty list is returned. If the session is not found, a 404 error with a descriptive message is returned."
+  responseDescription="Returns a list of new messages for the session. If specified, it returns the messages since the last checked message. If there are no new messages, an empty list is returned. If the session is not found, a 404 error with a descriptive message is returned."
 />
 
 ## Provide feedback for a session
@@ -703,7 +704,7 @@ responseDescription="On a successful request, there is no response"
       "creative-01": 5000000,
     },
   }}
-  responseDescription="On a successful request returns the remaining tokens for the models that have been queried"
+  responseDescription="Retrieves the remaining tokens for the models that have been queried."
 />
 
 ## Retrieve remaining tokens
@@ -732,5 +733,5 @@ responseDescription="On a successful request, there is no response"
       "creative-01": 5000000,
     },
   }}
-  responseDescription="On a successful request returns the remaining tokens for the models that have been queried"
+  responseDescription="Retrieves the remaining tokens for the models that have been queried."
 />

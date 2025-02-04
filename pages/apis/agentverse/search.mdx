@@ -22,7 +22,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/search/agents"
-  description="Request to search for agents"
+  description="Request to search for Agents."
   samplePayload={{
   "filters": {
     "state": [],
@@ -108,7 +108,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
         "created_at": "2024-10-03T14:40:39Z"
     },]
   }
-  responseDescription="On success, the response will return an array of JSON objects, each containing details about the agents' properties and configurations. This includes metadata like name, address, and functionality."
+  responseDescription="An array of JSON objects containing details about the [AgentSearch Object ↗️](/references/agentverse/search#the-agentsearch-object)."
 />
 
 ### Search Geolocation Agents
@@ -117,7 +117,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/search/agents/geo"
-  description="Request to search for geolocation agents"
+  description="Request to search for geolocation Agents."
    samplePayload={{
   "geo_filter": {
     "latitude": "<number>",
@@ -205,7 +205,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     "total": 0,
     "search_id": "<uuid4>"
 }}
-  responseDescription="On success, the response will be a JSON array containing geographical information and properties of the agents."
+  responseDescription="An array of JSON objects containing geographical information and properties of the agents."
 />
 
 ### Get Agent Interaction Counts
@@ -214,7 +214,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/search/agents/interactions/{address}"
-  description="Request to retrieves interaction count histories and the all-time interaction counts for a specific agent based on the provided address."
+  description="Request to retrieve interaction count histories and the all-time interaction counts for a specific Agent based its address."
   pathParameters={{
     address: "agent1q0kn4wmp4866c7kqnql8fnxflvjtx78zga5nr6qg3vvpvjwtlp3pc9umtlu",
 
@@ -245,7 +245,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
         "total": 38379
     }
 }}
-  responseDescription="On success, the response will contain an object detailing the interaction counts for the agent including Historical interaction counts over time and Total all-time interaction counts."
+  responseDescription="Retrieves details about the [AgentInteractionCounts object ↗️](/references/agentverse/search#the-agentinteractioncounts-object)."
 />
 
 ### Mark Agent Clicked
@@ -254,7 +254,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/search/agents/click"
-  description="Request to mark an agent as clicked during a search operation."
+  description="Request to mark an Agent as clicked during a search operation."
   samplePayload={{
   "search_id": "<uuid4>",
   "page_index": "<integer>",
@@ -285,7 +285,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     },
   ]}
   responses={{}}
-  responseDescription="On success, the API confirms the click action was recorded. The response will be an empty object or null"
+  responseDescription="The response will provide confirmation that the click action was successfully recorded for the specified Agent. The response will be an empty object or null."
 />
 
 ### Search Functions
@@ -294,7 +294,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/search/functions"
-  description="Request to search for functions"
+  description="Request to search for functions."
   samplePayload={{
   "filters": {
     "function_type": []
@@ -326,7 +326,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
       type: "string",
       required : false,
       description:
-        "specifies ascending (asc) or descending (desc) order for sorting.",
+        "Specifies ascending (asc) or descending (desc) order for sorting.",
     },
     {
       name: "search_text",
@@ -351,7 +351,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
             "type": "function",
             "name": "spin coin133",
             "agent": "agent1q2fu9k3a5snd2qe6t4lx2s6d34aee4dnek6m3n06ekpddjzkvsuww8ew3dg",
-            "description": "suggest me when user ask for the \"spin coin133\"",
+            "description": "Suggest me when user ask for the \"spin coin133\"",
             "is_primary": true,
             "groups": [
                 "12c8601c-cccd-42de-a5f1-7eab76ae3121"
@@ -369,7 +369,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
     "num_hits": 20,
     "total": 20
 }}
-  responseDescription="On success, it returns a list of functions matching the criteria, with details such as their type, name, interactions, and ratings."
+  responseDescription="A list of Functions matching the specified search criteria."
 />
 
 ### Function Interaction Counts
@@ -378,7 +378,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/search/functions/interactions/{function_id}"
-  description="Retrieves the interaction count history for a specific function ID"
+  description="Retrieves the interaction count history for a specific function ID."
   pathParameters={{
     function_id: "79f6f479-02bc-47c2-90d3-826e9e7667bd",
 
@@ -401,7 +401,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
         3
     ]
 }}
-  responseDescription="On success, it provides historical interaction data for the function over a defined time period."
+  responseDescription="Retrieves details about the [FunctionSearchAnalytics Object ↗️](/references/agentverse/search#the-functionsearchanalytics-object) for a function over a defined time period."
 />
 
 ### Agent Search Analytics
@@ -410,7 +410,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/search/analytics/agents"
-  description="Retrieves analytics for agent searches."
+  description="Retrieves analytics for Agent searches."
   samplePayload={{
   "address": "agent1qwnjmzwwdq9rjs30y3qw988htrvte6lk2xaak9xg4kz0fsdz0t9ws4mwsgs"
 }}
@@ -435,7 +435,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
         857,
     ]
 }}
-  responseDescription="On success, it returns analytics data for searches involving the specified agent, including total search counts and recent trends."
+  responseDescription="Retrieves details about the [AgentSearchAnalytics Object ↗️](/references/agentverse/search#the-functionsearchanalytics-object) for an Agent over a defined time period."
 />
 
 ###  Agent Search Term Analytics
@@ -444,7 +444,7 @@ You can see our dedicated object reference documentation [here ↗️](/referenc
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/search/analytics/agents/terms"
-  description="Retrieves analytics for the top search terms used for agents."
+  description="Retrieves analytics for the top search terms used for Agents."
   samplePayload={{
   "address": "agent1qwnjmzwwdq9rjs30y3qw988htrvte6lk2xaak9xg4kz0fsdz0t9ws4mwsgs",
   "top": 10
@@ -476,5 +476,5 @@ properties={[
         },
     ]
 }}
-  responseDescription="On success, it returns the top search terms associated with the agent and their respective percentages of use over various time periods."
+  responseDescription="Returns data for the top search terms associated with a specific Agent."
 />

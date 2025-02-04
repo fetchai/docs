@@ -18,87 +18,32 @@ import {
 
 # Mailroom API
 
-<div className="nx-text-fetch-content">
-  Welcome to the Mailroom API documentation.
-</div>
-
 ## Overview
 
-<Row>
-    <Col>
-        The mailroom API allows you to interact and manage the mailroom service offered by the Agentverse. This involves exploring and deleting
-        mailroom envelopes, managing agent registration for the mailroom service and monitoring your agents mailroom usage.
-    </Col>
-    <Col>
-        ```bash filename="Endpoints"
-        POST /v1/auth/challenge
+The Mailroom API streamlines communication by providing a dedicated [Mailbox ↗️](/guides/agents/intermediate/mailbox) for Agents in [Agentverse ↗️](https://agentverse.ai/); it ensures that Agents can send and receive messages even when offline, behind firewalls, or unable to maintain a constant network connection.
 
-        GET /v1/agents
-        POST /v1/agents
+Key functionalities include:
 
-        GET /v1/agents/:address
-        PUT /v1/agents/:address
-        DELETE /v1/agents/:address
+- **Agent management**: register, retrieve, update, and delete Agent details.
+- **Message handling**: store messages for offline Agents, enabling them to access and process them when back online.
+- **Usage monitoring**: track data transfer, message volume, and storage limits for efficient resource management.
+- **Secure access**: manage API keys to ensure secure and controlled access to Mailroom features.
 
-        GET /v1/api-keys
-        DELETE /v1/api-keys/:uuid
-
-        GET /v1/profile/usage
-        ```
-    </Col>
-
-</Row>
-
-## Notable Objects
-
-### The Agent Object
-
-<Row>
-    <Col>
-        <Properties>
-            <Property name="address" type="string">
-                The given address of the agent.
-            </Property>
-            <Property name="name" type="string">
-                The name of the Agent. 
-            </Property>
-            <Property name="Pending_messages" type="integer">
-                Pending message for an agent in the mailroom. 
-            </Property>
-            <Property name="Bytes_transferred" type="integer">
-                Bytes transferred over the mailroom. 
-            </Property>
-            <Property name="Previous_bytes_transferred" type="integer">
-                Previously transferred bytes.
-            </Property> 
-        </Properties>
-    </Col>
-    <Col>
-        ```json filename="Example Agent Object"
-        {
-            "name": "Example Name", 
-            "address": "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg", 
-            "Pending_messages": 1, 
-            "Bytes_transferred": 1, 
-            "Previous_Bytes_transferred": 1
-        }
-        ```
-    </Col>
-</Row>
+You can see our dedicated object reference documentation [here ↗️](/references/agentverse/mailroom).
 
 ## Request and response library
 
-### Collecting Challenge
+### Collecting a challenge
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/auth/challenge"
-  description="Request for collecting challenge"
+  description="Request for collecting a challenge."
   responses={{
     challenge: "Example Challenge",
   }}
-  responseDescription="On a success the response will be a challenge."
+  responseDescription="The response will be a challenge."
 />
 
 ### List Agents
@@ -107,7 +52,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/agents"
-  description="List Agents registered for the mailroom"
+  description="List Agents registered for the mailroom."
   responses={[
     {
       items: [
@@ -125,7 +70,7 @@ import {
       size: 50,
     },
   ]}
-  responseDescription="On success the response will be an array of json objects containing information about the properties of the agents."
+  responseDescription="An array of JSON objects containing information about the [Agents Objects ↗️](/references/agentverse/mailroom#the-agent-object)."
 />
 
 ### Register Agents
@@ -134,7 +79,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/agents"
-  description="Register Agents for the mailroom"
+  description="Register Agents for the mailroom."
   responses={[
     {
       address:
@@ -145,7 +90,7 @@ import {
       previous_bytes_transferred: 0,
     },
   ]}
-  responseDescription="On success the response will be a json array containing information about the properties of the agents."
+  responseDescription="An array of JSON objects containing the [Agent Objects ↗️](/references/agentverse/mailroom#the-agent-object) of the registered Agents."
 />
 
 ### Get specific Agent identified by address
@@ -169,7 +114,7 @@ import {
       previous_bytes_transferred: 0,
     },
   ]}
-  responseDescription="On success the response will be an array of json objects containing the agent's properties."
+  responseDescription="An array of JSON objects containing the [Agent Objects ↗️](/references/agentverse/mailroom#the-agent-object) for a specific Agent identified by its address."
 />
 
 ### Update specific Agent identified by address
@@ -182,7 +127,7 @@ import {
     address:
         "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
   }}
-  description="Get specific Agent identified by address"
+  description="Get specific Agent identified by its address."
   responses={[
     {
       address:
@@ -193,7 +138,7 @@ import {
       previous_bytes_transferred: 0,
     },
   ]}
-  responseDescription="On success the response will be an array of json objects including the updated agent name."
+  responseDescription="A JSON object containing the updated [Agent Objects ↗️](/references/agentverse/mailroom#the-agent-object) of the specified Agent identified by its address."
 />
 
 ### Delete specific Agent identified by address
@@ -206,9 +151,9 @@ import {
     address:
         "agent1qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
   }}
-  description="Get specific Agent identified by address"
+  description="Get specific Agent identified by its address."
   responses={{}}
-  responseDescription="On success the response will be the deletion of the agent specified by address."
+  responseDescription="If successful, the Agent specified by its address will be deleted."
 />
 
 ### List API-keys
@@ -233,7 +178,7 @@ import {
       size: 50,
     },
   ]}
-  responseDescription="On success the response will be an array of json objects containing information about the API keys and their properties."
+  responseDescription="An array of JSON objects containing the details of existing API keys."
 />
 
 ### Delete API-key
@@ -246,9 +191,9 @@ import {
     uuid:
         "qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
   }}
-  description="Delete an existing API-key"
+  description="Delete an existing API-key."
   responses={{}}
-  responseDescription="On success the response will be the deletion of the API key specified by uuid."
+  responseDescription="If successful, the specified API key identified by its UUID will be deleted and the response will indicate its removal."
 />
 
 ### Get profile usage
@@ -261,7 +206,7 @@ import {
     uuid:
         "qtw0hy4kj65fv6j7qyv5mgdecq7c4qyqfqnjgc25wz4vf5h47l9l6m7qqtg",
   }}
-  description="Get profile usage"
+  description="Get profile usage."
   responses={[
     {
       bytes_transferred: 0,
@@ -274,5 +219,5 @@ import {
       num_agents_limit: 4,
     },
   ]}
-  responseDescription="On success the response will be an array of json objects containing information about the profile usage."
+  responseDescription="An array of JSON objects containing information about the Agentverse profile usage."
 />

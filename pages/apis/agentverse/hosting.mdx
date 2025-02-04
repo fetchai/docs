@@ -34,7 +34,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents"
-  description="Request for listing all of your Agents at once"
+  description="Request a list of all your Agents."
   responses={[
     {
       name: "My first agent",
@@ -48,7 +48,7 @@ import {
       wallet_address: "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk",
     },
   ]}
-  responseDescription="On a success the response will be an array of Agent Object properties."
+  responseDescription="An array of your Agents, each represented as an [Agent Object ↗️](/references/agentverse/hosting#the-agent-object)."
 />
 
 ### Creating a new Agent
@@ -57,7 +57,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/hosting/agents"
-  description="Request for creating a new agent"
+  description="Request for creating a new Agent."
   properties={[
     {
       name: "name",
@@ -80,7 +80,7 @@ import {
       "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
     wallet_address: "fetch1dtwgzm6km4394erexa8ka05wva306wt9cc3mwk",
   }}
-  responseDescription="On a success the response will be an array of Agent object properties."
+  responseDescription="An array containing the properties of a newly created Agent represented as an [Agent Object ↗️](/references/agentverse/hosting#the-agent-object)."
 />
 
 ### Look up specific Agent
@@ -89,7 +89,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents/{agentAddress}"
-  description="Looks up a specific Agent by address on the hosting platform"
+  description="Look up a specific Agent by its address on the hosting platform."
   properties={[
     {
       name: "address",
@@ -115,7 +115,7 @@ import {
       wallet_address: "fetch1mh0zmyddgcvspz7ye5zdrzjcfjtz54cgafak67",
     },
   ]}
-  responseDescription="On success, the response will be an array of the specified Agent's properties."
+  responseDescription="An array containing the properties of the specified Agent, represented as an [Agent Object ↗️](/references/agentverse/hosting#the-agent-object)."
 />
 
 ### Delete Specified Agent
@@ -124,7 +124,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="DELETE"
   path="/v1/hosting/agents/{agentAddress}"
-  description="Delete a specific Agent, identified by address"
+  description="Delete a specific Agent identified by its address."
   properties={[
     {
       name: "address",
@@ -138,16 +138,16 @@ import {
       "agent1q2dfhywtt8xazrdyzgap6gzdd7uhk4e0wmc3gjqt42esauaegcm8cuvclpj",
   }}
   responses={{}}
-  responseDescription="On a success the response will be the deletion of the specified Agent from the platform"
+  responseDescription="If successful, this will result in the deletion of the specified Agent from the Agentverse platform."
 />
 
-### Look up Agent code
+### Look up Agent's code
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents/{agentAddress}/code"
-  description="Looks up the code for an Agent, specified by address."
+  description="Look up the code for an Agent specified by its address."
   properties={[
     {
       name: "address",
@@ -168,10 +168,10 @@ import {
       timestamp: "2023-08-22T12:49:45.856000+00:00",
     },
   ]}
-  responseDescription="On success, the response will be an array of JSON objects containing the digest, code, and timestamp."
+  responseDescription="Retrieves the Agent's code details, including digest, code, and timestamp."
 />
 
-### Update Agent Code for a specific Agent
+### Update code for a specific Agent
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -219,16 +219,16 @@ import {
         "66089877730d0501a4ff1efedf545279d5db120d0960f1ea6a1c00f834ff9530",
     },
   ]}
-  responseDescription="On success, the response will be a JSON object with the updated digest."
+  responseDescription="A JSON object containing the updated digest of the Agent's code."
 />
 
-### Start a specific Agent, identified by address
+### Start a specific Agent identified by its address
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/hosting/agents/{address}/start"
-  description="Starts a specific Agent, identified by address"
+  description="Start a specific Agent identified by its address."
   properties={[
     {
       name: "address",
@@ -255,16 +255,16 @@ import {
       wallet_address: "None",
     },
   ]}
-  responseDescription="On success, the agent selected by address will start, and the API will return an array with the Agent's properties."
+  responseDescription="An array of JSON objects containing the properties of the started Agent identified by its address."
 />
 
-### Stop a specific Agent, identified by address
+### Stop a specific Agent identified by its address
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="POST"
   path="/v1/hosting/agents/{address}/stop"
-  description="Stops a specific Agent, identified by address"
+  description="Stops a specific Agent identified by address."
   properties={[
     {
       name: "address",
@@ -291,16 +291,16 @@ import {
       wallet_address: "None",
     },
   ]}
-  responseDescription="On success, the agent selected by address will stop, and the API will return an array with the Agent's properties."
+  responseDescription="If successful, the selected Agent will stop, and the response will be an array with the Agent's properties."
 />
 
-### Get Latest Logs For Agent
+### Get the latest logs for an Agent
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/agents/{address}/logs/latest"
-  description="Get the latest logs for an Agent, identified by address"
+  description="Get the latest logs for an Agent identified by address"
   properties={[
     {
       name: "address",
@@ -319,7 +319,7 @@ import {
       log_entry: "[INFO]: My count is: 0",
     },
   ]}
-  responseDescription="On successful retrieval of the specified agent logs, the response will be an array of json objects containing the timestamp and log entry."
+  responseDescription="An array of JSON objects containing the timestamp and log entry for a specific Agent identified by its address."
 />
 
 ### Delete the latest logs for an Agent
@@ -328,7 +328,7 @@ import {
   apiUrl="https://agentverse.ai"
   method="DELETE"
   path="/v1/hosting/agents/{address}/logs"
-  description="Delete the latest logs for an Agent, identified by address"
+  description="Delete the latest logs for an Agent identified by address."
   properties={[
     {
       name: "address",
@@ -344,7 +344,7 @@ import {
   responses={{
 
 }}
-responseDescription="On success, the response will be the deletion of the specified agent logs. "
+responseDescription="If successful, the response will be the deletion of the specified Agent's logs."
 />
 
 ### Get current Agent usage
@@ -353,7 +353,7 @@ responseDescription="On success, the response will be the deletion of the specif
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/usage/current"
-  description="Get data about the usage of the currently selected Agent"
+  description="Get data about the usage of the currently selected Agent."
   properties={[
     {
       name: "address",
@@ -380,16 +380,16 @@ responseDescription="On success, the response will be the deletion of the specif
       quota_agents: "1000",
     },
   ]}
-  responseDescription="On success, the response will be a json array with properties containing data about the usage of the currently selected agent."
+  responseDescription="An array of JSON objects with properties containing data about the usage of the selected Agent."
 />
 
-### Get Agent Usage for a specific year and month
+### Get Agent usage for a specific year and month
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/usage/{year}/{month}"
-  description="Get data about the usage of the currently selected Agent for a selected year and month"
+  description="Get data about the usage of the currently selected Agent for a selected year and month."
   properties={[
     {
       name: "address",
@@ -419,7 +419,7 @@ responseDescription="On success, the response will be the deletion of the specif
       quota_agents: "1000",
     },
   ]}
-  responseDescription="On success, the response will be a json array with properties containing data about the usage of the currently selected Agent for a selected year and month."
+  responseDescription="An array of JSON objects for properties containing data about the usage of the selected Agent for a selected year and month."
 />
 
 ### Get Agent Usage for a specific year and month
@@ -428,7 +428,7 @@ responseDescription="On success, the response will be the deletion of the specif
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/usage/agents/{address}/current"
-  description="Get data about the usage for an Agent, identified by address"
+  description="Get data about the usage for an Agent identified by its address."
   properties={[
     {
       name: "address",
@@ -450,7 +450,7 @@ responseDescription="On success, the response will be the deletion of the specif
       num_message_bytes: "0",
     },
   ]}
-  responseDescription="On success the response will be an array of json properties containing information about the current usage for a specified Agent identified by address."
+  responseDescription="An array of JSON objects for properties containing information about the current usage for a specified Agent identified by its address."
 />
 
 ### Get current Agent usage selected by address year and month
@@ -459,7 +459,7 @@ responseDescription="On success, the response will be the deletion of the specif
   apiUrl="https://agentverse.ai"
   method="GET"
   path="/v1/hosting/usage/agents/{address}/{year}/{month}"
-  description="Get data about the usage for an Agent, identified by address for a specific year and month"
+  description="Get data about the usage for an Agent, identified by its address, for a specific year and month."
   properties={[
     {
       name: "address",
@@ -483,5 +483,5 @@ responseDescription="On success, the response will be the deletion of the specif
       num_message_bytes: "0",
     },
   ]}
-  responseDescription="On success, the response will be a json array with properties for the specified Agent identified by address for a specific year and month"
+  responseDescription="An array of JSON objects for properties of the specified Agent identified by its address for a specific year and month."
 />
