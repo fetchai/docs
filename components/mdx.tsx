@@ -91,7 +91,7 @@ export function Property({
         {required !== undefined && (
           <>
             <dt className="nx-sr-only">Required</dt>
-            <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 dark:nx-text-white-40">
+            <dd className="nx-font-mono nx-text-xs nx-text-[#ef4146] dark:nx-text-white-40">
               {required ? `required` : `optional`}
             </dd>
           </>
