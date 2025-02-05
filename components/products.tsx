@@ -197,7 +197,7 @@ const items: { [key: string]: Item[] } = {
       path: "/apis#agentverse-apis",
     },
     {
-      title: "Agentverse: Explorer",
+      title: "Agentverse: Marketplace",
       description: (
         <>
           Learn to use the Agentverse Marketplace to start an interaction with
