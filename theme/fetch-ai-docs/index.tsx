@@ -37,6 +37,7 @@ import { OSProvider } from "./contexts/os-provider";
 type MyItem = Item & {
   // Add or modify properties as needed
   tags?: string[];
+  api?: boolean;
   permission: string[];
 };
 
@@ -52,6 +53,7 @@ interface BodyProps {
   headings: Heading[];
   timestamp?: number;
   navigation: ReactNode;
+  api: boolean | null;
   tags: string[] | null;
   children: ReactNode;
   directoriesWithTags: {
@@ -75,6 +77,7 @@ const Body = ({
   children,
   directoriesWithTags,
   headings,
+  api,
 }: BodyProps): ReactElement => {
   const config = useConfig();
   const [matchingTagRoute, setMatchingTagRoute] =
@@ -114,6 +117,8 @@ const Body = ({
     id: heading.id,
     depth: heading.depth,
   }));
+
+  api = api ?? false;
 
   const routeOriginal = useFSRoute();
   const [route] = routeOriginal.split("#");
@@ -167,10 +172,17 @@ const Body = ({
             "nextra-body-typesetting-article",
         )}
       >
-        <main className="nextra-body-full-container nx-flex-col">
-          {!matchingTagRoute && breadcrumb}
-          {body}
-        </main>
+        {api ? (
+          <main className="nextra-body-full-container-apis nx-flex-col">
+            {!matchingTagRoute && breadcrumb}
+            {body}
+          </main>
+        ) : (
+          <main className="nextra-body-full-container nx-flex-col">
+            {!matchingTagRoute && breadcrumb}
+            {body}
+          </main>
+        )}
 
         {themeContext.toc &&
           renderComponent(config.toc.component, {
@@ -320,6 +332,7 @@ const InnerLayout = ({
             }
             tags={activePath.at(-1)?.tags ?? undefined}
             directoriesWithTags={directoriesWithTags}
+            api={activePath.at(-1)?.route.includes("/apis") ?? false}
           >
             <MDXProvider
               components={getComponents({

@@ -58,7 +58,7 @@ export function Properties({ children }: { children: ReactNode }) {
     <div className="nx-my-6">
       <ul
         role="list"
-        className="nx-m-0 nx-max-w-[calc(theme(maxWidth.lg)-theme(spacing.8))] nx-list-none nx-divide-y nx-divide-zinc-900/5 nx-p-0 nx-dark:divide-white/5"
+        className="nx-m-0 nx-list-none nx-divide-y nx-divide-zinc-900/5 nx-p-0 nx-dark:divide-white/5"
       >
         {children}
       </ul>
@@ -91,14 +91,14 @@ export function Property({
         {required !== undefined && (
           <>
             <dt className="nx-sr-only">Required</dt>
-            <dd className="nx-font-mono nx-text-xs nx-text-zinc-400 dark:nx-text-white-40">
+            <dd className="nx-font-mono nx-text-xs nx-text-[#ef4146] dark:nx-text-white-40">
               {required ? `required` : `optional`}
             </dd>
           </>
         )}
 
         <dt className="nx-sr-only">Description</dt>
-        <dd className="nx-w-full nx-flex-none [&gt;:first-child]:nx-mt-0 [&gt;:last-child]:nx-mb-0 dark:nx-text-white-60">
+        <dd className="nx-w-full nx-text-sm nx-flex-none [&gt;:first-child]:nx-mt-0 [&gt;:last-child]:nx-mb-0 dark:nx-text-white-60">
           {children}
         </dd>
       </dl>
@@ -248,7 +248,9 @@ export function Tab(properties) {
 
 export function Row({ children }: { children: ReactNode }) {
   return (
-    <div className="nx-pt-4 nx-gap-8 row-width nx-flex-mdx">{children}</div>
+    <div className="nx-pt-6 nx-mb-12 nx-gap-8 row-width nx-flex-mdx">
+      {children}
+    </div>
   );
 }
 

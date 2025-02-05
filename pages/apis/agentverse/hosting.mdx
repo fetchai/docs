@@ -1,3 +1,4 @@
+
 import {
   Note,
   Properties,
@@ -12,8 +13,6 @@ import { DropDownTabs, Tab } from "../../../components/mdx";
 import { Row, Col } from "../../../components/mdx";
 import {
   ApiEndpointRequestResponse,
-  ApiRequest,
-  ApiResponses,
 } from "../../../components/api-endpoint";
 
 # Hosting API
@@ -62,6 +61,7 @@ import {
     {
       name: "name",
       type: "string",
+      required : true,
       description:
         "The given name of the agent. This is only a label that is used internally so users can keep track of their agents.",
     },
@@ -94,6 +94,7 @@ import {
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent",
     },
@@ -129,6 +130,7 @@ import {
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent",
     },
@@ -152,6 +154,7 @@ import {
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -182,12 +185,14 @@ import {
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
     {
       name: "code",
       type: "string",
+      required : true,
       description:
         "The code for a specific agent on the Agentverse, provided as a collection of files. Each file includes an id, name, value (the code content), and language.",
     },
@@ -233,6 +238,7 @@ import {
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -269,6 +275,7 @@ import {
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -305,6 +312,7 @@ import {
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -333,6 +341,7 @@ import {
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -358,6 +367,7 @@ responseDescription="On success, the response will be the deletion of the specif
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -394,7 +404,20 @@ responseDescription="On success, the response will be the deletion of the specif
     {
       name: "address",
       type: "string",
-      description: "",
+      required : true,
+      description: "The unique address of the agent for which the hosting usage data is requested.",
+    },
+     {
+      name: "month",
+      type: "string",
+      required : true,
+      description: "The month for which the hosting usage data is requested.",
+    },
+     {
+      name: "year",
+      type: "string",
+      required : true,
+      description: "The year for which the hosting usage data is requested.",
     },
   ]}
   samplePayload={{
@@ -422,7 +445,7 @@ responseDescription="On success, the response will be the deletion of the specif
   responseDescription="On success, the response will be a json array with properties containing data about the usage of the currently selected Agent for a selected year and month."
 />
 
-### Get Agent Usage for a specific year and month
+### Get Current Agent Usage by Address
 
 <ApiEndpointRequestResponse
   apiUrl="https://agentverse.ai"
@@ -433,6 +456,7 @@ responseDescription="On success, the response will be the deletion of the specif
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
     },
@@ -464,8 +488,23 @@ responseDescription="On success, the response will be the deletion of the specif
     {
       name: "address",
       type: "string",
+      required : true,
       description:
         "The address of the agent. This is also the current public key of the agent.",
+    },
+    {
+      name: "month",
+      type: "string",
+      required : true,
+      description:
+        "The year for which the current agent usage data is requested.",
+    },
+      {
+      name: "year",
+      type: "string",
+      required : true,
+      description:
+        "The month for which the current agent  hosting usage data is requested.",
     },
   ]}
   pathParameters={{
