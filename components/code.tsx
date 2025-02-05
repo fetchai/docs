@@ -222,7 +222,7 @@ export const CodeBlock: React.FC<{
   };
 
   return (
-    <div className="pre-out-code nx-h-[25vh] nx-overflow-auto">
+    <div className="pre-out-code nx-h-[25vh] nx-overflow-auto thin-scrollbar">
       <header className="nx-w-full nx-flex nx-justify-between">
         <Dropdown
           options={codeBlocks.map((block) => block.filename)}
