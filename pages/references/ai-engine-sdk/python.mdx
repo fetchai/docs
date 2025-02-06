@@ -1,0 +1,438 @@
+# ai_engine_sdk.client
+
+session
+
+## Session Objects [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L104)
+
+```python
+class Session()
+```
+
+The `Session` class represents an interaction session with an AI engine API, managing messages and function executions within a function group. This class provides methods to send and receive messages, execute functions, and manage session-related tasks.
+
+**Attributes**:
+
+- `_api_base_url` _str_ - The base URL for the AI engine API.
+- `_api_key` _str_ - The API key used for authentication.
+- `session_id` _str_ - The unique identifier for the session.
+- `function_group` _str_ - The function group associated with the session.
+- `_messages` _List[ApiBaseMessage]_ - A list to store messages associated with the session.
+- `_message_ids` _set[str]_ - A set to store unique message IDs to prevent duplication.
+
+---
+
+**Methods**:
+
+#### **init** [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L116)
+
+```python
+def __init__(api_base_url: str, api_key: str, session_id: str, function_group: str)
+
+```
+
+Initializes a new session with the given parameters.
+
+**Parameters**:
+
+- `api_base_url` _str_ - The base URL for the API.
+- `api_key` _str_ - The API key used for authentication.
+- `session_id` _str_ - The unique identifier for the session.
+- `function_group` _str_ - The function group associated with this session.
+
+---
+
+#### submit message [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L133)
+
+```python
+async _submit_message(payload: ApiMessagePayload)
+```
+
+Submits a message to the API for the current session.
+
+**Parameters**:
+
+- `payload` _ApiMessagePayload_ - The message payload to be submitted.
+
+**Returns**:
+
+- `None`
+
+---
+
+#### start [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L151)
+
+```python
+async start(objective: str, context: Optional[str] = None)
+```
+
+Starts a new session by submitting an initial message to the AI engine API.
+
+**Parameters**:
+
+- `objective` _str_ - The primary objective or goal of the session.
+- `context` _Optional[str]_ - Additional context for the session (default: `None`).
+
+---
+
+#### submit_task_selection [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L169)
+
+```python
+async submit_task_selection(selection: TaskSelectionMessage, options: list[TaskOption])
+```
+
+Submits a message with the selected task to the AI engine API.
+
+**Parameters**:
+
+- `selection` _TaskSelectionMessage_ - The task selection message being responded to.
+- `options` _list[TaskOption]_ - The list of selected tasks.
+
+---
+
+#### submit_response [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L189)
+
+```python
+async submit_response(query: AgentMessage, response: str)
+```
+
+Sends an answer to a question asked by the agent.
+
+**Parameters**:
+
+- `query` _AgentMessage_ - The agent's message to which the user is responding.
+- `response` _str_ - The user's response to the agent's message.
+
+---
+
+#### submit_confirmation [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L208)
+
+```python
+async submit_confirmation(confirmation: ConfirmationMessage)
+```
+
+Submits a confirmation message for an agent's question to the AI engine API.
+
+**Parameters**:
+
+- `confirmation` _ConfirmationMessage_ - The confirmation message being responded to.
+
+---
+
+#### reject_confirmation [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L224)
+
+```python
+async reject_confirmation(confirmation: ConfirmationMessage, reason: str)
+```
+
+Rejects a confirmation with a given reason and submits the response to the API.
+
+**Parameters**:
+
+- `confirmation` _ConfirmationMessage_ - The confirmation message being rejected.
+- `reason` _str_ - The reason for rejecting the confirmation.
+
+---
+
+#### get_messages [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L242)
+
+```python
+async get_messages() -> List[ApiBaseMessage]
+```
+
+Retrieves new messages for the session from the AI engine API.
+
+**Returns**:
+
+- `List[ApiBaseMessage]` - A list of new messages parsed from the API response. Message types may include:
+  - `TaskSelectionMessage`
+  - `ConfirmationMessage`
+  - `DataRequestMessage`
+  - `AgentMessage`
+  - `AiEngineMessage`
+  - `StopMessage`
+
+---
+
+#### delete [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L343)
+
+```python
+async delete()
+```
+
+Deletes the current session associated with the `session_id` from the AI engine API.
+
+---
+
+#### execute_function [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L354)
+
+```python
+async execute_function(function_ids: list[str], objective: str, context: Optional[str] = None)
+```
+
+Executes a function or set of functions within the session.
+
+**Parameters**:
+
+- `function_ids` _list[str]_ - List of function identifiers to be executed.
+- `objective` _str_ - The objective of the function execution.
+- `context` _Optional[str]_ - Additional context for function execution (default: `None`).
+
+## AiEngine Objects [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L364)
+
+```python
+class AiEngine()
+```
+
+The `AiEngine` class provides an interface to interact with an AI engine API, offering methods to manage function groups, functions, models, sessions, and permissions.
+
+---
+
+**Methods**:
+
+#### **init** [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L365)
+
+```python
+def __init__(self, api_key: str, options: Optional[dict] = None)
+```
+
+**Parameters:**
+
+- `api_key` _str_ - The API key for authentication.
+- `options` _Optional[dict]_ - Additional configuration options, including `api_base_url`.
+
+---
+
+**Function Groups**
+
+#### get_function_groups [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L372)
+
+```python
+async get_function_groups() -> List[FunctionGroup]
+```
+
+Retrieves both public and private function groups.
+
+**Returns:**
+
+- `List[FunctionGroup]` - A combined list of private and public function groups.
+
+---
+
+#### get_public_function_groups [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L380)
+
+```python
+async get_public_function_groups() -> List[FunctionGroup]
+```
+
+Fetches publicly available function groups.
+
+**Returns:**
+
+- `List[FunctionGroup]` - A list of public function groups.
+
+---
+
+#### get_private_function_groups [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L394)
+
+```python
+async get_private_function_groups() -> List[FunctionGroup]
+```
+
+Fetches private function groups.
+
+**Returns:**
+
+- `List[FunctionGroup]` - A list of private function groups.
+
+---
+
+#### create_function_group [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L408)
+
+```python
+async create_function_group(is_private: bool, name: str) -> FunctionGroup
+```
+
+Creates a new function group.
+
+**Parameters:**
+
+- `is_private` _bool_ - Determines if the function group is private.
+- `name` _str_ - The name of the function group.
+
+**Returns:**
+
+- `FunctionGroup` - The created function group.
+
+---
+
+#### delete_function_group [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L427)
+
+```python
+async delete_function_group(function_group_id: str)
+```
+
+Deletes a function group.
+
+**Parameters:**
+
+- `function_group_id` _str_ - The ID of the function group to be deleted.
+
+---
+
+#### get_function_group_by_function [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L448)
+
+```python
+async get_function_group_by_function(function_id: str)
+```
+
+Retrieves the function groups associated with a specific function.
+
+**Parameters:**
+
+- `function_id` _str_ - The ID of the function.
+
+**Returns:**
+
+- `List[FunctionGroup]` - A list of function groups containing the function.
+
+---
+
+**Functions**
+
+#### get_functions_by_function_group [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L464)
+
+```python
+async get_functions_by_function_group(function_group_id: str) -> list[FunctionGroupFunctions]
+```
+
+Retrieves functions associated with a function group.
+
+**Parameters:**
+
+- `function_group_id` _str_ - The ID of the function group.
+
+**Returns:**
+
+- `list[FunctionGroupFunctions]` - A list of functions within the group.
+
+---
+
+#### get_functions [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L483)
+
+```python
+async get_functions() -> list[Function]
+```
+
+Fetches all available functions.
+
+**Returns:**
+
+- `list[Function]` - A list of all functions.
+
+---
+
+**Models**
+
+#### get_models [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L499)
+
+```python
+async get_models() -> List[Model]
+```
+
+Retrieves available models along with their credit balance.
+
+**Returns:**
+
+- `List[Model]` - A list of available models with credit information.
+
+---
+
+**Credits**
+
+#### get_credits [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L521)
+
+```python
+async get_credits() -> CreditBalance
+```
+
+Fetches credit balance details.
+
+**Returns:**
+
+- `CreditBalance` - The total, used, and available credits.
+
+---
+
+#### get_model_credits [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L529)
+
+```python
+async get_model_credits(model: Union[KnownModelId, CustomModel]) -> int
+```
+
+Retrieves the remaining token credits for a specific model.
+
+**Parameters:**
+
+- `model` _Union[KnownModelId, CustomModel]_ - The model ID or custom model.
+
+**Returns:**
+
+- `int` - The number of remaining tokens for the model.
+
+---
+
+**Session**
+
+#### create_session [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L542)
+
+```python
+async create_session(function_group: str, opts: Optional[dict] = None) -> Session
+```
+
+Creates a new session for executing functions.
+
+**Parameters:**
+
+- `function_group` _str_ - The function group associated with the session.
+- `opts` _Optional[dict]_ - Additional options, including email and model preference.
+
+**Returns:**
+
+- `Session` - The created session object.
+
+---
+
+**Permissions**
+
+#### share_function_group [↗](https://github.com/fetchai/ai-engine-sdk-python/blob/master/ai_engine_sdk/client.py#L562)
+
+```python
+async share_function_group(function_group_id: str, target_user_email: str) -> dict
+```
+
+Shares a function group with another user.
+
+**Parameters:**
+
+- `function_group_id` _str_ - The ID of the function group to be shared.
+- `target_user_email` _str_ - The email of the user to share with.
+
+**Returns:**
+
+- `dict` - API response confirming the sharing action.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
