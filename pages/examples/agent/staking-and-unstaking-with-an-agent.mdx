@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import { CodeGroup, DocsCode, GithubCodeSegment,CodeSegment } from "../../../components/code"
 
 # Staking and unstaking with an Agent  
 
@@ -6,6 +7,7 @@ import { Callout } from 'nextra/components'
 
 In this example, we explore the implementation of staking and unstaking tokens using autonomous uAgents in a Web3 environment. Staking refers to the process of locking tokens in a smart contract to support network operations or earn rewards, while unstaking involves the withdrawal of these tokens after a specified period or conditions have been met. By leveraging the uAgents library and Web3, this setup enables agents to interact with smart contracts.
 
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/staking-and-unstaking) to run this locally.
 
 ### Supporting Documents
    
@@ -98,6 +100,18 @@ This example uses `uAgents` to facilitate staking and unstaking of tokens on a b
    - The `user_agent` receives the response and logs the transaction receipt details.
    - The `user_agent` updates the storage with the transaction receipt and informs the user of the transaction status.
 
+<GithubCodeSegment digest="">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/staking-and-unstaking/web3/staking-and-unstaking-with-agent.py"
+        lineStart={1}
+        lineEnd={156}
+        hosted={true}
+    />
+</GithubCodeSegment>
+
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
+
+<DocsCode local={true}>
 
 ```py copy filename="staking-and-unstaking-with-agent.py"
 from uagents import Agent, Bureau, Context, Model
@@ -257,6 +271,9 @@ bureau.add(unstake_agent)
 if __name__ == "__main__":
     bureau.run()
 ```
+</DocsCode>
+
+</CodeGroup>
 
 ### Poetry Dependencies
 
