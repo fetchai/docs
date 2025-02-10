@@ -12,7 +12,7 @@ import HotelTasksGoThroughTheEngineToRepresentativeAgents from 'src/images/conce
 import DarkHotelTasksGoThroughTheEngineToRepresentativeAgents from 'src/images/concepts/ai-engine/dark_hotel_tasks_go_through_the_engine_to_representative_agents.svg';
 import { Callout } from 'nextra/components'
 
-# Introducing Fetch.ai;
+# Introducing Fetch.ai; 
 
 Fetch.ai is developing a platform to enable the development of an AI empowered agent based decentralized digital economy. Agents are programs that can make choices on their own for individuals, companies, and devices. Agents are the 'doers' of Fetch.ai ecosystem.
 
@@ -52,7 +52,7 @@ At a high level, the system isn't too complicated, but let's get into the detail
 Agents are programs designed to operate freely and communicate with whomever they're programmed to. Agents can connect, search, and transact in order to create dynamic markets, and they can be programmed to interact both within their environment and with other agents in the network. Because they're siloed, and decentralized they can safely accomplish particular activities and objectives without requiring human participation. We have a very simple guide in our documentation that gets you started on building an agent to be part [of the network ↗️](/guides/agents/getting-started/create-a-uagent).
 
 
-At the simplest level, and agent would work as follows:
+At the simplest level, and agent would work as follows: 
 
 <ImageByTheme
   darkSrc={DarkHighLevelDiagram}
@@ -66,21 +66,21 @@ Of course, many agents in the above workflow can come together to become multi-a
 
 
 
-A simple Agent using the uAgents library could be:
+A simple Agent using the uAgents library could be: 
 
 ```
 from uagents import Agent, Context, Model
-
+ 
 agent = Agent(name="concept", seed="secret_seed_phrase_concept", endpoint="127.0.0.1", port="8001")
 
 class Message(Model):
     message : str
 
-
+ 
 @agent.on_message(model=Message)
 async def print_message(ctx: Context, msg : Message):
     ctx.logger.info(f"Message received: {msg.message}")
-
+ 
 if __name__ == "__main__":
     agent.run()
 ```
@@ -105,29 +105,29 @@ Agents thrive on iOT devices such as Raspberry Pi, and there are some great exam
   height={400}
 />
 
-FET token is the necessary payment token to create economic opportunity to your agents. FET allows for token transactions of a tiny size 10^-18 of a FET, we call this a nano fet. This system is built for agent economic gain, the best agents should be profitable.
+FET token is the necessary payment token to create economic opportunity to your agents. FET allows for token transactions of a tiny size 10^-18 of a FET, we call this a nano fet. This system is built for agent economic gain, the best agents should be profitable. 
 
 
 ```
 from uagents import Agent, Bureau, Context, Model
 from uagents.network import wait_for_tx_to_complete
 from uagents.setup import fund_agent_if_low
-
- ...
+ 
+ ... 
 
 @agent.on_message(model=PaymentRequest, replies=TransactionInfo)
   async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
       ctx.logger.info(f"Received payment request from {sender}: {msg}")
-
+  
       # send the payment
       transaction = ctx.ledger.send_tokens(
           msg.wallet_address, msg.amount, msg.denom, bob.wallet
       )
-
+  
       # send the tx hash so other agent can confirm
       await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
-
-
+  
+ 
  ...
 ```
 
@@ -174,7 +174,7 @@ We developed Agentverse because we have the requirements for a cloud-based servi
 
 ### Integration with wallets
 
-As we touched on earlier, FET payments between agents are embedded into the uAgents library, as in an open decentralized marketplace it is essential that agents can transact. What we didn’t cover is that by default the uAgents library has support for Fetch.ai wallets. This means that not only can agents interact with the Fetch.ai Ledger to send and receive transactions but it can also query balances, interact with smart contracts, and deploy them.
+As we touched on earlier, FET payments between agents are embedded into the uAgents library, as in an open decentralized marketplace it is essential that agents can transact. What we didn’t cover is that by default the uAgents library has support for Fetch.ai wallets. This means that not only can agents interact with the Fetch.ai Ledger to send and receive transactions but it can also query balances, interact with smart contracts, and deploy them. 
 
 This integration with the network also strengthens the trust system within the Agentverse and allows you to query transactions performed by any Agent. You can easily see transactions against an agent address, which allows you to infer the history, or trust of an agent. Of course, there are agents for that too.
 
@@ -185,7 +185,7 @@ As Agents are open source you can integrate any payment provider you like, from 
 ### Deploy and run Agents
 
 When it comes to deploying an agent on Agentverse, it's a simple process from start to deploy. You can either choose to build an Agent from a blank script, or you can choose to create your Agent based on a specified template.
-On Agentverse.ai you will see we have a My Agents tab, this page allows you to manage your agents and see Agent stats. With a targeted 100% uptime, your Agent will not sleep unless you tell it to. By it being a hosted Agent on the Agentverse, the Agent will always be kept up-to-date on the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract.
+On Agentverse.ai you will see we have a My Agents tab, this page allows you to manage your agents and see Agent stats. With a targeted 100% uptime, your Agent will not sleep unless you tell it to. By it being a hosted Agent on the Agentverse, the Agent will always be kept up-to-date on the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract. 
 
 ### Scaling
 
