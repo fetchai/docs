@@ -54,6 +54,8 @@ In the [Agentverse ↗️](https://agentverse.ai/) code editor, you have the fre
 
     - [`validators` ↗️](/guides/agentverse/allowed-imports#validators).
 
+    - [`web3` ↗️](/guides/agentverse/allowed-imports#web3).
+
 ## Allowed imports
 
 #### uagents
@@ -615,6 +617,22 @@ Integrate Agents with the AI Engine to perform a wide variety tasks, including i
         print(validators.email('invalid-email'))  # ValidationFailure
 
         ```
+
+#### web3
+
+`web3` is a Python library for interacting with the Ethereum blockchain. It provides functionalities for sending transactions, interacting with smart contracts, and querying blockchain data. Further reference [here ↗️](https://pypi.org/project/web3/).
+
+        **Example**:
+
+        ```py copy
+        from web3 import Web3
+        
+        w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"))
+        
+        print(w3.is_connected())  # True if connected to Ethereum network
+
+        ```
+
 ## Multi-file Support
 
 The Agentverse Code Editor enhances your agent development experience with multi-file support, enabling you to tackle complex projects with ease. Leverage this feature to:
