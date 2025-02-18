@@ -2,41 +2,43 @@ import {CodeGroup, CodeSegment, DocsCode, GithubCodeSegment} from "../../../comp
 
 # Quick Start Guide for uAgents Framework
 
-This **quickstart guide** quickly guides you through installing the uAgents Framework and building a couple of agents in a few steps.
+This **Quickstart guide** walks you through the installation process of the **uAgents Framework** and helps building a couple of Agents in a few steps. 
 
-You can find all supporting code files in our dedicated [GitHub repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/guides/agents/quickstart)
+You can find all supporting code files in our dedicated [GitHub repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/guides/agents/quickstart). 
+
+Let's get started!
 
 ## Installation
 
 ### System requirements
 
-    - **Python 3.8+**: A popular programming language.
-    - **PIP**: Python package manager for installing libraries.
-    - **Poetry (optional)**: For managing virtual environments and dependencies.
-    - **Windows, Mac or Ubuntu**.
+    - **Python 3.8+**: it is a popular programming language.
+    - **PIP**: it is Python package manager for installing libraries.
+    - **Poetry (optional)**: this helps managing virtual environments and dependencies.
+    - **Operating System**: _Windows_, _MacOS_ or _Ubuntu_.
 
 ### Installation steps
 
-1. Create a **Project Directory**. Open your terminal and create a new directory for your project:
+1. Let's start and create a **Project Directory** for your Agent project. Open and type the following within your terminal:
 
     ```py copy
     mkdir directory_name
     cd directory_name
     ```
 
-2. Initialize and activate virtual environment. Use **Poetry** to initialize and activate a virtual environment (optional but recommended):
+2. Initialize and activate virtual environment. Use **Poetry** to do this (optional but recommended):
 
     ```py copy
     poetry init -n && poetry shell
     ```
 
-3. Install **uAgents Framework**.
+3. Proceed and install the **uAgents Framework** package:
 
     ```py copy
     poetry add uagents
     ```
 
-4. Verify installation. Check if the installation was successful.
+4. Check if the installation was successful:
 
     ```py copy
     poetry show uagents
@@ -44,23 +46,23 @@ You can find all supporting code files in our dedicated [GitHub repo ↗️](htt
 
 ### Troubleshooting
 
-Sometimes you may face errors installing, we list the most common reasons below:
+Sometimes you may face errors during installation. Here we list the most common reasons below:
 
 **Problem on MacOS/Python 3.11**: Installing coincurve (17.0.0) fails.
 
 #### Solution
 
-Install the necessary tools.
+Install the necessary tools:
 
     ```py
     brew install automake autoconf libtool
     ```
 
-## Creating a simple agent
+## Creating a simple Agent
 
-We should create something simple to get started, below the most basic of agents performs a task periodically.
+Let's create a very basic Agent to get started. Here below you can finde the most basic Agent application; we want the Agent to perform a task periodically.
 
-Create a new Python script:
+First of all, let's create a new Python script for this project. Open terminal and type the following into it:
 
 <CodeGroup hasCopy isOSFile>
 <DocsCode mac={true}>
@@ -78,11 +80,11 @@ Create a new Python script:
     ```py copy filename="ubuntu"
     touch interval_task.py
     ```
-    </DocsCode>
+</DocsCode>
 
 </CodeGroup>
 
-Open `interval_task.py` in your text editor and add the following code:
+Then, open the `interval_task.py` file in a text editor of your choice and add the following code:
 
 <GithubCodeSegment digest="1ca2933fb0ecb7d6e92d3834d7a4f49c">
     <CodeSegment
@@ -119,8 +121,7 @@ Open `interval_task.py` in your text editor and add the following code:
 </CodeGroup>
 
 
-
-Be sure to update `seed` with a unique phrase, your seed will need to be wrapped in `"`.
+Be sure to update `seed` with a unique phrase; the seed will need to be wrapped in `"`.
 
 #### Run Script
 
@@ -141,9 +142,9 @@ Run the script to see the output:
 
 ## Message Handling Example
 
-This guide will walk you through creating a simple interaction between two agents. The first will send a message to the second one at regular intervals, and this latter one will handle and log the received messages.
+Let's now explore how Agents handle messages. Let's set up a simple interaction between two Agents: the first will send a message to the second one at regular intervals, and the latter one will handle and log the received messages accordingly.
 
-Create 2 new Python scripts:
+First, let's create 2 new Python scripts, one for each Agent:
 
 <CodeGroup hasCopy isOSFile>
 <DocsCode mac={true}>
@@ -186,7 +187,7 @@ Create 2 new Python scripts:
 
 </CodeGroup>
 
-Open `SenderAgent.py` in your text editor and add the following code:
+Open `SenderAgent.py` in your text editor and add the following code into it:
 
 <GithubCodeSegment digest="02a3c6221c7445fafdf2c00357f46de4">
     <CodeSegment
@@ -241,8 +242,6 @@ Open `SenderAgent.py` in your text editor and add the following code:
 
 </CodeGroup>
 
-
-
 Then, open `ReceiverAgent.py` in your text editor and add the following code into it:
 
 <GithubCodeSegment digest="b1499fe7ec2bb9e493c2bb323f1b054e">
@@ -296,12 +295,11 @@ Then, open `ReceiverAgent.py` in your text editor and add the following code int
 </CodeGroup>
 
 
-
 Again, be sure to update `seed` with a unique phrase.
 
 #### Run Script
 
-Run the scripts to see the agents communicating:
+Open two terminal windows, each one for an Agent, and then run the scripts separately to see the Agents communicating:
 
    ```py copy
    python SenderAgent.py
@@ -338,6 +336,6 @@ Run the scripts to see the agents communicating:
 
 ## Reach out to the Team!
 
-Excellent! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network! if you're keen to skip the more code focused guides, your best next steps would be [Communicating with agents ↗️](/guides/agents/intermediate/communicating-with-other-agents).
+Excellent! You are now ready to start exploring the concepts and resources available to start developing your agents on the Fetch Network! if you're keen to skip the more code focused guides, the best next steps would be exploring how [Agents communicate with other Agents ↗️](/guides/agents/intermediate/communicating-with-other-agents).
 
 Note that our Team is available on [Discord ↗️](https://discord.gg/fetchai) for any additional inquiry.
