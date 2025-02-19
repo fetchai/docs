@@ -23,7 +23,7 @@ Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 <!-- markdown-link-check-disable -->
 
-Please use [GitHub Discussions](https://github.com/fetchai/docs/discussions) for support related questions and general discussions. Do NOT open issues as they are for bug reports and feature requests. This is because:
+Please use [GitHub Discussions](https://github.com/fetchai/docs/discussions) for support-related questions and general discussions. Do NOT open issues as they are for bug reports and feature requests. This is because:
 
 <!-- markdown-link-check-enable -->
 
@@ -51,7 +51,7 @@ If you would like to _implement_ a new feature:
 
 Before you submit an issue, please search the [issue tracker](https://github.com/fetchai/docs/issues). An issue for your problem might already exist and the discussion might inform you of workarounds readily available.
 
-For bug reports, it is important that we can reproduce and confirm it. For this, we need you to provide a minimal reproduction instruction (this is part of the bug report issue template).
+For bug reports, it is important that we can reproduce and confirm it. For this, we need you to provide minimal reproduction instruction (this is part of the bug report issue template).
 
 You can file new issues by selecting from our [new issue templates](https://github.com/fetchai/docs/issues/new/choose) and filling out the issue template.
 
@@ -61,7 +61,7 @@ You can file new issues by selecting from our [new issue templates](https://gith
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-1. All Pull Requests should be based off of and opened against the `main` branch.
+1. All Pull Requests should be based on and opened against the `main` branch.
 
 <!-- markdown-link-check-disable -->
 
@@ -111,7 +111,7 @@ If we ask for changes via code reviews then:
 
 2. Re-run the tests and checks to ensure they are still passing.
 
-3. Create a new commit and push to your GitHub repository (this will update your Pull Request).
+3. Create a new commit and push it to your GitHub repository (this will update your Pull Request).
 
 #### After your pull request is merged
 
@@ -132,7 +132,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
   2. Guard against future breaking changes and lower the maintenance cost.
 
 - All public features **must be documented**.
-- Keep API compatibility in mind when you change any code. Above version `1.0.0`, breaking changes can happen across versions with different left digit. Below version `1.0.0`, they can happen across versions with different middle digit. Reviewers of your pull request will comment on any API compatibility issues.
+- Keep API compatibility in mind when you change any code. Above version `1.0.0`, breaking changes can happen across versions with different left digits. Below version `1.0.0`, they can happen across versions with different middle digits. Reviewers of your pull request will comment on any API compatibility issues.
 
 ## <a name="commit"></a> Commit Message Convention
 
