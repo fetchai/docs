@@ -11,26 +11,15 @@ On your computer, you may need to install:
 
     - [Python ↗️](https://www.python.org/downloads/) 3.8+.
     - [PIP ↗️](https://pypi.org/project/pip/) - the Python package manager.
-    - [Poetry ↗️](https://python-poetry.org/) for virtual environments (optional).
     - [uAgents library ↗️](https://pypi.org/project/uagents/)
 
 ## Install with Pip
 
     1. Create a directory for your agents project: `mkdir directory_name`
 
-    2. Within the directory, create and open a virtual environment using Poetry: `poetry init -n && poetry shell`
+    2. Install Fetch.ai `uagents` library: `pip install uagents`
 
-    3. Install Fetch.ai `uagents` library: `pip install uagents`
-
-    4. Check if installation was successful: `pip show uagents`
-
-    <Callout type="info" emoji="ℹ️">
-      If you want to install a specific version of the `uagents` library (e.g., 0.12.0), you can do so by running the following:
-
-        `pip install uagents==0.12.0`
-
-      Current version of the uAgents package is <PackageVersion packageName="uagents" packageType="pypi" />.
-    </Callout>
+    3. Check if installation was successful: `pip show uagents`
 
 ## Install from source code
 
@@ -171,53 +160,3 @@ Let's now ensure the **global version of Python** you are working with is not th
     pyenv global 3.10 # this sets the global interpreter
     pyenv versions # this verifies if it is set up correctly
     ```
-
-#### Installing Poetry
-
-You now need to install **Poetry**. Poetry is used for managing Python project dependencies, handling virtual environments, packaging, and publishing Python libraries or applications.
-
-You can install Poetry by running the following command:
-
-    ```
-    curl -sSL https://install.python-poetry.org | python3 -
-    ```
-
-    <Callout type="info" emoji="ℹ️">
-      If you would like to learn more about Poetry, visit the [website ↗️](https://python-poetry.org/docs/#installation) for further information.
-    </Callout>
-
-#### Initialize your project with Poetry
-
-You now have all necessary tools installed. You are ready to initialize your project! Let's create a working directory and initialize Poetry 🎉.
-
-First, you need to create a working directory for your project using `mkdir` command. Then, you will need to change directory to this one, using `cd` command:
-
-    ```
-    mkdir development/agent-demo
-    cd development/agent-demo
-    ```
-
-You can ensure you are in the correct directory by checking your current path:
-
-    ```
-    pwd
-    # Example output: /Users/Jessica/Documents
-    ```
-
-If you are happy with the install location for the project, go ahead and **initialize Poetry**:
-
-    ```
-    poetry init
-    ```
-
-    <Callout type="info" emoji="ℹ️">
-      Follow the setup wizard to provide details including project name, version, author, license, and select dependencies (e.g., `uagents`).
-    </Callout>
-
-Once you complete the initialization, run:
-
-    ```
-    poetry install
-    ```
-
-This command will install the dependencies specified in the **pyproject.toml** file.

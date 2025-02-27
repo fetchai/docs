@@ -1,10 +1,7 @@
 import { Callout } from 'nextra/components'
-import PackageVersion from 'components/package-version'
 import { ImageByTheme } from "components/mdx"
-import AgentsInteracting from 'src/images/concepts/ai-agents/Agents_interacting.png';
-import DarkAgentsInteracting from 'src/images/concepts/ai-agents/Dark_agents_interacting.svg';
-import DecentralisedNetwork from 'src/images/concepts/ai-agents/decentralised_network.png';
-import DarkDecentralisedNetwork from 'src/images/concepts/ai-agents/Dark_decentralised_network.svg';
+import PackageVersion from 'components/package-version'
+import communication from 'src/images/concepts/tech/I2.svg';
 
 # Agents - uAgents Framework
 
@@ -18,39 +15,64 @@ The **uAgents Framework** is a lightweight library designed to facilitate the de
       Current version of the uAgents package is <PackageVersion packageName="uagents" packageType="pypi" />.
     </Callout>
 
+
+### Getting into Agents
+
+Agents are programs designed to operate freely and communicate with whomever they're programmed to. Agents can connect, search, and transact in order to create dynamic markets, and they can be programmed to interact both within their environment and with other agents in the network. Because they're siloed, and decentralized they can safely accomplish particular activities and objectives without requiring human participation. We have a very simple guide in our documentation that gets you started on building an agent to be part [of the network ↗️](/guides/agents/getting-started/create-a-uagent).
+
+
+At the simplest level, and agent would work as follows: 
+
 <ImageByTheme
-  darkSrc={DarkAgentsInteracting}
-  lightSrc={AgentsInteracting}
-  alt="agents-interacting"
+  darkSrc={communication}
+  lightSrc={communication}
+  alt="HighLevel-Diagram"
 />
 
-Agents built with the uAgents Framework are autonomous programs designed for decentralized interactions, with decentralization being optional. They can transform systems like supply chains by enhancing forecasting, logistics, supplier monitoring, and risk management, driving efficiency and accuracy. Developers can leverage these Agents to build intelligent, self-managed systems across various domains.
 
-<ImageByTheme
-  darkSrc={DarkDecentralisedNetwork}
-  lightSrc={DecentralisedNetwork}
-  alt="decentralised-network"
-/>
 
-## Why Agents
+Of course, many agents in the above workflow can come together to become multi-agents workflows, where single Agents call one another to complete a task. Agents that you design could be programmed to contact known agents, whereas in a dynamic marketplace you may need an agent that you haven't created, searching and interacting with that agent may be the more optimal strategy.
 
-With the rise of Large Language Models (LLMs) and AI-driven tools, autonomous Agents are revolutionizing problem-solving, decision-making, and collaboration.
 
-For instance, Agents operating in the financial sector are able to automate trading, risk assessment, fraud detection, and customer support. By leveraging predictive analytics, they analyze market trends, assess risks, and offer tailored advice. Continuous transaction monitoring enhances security and simplifies processes, providing valuable insights for better decision-making.
 
-Fetch.ai's uAgents Framework enables developers to create customizable Agents for decentralized networks, tailored to specific tasks and real-world challenges. These autonomous systems, powered by the Fetch network and the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), collaborate to streamline tasks, solve complex problems, and improve decision-making across industries.
+A simple Agent using the uAgents library could be: 
 
-### Get started with Agents development!
+```
+from uagents import Agent, Context, Model
+ 
+agent = Agent(name="concept", seed="secret_seed_phrase_concept", endpoint="127.0.0.1", port="8001")
 
-Visit the [GitHub repository ↗️](https://github.com/fetchai/uAgents) for more information on the aforementioned topics.
-. This will also keep you up-to-date with any update made to the uAgents Framework.
+class Message(Model):
+    message : str
 
-To learn more about how to create and connect Agents technology, check out the resources and guides for the [Agentverse ↗️](/concepts/agent-services/agentverse-intro), [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), and [DeltaV ↗️](/concepts/deltav/intro)!
+ 
+@agent.on_message(model=Message)
+async def print_message(ctx: Context, msg : Message):
+    ctx.logger.info(f"Message received: {msg.message}")
+ 
+if __name__ == "__main__":
+    agent.run()
+```
 
-    <Callout type="info" emoji="ℹ️">
-      If you wish to create AI Engine compatible Agents, you will need to get the `uagents-ai-engine` package installed. Check out the [package ↗️](https://pypi.org/project/uagents/) to download it and start developing your AI Engine compatible Agents.
+This Agent defines its communication method as receiving any Object of `Class Message`, with a value for `message` of type `string`. You can see how this agent behaves, and how to extend this in [our guides ↗️](/guides)
 
-      Also, do not miss the [Make your agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent) resource to get yourself started!
-    </Callout>
 
-The Team is available on [Telegram ↗️](https://t.me/fetch_ai) and [Discord ↗️](https://discord.gg/fetchai) channels for any further inquiries.
+Agents are lightweight programs that can be inserted to existing systems with the ability to simplify the way we see complicated systems. As an example, supply chain management could deploy Agents using the uAgents Framework to improve operations at various stages. Demand forecasting, inventory control, logistics optimization, supplier relationships monitoring, quality control and risk mitigation in all areas can be done with their help. Agents could transform supply chain operations by increasing efficiency, reducing costs, improving accuracy and providing real-time visibility.
+
+You can view the source code for an Agent that monitors inventory levels in [our examples ↗️](https://github.com/fetchai/uAgent-Examples/blob/main/3-applications/inventory-monitoring/src/main.py)
+
+Agents thrive on IoT devices such as Raspberry Pi, and there are some great examples of multi-agent simulations using Agents on Raspberry Pi available on [Github ↗️](https://github.com/Agents-Lab/sensor-agent).
+
+
+#### LLMs
+
+Agents can wrap and orchestrate LLMs to create personalized Agents for any task. With the rise of Large Language Models (LLMs) and AI-related products, autonomous intelligent Agents have become the link between these models and tools. They are revolutionizing the way we solve problems, make decisions and collaborate with each other.
+
+Integrating LLMs into an Agent is relatively trivial, [we have a guide for that too ↗️](/guides/agents/intermediate/langchain-rag-agent)
+
+
+### Getting started with Agent development!
+
+Visit the [GitHub repository ↗️](https://github.com/fetchai/uAgents) to see the source code for uAgents, and to keep up-to-date with any update made to the uAgents Framework.
+
+From there, view the examples on uAgents repository, or start reading our guides, we'd recommend starting with [agent to agent communication ↗️](/guides/agents/intermediate/communicating-with-other-agents).
