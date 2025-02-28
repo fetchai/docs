@@ -15,7 +15,7 @@ RUN apk add --no-cache git tree && \
 WORKDIR /app
 ADD package.json pnpm-lock.yaml /app/
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 COPY . /app
 
