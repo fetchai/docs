@@ -134,7 +134,7 @@ This command will install the dependencies specified in the **pyproject.toml** f
 
 ## Overview of the uAgents Framework
 
-The [uAgents Framework ↗️](/concepts/agents/agents) provides the essential infrastructure for creating and deploying Agents within Fetch.ai Ecosystem. It offers a comprehensive toolkit, protocols, and functionalities crucial for developing autonomous agents. The uAgents Framework is integrated with several components of the Fetch.ai Ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) and the [Agentverse ↗️](/concepts/agent-services/agentverse-intro).
+The [uAgents Framework ↗️](/concepts/agents/agents) provides the essential infrastructure for creating and deploying Agents within the ASI Ecosystem. It offers a comprehensive toolkit, protocols, and functionalities crucial for developing autonomous agents. The uAgents Framework is integrated with several components of the ASI Ecosystem, including the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro), the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview) and the [Agentverse ↗️](/concepts/agent-services/agentverse-intro).
 
     <Callout type="info" emoji="ℹ️">
       Check out the official [uAgents Python package ↗️](https://pypi.org/project/uagents/) and start developing your ideas using this library!
@@ -147,7 +147,7 @@ Check out the [uAgents Framework installation guide ↗️](/guides/agents/getti
 ### Core concepts
 #### Addresses
 
-Agents are identified by **two types of addresses**, serving as identifiers for each agent within the Fetch.ai Ecosystem:
+Agents are identified by **two types of addresses**, serving as identifiers for each agent within the ASI Ecosystem:
 
     1. **uAgent Address**: the primary agent identifier; it allows it to interact with other agents, exchange messages, and participate in decentralized network activities
 
@@ -191,7 +191,7 @@ The exchange protocol uses a standardized `HTTP 1.1 POST /submit` endpoint for m
 
 #### Almanac contract, registering, searching and discovery
 
-The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is an important component in Fetch.ai Ecosystem. It operates as a blockchain-based repository where agents register, exchange information and establish communication. Registration in the Almanac is mandatory so that agents can participate in remote interactions and become discoverable through the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer).
+The [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract is an important component in ASI Ecosystem. It operates as a blockchain-based repository where agents register, exchange information and establish communication. Registration in the Almanac is mandatory so that agents can participate in remote interactions and become discoverable through the [Agentverse Explorer ↗️](/concepts/agent-services/agent-explorer).
 
 Agents keep their registrations up-to-date within certain block limits to ensure the accuracy and relevance of their data. Expired registrations prevent outdated information from being accessed, increasing the reliability of the data. During the registration process, the ownership of addresses is verified to ensure the credibility and accuracy of the information stored in the Almanac.
 
@@ -328,7 +328,7 @@ This time, the output will be:
 
 ### Printing agent's addresses
 
-Sometimes, we just need to see what a value looks like. We can quickly do so in Python by using the `print()` in-built function. As we have mentioned earlier, every AI Agent is identified by two addresses within the uAgents Framework: **uAgent** and **Fetch Network** addresses. We have showed above how to check for an uAgent address using the `agent.address` method of the `Context` class. Let's now print them in the console to see their differences using the `print()` function:
+Sometimes, we just need to see what a value looks like. We can quickly do so in Python by using the `print()` in-built function. As we have mentioned earlier, every AI Agent is identified by two addresses within the uAgents Framework: **uAgent** and **ASI Network** addresses. We have showed above how to check for an uAgent address using the `agent.address` method of the `Context` class. Let's now print them in the console to see their differences using the `print()` function:
 
 <GithubCodeSegment digest="3ef75cfff15d9d5d4469418349ecc95c">
     <CodeSegment
@@ -348,7 +348,7 @@ Sometimes, we just need to see what a value looks like. We can quickly do so in 
 	agent = Agent(name="alice")
 	
 	print("uAgent address: ", agent.address)
-	print("Fetch network address: ", agent.wallet.address())
+	print("ASI network address: ", agent.wallet.address())
 
 ```
 </DocsCode>
@@ -361,7 +361,7 @@ The output of the above would look similar to:
 
     ```
     uAgent address: agent1qww3ju3h6kfcuqf54gkghvt2pqe8qp97a7nzm2vp8plfxflc0epzcjsv79t
-    Fetch network address: fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
+    ASI network address: fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
     ```
 
     <Callout type="info" emoji="ℹ️">
