@@ -4,13 +4,13 @@ import { CodeGroup, CodeSegment, DocsCode, GithubCodeSegment } from "../../../..
 
 ## Introduction
 
-Agents within the Fetch Ecosystem are characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
+Agents within the ASI Ecosystem are characterized by different addresses. These can allow the agent to perform different actions, including sending messages or interacting with the [Almanac contract ↗️](/references/contracts/uagents-almanac/almanac-overview).
 
 It is possible to distinguish between two different types of addresses:
 
-    - `uAgent address`: this address identifies the agent within the Fetch Network. It's similar to a username within a chat platform, allowing other agents to discover and communicate with that specific agent by querying that agent's information from the Almanac contract.
+    - `uAgent address`: this address identifies the agent within the ASI Network. It's similar to a username within a chat platform, allowing other agents to discover and communicate with that specific agent by querying that agent's information from the Almanac contract.
 
-    - `Fetch network address`: this address is linked to the agent's wallet on the Fetch.ai network. It is essential to perform multiple functionalities like holding cryptocurrency, interacting with the [Fetch Ledger ↗️](/concepts/fetch-network/ledger/intro) and performing secure transactions. This address is needed to register an agent to the [Almanac ↗️](/concepts/fetch-network/almanac) contract. Note, you must ensure the agents has enough funds available to perform operations in the Fetch Network, however this is all done automatically and no funds are currently required. 
+    - `ASI network address`: this address is linked to the agent's wallet on the ASI network. It is essential to perform multiple functionalities like holding cryptocurrency, interacting with the [Fetch Ledger ↗️](/concepts/fetch-network/ledger/intro) and performing secure transactions. This address is needed to register an agent to the [Almanac ↗️](/concepts/fetch-network/almanac) contract. Note, you must ensure the agents has enough funds available to perform operations in the ASI Network, however this is all done automatically and no funds are currently required. 
 
 If you want to retrieve the address of an agent, you can either use the `print()` function and specify which of the above addresses you wish to print out, or by calling the `.address()` or `.wallet.address()` methods using the `agent` object to retrieve specific information.
 
@@ -98,9 +98,9 @@ The output would be as follows:
    INFO:     [alice]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
    ```
 
-## Print Fetch network address
+## Print ASI network address
 
-You can print the `Fetch network address` related to your agent in the following way:
+You can print the `ASI network address` related to your agent in the following way:
 
 1. Let's create a Python script, and name it:
 
@@ -124,7 +124,7 @@ You can print the `Fetch network address` related to your agent in the following
    </DocsCode>
    </CodeGroup>
 
-2. As before, we first need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `Fetch Network address`:
+2. As before, we first need to import the `Agent` class from the `uagents` library to create an Agent, `alice`. Then, using the `print()` function, we will print the related `ASI Network address`:
 
    <GithubCodeSegment digest="c1a9f6fba2e2472ad6adbbfe330dee10">
        <CodeSegment
@@ -144,7 +144,7 @@ You can print the `Fetch network address` related to your agent in the following
 	
 	agent = Agent(name="alice", seed="alice recovery phrase", port=8000, endpoint=["http://127.0.0.1:8000/submit"])
 	
-	print("Fetch network address: ", agent.wallet.address())
+	print("ASI network address: ", agent.wallet.address())
 	
 	if __name__ == "__main__":
 	    agent.run()
@@ -161,7 +161,7 @@ You can print the `Fetch network address` related to your agent in the following
 The output would be as follows:
 
    ```
-   Fetch network address:  fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
+   ASI network address:  fetch1454hu0n9eszzg8p7mvan3ep7484jxl5mkf9phg
    INFO:     [alice]: Registration on Almanac API successful
    INFO:     [alice]: Registering on almanac contract...
    INFO:     [alice]: Registering on almanac contract...complete
