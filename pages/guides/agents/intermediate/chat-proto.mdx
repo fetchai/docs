@@ -468,7 +468,6 @@ from pydantic.v1 import UUID4
 from uagents import Agent, Model, Context
 from uuid import uuid4
 from chat_proto import AgentContent, ChatAcknowledgement
-import asyncio
 
 class ContextPrompt(Model):
     context: str
@@ -541,10 +540,9 @@ prompts = [
 ]
 
 
-@agent.on_event("startup")
+@agent.on_interval(period=10.0)
 async def send_message(ctx: Context):
     for prompt in prompts:
-        asyncio.sleep(3)
         await ctx.send(AI_AGENT_ADDRESS, prompt)
 
 
