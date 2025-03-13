@@ -121,6 +121,165 @@ In this page, you are also able to check for **Protocols** and **Domains** relat
 
 To learn more about how to create and manage Agents, check out our [documentation ↗️](https://fetch.ai/docs/) and Agent guides. By understanding Agents, you can unlock the full potential of the ASI Network and build innovative decentralized applications.
 
+### Validators Page
+
+The **Validators** page of the Companion App UI provides an overview of the blockchain's validators, helping users analyze their performance, participation, and overall contribution to network security. It is particularly useful for delegators, network participants, and developers who want to track validators' statistics.
+
+#### Validators Summary
+
+![](src/images/companion-app/validators/validators_1.png)
+
+The **Validators Summary** section offers a high-level breakdown of validator activity, including:
+
+- **Active / Allocated Validators**: Displays the number of currently active validators compared to the total in the network.
+- **Onchain APR**: Shows the current annual percentage rate (APR) for staking rewards.
+- **Bonded Rate**: Shows the percentage of total staked tokens relative to the total supply.
+- **Avg. / weighted Commission**: Highlights the average commission rates taken by validators.
+
+Once you connect your [ASI Wallet ↗️](/guides/fetch-network/asi-wallet/web-wallet/get-started) to the Companion App UI, you will be able to see the refreshed table for Validators based on your Stakes amount:
+
+![](src/images/companion-app/validators/validators_2.png)
+
+The **Validators Table** provides a detailed list of active validators with key metrics, including:
+
+- **Rank**: Indicates the validator’s ranking based on voting power.
+- **Validator**: Displays the validator's name, logo, and identity. 
+- **Voting Power**: Shows the total stake delegated to the validator, representing their influence in consensus. 
+- **Commission**: Displays the fee percentage charged by the validator on delegated rewards. 
+- **Uptime & Missed Blocks**: Highlights validator reliability, showing uptime percentage and recent missed blocks. 
+- **Participation**: Measures how actively the validator participates in the network. 
+- **Delegators**: The number of users delegating stakes to each specific validator.
+- **Stake**: Amount payable to stake with a specific validator.
+
+Each validator has a menu (... button) allowing users to manage their stakes:
+
+- **Stake**: Delegate FET tokens to the selected validator.
+- **Unstake**: Withdraw staked tokens from the validator.
+- **Claim Rewards**: Collect earned staking rewards.
+
+#### Validators Details
+
+Users can click on a specific validator to access the **Validator Details** Page, which provides an in-depth view of their performance and activity. 
+
+![](src/images/companion-app/validators/validators_3.png)
+
+This page offers comprehensive information about a selected validator, including:
+
+- **Validator details**: Shows the validator's name, logo, address, description and related website. 
+- **Voting Power**: Displays the validator's total stake and percentage of total network stake. 
+- **Commission Rate**: Shows the fee structure for delegators. 
+- **Expected APR**: Estimated annual percentage rate. 
+- **Delegators**: the number of delegators supporting the validator and their respective stakes. 
+- **Uptime History**: Provides a % indicating the validator's reliability and availability performance. 
+- **Bonded Tokens**: Indicated the total delegated stake. 
+- **Self Bonded Tokens**: It is the amount staked by the validator itself.
+- **Start Height**: Indicates the block number at which the validator first became active on the network. 
+- **Uptime / Block Miss**: Uptime refers to the validator's availability and reliability in signing and proposing blocks. Block Miss stands as the number of blocks the validator failed to sign or propose within a given tracking period. The relationship between these two values indicates the amount of blocks being missed overall and stands as a measure of reliability into the specific validator.
+- **Window Block Miss**: It is the number of missed blocks in the current tracking window.
+
+Within the Validator's _Details_ page, users can interact with the specific validator through the dedicated buttons available in the UI:
+
+- **Claim rewards**: Collect earned staking rewards. 
+- **Redelegate**: Transfer staked tokens to another validator without unstaking first. 
+- **Unstake**: Withdraw FET tokens from the validator. 
+- **Stake**: Delegate FET tokens to this validator.
+
+##### Proposed Blocks tab
+
+![](src/images/companion-app/validators/validators_4.png)
+
+Within the **Proposed Blocks** tab available at the bottom of the validator's Details page, users are able to see a list of blocks that this validator has proposed as part of its role in the network. Here, you can explore the following information:
+
+- **Height**: The block number in the blockchain. Higher number means a more recent block.
+- **Block Hash**: It is the unique cryptographic identifier for the block. 
+- **Tx Count (Transaction Count)**: The number of transactions included in the block. Higher transaction counts indicate active participation in processing transactions.
+- **Created At**: The timestamp when the block was proposed.
+
+These details and information helps users track if the validator is actively participating in block proposals, ensuring its reliability and trustworthiness.
+
+##### Power Events tab
+
+![](src/images/companion-app/validators/validators_5.png)
+
+The **Power Events** tab provides a historical record of events that have impacted the validator's voting power. Users can check the following information within this tab: 
+
+- **Height**: This refers to the block height at which the power event occurred. It essentially pinpoints the event's location within the blockchain's timeline.
+- **Tx Hash**: This is the unique transaction hash associated with the power event. You can click on it to view the transaction details on the explorer.
+- **Amount**: This indicates the change in the validator's voting power. A positive value signifies an increase in power, while a negative value represents a decrease.
+- **Time**: This is the timestamp of when the power event occurred.
+
+##### Delegators tab
+
+![](src/images/companion-app/validators/validators_6.png)
+
+Lastly, within the **Delegators** tab, users can check out the information about those users who have delegated their tokens to the selected validator, including:
+
+- **Delegator**: This column lists the addresses of the users who have delegated their tokens to the validator.
+- **Amount**: This column indicates the amount of tokens each delegator has staked with the validator.
+- **Updated At**: This column shows the timestamp of when the delegation was last updated.
+
+
+##### Claim rewards, Redelegate, Unstake and Stake
+
+Within each specific validator's details page, users have the options to manage rewards as well as staked/delegated tokens to that particular validator. They can do this by clicking on the dedicated buttons: **Claim rewards**, **Redelegate**, **Unstake** and **Stake**.
+
+![](src/images/companion-app/validators/validators_7.png)
+
+For instance, by clicking the **Stake** button, a side panel will appear showing you different data about the Stake operation:
+
+![](src/images/companion-app/validators/validators_8.png)
+
+This way, you can directly stake FET tokens with the validator of your choice. You will need to provide the Amount of tokens you wish to stake as well as the name of the Validator you want to stake your tokens with. You can also add a _memo_ field for information you wish to add to the transaction. Once you are satisfied, click on the **Stake** button. You will see a summary showing up for the operation. Then, click on **Confirm** and **Approve** the transaction within your ASI Wallet.
+
+### Proposals Page
+
+The **Proposals** page of the Companion App UI provides an overview of the Governance Proposals taking place within the ASI network.
+
+![](src/images/companion-app/proposals/proposals_1.png)
+
+This page allows users to check out the total number of proposals, their status, and voting outcomes. Users can track past proposals along with their approval or rejection status. The page helps ensure transparency in network governance and allows users to stay informed about decisions affecting the ASI ecosystem.
+
+#### Proposals summary and details 
+
+![](src/images/companion-app/proposals/proposals_2.png)
+
+The **Proposals Summary** page provides an overview of all Proposals. It displays the Total amount of Proposals and current available ones under Voting Period Proposals.  This page provides multiple details for each governance proposal:
+
+- Proposal ID 
+- Title 
+- Type 
+- Your Vote 
+- Status 
+- Voting End On
+
+By switching **My Votes** toogle on, you will be able to filter proposals and see just those for which you voted previously.
+By clicking on a particular proposal, you will be able to explore additional details through the **Proposal Details** page:
+
+![](src/images/companion-app/proposals/proposals_3.png)
+
+Through the details page, users are able to explore in a more detailed manner all the aspects of a specific proposal, starting with actual votes, voting details and description. You can check out the proposal's description at the bottom within the **Description** section:
+
+![](src/images/companion-app/proposals/proposals_4.png)
+
+Instead, by clicking on the **Json** tab, you will be able to explore the Proposal's details in json format:
+
+![](src/images/companion-app/proposals/proposals_5.png)
+
+#### How to vote for Proposals
+
+Whenever you wish to participate in a Governance Proposals voting, you will need to open the related Proposal's details page by clicking on the Proposal itself within the Proposals page in the Companion App. Once you open the proposal's details page, if the proposal voting period hasn't still ended, then you should be able to see a **Vote** button at the top of the page:
+
+![](src/images/companion-app/proposals/proposals_6.png)
+
+By clicking on this one, a drop-down menu will appear with multiple options:
+
+![](src/images/companion-app/proposals/proposals_7.png)
+
+By selecting one of the voting options displayed, you will have your vote being registered and the UI will refresh. You should be able to see something similar to the following:
+
+![](src/images/companion-app/proposals/proposals_8.png)
+
+
 ### Reconciliation Page
 
 The **Reconciliation Service** enables users with Hardware Wallets to recover funds migrated from the Fetch Staking platform on Ethereum to the Fetch Mainnet. By linking their ASI [Alliance Wallet ↗️](/guides/fetch-network/asi-wallet/web-wallet/get-started) and Metamask, users can securely associate their Ethereum staking address with a Fetch recovery address to restore access to their tokens. Within this tab you can also access the **CUDOS Tokens Transfer** UI if you have either Locked or Convertible CUDOS Tokens in your wallet.
