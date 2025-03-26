@@ -1,0 +1,185 @@
+import { CodeGroup, DocsCode,GithubCodeSegment,CodeSegment } from "../../../../components/code"
+
+# Synchronous Communication
+
+## Overview
+
+This guide demonstrates how multiple Agents communicate in the uAgents framework using the `send_and_receive()` method to await responses. The example consists of three agents: `Alice`, `Bob`, and `Clyde`. These exchange messages in a structured and sequential manner.
+
+
+<GithubCodeSegment digest="">
+    <CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples_existing/20-send-and-receive/main.py"
+        lineStart={1}
+        lineEnd={46}
+        hosted={true}
+    />
+
+</GithubCodeSegment>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
+
+<DocsCode local={true}>
+    ```py copy filename="main.py"
+    from uagents import Agent, Bureau, Context, Model
+    
+    
+    class Message(Model):
+        message: str
+    
+    
+    alice = Agent(name="alice")
+    bob = Agent(name="bob")
+    clyde = Agent(name="clyde")
+    
+    
+    @alice.on_interval(period=5.0)
+    async def send_message(ctx: Context):
+        msg = Message(message="Hey Bob, how's Clyde?")
+        reply, status = await ctx.send_and_receive(bob.address, msg, response_type=Message)
+        if isinstance(reply, Message):
+            ctx.logger.info(f"Received awaited response from bob: {reply.message}")
+        else:
+            ctx.logger.info(f"Failed to receive response from bob: {status}")
+    
+    
+    @bob.on_message(model=Message)
+    async def handle_message_and_reply(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message: {msg.message}")
+        new_msg = Message(message="How are you, Clyde?")
+        reply, status = await ctx.send_and_receive(
+            clyde.address, new_msg, response_type=Message
+        )
+        if isinstance(reply, Message):
+            ctx.logger.info(f"Received awaited response from clyde: {reply.message}")
+            await ctx.send(sender, Message(message="Clyde is doing alright!"))
+        else:
+            ctx.logger.info(f"Failed to receive response from clyde: {status}")
+    
+    
+    @clyde.on_message(model=Message)
+    async def handle_message(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        await ctx.send(sender, Message(message="I'm doing alright!"))
+    
+    
+    bureau = Bureau([alice, bob, clyde])
+    
+    if __name__ == "__main__":
+        bureau.run()
+    ```
+</DocsCode>
+
+</CodeGroup>
+
+First, we import the necessary components from the uAgents library and then proceed to define the `Message` data model for messages to be exchanged between Agents. This one contains a single field, `message`, which holds a string.
+
+We go on and initialize 3 Agents: `Alice` initiates communication. `Bob` relays messages and awaits `Clyde`'s response. `Clyde` receives messages and responds accordingly.
+
+We then proceed and define the Agents' handlers, so to define their behaviour:
+
+1. `Alice` sends a message to Bob every 5 seconds and awaits a response:
+
+    <GithubCodeSegment digest="">
+        <CodeSegment
+            path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples_existing/20-send-and-receive/main.py"
+            lineStart={13}
+            lineEnd={21}
+            hosted={true}
+        />
+    
+    </GithubCodeSegment>
+    <CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
+
+    <DocsCode local={true}>
+        ```py copy
+        @alice.on_interval(period=5.0)
+        async def send_message(ctx: Context):
+            msg = Message(message="Hey Bob, how's Clyde?")
+            reply, status = await ctx.send_and_receive(bob.address, msg, response_type=Message)
+            if isinstance(reply, Message):
+                ctx.logger.info(f"Received awaited response from bob: {reply.message}")
+            else:
+                ctx.logger.info(f"Failed to receive response from bob: {status}")
+        ```
+    </DocsCode>
+    
+    </CodeGroup>
+
+    This handler is triggered every 5 seconds (as specified by `period=5.0`). It sends a message to Bob asking how Clyde is doing. Alice creates a `Message` object with the content `"Hey Bob, how's Clyde?"`. The `send_and_receivefunction()` sends the message to `Bob`'s address and waits for a response. The `response_type=Message` argument specifies that the expected reply should be of type `Message`. If a valid `Message` is received, `Alice` logs the response. If the reply is not a valid, it logs the failure status.
+
+2. `Bob` receives `Alice`’s message and forwards a new message to `Clyde`, awaiting a response. Once received, `Bob` informs `Alice`:
+
+    <GithubCodeSegment digest="">
+        <CodeSegment
+            path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples_existing/20-send-and-receive/main.py"
+            lineStart={23}
+            lineEnd={34}
+            hosted={true}
+        />
+    
+    </GithubCodeSegment>
+    <CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
+
+    <DocsCode local={true}>
+    ```py copy
+    @bob.on_message(model=Message)
+    async def handle_message_and_reply(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message: {msg.message}")
+        new_msg = Message(message="How are you, Clyde?")
+        reply, status = await ctx.send_and_receive(
+            clyde.address, new_msg, response_type=Message
+        )
+        if isinstance(reply, Message):
+            ctx.logger.info(f"Received awaited response from clyde: {reply.message}")
+            await ctx.send(sender, Message(message="Clyde is doing alright!"))
+        else:
+            ctx.logger.info(f"Failed to receive response from clyde: {status}")
+    ```
+    </DocsCode>
+    
+    </CodeGroup>
+
+    Bob listens for incoming messages from `Alice` and, upon receiving one of type `Message`, it logs the received message from Alice. Bob then constructs a new message (`"How are you, Clyde?"`) and sends it to `Clyde` using `send_and_receive()` method. Bob then waits for `Clyde`'s response. If the response is valid, he sends the reply back to `Alice`, informing her that `"Clyde is doing alright!"`.
+
+3. `Clyde` responds to any message received:
+
+    <GithubCodeSegment digest="">
+        <CodeSegment
+            path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples_existing/20-send-and-receive/main.py"
+            lineStart={37}
+            lineEnd={40}
+            hosted={true}
+        />
+    
+    </GithubCodeSegment>
+    <CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
+
+    <DocsCode local={true}>
+    ```py copy
+    @clyde.on_message(model=Message)
+    async def handle_message(ctx: Context, sender: str, msg: Message):
+        ctx.logger.info(f"Received message from {sender}: {msg.message}")
+        await ctx.send(sender, Message(message="I'm doing alright!"))
+    ```
+    </DocsCode>
+    
+    </CodeGroup>
+
+   `Clyde` listens for incoming messages from other Agents (in this case, from `Bob`). Upon receiving a message of type `Message`, it responds with a simple confirmation message `"I'm doing alright!"` which is sent back to the `sender` using the `send` method.
+
+### Expected output
+
+Run the example script: `python main.py`
+
+By running the above script, you should be able to see something similar within the terminal output:
+
+   ```
+   INFO:     [alice]: Starting agent with address: agent1qwmt0al3dd334n4f4rs3dw496n02cjackcxfg8l3vfl5m0pf7k5nqamf6rx
+   INFO:     [  bob]: Starting agent with address: agent1qd7uqtycfr00xkhlpqatvkjdcgfrtf0xh93fncaqa8pf6upvn9jdjcuwzjh
+   INFO:     [clyde]: Starting agent with address: agent1qvnf3qvc7y24gekpmtd8ar2lpskw8jnc5zzakgcjtku3u798e8lg2vugkgv
+   INFO:     [bureau]: Starting server on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     [  bob]: Received message: Hey Bob, how's Clyde?
+   INFO:     [clyde]: Received message from agent1qd7uqtycfr00xkhlpqatvkjdcgfrtf0xh93fncaqa8pf6upvn9jdjcuwzjh: How are you, Clyde?
+   INFO:     [  bob]: Received awaited response from clyde: I'm doing alright!
+   INFO:     [alice]: Received awaited response from bob: Clyde is doing alright!
+   ```
