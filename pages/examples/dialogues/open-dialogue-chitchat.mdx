@@ -7,7 +7,7 @@ import { CodeGroup, DocsCode, CodeSegment, GithubCodeSegment } from "../../../co
 
 This example demonstrates how to set up and execute a simple agent-based dialogue using the ChitChat Dialogue system. Agent 2 will initiate a conversation with Agent 1, which will respond and continue the interaction. This interaction showcases basic dialogue initiation, message exchange, and dialogue conclusion. Each step and state transition within the ChitChat Dialogue is visible and interactive
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/docs_examples/advanced/open-dialogue-chitchat) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/examples/advanced/open-dialogue-chitchat) to run this locally.
 
 ### Guide
 
@@ -49,15 +49,15 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
 
 - Import required libraries.
 
-<GithubCodeSegment digest="cc21a21c56a56d5c4c67055822dcdc25">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/open-dialogue-chitchat/dialogues/chitchat.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/advanced/open-dialogue-chitchat/dialogues/chitchat.py"
         lineStart={1}
         lineEnd={6}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='cc21a21c56a56d5c4c67055822dcdc25'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="chitchat.py"
@@ -69,7 +69,7 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
 	from uagents.experimental.dialogues import Dialogue, Edge, Node
 	
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -78,9 +78,9 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
 
 - Define `nodes` (state) of dialogues like default, initiate, chitchat and conclude state.
 
-<GithubCodeSegment digest="13808fcfc8131486175ae46c64a58bdb">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/open-dialogue-chitchat/dialogues/chitchat.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/advanced/open-dialogue-chitchat/dialogues/chitchat.py"
         lineStart={7}
         lineEnd={30}
         hosted={true}
@@ -116,7 +116,7 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
 	)
 	
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -125,9 +125,9 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
 
 - Define `edges` (transition) of dialogues like initiate session, reject session, start dialogue, continue dialogue and end session.
 
-<GithubCodeSegment digest="b20e3d619099c1d101b3fa126372ce3b">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/open-dialogue-chitchat/dialogues/chitchat.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/advanced/open-dialogue-chitchat/dialogues/chitchat.py"
         lineStart={31}
         lineEnd={65}
         hosted={true}
@@ -174,7 +174,7 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
 	)
 	
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -183,15 +183,15 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
 
 - Define `ChitChatDialogue` class and include nodes and edges into it. These acts as rule for chit chat dialogues.
 
-<GithubCodeSegment digest="2b4291fcee4a8d0efff5b25b4b5edd38">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/open-dialogue-chitchat/dialogues/chitchat.py"
-        lineStart={65}
-        lineEnd={135}
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/advanced/open-dialogue-chitchat/dialogues/chitchat.py"
+        lineStart={66}
+        lineEnd={137}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='2b4291fcee4a8d0efff5b25b4b5edd38'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="chitchat.py"
@@ -268,7 +268,7 @@ This script sets up the `ChitChatDialogue` class, This system includes nodes rep
 	        """
 	        return super()._on_state_transition(end_session.name, model)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -304,15 +304,15 @@ The contents of this script are to be shared between the agents that want to use
 
 </CodeGroup>
 
-<GithubCodeSegment digest="71fd5dc2b99339eb1db16276ab5b7a92">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/open-dialogue-chitchat/agent1.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/advanced/open-dialogue-chitchat/agent1.py"
         lineStart={1}
-        lineEnd={112}
+        lineEnd={121}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='71fd5dc2b99339eb1db16276ab5b7a92'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="agent1.py"
@@ -430,7 +430,7 @@ The contents of this script are to be shared between the agents that want to use
 	    print(f"Agent address: {agent.address}")
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -459,15 +459,15 @@ The contents of this script are to be shared between the agents that want to use
 
 </CodeGroup>
 
-<GithubCodeSegment digest="d5864dd47faa06e844c1779bf6ede910">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/advanced/open-dialogue-chitchat/agent2.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/advanced/open-dialogue-chitchat/agent2.py"
         lineStart={1}
-        lineEnd={115}
+        lineEnd={126}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='d5864dd47faa06e844c1779bf6ede910'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="agent2.py"
@@ -588,7 +588,7 @@ The contents of this script are to be shared between the agents that want to use
 	    print(f"Agent address: {agent.address}")
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>

@@ -6,35 +6,35 @@ This example covers how to use the `uagents` library to search for agents based 
 ## Explanation of the `ai` Function
 The `ai` function is responsible for interacting with search API to retrieve search results. Here's how it works:
 
-```py copy
-def ai(
-    query: str,
-    protocol: Optional[
-        str
-    ] = "proto:a03398ea81d7aaaf67e72940937676eae0d019f8e1d8b5efbadfef9fd2e98bb2",
-) -> dict:
-    url = "https://agentverse.ai/v1/search/agents"
-    headers = {
-        "Content-Type": "application/json",
-    }
-
-    data = {
-        "search_text": query,
-        "sort": "relevancy",
-        "filters": {
-            "protocol_digest": [protocol],
-        },
-        "direction": "asc",
-        "offset": 0,
-        "limit": 10,
-    }
-
-    try:
-        response = httpx.post(url, json=data, headers=headers, timeout=10.0)
-        return {"ais": response.json().get("agents", [])}
-    except httpx.RequestError as exc:
-        return {"ais": [], "error": f"{exc}"}
-```
+   ```py copy
+   def ai(
+       query: str,
+       protocol: Optional[
+           str
+       ] = "proto:a03398ea81d7aaaf67e72940937676eae0d019f8e1d8b5efbadfef9fd2e98bb2",
+   ) -> dict:
+       url = "https://agentverse.ai/v1/search/agents"
+       headers = {
+           "Content-Type": "application/json",
+       }
+   
+       data = {
+           "search_text": query,
+           "sort": "relevancy",
+           "filters": {
+               "protocol_digest": [protocol],
+           },
+           "direction": "asc",
+           "offset": 0,
+           "limit": 10,
+       }
+   
+       try:
+           response = httpx.post(url, json=data, headers=headers, timeout=10.0)
+           return {"ais": response.json().get("agents", [])}
+       except httpx.RequestError as exc:
+           return {"ais": [], "error": f"{exc}"}
+   ```
 
 ### Parameters
 

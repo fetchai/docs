@@ -40,17 +40,6 @@ This example shows how to run an agent using the uAgents library inside a Docker
 
 This example demonstrates a simple agent-based communication system using the uAgents library. The `data_sender` agent sends a `DataPacket` message to the `data_receiver` agent every 4 seconds. Upon receiving the message, `data_receiver` logs it and sends an acknowledgment back to data_sender. Both agents log the messages they receive. The agents are running with Docker Compose using Docker.
 
-<GithubCodeSegment digest="f3fa0311d5d2c3a974acf758de51a654">
-    <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/agents-with-docker/src/agent.py"
-        lineStart={1}
-        lineEnd={69}
-        hosted={true}
-    />
-</GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='f3fa0311d5d2c3a974acf758de51a654'>
-
-<DocsCode local={true}>
 	```py copy filename="agent.py"
 
 	 
@@ -123,10 +112,8 @@ This example demonstrates a simple agent-based communication system using the uA
 	if __name__ == "__main__":
 	    bureau.run()
 
-```
-</DocsCode>
+    ```
 
-</CodeGroup>
 
 
 
@@ -134,17 +121,6 @@ This example demonstrates a simple agent-based communication system using the uA
 
 This Dockerfile sets up a Python environment with Poetry for dependency management. It installs necessary system packages, sets up the working directory, installs dependencies specified in `pyproject.toml`, and runs `agent.py` using Poetry. The application listens on port 8000.
 
-<GithubCodeSegment digest="61164fb5ac7fa26cf68665d401fc19cc">
-    <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/agents-with-docker/Dockerfile"
-        lineStart={1}
-        lineEnd={12}
-        hosted={true}
-    />
-</GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='61164fb5ac7fa26cf68665d401fc19cc'>
-
-<DocsCode local={true}>
 	```py copy filename="Dockerfile"
 
 	FROM python:3.12-slim
@@ -160,27 +136,13 @@ This Dockerfile sets up a Python environment with Poetry for dependency manageme
 	ENTRYPOINT ["poetry", "run"]
 	CMD ["python", "agent.py"]
 
-```
-</DocsCode>
-
-</CodeGroup>
+    ```
 
 
 
 ### `docker-compose.yml`
 This Docker Compose configuration builds and runs a Python app using Poetry. It maps the current directory to the container, exposes port 8000, and starts the `agent.py` script.
 
-<GithubCodeSegment digest="c5968d7a0aa277e98151fb92b7a98a78">
-    <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/agents-with-docker/docker-compose.yml"
-        lineStart={1}
-        lineEnd={11}
-        hosted={true}
-    />
-</GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='c5968d7a0aa277e98151fb92b7a98a78'>
-
-<DocsCode local={true}>
 	```py copy filename="docker-compose.yml"
 
 	version: '3.8'
@@ -195,11 +157,7 @@ This Docker Compose configuration builds and runs a Python app using Poetry. It 
 	      - "8000:8000"
 	    command: poetry run python src/agent.py
 
-```
-</DocsCode>
-
-</CodeGroup>
-
+    ```
 
 
 ## Poetry Dependencies
