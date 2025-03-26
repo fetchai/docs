@@ -6,7 +6,7 @@ import { CodeGroup, DocsCode,  GithubCodeSegment, CodeSegment } from "../../../c
 
 This example demonstrates how LangChain's RAG (Retrieval-Augmented Generation) technology integrates with uAgents. It shows how to create a RAG application that can answer questions based on a document.
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/docs_examples/intermediate/langchain-rag/src) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/examples/intermediate/langchain-rag/src) to run this locally.
 
 ### Supporting documentation
 
@@ -105,15 +105,15 @@ langchain-community = "^0.3.7"
 
 The `RagRequest` model represents a request for retrieving an answer to a user's question from a specified document URL. It includes an optional parameter to determine if nested pages should also be read.
 
-<GithubCodeSegment digest="6d99301cf7b5b94c82d8cc447a1891fe">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/langchain-rag/src/messages/requests.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/langchain-rag/src/messages/requests.py"
         lineStart={1}
         lineEnd={14}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='6d99301cf7b5b94c82d8cc447a1891fe'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="requests.py"
@@ -133,7 +133,7 @@ The `RagRequest` model represents a request for retrieving an answer to a user's
 	    )
 	 
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -144,15 +144,15 @@ The `RagRequest` model represents a request for retrieving an answer to a user's
 
 This agent answers questions by fetching and summarizing information from a given website. It checks and scrapes URLs, uses LangChain to find important documents, and generates answers with OpenAI's GPT-40-mini model.
 
-<GithubCodeSegment digest="6e1bac7fcd2e972c9e57b0baae58c27c">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/langchain-rag/src/agents/langchain_rag_agent.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/langchain-rag/src/agents/langchain_rag_agent.py"
         lineStart={1}
-        lineEnd={137}
+        lineEnd={135}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='6e1bac7fcd2e972c9e57b0baae58c27c'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="langchain_rag_agent.py"
@@ -295,7 +295,7 @@ This agent answers questions by fetching and summarizing information from a give
 	    agent.run()
 	 
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -308,13 +308,19 @@ The agent is designed to ask a predefined question to a RAG agent at regular int
 
 <GithubCodeSegment digest="67ca92154bcb99f3c17512c6210727a4">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/langchain-rag/src/agents/langchain_rag_user.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/langchain-rag/src/agents/langchain_rag_user.py"
         lineStart={1}
         lineEnd={43}
         hosted={true}
     />
+	<CodeSegment
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/langchain-rag/src/agents/hosted/langchain_rag_user.py"
+        lineStart={1}
+        lineEnd={42}
+        hosted={false}
+    />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='67ca92154bcb99f3c17512c6210727a4'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="langchain_rag_user.py"
@@ -363,22 +369,69 @@ The agent is designed to ask a predefined question to a RAG agent at regular int
 	    rag_user.run()
 	 
 
-```
+    ```
 </DocsCode>
+<DocsCode local={false}>
+	```py copy filename="langchain_rag_user.py"
 
+    from typing import Optional
+    
+    from ai_engine import UAgentResponse
+    from uagents import Context, Field, Model, Protocol
+    
+    QUESTION = "How to install uagents using pip"
+    URL = "https://fetch.ai/docs/guides/agents/installing-uagent"
+    DEEP_READ = "no"
+    
+    
+    class RagRequest(Model):
+        question: str = Field(
+            description="The question that the user wants to have an answer for."
+        )
+        url: str = Field(description="The url of the docs where the answer is.")
+        deep_read: Optional[str] = Field(
+            description="Specifies weather all nested pages referenced from the starting URL should be read or not. The value should be yes or no.",
+            default="no",
+        )
+    
+    
+    RAG_AGENT_ADDRESS = "YOUR_LANGCHAIN_RAG_AGENT_ADDRESS"
+    
+    rag_user = Protocol("LangChain RAG user")
+    
+    
+    @agent.on_interval(60, messages=RagRequest)
+    async def ask_question(ctx: Context):
+        ctx.logger.info(
+            f"Asking RAG agent to answer {QUESTION} based on document located at {URL}, reading nested pages too: {DEEP_READ}"
+        )
+        await ctx.send(
+            RAG_AGENT_ADDRESS, RagRequest(question=QUESTION, url=URL, deep_read=DEEP_READ)
+        )
+    
+    
+    @agent.on_message(model=UAgentResponse)
+    async def handle_data(ctx: Context, sender: str, data: UAgentResponse):
+        ctx.logger.info(f"Got response from RAG agent: {data.message}")
+    
+    
+    agent.include(rag_user)
+
+    ```
+</DocsCode>
 </CodeGroup>
 
 
 
-<GithubCodeSegment digest="9018aca08a2c6ffee127165c2cff6043">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/langchain-rag/src/main.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/langchain-rag/src/main.py"
         lineStart={1}
-        lineEnd={12}
+        lineEnd={11}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='9018aca08a2c6ffee127165c2cff6043'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="main.py"
@@ -396,7 +449,7 @@ The agent is designed to ask a predefined question to a RAG agent at regular int
 	    bureau.add(user)
 	    bureau.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>

@@ -7,7 +7,7 @@ import { CodeGroup, DocsCode, GithubCodeSegment,CodeSegment } from "../../../com
 This file can be run on any platform supporting Python, with the necessary install permissions.
 This example shows how to use Agents to create a table booking service at a restaurant.
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/docs_examples/intermediate/table-booking-demo) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/examples/intermediate/table-booking-demo) to run this locally.
 
 ### Supporting documentation
 
@@ -39,21 +39,21 @@ table-booking-demo/
 
 #### Query table
 
-<GithubCodeSegment digest="c3c5863868afc297576cfd7face5f5fc">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/table-booking-demo/protocols/query.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/table-booking-demo/protocols/query.py"
         lineStart={1}
-        lineEnd={51}
+        lineEnd={60}
         hosted={true}
     />
 	<CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/table-booking-demo/hosted/query.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/table-booking-demo/hosted/query.py"
         lineStart={1}
-        lineEnd={51}
+        lineEnd={60}
         hosted={false}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='c3c5863868afc297576cfd7face5f5fc'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="query.py"
@@ -110,7 +110,7 @@ table-booking-demo/
 	    total_queries = int(ctx.storage.get("total_queries") or 0)
 	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-```
+    ```
 </DocsCode>
 
 <DocsCode local={false}>
@@ -168,7 +168,7 @@ table-booking-demo/
 	    total_queries = int(ctx.storage.get("total_queries") or 0)
 	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -177,21 +177,21 @@ table-booking-demo/
 
 #### Book table
 
-<GithubCodeSegment digest="05d69de7843daf0fcc22f004388bf173">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/table-booking-demo/protocols/book.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/table-booking-demo/protocols/book.py"
         lineStart={1}
-        lineEnd={34}
+        lineEnd={40}
         hosted={true}
     />
 	<CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/table-booking-demo/hosted/book.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/table-booking-demo/hosted/book.py"
         lineStart={1}
-        lineEnd={35}
+        lineEnd={40}
         hosted={false}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='05d69de7843daf0fcc22f004388bf173'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="book.py"
@@ -231,7 +231,7 @@ table-booking-demo/
 	    # send the response
 	    await ctx.send(sender, BookTableResponse(success=success))
 
-```
+    ```
 </DocsCode>
 
 <DocsCode local={false}>
@@ -273,7 +273,7 @@ table-booking-demo/
 	    # send the response
 	    await ctx.send(sender, BookTableResponse(success=success))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -284,21 +284,21 @@ table-booking-demo/
 
 #### Restaurant
 
-<GithubCodeSegment digest="61dbc094974ca310966c4e04afe278c9">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/table-booking-demo/restaurant.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/table-booking-demo/restaurant.py"
         lineStart={1}
-        lineEnd={29}
+        lineEnd={27}
         hosted={true}
     />
 	<CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/table-booking-demo/hosted/restaurant.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/table-booking-demo/hosted/restaurant.py"
         lineStart={1}
-        lineEnd={17}
+        lineEnd={16}
         hosted={false}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='61dbc094974ca310966c4e04afe278c9'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="restaurant.py"
@@ -333,7 +333,7 @@ table-booking-demo/
 	if __name__ == "__main__":
 	    restaurant.run()
 
-```
+    ```
 </DocsCode>
 
 <DocsCode local={false}>
@@ -357,7 +357,7 @@ table-booking-demo/
 	for (number, status) in TABLES.items():
 	    agent._storage.set(number, status.dict())
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -366,21 +366,21 @@ table-booking-demo/
 
 #### Customer/user
 
-<GithubCodeSegment digest="cf26dd5dcaa150d6e872e45e8dbc52b3">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/table-booking-demo/user.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/table-booking-demo/user.py"
         lineStart={1}
         lineEnd={65}
         hosted={true}
     />
 	<CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/table-booking-demo/hosted/user.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/table-booking-demo/hosted/user.py"
         lineStart={1}
-        lineEnd={52}
+        lineEnd={54}
         hosted={false}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='cf26dd5dcaa150d6e872e45e8dbc52b3'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="user.py"
@@ -451,7 +451,7 @@ table-booking-demo/
 	if __name__ == "__main__":
 	    user.run()
 
-```
+    ```
 </DocsCode>
 
 <DocsCode local={false}>
@@ -510,7 +510,7 @@ table-booking-demo/
 	 
 	    ctx.storage.set("completed", True)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>

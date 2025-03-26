@@ -10,7 +10,7 @@ can include sending and receiving payments, querying account balances, and handl
 
 In this example we will create two agents locally using `uagents` library and make them share wallet information with each other.
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/docs_examples/intermediate/wallet-messaging) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/examples/intermediate/wallet-messaging) to run this locally.
 
 ### Supporting documentation
 
@@ -25,9 +25,9 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
     - Importing required libraries
 
-    <GithubCodeSegment digest="2ef4cebb5ad68d9b842ecfe06cb4f556">
+    <GithubCodeSegment digest="">
         <CodeSegment
-            path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/wallet-messaging/wallet_messaging.py"
+            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/wallet-messaging/wallet_messaging.py"
             lineStart={1}
             lineEnd={2}
             hosted={true}
@@ -41,7 +41,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	from uagents import Agent, Bureau, Context
 	from uagents.wallet_messaging import WalletMessage
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -52,15 +52,15 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
     - Defining two agents that can communicate with each other.
 
-    <GithubCodeSegment digest="a30936d168755c9cdc3b2e2ed3d5a831">
+    <GithubCodeSegment digest="">
         <CodeSegment
-            path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/wallet-messaging/wallet_messaging.py"
+            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/wallet-messaging/wallet_messaging.py"
             lineStart={3}
             lineEnd={9}
             hosted={true}
         />
     </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='a30936d168755c9cdc3b2e2ed3d5a831'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="wallet_messaging.py"
@@ -73,7 +73,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	bob = Agent(name="bob", seed=BOB_SEED, enable_wallet_messaging = True)
 	 
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -84,15 +84,15 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
     - Agent 1 wallet message handler:
 
-    <GithubCodeSegment digest="b5881e15ee95ede547a7ee211ba4e8e4">
+    <GithubCodeSegment digest="">
         <CodeSegment
-            path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/wallet-messaging/wallet_messaging.py"
+            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/wallet-messaging/wallet_messaging.py"
             lineStart={11}
             lineEnd={14}
             hosted={true}
         />
     </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='b5881e15ee95ede547a7ee211ba4e8e4'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="wallet_messaging.py"
@@ -102,7 +102,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	    ctx.logger.info(f"Got wallet message: {msg.text}")
 	    await ctx.send_wallet_message(msg.sender, "hey, thanks for the message")
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -113,11 +113,11 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
     - Agent 2 wallet message handler and `on_interval` sender:
 
-    <GithubCodeSegment digest="43716032ccd58b85f9f802cbe2cc8ca0">
+    <GithubCodeSegment digest="">
         <CodeSegment
-            path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/wallet-messaging/wallet_messaging.py"
+            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/wallet-messaging/wallet_messaging.py"
             lineStart={15}
-            lineEnd={24}
+            lineEnd={25}
             hosted={true}
         />
     </GithubCodeSegment>
@@ -137,7 +137,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	    ctx.logger.info(f"Got wallet message: {msg.text}")
 	 
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -148,15 +148,15 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
     - Defining `Bureau` and adding agents:
 
-     <GithubCodeSegment digest="ced771f691cd71de0202ecbaf36b46e3">
+     <GithubCodeSegment digest="">
         <CodeSegment
-            path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/wallet-messaging/wallet_messaging.py"
-            lineStart={24}
-            lineEnd={28}
+            path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/wallet-messaging/wallet_messaging.py"
+            lineStart={28}
+            lineEnd={31}
             hosted={true}
         />
     </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='ced771f691cd71de0202ecbaf36b46e3'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="wallet_messaging.py"
@@ -167,7 +167,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	bureau.add(bob)
 	bureau.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -180,15 +180,15 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 This section presents the entire script in one block, allowing users to easily copy and paste it for testing or deployment.
 
-<GithubCodeSegment digest="26fb1c194200e63b19e8599077ff0f61">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/wallet-messaging/wallet_messaging.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/wallet-messaging/wallet_messaging.py"
         lineStart={1}
-        lineEnd={28}
+        lineEnd={31}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='26fb1c194200e63b19e8599077ff0f61'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="wallet_messaging.py"
@@ -222,7 +222,7 @@ This section presents the entire script in one block, allowing users to easily c
 	bureau.add(bob)
 	bureau.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>

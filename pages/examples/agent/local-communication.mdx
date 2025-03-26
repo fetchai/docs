@@ -6,7 +6,7 @@ import { CodeGroup, DocsCode,GithubCodeSegment,CodeSegment } from "../../../comp
 
 This file can be run on any platform supporting Python, with the necessary install permissions. This example shows how to set up a local network interaction between two agents using the uAgents Python library.
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/docs_examples/easy/local-communication) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/examples/easy/local-communication) to run this locally.
 
 ### Supporting documentation
 
@@ -18,21 +18,21 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 ### Agent 1
 
-<GithubCodeSegment digest="60ee49a55d8fdad80b9cd0ba12bd9c27">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_1/local/agent_1.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/easy/local-communication/agent_1/local/agent_1.py"
         lineStart={1}
-        lineEnd={23}
+        lineEnd={27}
         hosted={true}
     />
 	<CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_1/hosted/agent_1.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/easy/local-communication/agent_1/hosted/agent_1.py"
         lineStart={1}
-        lineEnd={13}
+        lineEnd={15}
         hosted={false}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='60ee49a55d8fdad80b9cd0ba12bd9c27'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="agent_1.py"
@@ -61,7 +61,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	if __name__ == "__main__":
 	    bob.run()
 
-```
+    ```
 </DocsCode>
 
 <DocsCode local={false}>
@@ -81,7 +81,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	    # send the response
 	    await ctx.send(sender, Message(message="Hello there alice."))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -90,21 +90,21 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 ### Agent 2
 
-<GithubCodeSegment digest="50ebda6a0eaa4915b5982621326579bc">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_2/local/agent_2.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/easy/local-communication/agent_2/local/agent_2.py"
         lineStart={1}
-        lineEnd={26}
+        lineEnd={31}
         hosted={true}
     />
 	<CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/easy/local-communication/agent_2/hosted/agent_2.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/easy/local-communication/agent_2/hosted/agent_2.py"
         lineStart={1}
-        lineEnd={16}
+        lineEnd={20}
         hosted={false}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='50ebda6a0eaa4915b5982621326579bc'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="agent_2.py"
@@ -136,7 +136,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	if __name__ == "__main__":
 	    alice.run()
 
-```
+    ```
 </DocsCode>
 
 <DocsCode local={false}>
@@ -159,7 +159,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	async def message_handler(ctx: Context, sender: str, msg: Message):
 	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
