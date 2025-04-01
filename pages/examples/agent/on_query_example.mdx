@@ -7,7 +7,7 @@ import { CodeGroup, DocsCode, GithubCodeSegment, CodeSegment } from "../../../co
 
 This example creates a shopping assistant agent using FastAPI and uagents. The agent handles shopping questions, utilizes the OpenAI API to generate responses, and sends personalized shopping advice back to the user. The `on_query` method is key to processing and responding to these queries.
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/docs_examples/intermediate/on_query_example/src) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/examples/intermediate/on_query_example/src) to run this locally.
 
 ### Supporting Documents
 
@@ -24,15 +24,15 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
  - **models :** This code defines two data models, `ShoppingRequest` and `ShoppingAssistResponse`, using the uAgents library, each with a single string attribute (question and answer, respectively).
 
- <GithubCodeSegment digest="9a48f495122d3caa46e7fc6574efeae6">
+ <GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on_query_example/src/models.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/on_query_example/src/models.py"
         lineStart={1}
-        lineEnd={10}
+        lineEnd={9}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='9a48f495122d3caa46e7fc6574efeae6'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="models.py"
@@ -48,7 +48,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	    answer: str
 	 
 
-```
+	```
 </DocsCode>
 
 </CodeGroup>
@@ -57,21 +57,21 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
  - **Shopping Assistance Agent :** This code defines a shopping assistant agent using the uAgents framework. The agent listens for incoming `ShoppingRequest` messages, processes them by sending the user's question to OpenAI's GPT-4 API for a response, and then sends the generated response back to the sender as a `ShoppingAssistResponse`.
 
- <GithubCodeSegment digest="6cb6de5ae8658d5331f659e8a13bd6e4">
+ <GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on_query_example/src/agent.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/on_query_example/src/agent.py"
         lineStart={1}
-        lineEnd={90}
+        lineEnd={88}
         hosted={true}
     />
 	<CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on_query_example/src/hosted/agent.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/on_query_example/src/hosted/agent.py"
         lineStart={1}
-        lineEnd={78}
+        lineEnd={84}
         hosted={false}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='6cb6de5ae8658d5331f659e8a13bd6e4'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="agent.py"
@@ -167,7 +167,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	    agent.run()
 	 
 
-```
+      ```
 </DocsCode>
 
 <DocsCode local={false}>
@@ -252,7 +252,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	    await ctx.send(sender, ShoppingAssistResponse(answer=response))
 	 
 
-```
+      ```
 </DocsCode>
 
 </CodeGroup>
@@ -265,15 +265,15 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
  - **main.py :** This FastAPI code starts by defining an endpoint `/api/question-answer` that accepts a query parameter message, sends it to an agent for processing, and returns the agent's response.
 
- <GithubCodeSegment digest="88af601bdca5e69d5df9bc8aeb384efa">
+ <GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/on_query_example/src/main.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/on_query_example/src/main.py"
         lineStart={1}
-        lineEnd={46}
+        lineEnd={47}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='88af601bdca5e69d5df9bc8aeb384efa'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="main.py"
@@ -325,7 +325,7 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 	    """
 	    return {"message": "Hello World"}
 
-```
+      ```
 </DocsCode>
 
 </CodeGroup>

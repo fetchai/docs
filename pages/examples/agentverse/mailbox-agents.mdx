@@ -8,7 +8,7 @@ This file can be run on any platform supporting Python, with the necessary insta
 
 A **Mailbox** allows your agent to receive messages sent to its address even when this agent is offline. The Mailbox will automatically retrieve and handle stored messages once it comes online back again.
 
-Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/1-uagents/docs_examples/intermediate/mailbox-agents) to run this locally.
+Please check out the example code in our [examples repo ↗️](https://github.com/fetchai/uAgent-Examples/tree/main/5-documentation/examples/intermediate/mailbox-agents) to run this locally.
 
 ### Supporting documentation
 
@@ -21,21 +21,17 @@ Please check out the example code in our [examples repo ↗️](https://github.c
 
 ### Agent 1: Local Agent
 
-<GithubCodeSegment digest="bcdd39390d71abefc2ee3166005a59e0">
+<GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/mailbox-agents/local/agent_1.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/mailbox-agents/local/agent_1.py"
         lineStart={1}
-        lineEnd={33}
+        lineEnd={35}
         hosted={true}
     />
-    <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/main/1-uagents/examples/intermediate/mailbox-agents/hosted/agent_2.py"
-        lineStart={1}
-        lineEnd={16}
-        hosted={false}
-    />
+
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='bcdd39390d71abefc2ee3166005a59e0'>
+
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
    ```py copy filename="agent_1.py"
@@ -69,43 +65,18 @@ Please check out the example code in our [examples repo ↗️](https://github.c
    if __name__ == "__main__":
        agent.run()
    ```
-
-</DocsCode>
-
-<DocsCode local={false}>
-	```py copy filename="agent_2.py"
-
-	from uagents import Agent, Context, Model
-	 
-	class Message(Model):
-	    message: str
-	 
-	# Copy ALICE_ADDRESS generated in agent_1.py
-	ALICE_ADDRESS = "agent1qfa53drat8rzau90u4494gx5mhj3v87tm4t5cuzkd7gkegxcm5vx5pku7kf"
-	 
-	@agent.on_interval(period=2.0)
-	async def send_message(ctx: Context):
-	    ctx.logger.info("Sending message to alice")
-	    await ctx.send(ALICE_ADDRESS, Message(message="hello there alice"))
-	 
-	@agent.on_message(model=Message, replies=set())
-	async def on_message(ctx: Context, sender: str, msg: Message):
-	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
-
-```
 </DocsCode>
 
 </CodeGroup>
-
 
 
 ### Agent 2: Agentverse Agent
 
 <GithubCodeSegment digest="">
     <CodeSegment
-        path="https://github.com/fetchai/uAgent-Examples/blob/691a6d9d10cd54a87603f5b91183bd39a140e50b/1-uagents/examples/intermediate/mailbox-agents/hosted/agent_2.py"
+        path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/examples/intermediate/mailbox-agents/hosted/agent_2.py"
         lineStart={1}
-        lineEnd={16}
+        lineEnd={20}
         hosted={true}
     />
 </GithubCodeSegment>
