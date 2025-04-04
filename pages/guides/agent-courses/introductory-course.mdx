@@ -232,7 +232,7 @@ We can now code our agent. Let's start by importing the required modules. In our
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/alice_agent.py"
         lineStart={1}
-        lineEnd={15}
+        lineEnd={16}
         hosted={true}
     />
 </GithubCodeSegment>
@@ -257,7 +257,7 @@ We can now code our agent. Let's start by importing the required modules. In our
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -307,7 +307,7 @@ Let's update `alice_agent.py` with the code snippet below:
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -350,7 +350,7 @@ Sometimes, we just need to see what a value looks like. We can quickly do so in 
 	print("uAgent address: ", agent.address)
 	print("ASI network address: ", agent.wallet.address())
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -402,7 +402,7 @@ In this case, we apply the decorator to a `say_hello()` function which will be r
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -487,7 +487,7 @@ The script will look as follows:
 	if __name__ == "__main__":
 	    bureau.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -566,7 +566,7 @@ We can now define the `Message` data model and our two agents:
 	alice = Agent(name="alice", seed="alice recovery phrase")
 	bob = Agent(name="bob", seed="bob recovery phrase")
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -592,7 +592,7 @@ We need to define a function for `alice` to send messages to `bob` periodically.
 	async def send_message(ctx: Context):
 	    await ctx.send(bob.address, Message(message="hello there bob"))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -619,7 +619,7 @@ We then need a way for `bob` to receive these messages. We can do this by creati
 	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 	    await ctx.send(alice.address, Message(message="hello there alice"))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -645,12 +645,10 @@ We then need to define a message handler function for `alice` to handle response
 	async def alice_message_handler(ctx: Context, sender: str, msg: Message):
 	    ctx.logger.info(f"Received message from {sender}: {msg.message}")
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 Finally, we need to add both agents to the `Bureau` in order to run them from the same script:
 
@@ -674,7 +672,7 @@ Finally, we need to add both agents to the `Bureau` in order to run them from th
 	if __name__ == "__main__":
 	    bureau.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -730,12 +728,10 @@ The overall script would be:
 	if __name__ == "__main__":
 	    bureau.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 We can now run the script. Just run: `poetry run python agent_communication.py` in your terminal.
 
@@ -792,36 +788,36 @@ Let's create a Python script for this example:
 
 We will have what follows:
 
-<GithubCodeSegment digest="6ae779e605343536a4618ccc0a03be1b">
+<GithubCodeSegment digest="">
     <CodeSegment
         path="https://github.com/fetchai/uAgent-Examples/blob/main/5-documentation/guides/agent-courses/introductory-course/almanac_registration.py"
         lineStart={1}
-        lineEnd={19}
+        lineEnd={15}
         hosted={true}
     />
 </GithubCodeSegment>
-<CodeGroup dynamic hasCopy isLocalHostedFile digest='6ae779e605343536a4618ccc0a03be1b'>
+<CodeGroup dynamic hasCopy isLocalHostedFile digest=''>
 
 <DocsCode local={true}>
 	```py copy filename="almanac_registration.py"
 
-	from uagents import Agent, Context, Protocol
-	
-	agent = Agent(
-	    name="alice",
-	    port=8000,
-	    seed="alice secret phrase",
-	    endpoint=["http://127.0.0.1:8000/submit"],
-	)
-	
-	@agent.on_interval(period=3)
-	async def hi(ctx: Context):
-	    ctx.logger.info(f"Hello")
-	
-	
-	agent.run()
+    from uagents import Agent, Context, Protocol
+    
+    agent = Agent(
+        name="alice",
+        port=8000,
+        seed="alice secret phrase",
+        endpoint=["http://127.0.0.1:8000/submit"],
+    )
+    
+    @agent.on_interval(period=3)
+    async def hi(ctx: Context):
+        ctx.logger.info(f"Hello")
+    
+    
+    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -916,7 +912,7 @@ The script would be as follows:
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -985,7 +981,7 @@ Instead of creating and manually writing out the same script we can copy and ren
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1084,12 +1080,10 @@ The script for this example is:
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 We can then run the script: `poetry run python storage.py`
 The output would be:
@@ -1156,12 +1150,10 @@ Let's start by defining the protocol for querying availability of tables at the 
 	class TotalQueries(Model):
 	    total_queries: int
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 Here, we defined different messages data models:
 
@@ -1222,7 +1214,7 @@ Let's then define the message handlers for the `query_proto` protocol:
 	    total_queries = int(ctx.storage.get("total_queries") or 0)
 	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1315,7 +1307,7 @@ The overall script should look as follows:
 	    total_queries = int(ctx.storage.get("total_queries") or 0)
 	    await ctx.send(sender, TotalQueries(total_queries=total_queries))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1355,7 +1347,7 @@ We can now proceed by writing the booking protocol script for booking the table 
 	
 	book_proto = Protocol(name="RestaurantBookingProtocolExample", version="0.1.0")
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1405,12 +1397,10 @@ Let's now define the message handler function:
 	    # send the response
 	    await ctx.send(sender, BookTableResponse(success=success))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
     The `handle_book_request()` handler first retrieves table statuses from the agent's storage and converts them into a dictionary with integer keys (table numbers) and `TableStatus` values. The `TableStatus` class is imported from the query module. Next, the handler gets the table associated with the requested `table_number` from the tables dictionary. The handler checks if the requested time_start falls within the availability period of the table. If the table is available for the requested booking duration, the handler sets success to `True`, updates the table's `time_start` to reflect the end of the booking, and saves the updated table information in the agent's storage using `ctx.storage.set()`. If the table is not available for the requested booking, the handler sets success to `False`. The handler sends a `BookTableResponse` message back to the sender with the success status of the booking using the `ctx.send()` method.
 
@@ -1471,12 +1461,10 @@ The overall script should be:
 	    # send the response
 	    await ctx.send(sender, BookTableResponse(success=success))
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 #### Restaurant agent
 
@@ -1508,7 +1496,7 @@ Let's now move forward and create our restaurant agent in a separate file. In th
 	    },
 	)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -1546,12 +1534,10 @@ Remember that you need to provide the `name`, `port`, `seed` and `endpoint` para
 	if __name__ == "__main__":
 	    restaurant.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 The `restaurant` agent is now online and ready to receive messages.
 
@@ -1599,12 +1585,10 @@ The overall script would be as follows:
 	if __name__ == "__main__":
 	    restaurant.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 #### User agent
 
@@ -1645,12 +1629,10 @@ Once we've imported the necessary classes from the `uagents` library and the two
 	    },
 	)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 Remember that you need to provide the `RESTAURANT_ADDRESS`, `name`, `port`, `seed` and `endpoint` parameters to correctly set up the agent and code. Let's then create the table query to generate the `QueryTableRequest` using the `restaurant` address. Then, we need to create an `on_interval()` function which periodically queries the `restaurant`, asking for the availability of a table given the `table_query` parameters:
 
@@ -1681,12 +1663,10 @@ Remember that you need to provide the `RESTAURANT_ADDRESS`, `name`, `port`, `see
 	    if not completed:
 	        await ctx.send(RESTAURANT_ADDRESS, table_query)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 We then need to define the message handler function for incoming `QueryTableResponse` messages from the `restaurant` agent:
 
@@ -1718,12 +1698,10 @@ We then need to define the message handler function for incoming `QueryTableResp
 	        ctx.logger.info("No free tables - nothing more to do")
 	        ctx.storage.set("completed", True)
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 Let's then define a function which will handle messages from the `restaurant` agent on whether the reservation was successful or not:
 
@@ -1753,12 +1731,10 @@ Let's then define a function which will handle messages from the `restaurant` ag
 	if __name__ == "__main__":
 	    user.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 The overall script would be:
 
@@ -1839,12 +1815,10 @@ The overall script would be:
 	if __name__ == "__main__":
 	    user.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 We are ready to run the example.
 
