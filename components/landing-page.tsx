@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./landing.module.css";
 import Link from "next/link";
 
@@ -23,7 +23,7 @@ function LandingPage() {
             className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
             >
             <div className="nx-text-[24px] nx-font-medium">ASI: One</div>
-            <div className="nx-text-[12px] nx-font-medium nx-uppercase">World's first Web3-native LLM designed for Agentic AI. </div>
+            <div className="nx-text-[12px] nx-font-medium nx-uppercase">World&apos;s first Web3-native LLM designed for Agentic AI. </div>
             </Link>
           </div>
           <div className="nx-grid nx-grid-cols-2 nx-gap-6 nx-w-[50%] nx-grid-rows-[214px,1fr] nx-rounded-lg">
@@ -53,7 +53,7 @@ function LandingPage() {
         </div>
 
         <div className="nx-mt-[48px]">
-          <div>AI Agents</div>
+          <div className="nx-text-[24px] nx-font-medium">AI Agents</div>
           <div>Secure communication and a robust network to build excellent autonomy agents</div>
         </div>
         <div className={styles.startGuides}>
@@ -83,7 +83,7 @@ function LandingPage() {
 
 
         <div className="nx-mt-[48px]">
-          <div>uAgents</div>
+          <div className="nx-text-[24px] nx-font-medium">uAgents</div>
           <div>Python library for dyanmic Multiagent systems and AI Agents, made simple.</div>
         </div>
         <div className={styles.startGuides}>
@@ -119,7 +119,7 @@ function LandingPage() {
 
 
         <div className="nx-mt-[48px]">
-          <div>Agentverse</div>
+          <div className="nx-text-[24px] nx-font-medium">Agentverse</div>
           <div>For simple agent hosting and management</div>
         </div>
         <div className={styles.startGuides}>
@@ -153,7 +153,7 @@ function LandingPage() {
 
 
         <div className="nx-mt-[48px]">
-          <div>Network</div>
+          <div className="nx-text-[24px] nx-font-medium">Network</div>
           <div>Smart contracts and agent payments.</div>
         </div>
         <div className={styles.startGuides}>
@@ -162,7 +162,7 @@ function LandingPage() {
 
               <Link href="www.google.com" target="_blank"
                     className="nx-flex boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-h-[96px] nx-gap-2">
-                  <div className="nx-text-[16px] nx-font-medium nx-bg-black nx-rounded-lg nx-h-16 nx-w-16">blob</div>
+                  <div className="nx-text-[16px] nx-font-medium nx-bg-black nx-rounded-lg nx-h-16 nx-w-16"></div>
                   <div className="flex nx-flex-col nx-items-center">
                       <div className="nx-text-[20px] nx-font-medium ">Ledger</div>
                       <div className="nx-text-[12px] nx-font-medium nx-uppercase ">Search and discover agents with</div>
@@ -171,7 +171,7 @@ function LandingPage() {
 
               <Link href="www.google.com" target="_blank"
                     className="nx-flex boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-h-[96px] nx-gap-2">
-                  <div className="nx-text-[20px] nx-font-medium nx-bg-black nx-rounded-lg nx-h-16 nx-w-16">blob</div>
+                  <div className="nx-text-[20px] nx-font-medium nx-bg-black nx-rounded-lg nx-h-16 nx-w-16"></div>
                   <div className="flex nx-flex-col nx-items-center">
                       <div className="nx-text-[20px] nx-font-medium ">Almanac</div>
                       <div className="nx-text-[12px] nx-font-medium nx-uppercase ">Public contract fo all agents</div>
@@ -181,7 +181,7 @@ function LandingPage() {
 
               <Link href="www.google.com" target="_blank"
                     className="nx-flex boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-h-[96px] nx-gap-2">
-                  <div className="nx-text-[20px] nx-font-medium nx-bg-black nx-rounded-lg nx-h-16 nx-w-16">blob</div>
+                  <div className="nx-text-[20px] nx-font-medium nx-bg-black nx-rounded-lg nx-h-16 nx-w-16"></div>
                   <div className="flex nx-flex-col nx-items-center">
                       <div className="nx-text-[20px] nx-font-medium ">Cosmpy</div>
                       <div className="nx-text-[12px] nx-font-medium nx-uppercase ">Python library for cosmos based blockchains</div>
@@ -190,7 +190,7 @@ function LandingPage() {
 
               <Link href="www.google.com" target="_blank"
                     className="nx-flex boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-h-[96px] nx-gap-2">
-                  <div className="nx-text-[20px] nx-font-medium nx-bg-black nx-rounded-lg nx-h-16 nx-w-16">blob</div>
+                  <div className="nx-text-[20px] nx-font-medium nx-bg-black nx-rounded-lg nx-h-16 nx-w-16"></div>
                   <div className="flex nx-flex-col nx-items-center">
                       <div className="nx-text-[20px] nx-font-medium ">Wallet</div>
                       <div className="nx-text-[12px] nx-font-medium nx-uppercase ">TOKEN management and agent interaction</div>
