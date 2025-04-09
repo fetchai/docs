@@ -14,8 +14,8 @@ function LandingPage() {
       </div>
       <section className="nx-mt-60">
 
-        <div className="nx-flex nx-h-[332px] nx-gap-6">
-          <div className="nx-w-1/2 nx-h-[332px] nx-p-3 boxColor nx-relative nx-rounded-lg">
+        <div className="nx-flex nx-flex-wrap sm:nx-flex-nowrap sm:nx-h-[332px] nx-gap-6">
+          <div className="nx-w-full sm:nx-w-1/2 nx-h-[332px] nx-p-3 boxColor nx-relative nx-rounded-lg">
 
             <Link
             href="www.google.com"
@@ -26,7 +26,7 @@ function LandingPage() {
             <div className="nx-text-[12px] nx-font-medium nx-uppercase">World&apos;s first Web3-native LLM designed for Agentic AI. </div>
             </Link>
           </div>
-          <div className="nx-grid nx-grid-cols-2 nx-gap-6 nx-w-[50%] nx-grid-rows-[214px,1fr] nx-rounded-lg">
+          <div className="nx-grid nx-w-full nx-grid-cols-1 sm:nx-grid-cols-2 nx-gap-6 sm:nx-w-[50%] nx-grid-rows-[214px,1fr] nx-rounded-lg">
 
 
             <Link
@@ -44,7 +44,7 @@ function LandingPage() {
              </Link>
 
             <Link href="www.google.com" target="_blank"
-            className="nx-col-span-2 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
+            className="nx-col-span-1 sm:nx-col-span-2 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
             >
               <div className="nx-text-[20px] nx-font-medium">What is Fetch.ai</div>
               <div className="nx-text-[12px] nx-font-medium nx-uppercase">Breaking down the components and ecosystem of fetch.ai </div>
