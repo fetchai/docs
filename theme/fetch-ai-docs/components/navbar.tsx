@@ -114,84 +114,87 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
           "contrast-more:nx-shadow-[0_0_0_1px_#000] contrast-more:dark:nx-shadow-[0_0_0_1px_#fff]",
         )}
       />
-      <nav className="nx-mx-auto nx-py-4 nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
+      <nav className="nx-mx-auto nx-items-center nx-justify-end nx-gap-2 nx-pl-[max(env(safe-area-inset-left),1.5rem)] nx-pr-[max(env(safe-area-inset-right),1.5rem)]">
         <div className="nx-flex nx-items-center nx-justify-between">
           <div className="nx-flex nx-justify-center nx-items-center nx-gap-6">
             {config.logoLink ? (
-              <Anchor
-                id="fetch-logo"
-                href={
-                  typeof config.logoLink === "string" ? config.logoLink : "/"
-                }
-                className="nx-flex nx-items-center"
-              >
-                {renderComponent(config.logo)}
-              </Anchor>
+                <Anchor
+                    id="fetch-logo"
+                    href={
+                      typeof config.logoLink === "string" ? config.logoLink : "/"
+                    }
+                    className="nx-flex nx-items-center"
+                >
+                  {renderComponent(config.logo)}
+                </Anchor>
             ) : (
-              <div className="nx-flex nx-items-center">
-                {renderComponent(config.logo)}
-              </div>
+                <div className="nx-flex nx-items-center">
+                  {renderComponent(config.logo)}
+                </div>
             )}
-            <div className="nx-flex nx-justify-center menu-hide nx-gap-2 nx-mb-2 nx-menu-height nx-items-center">
-              {items.map((pageOrMenu, index) => {
-                if (pageOrMenu.display === "hidden") return null;
 
-                if (pageOrMenu.type === "menu") {
-                  const menu = pageOrMenu as MenuItem;
-                  return (
+          </div>
+
+          <div className="nx-flex nx-justify-center menu-hide nx-gap-2 nx-mb-2 nx-menu-height nx-items-center">
+            {items.map((pageOrMenu, index) => {
+              if (pageOrMenu.display === "hidden") return null;
+
+              if (pageOrMenu.type === "menu") {
+                const menu = pageOrMenu as MenuItem;
+                return (
                     <NavbarMenu
-                      key={menu.title}
-                      className={cn(
-                        classes.link,
-                        "nx-flex nx-gap-1",
-                        classes.inactive,
-                      )}
-                      menu={menu}
+                        key={menu.title}
+                        className={cn(
+                            classes.link,
+                            "nx-flex nx-gap-1",
+                            classes.inactive,
+                        )}
+                        menu={menu}
                     >
                       {menu.title}
                       <ArrowRightIcon
-                        className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5"
-                        pathClassName="nx-origin-center nx-transition-transform nx-rotate-90"
+                          className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5"
+                          pathClassName="nx-origin-center nx-transition-transform nx-rotate-90"
                       />
                     </NavbarMenu>
-                  );
-                }
-                const page = pageOrMenu as PageItem;
-                let href = page.href || page.route || "#";
+                );
+              }
+              const page = pageOrMenu as PageItem;
+              let href = page.href || page.route || "#";
 
-                // If it's a directory
-                if (page.children) {
-                  href =
+              // If it's a directory
+              if (page.children) {
+                href =
                     (page.withIndexPage ? page.route : page.firstChildRoute) ||
                     href;
-                }
+              }
 
-                const isActive =
+              const isActive =
                   page.route === activeRoute ||
                   activeRoute.startsWith(page.route + "/");
-                return (
+              return (
                   <Anchor
-                    id={page.title}
-                    onMouseOver={() => setHoveredLink(href)}
-                    onMouseLeave={() => setHoveredLink(null)}
-                    href={href}
-                    key={href}
-                    className={cn(
-                      classes.link,
-                      "nx-relative  nx-hidden nx-whitespace-nowrap menu-container  md:nx-inline-block",
-                      !isActive || page.newWindow
-                        ? classes.inactive
-                        : classes.active,
-                      hoveredLink === href && !isActive ? "link-hover" : "",
-                      index === 0 && !isActive && "-nx-ml-6",
-                    )}
-                    newWindow={page.newWindow}
-                    aria-current={!page.newWindow && isActive}
+                      id={page.title}
+                      onMouseOver={() => setHoveredLink(href)}
+                      onMouseLeave={() => setHoveredLink(null)}
+                      href={href}
+                      key={href}
+                      className={cn(
+                          classes.link,
+                          "nx-relative  nx-hidden nx-whitespace-nowrap menu-container  md:nx-inline-block",
+                          !isActive || page.newWindow
+                              ? classes.inactive
+                              : classes.active,
+                          hoveredLink === href && !isActive ? "link-hover" : "",
+                          index === 0 && !isActive && "-nx-ml-6",
+                      )}
+                      newWindow={page.newWindow}
+                      aria-current={!page.newWindow && isActive}
                   >
                     <span
-                      className={`${
-                        hoveredLink === href && !isActive ? "link-text " : ""
-                      } nx-absolute nx-inset-x-0 nx-text-base nx-text-center`}
+                        className={`${
+                            hoveredLink === href && !isActive ? "link-text " : ""
+                        } nx-absolute nx-inset-x-0 nx-text-base nx-text-center`}
                     >
                       {page.title}
                     </span>
@@ -199,9 +202,8 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
                       {page.title}
                     </span>
                   </Anchor>
-                );
-              })}
-            </div>
+              );
+            })}
           </div>
           <div className="nx-flex nx-items-center">
             <div className="nx-hidden nx-m-l-auto nx-search-width search-bar-desktop md:nx-inline-block">
@@ -210,31 +212,31 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               })}
             </div>
             <div ref={dropdownRef} className="nx-relative">
-              <Gear onClickHandler={handleOpenClose} />
+              <Gear onClickHandler={handleOpenClose}/>
               {openOs && (
-                <div>
-                  <ThemeSwitcher />
-                </div>
+                  <div>
+                    <ThemeSwitcher/>
+                  </div>
               )}
             </div>
             {config.project.link ? (
-              <Anchor
-                className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
-                href={config.project.link}
-                newWindow
-                id="github"
-              >
-                {renderComponent(config.project.icon)}
-              </Anchor>
+                <Anchor
+                    className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
+                    href={config.project.link}
+                    newWindow
+                    id="github"
+                >
+                  {renderComponent(config.project.icon)}
+                </Anchor>
             ) : null}
             {renderComponent(config.navbar.extraContent)}
             <button
-              type="button"
-              aria-label="Menu"
-              className="nextra-hamburger -nx-mr-2 nx-rounded nx-p-2 active:nx-bg-gray-400/20 hamburger"
-              onClick={() => setMenu(!menu)}
+                type="button"
+                aria-label="Menu"
+                className="nextra-hamburger -nx-mr-2 nx-rounded nx-p-2 active:nx-bg-gray-400/20 hamburger"
+                onClick={() => setMenu(!menu)}
             >
-              <MenuIcon className={cn({ open: menu })} />
+              <MenuIcon className={cn({open: menu})}/>
             </button>
           </div>
         </div>
