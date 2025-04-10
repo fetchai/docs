@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect } from "react";
 import Image from "next/image";
 import Error from "../src/svgs/desktop/404.svg";
-import { FeatureGuideTabs } from "./feature-guide-tabs";
 
 const Description = ({ children }: { children: ReactNode }) => (
   <span
