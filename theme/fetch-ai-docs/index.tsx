@@ -15,9 +15,7 @@ import {
   Banner,
   Breadcrumb,
   Head,
-  MatchingRoutesComponent,
   NavLinks,
-  Progressbar,
   Sidebar,
   SkipNavContent,
 } from "./components";
@@ -26,7 +24,6 @@ import { ActiveAnchorProvider, ConfigProvider, useConfig } from "./contexts";
 import { getComponents } from "./mdx-components";
 import { renderComponent, useGitEditUrl } from "./utils";
 import React from "react";
-import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
 import Error404 from "components/error-404";
@@ -121,27 +118,14 @@ const Body = ({
   api = api ?? false;
 
   const routeOriginal = useFSRoute();
-  const [route] = routeOriginal.split("#");
   const editUrl = useGitEditUrl(routeOriginal);
   const pagesUrl = editUrl.split("/pages/")[1];
   const content = (
     <>
       {tagsComponent}
-      {matchingTagRoute ? (
-        <MatchingRoutesComponent
-          setMatchingTagRoute={setMatchingTagRoute}
-          routes={matchingTagRoute}
-        />
-      ) : (
-        ""
-      )}
       {children}
       <LastUpdatedTime filePath={`pages${pagesUrl}`} />
-      {themeContext.timestamp && (
-        <div className="nx-flex nx-justify-center nx-mb-6">
-          <FeedbackComponent pageUrl={route} />
-        </div>
-      )}
+      {themeContext.timestamp}
       {navigation}
     </>
   );
@@ -293,7 +277,6 @@ const InnerLayout = ({
         <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/>
         <Head/>
         <Banner/>
-        <Progressbar/>
         {themeContext.navbar &&
             renderComponent(config.navbar.component, {
               flatDirectories,

@@ -1,6 +1,10 @@
 import React from "react";
 import styles from "./landing.module.css";
 import Link from "next/link";
+import leading_image from '../src/images/landing/leading/1.jpg'
+import leading_image_2a from '../src/images/landing/leading/2.jpg'
+import leading_image_2b from '../src/images/landing/leading/3.jpg'
+import leading_image_2c from '../src/images/landing/leading/4.jpg'
 
 
 function LandingPage() {
@@ -18,8 +22,8 @@ function LandingPage() {
                 <Link
                         href="www.google.com"
                         target="_blank"
-                        className="nx-flex nx-flex-col nx-w-full boxColor nx-rounded-lg nx-p-4 nx-h-[332px] nx-p-3 nx-relative nx-hover:bg-[#ECEEF1] sm:nx-w-1/2  "
-                    >
+                        className="nx-flex nx-flex-col nx-w-full boxColor nx-rounded-lg nx-p-4 nx-h-[332px] nx-p-3 nx-relative nx-bg-center  sm:nx-w-1/2  "
+                        style={{ backgroundImage: `url(${leading_image.src})`}} >
                         <div className="nx-flex-1"></div>
                         <div className="nx-text-white nx-text-[24px] nx-font-medium">ASI: One</div>
                         <div className="nx-text-white nx-text-[12px] nx-font-medium nx-uppercase">World&apos;s first
@@ -47,7 +51,7 @@ function LandingPage() {
                         <div className="nx-m-2 nx-text-white nx-text-[20px] nx-font-medium">ASI-1 Agents</div>
                     </Link>
 
-                    <Link href="www.google.com" target="_blank"
+                    <Link href="/concepts" target="_blank"
                           className="nx-col-span-1 sm:nx-col-span-2 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex nx-flex-col nx-justify-center"
                     >
                         <div className="nx-text-white nx-text-[20px] nx-font-medium">What is Fetch.ai</div>
@@ -64,24 +68,27 @@ function LandingPage() {
             </div>
             <div className={styles.startGuides}>
                 <div
-                    className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-3 nx-gap-8 sm:nx-h-[270px]">
+                    className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-3 nx-gap-6 sm:nx-h-[270px]">
 
                     <Link href="www.google.com" target="_blank"
-                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center">
+                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-relative nx-bg-center  nx-items-center"
+                          style={{ backgroundImage: `url(${leading_image_2a.src})`}} >
                         <div className="nx-text-white nx-text-[12px] nx-font-medium nx-uppercase">Getting started with
                         </div>
                         <div className=" nx-text-white nx-text-[20px] nx-font-medium">Agentverse</div>
                     </Link>
 
                     <Link href="www.google.com" target="_blank"
-                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center">
+                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-relative nx-bg-center  nx-items-center"
+                          style={{ backgroundImage: `url(${leading_image_2b.src})`}} >
                         <div className="nx-text-white nx-text-[12px] nx-font-medium nx-uppercase">Getting started with
                         </div>
                         <div className=" nx-text-white nx-text-[20px] nx-font-medium">ASI-1</div>
                     </Link>
 
                     <Link href="www.google.com" target="_blank"
-                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center">
+                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-relative nx-bg-center  nx-items-center"
+                          style={{ backgroundImage: `url(${leading_image_2c.src})`}} >
                         <div className="nx-text-white nx-text-[12px] nx-font-medium nx-uppercase">Getting started with
                         </div>
                         <div className="nx-text-white nx-text-[20px] nx-font-medium">uAgents</div>
@@ -97,7 +104,7 @@ function LandingPage() {
             </div>
 
             <div className={styles.startGuides}>
-                <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-4 lg:nx-grid-cols-4 nx-gap-8 sm:nx-h-[270px]">
+                <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-4 lg:nx-grid-cols-4 nx-gap-6 sm:nx-h-[270px]">
 
                     <Link href="www.google.com" target="_blank"
                           className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center">
@@ -134,18 +141,19 @@ function LandingPage() {
 
             <div className={styles.startGuides}>
                 <div
-                    className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-2 lg:nx-grid-cols-2 nx-gap-8 ">
+                    className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-2 lg:nx-grid-cols-2 nx-gap-6 ">
 
 
                     <Link href="www.google.com" target="_blank"
-                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center nx-h-[270px]">
+                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex-col nx-items-center nx-h-[270px]"
+                          >
                         <div className="nx-text-white nx-text-[12px] nx-font-medium nx-uppercase">Getting started with
                         </div>
                         <div className="nx-text-white nx-text-[20px] nx-font-medium">Agentverse Templates</div>
                     </Link>
 
                     <Link href="www.google.com" target="_blank"
-                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center nx-h-[270px]">
+                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex-col nx-items-center nx-h-[270px]">
                         <div className="nx-text-white nx-text-[12px] nx-font-medium nx-uppercase">Test your agent with
                             agentverse
                         </div>
@@ -153,7 +161,7 @@ function LandingPage() {
                     </Link>
 
                     <Link href="www.google.com" target="_blank"
-                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center nx-h-[270px]">
+                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1]  nx-flex-col nx-items-center nx-h-[270px]">
                         <div className="nx-text-white nx-text-[12px] nx-font-medium nx-uppercase">A SIMPLE guide to help
                             you
                         </div>
@@ -161,7 +169,7 @@ function LandingPage() {
                     </Link>
 
                     <Link href="www.google.com" target="_blank"
-                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center nx-h-[270px]">
+                          className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1]  nx-flex-col nx-items-center nx-h-[270px]">
                         <div className="nx-text-white nx-text-[12px] nx-font-medium nx-uppercase">Search and discover
                             agents with
                         </div>
@@ -177,7 +185,7 @@ function LandingPage() {
             </div>
             <div className={styles.startGuides}>
                 <div
-                    className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-2 lg:nx-grid-cols-2 nx-gap-8">
+                    className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-2 lg:nx-grid-cols-2 nx-gap-6">
 
                     <Link href="www.google.com" target="_blank"
                           className="nx-flex boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex nx-flex-col nx-justify-center nx-h-[96px] nx-gap-2">

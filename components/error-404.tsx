@@ -42,14 +42,9 @@ const Error404 = () => {
               go back to the homepage or
             </span>
           </Description>
-          <Description>
-            The quick links below may help you find your way.
-          </Description>
+
         </div>
       </div>
-      <section className="nx-mt-landing-page-sections nx-max-w-[1216px]">
-        <FeatureGuideTabs centerMode={true} />
-      </section>
     </div>
   );
 };
