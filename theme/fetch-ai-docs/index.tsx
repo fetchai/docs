@@ -15,9 +15,7 @@ import {
   Banner,
   Breadcrumb,
   Head,
-  MatchingRoutesComponent,
   NavLinks,
-  Progressbar,
   Sidebar,
   SkipNavContent,
 } from "./components";
@@ -26,7 +24,6 @@ import { ActiveAnchorProvider, ConfigProvider, useConfig } from "./contexts";
 import { getComponents } from "./mdx-components";
 import { renderComponent, useGitEditUrl } from "./utils";
 import React from "react";
-import FeedbackComponent from "components/feedback";
 import type { Item } from "nextra/normalize-pages";
 import { setCookie } from "cookies-next";
 import Error404 from "components/error-404";
@@ -121,27 +118,14 @@ const Body = ({
   api = api ?? false;
 
   const routeOriginal = useFSRoute();
-  const [route] = routeOriginal.split("#");
   const editUrl = useGitEditUrl(routeOriginal);
   const pagesUrl = editUrl.split("/pages/")[1];
   const content = (
     <>
       {tagsComponent}
-      {matchingTagRoute ? (
-        <MatchingRoutesComponent
-          setMatchingTagRoute={setMatchingTagRoute}
-          routes={matchingTagRoute}
-        />
-      ) : (
-        ""
-      )}
       {children}
       <LastUpdatedTime filePath={`pages${pagesUrl}`} />
-      {themeContext.timestamp && (
-        <div className="nx-flex nx-justify-center nx-mb-6">
-          <FeedbackComponent pageUrl={route} />
-        </div>
-      )}
+      {themeContext.timestamp}
       {navigation}
     </>
   );
@@ -272,89 +256,85 @@ const InnerLayout = ({
     // This makes sure that selectors like `[dir=ltr] .nextra-container` work
     // before hydration as Tailwind expects the `dir` attribute to exist on the
     // `html` element.
-    <div id="modal-root" dir={direction}>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `document.documentElement.setAttribute('dir','${direction}')`,
-        }}
-      />
-      <noscript>
-        <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-5QDSR3CT"
-          height="0"
-          width="0"
-          className="nextra-iframe-google-tag"
-        ></iframe>
-      </noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-      />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-      />
-      <Head />
-      <Banner />
-      <Progressbar />
-      {themeContext.navbar &&
-        renderComponent(config.navbar.component, {
-          flatDirectories,
-          items: docsDirectories,
-        })}
-      <div className="nx-mx-auto nx-flex">
-        <ActiveAnchorProvider>
-          <Sidebar
-            docsDirectories={docsDirectories}
-            flatDirectories={flatDirectories}
-            fullDirectories={directories}
-            headings={headings}
-            asPopover={hideSidebar}
-            includePlaceholder={themeContext.layout === "default"}
-          />
-          <SkipNavContent />
-          <Body
-            headings={headings}
-            themeContext={themeContext}
-            breadcrumb={
-              activeType !== "page" && themeContext.breadcrumb ? (
-                <Breadcrumb activePath={activePath} />
-              ) : null
-            }
-            timestamp={timestamp}
-            navigation={
-              activeType !== "page" && themeContext.pagination ? (
-                <NavLinks
-                  flatDirectories={flatDocsDirectories}
-                  currentIndex={activeIndex}
-                />
-              ) : null
-            }
-            tags={activePath.at(-1)?.tags ?? undefined}
-            directoriesWithTags={directoriesWithTags}
-            api={activePath.at(-1)?.route.includes("/apis") ?? false}
-          >
-            <MDXProvider
-              components={getComponents({
-                isRawLayout: themeContext.layout === "raw",
-                components: config.components,
-              })}
+      <div id="modal-root" dir={direction}>
+        <script
+            dangerouslySetInnerHTML={{
+              __html: `document.documentElement.setAttribute('dir','${direction}')`,
+            }}
+        />
+        <noscript>
+          <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-5QDSR3CT"
+              height="0"
+              width="0"
+              className="nextra-iframe-google-tag"
+          ></iframe>
+        </noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/>
+        <Head/>
+        <Banner/>
+        {themeContext.navbar &&
+            renderComponent(config.navbar.component, {
+              flatDirectories,
+              items: docsDirectories,
+            })}
+        <div className="nx-mx-auto nx-flex">
+          <ActiveAnchorProvider>
+            <Sidebar
+                docsDirectories={docsDirectories}
+                flatDirectories={flatDirectories}
+                fullDirectories={directories}
+                headings={headings}
+                asPopover={hideSidebar}
+                includePlaceholder={themeContext.layout === "default"}
+            />
+            <SkipNavContent/>
+            <Body
+                headings={headings}
+                themeContext={themeContext}
+                breadcrumb={
+                  activeType !== "page" && themeContext.breadcrumb ? (
+                      <Breadcrumb activePath={activePath}/>
+                  ) : null
+                }
+                timestamp={timestamp}
+                navigation={
+                  activeType !== "page" && themeContext.pagination ? (
+                      <NavLinks
+                          flatDirectories={flatDocsDirectories}
+                          currentIndex={activeIndex}
+                      />
+                  ) : null
+                }
+                tags={activePath.at(-1)?.tags ?? undefined}
+                directoriesWithTags={directoriesWithTags}
+                api={activePath.at(-1)?.route.includes("/apis") ?? false}
             >
-              {children}
-            </MDXProvider>
-          </Body>
-        </ActiveAnchorProvider>
+              <MDXProvider
+                  components={getComponents({
+                    isRawLayout: themeContext.layout === "raw",
+                    components: config.components,
+                  })}
+              >
+                {children}
+              </MDXProvider>
+            </Body>
+          </ActiveAnchorProvider>
+        </div>
+        {themeContext.footer &&
+            renderComponent(config.footer.component, {menu: hideSidebar})}
       </div>
-      {themeContext.footer &&
-        renderComponent(config.footer.component, { menu: hideSidebar })}
-    </div>
   );
 };
 
 export default function Layout({
-  children,
-  ...context
-}: NextraThemeLayoutProps): ReactElement {
+                                 children,
+                                 ...context
+                               }: NextraThemeLayoutProps): ReactElement {
   return (
     <ThemeDocProvider>
       <OSProvider>

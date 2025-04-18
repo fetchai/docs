@@ -1,104 +1,300 @@
-# Concepts
+import { ImageByTheme } from "../components/mdx";
+import DarkHighLevelDiagram from 'src/images/concepts/about/Dark-high-level-system-diagram.svg';
+import techStack from 'src/images/concepts/tech/I1.png'
+import communication from 'src/images/concepts/tech/I2.svg'
+import ScalingHosting from 'src/images/scaling-hosting.png';
+import DarkScalingHosting from 'src/images/dark-scaling-hosting.svg';
+import SystemDiagramAiEngine from 'src/images/concepts/ai-engine/system_diagram_ai_engine.png';
+import DarkSystemDiagramAiEngine from 'src/images/concepts/ai-engine/dark_system_diagram_ai_engine.svg';
+import FetPayements from 'src/images/concepts/ai-agents/fetpayment.png';
+import SearchSniuppet from 'src/images/agentverse/explorer/agentverse-explorer_1.png';
+import HotelTasksGoThroughTheEngineToRepresentativeAgents from 'src/images/concepts/ai-engine/hotel_tasks_go_through_the_engine_to_representative_agents.png';
+import DarkHotelTasksGoThroughTheEngineToRepresentativeAgents from 'src/images/concepts/ai-engine/dark_hotel_tasks_go_through_the_engine_to_representative_agents.svg';
+import { Callout } from 'nextra/components'
 
-<div className="nx-text-fetch-content">
-  The place where you can get yourself familiar with the needed concepts to
-  start developing on the uAgents Framework and Agentverse services.
-</div>
+# Introducing Fetch.ai; 
 
-import GuidesMdx from "../components/guide-mdx"
-import { AgentsIcon, AgentverseIcon ,FetchNetwork, LedgerIcon} from "src/icons/main-page-icons";
+Fetch.ai is developing a platform to enable the development of an AI empowered agent based decentralized digital economy. Agents are programs that can make choices on their own for individuals, companies, and devices. Agents are the 'doers' of Fetch.ai ecosystem.
 
-<GuidesMdx content={[
-  {
-    type: "Introduction",
-    icon: AgentsIcon,
-    data: [
-      {
-        title: "Introducing Fetch.ai: pioneering an AI powered decentralized digital economy",
-        path: "/concepts/introducing-fetchai",
-      },
-    ],
-  },
-  {
-    type: "Agentverse",
-    icon: AgentverseIcon,
-    data: [
-      {
-        title: "Agentverse: Introduction",
-        path: "/concepts/agent-services/agentverse-intro",
-      },
-      {
-        title: "Agentverse: Marketplace",
-        path: "/concepts/agent-services/agent-explorer",
-      },
-      {
-        title: "Agentverse: My Agents",
-        path: "/concepts/agent-services/agent-hosting",
-      },
-      {
-        title: "Agentverse: Mailroom / IoT Gateway",
-        path: "/concepts/agent-services/agent-mail",
-      },
-      {
-        title: "Agentverse: Agent Functions",
-        path: "/concepts/agent-services/services",
-      },
-    ],
-  },
-  {
-    type: "AI Engine",
-    icon: AgentsIcon,
-    data: [
-      {
-        title: "AI Engine: Introduction",
-        path: "/concepts/ai-engine/ai-engine-intro",
-      },
-      {
-        title: "Powering connections and smart operations in DeltaV",
-        path: "/concepts/ai-engine/powering-connections-and-smart-operations-in-deltav",
-      },
-      {
-        title: "DeltaV",
-        path: "/concepts/deltav/intro",
-      },
-      {
-        title: "AI Engine Personalities",
-        path: "/concepts/ai-engine/ai-engine-personalities",
-      },
-    ],
-  },
-  {
-    type: "Fetch Network",
-    icon: FetchNetwork,
-    data: [
-      {
-        title: "Introducing the ASI Network",
-        path: "/concepts/fetch-network/intro-fetch-network",
-      },
-      {
-        title: "Native and ERC-20 FET tokens",
-        path: "/concepts/fetch-network/native-and-erc20-fet-tokens",
-      },
-      {
-        title: "The Almanac contract",
-        path: "/concepts/fetch-network/almanac",
-      },
-    ],
-  },
-  {
-    type: "Ledger",
-    icon: LedgerIcon,
-    data: [
-      {
-        title: "Ledger: Introduction",
-        path: "/concepts/fetch-network/ledger/intro",
-      },
-      {
-        title: "Validators overview",
-        path: "/concepts/fetch-network/ledger/validators",
-      },
-    ],
-  }
-]} />
+Agents are flexible problem solvers, capable of completing tasks and tackling difficult issues across many domains. They have the adaptability to handle different activities inside the decentralized economy, whether it's improving supply chain logistics, maintaining solid record-keeping systems, executing computational tasks, or enabling buying and selling interactions. They can even book a train ticket room for you. For this we have developed the uAgents python library, which defines an open communication layer for simple message-based communication and free communication defined by a graph. The uAgents library introduces an open source communication protocol specifically for Agents, and any Agent from any other library.
 
-<div className="nx-mb-8"></div>
+We couple Agents with the AI Engine; an AI system that understands human input and turns that into actionable events empowered by agents in the network. AI Engine is an intelligence system that creates dynamic agent workflows. Fetch.ai is also developing Agentverse.ai, the web portal to online Agent functions and offering affordable agent hosting. Agentverse is also the service that wraps the Almanac, allowing you to search and discover Agents within the Ecosystem.
+
+This all builds into the agent marketplace, a service that allows AI Engine and other Agents to find your agent. This is where our Agent system shines, as any agent from anywhere can register with the uAgents library.
+
+Underneath this all is the Fetch.ai ledger, it's a blockchain that facilitates the FET token transactions, and decentralized smart contracts. It's essential for tiny payments that agents may make. The Almanac contract is our deployed smart contract for Agents registration; Agents must register to this contract to be found by other Agents available in the network. Agents transact FET tokens to purchase information or actions. You can read more about that [here]().
+
+
+
+### The Fetch.ai architecture
+
+**Agents**, **Agentverse**, **AI Engine**, and **Fetch network**.
+
+
+<ImageByTheme
+  darkSrc={DarkHighLevelDiagram}
+  lightSrc={techStack}
+  alt="HighLevel-Diagram"
+/>
+View a full resolution of this image [this image](/_next/image?url=%2Fdocs%2F_next%2Fstatic%2Fmedia%2FI1.b224d139.png&w=3840&q=75)
+
+Agents work across the Fetch.ai tech stack; as they're developed modularly you the developer are in control of what Agent functions and agents they communicate with.
+
+
+When an Agent comes online it probably wants to find other agents, or be found by other agents. For an Agent to be accessible to the wider network it must register to the Almanac. The Almanac is a smart contract storing agents addresses, and their services, referred to as functions. When your agent registers to the Almanac, they become part of the Open Marketplace. This is all facilitated, and paid for with the FET token. AI Engine is consuming events that come from all of the main agentverse services (hosting, mailbox, almanac) to build its search index. Agentverse is the web portal to all of the online Agent functions, as well as the explorer for Open Marketplace. For an agent to be contactable by AI Engine they need to register their agent function metadata to the Agentverse.
+
+
+At a high level, the system isn't too complicated, but let's get into the details.
+
+
+### Getting into Agents
+
+Agents are programs designed to operate freely and communicate with whomever they're programmed to. Agents can connect, search, and transact in order to create dynamic markets, and they can be programmed to interact both within their environment and with other agents in the network. Because they're siloed, and decentralized they can safely accomplish particular activities and objectives without requiring human participation. We have a very simple guide in our documentation that gets you started on building an agent to be part [of the network ↗️](/guides/agents/getting-started/create-a-uagent).
+
+
+At the simplest level, and agent would work as follows: 
+
+<ImageByTheme
+  darkSrc={DarkHighLevelDiagram}
+  lightSrc={communication}
+  alt="HighLevel-Diagram"
+/>
+
+
+
+Of course, many agents in the above workflow can come together to become multi-agents workflows, where single Agents call one another to complete a task. Agents that you design could be programmed to contact known agents, whereas in a dynamic marketplace you may need an agent that you haven't created, searching and interacting with that agent may be the more optimal strategy.
+
+
+
+A simple Agent using the uAgents library could be: 
+
+```
+from uagents import Agent, Context, Model
+ 
+agent = Agent(name="concept", seed="secret_seed_phrase_concept", endpoint="127.0.0.1", port="8001")
+
+class Message(Model):
+    message : str
+
+ 
+@agent.on_message(model=Message)
+async def print_message(ctx: Context, msg : Message):
+    ctx.logger.info(f"Message received: {msg.message}")
+ 
+if __name__ == "__main__":
+    agent.run()
+```
+
+This Agent defines it's communication as receiving any Object of `Class Message`, with a value for `message` of type `string`. You can see how this agent behaves, and how to extend this in [our guides](>>)
+
+
+Agents are lightweight programs that can be inserted to existing systems with the ability to simplify the way we see complicated systems. As an example, supply chain management could deploy Agents using the uAgents Framework to improve operations at various stages. Demand forecasting, inventory control, logistics optimization, supplier relationships monitoring, quality control and risk mitigation in all areas can be done with their help. Agents could transform supply chain operations by increasing efficiency, reducing costs, improving accuracy and providing real-time visibility.
+
+You can view the source code for an agent that monitors inventory levels in [our examples](https://github.com/fetchai/uAgent-Examples/blob/main/2-solutions/inventory-monitoring/src/main.py)
+
+
+Agents thrive on iOT devices such as Raspberry Pi, and there are some great examples of multi agent simulations using uAgents on Raspberry Pi available on [Github](https://github.com/Agents-Lab/sensor-agent)
+
+### Integrating FET token in your agents
+
+<ImageByTheme
+  darkSrc={FetPayements}
+  lightSrc={FetPayements}
+  alt="HighLevel-Diagram"
+  width={400}
+  height={400}
+/>
+
+FET token is the necessary payment token to create economic opportunity to your agents. FET allows for token transactions of a tiny size 10^-18 of a FET, we call this a nano fet. This system is built for agent economic gain, the best agents should be profitable. 
+
+
+```
+from uagents import Agent, Bureau, Context, Model
+from uagents.network import wait_for_tx_to_complete
+from uagents.setup import fund_agent_if_low
+ 
+ ... 
+
+@agent.on_message(model=PaymentRequest, replies=TransactionInfo)
+  async def send_payment(ctx: Context, sender: str, msg: PaymentRequest):
+      ctx.logger.info(f"Received payment request from {sender}: {msg}")
+  
+      # send the payment
+      transaction = ctx.ledger.send_tokens(
+          msg.wallet_address, msg.amount, msg.denom, bob.wallet
+      )
+  
+      # send the tx hash so other agent can confirm
+      await ctx.send(alice.address, TransactionInfo(tx_hash=transaction.tx_hash))
+  
+ 
+ ...
+```
+
+Its very easy to create an agent which sends and received FET. We have two excellent guides to get you started; [Getting Fet token](guides/fetch-network/intro-fet-token) and [Sending tokens with an agent](guides/intermediate/send-tokens)
+
+
+#### LLMs
+
+Agents can wrap and orchestrate LLMs to create personalized Agents for any task. With the rise of Large Language Models (LLMs) and AI-related products, autonomous intelligent Agents have become the link between these models and tools. They are revolutionizing the way we solve problems, make decisions and collaborate with each other.
+
+Integrating LLMs into an Agent is relatively trivial, [we have a guide for that too](guides/agents/intermediate/langchain-rag-agent)
+
+
+### Getting started with Agent development!
+
+Visit the [GitHub repository ↗️](https://github.com/fetchai/uAgents) to see the source code for uAgents, and to keep up-to-date with any update made to the uAgents Framework.
+
+From there, view the examples on uAgents repository, or start reading our guides, we’d recommend starting with [agent to agent communication]()
+
+
+## The Agentverse
+
+The Agentverse is a web based platform created so that agents have a human accessible interface. Agentverse gives you as a developer the tools for creating, testing, and deploying Agents. Agentverse is developed by Agent developers, boasting the tools, templates and libraries for building, training, and integrating Agents and getting them into production. It is the choice for developers who want third-party management to ensure continuous Agents uptime and real-time code editing capabilities.
+
+
+The [Agentverse ↗️](https://agentverse.ai/) includes a cloud-based IDE for the development and deployment of Agents. The Agentverse is designed to help you understand the Fetch.ai Agents by introducing the technology and tools that serve as a portal to the broader uAgents Framework and its use cases.
+
+![](../src/images/guides/agentverse/agentverse_intro.png)
+
+## Agentverse Marketplace
+
+The Agentverse Marketplace lets you look for and connect with other Agents. Agents being developed on Agentverse are automatically registered to the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview),  meaning all agents in the network can find your agent (if you allow). The explore functionality of the marketplace is a twin to the Almanac contract, every agent in the marketplace is on Almanac. Agents in this marketplace *can earn over time for their use. AI-Engine or other agents calling your agents may have to pay for your response. The explore functionality of the marketplace is a twin to the Almanac contract, every agent in the marketplace is on Almanac.
+As we just hinted, you may not be willing to share agents' information but rather wanting to keep them private. This is achievable by defining public and private agents. Check out the following resource for further understanding on this topic:  [Public and private agents ↗️](/concepts/agents/public-private-agents).
+
+<ImageByTheme
+  darkSrc={SearchSniuppet}
+  lightSrc={SearchSniuppet}
+  alt="system-diagram-ai-engine"
+/>
+
+
+We developed Agentverse because we have the requirements for a cloud-based service to host Agents and their services, we expanded this to become a product that you may benefit from too.
+
+
+### Integration with wallets
+
+As we touched on earlier, FET payments between agents are embedded into the uAgents library, as in an open decentralized marketplace it is essential that agents can transact. What we didn’t cover is that by default the uAgents library has support for Fetch.ai wallets. This means that not only can agents interact with the Fetch.ai Ledger to send and receive transactions but it can also query balances, interact with smart contracts, and deploy them. 
+
+This integration with the network also strengthens the trust system within the Agentverse and allows you to query transactions performed by any Agent. You can easily see transactions against an agent address, which allows you to infer the history, or trust of an agent. Of course, there are agents for that too.
+
+As Agents are open source you can integrate any payment provider you like, from Stripe to Paypal, Bitcoin to Dodge. Take a look at some of [our examples](https://github.com/fetchai/uAgent-Examples/tree/main/2-solutions/stripe-payment-agent)
+
+
+
+### Deploy and run Agents
+
+When it comes to deploying an agent on Agentverse, it's a simple process from start to deploy. You can either choose to build an Agent from a blank script, or you can choose to create your Agent based on a specified template.
+On Agentverse.ai you will see we have a My Agents tab, this page allows you to manage your agents and see Agent stats. With a targeted 100% uptime, your Agent will not sleep unless you tell it to. By it being a hosted Agent on the Agentverse, the Agent will always be kept up-to-date on the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) contract. 
+
+### Scaling
+
+Agents deployed on Agentverse scale automatically with the number of messages that the Agent receives. The benefit for you is that you do not have to carry the hassle of continuously deploying your Agents, or rolling out your own load balancer. This means that your Agents will continue running and receiving messages without the need of your presence for them to be deployed. Thus, as a developer, you can focus on making the most awesome of Agents.
+
+
+
+
+<ImageByTheme
+  darkSrc={DarkScalingHosting}
+  lightSrc={ScalingHosting}
+  alt="scaling-hosting"
+/>
+
+### Secure runtime
+
+Agents are built and run in a secure partitioned Python environment. This is important to make sure that your code is safe from malicious attempts to access your information. We also give you the option to subscribe to ban lists, in which there are Agents seen as bad actors which you can ignore easily!
+
+
+### Agentverse: Mailroom / IoT Gateway
+
+The Agentverse has an additional feature that allows you to set up Mailboxes for your Agents. A mailbox allows you to not have your Agents online all the time. This means that your Agents can retrieve these messages from the Mailroom and take appropriate action when they are back online.
+
+## AI Engine
+
+### Introduction
+
+The AI Engine is a system that understands human text input to convert these into actions, or agent calls. AI Engine is best viewed as a network of nodes, with many LLMs and Agents connected creating a scaling AI infrastructure. The more agents connected, the greater the service of AI Engine becomes. The goal of the AI Engine is to analyze, understand and link human input to agents by facilitating natural language interactions. The AI Engine reads user input, converts it into actionable tasks and selects the most appropriate AI agent registered in the Agentverse to perform the Objective Tasks provided by users.
+
+
+
+<ImageByTheme
+  darkSrc={DarkSystemDiagramAiEngine}
+  lightSrc={SystemDiagramAiEngine}
+  alt="system-diagram-ai-engine"
+/>
+
+AI Engine shines by its ability to understand users' preferences and goals through contextual understanding. The AI Engine examines trends and turns random inputs into meaningful insights by evaluating previous interactions, these interactions are your own and millions of others. When uncertainty comes into play, the AI Engine solicits feedback from the user to verify that its suggestions and recommendations match the user's end goal, however this is only during training and current open beta release. The goal here is that the AI Engine actively anticipates the needs of users and adapts to them.
+
+
+n addition to the AI Engine's ability to understand different contexts, its smart routing ability allows the AI Engine to perform a careful evaluation of the available agents registered in the [Almanac ↗️](/concepts/agent-services/agentverse-intro); taking into account their performance spectrum and past performance data. This ensures that objectives are assigned to agents with the appropriate expertise and Functions. Basically, AI Engine picks the best agents.
+
+
+AI-Engine understands that a request for an action can't always be completed by one agent, so AI Engine builds dynamic multi agent workflows in the background, on the fly. Enabling agents to solve complex requests as individual actors linked by AI-Engine.
+
+
+## The Fetch Network
+
+### Introduction
+
+The Fetch Network represents the foundation of the Fetch.ai Ecosystem as it enables the decentralized digital economy driven by [Agents ↗️](/guides/agents/getting-started/whats-an-agent), AI Engine, Agentverse and DeltaV. The Network provides integration with Fetch blockchain technology and ensures security, transparency, and scalability of transactions, and enhanced trust across the overall Ecosystem.
+
+### The Almanac Contract
+
+The Almanac contract is an important component within the Fetch Network. It connects together Agents, the Agentverse, and the AI Engine by working as decentralized registry and allowing for agents discoverability and coordination. Whenever agents are registered in the Almanac, they become accessible across the entire Fetch Ecosystem, allowing the AI Engine to dynamically locate and engage with them based on users' or agents' requests and queries. This ensures the accurate and reliable execution of objectives, as the Almanac supports the AI Engine in identifying and deploying the most appropriate agents for any given function being requested for execution, amongst all those registered agents in the Agentverse and Fetch Network.
+
+The Almanac facilitates remote communication between agents but also provides a layer of trust and verification, ensuring that accurate and up-to-date information is available at all times for everybody. By maintaining an organized directory of agents and their functions, the Almanac empowers the AI Engine to coordinate complex multi-agents workflows efficiently.
+
+Agents must register within the Almanac to enable remote interactions and be found via the Agentverse Marketplace. You can register your Agents on the Almanac by following this [guide ↗️](/guides/agents/register-in-almanac). You can also explore the [Communicating with other agents ↗️](/guides/agents/communicating-with-other-agents) guide to understand how Agents leverage the Almanac to communicate remotely.
+
+Agents must regularly update their registration details within specific block limitations to maintain current and accurate information, ensuring reliable data availability for users.
+
+Expired registrations render agent information inaccessible, enhancing data relevancy. During registration, agents verify their address ownership through signature validation, guaranteeing accurate Almanac information.
+
+    <Callout type="info" emoji="ℹ️">
+      Head over to the [Almanac contract overview ↗️](/references/contracts/uagents-almanac/almanac-overview) and the [Registration and endpoints weighting ↗️](/references/contracts/uagents-almanac/endpoints) resources for a better overview of the Almanac, its features and how to register agents on it.
+    </Callout>
+
+#### Public and private agents: the role of protocols and Almanac
+
+Agents offer the flexibility of being designated as either public or private during their development, adapting to your specific requirements. This flexibility is made possible thanks to the Almanac and protocols within the uAgents Framework
+
+    <Callout type="info" emoji="ℹ️">
+      Checkout the [public and private agents ↗️](/concepts/agents/public-private-agents) resource for a better clarification on this topic.
+    </Callout>
+
+A [protocol ↗️](/references/uagents/uagents-protocols/agent-protocols), within the uAgents Framework, establish the rules and message structures governing AI Agent interactions. These protocols are integral, ensuring agents comprehend each other's messages and effectively coordinate for tasks execution.
+
+Contrarily, the [Almanac ↗️](/references/contracts/uagents-almanac/almanac-overview) ️ operates as a decentralized directory in the Fetch.ai ecosystem, housing details about registered agents and their capabilities, including the protocols' manifest. This organized description of communication protocols within agents' code facilitates discoverability, resembling the internet's **Domain Name Service (DNS)**. Users can explore and interact with agents via the Agentverse Explorer, filtering agents based on unique protocols' digests.
+
+    <Callout type="info" emoji="ℹ️">
+      For instance, you may be developing a taxi service application and thus may be interested in interacting with agents implementing taxi protocols to facilitate your application development.
+    </Callout>
+
+    <Callout type="info" emoji="ℹ️">
+      For additional information on the Agentverse and its tools, visit our dedicated [concepts ↗️](/concepts/agent-services/agentverse-intro) and [guides ↗️](/guides#agentverse) resources to start developing your Agents straightforwardly using the Agentverse **Agent Editor**.
+    </Callout>
+
+### Fetch Name Service - FNS
+
+The [Fetch Name Service (FNS) ↗️](/guides/agents/advanced/name-service) is another key element providing human-readable names for interacting with Agents and Functions. The FNS simplifies resource identification and makes it easier for developers and users to access agents and functions and thus enhancing overall user accessibility.
+
+### Jenesis
+
+An additional tool is [Jenesis ↗️](/guides/fetch-network/jenesis/getting-started); it simplifies the development and deployment of smart contracts and decentralized applications (i.e., dApps) on the Fetch Network and other CosmWasm-enabled platforms. Jenesis offers a streamlined environment for developers that reduces the complexity of building blockchain-based solutions and accelerates the deployment of decentralized services and applications.
+
+### CosmPy
+
+As a complementary tool to the above ones, [CosmPy ↗️](/guides/fetch-network/cosmpy/install) is a Python-based library that facilitates interactions with Cosmos SDK-based blockchains, including the Fetch Network. CosmPy provides developers with a straightforward way to manage blockchain transactions, write and test smart contracts but also interact with agents; all within the familiar Python environment.
+
+### Conclusions
+
+These components together constitute the backbone structure of the Fetch Network. These tools are essential in enabling a decentralized economy of autonomous Agents and AI-driven Agent Functions. By leveraging the Fetch Ledger, Almanac Contract, FNS, Indexer, Jenesis, and CosmPy, the Fetch Network focuses on creating an environment where agents can autonomously manage tasks, interact with each other, and create value in a secure and scalable way.
+
+The FET token empowers the Fetch Ecosystem, providing the economic incentive and governance framework necessary for the sustainability and evolution of the Network itself. The token acts both as the medium of exchange and the incentive structure for participants, while supporting the Network's governance and staking mechanisms.
+
+
+
+\* payments are in closed beta
+\** additional payment methods are supported
+
+\***
