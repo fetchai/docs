@@ -14,8 +14,6 @@ In the [Agentverse ↗️](https://agentverse.ai/) code editor, you have the fre
 
     - [`pydantic` ↗️](/guides/agentverse/allowed-imports#datetime).
 
-    - [`uagents-ai-engine` ↗️](/guides/agentverse/allowed-imports#ai_engine).
-
     - [`MySQLdb` ↗️](/guides/agentverse/allowed-imports#mysqldb).
 
     - [`pymongo` ↗️](/guides/agentverse/allowed-imports#pymongo).
@@ -149,28 +147,6 @@ A package to ensure data validation and settings management. It simplifies the p
           user = User(**data)
 
           print(user)
-          ```
-
-#### ai_engine
-
-Integrate Agents with the AI Engine to perform a wide variety tasks, including in booking services, make reservations, and provide answers to different queries. Checkout the [AI Engine ↗️](/concepts/ai-engine/ai-engine-intro) documentation and the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) for further information.
-
-    - **Full access to all functions and features**.
-
-        **Example**:
-
-          ```py copy
-          from uagents import Context, Model, Protocol
-          from ai_engine import UAgentResponse, UAgentResponseType
-
-          simples = Protocol(name="simples", version="v1.1")
-
-          class Request(Model):
-              message: str
-
-          @simples.on_message(model=Request, replies={UAgentResponse})
-          async def handle_message(ctx: Context, sender: str, msg: Request):
-              await ctx.send(sender, UAgentResponse(message="0", type=UAgentResponseType.FINAL))
           ```
 
 #### MySQLdb
@@ -664,6 +640,4 @@ Then, you can just import the `Sentence` data model to your `agent.py` file and 
         msg = Sentence(text=f"Hello there my wallet address is {ctx.wallet}.")
         print(msg.text)
     ```
-
-For additional information on Functions, head over to [Agent Functions ↗️](/guides/agents/intermediate/agent-functions) and [Register Agent Functions ↗️](/guides/agentverse/agentverse-functions/registering-agent-services) resources.
 
