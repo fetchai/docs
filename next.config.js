@@ -59,12 +59,6 @@ module.exports = (phase, { defaultConfig }) => {
           permanent: true,
         },
         {
-          source: "/guides/services/field-descriptions-for-deltav",
-          destination:
-            "/guides/agentverse/agentverse-functions/field-descriptions-for-deltav",
-          permanent: true,
-        },
-        {
           source: "/guides/agentverse/registering-agent-services",
           destination:
             "/guides/agentverse/agentverse-functions/registering-agent-services",
