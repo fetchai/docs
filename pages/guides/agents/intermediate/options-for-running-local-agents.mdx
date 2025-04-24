@@ -21,14 +21,11 @@ Make sure you have read the following resources before going on with this guide:
     - [Register in Almanac ↗️](/guides/agents/register-in-almanac)
     - [Agents protocols ↗️](/guides/agents/intermediate/protocols)
     - [Exchange protocol ↗️](/references/uagents/uagents-protocols/exchange-protocol)
-    - [Agent Functions ↗️](/guides/agents/intermediate/agent-functions)
     - [Agent Mailboxes ↗️](/guides/agents/intermediate/mailbox)
-    - [Make your Agents AI Engine compatible ↗️](/guides/agents/intermediate/ai-engine-compatible-agent)
 
 ## Imports needed
 
     - [uAgents ↗️](https://pypi.org/project/uagents/)
-    - [AI Engine ↗️](https://pypi.org/project/uagents-ai-engine/)
 
 ### The Agent
 
@@ -86,7 +83,7 @@ Consider the following Agent:
 	
 	agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
@@ -99,7 +96,7 @@ The Agent must run on infrastructure that allows opening a `port`. In this examp
 
 The Agent is initialized with an endpoint and a port to receive messages and allow other Agents to communicate with it. The `protocol`, defined as an `int`, is specified in the `Request` object.
 
-The `on_message()` function processes incoming messages and returns a random number between 1 and the specified `dice_sides` from the message. The response must use the `UAgentResponse` type, which is essential for communication with [DeltaV ↗️](/concepts/ai-engine/deltav). Check out this guide [here ↗️](/guides/agents/intermediate/ai-engine-compatible-agent) to understand how to make your Agents AI Engine compatible.
+The `on_message()` function processes incoming messages and returns a random number between 1 and the specified `dice_sides` from the message.
 
 Finally, `.run()` starts the Agent.
 
@@ -116,11 +113,6 @@ We can now run our Agent with the following command: `python agent_endpoint.py`
     INFO:     [dungeonsanddragonsdiceroll]: Starting server on http://0.0.0.0:6145 (Press CTRL+C to quit)
     ```
 
-    <Callout type="info" emoji="ℹ️">
-      Check out the [AI Engine package ↗️](https://pypi.org/project/uagents-ai-engine/) to download it and start integrating your Agents with this tool!
-
-      Current version of the package is <PackageVersion packageName="uagents-ai-engine" packageType="pypi" />.
-    </Callout>
 
 ## Run a local Agent using a Mailbox
 

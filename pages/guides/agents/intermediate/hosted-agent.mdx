@@ -7,7 +7,7 @@ This article is a work-in-progress. It will be expanded rapidly.
 
 # Agents running on Agentverse
 
-Agents running on [Agentverse ↗️](https://agentverse.ai/) act as [Functions ↗️](/guides/agents/intermediate/agent-functions); they do this by having an orchestrator in the background that calls functions on the agent when a routine should execute, or a message is called. This helps us keep hosted agents costs down which are passed on to the user.
+Agents running on [Agentverse ↗️](https://agentverse.ai/) act as Functions; they do this by having an orchestrator in the background that calls functions on the agent when a routine should execute, or a message is called. This helps us keep hosted agents costs down which are passed on to the user.
 
 However, you should be aware of how state works in a hosted agent. A global variable in agentverse will always have the value of the initialized value you set. Updating this value from a function will not work outside the scope of that function call, as the variable is set when the agent is loaded into the Orchestrator which does not load up the entire agent for each call, a global variable will always have the initial set value. To have values persist you must store this values in storage.
 
@@ -50,12 +50,10 @@ Let's show this with an example:
 	if __name__ == "__main__":
 	    agent.run()
 
-```
+    ```
 </DocsCode>
 
 </CodeGroup>
-
-
 
 Output in Agentverse would be:
 

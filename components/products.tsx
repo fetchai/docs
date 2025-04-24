@@ -117,44 +117,6 @@ const Section: React.FC<SectionProperties> = ({ heading, items }) => {
 };
 
 const items: { [key: string]: Item[] } = {
-  "AI Engine": [
-    {
-      title: "Introducing the AI Engine",
-      description: (
-        <>Introducing the AI Engine and its role in DeltaV functionalities.</>
-      ),
-      icon: aiEngine,
-      path: "/concepts/ai-engine/ai-engine-intro",
-    },
-    {
-      title: "Powering connections and smart operations in DeltaV",
-      description: (
-        <>
-          Explore the integration of AI Engine within DeltaV, enabling
-          connections between users and agent-based Functions.
-        </>
-      ),
-      icon: synergyIcon,
-      path: "/concepts/ai-engine/powering-connections-and-smart-operations-in-deltav",
-    },
-    {
-      title: "DeltaV",
-      description: (
-        <>
-          DeltaV operates as a search-based AI chat interface, employing natural
-          language conversations to assist users in objective execution.
-        </>
-      ),
-      icon: whisperAgentIcon,
-      path: "https://deltav.agentverse.ai/login",
-    },
-    {
-      title: "Analytics",
-      description: <>Coming soon.</>,
-      icon: analyticsIcon,
-      path: "",
-    },
-  ],
   "Agentverse components": [
     {
       title: "Agentverse: My Agents",
@@ -178,17 +140,6 @@ const items: { [key: string]: Item[] } = {
       ),
       icon: mailBoxIcon,
       path: "/concepts/agent-services/agent-mail",
-    },
-    {
-      title: "Agentverse Functions: register your Functions on the Agentverse!",
-      description: (
-        <>
-          Create an agent encapsulating a Function and register it as an Agent
-          Function on the Agentverse to be retrieved via DeltaV chat!
-        </>
-      ),
-      icon: agentFunction,
-      path: "/guides/agentverse/registering-agent-services",
     },
     {
       title: "Agentverse APIs",

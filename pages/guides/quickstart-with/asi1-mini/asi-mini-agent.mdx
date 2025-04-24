@@ -16,9 +16,9 @@ Alrighty, let's get started.
 
 ## Getting started
 
-    - head over to as1.ai, and [create an api key ↗️](https://docs.asi1.ai/docs/getting-api-key)
-    - make sure you have [uAgents installed ↗️](/guides/agents/getting-started/installing-uagent)
-    - Sign up to [agentverse ↗️](https://www.agentverse.ai) so that you can create a mailbox for your agent.
+    - Head over to [ASI-1 ↗️](https://asi1.ai/), and [create an api key ↗️](https://docs.asi1.ai/docs/core/api-key).
+    - Make sure you have [uAgents installed ↗️](/guides/agents/getting-started/installing-uagent).
+    - Sign up to [Agentverse ↗️](https://www.agentverse.ai) so that you can create a [mailbox ↗️](/guides/agents/intermediate/mailbox) for your agent.
 
 Don't fret, we explain these topics in this guide.
 
@@ -49,7 +49,7 @@ The most important thing to note about the chat protocol, is `ChatMessage(Model)
 
 
 
-## llm
+## LLM
 
     ```py copy filename="llm.py"
 
@@ -91,10 +91,10 @@ The most important thing to note about the chat protocol, is `ChatMessage(Model)
 
     ```
 
-This is a pretty simple function to make a call to asi1-mini, to get a response to a prompt that we send. The function takes two args, `context` and `prompt`. Let's build the ai_agent, and see how we call `get_completion`
+This is a pretty simple function to make a call to `asi1-mini`, to get a response to a prompt that we send. The function takes two args, `context` and `prompt`. Let's build the Agent, `asi-agent`, and see how we call `get_completion`.
 
 
-## ai agent
+## Agent
 
     ```py copy filename="ai_agent.py"
 
@@ -159,23 +159,21 @@ This is a pretty simple function to make a call to asi1-mini, to get a response 
 
 From `chat_protocol.py` we import `ChatMessage, ChatAcknowledgement, TextContent` we use these to send, and receive chat protocol messages.
 
-We define the protocol the agent uses with `chat_proto = Protocol(name="AgentChatProtcol", version="0.2.1")` which means other agents will be able to communicate with these agent if they've also implemented the chat protocol.
+We define the protocol the agent uses with `chat_proto = Protocol(name="AgentChatProtcol", version="0.2.1")` which means other Agents will be able to communicate with these Agent if they've also implemented the chat protocol.
 
-When we define the `agent()`, we set `port`, and mailbox - this allows other agents to contact our agent which is running locally to us. We add `publish_agent_details` to tell Agentverse about us.
+When we define the `agent()`, we set `port`, and mailbox - this allows other Agents to contact our Agent which is [running locally ↗️](/guides/agents/intermediate/agent-types) to us. We add `publish_agent_details` to tell Agentverse about us.
 
-We add an on_event handler, to output to log the agent's address.
+We add an `on_event()` [handler ↗️](/guides/agents/intermediate/handlers), to output to log the Agent's address. 
 
 This agent implements two on_message handlers, `handle_message` for `ChatMessage` and `handle_ack` for `ChatAcknowledgement`. The first takes the message value from `ChatMessage` and uses this to create the params for the call to `get_completion()`. `handle_ack()` simply logs out any `ChatAcknowledgement` messages it receives.
 
-Important to note, chatProtocol works in message pairs, each message sent gets an acknowledgement response.
+Important to note, chat protocol works in message pairs, each message sent gets an acknowledgement response.
 
-We finally include the chat_proto to the agent, and then we `run()`.
+We finally include the `chat_proto` to the Agent, and then we `run()`.
 
-
-We can start this agent now, you should see something like this output:
+We can start this Agent now. You should see something like this output:
 
     ```
-    
     python asi-1/ai_agent.py 
     INFO:     [asi-agent]: Manifest published successfully: AgentChatProtcol
     INFO:     [asi-agent]: Starting agent with address: agent1q2cduhv4z5cleynmmlwymluazp0v6vx48wa9g496n067j3guarjkwtk957g
@@ -185,12 +183,11 @@ We can start this agent now, you should see something like this output:
 
 ### Enabling the mailbox
 
-Let's click the link for the Agent inspector, you should see a window like the below:
+Let's click the link for the [Local Agent Inspector ↗️](/guides/agents/intermediate/local-agent-inspector), you should see a window like the below:
 
 ![](/docs/images/guides/asi-mini/inspector_quickstart.png)
 
-
-click "connect" and in the modal click "Mailbox"
+click **connect** and in the modal click **Mailbox**.
 
 You'll then see instructions to update your agent to use the mailbox:
 
@@ -198,29 +195,27 @@ You'll then see instructions to update your agent to use the mailbox:
 
 Now our agent can receive messages from any agent! You can read more about the mailbox [here ↗️](/guides/agents/intermediate/mailbox).
 
-
 Alrighty, let's chat with our Agent.
 
 ## chat.agentverse.ai
 
-Visit chat.agentverse.ai, and sign in.
+Visit [chat.agentverse.ai ↗️](https://chat.agentverse.ai), and sign in.
 
 You should see a landing page like so:
 
 ![](/docs/images/guides/asi-mini/landing.png)
 
-Using the address of your agent, search for your agent.
+Using the address of your Agent, search for your Agent.
 
 ![](/docs/images/guides/asi-mini/search.png)
 
-Select your agent, and then, ask your agent a question 👍.
+Select your Agent, and then, ask the Agent a question 👍.
 
 ![](/docs/images/guides/asi-mini/start_chat.png)
 
-Then you should see your agents response in the chat window:
+Then you should see your Agents response in the chat window:
 
 ![](/docs/images/guides/asi-mini/response.png)
-
 
 Your Agent should have output log similar to the below:
 
@@ -283,7 +278,7 @@ Of course, you could also create a client to your agent and skip chat.agentverse
 
 ## Next steps
 
-This is a simple example of a question and answer chatbot and is perfect for extending to useful services. chat.agentverse.ai is the first step in getting your agents onto asi1, keep an eye on our [blog ↗️](https://fetch.ai/blog) for the future release date.
+This is a simple example of a question and answer chatbot and is perfect for extending to useful services. chat.agentverse.ai is the first step in getting your agents onto ASI-1, keep an eye on our [blog ↗️](https://fetch.ai/blog) for the future release date.
 
 What can you build with a dynamic chat protocol, and an LLM? 
 
