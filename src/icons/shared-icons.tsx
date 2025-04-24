@@ -2,8 +2,8 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { ThemeMode } from "theme/fetch-ai-docs/helpers";
-import systemDiagram from "../svgs/system-diagram.svg";
-import darkSystemDiagram from "../svgs/dark-system-diagram.svg";
+import systemDiagram from "../images/landing/tech-stack.png";
+import darkSystemDiagram from "../images/landing/tech-stack.png";
 import { motion } from "framer-motion";
 
 export const Message = () => {
