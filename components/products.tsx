@@ -1,17 +1,12 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
 import apiAgentIcon from "../src/svgs/api-agents.svg";
-import whisperAgentIcon from "../src/svgs/delta-v.svg";
-import agentFunction from "../src/svgs/agent-functions.svg";
-import aiEngine from "../src/svgs/ai-engine.svg";
 import walletIcon from "../src/svgs/wallet.svg";
 import cosmpyIcon from "../src/svgs/cosmpy.svg";
-import analyticsIcon from "../src/svgs/analytics.svg";
 import hostingIcon from "../src/svgs/hosting.svg";
 import mailBoxIcon from "../src/svgs/mailbox.svg";
 import explorerIcon from "../src/svgs/explorer.svg";
 import almanacIcon from "../src/svgs/almanac.svg";
-import synergyIcon from "../src/svgs/synergy.svg";
 import ledgerIcon from "../src/svgs/ledger.svg";
 import styles from "./tab.module.css";
 import { useRouter } from "next/navigation";
