@@ -39,8 +39,8 @@ const startingGuides = (theme) => [
     image: theme === ThemeMode.Dark ? darkbuildYourAgent : buildYourAgent,
   },
   {
-    label: "Creating an executable function for AI",
-    path: "/guides/agents/intermediate/agent-functions",
+    label: "Getting Started with ASI-1",
+    path: "/guides/quickstart-with/asi1-mini/asi-mini-agent",
     image: theme === ThemeMode.Dark ? darkexecutable : executable,
   },
   {
