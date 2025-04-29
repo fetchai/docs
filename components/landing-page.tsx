@@ -41,8 +41,8 @@ function LandingPage() {
                         className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
                     >
 
-                        <div className="nx-left-2 nx-m-2 nx-text-white nx-text-[20px] nx-font-medium">Getting started
-                            with FET token
+                        <div className="nx-left-2 nx-m-2 nx-text-white nx-text-[20px] nx-font-medium">Connect to ASI:One
+                            with uAgents
                         </div>
                     </Link>
 
