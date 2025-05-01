@@ -1,0 +1,55 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches:
+      - feat/docs-revamps
+
+jobs:
+  build:
+    name: Build Images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Gcloud Auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: "${{ secrets.ORG_SANDBOX_DEPLOYMENT_KEY }}"
+
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Set Image Tag
+        id: lookup
+        run: echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - run: |
+          gcloud auth list
+          gcloud auth configure-docker -q
+          echo "VERSION: ${{ steps.lookup.outputs.version }}"
+
+      - name: Build and Push Images
+        run: |
+          ./scripts/build-img-revamp.py
+        env:
+          IMAGE_REPOSITORY: ${{ secrets.STAGING_IMAGE_REPOSITORY }}
+          BACKEND_URL: ${{ secrets.STAGING_NEXT_PUBLIC_BACKEND_URL }}
+          NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID }}
+          NEXT_PUBLIC_ALGOLIA_APP_ID: ${{ secrets.NEXT_PUBLIC_ALGOLIA_APP_ID }}
+          NEXT_PUBLIC_ALGOLIA_API_KEY: ${{ secrets.NEXT_PUBLIC_ALGOLIA_API_KEY }}
+          NEXT_PUBLIC_ALGOLIA_INDEX: ${{ secrets.NEXT_PUBLIC_ALGOLIA_INDEX }}
+          NEWSLETTER_BASE_URL: ${{ secrets.NEWSLETTER_BASE_URL }}
+          SENDER_TOKEN: ${{ secrets.SENDER_TOKEN }}
+
+      - name: Repository Dispatch
+        run: |
+          curl -f -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Authorization: token ${{ secrets.ORG_DISPATCH_RENDER_TOKEN }}" \
+          --request POST \
+          --data '{"event_type": "docs-staging-build", "client_payload": {"image": "'"${{ secrets.STAGING_IMAGE_REPOSITORY }}"'" , "image_path": "values", "key_path": ".website.image.tag", "commit_message_service": "Docs Staging", "tag": "'"${{ steps.lookup.outputs.version }}"'"}}' \
+          https://api.github.com/repos/fetchai/infra-sandbox-london-b-deployment/dispatches

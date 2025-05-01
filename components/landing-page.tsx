@@ -11,7 +11,7 @@ function LandingPage() {
   return (
     <section className={styles.page}>
       <div className={styles.headingSection}>
-        <h1 className={styles.mainTitle}>The Fetch.ai developer portal</h1>
+        <h1 className={styles.mainTitle}>The Fetch.ai developer portal Revamp</h1>
         <p className={styles.description}>
           The place where you can find all tutorials and guides needed to familiarise with the concepts and code in a practical way to develop your ideas autonomously.
         </p>
