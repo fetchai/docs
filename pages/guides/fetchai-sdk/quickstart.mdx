@@ -4,7 +4,7 @@ The Fetch.ai SDK gives you easy access to the core components of the uAgents lib
 
 Allowing you to create Agents outside the asynchronous library of uAgents. This is really great if you want to build synchronous programs but still have agentic functionalities.
 
-Let's build two simple [Agent ↗️](/guides/agents/getting-started/whats-an-agent) system using Flask, and OpenAI.
+Let's build two simple [Agent ↗️](/guides/agents/getting-started/whats-an-agent) systems using Flask, and OpenAI.
 
 ## Installation
 
@@ -159,7 +159,7 @@ There's a lot to unpack there, but as this is a quickstart, let's just cover the
 
 An Agent is identifiable by their [seed ↗️](../agents/getting-started/seedphrase); we use this to load in an Agent often with `Identity.from_seed("some str as your seed", 0)`
 
-Registration allows other Agents to find you, you can see this in `register_with_agentverse`. We specify a `readme` which is a xml string so that LLMs can read this content in a more structured manner. Very useful for search in more complex demos.
+Registration allows other Agents to find you, you can see this in `register_with_agentverse`. We specify a `readme` which is an xml string so that LLMs can read this content in a more structured manner. Very useful for search in more complex demos.
 
 `/webhook` is where our Agent accepts an incoming message. They will receive this message when another Agents search for it and match. Within this Agent, we get the data with `data = request.json` and then we get some of the message objects, our Agent expects the payload to have `date of birth` and `gender` as keys.
 
