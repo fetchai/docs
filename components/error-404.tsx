@@ -41,7 +41,6 @@ const Error404 = () => {
               go back to the homepage or
             </span>
           </Description>
-
         </div>
       </div>
     </div>

@@ -7,9 +7,9 @@ import type { ReactElement, ReactNode } from "react";
 import { useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
-import React, { useState, useEffect, useRef } from "react";
-import { Gear } from "src/icons/shared-icons";
-import { ThemeSwitcher } from "./theme-switcher";
+import React, { useState } from "react";
+// import { Gear } from "src/icons/shared-icons";
+// import { ThemeSwitcher } from "./theme-switcher";
 
 export type NavBarProps = {
   flatDirectories: Item[];
@@ -79,30 +79,30 @@ function NavbarMenu({
   );
 }
 
-export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
+export function Navbar({ items }: NavBarProps): ReactElement {
   const config = useConfig();
   const activeRoute = useFSRoute();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { menu, setMenu } = useMenu();
-  const [openOs, setOpenOs] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpenOs(false);
-      }
-    };
+  // const [openOs, setOpenOs] = useState<boolean>(false);
+  // const dropdownRef = useRef<HTMLDivElement>(null);
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       dropdownRef.current &&
+  //       !dropdownRef.current.contains(event.target as Node)
+  //     ) {
+  //       // setOpenOs(false);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef]);
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [dropdownRef]);
 
-  const handleOpenClose = () => setOpenOs((prev) => !prev);
+  // const handleOpenClose = () => setOpenOs((prev) => !prev);
 
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">
@@ -118,21 +118,20 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
         <div className="nx-flex nx-items-center nx-justify-between">
           <div className="nx-flex nx-justify-center nx-items-center nx-gap-6">
             {config.logoLink ? (
-                <Anchor
-                    id="fetch-logo"
-                    href={
-                      typeof config.logoLink === "string" ? config.logoLink : "/"
-                    }
-                    className="nx-flex nx-items-center"
-                >
-                  {renderComponent(config.logo)}
-                </Anchor>
+              <Anchor
+                id="fetch-logo"
+                href={
+                  typeof config.logoLink === "string" ? config.logoLink : "/"
+                }
+                className="nx-flex nx-items-center"
+              >
+                {renderComponent(config.logo)}
+              </Anchor>
             ) : (
-                <div className="nx-flex nx-items-center">
-                  {renderComponent(config.logo)}
-                </div>
+              <div className="nx-flex nx-items-center">
+                {renderComponent(config.logo)}
+              </div>
             )}
-
           </div>
 
           <div className="nx-flex nx-justify-center menu-hide nx-gap-2 nx-mb-2 nx-menu-height nx-items-center">
@@ -142,21 +141,21 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               if (pageOrMenu.type === "menu") {
                 const menu = pageOrMenu as MenuItem;
                 return (
-                    <NavbarMenu
-                        key={menu.title}
-                        className={cn(
-                            classes.link,
-                            "nx-flex nx-gap-1",
-                            classes.inactive,
-                        )}
-                        menu={menu}
-                    >
-                      {menu.title}
-                      <ArrowRightIcon
-                          className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5"
-                          pathClassName="nx-origin-center nx-transition-transform nx-rotate-90"
-                      />
-                    </NavbarMenu>
+                  <NavbarMenu
+                    key={menu.title}
+                    className={cn(
+                      classes.link,
+                      "nx-flex nx-gap-1",
+                      classes.inactive,
+                    )}
+                    menu={menu}
+                  >
+                    {menu.title}
+                    <ArrowRightIcon
+                      className="nx-h-[18px] nx-min-w-[18px] nx-rounded-sm nx-p-0.5"
+                      pathClassName="nx-origin-center nx-transition-transform nx-rotate-90"
+                    />
+                  </NavbarMenu>
                 );
               }
               const page = pageOrMenu as PageItem;
@@ -165,87 +164,87 @@ export function Navbar({ flatDirectories, items }: NavBarProps): ReactElement {
               // If it's a directory
               if (page.children) {
                 href =
-                    (page.withIndexPage ? page.route : page.firstChildRoute) ||
-                    href;
+                  (page.withIndexPage ? page.route : page.firstChildRoute) ||
+                  href;
               }
 
               const isActive =
-                  page.route === activeRoute ||
-                  activeRoute.startsWith(page.route + "/");
+                page.route === activeRoute ||
+                activeRoute.startsWith(page.route + "/");
               return (
-                  <Anchor
-                      id={page.title}
-                      onMouseOver={() => setHoveredLink(href)}
-                      onMouseLeave={() => setHoveredLink(null)}
-                      href={href}
-                      key={href}
-                      className={cn(
-                          classes.link,
-                          "nx-relative  nx-hidden nx-whitespace-nowrap menu-container  md:nx-inline-block",
-                          !isActive || page.newWindow
-                              ? classes.inactive
-                              : classes.active,
-                          hoveredLink === href && !isActive ? "link-hover" : "",
-                          index === 0 && !isActive && "-nx-ml-6",
-                      )}
-                      newWindow={page.newWindow}
-                      aria-current={!page.newWindow && isActive}
+                <Anchor
+                  id={page.title}
+                  onMouseOver={() => setHoveredLink(href)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                  href={href}
+                  key={href}
+                  className={cn(
+                    classes.link,
+                    "nx-relative  nx-hidden nx-whitespace-nowrap menu-container  md:nx-inline-block",
+                    !isActive || page.newWindow
+                      ? classes.inactive
+                      : classes.active,
+                    hoveredLink === href && !isActive ? "link-hover" : "",
+                    index === 0 && !isActive && "-nx-ml-6",
+                  )}
+                  newWindow={page.newWindow}
+                  aria-current={!page.newWindow && isActive}
+                >
+                  <span
+                    className={`${
+                      hoveredLink === href && !isActive ? "link-text " : ""
+                    } nx-absolute nx-inset-x-0 nx-text-base nx-text-center`}
                   >
-                    <span
-                        className={`${
-                            hoveredLink === href && !isActive ? "link-text " : ""
-                        } nx-absolute nx-inset-x-0 nx-text-base nx-text-center`}
-                    >
-                      {page.title}
-                    </span>
-                    <span className="nx-invisible nx-text-base">
-                      {page.title}
-                    </span>
-                  </Anchor>
+                    {page.title}
+                  </span>
+                  <span className="nx-invisible nx-text-base">
+                    {page.title}
+                  </span>
+                </Anchor>
               );
             })}
           </div>
           <div className="nx-flex nx-items-center">
-            <div className="nx-hidden nx-m-l-auto nx-search-width search-bar-desktop md:nx-inline-block">
+            {/* <div className="nx-hidden nx-m-l-auto nx-search-width search-bar-desktop md:nx-inline-block">
               {renderComponent(config.search.component, {
                 directories: flatDirectories,
               })}
-            </div>
-            <div ref={dropdownRef} className="nx-relative">
+            </div> */}
+            {/* <div ref={dropdownRef} className="nx-relative">
               <Gear onClickHandler={handleOpenClose}/>
               {openOs && (
                   <div>
                     <ThemeSwitcher/>
                   </div>
               )}
-            </div>
+            </div> */}
             {config.project.link ? (
-                <Anchor
-                    className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
-                    href={config.project.link}
-                    newWindow
-                    id="github"
-                >
-                  {renderComponent(config.project.icon)}
-                </Anchor>
+              <Anchor
+                className="nx-p-2 nx-text-current nx-hidden md:nx-inline-block"
+                href={config.project.link}
+                newWindow
+                id="github"
+              >
+                {renderComponent(config.project.icon)}
+              </Anchor>
             ) : null}
             {renderComponent(config.navbar.extraContent)}
             <button
-                type="button"
-                aria-label="Menu"
-                className="nextra-hamburger -nx-mr-2 nx-rounded nx-p-2 active:nx-bg-gray-400/20 hamburger"
-                onClick={() => setMenu(!menu)}
+              type="button"
+              aria-label="Menu"
+              className="nextra-hamburger -nx-mr-2 nx-rounded nx-p-2 active:nx-bg-gray-400/20 hamburger"
+              onClick={() => setMenu(!menu)}
             >
-              <MenuIcon className={cn({open: menu})}/>
+              <MenuIcon className={cn({ open: menu })} />
             </button>
           </div>
         </div>
-        <div className="search-bar-mobile nx-mt-6 nx-mb-2">
+        {/* <div className="search-bar-mobile nx-mt-6 nx-mb-2">
           {renderComponent(config.search.component, {
             directories: flatDirectories,
             // className: "md:nx-hidden nx-mt-6 nx-mb-2",
           })}
-        </div>
+        </div> */}
       </nav>
     </div>
   );
