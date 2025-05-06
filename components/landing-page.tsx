@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import leading_image from "../src/images/landing/leading/asi1.svg";
 import InfoCard from "./info-card";
+import InfoImageCard from "./info-image-card";
 
 function LandingPage() {
   return (
@@ -131,7 +132,7 @@ function LandingPage() {
 
         <section>
           <Link
-            href="https://agentverse.ai/"
+            href="https://agentverse.ai/docs"
             target="_blank"
             className="nx-flex nx-gap-1"
           >
@@ -148,23 +149,123 @@ function LandingPage() {
             and agent hosting
           </p>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
+            <InfoImageCard
+              href="https://agentverse.ai/docs/templates"
+              mainTitle="Agentverse Templates"
+              firstTitle="Explore, ideate, and learn WITH"
+              image="/assets/agentverse_templates.svg"
+            />
+            <InfoImageCard
+              href="https://agentverse.ai/docs/templates"
+              mainTitle="Agentverse Chat"
+              firstTitle="Test your agent in isolation with"
+              image="/assets/agentverse_chat.svg"
+            />
+          </div>
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
+            <InfoImageCard
+              href="https://agentverse.ai/docs/quickstart"
+              mainTitle="Deploy and host your agents"
+              firstTitle="A simple guide to help you"
+              image="/assets/agentverse_deployhost.svg"
+            />
+            <InfoImageCard
+              href="https://agentverse.ai/docs/marketplace"
+              mainTitle="The Marketplace"
+              firstTitle="Search and Discover AGENTS with"
+              image="/assets/agentverse_marketplace.svg"
+            />
+          </div>
+        </section>
+
+        <section>
+          <Link
+            href="https://docs.flockx.io/home"
+            target="_blank"
+            className="nx-flex nx-gap-1"
+          >
+            <h2 className="nx-text-[#000] nx-text-[24px]">Flockx</h2>
+            <Image
+              width={14}
+              height={14}
+              src={`/docs/assets/opne-new-tab-icon.svg`}
+              alt="open-in-new-tab-icon"
+            />
+          </Link>
+          <p className="nx-text-[#000] nx-text-[16px] nx-opacity-60 nx-mt-2">
+            Multiagent systems made simple with
+          </p>
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
+            <InfoImageCard
+              href="https://agentverse.ai/docs/templates"
+              mainTitle="No-code Agent Studio"
+              firstTitle="Text to be provided"
+              image="/assets/agentverse_templates.svg"
+            />
+            <InfoImageCard
+              href="https://agentverse.ai/docs/templates"
+              mainTitle="Knowledge Management"
+              firstTitle="Text to be provided"
+              image="/assets/agentverse_chat.svg"
+            />
+          </div>
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
+            <InfoImageCard
+              href="https://agentverse.ai/docs/quickstart"
+              mainTitle="Integrations & Deployments"
+              firstTitle="Text to be provided"
+              image="/assets/agentverse_templates.svg"
+            />
+            <InfoImageCard
+              href="https://agentverse.ai/docs/marketplace"
+              mainTitle="Multi-agent Collaboration"
+              firstTitle="Text to be provided"
+              image="/assets/agentverse_templates.svg"
+            />
+          </div>
+        </section>
+
+        <section>
+          <Link
+            href="https://innovationlab.fetch.ai/resources/docs/1.0.2/agent-creation/uagent-creation"
+            target="_blank"
+            className="nx-flex nx-gap-1"
+          >
+            <h2 className="nx-text-[#000] nx-text-[24px]">uAgents</h2>
+            <Image
+              width={14}
+              height={14}
+              src={`/docs/assets/opne-new-tab-icon.svg`}
+              alt="open-in-new-tab-icon"
+            />
+          </Link>
+          <p className="nx-text-[#000] nx-text-[16px] nx-opacity-60 nx-mt-2">
+            Multiagent systems made simple with
+          </p>
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
-              mainTitle="AS1:One"
-              firstTitle="Build an Agent Compatible with"
-              icon="/assets/iconlogo_asione.svg"
+              href="https://innovationlab.fetch.ai/resources/docs/1.0.2/examples/other-frameworks/financial-analysis-ai-agent#b-rag-chain-chainpy"
+              mainTitle="RAG agent"
+              firstTitle="BUILD A SIMPLE"
+              icon="/assets/icon_ragagent.svg"
             />
             <InfoCard
               href="https://innovationlab.fetch.ai/resources/docs/examples/adapters/crewai-adapter-example"
-              mainTitle="uAgents Adapter"
-              firstTitle="crewAI Multi-Agent Ecosystem with"
-              icon="/assets/iconlogo_agentverse.svg"
+              mainTitle="ChatProtocol"
+              firstTitle="GETTING STARTED WITH"
+              icon="/assets/icon_chatprotocol.svg"
             />
             <InfoCard
               href="https://innovationlab.fetch.ai/resources/docs/examples/on-chain-examples/solana-agents"
-              mainTitle="uAgents"
-              firstTitle="integrate Solana wallets with"
-              icon="/assets/iconlogo_flockx.svg"
+              mainTitle="Agent Mailbox"
+              firstTitle="Utilise"
+              icon="/assets/icon_mailbox.svg"
+            />
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/examples/on-chain-examples/solana-agents"
+              mainTitle="Multi Agent System"
+              firstTitle="BUILD A SIMPLE"
+              icon="/assets/icon_multiagentsystem.svg"
             />
           </div>
         </section>

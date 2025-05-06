@@ -193,7 +193,7 @@ export function Navbar({ items }: NavBarProps): ReactElement {
                   <span
                     className={`${
                       hoveredLink === href && !isActive ? "link-text " : ""
-                    } nx-absolute nx-inset-x-0 nx-text-base nx-text-center`}
+                    } nx-absolute nx-inset-x-0 nx-text-sm nx-font-medium nx-text-center nx-text-[#000] nx-opacity-80`}
                   >
                     {page.title}
                   </span>
