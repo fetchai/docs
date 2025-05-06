@@ -1,10 +1,9 @@
 import React from "react";
 import styles from "./landing.module.css";
+import Image from "next/image";
 import Link from "next/link";
 import leading_image from "../src/images/landing/leading/asi1.svg";
-import leading_image_2a from "../src/images/landing/leading/2.jpg";
-import leading_image_2b from "../src/images/landing/leading/asi1.svg";
-import leading_image_2c from "../src/images/landing/leading/4.jpg";
+import InfoCard from "./info-card";
 
 function LandingPage() {
   return (
@@ -15,299 +14,160 @@ function LandingPage() {
         </h1>
         <p className="nx-text-[#000] nx-text-[16px] nx-opacity-60">
           The place where you can find all tutorials and guides needed to
-          familiarise with the concepts and code in a practical way to develop
-          your ideas autonomously.
+          familiarise with the
+          <br />
+          concepts and code in a practical way to develop your ideas
+          autonomously.
         </p>
       </div>
-      <section className="nx-mt-60">
-        <div className="nx-flex nx-flex-wrap sm:nx-flex-nowrap sm:nx-h-[332px] nx-gap-6">
+      <section className="nx-mt-60 nx-flex nx-flex-col nx-gap-12">
+        <section>
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6">
+            <Link
+              href="https://docs.asi1.ai/docs"
+              target="_blank"
+              className="nx-flex nx-flex-col nx-w-full nx-bg-position-top nx-rounded-lg nx-h-[384px] nx-p-6 nx-relative md:nx-w-1/2"
+              style={{ backgroundImage: `url(${leading_image.src})` }}
+            >
+              <div className="nx-realtive nx-inset-0 nx-w-full nx-my-auto">
+                <Image
+                  src="/docs/assets/hover.svg"
+                  alt="Chat conversation"
+                  width={400}
+                  height={110}
+                  className="nx-w-full nx-h-auto nx-transition-transform nx-duration-300 hover:nx-scale-105 nx-will-change-transform"
+                />
+              </div>
+              <div className="nx-text-white nx-text-[24px] nx-font-medium nx-mt-auto">
+                ASI: One
+              </div>
+              <div className="nx-text-white nx-text-[12px] nx-mt-[6px] nx-font-medium nx-uppercase geist-mono-font-family">
+                World&apos;s first Web3-native LLM designed for Agentic AI.
+              </div>
+            </Link>
+            <div className="nx-w-full nx-gap-6 md:nx-w-1/2 nx-flex nx-flex-col">
+              <div className="nx-flex nx-flex-col nx-gap-6 md:nx-flex-row nx-w-full">
+                <InfoCard
+                  href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
+                  mainTitle="Compatible Agent with Agentverse"
+                  firstTitle="buIld 0 → ASI:One"
+                  icon="/assets/iconlogo_agentverse.svg"
+                />
+                <InfoCard
+                  href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
+                  mainTitle="Compatible No-code Agents with Flockx"
+                  firstTitle="Zero to ASI:One in 60s"
+                  icon="/assets/iconlogo_flockx.svg"
+                />
+              </div>
+              <Link
+                href="/concepts"
+                target="_blank"
+                className="nx-w-full boxColor nx-rounded-lg nx-p-6 nx-hover:bg-[#ECEEF1] nx-flex nx-flex-col nx-gap-6 nx-justify-between"
+              >
+                <div className="nx-rounded-lg nx-w-[48px] nx-h-[48px]">
+                  <Image
+                    width={48}
+                    height={48}
+                    src={`/docs/Logo.png`}
+                    alt="logo"
+                    className="nx-rounded-lg"
+                  />
+                </div>
+                <div className="nx-flex nx-flex-col nx-gap-1">
+                  <div className="nx-text-[#000] nx-text-[16px] nx-font-medium">
+                    Agentic Search
+                  </div>
+                  <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase geist-mono-font-family nx-opacity-60 nx-leading-[150%]">
+                    provide text for agentic search
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </section>
+        <section>
           <Link
-            href="www.google.com"
+            href="https://innovationlab.fetch.ai/resources"
             target="_blank"
-            className="nx-flex nx-flex-col nx-w-full boxColor nx-rounded-lg nx-p-4 nx-h-[332px] nx-p-3 nx-relative nx-bg-center  sm:nx-w-1/2  "
-            style={{ backgroundImage: `url(${leading_image.src})` }}
+            className="nx-flex nx-gap-1"
           >
-            <div className="nx-flex-1"></div>
-            <div className="nx-text-[#000] nx-text-[24px] nx-font-medium">
-              ASI: One
-            </div>
-            <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-              World&apos;s first Web3-native LLM designed for Agentic AI.
-            </div>
+            <h2 className="nx-text-[#000] nx-text-[24px]">
+              Resources by Innovation Lab
+            </h2>
+
+            <Image
+              width={14}
+              height={14}
+              src={`/docs/assets/opne-new-tab-icon.svg`}
+              alt="open-in-new-tab-icon"
+            />
           </Link>
-          <div className="nx-grid nx-w-full nx-grid-cols-1 sm:nx-grid-cols-2 nx-gap-6 sm:nx-w-[50%] nx-grid-rows-[214px,1fr] nx-rounded-lg">
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
-            >
-              <div className="nx-left-2 nx-m-2 nx-text-[#000] nx-text-[20px] nx-font-medium">
-                Connect to ASI:One with uAgents
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
-            >
-              <div className="nx-m-2 nx-text-[#000] nx-text-[20px] nx-font-medium">
-                ASI-1 Agents
-              </div>
-            </Link>
-
-            <Link
-              href="/concepts"
-              target="_blank"
-              className="nx-col-span-1 sm:nx-col-span-2 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex nx-flex-col nx-justify-center"
-            >
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                What is Fetch.ai
-              </div>
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Breaking down the components and ecosystem of fetch.ai
-              </div>
-            </Link>
+          <p className="nx-text-[#000] nx-text-[16px] nx-opacity-60 nx-mt-2">
+            Jumpstart your ideas: perfect for rapid prototyping, PoCs and
+            hackathons
+          </p>
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
+              mainTitle="AS1:One"
+              firstTitle="Build an Agent Compatible with"
+              icon="/assets/iconlogo_asione.svg"
+            />
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/examples/adapters/crewai-adapter-example"
+              mainTitle="uAgents Adapter"
+              firstTitle="crewAI Multi-Agent Ecosystem with"
+              icon="/assets/iconlogo_agentverse.svg"
+            />
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/examples/on-chain-examples/solana-agents"
+              mainTitle="uAgents"
+              firstTitle="integrate Solana wallets with"
+              icon="/assets/iconlogo_flockx.svg"
+            />
           </div>
-        </div>
+        </section>
 
-        <div className="nx-mt-[48px]">
-          <div className="nx-text-[24px] nx-font-medium">AI Agents</div>
-          <div>
-            Secure communication and a robust network to build excellent
-            autonomous agents.
+        <section>
+          <Link
+            href="https://agentverse.ai/"
+            target="_blank"
+            className="nx-flex nx-gap-1"
+          >
+            <h2 className="nx-text-[#000] nx-text-[24px]">Agentverse</h2>
+            <Image
+              width={14}
+              height={14}
+              src={`/docs/assets/opne-new-tab-icon.svg`}
+              alt="open-in-new-tab-icon"
+            />
+          </Link>
+          <p className="nx-text-[#000] nx-text-[16px] nx-opacity-60 nx-mt-2">
+            Dev platform for agent registration for search/discovery in ASI:One
+            and agent hosting
+          </p>
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
+              mainTitle="AS1:One"
+              firstTitle="Build an Agent Compatible with"
+              icon="/assets/iconlogo_asione.svg"
+            />
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/examples/adapters/crewai-adapter-example"
+              mainTitle="uAgents Adapter"
+              firstTitle="crewAI Multi-Agent Ecosystem with"
+              icon="/assets/iconlogo_agentverse.svg"
+            />
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/examples/on-chain-examples/solana-agents"
+              mainTitle="uAgents"
+              firstTitle="integrate Solana wallets with"
+              icon="/assets/iconlogo_flockx.svg"
+            />
           </div>
-        </div>
-        <div className={styles.startGuides}>
-          <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-3 lg:nx-grid-cols-3 nx-gap-6 sm:nx-h-[270px]">
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-relative nx-bg-center  nx-items-center"
-              style={{ backgroundImage: `url(${leading_image_2a.src})` }}
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Getting started with
-              </div>
-              <div className=" nx-text-[#000] nx-text-[20px] nx-font-medium">
-                Agentverse
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-relative nx-bg-center  nx-items-center"
-              style={{ backgroundImage: `url(${leading_image_2b.src})` }}
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Getting started with
-              </div>
-              <div className=" nx-text-[#000] nx-text-[20px] nx-font-medium">
-                ASI-1
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-relative nx-bg-center  nx-items-center"
-              style={{ backgroundImage: `url(${leading_image_2c.src})` }}
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Getting started with
-              </div>
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                uAgents
-              </div>
-            </Link>
-          </div>
-        </div>
-
-        <div className="nx-mt-[48px]">
-          <div className="nx-text-[24px] nx-font-medium">uAgents</div>
-          <div>
-            Python library for dyanmic Multiagent systems and AI Agents, made
-            simple.
-          </div>
-        </div>
-
-        <div className={styles.startGuides}>
-          <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-4 lg:nx-grid-cols-4 nx-gap-6 sm:nx-h-[270px]">
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Build a simple
-              </div>
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                RAG agent
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Getting started with
-              </div>
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                ChatProtocol
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Utilise
-              </div>
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                Agent Mailbox
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] flex nx-flex-col nx-items-center"
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Build a simple
-              </div>
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                Multi Agent System
-              </div>
-            </Link>
-          </div>
-        </div>
-
-        <div className="nx-mt-[48px]">
-          <div className="nx-text-[24px] nx-font-medium">Agentverse</div>
-          <div>For simple agent hosting and management</div>
-        </div>
-
-        <div className={styles.startGuides}>
-          <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-2 lg:nx-grid-cols-2 nx-gap-6 ">
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex-col nx-items-center nx-h-[270px]"
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Getting started with
-              </div>
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                Agentverse Templates
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex-col nx-items-center nx-h-[270px]"
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Test your agent with agentverse
-              </div>
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                Chat
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1]  nx-flex-col nx-items-center nx-h-[270px]"
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                A SIMPLE guide to help you
-              </div>
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                Deploy and host your agents
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-col-span-1 nx-block boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1]  nx-flex-col nx-items-center nx-h-[270px]"
-            >
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase">
-                Search and discover agents with
-              </div>
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium">
-                The Marketplace
-              </div>
-            </Link>
-          </div>
-        </div>
-
-        <div className="nx-mt-[48px]">
-          <div className="nx-text-[24px] nx-font-medium">Network</div>
-          <div>Smart contracts and agent payments.</div>
-        </div>
-        <div className={styles.startGuides}>
-          <div className="nx-grid nx-grid-cols-1 nx-w-full sm:nx-grid-cols-2 md:nx-grid-cols-2 lg:nx-grid-cols-2 nx-gap-6">
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-flex boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex nx-flex-col nx-justify-center nx-h-[96px] nx-gap-2"
-            >
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium ">
-                Ledger
-              </div>
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase ">
-                Search and discover agents with
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-flex boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex nx-flex-col nx-justify-center nx-h-[96px] nx-gap-2"
-            >
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium ">
-                Almanac
-              </div>
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase ">
-                Public contract fo all agents
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-flex boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex nx-flex-col nx-justify-center nx-h-[96px] nx-gap-2"
-            >
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium ">
-                Cosmpy
-              </div>
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase ">
-                Python library for cosmos based blockchains
-              </div>
-            </Link>
-
-            <Link
-              href="www.google.com"
-              target="_blank"
-              className="nx-flex boxColor nx-rounded-lg nx-p-4 nx-hover:bg-[#ECEEF1] nx-flex nx-flex-col nx-justify-center nx-h-[96px] nx-gap-2"
-            >
-              <div className="nx-text-[#000] nx-text-[20px] nx-font-medium ">
-                Wallet
-              </div>
-              <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase ">
-                TOKEN management and agent interaction
-              </div>
-            </Link>
-          </div>
-        </div>
+        </section>
       </section>
     </section>
   );
