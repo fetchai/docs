@@ -269,6 +269,53 @@ function LandingPage() {
             />
           </div>
         </section>
+
+        <section>
+          <Link
+            href="https://innovationlab.fetch.ai/resources/docs/1.0.2/agent-creation/uagent-creation"
+            target="_blank"
+            className="nx-flex nx-gap-1"
+          >
+            <h2 className="nx-text-[#000] nx-text-[24px]">Network</h2>
+            <Image
+              width={14}
+              height={14}
+              src={`/docs/assets/opne-new-tab-icon.svg`}
+              alt="open-in-new-tab-icon"
+            />
+          </Link>
+          <p className="nx-text-[#000] nx-text-[16px] nx-opacity-60 nx-mt-2">
+            Smart contracts and agent payments
+          </p>
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/1.0.2/examples/other-frameworks/financial-analysis-ai-agent#b-rag-chain-chainpy"
+              mainTitle="Ledger"
+              firstTitle="Open ledger of AGents and transactions"
+              icon="/assets/icon_ledger.svg"
+            />
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/examples/adapters/crewai-adapter-example"
+              mainTitle="Almanac"
+              firstTitle="Public contract of all agents"
+              icon="/assets/icon_almanac.svg"
+            />
+          </div>
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/1.0.2/examples/other-frameworks/financial-analysis-ai-agent#b-rag-chain-chainpy"
+              mainTitle="CosmPy"
+              firstTitle="python library for cosmos based blockchains"
+              icon="/assets/icon_cosmpy.svg"
+            />
+            <InfoCard
+              href="https://innovationlab.fetch.ai/resources/docs/examples/adapters/crewai-adapter-example"
+              mainTitle="Wallet"
+              firstTitle="Token management and agent interaction"
+              icon="/assets/icon_wallet.svg"
+            />
+          </div>
+        </section>
       </section>
     </section>
   );
