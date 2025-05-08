@@ -22,7 +22,7 @@ function LandingPage() {
         </p>
       </div>
       <section className="nx-mt-60 nx-flex nx-flex-col nx-gap-12">
-        <section>
+        <section id="asi1">
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6">
             <Link
               href="https://docs.asi1.ai/docs"
@@ -49,22 +49,24 @@ function LandingPage() {
             <div className="nx-w-full nx-gap-6 md:nx-w-1/2 nx-flex nx-flex-col">
               <div className="nx-flex nx-flex-col nx-gap-6 md:nx-flex-row nx-w-full">
                 <InfoCard
-                  href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
+                  href="https://uagents.fetch.ai/docs/examples/asi-1"
                   mainTitle="Compatible Agent with Agentverse"
                   firstTitle="buIld 0 → ASI:One"
                   icon="/assets/iconlogo_agentverse.svg"
+                  mainTitleFont="16px"
                 />
                 <InfoCard
                   href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
                   mainTitle="Compatible No-code Agents with Flockx"
                   firstTitle="Zero to ASI:One in 60s"
                   icon="/assets/iconlogo_flockx.svg"
+                  mainTitleFont="16px"
                 />
               </div>
               <Link
                 href="/concepts"
                 target="_blank"
-                className="nx-w-full boxColor nx-rounded-lg nx-p-6 nx-hover:bg-[#ECEEF1] nx-flex nx-flex-col nx-gap-6 nx-justify-between"
+                className="nx-w-full boxColor nx-rounded-lg nx-p-6 hover:nx-bg-[#E5E7EC] nx-flex nx-flex-col nx-gap-6 nx-justify-between"
               >
                 <div className="nx-rounded-lg nx-w-[48px] nx-h-[48px]">
                   <Image
@@ -87,11 +89,11 @@ function LandingPage() {
             </div>
           </div>
         </section>
-        <section>
+        <section id="innovationlab-resources">
           <Link
             href="https://innovationlab.fetch.ai/resources"
             target="_blank"
-            className="nx-flex nx-gap-1"
+            className="nx-flex nx-gap-1 hover:nx-underline"
           >
             <h2 className="nx-text-[#000] nx-text-[24px]">
               Resources by Innovation Lab
@@ -122,19 +124,19 @@ function LandingPage() {
               icon="/assets/iconlogo_agentverse.svg"
             />
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/examples/on-chain-examples/solana-agents"
+              href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/solana-wallet-agent"
               mainTitle="uAgents"
               firstTitle="integrate Solana wallets with"
-              icon="/assets/iconlogo_flockx.svg"
+              icon="/assets/solana.svg"
             />
           </div>
         </section>
 
-        <section>
+        <section id="agentverse">
           <Link
             href="https://agentverse.ai/docs"
             target="_blank"
-            className="nx-flex nx-gap-1"
+            className="nx-flex nx-gap-1 hover:nx-underline"
           >
             <h2 className="nx-text-[#000] nx-text-[24px]">Agentverse</h2>
             <Image
@@ -156,7 +158,7 @@ function LandingPage() {
               image="/assets/agentverse_templates.svg"
             />
             <InfoImageCard
-              href="https://agentverse.ai/docs/templates"
+              href="https://uagents.fetch.ai/docs/examples/asi-1"
               mainTitle="Agentverse Chat"
               firstTitle="Test your agent in isolation with"
               image="/assets/agentverse_chat.svg"
@@ -178,11 +180,11 @@ function LandingPage() {
           </div>
         </section>
 
-        <section>
+        <section id="flockx">
           <Link
-            href="https://docs.flockx.io/home"
+            href="https://flockx.io"
             target="_blank"
-            className="nx-flex nx-gap-1"
+            className="nx-flex nx-gap-1 hover:nx-underline"
           >
             <h2 className="nx-text-[#000] nx-text-[24px]">Flockx</h2>
             <Image
@@ -227,9 +229,9 @@ function LandingPage() {
 
         <section>
           <Link
-            href="https://innovationlab.fetch.ai/resources/docs/1.0.2/agent-creation/uagent-creation"
+            href="https://uagents.fetch.ai"
             target="_blank"
-            className="nx-flex nx-gap-1"
+            className="nx-flex nx-gap-1 hover:nx-underline"
           >
             <h2 className="nx-text-[#000] nx-text-[24px]">uAgents</h2>
             <Image
@@ -244,25 +246,25 @@ function LandingPage() {
           </p>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/1.0.2/examples/other-frameworks/financial-analysis-ai-agent#b-rag-chain-chainpy"
+              href="https://uagents.fetch.ai/docs/guides/langchain_agent"
               mainTitle="RAG agent"
               firstTitle="BUILD A SIMPLE"
               icon="/assets/icon_ragagent.svg"
             />
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/examples/adapters/crewai-adapter-example"
+              href="https://uagents.fetch.ai/docs/guides/chat_protocol"
               mainTitle="ChatProtocol"
               firstTitle="GETTING STARTED WITH"
               icon="/assets/icon_chatprotocol.svg"
             />
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/examples/on-chain-examples/solana-agents"
+              href="https://uagents.fetch.ai/docs/agentverse/mailbox"
               mainTitle="Agent Mailbox"
               firstTitle="Utilise"
               icon="/assets/icon_mailbox.svg"
             />
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/examples/on-chain-examples/solana-agents"
+              href="https://uagents.fetch.ai/docs/examples/openai/swarm"
               mainTitle="Multi Agent System"
               firstTitle="BUILD A SIMPLE"
               icon="/assets/icon_multiagentsystem.svg"
@@ -272,9 +274,9 @@ function LandingPage() {
 
         <section>
           <Link
-            href="https://innovationlab.fetch.ai/resources/docs/1.0.2/agent-creation/uagent-creation"
+            href="https://network.fetch.ai"
             target="_blank"
-            className="nx-flex nx-gap-1"
+            className="nx-flex nx-gap-1 hover:nx-underline"
           >
             <h2 className="nx-text-[#000] nx-text-[24px]">Network</h2>
             <Image
@@ -289,30 +291,42 @@ function LandingPage() {
           </p>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/1.0.2/examples/other-frameworks/financial-analysis-ai-agent#b-rag-chain-chainpy"
+              href="https://network.fetch.ai/docs"
               mainTitle="Ledger"
               firstTitle="Open ledger of AGents and transactions"
               icon="/assets/icon_ledger.svg"
+              displayFlex
+              mainTitleFont="16px"
+              displayTitleReverse
             />
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/examples/adapters/crewai-adapter-example"
+              href="https://network.fetch.ai/docs/introduction/almanac/introduction"
               mainTitle="Almanac"
               firstTitle="Public contract of all agents"
               icon="/assets/icon_almanac.svg"
+              displayFlex
+              mainTitleFont="16px"
+              displayTitleReverse
             />
           </div>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/1.0.2/examples/other-frameworks/financial-analysis-ai-agent#b-rag-chain-chainpy"
+              href="https://network.fetch.ai/docs/guides/cosmpy/installation"
               mainTitle="CosmPy"
               firstTitle="python library for cosmos based blockchains"
               icon="/assets/icon_cosmpy.svg"
+              displayFlex
+              mainTitleFont="16px"
+              displayTitleReverse
             />
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/examples/adapters/crewai-adapter-example"
+              href="https://network.fetch.ai/docs/guides/asi-wallet/mobile-wallet/get-started"
               mainTitle="Wallet"
               firstTitle="Token management and agent interaction"
               icon="/assets/icon_wallet.svg"
+              displayFlex
+              mainTitleFont="16px"
+              displayTitleReverse
             />
           </div>
         </section>
