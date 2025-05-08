@@ -18,6 +18,7 @@ const config: DocsThemeConfig = {
   search: {
     placeholder: "Search in documentation",
   },
+  darkMode: false,
   head: (
     <>
       <meta name="msapplication-TileColor" content="#fff" />

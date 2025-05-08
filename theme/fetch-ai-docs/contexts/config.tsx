@@ -82,6 +82,7 @@ export const ConfigProvider = ({
   value: Context;
 }): ReactElement => {
   const [menu, setMenu] = useState(false);
+
   // Merge only on first load
   if (!theme) {
     theme = {
@@ -122,9 +123,10 @@ export const ConfigProvider = ({
     <ThemeProvider
       attribute="class"
       disableTransitionOnChange
-      defaultTheme={nextThemes.defaultTheme}
+      defaultTheme="light"
       storageKey={nextThemes.storageKey}
-      forcedTheme={nextThemes.forcedTheme}
+      forcedTheme="light"
+      enableSystem={false}
     >
       <ConfigContext.Provider value={extendedConfig}>
         <MenuProvider value={{ menu, setMenu }}>{children}</MenuProvider>
