@@ -212,7 +212,7 @@ function LandingPage() {
           </div>
         </section>
 
-        <section id="uAgents">
+        <section id="ugents-section">
           <Link
             href="https://uagents.fetch.ai"
             target="_blank"
