@@ -22,6 +22,7 @@ function InfoCard({
   return (
     <Link
       href={href}
+      id={mainTitle}
       target="_blank"
       className={`boxColor nx-rounded-lg nx-p-6 hover:nx-bg-[#E5E7EC] nx-flex ${displayFlex ? "nx-flex-row" : "nx-flex-col"} nx-gap-6 ${displayFlex ? "nx-justify-start" : "nx-justify-between"} nx-w-full`}
     >

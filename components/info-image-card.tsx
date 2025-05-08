@@ -16,6 +16,7 @@ function InfoImageCard({
   return (
     <Link
       href={href}
+      id={mainTitle}
       target="_blank"
       className="boxColor nx-rounded-lg nx-pt-6 hover:nx-bg-[#E5E7EC] nx-flex nx-flex-col nx-justify-between nx-w-full h-full"
     >

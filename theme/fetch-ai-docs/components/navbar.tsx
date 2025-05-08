@@ -134,7 +134,7 @@ export function Navbar({ items }: NavBarProps): ReactElement {
             )}
           </div>
 
-          <div className="nx-flex nx-justify-center menu-hide nx-gap-2 nx-mb-2 nx-menu-height nx-items-center">
+          <div className="nx-flex nx-gap-2 nx-items-center">
             {items.map((pageOrMenu, index) => {
               if (pageOrMenu.display === "hidden") return null;
 
@@ -180,7 +180,7 @@ export function Navbar({ items }: NavBarProps): ReactElement {
                   key={href}
                   className={cn(
                     classes.link,
-                    "nx-relative  nx-hidden nx-whitespace-nowrap menu-container  md:nx-inline-block",
+                    "nx-relative  nx-hidden nx-whitespace-nowrap  md:nx-inline-block",
                     !isActive || page.newWindow
                       ? classes.inactive
                       : classes.active,
@@ -192,7 +192,7 @@ export function Navbar({ items }: NavBarProps): ReactElement {
                 >
                   <span
                     className={`${
-                      hoveredLink === href && !isActive ? "link-text " : ""
+                      hoveredLink === href && !isActive ? " " : ""
                     } nx-absolute nx-inset-x-0 nx-text-sm nx-font-medium nx-text-center nx-text-[#000] nx-opacity-80`}
                   >
                     {page.title}

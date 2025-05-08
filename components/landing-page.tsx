@@ -64,7 +64,7 @@ function LandingPage() {
                 />
               </div>
               <Link
-                href="/concepts"
+                href="https://fetch.ai/blog/introducing-agent-rank-improving-agent-search-through-network-centrality"
                 target="_blank"
                 className="nx-w-full boxColor nx-rounded-lg nx-p-6 hover:nx-bg-[#E5E7EC] nx-flex nx-flex-col nx-gap-6 nx-justify-between"
               >
@@ -79,10 +79,10 @@ function LandingPage() {
                 </div>
                 <div className="nx-flex nx-flex-col nx-gap-1">
                   <div className="nx-text-[#000] nx-text-[16px] nx-font-medium">
-                    Agentic Search
+                    Get Found: Improve Agent Visibility
                   </div>
                   <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase geist-mono-font-family nx-opacity-60 nx-leading-[150%]">
-                    provide text for agentic search
+                    Improve your agent’s visibility and boost ranking
                   </div>
                 </div>
               </Link>
@@ -199,35 +199,35 @@ function LandingPage() {
           </p>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
             <InfoImageCard
-              href="https://agentverse.ai/docs/templates"
+              href="https://flockx.io/docs"
               mainTitle="No-code Agent Studio"
               firstTitle="Text to be provided"
               image="/assets/agentverse_templates.svg"
             />
             <InfoImageCard
-              href="https://agentverse.ai/docs/templates"
+              href="https://flockx.io/docs"
               mainTitle="Knowledge Management"
               firstTitle="Text to be provided"
               image="/assets/agentverse_chat.svg"
             />
           </div>
-          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
+          {/* <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
             <InfoImageCard
-              href="https://agentverse.ai/docs/quickstart"
+              href="https://flockx.io/docs"
               mainTitle="Integrations & Deployments"
               firstTitle="Text to be provided"
               image="/assets/agentverse_templates.svg"
             />
             <InfoImageCard
-              href="https://agentverse.ai/docs/marketplace"
+              href="https://flockx.io/docs"
               mainTitle="Multi-agent Collaboration"
               firstTitle="Text to be provided"
               image="/assets/agentverse_templates.svg"
             />
-          </div>
+          </div> */}
         </section>
 
-        <section>
+        <section id="uAgents">
           <Link
             href="https://uagents.fetch.ai"
             target="_blank"
@@ -272,7 +272,7 @@ function LandingPage() {
           </div>
         </section>
 
-        <section>
+        <section id="network">
           <Link
             href="https://network.fetch.ai"
             target="_blank"
