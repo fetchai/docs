@@ -1,9 +1,9 @@
-import { Menu, Transition } from "@headlessui/react";
+// import { Menu, Transition } from "@headlessui/react";
 import cn from "clsx";
 import { useFSRoute } from "nextra/hooks";
-import { ArrowRightIcon, MenuIcon } from "nextra/icons";
+import { MenuIcon } from "nextra/icons";
 import type { Item, MenuItem, PageItem } from "nextra/normalize-pages";
-import type { ReactElement, ReactNode } from "react";
+import type { ReactElement } from "react";
 import { useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
@@ -26,58 +26,72 @@ const classes = {
   ),
 };
 
-function NavbarMenu({
-  className,
-  menu,
-  children,
-}: {
-  className?: string;
-  menu: MenuItem;
-  children: ReactNode;
-}): ReactElement {
-  const { items, route } = menu;
-  const routes = Object.fromEntries(
-    (menu.children || []).map((route) => [route.name, route]),
-  );
+// function NavbarMenu({
+//   className,
+//   menu,
+//   children,
+// }: {
+//   className?: string;
+//   menu: MenuItem;
+//   children: ReactNode;
+// }): ReactElement {
+//   const { items, route } = menu;
+//   const routes = Object.fromEntries(
+//     (menu.children || []).map((route) => [route.name, route]),
+//   );
 
-  return (
-    <div className="nx-relative nx-inline-block">
-      <Menu>
-        <Menu.Button
-          className={cn(
-            className,
-            "-nx-ml-2 nx-hidden nx-items-center nx-whitespace-nowrap nx-rounded nx-p-2 md:nx-inline-flex",
-            classes.inactive,
-          )}
-        >
-          {children}
-        </Menu.Button>
-        <Transition
-          leave="nx-transition-opacity"
-          leaveFrom="nx-opacity-100"
-          leaveTo="nx-opacity-0"
-        >
-          <Menu.Items className="nx-absolute nx-right-0 nx-z-20 nx-mt-1 nx-max-h-64 nx-min-w-full nx-overflow-auto nx-rounded-md nx-ring-1 nx-ring-black/5 nx-bg-white nx-py-1 nx-text-sm nx-shadow-lg dark:nx-ring-white/20 dark:nx-bg-neutral-800">
-            {Object.entries(items || {}).map(([key, item]) => (
-              <Menu.Item key={key}>
-                <Anchor
-                  href={item.href || routes[key]?.route || route + "/" + key}
-                  className={cn(
-                    "nx-relative nx-hidden nx-w-full nx-select-none nx-whitespace-nowrap nx-text-gray-600 hover:nx-text-gray-900 dark:nx-text-gray-400 dark:hover:nx-text-gray-100 md:nx-inline-block",
-                    "nx-py-1.5 nx-transition-colors ltr:nx-pl-3 ltr:nx-pr-9 rtl:nx-pr-3 rtl:nx-pl-9",
-                  )}
-                  newWindow={item.newWindow}
-                >
-                  {item.title || key}
-                </Anchor>
-              </Menu.Item>
-            ))}
-          </Menu.Items>
-        </Transition>
-      </Menu>
-    </div>
-  );
-}
+//   return (
+//     <div className="nx-relative nx-inline-block">
+//       <Menu>
+//         <Menu.Button
+//           className={cn(
+//             className,
+//             "-nx-ml-2 nx-hidden nx-items-center nx-whitespace-nowrap nx-rounded nx-p-2 md:nx-inline-flex",
+//             classes.inactive,
+//           )}
+//         >
+//           {children}
+//         </Menu.Button>
+//         <Transition
+//           leave="nx-transition-opacity"
+//           leaveFrom="nx-opacity-100"
+//           leaveTo="nx-opacity-0"
+//         >
+//           <Menu.Items className="nx-absolute nx-right-0 nx-z-20 nx-mt-1 nx-max-h-64 nx-min-w-full nx-overflow-auto nx-rounded-md nx-ring-1 nx-ring-black/5 nx-bg-white nx-py-1 nx-text-sm nx-shadow-lg dark:nx-ring-white/20 dark:nx-bg-neutral-800">
+//             {Object.entries(items || {}).map(([key, item]) => (
+//               <Menu.Item key={key}>
+//                 <Anchor
+//                   href={item.href || routes[key]?.route || route + "/" + key}
+//                   className={cn(
+//                     "nx-relative nx-hidden nx-w-full nx-select-none nx-whitespace-nowrap nx-text-gray-600 hover:nx-text-gray-900 dark:nx-text-gray-400 dark:hover:nx-text-gray-100 md:nx-inline-block",
+//                     "nx-py-1.5 nx-transition-colors ltr:nx-pl-3 ltr:nx-pr-9 rtl:nx-pr-3 rtl:nx-pl-9",
+//                   )}
+//                   newWindow={item.newWindow}
+//                 >
+//                   {item.title || key}
+//                 </Anchor>
+//               </Menu.Item>
+//             ))}
+//           </Menu.Items>
+//         </Transition>
+//       </Menu>
+//     </div>
+//   );
+// }
+
+const scrollToSection = (sectionId: string, offset = 100) => {
+  const section = document.querySelector(`${sectionId}`);
+
+  if (section) {
+    const sectionPosition =
+      section.getBoundingClientRect().top + window.pageYOffset - offset;
+
+    window.scrollTo({
+      top: sectionPosition,
+      behavior: "smooth",
+    });
+  }
+};
 
 export function Navbar({ items }: NavBarProps): ReactElement {
   const config = useConfig();
@@ -139,7 +153,7 @@ export function Navbar({ items }: NavBarProps): ReactElement {
             )}
           </div>
 
-          <div className="nx-flex nx-gap-2 nx-items-center">
+          {/* <div className="nx-flex nx-gap-2 nx-items-center">
             {items.map((pageOrMenu, index) => {
               if (pageOrMenu.display === "hidden") return null;
 
@@ -206,6 +220,52 @@ export function Navbar({ items }: NavBarProps): ReactElement {
                     {page.title}
                   </span>
                 </Anchor>
+              );
+            })}
+          </div> */}
+          <div className="nx-flex nx-gap-2 nx-items-center">
+            {items.map((pageOrMenu, index) => {
+              const page = pageOrMenu as PageItem;
+              let href = page.href || page.route || "#";
+
+              // If it's a directory
+              if (page.children) {
+                href =
+                  (page.withIndexPage ? page.route : page.firstChildRoute) ||
+                  href;
+              }
+
+              const isActive =
+                page.route === activeRoute ||
+                activeRoute.startsWith(page.route + "/");
+              return (
+                <div
+                  id={page.title}
+                  onMouseOver={() => setHoveredLink(href)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                  onClick={() => {
+                    scrollToSection(href);
+                  }}
+                  key={href}
+                  className={cn(
+                    classes.link,
+                    "nx-relative  nx-hidden nx-whitespace-nowrap  md:nx-inline-block nx-cursor-pointer",
+                    isActive ? classes.active : classes.inactive,
+                    hoveredLink === href && !isActive ? "link-hover" : "",
+                    index === 0 && !isActive && "-nx-ml-6",
+                  )}
+                >
+                  <span
+                    className={`${
+                      hoveredLink === href && !isActive ? " " : ""
+                    } nx-absolute nx-inset-x-0 nx-text-sm nx-font-medium nx-text-center nx-text-[#000] nx-opacity-80`}
+                  >
+                    {page.title}
+                  </span>
+                  <span className="nx-invisible nx-text-base">
+                    {page.title}
+                  </span>
+                </div>
               );
             })}
           </div>

@@ -74,9 +74,9 @@ function LandingPage() {
             </div>
           </div>
         </section>
-        <section id="innovationlab-resources">
+        <section id="innovationlab">
           <Link
-            href="https://innovationlab.fetch.ai/resources"
+            href="https://innovationlab.fetch.ai"
             target="_blank"
             className="nx-flex nx-gap-1 hover:nx-underline"
           >
