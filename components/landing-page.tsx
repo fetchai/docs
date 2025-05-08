@@ -3,8 +3,11 @@ import styles from "./landing.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import leading_image from "../src/images/landing/leading/asi1.svg";
+import flockx_collab from "../src/images/flockx_collab.png";
+import flockx_no_code from "../src/images/flockx_nocodeagentstudio.png";
 import InfoCard from "./info-card";
 import InfoImageCard from "./info-image-card";
+import InfoImagePngCard from "./info-image-card-png";
 
 function LandingPage() {
   return (
@@ -183,31 +186,31 @@ function LandingPage() {
             Multiagent systems made simple with
           </p>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
-            <InfoImageCard
-              href="https://flockx.io/docs"
+            <InfoImagePngCard
+              href="https://docs.flockx.io/"
               mainTitle="No-code Agent Studio"
               firstTitle="business agent in just 2 clicks"
-              image="/assets/agentverse_templates.svg"
+              image={flockx_no_code.src}
             />
             <InfoImageCard
-              href="https://flockx.io/docs"
+              href="https://docs.flockx.io/"
               mainTitle="Knowledge Management"
               firstTitle="Give your agent your expertise, and knowledge "
-              image="/assets/agentverse_chat.svg"
+              image="/assets/flockx_knowledgemanagement.svg"
             />
           </div>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
             <InfoImageCard
-              href="https://flockx.io/docs"
+              href="https://docs.flockx.io/"
               mainTitle="Deployments & Integrations"
               firstTitle="Transform your presence with 1 click agent superpowers"
-              image="/assets/agentverse_templates.svg"
+              image="/assets/flockx_integrations.svg"
             />
-            <InfoImageCard
-              href="https://flockx.io/docs"
+            <InfoImagePngCard
+              href="https://docs.flockx.io/"
               mainTitle="Multi-agent Collaboration"
               firstTitle="Agents that collaborate, businesses that dominate"
-              image="/assets/agentverse_templates.svg"
+              image={flockx_collab.src}
             />
           </div>
         </section>
