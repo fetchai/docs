@@ -28,7 +28,7 @@ function InfoImageCard({
           {mainTitle}
         </div>
       </div>
-      <div className="nx-rounded-lg nx-w-full nx-h-full">
+      <div className="nx-rounded-lg nx-w-full nx-h-full nx-pl-6 nx-pt-6">
         <Image width={494} height={266} src={`/docs/${image}`} alt={image} />
       </div>
     </Link>
