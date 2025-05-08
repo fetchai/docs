@@ -7,7 +7,7 @@ import type { ReactElement, ReactNode } from "react";
 import { useConfig, useMenu } from "../contexts";
 import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { Gear } from "src/icons/shared-icons";
 // import { ThemeSwitcher } from "./theme-switcher";
 
@@ -84,6 +84,7 @@ export function Navbar({ items }: NavBarProps): ReactElement {
   const activeRoute = useFSRoute();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { menu, setMenu } = useMenu();
+
   // const [openOs, setOpenOs] = useState<boolean>(false);
   // const dropdownRef = useRef<HTMLDivElement>(null);
   // useEffect(() => {
@@ -103,6 +104,10 @@ export function Navbar({ items }: NavBarProps): ReactElement {
   // }, [dropdownRef]);
 
   // const handleOpenClose = () => setOpenOs((prev) => !prev);
+
+  useEffect(() => {
+    localStorage.setItem("theme", "light");
+  }, []);
 
   return (
     <div className="nextra-nav-container nx-sticky nx-top-0 nx-z-20 nx-w-full nx-bg-transparent print:nx-hidden">

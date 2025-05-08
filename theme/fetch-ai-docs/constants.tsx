@@ -247,8 +247,8 @@ export const DEFAULT_THEME: DocsThemeConfig = {
   },
   navigation: true,
   nextThemes: {
-    defaultTheme: "Light",
-    forcedTheme: "Light",
+    defaultTheme: "light",
+    forcedTheme: "light",
     storageKey: "theme",
   },
   notFound: {

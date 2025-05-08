@@ -63,29 +63,14 @@ function LandingPage() {
                   mainTitleFont="16px"
                 />
               </div>
-              <Link
+              <InfoCard
                 href="https://fetch.ai/blog/introducing-agent-rank-improving-agent-search-through-network-centrality"
-                target="_blank"
-                className="nx-w-full boxColor nx-rounded-lg nx-p-6 hover:nx-bg-[#E5E7EC] nx-flex nx-flex-col nx-gap-6 nx-justify-between"
-              >
-                <div className="nx-rounded-lg nx-w-[48px] nx-h-[48px]">
-                  <Image
-                    width={48}
-                    height={48}
-                    src={`/docs/Logo.png`}
-                    alt="logo"
-                    className="nx-rounded-lg"
-                  />
-                </div>
-                <div className="nx-flex nx-flex-col nx-gap-1">
-                  <div className="nx-text-[#000] nx-text-[16px] nx-font-medium">
-                    Get Found: Improve Agent Visibility
-                  </div>
-                  <div className="nx-text-[#000] nx-text-[12px] nx-font-medium nx-uppercase geist-mono-font-family nx-opacity-60 nx-leading-[150%]">
-                    Improve your agent’s visibility and boost ranking
-                  </div>
-                </div>
-              </Link>
+                mainTitle="Get Found: Improve Agent Visibility"
+                firstTitle="Improve your agent’s visibility and boost ranking"
+                icon="/assets/icon_agenticsearch.svg"
+                mainTitleFont="16px"
+                displayTitleReverse
+              />
             </div>
           </div>
         </section>
