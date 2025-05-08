@@ -46,8 +46,8 @@ function LandingPage() {
                 World&apos;s first Web3-native LLM designed for Agentic AI.
               </div>
             </Link>
-            <div className="nx-w-full nx-gap-6 md:nx-w-1/2 nx-flex nx-flex-col">
-              <div className="nx-flex nx-flex-col nx-gap-6 md:nx-flex-row nx-w-full">
+            <div className="nx-w-full nx-gap-6 md:nx-w-1/2 nx-flex nx-flex-col md:nx-h-[384px]">
+              <div className="nx-flex nx-flex-col nx-gap-6 md:nx-flex-row nx-w-full nx-h-full">
                 <InfoCard
                   href="https://uagents.fetch.ai/docs/examples/asi-1"
                   mainTitle="Compatible Agent with Agentverse"
@@ -186,30 +186,30 @@ function LandingPage() {
             <InfoImageCard
               href="https://flockx.io/docs"
               mainTitle="No-code Agent Studio"
-              firstTitle="Text to be provided"
+              firstTitle="business agent in just 2 clicks"
               image="/assets/agentverse_templates.svg"
             />
             <InfoImageCard
               href="https://flockx.io/docs"
               mainTitle="Knowledge Management"
-              firstTitle="Text to be provided"
+              firstTitle="Give your agent your expertise, and knowledge "
               image="/assets/agentverse_chat.svg"
             />
           </div>
-          {/* <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
+          <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
             <InfoImageCard
               href="https://flockx.io/docs"
-              mainTitle="Integrations & Deployments"
-              firstTitle="Text to be provided"
+              mainTitle="Deployments & Integrations"
+              firstTitle="Transform your presence with 1 click agent superpowers"
               image="/assets/agentverse_templates.svg"
             />
             <InfoImageCard
               href="https://flockx.io/docs"
               mainTitle="Multi-agent Collaboration"
-              firstTitle="Text to be provided"
+              firstTitle="Agents that collaborate, businesses that dominate"
               image="/assets/agentverse_templates.svg"
             />
-          </div> */}
+          </div>
         </section>
 
         <section id="uAgents">

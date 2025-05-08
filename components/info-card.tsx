@@ -24,7 +24,7 @@ function InfoCard({
       href={href}
       id={mainTitle}
       target="_blank"
-      className={`boxColor nx-rounded-lg nx-p-6 hover:nx-bg-[#E5E7EC] nx-flex ${displayFlex ? "nx-flex-row" : "nx-flex-col"} nx-gap-6 ${displayFlex ? "nx-justify-start" : "nx-justify-between"} nx-w-full`}
+      className={`boxColor md:nx-h-full nx-rounded-lg nx-p-6 hover:nx-bg-[#E5E7EC] nx-flex ${displayFlex ? "nx-flex-row" : "nx-flex-col"} nx-gap-6 ${displayFlex ? "nx-justify-start" : "nx-justify-between"} nx-w-full`}
     >
       <div className="nx-bg-white nx-rounded-lg nx-py-3 nx-w-[48px] nx-h-[48px]">
         <Image
