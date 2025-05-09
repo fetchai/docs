@@ -191,7 +191,7 @@ export const DEFAULT_THEME: DocsThemeConfig = {
       </>
     ),
   },
-  darkMode: true,
+  darkMode: false,
   direction: "ltr",
   docsRepositoryBase: "https://github.com/shuding/nextra",
   editLink: {
@@ -247,8 +247,8 @@ export const DEFAULT_THEME: DocsThemeConfig = {
   },
   navigation: true,
   nextThemes: {
-    defaultTheme: "Light",
-    forcedTheme: "Light",
+    defaultTheme: "light",
+    forcedTheme: "light",
     storageKey: "theme",
   },
   notFound: {

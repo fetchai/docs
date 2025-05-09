@@ -147,6 +147,20 @@ export const FeatureGuideTabs = ({ centerMode }: { centerMode?: boolean }) => {
           path: "/guides/agentverse/utilising-the-mailbox",
         },
         {
+          title:
+            "Agentverse Functions: register your Agent Functions on the Agentverse!",
+          description:
+            "Discover how to register and make discoverable Agents' Functions within the Agentverse and DeltaV!",
+          path: "/guides/agentverse/registering-agent-services",
+        },
+        {
+          title:
+            "Agentverse Functions: register a coin toss agent as a Function",
+          description:
+            "Create and make an coin toss Function discoverable on the Agentverse and DeltaV!",
+          path: "/guides/agentverse/registering-agent-coin-toss",
+        },
+        {
           title: "Agentverse allowed imports",
           description:
             "Understand what modules are provided within the Agentverse platform.",
