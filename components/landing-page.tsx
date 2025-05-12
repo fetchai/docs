@@ -79,7 +79,7 @@ function LandingPage() {
         </section>
         <section id="innovationlab">
           <Link
-            href="https://innovationlab.fetch.ai"
+            href="https://innovationlab.fetch.ai/resources/docs/intro"
             target="_blank"
             className="nx-flex nx-gap-1 hover:nx-underline"
           >
@@ -170,7 +170,7 @@ function LandingPage() {
 
         <section id="flockx">
           <Link
-            href="https://flockx.io"
+            href="https://docs.flockx.io/home"
             target="_blank"
             className="nx-flex nx-gap-1 hover:nx-underline"
           >
@@ -217,7 +217,7 @@ function LandingPage() {
 
         <section id="ugents-section">
           <Link
-            href="https://uagents.fetch.ai"
+            href="https://uagents.fetch.ai/docs"
             target="_blank"
             className="nx-flex nx-gap-1 hover:nx-underline"
           >
@@ -262,7 +262,7 @@ function LandingPage() {
 
         <section id="network">
           <Link
-            href="https://network.fetch.ai"
+            href="https://network.fetch.ai/docs"
             target="_blank"
             className="nx-flex nx-gap-1 hover:nx-underline"
           >
