@@ -122,7 +122,7 @@ function LandingPage() {
 
         <section id="agentverse">
           <Link
-            href="https://agentverse.ai/docs"
+            href="https://docs.agentverse.ai/docs"
             target="_blank"
             className="nx-flex nx-gap-1 hover:nx-underline"
           >
@@ -140,7 +140,7 @@ function LandingPage() {
           </p>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
             <InfoImageCard
-              href="https://agentverse.ai/docs/templates"
+              href="https://docs.agentverse.ai/docs/templates"
               mainTitle="Agentverse Templates"
               firstTitle="Explore, ideate, and learn WITH"
               image="/assets/agentverse_templates.svg"
@@ -154,13 +154,13 @@ function LandingPage() {
           </div>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
             <InfoImageCard
-              href="https://agentverse.ai/docs/quickstart"
+              href="https://docs.agentverse.ai/docs/quickstart"
               mainTitle="Deploy and host your agents"
               firstTitle="A simple guide to help you"
               image="/assets/agentverse_deployhost.svg"
             />
             <InfoImageCard
-              href="https://agentverse.ai/docs/marketplace"
+              href="https://docs.agentverse.ai/docs/marketplace"
               mainTitle="The Marketplace"
               firstTitle="Search and Discover AGENTS with"
               image="/assets/agentverse_marketplace.svg"
