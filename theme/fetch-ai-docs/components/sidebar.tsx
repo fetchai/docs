@@ -22,7 +22,6 @@ import { renderComponent } from "../utils";
 import { Anchor } from "./anchor";
 import { Collapse } from "./collapse";
 import { WITH_INDEXED_PAGES } from "../constants";
-import ChatWithUs from "components/chat/chat-with-us";
 
 const TreeState: Record<string, boolean> = Object.create(null);
 
@@ -493,9 +492,9 @@ export function Sidebar({
               </div>
             </OnFocusItemContext.Provider>
           </FocusedItemContext.Provider>
-          <div className="show-on-small">
+          {/* <div className="show-on-small">
             <ChatWithUs />
-          </div>
+          </div> */}
         </aside>
       </div>
     </>
