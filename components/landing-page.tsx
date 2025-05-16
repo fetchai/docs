@@ -54,12 +54,12 @@ function LandingPage() {
                 <InfoCard
                   href="https://uagents.fetch.ai/docs/examples/asi-1"
                   mainTitle="Compatible Agent with Agentverse"
-                  firstTitle="buIld 0 → ASI:One"
+                  firstTitle="Connect agent to ASI:One"
                   icon="/assets/iconlogo_agentverse.svg"
                   mainTitleFont="16px"
                 />
                 <InfoCard
-                  href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
+                  href="https://docs.flockx.io/documentation/guides/agent-studio"
                   mainTitle="Compatible No-code Agents with Flockx"
                   firstTitle="Zero to ASI:One in 60s"
                   icon="/assets/iconlogo_flockx.svg"
