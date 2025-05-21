@@ -2,11 +2,19 @@
 import "../styles/globals.css";
 import Script from "next/script";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 // ID is fetched from .env.local created at project root to maintain security + ability to easily change in the future
 export default function MyApp({ Component, pageProps }) {
+  const router = useRouter();
   const googleAnalyticsTrackingId =
     process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID;
+
+  useEffect(() => {
+    window.location.href =
+      "https://innovationlab.fetch.ai/resources/docs/intro";
+  }, []);
+
   // useEffect webhook used to dynamically add GA to pages
   useEffect(() => {
     if (googleAnalyticsTrackingId) {
