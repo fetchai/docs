@@ -8,6 +8,7 @@ import flockx_no_code from "../src/images/flockx_nocodeagentstudio.png";
 import InfoCard from "./info-card";
 import InfoImageCard from "./info-image-card";
 import InfoImagePngCard from "./info-image-card-png";
+import ChatWithUs from "./chat/chat-with-us";
 
 function LandingPage() {
   return (
@@ -101,7 +102,7 @@ function LandingPage() {
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
             <InfoCard
               href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
-              mainTitle="AS1:One"
+              mainTitle="ASI:One"
               firstTitle="Build an Agent Compatible with"
               icon="/assets/iconlogo_asione.svg"
             />
@@ -319,6 +320,8 @@ function LandingPage() {
           </div>
         </section>
       </section>
+
+      <ChatWithUs />
     </section>
   );
 }
