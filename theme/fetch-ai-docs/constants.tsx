@@ -268,8 +268,8 @@ export const DEFAULT_THEME: DocsThemeConfig = {
     ),
   },
   search: {
-    component: function Search({ directories }) {
-      return <InstantAlgoliaSearch directories={directories} />;
+    component: function Search() {
+      return <InstantAlgoliaSearch />;
     },
     emptyResult: (
       <span className="nx-block nx-select-none nx-p-8 nx-text-center nx-text-sm nx-text-gray-400">

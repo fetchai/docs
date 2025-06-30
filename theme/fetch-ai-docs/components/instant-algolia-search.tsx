@@ -12,16 +12,11 @@ import { getComponents } from "../mdx-components";
 import { useConfig } from "../contexts";
 import { remark } from "remark";
 import remarkHTML from "remark-html";
-import type { Item as NormalItem } from "nextra/normalize-pages";
 import { Input } from "./input";
 import Modal from "./search-model";
 import { DarkShortcut, Shortcut } from "src/icons/shared-icons";
 import { useTheme } from "next-themes";
 import { ThemeMode } from "../helpers";
-
-type MyItem = NormalItem & {
-  tags?: string[];
-};
 
 const searchClient = algoliasearch(
   `4MNO2TMYQ5`, //4MNO2TMYQ5
@@ -33,11 +28,7 @@ const markdownToHTML = (markdownString) => {
   return remark().use(remarkHTML).processSync(markdownString).toString();
 };
 
-export const InstantAlgoliaSearch = ({
-  directories,
-}: {
-  directories: MyItem[];
-}) => {
+export const InstantAlgoliaSearch = () => {
   const config = useConfig();
   const router = useRouter();
   const [modalIsOpen, setModalIsOpen] = useState(false);
