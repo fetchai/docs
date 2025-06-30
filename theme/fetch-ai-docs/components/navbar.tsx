@@ -270,11 +270,11 @@ export function Navbar({ items }: NavBarProps): ReactElement {
             })}
           </div>
           <div className="nx-flex nx-items-center">
-            {/* <div className="nx-hidden nx-m-l-auto nx-search-width search-bar-desktop md:nx-inline-block">
+            <div className="nx-hidden nx-m-l-auto nx-search-width search-bar-desktop md:nx-inline-block">
               {renderComponent(config.search.component, {
-                directories: flatDirectories,
+                directories: [],
               })}
-            </div> */}
+            </div>
             {/* <div ref={dropdownRef} className="nx-relative">
               <Gear onClickHandler={handleOpenClose}/>
               {openOs && (
@@ -306,7 +306,7 @@ export function Navbar({ items }: NavBarProps): ReactElement {
         </div>
         {/* <div className="search-bar-mobile nx-mt-6 nx-mb-2">
           {renderComponent(config.search.component, {
-            directories: flatDirectories,
+            directories: [],
             // className: "md:nx-hidden nx-mt-6 nx-mb-2",
           })}
         </div> */}
