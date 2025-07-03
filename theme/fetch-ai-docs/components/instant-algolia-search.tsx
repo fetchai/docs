@@ -19,10 +19,10 @@ import { useTheme } from "next-themes";
 import { ThemeMode } from "../helpers";
 
 const searchClient = algoliasearch(
-  `4MNO2TMYQ5`, //4MNO2TMYQ5
-  `79f05f43517b76c1b8af1c6c667dbaba`,
+  `${process.env.NEXT_PUBLIC_ALGOLIA_APP_ID}`,
+  `${process.env.NEXT_PUBLIC_ALGOLIA_API_KEY}`,
 );
-const indexName = `Fetch ai Docs`;
+const indexName = `${process.env.NEXT_PUBLIC_ALGOLIA_INDEX}`;
 
 const markdownToHTML = (markdownString) => {
   return remark().use(remarkHTML).processSync(markdownString).toString();
