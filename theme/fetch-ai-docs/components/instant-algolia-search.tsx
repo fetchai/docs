@@ -53,10 +53,10 @@ export const InstantAlgoliaSearch = () => {
           }),
         });
         if (!response.ok) {
-          console.log("---something went wrong----");
+          console.log("something went wrong");
         }
       } catch (error) {
-        console.log("---oops, something went wrong----", error);
+        console.log("oops, something went wrong", error);
       }
     }
 
