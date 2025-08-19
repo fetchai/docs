@@ -101,7 +101,7 @@ function LandingPage() {
           </p>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
             <InfoCard
-              href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi1-compatible-uagents"
+              href="https://innovationlab.fetch.ai/resources/docs/examples/chat-protocol/asi-compatible-uagents"
               mainTitle="ASI:One"
               firstTitle="Build an Agent Compatible with"
               icon="/assets/iconlogo_asione.svg"
