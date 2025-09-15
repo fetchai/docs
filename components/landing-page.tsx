@@ -60,7 +60,7 @@ function LandingPage() {
                   mainTitleFont="16px"
                 />
                 <InfoCard
-                  href="https://docs.flockx.io/documentation/guides/agent-studio"
+                  href="https://docs.flockx.io/documentation/getting-started/create-agent"
                   mainTitle="Compatible No-code Agents with Flockx"
                   firstTitle="Zero to ASI:One in 60s"
                   icon="/assets/iconlogo_flockx.svg"
@@ -123,7 +123,7 @@ function LandingPage() {
 
         <section id="agentverse">
           <Link
-            href="https://docs.agentverse.ai/docs"
+            href="https://docs.agentverse.ai/documentation"
             target="_blank"
             className="nx-flex nx-gap-1 hover:nx-underline"
           >
@@ -140,12 +140,12 @@ function LandingPage() {
             and agent hosting
           </p>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
-            <InfoImageCard
+            {/* <InfoImageCard
               href="https://docs.agentverse.ai/docs/templates"
               mainTitle="Agentverse Templates"
               firstTitle="Explore, ideate, and learn WITH"
               image="/assets/agentverse_templates.svg"
-            />
+            /> */}
             <InfoImageCard
               href="https://uagents.fetch.ai/docs/examples/asi-1"
               mainTitle="Agentverse Chat"
@@ -155,13 +155,13 @@ function LandingPage() {
           </div>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-6 nx-w-full">
             <InfoImageCard
-              href="https://docs.agentverse.ai/docs/quickstart"
+              href="https://docs.agentverse.ai/documentation/getting-started/overview"
               mainTitle="Deploy and host your agents"
               firstTitle="A simple guide to help you"
               image="/assets/agentverse_deployhost.svg"
             />
             <InfoImageCard
-              href="https://docs.agentverse.ai/docs/marketplace"
+              href="https://docs.agentverse.ai/documentation/search-for-agents/find-ai-agents"
               mainTitle="The Marketplace"
               firstTitle="Search and Discover AGENTS with"
               image="/assets/agentverse_marketplace.svg"
