@@ -140,12 +140,12 @@ function LandingPage() {
             and agent hosting
           </p>
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6 nx-mt-8 nx-w-full">
-            {/* <InfoImageCard
-              href="https://docs.agentverse.ai/docs/templates"
+            <InfoImageCard
+              href="https://docs.agentverse.ai/documentation/advanced-usages/hosted-agents#create-hosted-agents"
               mainTitle="Agentverse Templates"
               firstTitle="Explore, ideate, and learn WITH"
               image="/assets/agentverse_templates.svg"
-            /> */}
+            />
             <InfoImageCard
               href="https://uagents.fetch.ai/docs/examples/asi-1"
               mainTitle="Agentverse Chat"
