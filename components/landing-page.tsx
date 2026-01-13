@@ -253,8 +253,8 @@ function LandingPage() {
               icon="/assets/icon_mailbox.svg"
             />
             <InfoCard
-              href="https://uagents.fetch.ai/docs/examples/openai/swarm"
-              mainTitle="Multi Agent System"
+              href="https://uagents.fetch.ai/docs/examples/asi-1"
+              mainTitle="ASI1 Agent"
               firstTitle="BUILD A SIMPLE"
               icon="/assets/icon_multiagentsystem.svg"
             />
