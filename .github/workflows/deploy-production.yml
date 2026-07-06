@@ -46,10 +46,18 @@ jobs:
           NEWSLETTER_BASE_URL: ${{ secrets.NEWSLETTER_BASE_URL }}
           SENDER_TOKEN: ${{ secrets.SENDER_TOKEN }}
 
+      - name: Generate GitHub App token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ secrets.FETCHAI_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.FETCHAI_DISPATCH_APP_KEY }}
+          repositories: infra-production-deployment
+
       - name: Trigger Image Update
         run: |
           curl -H "Accept: application/vnd.github.everest-preview+json" \
-          -H "Authorization: token ${{ secrets.ORG_DISPATCH_RENDER_TOKEN }}" \
+          -H "Authorization: token ${{ steps.app-token.outputs.token }}" \
           --request POST \
           --data '{"event_type": "docs-build", "client_payload": {"image": "${{ env.IMAGE }}", "image_path": "${{ env.IMAGE_PATH }}", "key_path": "${{ env.KEY_PATH }}", "tag": "${{ env.TAG }}", "commit_message_service": "${{ env.SERVICE_NAME }}"}}' \
           ${{ env.TARGET_REPO }}
