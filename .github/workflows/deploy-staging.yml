@@ -46,10 +46,18 @@ jobs:
           NEWSLETTER_BASE_URL: ${{ secrets.NEWSLETTER_BASE_URL }}
           SENDER_TOKEN: ${{ secrets.SENDER_TOKEN }}
 
+      - name: Generate GitHub App token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ secrets.FETCHAI_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.FETCHAI_DISPATCH_APP_KEY }}
+          repositories: infra-sandbox-london-b-deployment
+
       - name: Repository Dispatch
         run: |
           curl -f -H "Accept: application/vnd.github.everest-preview+json" \
-          -H "Authorization: token ${{ secrets.ORG_DISPATCH_RENDER_TOKEN }}" \
+          -H "Authorization: token ${{ steps.app-token.outputs.token }}" \
           --request POST \
           --data '{"event_type": "docs-staging-build", "client_payload": {"image": "'"${{ secrets.STAGING_IMAGE_REPOSITORY }}"'" , "image_path": "values", "key_path": ".website.image.tag", "commit_message_service": "Docs Staging", "tag": "'"${{ steps.lookup.outputs.version }}"'"}}' \
           https://api.github.com/repos/fetchai/infra-sandbox-london-b-deployment/dispatches
