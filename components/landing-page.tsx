@@ -29,7 +29,7 @@ function LandingPage() {
         <section id="asi1">
           <div className="nx-flex nx-flex-col md:nx-flex-row nx-gap-6">
             <Link
-              href="https://docs.asi1.ai/docs"
+              href="https://docs.asi1.ai/documentation/getting-started/overview"
               target="_blank"
               className="nx-flex nx-flex-col nx-w-full nx-bg-position-top nx-rounded-lg nx-h-[384px] nx-p-6 nx-relative md:nx-w-1/2"
               style={{ backgroundImage: `url(${leading_image.src})` }}
