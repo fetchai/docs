@@ -2,7 +2,7 @@
 
 [![Official Website](https://img.shields.io/badge/Official%20Website-fetch.ai-blue?style=flat&logo=world&logoColor=white)](https://fetch.ai) [![Twitter Follow](https://img.shields.io/twitter/follow/fetch_ai?style=social)](https://twitter.com/fetch_ai)
 
-Welcome to the code repository for Fetch.ai's documentation at [fetch.ai/docs](fetch.ai/docs).
+Welcome to the code repository for Fetch.ai's documentation at [fetch.ai/docs](https://innovationlab.fetch.ai/resources/docs/intro).
 
 ## Developing
 
